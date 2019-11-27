@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tickets.FxTicketController">
+   <children>
+      <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
+         <children>
+            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../image/ticket.png" />
+               </image>
+            </ImageView>
+            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Tickets" />
+         </children>
+      </HBox>
+      <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onActionSearch" onKeyPressed="#onKeyPressedSearch" styleClass="buttonLight" text="Buscar">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionNuevo" onKeyPressed="#onKeyPressNuevo" styleClass="buttonLight" text="Nuevo">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/rows.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionSave" onKeyPressed="#onKeyPressedSave" styleClass="buttonLight" text="Guardar">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/save.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionPrint" onKeyPressed="#onKeyPressedPrint" styleClass="buttonLight" text="Imprimir">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/print.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionClear" onKeyPressed="#onKeyPressedClear" styleClass="buttonLight" text="Borrar">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/error.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+      <HBox style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: white; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox style="-fx-border-color: #999999;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <ScrollPane fitToWidth="true" prefHeight="292.0" styleClass="scroll-pane-ticket" HBox.hgrow="ALWAYS">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER">
+                                             <children>
+                                                <VBox prefWidth="323.0" style="-fx-background-color: white;">
+                                                   <children>
+                                                      <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
+                                                         <children>
+                                                            <Label styleClass="labelMonospaced13" text="Encabezado" textFill="WHITE" />
+                                                            <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedEncabezadoAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                                               <image>
+                                                                  <Image url="@../../image/plus.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </HBox>
+                                                      <VBox fx:id="hbEncabezado" />
+                                                      <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
+                                                         <children>
+                                                            <Label styleClass="labelMonospaced13" text="Detalle" textFill="WHITE" />
+                                                            <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedDetalleCabeceraAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                                               <image>
+                                                                  <Image url="@../../image/plus.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </HBox>
+                                                      <VBox fx:id="hbDetalleCabecera" />
+                                                      <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
+                                                         <children>
+                                                            <Label styleClass="labelMonospaced13" text="Pie" textFill="WHITE" />
+                                                            <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedPieAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                                               <image>
+                                                                  <Image url="@../../image/plus.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </HBox>
+                                                      <VBox fx:id="hbPie" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0  0.8333333333333334em;">
+                                 <children>
+                                    <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
+                                       <children>
+                                          <Label styleClass="labelRoboto14" text="Caracteristicas" />
+                                       </children>
+                                    </HBox>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" />
+                                          <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Alineación" />
+                                          <ComboBox fx:id="cbAlignment" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelOpenSansRegular14" text="Multilinea" />
+                                                      <CheckBox fx:id="cbMultilinea" mnemonicParsing="false" onAction="#onActionMultilinea" styleClass="check-box-contenido" text="No" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelOpenSansRegular14" text="Editable" />
+                                                      <CheckBox fx:id="cbEditable" disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="No" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Variable" />
+                                          <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
+                           <children>
+                              <Label styleClass="labelRoboto14" text="Formato de ticket" />
+                              <Label styleClass="labelRobotoBold16" text="Venta" textFill="#0f67a1" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
+                           <children>
+                              <Label styleClass="labelRoboto14" text="Columnas por Renglón" />
+                              <Label styleClass="labelRobotoBold16" text="40" textFill="#0f67a1" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" style="-fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
+                           <children>
+                              <Label styleClass="labelRoboto14" text="Predeterminado" />
+                              <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-ticket" text="Si" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.25em; -fx-padding: 0 10px 0 0;" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

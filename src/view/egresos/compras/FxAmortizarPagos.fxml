@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.egresos.compras.FxAmortizarPagosController">
+   <children>
+      <HBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px;">
+                     <children>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/presupuesto.png" />
+                           </image></ImageView>
+                        <Label styleClass="labelRobotoBold18" text="Amortizar deuda" />
+                     </children>
+                  </HBox>
+                  <Separator prefWidth="200.0" style="-fx-padding: 0 0 0.8333333333333334em 0;" />
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
+                     <children>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Monto:">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/billetes.png" />
+                                       </image></ImageView>
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <TextField fx:id="txtValorCuota" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedValorCuota" onKeyTyped="#onKeyTypedValorCuotas" prefHeight="30.0" prefWidth="330.0" styleClass="text-field-normal" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
+                     <children>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Observacion:">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/state.png" />
+                                       </image></ImageView>
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="330.0" styleClass="text-field-normal" />
+                     </children>
+                  </HBox>
+                  <GridPane prefHeight="80.0" prefWidth="470.0" style="-fx-padding: 0.8333333333333334em;">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Pagado" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Pendiente" GridPane.columnIndex="2" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelRoboto14" text="Total" GridPane.columnIndex="4" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/mas.png" />
+                                 </image></ImageView>
+                           </graphic>
+                        </Label>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/igual.png" />
+                                 </image></ImageView>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="lblPagado" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="M 0000.00" textFill="#0771d3" GridPane.rowIndex="1" />
+                        <Label fx:id="lblPendiente" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="M 0000.00" textFill="#0771d3" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="lblTotal" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelRoboto14" text="M 0000.00" textFill="#0771d3" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+                  <Separator prefWidth="200.0" />
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aceptar">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/plus.png" />
+                                 </image></ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/error.png" />
+                                 </image></ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

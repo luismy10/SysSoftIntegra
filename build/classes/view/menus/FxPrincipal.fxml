@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fx:id="spWindow" fitToHeight="true" fitToWidth="true" prefWidth="800.0" styleClass="scroll-pane-primary" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxPrincipalController">
+   <content>
+      <AnchorPane fx:id="vbPrincipal">
+         <children>
+            <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox fx:id="vbSiderBar" minWidth="-Infinity" style="-fx-background-color: #1a2226;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #367fa9;">
+                           <children>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/icon.png" />
+                                 </image>
+                                 <effect>
+                                    <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                       <bumpInput>
+                                          <Shadow />
+                                       </bumpInput>
+                                       <light>
+                                          <Light.Distant />
+                                       </light>
+                                    </Lighting>
+                                 </effect>
+                              </ImageView>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="SysSoft Integra" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" style="-fx-padding: 1.6666666666666667em  1.6666666666666667em   0.8333333333333334em 1.6666666666666667em;">
+                           <children>
+                              <VBox alignment="CENTER" style="-fx-spacing: 1.6666666666666667em;">
+                                 <children>
+                                    <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../image/client.png" />
+                                       </image>
+                                       <effect>
+                                          <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                             <bumpInput>
+                                                <Shadow />
+                                             </bumpInput>
+                                             <light>
+                                                <Light.Distant />
+                                             </light>
+                                          </Lighting>
+                                       </effect>
+                                    </ImageView>
+                                    <Label fx:id="lblPuesto" contentDisplay="TOP" styleClass="labelRobotoMedium16" text="Administrador" textFill="WHITE" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                           <children>
+                              <ImageView fx:id="imState" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/connected.png" />
+                                 </image>
+                                 <effect>
+                                    <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                       <bumpInput>
+                                          <Shadow />
+                                       </bumpInput>
+                                       <light>
+                                          <Light.Distant />
+                                       </light>
+                                    </Lighting>
+                                 </effect>
+                              </ImageView>
+                              <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Conectado" />
+                           </children>
+                        </HBox>
+                        <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1em 0em 1em  0.8333333333333334em;">
+                           <children>
+                              <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Menú principal" />
+                           </children>
+                        </HBox>
+                        <VBox fx:id="hbMenus">
+                           <children>
+                              <HBox fx:id="btnInicio" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Dashboard" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/home.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnOperaciones" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Operaciones" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/operaciones.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnConsultas" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Consultas" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/consultas.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnProduccion" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Produccion" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/produccion.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnInventario" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Inventario" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/inventario.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnContactos" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Contactos" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/contactos.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnReportes" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Reportes" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/reporte.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnConfiguracion" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Configuración" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/configuracion.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <VBox HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #3c8dbc;" styleClass="paddinContainer">
+                           <children>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" onMouseClicked="#onMouseClickedSiderBar" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                       <image>
+                                          <Image url="@../image/menu-white.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="50.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../image/client.png" />
+                                       </image>
+                                       <effect>
+                                          <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                             <bumpInput>
+                                                <Shadow />
+                                             </bumpInput>
+                                             <light>
+                                                <Light.Distant />
+                                             </light>
+                                          </Lighting>
+                                       </effect>
+                                    </ImageView>
+                                    <Text fx:id="lblDatos" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Luis Alexander Lara Serna">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" style="-fx-cursor: HAND;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Cerrar Sesión" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/error.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane fx:id="vbContent" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

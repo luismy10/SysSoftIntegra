@@ -1,0 +1,1973 @@
+@font-face {
+    font-family: 'Roboto Medium'; 
+    src: url('Roboto-Medium.ttf'); 
+} 
+@font-face { 
+    font-family: 'Roboto Bold'; 
+    src: url('Roboto-Bold.ttf'); 
+} 
+@font-face { 
+    font-family: 'Roboto'; 
+    src: url('Roboto-Regular.ttf'); 
+} 
+
+/*OPEN SANS FONT*/
+@font-face { 
+    font-family: 'Open Regular'; 
+    src: url('OpenSans-Regular.ttf'); 
+} 
+
+.labelForm{
+    -fx-font-family:"Roboto";  
+    -fx-font-size:1.1666666666666667em;/*14px*/
+}
+
+.labelBorder{
+    -fx-padding: 0.3333333333333333em 2.5em 0.3333333333333333em 2.5em;/*4px 30px 4px 30px*/  
+    -fx-font-family:"Roboto Bold";  
+    -fx-font-size:1.1666666666666667em; /*14px*/
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Label roboto sizes                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.labelRoboto10{
+    -fx-font-size:0.8333333333333334em; /*10px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto12{
+    -fx-font-size:1em; /*12px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto14{
+    -fx-font-size:1.1666666666666667em; /*14px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto16{
+    -fx-font-size:1.3333333333333333em; /*16px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto18{
+    -fx-font-size:1.5em; /*18px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto20{
+    -fx-font-size:1.6666666666666667em; /*20px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto22{
+    -fx-font-size:1.8333333333333333em; /*22px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+} 
+.labelRoboto24{
+    -fx-font-size:2em;/*24px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto26{
+    -fx-font-size:2.1666666666666665em; /*26px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto28{
+    -fx-font-size:2.3333333333333335em; /*28px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRoboto30{
+    -fx-font-size:2.5em; /*30px*/
+    -fx-font-family:"Roboto"; 
+    -fx-font-smoothing-type: lcd;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label roboto medium sizes                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.labelRobotoMedium10{
+    -fx-font-size:0.8333333333333334em; /*10px*/    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium12{
+    -fx-font-size:1em; /*12px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium14{
+    -fx-font-size:1.1666666666666667em; /*14px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium16{
+    -fx-font-size:1.3333333333333333em; /*16px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium18{
+    -fx-font-size:1.5em; /*18px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium20{
+    -fx-font-size:1.6666666666666667em; /*20px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium22{
+    -fx-font-size:1.8333333333333333em; /*22px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium24{
+    -fx-font-size:2em;/*24px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium26{
+    -fx-font-size:2.1666666666666665em; /*26px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium28{
+    -fx-font-size:2.3333333333333335em; /*28px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoMedium30{
+    -fx-font-size:2.5em; /*30px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label roboto bold sizes                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.labelRobotoBold10{
+    -fx-font-size:0.8333333333333334em; /*10px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold12{
+    -fx-font-size:1em; /*12px*/
+    -fx-font-family:"Roboto Bold";
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold14{
+    -fx-font-size:1.1666666666666667em; /*14px*/
+    -fx-font-family:"Roboto Bold";
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold16{
+    -fx-font-size:1.3333333333333333em; /*16px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold18{
+    -fx-font-size:1.5em; /*18px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold20{
+    -fx-font-size:1.6666666666666667em; /*20px*/
+    -fx-font-family:"Roboto Bold";
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold22{
+    -fx-font-size:1.8333333333333333em; /*22px*/
+    -fx-font-family:"Roboto Bold";
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold24{
+    -fx-font-size:2em;/*24px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold26{
+    -fx-font-size:2.1666666666666665em; /*26px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold28{
+    -fx-font-size:2.3333333333333335em; /*28px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelRobotoBold30{
+    -fx-font-size:2.5em; /*30px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label open sans regular sizes                                               *
+ *                                                                             *
+ ******************************************************************************/
+.labelOpenSansRegular10{
+    -fx-font-size:0.8333333333333334em; /*10px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular12{
+    -fx-font-size:1em; /*12px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular14{
+    -fx-font-size:1.1666666666666667em; /*14px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular16{
+    -fx-font-size:1.3333333333333333em; /*16px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular18{
+    -fx-font-size:1.5em; /*18px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular20{
+    -fx-font-size:1.6666666666666667em; /*20px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular22{
+    -fx-font-size:1.8333333333333333em; /*22px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular24{
+    -fx-font-size:2em;/*24px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular26{
+    -fx-font-size:2.1666666666666665em; /*26px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular28{
+    -fx-font-size:2.3333333333333335em; /*28px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+.labelOpenSansRegular30{
+    -fx-font-size:2.5em; /*30px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label Segoe UI and SemiBold sizes                                               *
+ *                                                                             *
+ ******************************************************************************/
+
+.labelSegoeUISemi12{
+    -fx-font-size: 1em; /*12px*/
+    -fx-font-family: "Segoe UI";
+    -fx-font-smoothing-type: lcd;
+}
+
+.labelSegoeUISemi14{
+    -fx-font-size:1.1666666666666667em; /*14px*/
+    -fx-font-family: "Segoe UI";
+    -fx-font-smoothing-type: lcd;
+}
+
+.labelSegoeUISemiBold14{
+    -fx-font-size: 1.1666666666666667em; /*14px*/
+    -fx-font-family: "Segoe UI SemiBold";
+    -fx-font-smoothing-type: lcd;
+}
+
+.labelSegoeUISemiBold18{
+    -fx-font-size:1.5em; /*18px*/
+    -fx-font-family: "Segoe UI SemiBold";
+    -fx-font-smoothing-type: lcd;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button menus                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.buttonMenu {
+    -fx-padding: 0.8333333333333334em 1.25em 0.8333333333333334em 1.25em;
+    -fx-spacing:0.8333333333333334em;
+    -fx-opacity:0.5;
+}
+.buttonMenu:hover {
+    -fx-background-color:  #41494e;
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+.buttonMenu:pressed {
+    -fx-background-color:  #000000;
+    -fx-opacity: 1;
+}
+.buttonMenuActivate{
+    -fx-padding: 0.8333333333333334em 1.25em 0.8333333333333334em 1.25em;
+    -fx-background-color: white;
+    -fx-spacing:0.8333333333333334em;
+    -fx-opacity: 1;
+}
+.buttonMenuActivateText{
+    -fx-font-size:1.3333333333333333em; /*16px*/
+    -fx-font-family:"Roboto Bold"; 
+    -fx-font-smoothing-type: lcd;
+    -fx-text-fill: #1a2226;
+}
+
+/*******************************************************************************
+*                                                                              *
+*  Text Field login                                                            *
+*                                                                              * 
+*******************************************************************************/
+.text-field-login{
+    -fx-background-radius: 0, 0;
+    -fx-background-color:transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: #151a23;
+    -fx-font-size:1.1666666666666667em; 
+    -fx-font-family:"Roboto"; 
+}
+.text-field-login:hover{
+    -fx-border-color: #0066cc;
+}
+.text-field-login:focused{
+    -fx-border-color: #00aff0;
+}
+/*******************************************************************************
+ *                                                                             *
+ * Text Field (and Password Field)                                             *
+ *                                                                             *
+ ******************************************************************************/
+.text-field-normal {
+    ACCENT_COLOR: #2796c4;
+    BORDER: #999999;
+    BORDER_HOVER: #666666;
+    BACKGROUND: white;
+    BACKGROUND_FOCUSED: #00aff0;
+    BACKGROUND_HOVER: white;
+    TEXT_COLOR: #111;
+    PROMPT_TEXT: #666666;
+    HIGHLIGHT: ACCENT_COLOR;
+    HIGHLIGHT_TEXT: white; 
+    GRAPHIC: #747474;
+}
+.text-field-normal{
+    -fx-padding: 0.5em 0.75em 0.5em 0.75em; /*6px 9px 6px 9px*/
+    -fx-background-radius: 0, 0;
+    -fx-background-color: transparent, transparent,transparent,transparent;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+    -fx-font-size:1.1666666666666667em; 
+    -fx-font-family:"Roboto"; 
+}
+.text-field-normal:hover{
+    /*-fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;*/
+    -fx-border-color: #7a7a7a;
+}
+.text-field-normal:focused{
+    -fx-border-color: #00aff0;
+}
+.text-field-normal:disabled{
+    -fx-opacity: 1;
+    -fx-background-color: #d9d9d9, #eaeaea;
+    -fx-text-fill: #666666;
+}
+
+
+/*******************************************************************************
+*                                                                              *
+*Text Area                                                                     *
+*                                                                              *
+*******************************************************************************/
+.text-area{
+    BORDER: #999999;
+    BORDER_HOVER: #666666;
+
+    BACKGROUND: white;
+    BACKGROUND_FOCUSED: #00aff0;
+    BACKGROUND_HOVER: white;
+}
+.text-area{
+    -fx-background-radius: 0, 0;
+
+    -fx-font-size:1.1666666666666667em;
+    -fx-font-family:"Roboto";
+
+    -fx-background-color: BORDER, BACKGROUND;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+}
+.text-area .content{
+    -fx-background-color: BACKGROUND_HOVER;
+}
+
+.text-area:hover{
+    -fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;
+    -fx-border-color: #7a7a7a;
+}
+
+.text-area:focused{
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
+}
+/*******************************************************************************
+ *                                                                             *
+ * Button Light                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLight{
+    BACKGROUND: #cccccc;
+    BACKGROUND_PRESSED: #999999;
+
+    BORDER_HOVER: #7a7a7a;
+
+    TEXT: #111;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #111;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLight{
+    -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 1.1666666666666667em;
+    -fx-text-fill: TEXT;
+}
+.buttonLight:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLight:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLight:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLight:disabled, .buttonLight:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+.buttonLight:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLight:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLight:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Light Default                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLightDefault{
+    BACKGROUND: #2796c4;
+    BACKGROUND_PRESSED: #175a75;
+
+    BORDER_HOVER: #175a75;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLightDefault{
+    -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 1.1666666666666667em;
+    -fx-text-fill: TEXT;
+}
+.buttonLightDefault:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLightDefault:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLightDefault:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLightDefault:disabled, .buttonLightDefault:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+.buttonLightDefault:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLightDefault:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLightDefault:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Light Warning                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLightWarning {
+    BACKGROUND: #ea5f09;
+    BACKGROUND_PRESSED: #aa521d;
+
+    BORDER_HOVER: #ce5104;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLightWarning{
+    -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 1.1666666666666667em;
+    -fx-text-fill: TEXT;
+}
+.buttonLightWarning:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLightWarning:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLightWarning:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLightWarning:disabled, .buttonLightWarning:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+
+.buttonLightWarning:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLightWarning:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLightWarning:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Light Success                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLightSuccess  {
+    BACKGROUND: #32a019;
+    BACKGROUND_PRESSED: #264f1c;
+
+    BORDER_HOVER: #237c0e;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLightSuccess{
+    -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 1.1666666666666667em;
+    -fx-text-fill: TEXT;
+}
+.buttonLightSuccess:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLightSuccess:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLightSuccess:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonLightSuccess:disabled, .buttonLightSuccess:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+.buttonLightSuccess:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLightSuccess:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLightSuccess:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button transparent                                                   *
+ *                                                                             *
+ ******************************************************************************/
+.buttonTransparent{
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
+    -fx-font-family:"Roboto";  
+    -fx-font-size:1.3333333333333333em ; 
+}
+.buttonTransparent:hover{
+    -fx-background-color: #999999;
+    -fx-cursor: hand;
+    -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+
+}
+.buttonTransparent:focused{
+    -fx-background-color: #0288d1;
+    -fx-cursor: hand;
+    -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
+    -fx-text-fill: #FFFFFF;
+}
+.buttonTransparent:pressed{
+    -fx-background-color: #666666;
+    -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button Border                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonBorder{
+    BACKGROUND: transparent;
+    BACKGROUND_PRESSED: #cccccc;
+
+    BORDER_HOVER: #175a75;
+
+    TEXT: #1a2226;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+.buttonBorder{
+    -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
+
+    -fx-border-color: #999999;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto";
+    -fx-font-size: 1.1666666666666667em;
+    -fx-text-fill: TEXT;
+}
+.buttonBorder:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonBorder:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonBorder:focused{
+    -fx-border-color: transparent, #00aff0;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+}
+.buttonBorder:disabled, .buttonBorder:default:disabled{
+    -fx-opacity: 1;
+    -fx-background-color: #d9d9d9, #eaeaea;
+    -fx-text-fill: #666666;
+}
+
+.buttonBorder:default
+{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonBorder:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonBorder:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Tab Pane                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.tab-pane {
+    -fx-tab-min-height: 3em;
+    /* 24 */
+    -fx-tab-max-height: 2em;
+    /* 24 */
+}
+.tab .tab-label {
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER;
+    -fx-text-fill: rgb(241,241,241);
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 1.1666666666666667em;
+}
+.tab {
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-background-color: #1a2226;
+}
+.tab:selected{
+    -fx-background-color: #e7e6e6;
+}
+.tab:selected .tab-label{
+    -fx-text-fill:  #23283a;
+
+}
+.tab:focused {
+    -fx-focus-color: transparent;
+}
+.tab {
+    -fx-padding: 0 2.5em 0 2.5em;/*0 30px 0 30px*/
+}
+.tab-pane *.tab-header-background {
+    -fx-background-color: #1a2226;
+}
+.tab-pane:top *.tab-header-area {
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0 0.166667em 0.0em 0.0em;
+}
+.tab-pane:left *.tab-header-area {
+    -fx-background-insets: 0, 0 0 0 0;
+    -fx-padding: 0em 0em 0em 0em;
+}
+.tab:selected .focus-indicator {
+    -fx-focus-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Scroll Bar and Scroll Pane                                                  *
+ *                                                                             *
+ ******************************************************************************/
+/*******************************************************************************
+ *                                                                             *
+ * ScrollPane                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.scroll-pane-primary {
+    -fx-background-color:  transparent,  transparent;
+    -fx-padding: 0px;
+    -fx-spacing: 0px;
+}
+
+.scroll-pane-primary .corner {
+    -fx-background-radius: 0 0 0 0;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 0 0 0; /* have the square on the corner be centered */
+}
+
+.scroll-pane-primary> .viewport{
+    -fx-background-color: white;
+
+}
+
+.scroll-pane-secundario {
+    -fx-background-color:  transparent,  transparent;
+    -fx-padding: 0px;
+    -fx-spacing: 0px;
+}
+
+.scroll-pane-secundario .corner {
+    -fx-background-radius: 0 0 0 0;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 0 0 0; /* have the square on the corner be centered */
+}
+
+.scroll-pane-secundario> .viewport{
+    -fx-background-color: #e7e6e6;
+
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ScrollBar                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.scroll-bar{
+    -fx-background-color: #999999,white;
+    -fx-background-radius: 0;
+}
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color:transparent;
+    -fx-background-radius: 0;
+}
+.scroll-bar:vertical .track-background,
+.scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 2em;
+}
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #999999;
+    -fx-background-insets: 4 0 4 0;
+    -fx-background-radius: 0;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #999999;
+    -fx-background-insets: 0 4 0 4;
+    -fx-background-radius: 0;
+}
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #B8B8B8;
+}
+.scroll-bar:horizontal .thumb:pressed,
+.scroll-bar:vertical .thumb:pressed {
+    -fx-background-color: #B8B8B8;
+}
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 5;
+}
+.scroll-bar:horizontal .increment-button, .scroll-bar:horizontal .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 5;
+}
+.scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-background-color: #999999;
+    -fx-padding: 0.3333333333333333em;
+    -fx-rotate: -90;
+}
+.scroll-bar:vertical .increment-arrow {
+    -fx-background-color: #999999;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.3333333333333333em;
+    -fx-rotate: 0;
+}
+.scroll-bar:horizontal .decrement-arrow {
+    -fx-background-color: #999999;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.3333333333333333em;
+    -fx-rotate: 90;
+}
+.scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: #999999;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.3333333333333333em;
+    -fx-rotate: -180;
+}
+
+
+/*
+.scroll-bar{
+    -fx-background-color: rgb(193,193,193),white;
+    
+}
+
+.scroll-bar  > .thumb{
+    -fx-background-color: rgb(193,193,193);
+    -fx-background-insets: 0 1 0 1;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar > .thumb:hover {
+    -fx-background-color: rgb(168,168,168);
+}
+
+.scroll-bar  > .thumb:pressed {
+    -fx-background-color: #606060;
+}
+
+
+.scroll-bar > .track {
+    -fx-background-color: rgb(241,241,241);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+.scroll-bar > .track-background {
+    -fx-background-color: rgb(241,241,241);
+    -fx-background-insets: 0;
+}
+
+.scroll-bar:vertical > .increment-button,
+.scroll-bar:vertical > .decrement-button {
+    -fx-padding: 0.3333333333333333em; /*4px*//*
+}
+/*
+.scroll-bar:horizontal > .increment-button,
+.scroll-bar:horizontal > .decrement-button {
+    -fx-padding: 0.3333333333333333em; /*4px*//*
+}
+/*
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;    
+}
+
+.scroll-bar > .increment-button:hover,
+.scroll-bar > .decrement-button:hover  {
+    -fx-background-color: rgb(168,168,168);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar > .increment-button:pressed,
+.scroll-bar > .decrement-button:pressed {
+    -fx-background-color: #606060;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar > .decrement-button > .decrement-arrow,
+.scroll-bar > .increment-button > .increment-arrow{
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-background-color: transparent, #606060;
+}
+
+.scroll-bar > .decrement-button:pressed > .decrement-arrow,
+.scroll-bar > .increment-button:pressed > .increment-arrow {
+    -fx-background-color: transparent, white;
+}
+
+.scroll-bar:vertical > .increment-button > .increment-arrow,
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+    -fx-padding: 0.4166666666666667em 0.5833333333333334em 0.08333333333333333em 0.08333333333333333em; 
+}
+
+.scroll-bar:horizontal > .increment-button > .increment-arrow,
+.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
+    -fx-padding: 0.4166666666666667em 0.5833333333333334em 0.08333333333333333em 0.08333333333333333em; 
+}
+
+.scroll-bar:disabled {
+    -fx-opacity: 0.4;
+}
+
+/* ARROW SHAPES *//*
+.scroll-bar:horizontal {
+    -fx-unit-increment: 5 ;
+    -fx-block-increment: 20 ;
+}
+
+.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-rotate: 90;
+}
+
+.scroll-bar:horizontal > .increment-button > .increment-arrow {
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-rotate: -90;
+}
+
+.scroll-bar:vertical{
+    -fx-unit-increment: 5 ;
+    -fx-block-increment: 20 ;
+}
+
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-rotate: 180;
+}
+
+.scroll-bar:vertical > .increment-button > .increment-arrow {
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Table View                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.table-view-principal{
+    -fx-background-color: transparent,transparent,transparent, transparent;
+    -fx-border-color: #999999;
+    -fx-border-width:1px;
+    -fx-padding: 0;
+}
+.table-view-principal:focused {
+    -fx-border-color: #00aff0;
+    -fx-background-insets: -1.4, 0, 1;
+    -fx-background-radius: 1.4, 0, 0;
+}
+
+
+/***** Column Header *****/
+.table-view-principal .column-header-background{
+    -fx-background-color: #1a2226;
+}
+
+.table-view-principal .column-header{
+    -fx-background-color: #1a2226;
+    -fx-border-width:0px 1px 1px 0px;
+    -fx-border-color:#999999;
+}
+
+.table-view-principal .filler{
+    -fx-background-color: inherit;
+    -fx-border-color: transparent transparent #999999 transparent;
+}
+
+.table-view-principal .column-header:hover{
+    -fx-background-color: #999999;
+    -fx-cursor:hand;
+}
+
+.table-view-principal .column-header .label{
+    -fx-text-fill:  white;
+    -fx-font-family:"Open Regular"; 
+    -fx-font-weight: 100;
+    -fx-font-size: 1.1666666666666667em; /*14px*/
+    -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;/*9px 2px 9px 2px*/
+}
+.table-view-principal .column-header .label:hover{
+    -fx-text-fill: white;
+}
+
+/***** Table View "body"  *****/
+
+.table-view-principal .table-cell {
+    -fx-font-family:"Roboto"; 
+    -fx-font-size: 1.1666666666666667em;
+    -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;/*9px 2px 9px 2*/
+    -fx-text-fill:#1a2226;
+}
+
+.table-view-principal:row-selection .table-row-cell:filled:hover { 
+    -fx-background-color: #cccccc;
+}
+
+.table-view-principal:row-selection .table-row-cell:filled:selected:hover { 
+    -fx-background-color:  #2796c4;
+}
+
+.table-view-principal:row-selection .table-row-cell:filled:selected { 
+    -fx-background-color:  #cccccc;
+}
+
+.table-view-principal:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused {
+    -fx-background-color: #2796c4;
+}
+
+.table-view-principal:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused .table-cell {
+    -fx-text-fill: white;
+}
+
+/*
+.table-view-principal:row-selection .table-row-cell:filled:selected .table-cell{
+    -fx-text-fill:white;
+}*/
+
+/*******************************************************************************
+ *                                                                             *
+ * Table View secundario                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+
+.table-view-secundario{
+    -fx-base: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-color: transparent,transparent,transparent, transparent;
+    -fx-border-color: #999999;
+    -fx-padding: 0;
+}
+
+.table-view-secundario:focused {
+    -fx-border-color: #00aff0;
+    -fx-background-insets: -1.4, 0, 1;
+    -fx-background-radius: 1.4, 0, 0;
+}
+
+/****** Column Header ******/
+.table-view-secundario .column-header:last-visible {
+    -fx-border-color: transparent transparent #999999 transparent;
+}
+
+.table-view-secundario .filler {
+    -fx-border-color: transparent transparent #999999 transparent;
+}
+
+.table-view-secundario .column-header .label{
+    -fx-text-fill: #111;
+    -fx-font-family: "Segoe UI SemiBold";
+    -fx-font-size: 1.1666666666666667em;  /* 14 */
+    -fx-alignment: center;
+    -fx-padding:  0.6666666666666666em 0.5em 0.6666666666666666em 0.5em;      
+}
+
+.table-view-secundario .column-header:hover{
+    -fx-background-color: #dadada;
+}
+
+.table-view-secundario .column-header:hover .label{
+    -fx-text-fill: #111;
+}
+
+.table-view-secundario .column-header-background {
+    -fx-background-color: white;
+}
+
+.table-view-secundario .column-header, .table-view-secundario .filler{
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #999999 transparent;
+}
+
+.table-view-secundario .filler {
+    -fx-background-color: transparent, white;
+    -fx-background-insets: 0 0 0 0, 1 0 1 0;
+}
+
+.table-view-secundario .column-header.table-column-selected {
+    -fx-background-color: white;   
+}
+
+/* Header Sort Arrows */
+/* There can be nested column headers inside other nested column so this declaration is a bit loose. Not sure we can be
+totally specific (always using direct child) and cover all cases, which would be more performant. */
+.table-view-secundario > .column-header-background .nested-column-header > .column-header > GridPane > .arrow {
+    -fx-padding: 0.5em 0.416667em 0.5em 0.416667em; /* 6 5 6 5 */
+    -fx-shape: "M 15 4 L 15 24.0625 L 8.21875 17.28125 L 6.78125 18.71875 L 15.28125 27.21875 L 16 27.90625 L 16.71875 27.21875 L 25.21875 18.71875 L 23.78125 17.28125 L 17 24.0625 L 17 4 Z ";
+    -fx-background-color: #111;
+}
+.table-view-secundario > .column-header-background .nested-column-header > .column-header > GridPane {
+    -fx-background-color: transparent;
+}
+
+.table-view-secundario > .column-header-background .nested-column-header > .column-header > GridPane > .sort-order-dots-container {
+    -fx-background-color: transparent;
+}
+
+/****** Table View "body"  ******/
+
+.table-view-secundario .table-cell{   
+    -fx-text-fill:#1a2226;
+    -fx-font-family:"Segoe UI";    
+    -fx-font-size: 1.1666666666666667em;  /* 14 */
+    -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;/*9px 2px 9px 2*/
+    -fx-border-insets: 0;
+    -fx-border-color: transparent;
+}
+
+.table-view-secundario .table-row-cell:empty, .table-cell:empty:hover {
+    -fx-background-color: transparent;
+}
+
+.table-view-secundario .table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+}
+
+.table-view-secundario:row-selection .table-row-cell:filled:hover { 
+    -fx-background-color: #cccccc;
+}
+
+.table-view-secundario:row-selection .table-row-cell:filled:selected:hover { 
+    -fx-background-color: #00aff0;
+}
+
+.table-view-secundario:row-selection .table-row-cell:filled:selected { 
+    -fx-background-color: transparent;
+}
+
+.table-view-secundario:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused {
+    -fx-background-color: #00aff0;
+}
+
+.table-view-secundario:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused .table-cell {
+    -fx-text-fill: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Date Picker                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+.date-picker{
+    -fx-background-color: transparent, transparent, transparent, transparent;
+    -fx-font-size:1.1666666666666667em; 
+    -fx-font-family:"Roboto"; 
+    -fx-background-color:white;
+    -fx-border-color:#999999;
+    -fx-border-width:1;
+}
+.date-picker:hover{
+    -fx-border-color: #7a7a7a;
+}
+.date-picker:focused{
+    -fx-border-color: #00aff0;
+}
+.date-picker .text-field{
+    -fx-background-color: transparent, transparent, transparent, transparent;
+    -fx-border-color: #ccc;
+    -fx-border-width: 0;
+    -fx-border-style: none;
+    -fx-border-radius: 0;
+    -fx-padding: 0.5em 0.75em 0.5em 0.75em; /*7px 9px 7px 9px*/
+}
+.date-picker.date-picker > .arrow-button{
+    -fx-background-color:  #3c8dbc;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+.date-picker.date-picker > .arrow-button:hover {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+.date-picker.date-picker > .arrow-button:pressed {
+    -fx-background-color: #175a75;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+.date-picker.date-picker > .arrow-button > .arrow {
+    -fx-shape: "M0,0v9h9V0H0z M2,8H1V7h1V8z M2,6H1V5h1V6z M2,4H1V3h1V4z M4,8H3V7h1V8z M4,6H3V5h1V6z M4,4H3V3h1V4z M6,8H5V7h1V8z M6,6H5 V5h1V6z M6,4H5V3h1V4z M8,8H7V7h1V8z M8,6H7V5h1V6z M8,4H7V3h1V4z";
+    -fx-background-color:  white;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.5em; /* 6 */
+    -fx-scale-shape: true;
+}
+.date-picker.date-picker > .arrow-button:pressed > .arrow {
+    -fx-background-color: white;
+}
+.date-picker .date-picker-popup {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+.date-picker.date-picker-popup > .month-year-pane {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+.date-picker .date-picker-popup > * > .spinner > .button {
+    -fx-padding: 0.25em 0.583333em 0.25em 0.583333em; /* 3 7 3 7 */
+}
+.date-picker .date-picker-popup > * > .spinner > .button {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+.date-picker .date-picker-popup > * > .spinner {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+.date-picker .date-picker-popup > * > .spinner > .button:hover {
+    -fx-background-color: #dadada;
+}
+.date-picker .date-picker-popup > * > .spinner > .button:armed {
+    -fx-background-color: #606060;
+}
+.date-picker .date-picker-popup > * > .spinner > .button > .left-arrow,
+.date-picker-popup > * > .spinner > .button > .right-arrow {
+    -fx-background-color: #606060;
+    -fx-background-insets: 0;
+    -fx-effect: null;
+}
+.date-picker .date-picker-popup > * > .spinner > .button:pressed > .left-arrow,
+.date-picker-popup > * > .spinner > .button:pressed > .right-arrow {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+.date-picker .date-picker-popup > .calendar-grid {
+    -fx-background-color: white;
+    /*-fx-background-insets: 1 0 0 0;*/
+    -fx-padding: 0;
+}
+.date-picker .date-picker-popup > * > .previous-month,
+.date-picker-popup > * > .next-month {
+    -fx-background-color: white;
+    -fx-opacity: 0.3;
+}
+.date-picker .date-picker-popup > * > .day-name-cell,
+.date-picker-popup > * > .week-number-cell {
+    -fx-font-size: 1.1666666666666667em;
+    -fx-font-family: "Roboto";
+    -fx-padding: 0.583333em;
+}
+.date-picker:disabled{
+    -fx-background-color: transparent, transparent, #eaeaea, transparent;
+    -fx-text-fill: #adadad;
+    -fx-opacity: 1.0; 
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Combo Box                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.combo-box {
+    -fx-background-color: transparent, white, transparent, white;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 1.1666666666666667em;
+}
+.combo-box:hover {
+    -fx-border-color: #7a7a7a;
+}
+.combo-box:focused {
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
+}
+.combo-box.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-font-family:"Roboto";  
+    -fx-font-size: 1.1666666666666667em;
+    -fx-padding: 0.5em;
+}
+.combo-box > .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover{
+    -fx-background-color: #00aff0;
+    -fx-text-fill: white;
+}
+.combo-box:editable{
+    -fx-padding: 0; /*20 7 20 7*/
+}
+
+.combo-box .text-field{
+    -fx-padding: 0.4166666666666667em 0.5833333333333334em 0.4166666666666667em  0.5833333333333334em; /*20 7 20 7*/
+    -fx-background-color: white,white;
+}
+.combo-box.combo-box-base > .arrow-button {    
+    -fx-background-color: #3c8dbc;
+    -fx-background-radius: 0;
+    -fx-padding: 1em 0.75em 1em 0.75em; /*12px 9px 12px 9px*/
+    -fx-border-width:1;
+    -fx-border-color:  #3c8dbc;
+
+}
+.combo-box.combo-box-base > .arrow-button > .arrow {
+    -fx-background-color: white;
+    -fx-background-insets: 0 0 0 0;
+    -fx-shape: "M 0 0 H 7 L 3.5 4 z";
+}
+.combo-box:disabled{
+    -fx-opacity: 1;
+    -fx-background-color: transparent, transparent, #eaeaea, transparent;
+    -fx-text-fill: #adadad;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * List View                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.list-view {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+
+    -fx-border-color: #a4a4a4;
+    -fx-border-width: 1px;
+}
+
+.list-view:focused {
+    -fx-border-color: #00aff0;
+}
+
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-padding: 0.6666666666666666em;
+    -fx-font-family: "Roboto";
+    -fx-text-fill: #1a2226;
+    -fx-font-size: 1.166667em;  /*14*/
+}
+
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
+    -fx-background-color: #cccccc;
+}
+
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-background-color: white;
+}
+
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
+    -fx-background-color: #00aff0;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Spinner                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+.spinner {    
+    -fx-background-radius: 0, 0;
+
+    -fx-background-color: transparent, transparent;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+
+}
+.spinner:focused,
+.spinner:contains-focus {
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
+
+
+}
+.spinner:disabled {
+    -fx-opacity: -fx-disabled-opacity;
+}
+.spinner > .text-field {
+    -fx-padding: 0.375em 0.5833333333333334em 0.375em 0.5833333333333334em; /*6 0 6 0*/
+    -fx-background-radius: 0, 0;
+    -fx-background-color: transparent, white;
+    -fx-border-width:1;
+    -fx-border-color: transparent;
+    -fx-font-size:1.1666666666666667em; 
+    -fx-font-family:"Roboto"; 
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #3c8dbc;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0,0;
+    -fx-border-width:1;
+    -fx-border-color:  #3c8dbc;
+    -fx-padding: 0.333em 0.666em 0.333em 0.666em; /* 4 8 4 8 */
+}
+.spinner .decrement-arrow-button {
+    -fx-background-color: #3c8dbc;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0,0;
+    -fx-border-width:1;
+    -fx-border-color:  #3c8dbc;
+    -fx-padding: 0.333em 0.666em 0.333em 0.666em; /* 4 8 4 8 */
+}
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: white;
+    -fx-background-insets: -0.6 0 1 0, 0;
+    -fx-padding: 0.167em 0.333em 0.167em 0.333em; /* 2 4 2 4 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+    -fx-rotate: 180;
+}
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: white;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.167em 0.333em 0.167em 0.333em; /* 2 4 2 4 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Check Box                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.check-box-contenido {
+    -fx-text-fill:  #23283a;
+    -fx-font-family:"Open Regular";  
+    -fx-font-size: 1.1666666666666667em;
+}
+
+/* unselected */
+.check-box-contenido > .box {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+
+    -fx-border-color: #999999;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+
+    -fx-padding: 0.4166666666666667em 0.25em 0.4166666666666667em 0.25em; /*5px*/
+}
+
+.check-box-contenido > .box > .mark {
+    -fx-shape: "M17.939,5.439L7.5,15.889l-5.439-5.449l0.879-0.879L7.5,14.111 l9.561-9.551L17.939,5.439z";
+
+    -fx-pref-width: 1.3333333333333333em;/*16px*/
+    -fx-pref-height: 1em;/*12px*/
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+/* hover */
+.check-box-contenido:hover > .box, .check-box-contenido:selected:hover > .box  {
+    -fx-border-color: #7a7a7a;
+}
+
+/* selected */
+.check-box-contenido:selected > .box{
+    -fx-background-color: #3c8dbc;
+    -fx-border-color: #666666;
+}
+
+.check-box-contenido:selected > .box > .mark{
+    -fx-background-color: white;
+}
+
+/* pressed */
+.check-box-contenido:pressed > .box, .check-box-contenido:selected:pressed > .box
+{
+    -fx-background-color: #666666;
+    -fx-border-color: #666666;
+}
+
+/* indeterminate */
+.check-box-contenido:indeterminate > .box {
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+
+    -fx-border-color: ACCENT_COLOR;
+}
+
+.check-box-contenido:indeterminate > .box > .mark {
+    -fx-shape: null;
+
+    -fx-pref-width: 0.8333333333333334em;/*10px*/
+    -fx-max-width: 0.8333333333333334em;
+    -fx-min-width: 0.8333333333333334em;
+    -fx-pref-height: 0.8333333333333334em;
+    -fx-max-height: 0.8333333333333334em;
+    -fx-min-height: 0.8333333333333334em;
+
+    -fx-background-color: #333333;
+    /*-fx-background-insets: 3px;*/
+}
+
+/* -- indeterminate - pressed */
+.check-box-contenido:indeterminate:pressed > .box > .mark {
+    -fx-background-color: #666666;
+}
+
+.check-box-contenido:indeterminate:pressed > .box {
+    -fx-background-color: white;
+    -fx-border-color: #666666;
+}
+
+/* focused */
+
+.check-box-contenido:focused > .box{
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    /* - first border is focus ring
+       - second border is control border */
+    -fx-border-color: #00aff0;
+    -fx-border-width: 1;
+    /*noinspection CssInvalidFunction*/
+    /*-fx-border-style: segments(1, 2), solid;*
+    -fx-border-insets: -3, 0;*/
+}
+
+/* -- focused - selected */
+.check-box-contenido:focused:selected > .box{
+    -fx-border-color: #00aff0;
+}
+
+/* -- focused - selected, hover */
+.check-box-contenido:focused:selected:hover > .box{
+    -fx-border-color: #666666;
+}
+
+/* -- focused - pressed */
+.check-box-contenido:focused:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-contenido:focused:selected:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-contenido:focused:indeterminate:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+/* -- focused - indeterminate*/
+.check-box-contenido:focused:indeterminate > .box {
+    -fx-border-color: #666666, #666666;
+}
+
+/* disabled */
+.check-box-contenido:disabled{
+    -fx-opacity: 0.8;
+}
+
+.check-box-contenido:disabled > .box{
+    -fx-background-color: #cccccc;
+    -fx-border-color: #333333;
+}
+.check-box-contenido:disabled:selected >.box{
+    -fx-background-color: #666666;
+}
+/*
+*/
+
+.check-box-ticket {
+    -fx-text-fill:  #0f67a1;
+    -fx-font-family:"Roboto Bold";  
+    -fx-font-size: 1.3333333333333333em;
+}
+
+/* unselected */
+.check-box-ticket > .box {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+
+    -fx-border-color: #999999;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+}
+
+.check-box-ticket > .box > .mark {
+    -fx-shape: "M17.939,5.439L7.5,15.889l-5.439-5.449l0.879-0.879L7.5,14.111 l9.561-9.551L17.939,5.439z";
+
+    -fx-pref-width: 1.3333333333333333em;/*16px*/
+    -fx-pref-height: 1em;/*12px*/
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+/* hover */
+.check-box-ticket:hover > .box, .check-box-ticket:selected:hover > .box  {
+    -fx-border-color: #7a7a7a;
+}
+
+/* selected */
+.check-box-ticket:selected > .box{
+    -fx-background-color: #3c8dbc;
+    -fx-border-color: #666666;
+}
+
+.check-box-ticket:selected > .box > .mark{
+    -fx-background-color: white;
+}
+
+/* pressed */
+.check-box-ticket:pressed > .box, .check-box-ticket:selected:pressed > .box
+{
+    -fx-background-color: #666666;
+    -fx-border-color: #666666;
+}
+
+/* indeterminate */
+.check-box-ticket:indeterminate > .box {
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+
+    -fx-border-color: ACCENT_COLOR;
+}
+
+.check-box-ticket:indeterminate > .box > .mark {
+    -fx-shape: null;
+
+    -fx-pref-width: 0.8333333333333334em;/*10px*/
+    -fx-max-width: 0.8333333333333334em;
+    -fx-min-width: 0.8333333333333334em;
+    -fx-pref-height: 0.8333333333333334em;
+    -fx-max-height: 0.8333333333333334em;
+    -fx-min-height: 0.8333333333333334em;
+
+    -fx-background-color: #333333;
+    /*-fx-background-insets: 3px;*/
+}
+
+/* -- indeterminate - pressed */
+.check-box-ticket:indeterminate:pressed > .box > .mark {
+    -fx-background-color: #666666;
+}
+
+.check-box-ticket:indeterminate:pressed > .box {
+    -fx-background-color: white;
+    -fx-border-color: #666666;
+}
+
+/* focused */
+
+.check-box-ticket:focused > .box{
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    /* - first border is focus ring
+       - second border is control border */
+    -fx-border-color: #00aff0;
+    -fx-border-width: 1;
+    /*noinspection CssInvalidFunction*/
+    /*-fx-border-style: segments(1, 2), solid;*
+    -fx-border-insets: -3, 0;*/
+}
+
+/* -- focused - selected */
+.check-box-ticket:focused:selected > .box{
+    -fx-border-color: #00aff0;
+}
+
+/* -- focused - selected, hover */
+.check-box-ticket:focused:selected:hover > .box{
+    -fx-border-color: #666666;
+}
+
+/* -- focused - pressed */
+.check-box-ticket:focused:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-ticket:focused:selected:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+.check-box-ticket:focused:indeterminate:pressed > .box{
+    -fx-border-color: #666666, #666666;
+}
+
+/* -- focused - indeterminate*/
+.check-box-ticket:focused:indeterminate > .box {
+    -fx-border-color: #666666, #666666;
+}
+
+/* disabled */
+.check-box-ticket:disabled
+{
+    -fx-opacity: 0.8;
+}
+
+.check-box-ticket:disabled > .box
+{
+    -fx-background-color: #cdcdcd;
+    -fx-border-color: #aaa;
+}
+
+/*
+*/
+
+.check-box-movimiento {
+    -fx-text-fill:  #0f67a1;
+    -fx-font-family:"Roboto Bold";  
+    -fx-font-size: 1.3333333333333333em;
+}
+
+/* unselected */
+.check-box-movimiento > .box {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+
+    -fx-border-color: #999999;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+
+    -fx-padding: 0.3333333333333333em 0.16666666666666666em 0.3333333333333333em 0.16666666666666666em;/*4px 2px 4px 2px*/
+}
+
+.check-box-movimiento > .box > .mark {
+    -fx-shape: "M17.939,5.439L7.5,15.889l-5.439-5.449l0.879-0.879L7.5,14.111 l9.561-9.551L17.939,5.439z";
+
+    -fx-pref-width: 1.3333333333333333em;/*16px*/
+    -fx-pref-height: 1em;/*12px*/
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+/* selected */
+.check-box-movimiento:selected > .box{
+    -fx-background-color: #3c8dbc;
+    -fx-border-color: #666666;
+}
+
+.check-box-movimiento:selected > .box > .mark{
+    -fx-background-color: #237c0e;
+}
+
+/* disabled */
+.check-box-movimiento:disabled
+{
+    -fx-opacity: 0.95;
+}
+
+.check-box-movimiento:disabled > .box
+{   
+    -fx-opacity: 0.95;
+    -fx-background-color: #cccccc;
+    -fx-border-color: #aaa;
+}
+
+/**/
+.selection_rectangle {
+    -fx-fill: transparent;
+    -fx-stroke: green;
+    -fx-stroke-width: 1;
+    -fx-stroke-dash-array: 2 4;
+    -fx-stroke-type: outside;
+}
+.selection_drag_handle {
+    -fx-fill: rgba( 0, 128, 0, 0.6); /*green = #008000 */
+    -fx-stroke: green;
+    -fx-stroke-width: 1;
+    -fx-stroke-type: outside;
+}
+
+.label-asignacion{
+    -fx-background-color: #c6e2cc; 
+    -fx-background-radius: 0 2 2 0; 
+    -fx-font-weight: 700; 
+    -fx-border-color: #309c40;
+    -fx-border-width: 0 0 0 10; 
+    -fx-border-radius: 0 2 2 0; 
+    -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
+    -fx-text-fill: #309c40; -fx-font-family: Roboto; 
+    -fx-font-size: 1.1666666666666667em;
+}
+
+.label-proceso{
+    -fx-background-color: #F1948A; 
+    -fx-background-radius: 0 2 2 0; 
+    -fx-font-weight: 700; 
+    -fx-border-color: #990000; 
+    -fx-border-width: 0 0 0 10; 
+    -fx-border-radius: 0 2 2 0; 
+    -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
+    -fx-text-fill: #990000; 
+    -fx-font-family: Roboto; 
+    -fx-font-size: 1.1666666666666667em;
+}
+
+.label-medio{
+    -fx-background-color: #F9E434 ; 
+    -fx-background-radius: 0 2 2 0; 
+    -fx-font-weight: 700; 
+    -fx-border-color: #C4A900 ; 
+    -fx-border-width: 0 0 0 10; 
+    -fx-border-radius: 0 2 2 0; 
+    -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
+    -fx-text-fill: #6D5F02 ; 
+    -fx-font-family: Roboto; 
+    -fx-font-size: 1.1666666666666667em;
+}
+
+.text-field-ticket{
+    -fx-background-radius: 0, 0;
+
+    -fx-background-color: transparent, white;
+    -fx-border-width:0 1px 0 0;
+    -fx-border-color: #999999;
+    -fx-padding:0.16666666666666666em 0 0.16666666666666666em 0;
+
+    -fx-font-size:13px; 
+    -fx-font-family:"Monospaced"; 
+}
+.text-field-ticket:hover{
+    -fx-background-color: transparent, white;
+    -fx-border-width:0 1px 0 0;
+    -fx-border-color: #999999;
+}
+.text-field-ticket:focused{
+    -fx-background-color: transparent, white;
+    -fx-border-width:0 1px 0 0;
+    -fx-border-color: #999999;
+}
+
+.hbBoxBackgroundImage{
+    -fx-background-image:url("/view/image/fondoanulado.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: 100%;  
+}

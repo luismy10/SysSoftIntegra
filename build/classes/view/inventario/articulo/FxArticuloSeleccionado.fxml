@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" minWidth="-Infinity" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.articulo.FxArticuloSeleccionadoController">
+   <children>
+      <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+         <children>
+            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Artículo seleccionado" textAlignment="CENTER" wrappingWidth="320.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+         <children>
+            <ImageView fx:id="ivPrincipal" fitHeight="190.0" fitWidth="190.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../image/no-image.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="lblName" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="-" textAlignment="CENTER" wrappingWidth="320.0" />
+            <Text fx:id="lblPrice" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="-" />
+            <Text fx:id="lblPriceBruto" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="-" />
+            <Text fx:id="lblImpuesto" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="-" />
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_LEFT" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="labelRobotoMedium14" VBox.vgrow="SOMETIMES">
+         <children>
+            <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="CANT. ACTUAL" />
+            <Text fx:id="lblQuantity" fill="#117c02" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="-" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

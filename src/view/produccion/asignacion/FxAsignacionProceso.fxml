@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.asignacion.FxAsignacionProcesoController">
+   <children>
+      <VBox HBox.hgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#onMouseClickedBehind" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../../image/left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/asignacion.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Asignación de Productos a Artículo" />
+                  <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelOpenSansRegular14" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Roboto" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ProgressIndicator prefHeight="30.0" prefWidth="30.0" style="-fx-progress-color: #23283a;" />
+                     </graphic>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLight" text="Registrar(F1)">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/save.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
+               <children>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto14" text="Buscar artículo para la asignación" textFill="#1a2226">
+                           <font>
+                              <Font name="Calibri" size="15.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonBorder">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Label fx:id="lblArticulo" maxWidth="1.7976931348623157E308" prefHeight="30.0" styleClass="labelRobotoBold14" text="Artículo elegido" textFill="#0d7097" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox fx:id="hbAsignacion" disable="true" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <Button fx:id="btnProducto" mnemonicParsing="false" onAction="#onActionProducto" onKeyPressed="#onKeyPressedProducto" styleClass="buttonLight" text="Productos">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionRecalcular" onKeyPressed="#onKeyPressedRecalcular" styleClass="buttonLight" text="Recalcular">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/reload-gray.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Remover">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/remove.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <TableView fx:id="tvList" prefHeight="260.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                           <columns>
+                              <TableColumn fx:id="tcDescripcion" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="167.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                              <TableColumn fx:id="tcMedida" prefWidth="167.0" style="-fx-alignment: CENTER-RIGHT;" text="Medida" />
+                              <TableColumn fx:id="tcCosto" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
+                              <TableColumn fx:id="tcPrecio" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio" />
+                              <TableColumn fx:id="tcMovimiento" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Movimiento" />
+                              <TableColumn fx:id="tcEstado" prefWidth="132.0" style="-fx-alignment: CENTER;" text="Estado" />
+                           </columns>
+                        </TableView>
+                        <HBox style="-fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Cantidad Promedio" />
+                                    <Label fx:id="lblCantidad" styleClass="labelRobotoBold14" text="0.00" textFill="#069ac3" />
+                                 </children>
+                              </VBox>
+                              <Separator orientation="VERTICAL" />
+                              <VBox>
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Costo Promedio" />
+                                    <Label fx:id="lblCostoPromedio" styleClass="labelRobotoBold14" text="0.00" textFill="#069ac3" />
+                                 </children>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Precio Promedio" />
+                                    <Label fx:id="lblPrecioPromedio" styleClass="labelRobotoBold14" text="0.00" textFill="#069ac3" />
+                                 </children>
+                              </VBox>
+                              <Separator orientation="VERTICAL" />
+                              <VBox>
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Costo Total" />
+                                    <Label fx:id="lblCostoTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#069ac3" />
+                                 </children>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Precio Total" />
+                                    <Label fx:id="lblPrecioTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#069ac3" />
+                                 </children>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Utilidad" />
+                                    <Label fx:id="lblUtilidad" styleClass="labelRobotoBold14" text="0.00" textFill="#069ac3" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>
