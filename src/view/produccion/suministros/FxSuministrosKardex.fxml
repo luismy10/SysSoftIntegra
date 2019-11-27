@@ -53,7 +53,7 @@
                                     <HBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
                                           <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onActionSearchSuministro" onKeyPressed="#onKeyPressedSearchSuministro" prefHeight="30.0" styleClass="buttonBorder" text="0">
+                                          <Button contentDisplay="GRAPHIC_ONLY" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSearchSuministro" onKeyPressed="#onKeyPressedSearchSuministro" prefHeight="30.0" styleClass="buttonBorder" text="0">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0680276-c4ca-4fbd-9077-aafcde36e2a5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -10,6 +11,9 @@
 	<parameter name="COSTO_TOTAL" class="java.lang.String"/>
 	<parameter name="PRECIO_TOTAL" class="java.lang.String"/>
 	<parameter name="UTILIDAD_GENERADA" class="java.lang.String"/>
+	<parameter name="CATEGORIA" class="java.lang.String"/>
+	<parameter name="MARCA" class="java.lang.String"/>
+	<parameter name="PRESENTACION" class="java.lang.String"/>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="nombreMarca" class="java.lang.String"/>
 	<field name="cantidad" class="java.lang.Double"/>
@@ -25,7 +29,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="56" splitType="Stretch">
+		<band height="77" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="204" height="30" forecolor="#032A5E" uuid="7f881812-d943-4fc9-b4c8-a244516161b6"/>
 				<textElement verticalAlignment="Middle">
@@ -69,7 +73,7 @@
 				<textFieldExpression><![CDATA[$P{PRODUCTOS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="537" y="32" width="104" height="22" forecolor="#0D4E9E" uuid="3f954c7b-cb4a-446c-b608-e6ce0aced597"/>
+				<reportElement x="550" y="32" width="91" height="22" forecolor="#0D4E9E" uuid="3f954c7b-cb4a-446c-b608-e6ce0aced597"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
@@ -82,6 +86,51 @@
 					<paragraph leftIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{ORDEN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="55" width="104" height="22" forecolor="#0D4E9E" uuid="796e2876-bb83-474c-9d1f-f9bdc8ac5a70"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoría]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="104" y="55" width="162" height="22" forecolor="#666666" uuid="6f1b1bc0-8bb7-4063-96d0-76bfa958c6ad"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CATEGORIA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="32" width="104" height="22" forecolor="#0D4E9E" uuid="0c185587-b422-45e4-91e5-440fb566012f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="381" y="32" width="162" height="22" forecolor="#666666" uuid="465b624e-b67e-4c69-aac3-d3fb8e5319f1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MARCA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="55" width="104" height="22" forecolor="#0D4E9E" uuid="d3407c1d-0d10-408c-8de9-dcd177db4df6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Presentación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="381" y="55" width="162" height="22" forecolor="#666666" uuid="6b7cab80-2bc5-4b90-a638-e80eb04076d3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRESENTACION}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -164,7 +213,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="32" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="60" height="30" forecolor="#666666" uuid="45fa28d5-6bd4-47f6-81f1-6b4986464a81"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -299,7 +348,7 @@
 				<text><![CDATA[Generado por SYS SOFT INTEGRA]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy h:mm a">
-				<reportElement x="580" y="0" width="220" height="30" forecolor="#666666" uuid="6a67ae48-1661-4a01-b140-a3077bce1fcb"/>
+				<reportElement x="581" y="0" width="220" height="30" forecolor="#666666" uuid="6a67ae48-1661-4a01-b140-a3077bce1fcb"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>

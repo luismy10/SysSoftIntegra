@@ -57,6 +57,7 @@ public class SuministroTB {
     private double subImporte;
     
     private double subImporteDescuento;
+    private double movimiento;
     private double diferencia;
 
     private double totalImporte;
@@ -71,13 +72,15 @@ public class SuministroTB {
 
     private String descripcion;
 
-    private TextField movimiento;
+    private TextField txtMovimiento;
 
     private CheckBox validar;
 
     private Label estadoAsignacion;
     
     private Button remover;
+    
+    private boolean cambios;
 
     public SuministroTB() {
     }
@@ -370,6 +373,14 @@ public class SuministroTB {
         this.subImporteDescuento = subImporteDescuento;
     }
 
+    public double getMovimiento() {
+        return movimiento;
+    }
+
+    public void setMovimiento(double movimiento) {
+        this.movimiento = movimiento;
+    }
+
     public double getDiferencia() {
         return diferencia;
     }
@@ -482,12 +493,12 @@ public class SuministroTB {
         this.descripcion = descripcion == null ? "" : descripcion;
     }
 
-    public TextField getMovimiento() {
-        return movimiento;
+    public TextField getTxtMovimiento() {
+        return txtMovimiento;
     }
 
-    public void setMovimiento(TextField movimiento) {
-        this.movimiento = movimiento;
+    public void setTxtMovimiento(TextField txtMovimiento) {
+        this.txtMovimiento = txtMovimiento;
     }
 
     public CheckBox getValidar() {
@@ -528,6 +539,14 @@ public class SuministroTB {
 
     public void setRemover(Button remover) {
         this.remover = remover;
+    }
+
+    public boolean isCambios() {
+        return cambios;
+    }
+
+    public void setCambios(boolean cambios) {
+        this.cambios = cambios;
     }
 
 }

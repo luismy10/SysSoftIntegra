@@ -169,7 +169,8 @@ public class FxAsignacionProcesoController implements Initializable {
                 Task<String> task = new Task<String>() {
                     @Override
                     public String call() {
-                        return SuministroADO.Registrar_Asignacion_Productos_Articulo(idArticulo, tvList);
+//                        return SuministroADO.Registrar_Asignacion_Productos_Articulo(idArticulo, tvList);
+                          return null;
                     }
                 };
 
@@ -282,7 +283,7 @@ public class FxAsignacionProcesoController implements Initializable {
             double utilidad;
             int rows = tvList.getItems().size();
             for (int i = 0; i < tvList.getItems().size(); i++) {
-                cantidad += Double.parseDouble(tvList.getItems().get(i).getMovimiento().getText());
+                cantidad += tvList.getItems().get(i).getMovimiento();
                 costoPromedio += tvList.getItems().get(i).getCostoCompra();
                 precioPromedio += tvList.getItems().get(i).getPrecioVentaGeneral();
             }

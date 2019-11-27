@@ -35,7 +35,7 @@
                         <Image url="@../../image/producto.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Movimiento de Productos" />
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Movimiento o ajuste de Productos" />
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -62,6 +62,15 @@
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionGenerarReporte" onKeyPressed="#onKeyPressedGenerarReport" styleClass="buttonLight" text="Generar reporte(F3)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/reports.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -149,8 +158,8 @@
                                           </Button>
                                        </children>
                                     </HBox>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del Movimeinto:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del Movimiento:" textFill="#1a2226" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <children>
                                           <RadioButton fx:id="rbCompletado" mnemonicParsing="false" selected="true" styleClass="labelOpenSansRegular14" text="Completado" textFill="#1a2226" />
                                           <RadioButton fx:id="rbProceso" mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="En Proceso" textFill="#1a2226" />

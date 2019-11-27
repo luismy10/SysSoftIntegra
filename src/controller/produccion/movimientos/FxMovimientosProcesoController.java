@@ -7,8 +7,12 @@ import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.awt.HeadlessException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,13 +41,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.CompraADO;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import model.MovimientoInventarioADO;
 import model.MovimientoInventarioTB;
 import model.SuministroADO;
 import model.SuministroTB;
 import model.TipoMovimientoADO;
 import model.TipoMovimientoTB;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class FxMovimientosProcesoController implements Initializable {
 
@@ -115,7 +128,7 @@ public class FxMovimientosProcesoController implements Initializable {
 
         tcAccion.setCellValueFactory(new PropertyValueFactory<>("remover"));
         tcClave.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()));
-        tcNuevaExistencia.setCellValueFactory(new PropertyValueFactory<>("movimiento"));
+        tcNuevaExistencia.setCellValueFactory(new PropertyValueFactory<>("txtMovimiento"));
         tcExistenciaActual.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getUnidadCompraName()));
         tcDiferencia.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDiferencia(), 2)));
 //        tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
@@ -183,6 +196,7 @@ public class FxMovimientosProcesoController implements Initializable {
 
     }
 
+    /*
     public void loadComprasRealizadas(String idCompra) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -224,7 +238,7 @@ public class FxMovimientosProcesoController implements Initializable {
             exec.shutdown();
         }
     }
-
+     */
     private void ejecutarConsulta(MovimientoInventarioTB inventarioTB) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -315,6 +329,7 @@ public class FxMovimientosProcesoController implements Initializable {
             task.setOnSucceeded(t -> {
                 SuministroTB suministroTB = task.getValue();
                 if (suministroTB != null) {
+                    suministroTB.setId(tvList.getItems().size() + 1);
                     suministroTB.getRemover().setOnAction(event -> {
                         tvList.getItems().remove(suministroTB);
                     });
@@ -324,22 +339,39 @@ public class FxMovimientosProcesoController implements Initializable {
                         }
                     });
 
-                    suministroTB.getMovimiento().setOnAction(event -> {
-                        if (Tools.isNumeric(suministroTB.getMovimiento().getText().trim())) {
+                    suministroTB.getTxtMovimiento().setOnAction(event -> {
+                        if (Tools.isNumeric(suministroTB.getTxtMovimiento().getText().trim())) {
                             if (rbIncremento.isSelected()) {
-                                double newDiferencia = suministroTB.getCantidad() + Double.parseDouble(suministroTB.getMovimiento().getText());
+                                double newDiferencia = suministroTB.getCantidad() + Double.parseDouble(suministroTB.getTxtMovimiento().getText());
+                                suministroTB.setMovimiento(Double.parseDouble(suministroTB.getTxtMovimiento().getText()));
                                 suministroTB.setDiferencia(newDiferencia);
+                                suministroTB.setCambios(true);
                             } else {
-                                double newDiferencia = suministroTB.getCantidad() - Double.parseDouble(suministroTB.getMovimiento().getText());
+                                double newDiferencia = suministroTB.getCantidad() - Double.parseDouble(suministroTB.getTxtMovimiento().getText());
+                                suministroTB.setMovimiento(Double.parseDouble(suministroTB.getTxtMovimiento().getText()));
                                 suministroTB.setDiferencia(newDiferencia);
+                                suministroTB.setCambios(true);
                             }
                         } else {
-                            suministroTB.getMovimiento().setText("0");
+                            suministroTB.setMovimiento(0);
+                            suministroTB.getTxtMovimiento().setText("0");
+                            suministroTB.setCambios(true);
                         }
                         tvList.refresh();
                     });
 
-                    tvList.getItems().add(suministroTB); 
+                    suministroTB.getTxtMovimiento().focusedProperty().addListener((obs, oldVal, newVal) -> {                   
+                        if (!newVal) {                         
+                            if (!suministroTB.isCambios()) {
+                                suministroTB.getTxtMovimiento().setText(suministroTB.getMovimiento()+"");
+                            }
+                            tvList.refresh();
+                        }else{                            
+                            suministroTB.setCambios(false);
+                        }
+                    });
+
+                    tvList.getItems().add(suministroTB);
                 }
                 hbBotones.setDisable(false);
                 lblLoad.setVisible(false);
@@ -427,15 +459,58 @@ public class FxMovimientosProcesoController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             short confirmation = Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Compras", "¿Esta seguro de quitar el suministro?", true);
             if (confirmation == 1) {
-                ObservableList<SuministroTB> observableList, suministroTBs;
-                observableList = tvList.getItems();
-                suministroTBs = tvList.getSelectionModel().getSelectedItems();
-                suministroTBs.forEach(e -> {
-                    observableList.remove(e);
-                });
+                ObservableList<SuministroTB> articuloSelect, allArticulos;
+                allArticulos = tvList.getItems();
+                articuloSelect = tvList.getSelectionModel().getSelectedItems();
+                articuloSelect.forEach(allArticulos::remove);
+
+                if (!tvList.getItems().isEmpty()) {
+                    int count = 0;
+                    for (int i = 0; i < tvList.getItems().size(); i++) {
+                        count++;
+                        tvList.getItems().get(i).setId(count);
+                    }
+                    tvList.refresh();
+                }
             }
         } else {
             openAlertMessageWarning("Seleccione un producto para removerlo");
+        }
+    }
+
+    private void executeGenerarReporte() {
+        try {
+            if (cbAjuste.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(hbWindow, "Ajuste de Inventario - Movimiento", "Seleccione el tipo de movimiento.");
+                cbAjuste.requestFocus();
+            } else {
+
+                if (tvList.getItems().isEmpty()) {
+                    Tools.AlertMessageWarning(hbWindow, "Ajuste de Inventario - Movimiento", "No hay registros para mostrar en el reporte.");
+                    return;
+                }
+
+                InputStream dir = getClass().getResourceAsStream("/report/MovimientoProductos.jasper");
+
+                JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
+                Map map = new HashMap();
+                map.put("TIPO_AJUSTE", rbIncremento.isSelected() ? "INCREMENTO" : "DECREMETNO");
+                map.put("TIPO_MOVIMIENTO", cbAjuste.getSelectionModel().getSelectedItem().getNombre());
+
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(tvList.getItems()));
+
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+                JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+                jasperViewer.setIconImage(new ImageIcon(getClass().getResource(FilesRouters.IMAGE_ICON)).getImage());
+                jasperViewer.setTitle("Ajuste de Inventario - Movimiento");
+                jasperViewer.setSize(840, 650);
+                jasperViewer.setLocationRelativeTo(null);
+                jasperViewer.setVisible(true);
+                jasperViewer.requestFocus();
+            }
+        } catch (HeadlessException | JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Tools.AlertMessageError(hbWindow, "Movimiento", "Error al generar el reporte : " + ex);
         }
     }
 
@@ -460,6 +535,18 @@ public class FxMovimientosProcesoController implements Initializable {
         TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
             cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
         });
+        if (!tvList.getItems().isEmpty()) {
+            tvList.getItems().forEach((SuministroTB e) -> {
+                if (rbIncremento.isSelected()) {
+                    double newDiferencia = e.getCantidad() + e.getMovimiento();
+                    e.setDiferencia(newDiferencia);
+                } else {
+                    double newDiferencia = e.getCantidad() - e.getMovimiento();
+                    e.setDiferencia(newDiferencia);
+                }
+            });
+            tvList.refresh();
+        }
     }
 
     @FXML
@@ -556,6 +643,18 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private void onActionSuministro(ActionEvent event) {
         openWindowSuministros();
+    }
+
+    @FXML
+    private void onKeyPressedGenerarReport(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            executeGenerarReporte();
+        }
+    }
+
+    @FXML
+    private void onActionGenerarReporte(ActionEvent event) {
+        executeGenerarReporte();
     }
 
     @FXML

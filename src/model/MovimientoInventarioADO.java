@@ -100,13 +100,13 @@ public class MovimientoInventarioADO {
                     if (tableView.getItems().get(i).getValidar().isSelected()) {
                         statementMovimientoDetalle.setString(1, idMovimiento);
                         statementMovimientoDetalle.setString(2, tableView.getItems().get(i).getIdSuministro());
-                        statementMovimientoDetalle.setDouble(3, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
+                        statementMovimientoDetalle.setDouble(3, tableView.getItems().get(i).getMovimiento());
                         statementMovimientoDetalle.setDouble(4, tableView.getItems().get(i).getCostoCompra());
                         statementMovimientoDetalle.setDouble(5, tableView.getItems().get(i).getPrecioVentaGeneral());
                         statementMovimientoDetalle.addBatch();
 
                         if (inventarioTB.getEstado() == 1) {
-                            suministro_update.setDouble(1, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
+                            suministro_update.setDouble(1, tableView.getItems().get(i).getMovimiento());
                             suministro_update.setString(2, tableView.getItems().get(i).getIdSuministro());
                             suministro_update.addBatch();
 
@@ -116,12 +116,11 @@ public class MovimientoInventarioADO {
                             suministro_kardex.setShort(4, inventarioTB.isTipoAjuste() ? (short) 1 : (short) 2);
                             suministro_kardex.setInt(5, inventarioTB.getTipoMovimiento());
                             suministro_kardex.setString(6, inventarioTB.getObservacion());
-                            suministro_kardex.setDouble(7, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
+                            suministro_kardex.setDouble(7, tableView.getItems().get(i).getMovimiento());
                             suministro_kardex.setDouble(8, tableView.getItems().get(i).getCostoCompra());
-                            suministro_kardex.setDouble(9, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()) * tableView.getItems().get(i).getCostoCompra());
+                            suministro_kardex.setDouble(9, tableView.getItems().get(i).getMovimiento() * tableView.getItems().get(i).getCostoCompra());
                             suministro_kardex.addBatch();
                         }
-
                     }
                 }
 

@@ -757,6 +757,7 @@ public class SuministroADO {
 
             if (rsEmps.next()) {
                 suministroTB = new SuministroTB();
+                suministroTB.setId(rsEmps.getRow());
                 suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
@@ -767,6 +768,7 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getBoolean("ValorInventario"));
                 suministroTB.setDiferencia(rsEmps.getDouble("Cantidad"));
+                suministroTB.setMovimiento(0);
                 TextField tf = new TextField(Tools.roundingValue(0.00, 0));
                 tf.getStyleClass().add("text-field-normal");
                 tf.setOnKeyTyped(event -> {
@@ -779,11 +781,12 @@ public class SuministroADO {
                     }
                 });
 
-                suministroTB.setMovimiento(tf);
+                suministroTB.setTxtMovimiento(tf);
 
                 CheckBox checkbox = new CheckBox("");
                 checkbox.getStyleClass().add("check-box-contenido");
                 checkbox.setSelected(true);
+                checkbox.setDisable(true);
 
                 Button button = new Button();
                 button.getStyleClass().add("buttonBorder");
@@ -834,6 +837,7 @@ public class SuministroADO {
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
                 suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
+                suministroTB.setMovimiento(suministroTB.getCantidad());
                 TextField tf = new TextField(Tools.roundingValue(suministroTB.getCantidad(), 4));
                 tf.getStyleClass().add("text-field-normal");
                 tf.setOnKeyTyped((KeyEvent event) -> {
@@ -845,7 +849,7 @@ public class SuministroADO {
                         event.consume();
                     }
                 });
-                suministroTB.setMovimiento(tf);
+                suministroTB.setTxtMovimiento(tf);
                 Label label = new Label("PROCESO");
                 label.getStyleClass().add("label-proceso");
                 suministroTB.setEstadoAsignacion(label);
@@ -1026,7 +1030,7 @@ public class SuministroADO {
         return empList;
     }
 
-    public static String Registrar_Asignacion_Productos_Articulo(String idArticulo, TableView<SuministroTB> tvList) {
+    private static String Registrar_Asignacion_Productos_Articulo(String idArticulo, TableView<SuministroTB> tvList) {
         String result = "";
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
@@ -1058,7 +1062,7 @@ public class SuministroADO {
                 int rows = tvList.getItems().size();
 
                 for (int i = 0; i < tvList.getItems().size(); i++) {
-                    cantidad += Double.parseDouble(tvList.getItems().get(i).getMovimiento().getText());
+                    cantidad +=tvList.getItems().get(i).getMovimiento();
                     costoPromedio += tvList.getItems().get(i).getCostoCompra();
                     precioPromedio += tvList.getItems().get(i).getPrecioVentaGeneral();
 
@@ -1067,11 +1071,11 @@ public class SuministroADO {
                     statementAsignacionDetalle.setDouble(3, tvList.getItems().get(i).getCantidad());
                     statementAsignacionDetalle.setDouble(4, tvList.getItems().get(i).getCostoCompra());
                     statementAsignacionDetalle.setDouble(5, tvList.getItems().get(i).getPrecioVentaGeneral());
-                    statementAsignacionDetalle.setDouble(6, Double.parseDouble(tvList.getItems().get(i).getMovimiento().getText()));
+                    statementAsignacionDetalle.setDouble(6, tvList.getItems().get(i).getMovimiento());
                     statementAsignacionDetalle.setBoolean(7, true);
                     statementAsignacionDetalle.addBatch();
 
-                    statementProducto.setDouble(1, Double.parseDouble(tvList.getItems().get(i).getMovimiento().getText()));
+                    statementProducto.setDouble(1, tvList.getItems().get(i).getMovimiento());
                     statementProducto.setString(2, tvList.getItems().get(i).getIdSuministro());
                     statementProducto.addBatch();
 
@@ -1081,9 +1085,9 @@ public class SuministroADO {
                     statementKardexProducto.setShort(4, (short) 2);
                     statementKardexProducto.setInt(5, 1);
                     statementKardexProducto.setString(6, "Asignación de producto(s) a artículo");
-                    statementKardexProducto.setDouble(7, Double.parseDouble(tvList.getItems().get(i).getMovimiento().getText()));
+                    statementKardexProducto.setDouble(7, tvList.getItems().get(i).getMovimiento());
                     statementKardexProducto.setDouble(8, tvList.getItems().get(i).getCostoCompra());
-                    statementKardexProducto.setDouble(9, Double.parseDouble(tvList.getItems().get(i).getMovimiento().getText()) * tvList.getItems().get(i).getCostoCompra());
+                    statementKardexProducto.setDouble(9, tvList.getItems().get(i).getMovimiento() * tvList.getItems().get(i).getCostoCompra());
                     statementKardexProducto.addBatch();
                 }
 

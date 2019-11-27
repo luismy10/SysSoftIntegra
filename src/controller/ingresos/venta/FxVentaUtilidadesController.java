@@ -32,6 +32,8 @@ import javafx.stage.Stage;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.Utilidad;
 import model.UtilidadADO;
 import net.sf.jasperreports.engine.JRException;
@@ -55,28 +57,45 @@ public class FxVentaUtilidadesController implements Initializable {
     @FXML
     private TextField txtProducto;
     @FXML
-    private CheckBox cbMostrarProducto;
-    @FXML
     private Button btnProductos;
+    @FXML
+    private CheckBox cbMostrarProducto;
     @FXML
     private CheckBox cbCategoriaSeleccionar;
     @FXML
-    private ComboBox<?> cbCategorias;
+    private CheckBox cbMarcaSeleccionar;
     @FXML
-    private ComboBox<?> cbMarcas;
+    private CheckBox cbPresentacionSeleccionar;
     @FXML
-    private CheckBox cbPresentacionesSeleccionar;
+    private ComboBox<DetalleTB> cbCategorias;
     @FXML
-    private ComboBox<?> cbPresentacion;
+    private ComboBox<DetalleTB> cbMarcas;
+    @FXML
+    private ComboBox<DetalleTB> cbPresentacion;
 
     private AnchorPane vbPrincipal;
 
     private String idSuministro;
 
+    private int idCategoria;
+
+    private int idMarca;
+
+    private int idPresentacion;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
         Tools.actualDate(Tools.getDate(), dpFechaFinal);
+        DetalleADO.GetDetailId("0006").forEach(e -> {
+            cbCategorias.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+        DetalleADO.GetDetailId("0007").forEach(e -> {
+            cbMarcas.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+        DetalleADO.GetDetailId("0008").forEach(e -> {
+            cbPresentacion.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
         idSuministro = "";
     }
 
@@ -143,10 +162,19 @@ public class FxVentaUtilidadesController implements Initializable {
             if (!cbProductosSeleccionar.isSelected() && idSuministro.equalsIgnoreCase("") && txtProducto.getText().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
                 btnProductos.requestFocus();
+            } else if (!cbCategoriaSeleccionar.isSelected() && cbCategorias.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
+                cbCategorias.requestFocus();
+            } else if (!cbMarcaSeleccionar.isSelected() && cbMarcas.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
+                cbMarcas.requestFocus();
+            } else if (!cbPresentacionSeleccionar.isSelected() && cbPresentacion.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
+                cbPresentacion.requestFocus();
             } else {
                 ArrayList<Utilidad> detalle_list = UtilidadADO.listUtilidadVenta(cbProductosSeleccionar.isSelected(), Tools.getDatePicker(dpFechaInicial), Tools.getDatePicker(dpFechaFinal), idSuministro);
                 if (detalle_list.isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Reporte General de Ventas", "No hay registros para mostrar en el reporte.");
+                    Tools.AlertMessageWarning(vbWindow, "Utilidades", "No hay registros para mostrar en el reporte.");
                     return;
                 }
 
@@ -214,6 +242,9 @@ public class FxVentaUtilidadesController implements Initializable {
                 Map map = new HashMap();
                 map.put("RANGO_FECHA", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("PRODUCTOS", cbProductosSeleccionar.isSelected() ? "TODOS" : txtProducto.getText());
+                map.put("CATEGORIA", cbCategoriaSeleccionar.isSelected() ? "TODOS" : cbCategorias.getSelectionModel().getSelectedItem().getNombre());
+                map.put("MARCA", cbMarcaSeleccionar.isSelected() ? "TODOS" : cbMarcas.getSelectionModel().getSelectedItem().getNombre());
+                map.put("PRESENTACION", cbPresentacionSeleccionar.isSelected() ? "TODOS" : cbPresentacion.getSelectionModel().getSelectedItem().getNombre());
                 map.put("ORDEN", "");
                 map.put("COSTO_TOTAL", Tools.roundingValue(costoTotal, 2));
                 map.put("PRECIO_TOTAL", Tools.roundingValue(precioTotal, 2));
@@ -225,13 +256,14 @@ public class FxVentaUtilidadesController implements Initializable {
 
                 JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
                 jasperViewer.setIconImage(new ImageIcon(getClass().getResource(FilesRouters.IMAGE_ICON)).getImage());
-                jasperViewer.setTitle("Detalle de compra");
+                jasperViewer.setTitle("Reporte General de Utilidades");
                 jasperViewer.setSize(840, 650);
                 jasperViewer.setLocationRelativeTo(null);
                 jasperViewer.setVisible(true);
+                jasperViewer.requestFocus();
             }
         } catch (HeadlessException | JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.out.println("Error al generar el reporte : " + ex);
+            Tools.AlertMessageError(vbWindow, "Utilidades", "Error al generar el reporte : " + ex);
         }
     }
 
@@ -259,6 +291,36 @@ public class FxVentaUtilidadesController implements Initializable {
     }
 
     @FXML
+    private void onActionCbCategoriaSeleccionar(ActionEvent event) {
+        if (cbCategoriaSeleccionar.isSelected()) {
+            cbCategorias.setDisable(true);
+            idCategoria = 0;
+        } else {
+            cbCategorias.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void onActionCbMarcaSeleccionar(ActionEvent event) {
+        if (cbMarcaSeleccionar.isSelected()) {
+            cbMarcas.setDisable(true);
+            idMarca = 0;
+        } else {
+            cbMarcas.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void onActionCbPresentacionSeleccionar(ActionEvent event) {
+        if (cbPresentacionSeleccionar.isSelected()) {
+            cbPresentacion.setDisable(true);
+            idPresentacion = 0;
+        } else {
+            cbPresentacion.setDisable(false);
+        }
+    }
+
+    @FXML
     private void onKeyPressedProductos(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowSuministros();
@@ -280,14 +342,6 @@ public class FxVentaUtilidadesController implements Initializable {
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
-    }
-
-    @FXML
-    private void onActionCbCategoriaSeleccionar(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionCbPresentacionSeleccionar(ActionEvent event) {
     }
 
 }

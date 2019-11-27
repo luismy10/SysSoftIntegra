@@ -468,7 +468,7 @@ public class CompraADO extends DBUtil {
         return compraTBs;
     }
 
-    public static ObservableList<SuministroTB> Listar_Detalle_Compra_By_IdCompra(String idCompra) {
+    private static ObservableList<SuministroTB> Listar_Detalle_Compra_By_IdCompra(String idCompra) {
         ObservableList<SuministroTB> list = FXCollections.observableArrayList();
         dbConnect();
         if (getConnection() != null) {
@@ -488,6 +488,7 @@ public class CompraADO extends DBUtil {
                     suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                     suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                     suministroTB.setValorInventario(rsEmps.getBoolean("ValorInventario"));
+                    suministroTB.setMovimiento(suministroTB.getCantidad());
                     TextField tf = new TextField(Tools.roundingValue(suministroTB.getCantidad(), 4));
                     tf.getStyleClass().add("text-field-normal");
                     tf.setOnKeyTyped((KeyEvent event) -> {
@@ -499,7 +500,7 @@ public class CompraADO extends DBUtil {
                             event.consume();
                         }
                     });
-                    suministroTB.setMovimiento(tf);
+                    suministroTB.setTxtMovimiento(tf);
 
                     CheckBox checkbox = new CheckBox("");
                     checkbox.getStyleClass().add("check-box-contenido");

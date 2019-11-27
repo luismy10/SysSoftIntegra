@@ -40,7 +40,7 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <GridPane style="-fx-vgap: 0.6666666666666666em; -fx-hgap: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
+                  <GridPane style="-fx-vgap: 0.16666666666666666em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints minWidth="10.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -76,24 +76,6 @@
                      <children>
                         <HBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Button fx:id="btnRegistrar" disable="true" mnemonicParsing="false" onAction="#onActionRegistrar" onKeyPressed="#onKeyPressedRegistrar" styleClass="buttonLightDefault" text="Registrar">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/save.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button fx:id="btnVerificar" mnemonicParsing="false" onAction="#onActionVerificar" onKeyPressed="#onKeyPressedVerificar" styleClass="buttonLight" text="Verificar">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/cash_movement.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
                               <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -103,15 +85,33 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button fx:id="btnRegistrar" disable="true" mnemonicParsing="false" onAction="#onActionRegistrar" onKeyPressed="#onKeyPressedRegistrar" styleClass="buttonLightDefault" text="Registrar" visible="false">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/save.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="btnVerificar" disable="true" mnemonicParsing="false" onAction="#onActionVerificar" onKeyPressed="#onKeyPressedVerificar" styleClass="buttonLight" text="Verificar" visible="false">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/cash_movement.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" editable="true" prefHeight="260.0" prefWidth="810.0" styleClass="table-view-principal">
+                        <TableView fx:id="tvList" editable="true" prefHeight="280.0" prefWidth="810.0" styleClass="table-view-principal">
                           <columns>
                             <TableColumn fx:id="tcNumero" style="-fx-alignment: CENTER-LEFT;" text="N°" />
-                            <TableColumn fx:id="tcDescripcion" prefWidth="300.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                              <TableColumn fx:id="tcVerificar" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Verificar" />
-                              <TableColumn fx:id="tcPrecio" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Precio" />
+                            <TableColumn fx:id="tcDescripcion" prefWidth="513.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                              <TableColumn fx:id="tcVerificar" prefWidth="29.0" style="-fx-alignment: CENTER;" text="Verificar" visible="false" />
+                              <TableColumn fx:id="tcPrecio" prefWidth="28.0" style="-fx-alignment: CENTER;" text="Precio" visible="false" />
                           </columns>
                         </TableView>
                      </children>

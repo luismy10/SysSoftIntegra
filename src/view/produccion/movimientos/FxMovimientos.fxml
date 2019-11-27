@@ -25,7 +25,7 @@
                         <Image url="@../../image/ajuste-inventario.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Movimiento de inventario" />
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Movimiento o ajuste de inventario" />
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />

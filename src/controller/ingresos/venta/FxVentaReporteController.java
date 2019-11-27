@@ -175,6 +175,7 @@ public class FxVentaReporteController implements Initializable {
                 jasperViewer.setSize(840, 650);
                 jasperViewer.setLocationRelativeTo(null);
                 jasperViewer.setVisible(true);
+                jasperViewer.requestFocus();
             }
 
         } catch (HeadlessException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | JRException ex) {

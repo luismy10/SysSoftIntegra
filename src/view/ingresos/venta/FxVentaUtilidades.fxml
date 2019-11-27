@@ -134,7 +134,7 @@
                                                          </children>
                                                       </HBox>
                                                       <CheckBox fx:id="cbCategoriaSeleccionar" mnemonicParsing="false" onAction="#onActionCbCategoriaSeleccionar" selected="true" styleClass="check-box-contenido" text="Todas las categorias" GridPane.rowIndex="1" />
-                                                      <CheckBox fx:id="cbPresentacionesSeleccionar" mnemonicParsing="false" onAction="#onActionCbPresentacionSeleccionar" selected="true" styleClass="check-box-contenido" text="Todas las marcas" GridPane.rowIndex="2" />
+                                                      <CheckBox fx:id="cbMarcaSeleccionar" mnemonicParsing="false" onAction="#onActionCbMarcaSeleccionar" selected="true" styleClass="check-box-contenido" text="Todas las marcas" GridPane.rowIndex="2" />
                                                       <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Marcas" textFill="#23283a" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -153,9 +153,9 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <ComboBox fx:id="cbCategorias" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                      <ComboBox fx:id="cbMarcas" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                      <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Todas las presentaciones" GridPane.rowIndex="3" />
+                                                      <ComboBox fx:id="cbCategorias" disable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <ComboBox fx:id="cbMarcas" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <CheckBox fx:id="cbPresentacionSeleccionar" mnemonicParsing="false" onAction="#onActionCbPresentacionSeleccionar" selected="true" styleClass="check-box-contenido" text="Todas las presentaciones" GridPane.rowIndex="3" />
                                                       <Label styleClass="labelOpenSansRegular14" text="Presentación" textFill="#23283a" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -165,7 +165,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <ComboBox fx:id="cbPresentacion" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <ComboBox fx:id="cbPresentacion" disable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                    </children>
                                                 </GridPane>
                                              </children>

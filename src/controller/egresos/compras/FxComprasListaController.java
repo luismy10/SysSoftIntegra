@@ -96,7 +96,7 @@ public class FxComprasListaController implements Initializable {
 
     private void executeList() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            movimientosProcesoController.loadComprasRealizadas(tvList.getSelectionModel().getSelectedItem().getIdCompra());
+            //movimientosProcesoController.loadComprasRealizadas(tvList.getSelectionModel().getSelectedItem().getIdCompra());
             Tools.Dispose(apWindow);
         } else {
             tvList.requestFocus();
