@@ -1,21 +1,21 @@
                                         
-          Impresion de prueba           
-             0000-00000000              
-AV. REAL Y 10 DE NOVIEMBRE S/N          
-26/11/2019          01:21:08 PM         
+             NOTA DE VENTA              
+             T001-00000008              
+AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
+LIMA PERU HUANCAYO                      
 ----------------------------------------
 DESCRIPCION.                            
 CANT.     P.UNIT.     DESCT.     IMPORTE
 ----------------------------------------
+SELLADOR CPP BLANCO X 5 GL              
+1.00      108.00        0%        108.00
+PINTURA LATEX PATO CPP CELESTE GL       
+3.00      29.00         0%         87.00
 ----------------------------------------
-VALOR VENTA                     S/ 00.00
-DESCUENTO                       S/ 00.00
-SUB IMPORTE                     S/ 00.00
-TOTAL                           S/ 00.00
-            CONTROL INTERNO             
-            EXIJA SU BOLETA             
-CODIGO UNICO:  789456123654987123659    
-----------------------------------------
+VALOR VENTA                    S/ 195.00
+DESCUENTO                        S/ 0.00
+SUB IMPORTE                    S/ 195.00
+TOTAL                          S/ 195.00
 
                                        
 

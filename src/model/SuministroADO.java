@@ -317,7 +317,7 @@ public class SuministroADO {
                                 preparedPrecios.setString(2, idSuministro);
                                 preparedPrecios.setString(3, tvPrecios.get(i).getNombre());
                                 preparedPrecios.setDouble(4, tvPrecios.get(i).getValor());
-                                preparedPrecios.setDouble(5, tvPrecios.get(i).getFactor());
+                                preparedPrecios.setDouble(5, tvPrecios.get(i).getFactor() <= 0 ? 1 : tvPrecios.get(i).getFactor());
                                 preparedPrecios.setBoolean(6, true);
                                 preparedPrecios.addBatch();
                             }

@@ -36,6 +36,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -53,6 +54,7 @@ import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.PreciosADO;
 import model.PreciosTB;
+import model.PrivilegioTB;
 import model.SuministroADO;
 import model.SuministroTB;
 
@@ -176,6 +178,8 @@ public class FxSuministrosProcesoController implements Initializable {
     private TextField txtMargenPersonalizado;
     @FXML
     private TextField txtUtilidadPersonalizado;
+    @FXML
+    private VBox vbContenedorCosto;
 
     private String idSuministro;
 
@@ -196,7 +200,6 @@ public class FxSuministrosProcesoController implements Initializable {
     private AnchorPane vbContent;
 
 //    private boolean articulo;
-
     private boolean estadoOrigen;
 
     private ObservableList<PreciosTB> tvPreciosNormal;
@@ -217,6 +220,14 @@ public class FxSuministrosProcesoController implements Initializable {
         txtPrecio2.setId("0");
         txtPrecio3.setId("0");
         initTablePrecios();
+    }
+
+    public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
+        if (privilegioTBs.get(10).getIdPrivilegio() != 0 && !privilegioTBs.get(10).isEstado()) {
+            vbContenedorCosto.setEffect(new GaussianBlur());
+        } else {
+
+        }
     }
 
     public void setInitArticulo() {
@@ -945,7 +956,6 @@ public class FxSuministrosProcesoController implements Initializable {
 //            exec.shutdown();
 //        }
 //    }
-
     private void aValidityProcess() {
         //primera validacion
         if (cbOrigen.getSelectionModel().getSelectedIndex() < 0) {

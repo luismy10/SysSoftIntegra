@@ -8,6 +8,7 @@ import controller.produccion.movimientos.FxMovimientosController;
 import controller.produccion.suministros.FxSuministrosController;
 import controller.produccion.suministros.FxSuministrosKardexController;
 import controller.tools.FilesRouters;
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +24,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.MenuADO;
+import model.PrivilegioTB;
 import model.SubMenusTB;
 
 public class FxInventarioController implements Initializable {
@@ -155,39 +158,40 @@ public class FxInventarioController implements Initializable {
         if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnProducto);
         } else {
-
+            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
+            controllerSuministros.loadPrivilegios(privilegioTBs);
         }
-        
+
         if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnKardex);
         } else {
 
         }
-        
+
         if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnValorInventario);
         } else {
 
         }
-        
+
         if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnInventarioInicial);
         } else {
 
         }
-        
+
         if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnMovimiento);
         } else {
 
         }
-        
+
         if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
             hbOperacionesDos.getChildren().remove(btnAsignacion);
         } else {
 
         }
-        
+
         if (subMenusTBs.get(6).getIdSubMenu() != 0 && !subMenusTBs.get(6).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnLote);
         } else {
