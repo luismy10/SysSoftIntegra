@@ -8,18 +8,20 @@ import java.util.ArrayList;
 
 public class UtilidadADO {
 
-    public static ArrayList<Utilidad> listUtilidadVenta(boolean opcion, String fechaInicial, String fechaFinal, String busqueda) {
-        String selectStmt = "{call Sp_Listar_Utilidad(?,?,?,?)}";
+    public static ArrayList<Utilidad> listUtilidadVenta( String fechaInicial, String fechaFinal, String idSuministro,int idCategoria,int idMarca,int idPresentacion) {
+        String selectStmt = "{call Sp_Listar_Utilidad(?,?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ArrayList<Utilidad> list = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setBoolean(1, opcion);
-            preparedStatement.setString(2, fechaInicial);
-            preparedStatement.setString(3, fechaFinal);
-            preparedStatement.setString(4, busqueda);
+            preparedStatement.setString(1, fechaInicial);
+            preparedStatement.setString(2, fechaFinal);
+            preparedStatement.setString(3, idSuministro);
+            preparedStatement.setInt(4, idCategoria);
+            preparedStatement.setInt(5, idMarca);
+            preparedStatement.setInt(6, idPresentacion);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 Utilidad utilidad = new Utilidad();

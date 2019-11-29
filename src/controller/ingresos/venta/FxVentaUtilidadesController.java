@@ -77,12 +77,6 @@ public class FxVentaUtilidadesController implements Initializable {
 
     private String idSuministro;
 
-    private int idCategoria;
-
-    private int idMarca;
-
-    private int idPresentacion;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
@@ -163,16 +157,22 @@ public class FxVentaUtilidadesController implements Initializable {
                 Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
                 btnProductos.requestFocus();
             } else if (!cbCategoriaSeleccionar.isSelected() && cbCategorias.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
+                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Seleccione una categoría para generar el reporte.");
                 cbCategorias.requestFocus();
             } else if (!cbMarcaSeleccionar.isSelected() && cbMarcas.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
+                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Seleccione una marca para generar el reporte.");
                 cbMarcas.requestFocus();
             } else if (!cbPresentacionSeleccionar.isSelected() && cbPresentacion.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Ingrese un producto para generar el reporte.");
+                Tools.AlertMessageWarning(vbWindow, "Utilidades", "Seleccione una presentación para generar el reporte.");
                 cbPresentacion.requestFocus();
-            } else {
-                ArrayList<Utilidad> detalle_list = UtilidadADO.listUtilidadVenta(cbProductosSeleccionar.isSelected(), Tools.getDatePicker(dpFechaInicial), Tools.getDatePicker(dpFechaFinal), idSuministro);
+            } else {               
+                ArrayList<Utilidad> detalle_list = UtilidadADO.listUtilidadVenta(
+                        Tools.getDatePicker(dpFechaInicial),
+                        Tools.getDatePicker(dpFechaFinal),
+                        idSuministro,
+                        cbCategoriaSeleccionar.isSelected() ? 0 : cbCategorias.getSelectionModel().getSelectedItem().getIdDetalle().get(),
+                        cbMarcaSeleccionar.isSelected() ? 0 : cbMarcas.getSelectionModel().getSelectedItem().getIdDetalle().get(),
+                        cbPresentacionSeleccionar.isSelected() ? 0 : cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle().get());
                 if (detalle_list.isEmpty()) {
                     Tools.AlertMessageWarning(vbWindow, "Utilidades", "No hay registros para mostrar en el reporte.");
                     return;
@@ -242,9 +242,9 @@ public class FxVentaUtilidadesController implements Initializable {
                 Map map = new HashMap();
                 map.put("RANGO_FECHA", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("PRODUCTOS", cbProductosSeleccionar.isSelected() ? "TODOS" : txtProducto.getText());
-                map.put("CATEGORIA", cbCategoriaSeleccionar.isSelected() ? "TODOS" : cbCategorias.getSelectionModel().getSelectedItem().getNombre());
-                map.put("MARCA", cbMarcaSeleccionar.isSelected() ? "TODOS" : cbMarcas.getSelectionModel().getSelectedItem().getNombre());
-                map.put("PRESENTACION", cbPresentacionSeleccionar.isSelected() ? "TODOS" : cbPresentacion.getSelectionModel().getSelectedItem().getNombre());
+                map.put("CATEGORIA", cbCategoriaSeleccionar.isSelected() ? "TODOS" : cbCategorias.getSelectionModel().getSelectedItem().getNombre().get());
+                map.put("MARCA", cbMarcaSeleccionar.isSelected() ? "TODOS" : cbMarcas.getSelectionModel().getSelectedItem().getNombre().get());
+                map.put("PRESENTACION", cbPresentacionSeleccionar.isSelected() ? "TODOS" : cbPresentacion.getSelectionModel().getSelectedItem().getNombre().get());
                 map.put("ORDEN", "");
                 map.put("COSTO_TOTAL", Tools.roundingValue(costoTotal, 2));
                 map.put("PRECIO_TOTAL", Tools.roundingValue(precioTotal, 2));
@@ -294,7 +294,7 @@ public class FxVentaUtilidadesController implements Initializable {
     private void onActionCbCategoriaSeleccionar(ActionEvent event) {
         if (cbCategoriaSeleccionar.isSelected()) {
             cbCategorias.setDisable(true);
-            idCategoria = 0;
+            cbCategorias.getSelectionModel().select(null);
         } else {
             cbCategorias.setDisable(false);
         }
@@ -304,7 +304,7 @@ public class FxVentaUtilidadesController implements Initializable {
     private void onActionCbMarcaSeleccionar(ActionEvent event) {
         if (cbMarcaSeleccionar.isSelected()) {
             cbMarcas.setDisable(true);
-            idMarca = 0;
+            cbMarcas.getSelectionModel().select(null);
         } else {
             cbMarcas.setDisable(false);
         }
@@ -314,7 +314,7 @@ public class FxVentaUtilidadesController implements Initializable {
     private void onActionCbPresentacionSeleccionar(ActionEvent event) {
         if (cbPresentacionSeleccionar.isSelected()) {
             cbPresentacion.setDisable(true);
-            idPresentacion = 0;
+            cbPresentacion.getSelectionModel().select(null);
         } else {
             cbPresentacion.setDisable(false);
         }

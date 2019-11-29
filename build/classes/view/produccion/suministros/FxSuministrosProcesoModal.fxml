@@ -160,7 +160,7 @@
                                                          <children>
                                                             <RadioButton fx:id="rbUnidad" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por Unidad/Pza o Por Precio Base" />
                                                             <RadioButton fx:id="rbGranel" mnemonicParsing="false" styleClass="labelRoboto14" text="Por Valor Monetario" />
-                                                            <RadioButton fx:id="rbMedida" mnemonicParsing="false" styleClass="labelRoboto14" text="Por Unidad/Pza o Por Precio Base" />
+                                                            <RadioButton fx:id="rbMedida" mnemonicParsing="false" styleClass="labelRoboto14" text="A granel(Km,Ml,Mc etc.)" />
                                                          </children>
                                                       </HBox>
                                                    </children>

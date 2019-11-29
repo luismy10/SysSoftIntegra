@@ -36,15 +36,14 @@ public class FxVentaController implements Initializable {
     private Tab tbVentaUno;
     @FXML
     private Button btnAgregarVenta;
-    
+
     private AnchorPane vbPrincipal;
 
     private FxVentaEstructuraController ventaEstructuraController;
-    
+
     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private boolean aperturaCaja;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -53,7 +52,7 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
-        this.privilegioTBs=privilegioTBs;
+        this.privilegioTBs = privilegioTBs;
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             btnAgregarVenta.setDisable(true);
         }
@@ -85,6 +84,25 @@ public class FxVentaController implements Initializable {
         controller.setContent(vbPrincipal);
         controller.getTxtSearch().requestFocus();
         controller.loadPrivilegios(privilegioTBs);
+    }
+
+    public void loadValidarCaja() {
+        String[] cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+        switch (cajaTB[0]) {
+            case "1":
+                openWindowFondoInicial();
+                break;
+            case "2":
+                Session.CAJA_ID = cajaTB[1];
+                aperturaCaja = true;
+                hbContenedorVentas.setDisable(false);              
+                break;
+            case "3":
+                openWindowValidarCaja(cajaTB[1], cajaTB[2]);
+                break;
+            default:
+                break;
+        }
     }
 
     public void openWindowFondoInicial() {
@@ -136,25 +154,6 @@ public class FxVentaController implements Initializable {
 
         }
 
-    }
-
-    public void loadValidarCaja() {
-        String[] cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-        switch (cajaTB[0]) {
-            case "1":
-                openWindowFondoInicial();
-                break;
-            case "2":
-                Session.CAJA_ID = cajaTB[1];
-                aperturaCaja = true;
-                hbContenedorVentas.setDisable(false);
-                break;
-            case "3":
-                openWindowValidarCaja(cajaTB[1], cajaTB[2]);
-                break;
-            default:
-                break;
-        }
     }
 
     @FXML

@@ -166,7 +166,7 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeVenta, 0d);
         AnchorPane.setBottomAnchor(nodeVenta, 0d);
         vbContent.getChildren().add(nodeVenta);
-        controllerVenta.loadValidarCaja();
+        controllerVenta.loadValidarCaja();     
         controllerVenta.loadElements();
     }
 
