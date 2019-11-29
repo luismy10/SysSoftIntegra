@@ -387,7 +387,7 @@ public class FxSuministrosListaController implements Initializable {
 
             suministroTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             suministroTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
-            suministroTB.setValorInventario(tvList.getSelectionModel().getSelectedItem().isValorInventario());
+            suministroTB.setValorInventario(tvList.getSelectionModel().getSelectedItem().getValorInventario());
 
             Button button = new Button();
             button.getStyleClass().add("buttonBorder");

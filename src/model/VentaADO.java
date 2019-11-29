@@ -185,14 +185,16 @@ public class VentaADO {
                 detalle_venta.setDouble(14, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
-                if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).isValorInventario()) {
+                if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario()==1) {
                     suministro_update_unidad.setDouble(1, tvList.getItems().get(i).getCantidad());
                     suministro_update_unidad.setString(2, tvList.getItems().get(i).getIdSuministro());
                     suministro_update_unidad.addBatch();
-                } else if (tvList.getItems().get(i).isInventario() && !tvList.getItems().get(i).isValorInventario()) {
+                } else if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario()==2) {
                     suministro_update_granel.setDouble(1, tvList.getItems().get(i).getTotalImporte());
                     suministro_update_granel.setString(2, tvList.getItems().get(i).getIdSuministro());
                     suministro_update_granel.addBatch();
+                }else if(tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario()==3){
+                    
                 }
 
                 suministro_kardex.setString(1, tvList.getItems().get(i).getIdSuministro());
@@ -202,11 +204,11 @@ public class VentaADO {
                 suministro_kardex.setInt(5, 1);
                 suministro_kardex.setString(6, "Venta");
                 suministro_kardex.setDouble(7,
-                        tvList.getItems().get(i).isValorInventario()
+                        tvList.getItems().get(i).getValorInventario() == 1
                         ? tvList.getItems().get(i).getCantidad()
                         : cantidadGranel);
                 suministro_kardex.setDouble(8, tvList.getItems().get(i).getCostoCompra());
-                suministro_kardex.setDouble(9, tvList.getItems().get(i).isValorInventario()
+                suministro_kardex.setDouble(9, tvList.getItems().get(i).getValorInventario() == 2
                         ? tvList.getItems().get(i).getCantidad() * tvList.getItems().get(i).getCostoCompra()
                         : cantidadGranel * tvList.getItems().get(i).getCostoCompra());
                 suministro_kardex.addBatch();
@@ -437,7 +439,7 @@ public class VentaADO {
                     suministroTB.setClave(resultSetLista.getString("Clave"));
                     suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca"));
                     suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
-                    suministroTB.setValorInventario(resultSetLista.getBoolean("ValorInventario"));
+                    suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
                     suministroTB.setUnidadCompraName(resultSetLista.getString("UnidadCompra"));
                     suministroTB.setImpuestoArticulo(resultSetLista.getInt("IdImpuesto"));
                     suministroTB.setCantidad(resultSetLista.getDouble("Cantidad"));
@@ -519,11 +521,11 @@ public class VentaADO {
                         + "VALUES(?,?,?,?,?,?,?,?,?)");
 
                 for (int i = 0; i < tvList.size(); i++) {
-                    if (tvList.get(i).isInventario() && tvList.get(i).isValorInventario()) {
+                    if (tvList.get(i).isInventario() && tvList.get(i).getValorInventario() == 1) {
                         statementSuministro.setDouble(1, tvList.get(i).getCantidad());
                         statementSuministro.setString(2, tvList.get(i).getIdSuministro());
                         statementSuministro.addBatch();
-                    } else if (tvList.get(i).isInventario() && !tvList.get(i).isValorInventario()) {
+                    } else if (tvList.get(i).isInventario() && tvList.get(i).getValorInventario() == 2) {
                         statementSuministro.setDouble(1, tvList.get(i).getCantidadGranel());
                         statementSuministro.setString(2, tvList.get(i).getIdSuministro());
                         statementSuministro.addBatch();
@@ -536,11 +538,11 @@ public class VentaADO {
                     suministro_kardex.setInt(5, 2);
                     suministro_kardex.setString(6, "Devolución");
                     suministro_kardex.setDouble(7,
-                            tvList.get(i).isValorInventario()
+                            tvList.get(i).getValorInventario() == 1
                             ? tvList.get(i).getCantidad()
                             : tvList.get(i).getCantidadGranel());
                     suministro_kardex.setDouble(8, tvList.get(i).getCostoCompra());
-                    suministro_kardex.setDouble(9, tvList.get(i).isValorInventario()
+                    suministro_kardex.setDouble(9, tvList.get(i).getValorInventario() == 2
                             ? tvList.get(i).getCantidad() * tvList.get(i).getCostoCompra()
                             : tvList.get(i).getCantidadGranel() * tvList.get(i).getCostoCompra());
                     suministro_kardex.addBatch();

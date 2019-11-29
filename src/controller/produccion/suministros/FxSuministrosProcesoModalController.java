@@ -133,8 +133,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private RadioButton rbValorUnidad;
     @FXML
-    private RadioButton rbValorCosto;
-    @FXML
+//    private RadioButton rbValorCosto;
     private CheckBox cbAceptar;
     @FXML
     private Text lblTitle;
@@ -206,7 +205,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
         rbMedida.setToggleGroup(groupVende);
         rbGranel.setToggleGroup(groupVende);
         rbValorUnidad.setToggleGroup(groupValor);
-        rbValorCosto.setToggleGroup(groupValor);
+//        rbValorCosto.setToggleGroup(groupValor);
         rbPrecioNormal.setToggleGroup(groupPrecio);
         rbPrecioPersonalizado.setToggleGroup(groupPrecio);
         tvPreciosNormal = FXCollections.observableArrayList();
@@ -651,7 +650,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 //                        break;
 //                }
 //            } else {
-            String result = SuministroADO.CrudSuministro(suministroTB, cbAceptar.isSelected(),
+            String result = SuministroADO.CrudSuministro(suministroTB,
                     rbPrecioNormal.isSelected() ? tvPreciosNormal : tvPrecios.getItems());
             switch (result) {
                 case "registered":

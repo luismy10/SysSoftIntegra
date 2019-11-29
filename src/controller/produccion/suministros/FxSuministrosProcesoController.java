@@ -140,8 +140,7 @@ public class FxSuministrosProcesoController implements Initializable {
     private RadioButton rbValorUnidad;
     @FXML
     private RadioButton rbValorCosto;
-    @FXML
-    private CheckBox cbAceptar;
+//    private CheckBox cbAceptar;
     @FXML
     private Text lblTitle;
     @FXML
@@ -258,8 +257,8 @@ public class FxSuministrosProcesoController implements Initializable {
 
         cbOrigen.getItems().clear();
         cbOrigen.setDisable(false);
-        cbAceptar.setSelected(true);
-        cbAceptar.setVisible(true);
+//        cbAceptar.setSelected(true);
+//        cbAceptar.setVisible(true);
         txtClave.clear();
         txtClaveAlterna.clear();
         txtNombreMarca.clear();
@@ -1131,8 +1130,7 @@ public class FxSuministrosProcesoController implements Initializable {
 //                    }
 //                } else {
                 String result = SuministroADO.CrudSuministro(
-                        suministroTB,
-                        cbAceptar.isSelected(),
+                        suministroTB,                      
                         rbPrecioNormal.isSelected() ? tvPreciosNormal : tvPrecios.getItems());
                 switch (result) {
                     case "registered":

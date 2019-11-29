@@ -68,16 +68,6 @@
                                                       <ComboBox fx:id="cbOrigen" maxWidth="1.7976931348623157E308" onAction="#onActionOrigen" prefWidth="200.0" />
                                                    </children>
                                                 </VBox>
-                                                <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Replicar en Artículo" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <CheckBox fx:id="cbAceptar" mnemonicParsing="false" prefHeight="30.0" selected="true" styleClass="check-box-contenido" text="Aceptar" />
-                                                   </children>
-                                                </VBox>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">

@@ -49,7 +49,7 @@ public class SuministroTB {
 
     private boolean lote;
     private boolean inventario;
-    private boolean valorInventario;
+    private short valorInventario;
     private ImageView imageValorInventario;
     private ImageView imageLote;
     private double descuento;
@@ -421,11 +421,11 @@ public class SuministroTB {
         this.inventario = inventario;
     }
 
-    public boolean isValorInventario() {
+    public short getValorInventario() {
         return valorInventario;
     }
 
-    public void setValorInventario(boolean valorInventario) {
+    public void setValorInventario(short valorInventario) {
         this.valorInventario = valorInventario;
     }
 

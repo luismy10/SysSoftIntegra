@@ -1141,7 +1141,7 @@ public class FxVentaEstructuraController implements Initializable {
 
                 suministroTB.setInventario(a.isInventario());
                 suministroTB.setUnidadVenta(a.getUnidadVenta());
-                suministroTB.setValorInventario(a.isValorInventario());
+                suministroTB.setValorInventario(a.getValorInventario());
 
                 Button button = new Button();
                 button.getStyleClass().add("buttonBorder");

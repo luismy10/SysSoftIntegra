@@ -487,7 +487,7 @@ public class CompraADO extends DBUtil {
                     suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
                     suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                     suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                    suministroTB.setValorInventario(rsEmps.getBoolean("ValorInventario"));
+                    suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                     suministroTB.setMovimiento(suministroTB.getCantidad());
                     TextField tf = new TextField(Tools.roundingValue(suministroTB.getCantidad(), 4));
                     tf.getStyleClass().add("text-field-normal");
