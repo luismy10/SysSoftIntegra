@@ -61,74 +61,70 @@
             </Button>
          </children>
       </HBox>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+      <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: white;" VBox.vgrow="ALWAYS">
          <children>
-            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+            <VBox alignment="TOP_CENTER" style="-fx-background-color: #666666;" HBox.hgrow="SOMETIMES">
                <children>
-                  <VBox alignment="TOP_CENTER" style="-fx-background-color: #666666;" HBox.hgrow="SOMETIMES">
-                     <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Rol">
-                           <VBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Text>
-                        <ListView fx:id="lvRol" onMouseClicked="#onMouseClickedRoles" prefHeight="260.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
-                           <children>
-                              <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Menús">
-                                       <VBox.margin>
-                                          <Insets bottom="5.0" top="5.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                    <ListView fx:id="lvMenus" onMouseClicked="#onMouseClickedMenus" prefHeight="260.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Submenús">
-                                       <VBox.margin>
-                                          <Insets bottom="5.0" top="5.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                    <ListView fx:id="lbSubmenus" onMouseClicked="#onMouseClickedSubMenus" prefHeight="260.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <HBox VBox.vgrow="SOMETIMES">
-                           <children>
-                              <VBox alignment="CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="SOMETIMES">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Privilegios">
-                                       <VBox.margin>
-                                          <Insets bottom="5.0" top="5.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                    <ListView fx:id="lvPrivilegios" onMouseClicked="#onMouseClickedMenus" prefHeight="200.0" VBox.vgrow="SOMETIMES" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Rol">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <ListView fx:id="lvRol" onMouseClicked="#onMouseClickedRoles" prefHeight="260.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                </children>
-               <VBox.margin>
+               <HBox.margin>
                   <Insets />
-               </VBox.margin>
-            </HBox>
+               </HBox.margin>
+            </VBox>
+            <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Menús">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <ListView fx:id="lvMenus" onMouseClicked="#onMouseClickedMenus" prefHeight="220.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Submenús">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <ListView fx:id="lbSubmenus" onMouseClicked="#onMouseClickedSubMenus" prefHeight="220.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox alignment="CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Privilegios">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <ListView fx:id="lvPrivilegios" onMouseClicked="#onMouseClickedMenus" prefHeight="220.0" VBox.vgrow="SOMETIMES" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
-      </VBox>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
    </children>
 </VBox>

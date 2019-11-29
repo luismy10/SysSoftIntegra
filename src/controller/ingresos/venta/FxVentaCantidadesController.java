@@ -28,18 +28,15 @@ public class FxVentaCantidadesController implements Initializable {
 
     private double oldCantidad;
 
-    private boolean factor;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
     }
 
-    public void initComponents(SuministroTB suministroTB, boolean factor) {
+    public void initComponents(SuministroTB suministroTB) {
         lblArticulo.setText(suministroTB.getNombreMarca());
         this.suministroTB = suministroTB;
         this.oldCantidad = suministroTB.getCantidad();
-        this.factor = factor;
         txtCantidad.setText(Tools.roundingValue(suministroTB.getCantidad(), 2));
     }
 

@@ -271,6 +271,7 @@ public class FxVentaMostrarController implements Initializable {
             System.out.println(ex.getLocalizedMessage());
             lblLoad.setVisible(false);
         }
+
     }
 
     private void fillVentasDetalleTable(ObservableList<SuministroTB> empList) {
@@ -310,7 +311,7 @@ public class FxVentaMostrarController implements Initializable {
                 rows++;
                 lines = billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto);
             }
-            billPrintable.modelTicket(apWindow, sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA,Session.CORTAPAPEL_IMPRESORA);
+            billPrintable.modelTicket(apWindow, sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 
         } else {
             Tools.AlertMessageWarning(apWindow, "Detalle de venta", "No esta configurado la impresora :D");
@@ -434,8 +435,10 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onMouseClickedTvVentas(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            if (!lblLoad.isVisible()) {
-                setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
+            if (tvVentas.getSelectionModel().getSelectedIndex() > 0) {
+                if (!lblLoad.isVisible()) {
+                    setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
+                }
             }
         }
     }
@@ -443,8 +446,10 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onKeyPressedTvVentas(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (!lblLoad.isVisible()) {
-                setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
+            if (tvVentas.getSelectionModel().getSelectedIndex() > 0) {
+                if (!lblLoad.isVisible()) {
+                    setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
+                }
             }
         }
     }

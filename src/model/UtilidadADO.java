@@ -30,6 +30,7 @@ public class UtilidadADO {
                 utilidad.setClave(rsEmps.getString("Clave"));
                 utilidad.setNombreMarca(rsEmps.getString("NombreMarca"));
                 utilidad.setCantidad(rsEmps.getDouble("Cantidad"));
+                utilidad.setMedida(rsEmps.getString("UnidadCompraNombre"));
                 
                 utilidad.setCostoVenta(rsEmps.getDouble("Costo"));
                 utilidad.setCostoVentaTotal(rsEmps.getDouble("CostoTotal")); 

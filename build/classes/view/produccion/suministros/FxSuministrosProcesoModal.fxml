@@ -68,16 +68,6 @@
                                                       <ComboBox fx:id="cbOrigen" maxWidth="1.7976931348623157E308" onAction="#onActionOrigen" prefWidth="200.0" />
                                                    </children>
                                                 </VBox>
-                                                <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Replicar en Artículo" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <CheckBox fx:id="cbAceptar" mnemonicParsing="false" prefHeight="30.0" selected="true" styleClass="check-box-contenido" text="Aceptar" />
-                                                   </children>
-                                                </VBox>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
@@ -160,7 +150,7 @@
                                                          <children>
                                                             <RadioButton fx:id="rbUnidad" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por Unidad/Pza o Por Precio Base" />
                                                             <RadioButton fx:id="rbGranel" mnemonicParsing="false" styleClass="labelRoboto14" text="Por Valor Monetario" />
-                                                            <RadioButton fx:id="rbMedida" mnemonicParsing="false" styleClass="labelRoboto14" text="A granel(Km,Ml,Mc etc.)" />
+                                                            <RadioButton fx:id="rbMedida" mnemonicParsing="false" styleClass="labelRoboto14" text="A granel(Km,Ml,Cm etc.)" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -266,17 +256,14 @@
                                                                         </VBox>
                                                                      </children>
                                                                   </VBox>
-                                                                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                                                  <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="SOMETIMES">
                                                                      <children>
-                                                                        <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                                                        <Label styleClass="labelRoboto14" text="Valor de salida del producto" />
+                                                                        <VBox alignment="CENTER_LEFT" style="-fx-spacing: 1.1666666666666667em;" VBox.vgrow="ALWAYS">
                                                                            <children>
-                                                                              <Label styleClass="labelRoboto14" text="Valor de inventario" />
-                                                                              <VBox style="-fx-spacing: 1em;">
-                                                                                 <children>
-                                                                                    <RadioButton fx:id="rbValorUnidad" minWidth="-Infinity" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Unidad(Cantidad)" />
-                                                                                    <RadioButton fx:id="rbValorCosto" minWidth="-Infinity" mnemonicParsing="false" styleClass="labelRoboto14" text="Peso(Kg,Lt,G,Etc)" />
-                                                                                 </children>
-                                                                              </VBox>
+                                                                              <RadioButton fx:id="rbValorUnidad" minWidth="-Infinity" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por unidades(cantidades)" />
+                                                                              <RadioButton fx:id="rbValorCosto" minWidth="-Infinity" mnemonicParsing="false" styleClass="labelRoboto14" text="Por valor monedario(S/, $, U, etc.)" />
+                                                                              <RadioButton fx:id="rbValorMedida" minWidth="-Infinity" mnemonicParsing="false" styleClass="labelRoboto14" text="Por medida(km, cm, galón, etc.)" />
                                                                            </children>
                                                                         </VBox>
                                                                      </children>

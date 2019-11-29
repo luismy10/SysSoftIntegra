@@ -164,7 +164,11 @@ public class FxMovimientosProcesoController implements Initializable {
     private void registrarMovimiento() {
 
         if (!tvList.getItems().isEmpty()) {
-            if (cbAjuste.getSelectionModel().getSelectedIndex() < 0) {
+            int validete = 0;
+            validete = tvList.getItems().stream().filter((e) -> (e.getMovimiento() <= 0)).map((_item) -> 1).reduce(validete, Integer::sum);
+            if (validete > 0) {
+                openAlertMessageWarning("Su nueva existencia de un producto no puede ser menor que 0.");
+            } else if (cbAjuste.getSelectionModel().getSelectedIndex() < 0) {
                 openAlertMessageWarning("Seleccione un tipo de ajuste, por favor.");
                 cbAjuste.requestFocus();
             } else if (Tools.isText(txtObservacion.getText().trim())) {
@@ -360,13 +364,13 @@ public class FxMovimientosProcesoController implements Initializable {
                         tvList.refresh();
                     });
 
-                    suministroTB.getTxtMovimiento().focusedProperty().addListener((obs, oldVal, newVal) -> {                   
-                        if (!newVal) {                         
+                    suministroTB.getTxtMovimiento().focusedProperty().addListener((obs, oldVal, newVal) -> {
+                        if (!newVal) {
                             if (!suministroTB.isCambios()) {
-                                suministroTB.getTxtMovimiento().setText(suministroTB.getMovimiento()+"");
+                                suministroTB.getTxtMovimiento().setText(suministroTB.getMovimiento() + "");
                             }
                             tvList.refresh();
-                        }else{                            
+                        } else {
                             suministroTB.setCambios(false);
                         }
                     });

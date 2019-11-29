@@ -37,8 +37,7 @@ public class SuministroTB {
     private double cantidadGranel;
     private double costoCompra;
     private double costoCompraReal;
-    private double multiplicador;
-
+    
     private double precioVentaGeneral;
     private double precioVentaGeneralReal;
     private double precioVentaGeneralAuxiliar;
@@ -275,14 +274,6 @@ public class SuministroTB {
 
     public void setCostoCompraReal(double costoCompraReal) {
         this.costoCompraReal = costoCompraReal;
-    }
-
-    public double getMultiplicador() {
-        return multiplicador;
-    }
-
-    public void setMultiplicador(double multiplicador) {
-        this.multiplicador = multiplicador;
     }
 
     public PreciosTB getPreciosTB() {

@@ -208,7 +208,7 @@
                                  <children>
                                     <VBox fx:id="vbContenedorCosto">
                                        <children>
-                                          <HBox style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em; -fx-border-color: cccccc; -fx-border-width: 0px 0px 1px 0px;">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em; -fx-border-color: cccccc; -fx-border-width: 0px 0px 1px 0px;">
                                              <children>
                                                 <Label styleClass="labelRoboto14" text="El artículo utiliza inventario">
                                                    <font>
@@ -258,15 +258,16 @@
                                                                   <TextField fx:id="txtCostoPromedio" disable="true" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" prefHeight="30.0" prefWidth="200.0" promptText="0.00" styleClass="text-field-normal" text="0.00" />
                                                                </children>
                                                             </VBox>
-                                                            <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox style="-fx-spacing: 0.5em;">
+                                                         <children>
+                                                            <Label styleClass="labelRoboto14" text="Valor de salida del producto" />
+                                                            <VBox style="-fx-spacing: 1.1666666666666667em;">
                                                                <children>
-                                                                  <Label styleClass="labelRoboto14" text="Valor de inventario" />
-                                                                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
-                                                                     <children>
-                                                                        <RadioButton fx:id="rbValorUnidad" minWidth="-Infinity" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Unidad(Cantidad)" />
-                                                                        <RadioButton fx:id="rbValorCosto" minWidth="-Infinity" mnemonicParsing="false" styleClass="labelRoboto14" text="Peso(Kg,Lt,G,Etc)" />
-                                                                     </children>
-                                                                  </HBox>
+                                                                  <RadioButton fx:id="rbValorUnidad" minWidth="-Infinity" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por Unidades(cantidades)" />
+                                                                  <RadioButton fx:id="rbValorCosto" minWidth="-Infinity" mnemonicParsing="false" styleClass="labelRoboto14" text="Por valor monedario(S/, $, U, etc.)" />
+                                                                  <RadioButton fx:id="rbValorMedida" minWidth="-Infinity" mnemonicParsing="false" styleClass="labelRoboto14" text="Por medida(km, cm, galón, etc.)" />
                                                                </children>
                                                             </VBox>
                                                          </children>

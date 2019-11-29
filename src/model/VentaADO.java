@@ -185,16 +185,18 @@ public class VentaADO {
                 detalle_venta.setDouble(14, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
-                if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario()==1) {
+                if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario() == 1) {
                     suministro_update_unidad.setDouble(1, tvList.getItems().get(i).getCantidad());
                     suministro_update_unidad.setString(2, tvList.getItems().get(i).getIdSuministro());
                     suministro_update_unidad.addBatch();
-                } else if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario()==2) {
+                } else if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario() == 2) {
                     suministro_update_granel.setDouble(1, tvList.getItems().get(i).getTotalImporte());
                     suministro_update_granel.setString(2, tvList.getItems().get(i).getIdSuministro());
                     suministro_update_granel.addBatch();
-                }else if(tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario()==3){
-                    
+                } else if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario() == 3) {
+                    suministro_update_unidad.setDouble(1, tvList.getItems().get(i).getCantidad());
+                    suministro_update_unidad.setString(2, tvList.getItems().get(i).getIdSuministro());
+                    suministro_update_unidad.addBatch();
                 }
 
                 suministro_kardex.setString(1, tvList.getItems().get(i).getIdSuministro());

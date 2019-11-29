@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -169,15 +170,32 @@
                               </GridPane>
                            </children>
                         </HBox>
+                        <Separator prefWidth="200.0" />
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
                               <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <HBox>
+                                    <VBox>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Mostrar todos los movimientos realizados de inventario" textFill="#1a2226" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Para realizar el movimiento tiene que completar los campos requeridos" textFill="#00608d">
+                                             <graphic>
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/note.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></Label>
+                                          <Label styleClass="labelOpenSansRegular14" text="Para que las cantidad ingresadas a la tabla se efectúen tiene que precionar enter en la fila Nueva Existencia" textFill="#00608d">
+                                             <graphic>
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/note.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                     <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" prefHeight="327.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcAccion" prefWidth="105.99996948242188" style="-fx-alignment: CENTER;" text="Acción" />

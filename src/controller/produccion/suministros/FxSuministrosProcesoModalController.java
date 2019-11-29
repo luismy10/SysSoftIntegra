@@ -133,8 +133,10 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private RadioButton rbValorUnidad;
     @FXML
-//    private RadioButton rbValorCosto;
-    private CheckBox cbAceptar;
+    private RadioButton rbValorCosto;
+    @FXML
+    private RadioButton rbValorMedida;
+    //private CheckBox cbAceptar;
     @FXML
     private Text lblTitle;
     @FXML
@@ -187,7 +189,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     private int idMedida;
 
 //    private boolean articulo;
-
     private boolean estadoOrigen;
 
     private ObservableList<PreciosTB> tvPreciosNormal;
@@ -204,8 +205,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
         rbUnidad.setToggleGroup(groupVende);
         rbMedida.setToggleGroup(groupVende);
         rbGranel.setToggleGroup(groupVende);
+
         rbValorUnidad.setToggleGroup(groupValor);
-//        rbValorCosto.setToggleGroup(groupValor);
+        rbValorCosto.setToggleGroup(groupValor);
+        rbValorMedida.setToggleGroup(groupValor);
+
         rbPrecioNormal.setToggleGroup(groupPrecio);
         rbPrecioPersonalizado.setToggleGroup(groupPrecio);
         tvPreciosNormal = FXCollections.observableArrayList();
@@ -242,8 +246,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
         cbOrigen.getItems().clear();
         cbOrigen.setDisable(false);
-        cbAceptar.setSelected(true);
-        cbAceptar.setVisible(true);
+//        cbAceptar.setSelected(true);
+//        cbAceptar.setVisible(true);
         txtClave.clear();
         txtClaveAlterna.clear();
         txtNombreMarca.clear();
@@ -622,7 +626,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             suministroTB.setUnidadVenta(se_vende);
             suministroTB.setLote(cbLote.isSelected());
             suministroTB.setInventario(cbInventario.isSelected());
-            suministroTB.setValorInventario(rbValorUnidad.isSelected());
+            suministroTB.setValorInventario(rbValorUnidad.isSelected() ? (short) 1 : rbValorCosto.isSelected() ? (short) 2 : (short) 3);
             suministroTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto() : 0);
             suministroTB.setClaveSat(txtClaveSat.getText().trim());
             suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());

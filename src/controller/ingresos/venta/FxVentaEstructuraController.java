@@ -221,7 +221,7 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                     event.consume();
                 } else if (event.getCode() == KeyCode.F4) {
-                    openWindowCantidad(false);
+                    openWindowCantidad();
                     event.consume();
                 }
 
@@ -643,7 +643,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-    public void openWindowCantidad(boolean factor) {
+    public void openWindowCantidad() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (!unidades_cambio_cantidades && tvList.getSelectionModel().getSelectedItem().getUnidadVenta() == 1 || !granel_cambio_cantidades && tvList.getSelectionModel().getSelectedItem().getUnidadVenta() == 2) {
                 Tools.AlertMessageWarning(window, "Ventas", "No se puede cambiar la cantidad a este producto.");
@@ -656,7 +656,7 @@ public class FxVentaEstructuraController implements Initializable {
                     //Controlller here
                     FxVentaCantidadesController controller = fXMLLoader.getController();
                     controller.setInitVentaEstructuraController(this);
-                    controller.initComponents(tvList.getSelectionModel().getSelectedItem(), factor);
+                    controller.initComponents(tvList.getSelectionModel().getSelectedItem());
                     //
                     Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window.getScene().getWindow());
                     stage.setResizable(false);
@@ -709,7 +709,7 @@ public class FxVentaEstructuraController implements Initializable {
                         case 3:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowListaPrecios("Lista");
+                            openWindowCantidad();
                             break;
                         case 2:
                             tvList.requestFocus();
@@ -730,7 +730,6 @@ public class FxVentaEstructuraController implements Initializable {
                             tvList.refresh();
                             tvList.getSelectionModel().select(i);
                             calculateTotales();
-
                             break;
                     }
                 }
@@ -743,7 +742,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowListaPrecios("Lista");
+                    openWindowCantidad();
                     break;
                 }
                 case 2: {
@@ -1032,13 +1031,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedCantidad(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCantidad(false);
+            openWindowCantidad();
         }
     }
 
     @FXML
     private void onActionCantidad(ActionEvent event) {
-        openWindowCantidad(false);
+        openWindowCantidad();
     }
 
     @FXML

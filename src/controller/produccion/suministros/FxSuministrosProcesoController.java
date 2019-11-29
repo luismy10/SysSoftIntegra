@@ -140,6 +140,8 @@ public class FxSuministrosProcesoController implements Initializable {
     private RadioButton rbValorUnidad;
     @FXML
     private RadioButton rbValorCosto;
+    @FXML
+    private RadioButton rbValorMedida;
 //    private CheckBox cbAceptar;
     @FXML
     private Text lblTitle;
@@ -211,10 +213,14 @@ public class FxSuministrosProcesoController implements Initializable {
         rbUnidad.setToggleGroup(groupVende);
         rbMedida.setToggleGroup(groupVende);
         rbGranel.setToggleGroup(groupVende);
+
         rbValorUnidad.setToggleGroup(groupValor);
         rbValorCosto.setToggleGroup(groupValor);
+        rbValorMedida.setToggleGroup(groupValor);
+
         rbPrecioNormal.setToggleGroup(groupPrecio);
         rbPrecioPersonalizado.setToggleGroup(groupPrecio);
+
         tvPreciosNormal = FXCollections.observableArrayList();
         txtPrecio2.setId("0");
         txtPrecio3.setId("0");
@@ -517,10 +523,16 @@ public class FxSuministrosProcesoController implements Initializable {
                         break;
                 }
 
-                if (suministroTB.isValorInventario()) {
-                    rbValorUnidad.setSelected(true);
-                } else {
-                    rbValorCosto.setSelected(true);
+                switch (suministroTB.getValorInventario()) {
+                    case 1:
+                        rbValorUnidad.setSelected(true);
+                        break;
+                    case 2:
+                        rbValorCosto.setSelected(true);
+                        break;
+                    default:
+                        rbValorMedida.setSelected(true);
+                        break;
                 }
 
                 ObservableList<DetalleTB> lsori = cbOrigen.getItems();
@@ -687,10 +699,16 @@ public class FxSuministrosProcesoController implements Initializable {
                         break;
                 }
 
-                if (suministroTB.isValorInventario()) {
-                    rbValorUnidad.setSelected(true);
-                } else {
-                    rbValorCosto.setSelected(true);
+                switch (suministroTB.getValorInventario()) {
+                    case 1:
+                        rbValorUnidad.setSelected(true);
+                        break;
+                    case 2:
+                        rbValorCosto.setSelected(true);
+                        break;
+                    default:
+                        rbValorMedida.setSelected(true);
+                        break;
                 }
 
                 ObservableList<DetalleTB> lsori = cbOrigen.getItems();
@@ -1097,7 +1115,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setUnidadVenta(se_vende);
                 suministroTB.setLote(cbLote.isSelected());
                 suministroTB.setInventario(cbInventario.isSelected());
-                suministroTB.setValorInventario(rbValorUnidad.isSelected());
+                suministroTB.setValorInventario(rbValorUnidad.isSelected() ? (short) 1 : rbValorCosto.isSelected() ? (short) 2 : (short) 3);
                 suministroTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto() : 0);
                 suministroTB.setClaveSat(txtClaveSat.getText().trim());
                 suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());
@@ -1130,7 +1148,7 @@ public class FxSuministrosProcesoController implements Initializable {
 //                    }
 //                } else {
                 String result = SuministroADO.CrudSuministro(
-                        suministroTB,                      
+                        suministroTB,
                         rbPrecioNormal.isSelected() ? tvPreciosNormal : tvPrecios.getItems());
                 switch (result) {
                     case "registered":

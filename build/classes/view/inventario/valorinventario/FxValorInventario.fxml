@@ -49,11 +49,11 @@
          <children>
             <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: white; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox style="-fx-spacing: 0.8333333333333334em;">
+                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                      <children>
                         <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Consulta el valor del inventario actual, la cantidad de items inventariables que tienes y su costo promedio" />
+                              <Label styleClass="labelOpenSansRegular14" text="Consulta el valor del inventario actual, la cantidad de items inventariables que tienes y su costo promedio" textFill="#1a2226" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">

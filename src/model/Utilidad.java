@@ -7,7 +7,7 @@ public class Utilidad {
     private String clave;
     private String nombreMarca;
     private double cantidad;
-    private double cantidadGranel;
+    private String medida;
     private double costoVenta;
     private double costoVentaTotal;
     private double precioVenta;
@@ -71,12 +71,12 @@ public class Utilidad {
         this.cantidad = cantidad;
     }
 
-    public double getCantidadGranel() {
-        return cantidadGranel;
+    public String getMedida() {
+        return medida;
     }
 
-    public void setCantidadGranel(double cantidadGranel) {
-        this.cantidadGranel = cantidadGranel;
+    public void setMedida(String medida) {
+        this.medida = medida;
     }
 
     public double getCostoVenta() {
