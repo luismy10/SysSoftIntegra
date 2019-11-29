@@ -33,6 +33,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -54,6 +55,7 @@ import model.DetalleTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.ModeloGenerico;
+import model.PrivilegioTB;
 import model.SuministroADO;
 import model.SuministroTB;
 
@@ -103,6 +105,20 @@ public class FxSuministrosController implements Initializable {
     private Label lblPaginaActual;
     @FXML
     private Label lblPaginaSiguiente;
+    @FXML
+    private HBox hbContenedorBotonos;
+    @FXML
+    private Button btnAgregar;
+    @FXML
+    private Button btnEditar;
+    @FXML
+    private Button btnClonar;
+    @FXML
+    private Button btnRecargar;
+    @FXML
+    private Button btnEtiqueta;
+    @FXML
+    private Button btnSuprimir;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -120,6 +136,8 @@ public class FxSuministrosController implements Initializable {
     private FxSuministrosProcesoController suministrosProcesoController;
 
     private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
+    
+     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private int paginacion;
 
@@ -210,6 +228,69 @@ public class FxSuministrosController implements Initializable {
 
         paginacion = 1;
         filtercbCategoria();
+    }
+
+    public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
+         this.privilegioTBs=privilegioTBs;
+        if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
+            hbContenedorBotonos.getChildren().remove(btnAgregar);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(1).getIdPrivilegio() != 0 && !privilegioTBs.get(1).isEstado()) {
+            hbContenedorBotonos.getChildren().remove(btnEditar);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(2).getIdPrivilegio() != 0 && !privilegioTBs.get(2).isEstado()) {
+            hbContenedorBotonos.getChildren().remove(btnClonar);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(3).getIdPrivilegio() != 0 && !privilegioTBs.get(3).isEstado()) {
+            hbContenedorBotonos.getChildren().remove(btnRecargar);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(4).getIdPrivilegio() != 0 && !privilegioTBs.get(4).isEstado()) {
+            hbContenedorBotonos.getChildren().remove(btnEtiqueta);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(5).getIdPrivilegio() != 0 && !privilegioTBs.get(5).isEstado()) {
+            hbContenedorBotonos.getChildren().remove(btnSuprimir);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(6).getIdPrivilegio() != 0 && !privilegioTBs.get(6).isEstado()) {
+            txtClave.setDisable(true);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(7).getIdPrivilegio() != 0 && !privilegioTBs.get(7).isEstado()) {
+            txtNombre.setDisable(true);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(8).getIdPrivilegio() != 0 && !privilegioTBs.get(8).isEstado()) {
+            cbCategoria.setDisable(true);
+        } else {
+
+        }
+
+        if (privilegioTBs.get(9).getIdPrivilegio() != 0 && !privilegioTBs.get(9).isEstado()) {
+            cbMarca.setEditable(true);
+        } else {
+
+        }
     }
 
     private void filtercbCategoria() {
@@ -316,6 +397,7 @@ public class FxSuministrosController implements Initializable {
 
     private void openWindowEdit() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            suministrosProcesoController.loadPrivilegios(privilegioTBs);
             suministrosProcesoController.setInitControllerSuministros(this, vbPrincipal, vbContent);
             //
             vbContent.getChildren().clear();
@@ -402,7 +484,6 @@ public class FxSuministrosController implements Initializable {
 //            System.out.println(ex.getLocalizedMessage());
 //        }
 //    }
-
     private void removedArticulo() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -550,7 +631,6 @@ public class FxSuministrosController implements Initializable {
 //    private void onActionCloneArticulo(ActionEvent event) {
 //        executeCloneArticulo();
 //    }
-
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {

@@ -40,8 +40,6 @@ public class FxListaPreciosController implements Initializable {
 
     private SuministroTB suministroTB;
 
-    private int index;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
@@ -51,9 +49,8 @@ public class FxListaPreciosController implements Initializable {
         tcFactor.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getFactor(), 2)));
     }
 
-    public void loadDataView(SuministroTB item, int idx) {
+    public void loadDataView(SuministroTB item) {
         suministroTB = item;
-        index = idx;
         ObservableList<PreciosTB> artPrices = SuministroADO.GetItemPriceList(suministroTB.getIdSuministro());
         if (!artPrices.isEmpty()) {
             tvList.setItems(artPrices);
