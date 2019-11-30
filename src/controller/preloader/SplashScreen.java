@@ -24,7 +24,6 @@ import model.ClienteTB;
 import model.DBUtil;
 import model.EmpresaADO;
 import model.EmpresaTB;
-import model.FacturacionTB;
 import model.MonedaADO;
 import model.TicketADO;
 import model.TicketTB;
@@ -136,19 +135,7 @@ public class SplashScreen extends Preloader {
                         clienteInsert.setEmail("");
                         clienteInsert.setDireccion("");
                         clienteInsert.setEstado(1);
-                        clienteInsert.setUsuarioRegistro("");
 
-                        FacturacionTB facturacionTB = new FacturacionTB();
-                        facturacionTB.setTipoDocumentoFacturacion(0);
-                        facturacionTB.setNumeroDocumentoFacturacion("");
-                        facturacionTB.setRazonSocial("");
-                        facturacionTB.setNombreComercial("");
-                        facturacionTB.setPais("");
-                        facturacionTB.setDepartamento(0);
-                        facturacionTB.setProvincia(0);
-                        facturacionTB.setDistrito(0);
-
-                        clienteInsert.setFacturacionTB(facturacionTB);
                         String result = ClienteADO.CrudCliente(clienteInsert);
                         if (result.equalsIgnoreCase("registered")) {
                             ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");

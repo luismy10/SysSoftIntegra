@@ -85,8 +85,8 @@ public class ProveedorADO {
                         preparedProveedor.setString(14, proveedorTB.getEmail());
                         preparedProveedor.setString(15, proveedorTB.getPaginaWeb());
                         preparedProveedor.setString(16, proveedorTB.getDireccion());
-                        preparedProveedor.setString(17, proveedorTB.getUsuarioRegistro());
-                        preparedProveedor.setTimestamp(18, Timestamp.valueOf(proveedorTB.getFechaRegistro()));
+//                        preparedProveedor.setString(17, proveedorTB.getUsuarioRegistro());
+//                        preparedProveedor.setTimestamp(18, Timestamp.valueOf(proveedorTB.getFechaRegistro()));
                         preparedProveedor.setString(19, proveedorTB.getRepresentante());
                         preparedProveedor.addBatch();
                         
@@ -192,7 +192,7 @@ public class ProveedorADO {
                 proveedorTB.setEstadoName(rsEmps.getString("Estado"));
                 proveedorTB.setTelefono(rsEmps.getString("Telefono"));
                 proveedorTB.setCelular(rsEmps.getString("Celular"));
-                proveedorTB.setFechaRegistro(rsEmps.getTimestamp("FRegistro").toLocalDateTime());
+//                proveedorTB.setFechaRegistro(rsEmps.getTimestamp("FRegistro").toLocalDateTime());
                 proveedorTB.setRepresentante(rsEmps.getString("Representante"));
                 empList.add(proveedorTB);
             }

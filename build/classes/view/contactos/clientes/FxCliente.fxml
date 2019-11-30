@@ -109,10 +109,11 @@
                                        <columns>
                                           <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                           <TableColumn fx:id="tcDocumento" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Documento" />
-                                          <TableColumn fx:id="tcPersona" prefWidth="330.0" style="-fx-alignment: CENTER-LEFT;" text="Datos Personales" />
-                                          <TableColumn fx:id="tcContacto" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
-                                          <TableColumn fx:id="tcEstado" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Estado" />
-                                          <TableColumn fx:id="tcFechaRegistro" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Fecha de Registro" />
+                                          <TableColumn fx:id="tcPersona" prefWidth="185.0" style="-fx-alignment: CENTER-LEFT;" text="Datos Personales" />
+                                          <TableColumn fx:id="tcContacto" prefWidth="148.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
+                                          <TableColumn fx:id="tcDirección" prefWidth="128.0" style="-fx-alignment: CENTER;" text="Dirección" />
+                                          <TableColumn fx:id="tcRepresentante" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Representante" />
+                                          <TableColumn fx:id="tcEstado" prefWidth="136.0" style="-fx-alignment: CENTER;" text="Estado" />
                                        </columns>
                                     </TableView>
                                  </children>

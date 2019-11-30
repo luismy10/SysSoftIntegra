@@ -256,8 +256,8 @@ public class FxProveedorProcesoController implements Initializable {
                 proveedorTB.setEmail(txtEmail.getText().trim());
                 proveedorTB.setPaginaWeb(txtPaginaWeb.getText().trim());
                 proveedorTB.setDireccion(txtDireccion.getText().trim());
-                proveedorTB.setUsuarioRegistro(Session.USER_ID);
-                proveedorTB.setFechaRegistro(LocalDateTime.now());
+//                proveedorTB.setUsuarioRegistro(Session.USER_ID);
+//                proveedorTB.setFechaRegistro(LocalDateTime.now());
                 proveedorTB.setRepresentante(txtRepresentante.getText().trim());
 
                 String result = ProveedorADO.CrudEntity(proveedorTB);

@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.contactos.proveedores.FxProveedorProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.contactos.proveedores.FxProveedorProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -54,7 +54,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Tipo documento:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Tipo documento" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -65,7 +65,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="N° Documento:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="N° Documento" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -79,7 +79,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Razón social:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Razón social" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -90,7 +90,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Agente:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Representante" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -104,7 +104,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Teléfono" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -115,7 +115,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Celular:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Celular" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -129,7 +129,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Email:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Email" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -140,7 +140,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Pagina web:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Pagina web" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -154,7 +154,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Dirección:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Dirección" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -183,7 +183,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Nombre comercial:" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Nombre comercial" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -194,7 +194,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Estado:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Estado" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -208,7 +208,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblDirectory" styleClass="labelRoboto14" text="Directorio:" textFill="#23283a">
+                                                      <Label fx:id="lblDirectory" styleClass="labelRoboto14" text="Directorio" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -247,7 +247,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="País:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="País" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -258,7 +258,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Departamento:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Departamento" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -272,7 +272,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Provincia:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Provincia" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -283,7 +283,7 @@
                                                 <Separator orientation="VERTICAL" />
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Distrito:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Distrito" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -297,7 +297,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Ámbito:" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Ámbito" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>

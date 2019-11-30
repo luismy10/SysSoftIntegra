@@ -31,7 +31,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.ClienteADO;
 import model.ClienteTB;
 
@@ -44,7 +43,7 @@ public class FxClienteController implements Initializable {
     @FXML
     private TableView<ClienteTB> tvList;
     @FXML
-    private TableColumn<ClienteTB, Long> tcId;
+    private TableColumn<ClienteTB, Integer> tcId;
     @FXML
     private TableColumn<ClienteTB, String> tcDocumento;
     @FXML
@@ -52,9 +51,11 @@ public class FxClienteController implements Initializable {
     @FXML
     private TableColumn<ClienteTB, String> tcContacto;
     @FXML
-    private TableColumn<ClienteTB, String> tcEstado;
+    private TableColumn<ClienteTB, String> tcDirección;
     @FXML
-    private TableColumn<ClienteTB, String> tcFechaRegistro;
+    private TableColumn<ClienteTB, String> tcRepresentante;
+    @FXML
+    private TableColumn<ClienteTB, String> tcEstado;
     @FXML
     private Label lblLoad;
 
@@ -64,29 +65,29 @@ public class FxClienteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
-        tcPersona.setCellValueFactory(cellData
-                -> Bindings.concat(
-                        cellData.getValue().getApellidos() + " ",
-                        cellData.getValue().getNombres() + " "
-                )
+        tcPersona.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getApellidos() + " ",
+                cellData.getValue().getNombres() + " "
+        )
         );
-        tcContacto.setCellValueFactory(cellData
-                -> Bindings.concat(
-                        !Tools.isText(cellData.getValue().getTelefono())
-                        ? "TEL: " + cellData.getValue().getTelefono() + "\n" + "CEL: " + cellData.getValue().getCelular()
-                        : "CEL: " + cellData.getValue().getCelular()
-                )
+        tcContacto.setCellValueFactory(cellData -> Bindings.concat(
+                (!Tools.isText(cellData.getValue().getTelefono()) ? "TEL: " + cellData.getValue().getTelefono() : "Sin número telefónico")
+                + "\n"
+                + (!Tools.isText(cellData.getValue().getCelular()) ? "CEL: " + cellData.getValue().getCelular() : "Sin número de celular")
+        )
         );
+        tcDirección.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDireccion()));
+        tcRepresentante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRepresentante()));
         tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
-        tcFechaRegistro.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
-        
+
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcDocumento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcPersona.prefWidthProperty().bind(tvList.widthProperty().multiply(0.33));
-        tcContacto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcFechaRegistro.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        
+        tcDocumento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
+        tcPersona.prefWidthProperty().bind(tvList.widthProperty().multiply(0.26));
+        tcContacto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcDirección.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcRepresentante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+
     }
 
     public void fillCustomersTable(String value) {

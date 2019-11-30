@@ -39,7 +39,7 @@ public class FxClienteListaController implements Initializable {
     @FXML
     private TableView<ClienteTB> tvList;
     @FXML
-    private TableColumn<ClienteTB, Long> tcId;
+    private TableColumn<ClienteTB, Integer> tcId;
     @FXML
     private TableColumn<ClienteTB, String> tcDocumento;
     @FXML

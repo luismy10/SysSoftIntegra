@@ -34,7 +34,6 @@ import model.DetalleADO;
 import model.DetalleTB;
 import model.DistritoADO;
 import model.DistritoTB;
-import model.FacturacionTB;
 import model.PaisADO;
 import model.PaisTB;
 import model.ProvinciaADO;
@@ -63,14 +62,6 @@ public class FxClienteProcesoController implements Initializable {
     @FXML
     private Label lblDirectory;
     @FXML
-    private ComboBox<DetalleTB> cbDocumentTypeFactura;
-    @FXML
-    private TextField txtDocumentNumberFactura;
-    @FXML
-    private TextField txtBusinessName;
-    @FXML
-    private TextField txtTradename;
-    @FXML
     private ComboBox<DetalleTB> cbEstado;
     @FXML
     private ComboBox<PaisTB> cbPais;
@@ -88,6 +79,8 @@ public class FxClienteProcesoController implements Initializable {
     private TextField txtEmail;
     @FXML
     private TextField txtDireccion;
+    @FXML
+    private TextField txtRepresentante;
 
     private String idCliente;
 
@@ -102,9 +95,6 @@ public class FxClienteProcesoController implements Initializable {
         });
         DetalleADO.GetDetailId("0004").forEach(e -> {
             cbSex.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
-        DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
-            cbDocumentTypeFactura.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -169,69 +159,63 @@ public class FxClienteProcesoController implements Initializable {
             txtEmail.setText(clienteTB.getEmail());
             txtDireccion.setText(clienteTB.getDireccion());
 
-            if (clienteTB.getFacturacionTB().getTipoDocumentoFacturacion() != 0) {
-                ObservableList<DetalleTB> lstypefacturacion = cbDocumentTypeFactura.getItems();
-                for (int i = 0; i < lstypefacturacion.size(); i++) {
-                    if (clienteTB.getFacturacionTB().getTipoDocumentoFacturacion() == lstypefacturacion.get(i).getIdDetalle().get()) {
-                        cbDocumentTypeFactura.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
-
-            txtDocumentNumberFactura.setText(clienteTB.getFacturacionTB().getNumeroDocumentoFacturacion());
-            txtBusinessName.setText(clienteTB.getFacturacionTB().getRazonSocial());
-            txtTradename.setText(clienteTB.getFacturacionTB().getNombreComercial());
-
-            if (clienteTB.getFacturacionTB().getPais() != null) {
-                ObservableList<PaisTB> lspais = cbPais.getItems();
-                for (int i = 0; i < lspais.size(); i++) {
-                    if (clienteTB.getFacturacionTB().getPais().equals(lspais.get(i).getPaisCodigo())) {
-                        cbPais.getSelectionModel().select(i);
-                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                            cbDepartamento.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (clienteTB.getFacturacionTB().getDepartamento() != 0) {
-                ObservableList<CiudadTB> lsciudad = cbDepartamento.getItems();
-                for (int i = 0; i < lsciudad.size(); i++) {
-                    if (clienteTB.getFacturacionTB().getDepartamento() == lsciudad.get(i).getIdCiudad()) {
-                        cbDepartamento.getSelectionModel().select(i);
-                        ProvinciaADO.ListProvincia(cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                            cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (clienteTB.getFacturacionTB().getProvincia() != 0) {
-                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-                for (int i = 0; i < lsprovin.size(); i++) {
-                    if (clienteTB.getFacturacionTB().getProvincia() == lsprovin.get(i).getIdProvincia()) {
-                        cbProvincia.getSelectionModel().select(i);
-                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                            cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (clienteTB.getFacturacionTB().getDistrito() != 0) {
-                ObservableList<DistritoTB> lsdistrito = cbDistrito.getItems();
-                for (int i = 0; i < lsdistrito.size(); i++) {
-                    if (clienteTB.getFacturacionTB().getDistrito() == lsdistrito.get(i).getIdDistrito()) {
-                        cbDistrito.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
-
+//            if (clienteTB.getFacturacionTB().getTipoDocumentoFacturacion() != 0) {
+//                ObservableList<DetalleTB> lstypefacturacion = cbDocumentTypeFactura.getItems();
+//                for (int i = 0; i < lstypefacturacion.size(); i++) {
+//                    if (clienteTB.getFacturacionTB().getTipoDocumentoFacturacion() == lstypefacturacion.get(i).getIdDetalle().get()) {
+//                        cbDocumentTypeFactura.getSelectionModel().select(i);
+//                        break;
+//                    }
+//                }
+//            }
+//            txtDocumentNumberFactura.setText(clienteTB.getFacturacionTB().getNumeroDocumentoFacturacion());
+//            txtBusinessName.setText(clienteTB.getFacturacionTB().getRazonSocial());
+//            txtTradename.setText(clienteTB.getFacturacionTB().getNombreComercial());
+//            if (clienteTB.getFacturacionTB().getPais() != null) {
+//                ObservableList<PaisTB> lspais = cbPais.getItems();
+//                for (int i = 0; i < lspais.size(); i++) {
+//                    if (clienteTB.getFacturacionTB().getPais().equals(lspais.get(i).getPaisCodigo())) {
+//                        cbPais.getSelectionModel().select(i);
+//                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
+//                            cbDepartamento.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
+//                        });
+//                        break;
+//                    }
+//                }
+//            }
+//            if (clienteTB.getFacturacionTB().getDepartamento() != 0) {
+//                ObservableList<CiudadTB> lsciudad = cbDepartamento.getItems();
+//                for (int i = 0; i < lsciudad.size(); i++) {
+//                    if (clienteTB.getFacturacionTB().getDepartamento() == lsciudad.get(i).getIdCiudad()) {
+//                        cbDepartamento.getSelectionModel().select(i);
+//                        ProvinciaADO.ListProvincia(cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
+//                            cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
+//                        });
+//                        break;
+//                    }
+//                }
+//            }
+//            if (clienteTB.getFacturacionTB().getProvincia() != 0) {
+//                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
+//                for (int i = 0; i < lsprovin.size(); i++) {
+//                    if (clienteTB.getFacturacionTB().getProvincia() == lsprovin.get(i).getIdProvincia()) {
+//                        cbProvincia.getSelectionModel().select(i);
+//                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
+//                            cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
+//                        });
+//                        break;
+//                    }
+//                }
+//            }
+//            if (clienteTB.getFacturacionTB().getDistrito() != 0) {
+//                ObservableList<DistritoTB> lsdistrito = cbDistrito.getItems();
+//                for (int i = 0; i < lsdistrito.size(); i++) {
+//                    if (clienteTB.getFacturacionTB().getDistrito() == lsdistrito.get(i).getIdDistrito()) {
+//                        cbDistrito.getSelectionModel().select(i);
+//                        break;
+//                    }
+//                }
+//            }
         }
 
     }
@@ -306,21 +290,19 @@ public class FxClienteProcesoController implements Initializable {
                 clienteTB.setEmail(txtEmail.getText().trim());
                 clienteTB.setDireccion(txtDireccion.getText().trim());
                 clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                clienteTB.setUsuarioRegistro(Session.USER_ID);
 
-                FacturacionTB facturacionTB = new FacturacionTB();
-                facturacionTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                        : 0);
-                facturacionTB.setNumeroDocumentoFacturacion(txtDocumentNumberFactura.getText());
-                facturacionTB.setRazonSocial(txtBusinessName.getText().trim());
-                facturacionTB.setNombreComercial(txtTradename.getText().trim());
-                facturacionTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0 ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo() : "");
-                facturacionTB.setDepartamento(cbDepartamento.getSelectionModel().getSelectedIndex() >= 0 ? cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad() : 0);
-                facturacionTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0 ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
-                facturacionTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0 ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
-
-                clienteTB.setFacturacionTB(facturacionTB);
-
+//                FacturacionTB facturacionTB = new FacturacionTB();
+//                facturacionTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
+//                        : 0);
+//                facturacionTB.setNumeroDocumentoFacturacion(txtDocumentNumberFactura.getText());
+//                facturacionTB.setRazonSocial(txtBusinessName.getText().trim());
+//                facturacionTB.setNombreComercial(txtTradename.getText().trim());
+//                facturacionTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0 ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo() : "");
+//                facturacionTB.setDepartamento(cbDepartamento.getSelectionModel().getSelectedIndex() >= 0 ? cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad() : 0);
+//                facturacionTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0 ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
+//                facturacionTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0 ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
+//
+//                clienteTB.setFacturacionTB(facturacionTB);
                 String result = ClienteADO.CrudCliente(clienteTB);
 
                 switch (result) {

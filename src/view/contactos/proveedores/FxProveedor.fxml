@@ -112,9 +112,8 @@
                                           <TableColumn fx:id="tcDocument" prefWidth="104.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
                                           <TableColumn fx:id="tcBusinessName" prefWidth="232.0" style="-fx-alignment: CENTER-LEFT;" text="Razón social/Nombre comercial" />
                                           <TableColumn fx:id="tcContacto" prefWidth="145.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
-                                          <TableColumn fx:id="tcState" prefWidth="91.0" style="-fx-alignment: CENTER;" text="Estado" />
-                                          <TableColumn fx:id="tcFechaRegistro" prefWidth="162.0" style="-fx-alignment: CENTER;" text="Fecha de Registro" />
                                           <TableColumn fx:id="tcRepresentante" prefWidth="144.0" text="Representante" />
+                                          <TableColumn fx:id="tcState" prefWidth="91.0" style="-fx-alignment: CENTER;" text="Estado" />
                                        </columns>
                                     </TableView>
                                  </children>

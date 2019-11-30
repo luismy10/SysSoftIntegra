@@ -28,16 +28,16 @@ public class ClienteADO {
             callableStatement.setString("Email", clienteTB.getEmail());
             callableStatement.setString("Direccion", clienteTB.getDireccion());
             callableStatement.setInt("Estado", clienteTB.getEstado());
-            callableStatement.setString("UsuarioRegistro", clienteTB.getUsuarioRegistro());
+//            callableStatement.setString("UsuarioRegistro", clienteTB.getUsuarioRegistro());
             //facturación
-            callableStatement.setInt("TipoDocumentoFactura", clienteTB.getFacturacionTB().getTipoDocumentoFacturacion());
-            callableStatement.setString("NumeroDocumentoFactura", clienteTB.getFacturacionTB().getNumeroDocumentoFacturacion());
-            callableStatement.setString("RazonSocial", clienteTB.getFacturacionTB().getRazonSocial());
-            callableStatement.setString("NombreComercial", clienteTB.getFacturacionTB().getNombreComercial());
-            callableStatement.setString("Pais", clienteTB.getFacturacionTB().getPais());
-            callableStatement.setInt("Ciudad", clienteTB.getFacturacionTB().getDepartamento());
-            callableStatement.setInt("Provincia", clienteTB.getFacturacionTB().getProvincia());
-            callableStatement.setInt("Distrito", clienteTB.getFacturacionTB().getDistrito());
+//            callableStatement.setInt("TipoDocumentoFactura", clienteTB.getFacturacionTB().getTipoDocumentoFacturacion());
+//            callableStatement.setString("NumeroDocumentoFactura", clienteTB.getFacturacionTB().getNumeroDocumentoFacturacion());
+//            callableStatement.setString("RazonSocial", clienteTB.getFacturacionTB().getRazonSocial());
+//            callableStatement.setString("NombreComercial", clienteTB.getFacturacionTB().getNombreComercial());
+//            callableStatement.setString("Pais", clienteTB.getFacturacionTB().getPais());
+//            callableStatement.setInt("Ciudad", clienteTB.getFacturacionTB().getDepartamento());
+//            callableStatement.setInt("Provincia", clienteTB.getFacturacionTB().getProvincia());
+//            callableStatement.setInt("Distrito", clienteTB.getFacturacionTB().getDistrito());
             //
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
@@ -69,13 +69,14 @@ public class ClienteADO {
 
             while (rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setId(rsEmps.getLong("Filas"));
+                clienteTB.setId(rsEmps.getRow());
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setApellidos(rsEmps.getString("Apellidos"));
                 clienteTB.setNombres(rsEmps.getString("Nombres"));
-                clienteTB.setFechaRegistro(rsEmps.getDate("FRegistro").toLocalDate());
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
+                clienteTB.setDireccion(rsEmps.getString("Direccion")); 
+                clienteTB.setRepresentante(rsEmps.getString("Representante")); 
                 clienteTB.setEstadoName(rsEmps.getString("Estado"));
                 empList.add(clienteTB);
             }
@@ -111,7 +112,7 @@ public class ClienteADO {
 
             while (rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setId(rsEmps.getLong("Filas"));
+                clienteTB.setId(rsEmps.getInt("Filas"));
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setApellidos(rsEmps.getString("Apellidos"));
@@ -164,16 +165,16 @@ public class ClienteADO {
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 clienteTB.setEstado(rsEmps.getInt("Estado"));
                 //facturación
-                FacturacionTB facturacionTB = new FacturacionTB();
-                facturacionTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
-                facturacionTB.setNumeroDocumentoFacturacion(rsEmps.getString("NumeroFactura"));
-                facturacionTB.setRazonSocial(rsEmps.getString("RazonSocial"));
-                facturacionTB.setNombreComercial(rsEmps.getString("NombreComercial"));
-                facturacionTB.setPais(rsEmps.getString("Pais"));
-                facturacionTB.setDepartamento(rsEmps.getInt("Ciudad"));
-                facturacionTB.setProvincia(rsEmps.getInt("Provincia"));
-                facturacionTB.setDistrito(rsEmps.getInt("Distrito"));
-                clienteTB.setFacturacionTB(facturacionTB);
+//                FacturacionTB facturacionTB = new FacturacionTB();
+//                facturacionTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
+//                facturacionTB.setNumeroDocumentoFacturacion(rsEmps.getString("NumeroFactura"));
+//                facturacionTB.setRazonSocial(rsEmps.getString("RazonSocial"));
+//                facturacionTB.setNombreComercial(rsEmps.getString("NombreComercial"));
+//                facturacionTB.setPais(rsEmps.getString("Pais"));
+//                facturacionTB.setDepartamento(rsEmps.getInt("Ciudad"));
+//                facturacionTB.setProvincia(rsEmps.getInt("Provincia"));
+//                facturacionTB.setDistrito(rsEmps.getInt("Distrito"));
+//                clienteTB.setFacturacionTB(facturacionTB);
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

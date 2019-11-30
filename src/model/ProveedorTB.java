@@ -1,6 +1,5 @@
 package model;
 
-import java.time.LocalDateTime;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -25,8 +24,6 @@ public class ProveedorTB {
     private String paginaWeb;
     private String direccion;
     private SimpleStringProperty estadoName;
-    private String usuarioRegistro;
-    private LocalDateTime fechaRegistro;
     private String representante;
 
     public ProveedorTB() {
@@ -176,22 +173,6 @@ public class ProveedorTB {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public String getUsuarioRegistro() {
-        return usuarioRegistro;
-    }
-
-    public void setUsuarioRegistro(String usuarioRegistro) {
-        this.usuarioRegistro = usuarioRegistro;
-    }
-
-    public LocalDateTime getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(LocalDateTime fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
     }
 
     public SimpleStringProperty getTipoDocumentoName() {

@@ -58,8 +58,6 @@ public class FxProveedorController implements Initializable {
     @FXML
     private TableColumn<ProveedorTB, String> tcState;
     @FXML
-    private TableColumn<ProveedorTB, String> tcFechaRegistro;
-    @FXML
     private TableColumn<ProveedorTB, String> tcRepresentante;
 
     private AnchorPane vbPrincipal;    
@@ -105,19 +103,16 @@ public class FxProveedorController implements Initializable {
                         : "CEL: " + cellData.getValue().getCelular()
                 )
         );
-        tcState.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
-        tcFechaRegistro.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
         tcRepresentante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRepresentante()+""));
+        tcState.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
         
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcDocumentType.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
-        tcDocument.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcBusinessName.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
-        tcContacto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcState.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
-        tcFechaRegistro.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
-        tcRepresentante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
-
+        tcDocumentType.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcDocument.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcBusinessName.prefWidthProperty().bind(tvList.widthProperty().multiply(0.21));
+        tcContacto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
+        tcRepresentante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcState.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));        
 
     }
 
