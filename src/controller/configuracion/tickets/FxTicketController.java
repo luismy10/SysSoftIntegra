@@ -526,10 +526,6 @@ public class FxTicketController implements Initializable {
 
             text.setDisable((widthContent + 13) > sheetWidth);
 
-            textVariable.setDisable((widthContent + 13) > sheetWidth);
-
-            textMultilinea.setDisable((widthContent + 13) > sheetWidth);
-
             textUnaLinea.setDisable((widthContent + 13) > sheetWidth);
 
             textDosLineas.setDisable((widthContent + 13) > sheetWidth);
@@ -881,6 +877,15 @@ public class FxTicketController implements Initializable {
         sheetWidth = widthPage;
         lblColumnas.setText("" + sheetWidth);
         vbContenedor.setPrefWidth(sheetWidth * pointWidth);
+        for (short i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
+            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
+            for (short j = 0; j < hBox.getChildren().size(); j++) {
+                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                fieldTicket.setColumnWidth(newwidth);
+                fieldTicket.setPrefWidth(newwidth * pointWidth);
+            }
+        }
     }
 
     public VBox getHbEncabezado() {

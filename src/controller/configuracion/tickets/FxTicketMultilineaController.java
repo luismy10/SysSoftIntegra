@@ -44,14 +44,17 @@ public class FxTicketMultilineaController implements Initializable {
         if (!textArea.getText().trim().isEmpty()) {
             short widthContent = 0;
             for (short i = 0; i < hBox.getChildren().size(); i++) {
-                TextFieldTicket fieldTicket = ((TextFieldTicket) hBox.getChildren().get(i));
-                widthContent += fieldTicket.getColumnWidth();
+                widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
             }
             if (widthContent <= sheetWidth) {
                 short widthNew = (short) (sheetWidth - widthContent);
-                TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, (short) 1, widthNew, Pos.CENTER_LEFT, true, "");
-                hBox.getChildren().add(field);
-                Tools.Dispose(window);
+                if (widthNew <= 0 || widthNew > sheetWidth) {
+                    Tools.AlertMessageWarning(window, "Ticket", "No hay espacio suficiente en la fila.");
+                } else {
+                    TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, (short) 1, widthNew, Pos.CENTER_LEFT, true, "");
+                    hBox.getChildren().add(field);
+                    Tools.Dispose(window);
+                }
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El área de texto no puede estar vacío.", false);
