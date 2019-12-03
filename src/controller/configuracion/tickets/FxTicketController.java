@@ -25,6 +25,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
@@ -46,7 +48,9 @@ import org.json.simple.JSONObject;
 public class FxTicketController implements Initializable {
 
     @FXML
-    private VBox window;
+    private VBox vbWindow;
+    @FXML
+    private VBox vbContenedor;
     @FXML
     private VBox hbEncabezado;
     @FXML
@@ -63,12 +67,16 @@ public class FxTicketController implements Initializable {
     private CheckBox cbEditable;
     @FXML
     private TextField txtVariable;
+    @FXML
+    private Label lblNombre;
+    @FXML
+    private Label lblColumnas;
 
     private AnchorPane vbPrincipal;
 
     private TextFieldTicket reference;
 
-    private int sheetWidth;
+    private short sheetWidth;
 
     private double pointWidth;
 
@@ -77,89 +85,26 @@ public class FxTicketController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         pointWidth = 7.825;
-        sheetWidth = 40;
+        sheetWidth = 0;
         cbAlignment.getItems().add(Pos.CENTER_LEFT);
         cbAlignment.getItems().add(Pos.CENTER);
         cbAlignment.getItems().add(Pos.CENTER_RIGHT);
     }
 
-    private void editTicket() {
-//        File file = new File("./archivos/ticketventa.json");
-//        if (file.exists()) {
-//            JSONObject jSONObject = obtenerObjetoJSON(leerArchivoTexto(file.getAbsolutePath()));
-//            hbEncabezado.getChildren().clear();
-//            hbDetalleCabecera.getChildren().clear();
-//            hbPie.getChildren().clear();
-//            if (jSONObject.get("cabecera") != null) {
-//                JSONObject cabeceraObjects = obtenerObjetoJSON(jSONObject.get("cabecera").toString());
-//                for (int i = 0; i < cabeceraObjects.size(); i++) {
-//                    HBox box = generateElement(hbEncabezado, "cb");
-//                    JSONObject objectObtener = obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
-//                    if (objectObtener.get("text") != null) {
-//                        JSONObject object = obtenerObjetoJSON(objectObtener.get("text").toString());
-//                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), "");
-//                        box.getChildren().add(field);
-//                    } else if (objectObtener.get("list") != null) {
-//                        JSONArray array = obtenerArrayJSON(objectObtener.get("list").toString());
-//                        Iterator it = array.iterator();
-//                        while (it.hasNext()) {
-//                            JSONObject object = obtenerObjetoJSON(it.next().toString());
-//                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), "");
-//                            box.getChildren().add(field);
-//                        }
-//                    }
-//                }
-//            }
-//            if (jSONObject.get("detalle") != null) {
-//                JSONObject detalleObjects = obtenerObjetoJSON(jSONObject.get("detalle").toString());
-//                for (int i = 0; i < detalleObjects.size(); i++) {
-//                    HBox box = generateElement(hbDetalleCabecera, "dr");
-//                    JSONObject objectObtener = obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
-//                    if (objectObtener.get("text") != null) {
-//                        JSONObject object = obtenerObjetoJSON(objectObtener.get("text").toString());
-//                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), "");
-//                        box.getChildren().add(field);
-//                    } else if (objectObtener.get("list") != null) {
-//                        JSONArray array = obtenerArrayJSON(objectObtener.get("list").toString());
-//                        Iterator it = array.iterator();
-//                        while (it.hasNext()) {
-//                            JSONObject object = obtenerObjetoJSON(it.next().toString());
-//                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), "");
-//                            box.getChildren().add(field);
-//                        }
-//                    }
-//                }
-//            }
-//            if (jSONObject.get("pie") != null) {
-//                JSONObject pieObjects = obtenerObjetoJSON(jSONObject.get("pie").toString());
-//                for (int i = 0; i < pieObjects.size(); i++) {
-//                    HBox box = generateElement(hbPie, "cp");
-//                    JSONObject objectObtener = obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
-//                    if (objectObtener.get("text") != null) {
-//                        JSONObject object = obtenerObjetoJSON(objectObtener.get("text").toString());
-//                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), "");
-//                        box.getChildren().add(field);
-//                    } else if (objectObtener.get("list") != null) {
-//                        JSONArray array = obtenerArrayJSON(objectObtener.get("list").toString());
-//                        Iterator it = array.iterator();
-//                        while (it.hasNext()) {
-//                            JSONObject object = obtenerObjetoJSON(it.next().toString());
-//                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), "");
-//                            box.getChildren().add(field);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-    }
-
-    public void loadTicket(int idTicket, String ruta) {
+    public void loadTicket(int idTicket, String nombre, String ruta) {
         if (ruta != null) {
             this.idTicket = idTicket;
             JSONObject jSONObject = Json.obtenerObjetoJSON(ruta);
             hbEncabezado.getChildren().clear();
             hbDetalleCabecera.getChildren().clear();
             hbPie.getChildren().clear();
+            lblNombre.setText(nombre);
+
+            sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
+            lblColumnas.setText("" + sheetWidth);
+
+            vbContenedor.setPrefWidth(sheetWidth * pointWidth);
+
             if (jSONObject.get("cabecera") != null) {
                 JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
                 for (int i = 0; i < cabeceraObjects.size(); i++) {
@@ -167,14 +112,14 @@ public class FxTicketController implements Initializable {
                     JSONObject objectObtener = Json.obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                         box.getChildren().add(field);
                     } else if (objectObtener.get("list") != null) {
                         JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                         Iterator it = array.iterator();
                         while (it.hasNext()) {
                             JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                             box.getChildren().add(field);
                         }
                     }
@@ -187,14 +132,14 @@ public class FxTicketController implements Initializable {
                     JSONObject objectObtener = Json.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                         box.getChildren().add(field);
                     } else if (objectObtener.get("list") != null) {
                         JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                         Iterator it = array.iterator();
                         while (it.hasNext()) {
                             JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                             box.getChildren().add(field);
                         }
                     }
@@ -208,14 +153,14 @@ public class FxTicketController implements Initializable {
                     JSONObject objectObtener = Json.obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                         box.getChildren().add(field);
                     } else if (objectObtener.get("list") != null) {
                         JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                         Iterator it = array.iterator();
                         while (it.hasNext()) {
                             JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Integer.parseInt(object.get("lines").toString()), Integer.parseInt(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                             box.getChildren().add(field);
                         }
                     }
@@ -224,23 +169,11 @@ public class FxTicketController implements Initializable {
         }
     }
 
-    private Pos getAlignment(String align) {
-        switch (align) {
-            case "CENTER":
-                return Pos.CENTER;
-            case "CENTER_LEFT":
-                return Pos.CENTER_LEFT;
-            case "CENTER_RIGHT":
-                return Pos.CENTER_RIGHT;
-            default:
-                return Pos.CENTER_LEFT;
-        }
-    }
-
     private void saveTicket() {
         try {
             if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
                 JSONObject sampleObject = new JSONObject();
+                sampleObject.put("column", sheetWidth);
                 JSONObject cabecera = new JSONObject();
                 for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                     HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
@@ -351,36 +284,49 @@ public class FxTicketController implements Initializable {
                 Files.write(Paths.get("./archivos/ticketventa.json"), sampleObject.toJSONString().getBytes());
                 TicketTB ticketTB = new TicketTB();
                 ticketTB.setId(idTicket);
-                ticketTB.setNombreTicket("Venta(s)");
+                ticketTB.setNombreTicket(lblNombre.getText());
                 ticketTB.setRuta(sampleObject.toJSONString());
                 String result = TicketADO.CrudTicket(ticketTB);
                 if (result.equalsIgnoreCase("duplicate")) {
-                    Tools.AlertMessageWarning(window, "Ticket", "El nombre del formato ya existe, intente con otro.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El nombre del formato ya existe, intente con otro.");
                 } else if (result.equalsIgnoreCase("updated")) {
-                    Tools.AlertMessageInformation(window, "Ticket", "Se actualizo correctamente el formato.");
+                    Tools.AlertMessageInformation(vbWindow, "Ticket", "Se actualizo correctamente el formato.");
                     Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 } else if (result.equalsIgnoreCase("registered")) {
-                    Tools.AlertMessageInformation(window, "Ticket", "Se guardo correctamente el formato.");
+                    Tools.AlertMessageInformation(vbWindow, "Ticket", "Se guardo correctamente el formato.");
                     Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
                 } else {
-                    Tools.AlertMessageError(window, "Ticket", result);
+                    Tools.AlertMessageError(vbWindow, "Ticket", result);
                 }
             } else {
                 if (hbEncabezado.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Ticket", "El encabezado está vacío.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado está vacío.");
                 } else if (hbDetalleCabecera.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Ticket", "El detalle cabecera está vacío.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle cabecera está vacío.");
                 } else if (hbPie.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Ticket", "El pie está vacío.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie está vacío.");
                 }
             }
 
         } catch (IOException ex) {
-            Tools.AlertMessageError(window, "Ticket", "No se pudo guardar la hoja con problemas de formato.");
+            Tools.AlertMessageError(vbWindow, "Ticket", "No se pudo guardar la hoja con problemas de formato.");
             System.out.println(ex.getLocalizedMessage());
             System.out.println(ex);
         }
 
+    }
+
+    private Pos getAlignment(String align) {
+        switch (align) {
+            case "CENTER":
+                return Pos.CENTER;
+            case "CENTER_LEFT":
+                return Pos.CENTER_LEFT;
+            case "CENTER_RIGHT":
+                return Pos.CENTER_RIGHT;
+            default:
+                return Pos.CENTER_LEFT;
+        }
     }
 
     private void searchTicket() {
@@ -393,7 +339,7 @@ public class FxTicketController implements Initializable {
             FxTicketBusquedaController controller = fXMLLoader.getController();
             controller.setInitTicketController(this);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", window.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
@@ -404,7 +350,7 @@ public class FxTicketController implements Initializable {
         }
     }
 
-    private void procesoTicket() {
+    private void nuevoTicket() {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_TICKET_PROCESO);
@@ -414,7 +360,29 @@ public class FxTicketController implements Initializable {
             FxTicketProcesoController controller = fXMLLoader.getController();
             controller.setInitTicketController(this);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Nuevo formato", window.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Nuevo formato", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void editarTicket() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_TICKET_PROCESO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketProcesoController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            controller.editarTicket(lblNombre.getText(), sheetWidth);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Editar formato", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
@@ -436,7 +404,7 @@ public class FxTicketController implements Initializable {
             controller.setInitTicketController(this);
             controller.setLoadComponent(hBox, sheetWidth);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar texto multilinea", window.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar texto multilinea", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
@@ -458,7 +426,7 @@ public class FxTicketController implements Initializable {
             controller.setInitTicketController(this);
             controller.setLoadComponent(hBox, sheetWidth);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar variable", window.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar variable", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
@@ -508,83 +476,70 @@ public class FxTicketController implements Initializable {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem remove = new MenuItem("Remover Renglón");
         remove.setGraphic(imgRemove);
-        remove.setOnAction((ActionEvent event) -> {
+        remove.setOnAction(e -> {
             contenedor.getChildren().remove(hBox);
         });
         MenuItem text = new MenuItem("Agregar Texto");
         text.setGraphic(imgText);
-        text.setOnAction((ActionEvent event) -> {
-            TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, 0, 13, Pos.CENTER_LEFT, true, "");
+        text.setOnAction(e -> {
+            TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, (short) 0, (short) 13, Pos.CENTER_LEFT, true, "");
             hBox.getChildren().add(field);
         });
         MenuItem textVariable = new MenuItem("Agregar Variable");
         textVariable.setGraphic(imgTextVariable);
-        textVariable.setOnAction((ActionEvent event) -> {
+        textVariable.setOnAction(e -> {
             windowTextVar(hBox);
         });
         MenuItem textMultilinea = new MenuItem("Agregar Texto Multilínea");
         textMultilinea.setGraphic(imgTextLines);
-        textMultilinea.setOnAction((ActionEvent event) -> {
+        textMultilinea.setOnAction(e -> {
             windowTextMultilinea(hBox);
         });
         MenuItem textUnaLinea = new MenuItem("Agregar Línea");
         textUnaLinea.setGraphic(imgUnaLinea);
-        textUnaLinea.setOnAction((ActionEvent event) -> {
+        textUnaLinea.setOnAction(e -> {
             String value = "";
             for (int i = 0; i < sheetWidth; i++) {
                 value += "-";
             }
-            TextFieldTicket field = addElementTextField("iu", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false, "");
+            TextFieldTicket field = addElementTextField("iu", value, false, (short) 0, sheetWidth, Pos.CENTER_LEFT, false, "");
             hBox.getChildren().add(field);
         });
         MenuItem textDosLineas = new MenuItem("Agregar Doble Línea");
         textDosLineas.setGraphic(imgDobleLinea);
-        textDosLineas.setOnAction((ActionEvent event) -> {
+        textDosLineas.setOnAction(e -> {
             String value = "";
             for (int i = 0; i < sheetWidth; i++) {
                 value += "=";
             }
-            TextFieldTicket field = addElementTextField("iu", value, false, 0, sheetWidth, Pos.CENTER_LEFT, false, "");
+            TextFieldTicket field = addElementTextField("iu", value, false, (short) 0, sheetWidth, Pos.CENTER_LEFT, false, "");
             hBox.getChildren().add(field);
         });
 
         contextMenu.getItems().addAll(text, textVariable, textMultilinea, textUnaLinea, textDosLineas, remove);
         hBox.setOnContextMenuRequested((ContextMenuEvent event) -> {
             contextMenu.show(hBox, event.getSceneX(), event.getSceneY());
-            int widthContent = 0;
+            short widthContent = 0;
             for (int i = 0; i < hBox.getChildren().size(); i++) {
                 widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
             }
-            if ((widthContent + 13) > sheetWidth) {
-                text.setDisable(true);
-            } else {
-                text.setDisable(false);
-            }
 
-            int widthNew = sheetWidth - widthContent;
+            text.setDisable((widthContent + 13) > sheetWidth);
 
-            if ((widthContent + widthNew) <= sheetWidth) {
-                textMultilinea.setDisable(false);
-            } else {
-                textMultilinea.setDisable(true);
-            }
+            textVariable.setDisable((widthContent + 13) > sheetWidth);
 
-            if ((widthContent + sheetWidth) > sheetWidth) {
-                textUnaLinea.setDisable(true);
-            } else {
-                textUnaLinea.setDisable(false);
-            }
-            if ((widthContent + sheetWidth) > sheetWidth) {
-                textDosLineas.setDisable(true);
-            } else {
-                textDosLineas.setDisable(false);
-            }
+            textMultilinea.setDisable((widthContent + 13) > sheetWidth);
+
+            textUnaLinea.setDisable((widthContent + 13) > sheetWidth);
+
+            textDosLineas.setDisable((widthContent + 13) > sheetWidth);
+
         });
         contenedor.getChildren().add(hBox);
         return hBox;
     }
 
-    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, int lines, int widthColumn, Pos align, boolean editable, String variable) {
+    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
@@ -650,32 +605,32 @@ public class FxTicketController implements Initializable {
 
         MenuItem remove = new MenuItem("Remover Campo de Texto");
         remove.setGraphic(imgRemove);
-        remove.setOnAction((ActionEvent event) -> {
+        remove.setOnAction(e -> {
             ((HBox) field.getParent()).getChildren().remove(field);
         });
         MenuItem textAdaptWidth = new MenuItem("Adaptar el Ancho del Padre");
         textAdaptWidth.setGraphic(imgAdaptParentWidth);
-        textAdaptWidth.setOnAction((ActionEvent event) -> {
+        textAdaptWidth.setOnAction(e -> {
             field.setColumnWidth(sheetWidth);
             field.setPrefWidth(((double) field.getColumnWidth() * pointWidth));
         });
         MenuItem textLeft = new MenuItem("Alineación Izquierda");
         textLeft.setGraphic(imgTextLeft);
-        textLeft.setOnAction((ActionEvent event) -> {
+        textLeft.setOnAction(e -> {
             if (!field.getText().isEmpty()) {
                 field.setAlignment(Pos.CENTER_LEFT);
             }
         });
         MenuItem textCenter = new MenuItem("Alineación Central");
         textCenter.setGraphic(imgTextCenter);
-        textCenter.setOnAction((ActionEvent event) -> {
+        textCenter.setOnAction(e -> {
             if (!field.getText().isEmpty()) {
                 field.setAlignment(Pos.CENTER);
             }
         });
         MenuItem textRight = new MenuItem("Alineación Derecha");
         textRight.setGraphic(imgTextRight);
-        textRight.setOnAction((ActionEvent event) -> {
+        textRight.setOnAction(e -> {
             if (!field.getText().isEmpty()) {
                 field.setAlignment(Pos.CENTER_RIGHT);
             }
@@ -706,23 +661,23 @@ public class FxTicketController implements Initializable {
                     }
                 }
                 if ((widthContent + Integer.parseInt(txtAnchoColumna.getText())) > sheetWidth) {
-                    Tools.AlertMessageWarning(window, "Ticket", "No puede sobrepasar al ancho de la hoja.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "No puede sobrepasar al ancho de la hoja.");
                 } else {
                     if (!reference.isMultilineas() && reference.isEditable()) {
                         if (reference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
-                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
                             reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
                         } else {
-                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
                             reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
                             reference.setText(reference.getText().substring(0, reference.getColumnWidth()));
                         }
                     } else {
                         if (reference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
-                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
                             reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
                         } else {
-                            reference.setColumnWidth(Integer.parseInt(txtAnchoColumna.getText()));
+                            reference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
                             reference.setPrefWidth(((double) reference.getColumnWidth() * pointWidth));
                         }
                     }
@@ -744,10 +699,24 @@ public class FxTicketController implements Initializable {
         }
     }
 
+    private void clearPane() {
+        hbEncabezado.getChildren().clear();
+        hbDetalleCabecera.getChildren().clear();
+        hbPie.getChildren().clear();
+        txtAnchoColumna.setText("");
+        cbAlignment.getSelectionModel().select(null);
+        cbMultilinea.setSelected(false);
+        cbEditable.setSelected(false);
+        txtVariable.setText("");
+        lblNombre.setText("--");
+        sheetWidth = 0;
+        lblColumnas.setText(sheetWidth + "");
+        vbContenedor.setPrefWidth(Control.USE_COMPUTED_SIZE);
+    }
+
     private void openWindowImpresora() {
         try {
             if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
-
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 URL url = getClass().getResource(FilesRouters.FX_IMPRIMIR);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -756,19 +725,18 @@ public class FxTicketController implements Initializable {
                 FxImprimirController controller = fXMLLoader.getController();
                 controller.setInitTicketController(this);
                 //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir Prueba", window.getScene().getWindow());
+                Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir Prueba", vbWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
                 stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
                 stage.show();
-
             } else {
                 if (hbEncabezado.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Ticket", "El encabezado está vacío.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado está vacío.");
                 } else if (hbDetalleCabecera.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Ticket", "El detalle cabecera está vacío.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle cabecera está vacío.");
                 } else if (hbPie.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Ticket", "El pie está vacío.");
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie está vacío.");
                 }
             }
         } catch (IOException ex) {
@@ -779,24 +747,26 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onKeyPressNuevo(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            procesoTicket();
+            nuevoTicket();
         }
 
     }
 
     @FXML
     private void onActionNuevo(ActionEvent event) {
-        procesoTicket();
+        nuevoTicket();
     }
 
+    @FXML
     private void onKeyPressEditar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            editTicket();
+            editarTicket();
         }
     }
 
+    @FXML
     private void onActionEditar(ActionEvent event) {
-        editTicket();
+        editarTicket();
     }
 
     @FXML
@@ -886,10 +856,10 @@ public class FxTicketController implements Initializable {
         if (reference != null) {
             if (!cbMultilinea.isSelected()) {
                 reference.setMultilineas(false);
-                reference.setLines(0);
+                reference.setLines((short) 0);
             } else {
                 reference.setMultilineas(true);
-                reference.setLines(1);
+                reference.setLines((short) 1);
             }
         }
     }
@@ -897,27 +867,20 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onKeyPressedClear(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            hbEncabezado.getChildren().clear();
-            hbDetalleCabecera.getChildren().clear();
-            hbPie.getChildren().clear();
-            txtAnchoColumna.setText("");
-            cbAlignment.getSelectionModel().select(-1);
-            cbMultilinea.setSelected(false);
-            cbEditable.setSelected(false);
-            txtVariable.setText("");
+            clearPane();
         }
     }
 
     @FXML
     private void onActionClear(ActionEvent event) {
-        hbEncabezado.getChildren().clear();
-        hbDetalleCabecera.getChildren().clear();
-        hbPie.getChildren().clear();
-        txtAnchoColumna.setText("");
-        cbAlignment.getSelectionModel().select(-1);
-        cbMultilinea.setSelected(false);
-        cbEditable.setSelected(false);
-        txtVariable.setText("");
+        clearPane();
+    }
+
+    public void editarTcket(String nombre, short widthPage) {
+        lblNombre.setText(nombre);
+        sheetWidth = widthPage;
+        lblColumnas.setText("" + sheetWidth);
+        vbContenedor.setPrefWidth(sheetWidth * pointWidth);
     }
 
     public VBox getHbEncabezado() {

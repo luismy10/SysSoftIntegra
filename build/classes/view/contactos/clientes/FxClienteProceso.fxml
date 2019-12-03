@@ -272,7 +272,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                      <Tab text="Otros">
+                      <Tab disable="true" text="Otros">
                            <content>
                               <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
                                  <children>

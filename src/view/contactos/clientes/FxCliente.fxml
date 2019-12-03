@@ -87,7 +87,12 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Datos de la persona o documento" textFill="#1a2226">
+                                                <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/note.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label styleClass="labelRoboto14" text="Buscar por número del documento o datos de la persona(Para realizar la busqueda precione enter)" textFill="#1a2226">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -108,7 +113,7 @@
                                     <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" prefWidth="961.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                                          <TableColumn fx:id="tcDocumento" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Documento" />
+                                          <TableColumn fx:id="tcDocumento" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
                                           <TableColumn fx:id="tcPersona" prefWidth="185.0" style="-fx-alignment: CENTER-LEFT;" text="Datos Personales" />
                                           <TableColumn fx:id="tcContacto" prefWidth="148.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
                                           <TableColumn fx:id="tcDirección" prefWidth="128.0" style="-fx-alignment: CENTER;" text="Dirección" />

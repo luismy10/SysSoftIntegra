@@ -216,7 +216,9 @@ public class FxMovimientosController implements Initializable {
     private void onActionTipoMovimiento(ActionEvent event) {
         if (cbMovimiento.getSelectionModel().getSelectedIndex() >= 0) {
             if (dtFechaInicio.getValue() != null && dtFechaFinal.getValue() != null) {
-                fillTableMovimiento(true, opcion, cbMovimiento.getSelectionModel().getSelectedItem().getIdTipoMovimiento(), Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal));
+                if (!lblLoad.isVisible()) {
+                    fillTableMovimiento(true, opcion, cbMovimiento.getSelectionModel().getSelectedItem().getIdTipoMovimiento(), Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal));
+                }
             }
         }
     }
@@ -224,21 +226,27 @@ public class FxMovimientosController implements Initializable {
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            executeReload();
+            if (!lblLoad.isVisible()) {
+                executeReload();
+            }
         }
     }
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        executeReload();
+        if (!lblLoad.isVisible()) {
+            executeReload();
+        }
     }
 
     @FXML
     private void onActionFecha(ActionEvent event) {
         if (dtFechaInicio.getValue() != null && dtFechaFinal.getValue() != null) {
-            fillTableMovimiento(true, opcion, cbMovimiento.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbMovimiento.getSelectionModel().getSelectedItem().getIdTipoMovimiento()
-                    : 0, Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal));
+            if (!lblLoad.isVisible()) {
+                fillTableMovimiento(true, opcion, cbMovimiento.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbMovimiento.getSelectionModel().getSelectedItem().getIdTipoMovimiento()
+                        : 0, Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal));
+            }
         }
     }
 

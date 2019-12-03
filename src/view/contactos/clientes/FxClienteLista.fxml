@@ -53,7 +53,7 @@
                   <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefWidth="860.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="tcId" prefWidth="70.0" style="-fx-alignment: CENTER;" text="N°" />
-                        <TableColumn fx:id="tcDocumento" prefWidth="140.0" style="-fx-alignment: CENTER;" text="Documento" />
+                        <TableColumn fx:id="tcDocumento" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
                         <TableColumn fx:id="tcPersona" prefWidth="300.0" text="Cliente" />
                         <TableColumn fx:id="tcDireccion" prefWidth="320.0" text="Dirección" />
                      </columns>

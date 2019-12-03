@@ -39,7 +39,7 @@ public class FxTicketVariableController implements Initializable {
 
     private HBox hBox;
 
-    private int sheetWidth;
+    private short sheetWidth;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,7 +49,7 @@ public class FxTicketVariableController implements Initializable {
         listPie = new ArrayList<>();
     }
 
-    public void setLoadComponent(HBox hBox, int sheetWidth) {
+    public void setLoadComponent(HBox hBox, short sheetWidth) {
         this.hBox = hBox;
         this.sheetWidth = sheetWidth;
         if (hBox.getId().substring(0, 2).equalsIgnoreCase("cb")) {
@@ -92,14 +92,14 @@ public class FxTicketVariableController implements Initializable {
 
     private void addTextVariable() {
         if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
-            int widthContent = 0;
-            for (int i = 0; i < hBox.getChildren().size(); i++) {
+            short widthContent = 0;
+            for (short i = 0; i < hBox.getChildren().size(); i++) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) hBox.getChildren().get(i));
                 widthContent += fieldTicket.getColumnWidth();
             }
             if (widthContent <= sheetWidth) {
-                int widthNew = sheetWidth - widthContent;
-                TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable());
+                short widthNew = (short) (sheetWidth - widthContent);
+                TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, (short)0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable());
                 hBox.getChildren().add(field);
                 Tools.Dispose(window);
             }

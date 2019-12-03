@@ -1,6 +1,7 @@
 package controller.ingresos.venta;
 
 import controller.produccion.suministros.FxSuministrosListaController;
+import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -29,9 +30,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.Utilidad;
@@ -42,7 +40,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class FxVentaUtilidadesController implements Initializable {
 
@@ -165,7 +162,7 @@ public class FxVentaUtilidadesController implements Initializable {
             } else if (!cbPresentacionSeleccionar.isSelected() && cbPresentacion.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Utilidades", "Seleccione una presentación para generar el reporte.");
                 cbPresentacion.requestFocus();
-            } else {               
+            } else {
                 ArrayList<Utilidad> detalle_list = UtilidadADO.listUtilidadVenta(
                         Tools.getDatePicker(dpFechaInicial),
                         Tools.getDatePicker(dpFechaFinal),
@@ -252,17 +249,19 @@ public class FxVentaUtilidadesController implements Initializable {
 
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(cbMostrarProducto.isSelected() ? detalle_list : list));
 
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-                JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-                jasperViewer.setIconImage(new ImageIcon(getClass().getResource(FilesRouters.IMAGE_ICON)).getImage());
-                jasperViewer.setTitle("Reporte General de Utilidades");
-                jasperViewer.setSize(840, 650);
-                jasperViewer.setLocationRelativeTo(null);
-                jasperViewer.setVisible(true);
-                jasperViewer.requestFocus();
+                URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxReportViewController controller = fXMLLoader.getController();
+                controller.setJasperPrint(jasperPrint);
+                controller.show();
+                Stage stage = WindowStage.StageLoader(parent, "Reporte General de Utilidades");
+                stage.setResizable(true);
+                stage.show();
+                stage.requestFocus();
             }
-        } catch (HeadlessException | JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (HeadlessException | JRException | IOException ex) {
             Tools.AlertMessageError(vbWindow, "Utilidades", "Error al generar el reporte : " + ex);
         }
     }

@@ -1,28 +1,27 @@
-                                        
-             NOTA DE VENTA              
-             T001-00000008              
-AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
-LIMA PERU HUANCAYO                      
-----------------------------------------
-DESCRIPCION.                            
-CANT.     P.UNIT.     DESCT.     IMPORTE
-----------------------------------------
-SELLADOR CPP BLANCO X 5 GL              
-1.00      108.00        0%        108.00
-PINTURA LATEX PATO CPP CELESTE GL       
-3.00      29.00         0%         87.00
-----------------------------------------
-VALOR VENTA                    S/ 195.00
-DESCUENTO                        S/ 0.00
-SUB IMPORTE                    S/ 195.00
-TOTAL                          S/ 195.00
+                                                            
+                     Documento de venta                     
+                       V000-00000000                        
+AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE LIMA PERU HUANCAYO  
+                                                            
+----------------------------------------                    
+DESCRIPCION.                                                
+CANT.     P.UNIT.     DESCT.     IMPORTE                    
+----------------------------------------                    
+Descripcion del articulo para la venta                      
+1000      0000.00    0000.00     0000.00                    
+----------------------------------------                    
+VALOR VENTA                      M 00.00                    
+DESCUENTO                        M 00.00                    
+SUB IMPORTE                      M 00.00                    
+TOTAL                            M 00.00                    
+----------------------------------------                    
 
-                                       
+                                                           
 
-                                       
+                                                           
 
-                                       
+                                                           
 
-                                       
+                                                           
 
-                                       
+                                                           

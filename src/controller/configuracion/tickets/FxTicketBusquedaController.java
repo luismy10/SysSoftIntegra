@@ -31,7 +31,10 @@ public class FxTicketBusquedaController implements Initializable {
 
     private void selectTicket() {
         if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
-            ticketController.loadTicket(lvLista.getSelectionModel().getSelectedItem().getId(),lvLista.getSelectionModel().getSelectedItem().getRuta());
+            ticketController.loadTicket(
+                    lvLista.getSelectionModel().getSelectedItem().getId(),
+                    lvLista.getSelectionModel().getSelectedItem().getNombreTicket(),
+                    lvLista.getSelectionModel().getSelectedItem().getRuta());
             Tools.Dispose(window);
         }
     }

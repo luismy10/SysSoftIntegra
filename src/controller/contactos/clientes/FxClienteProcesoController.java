@@ -1,7 +1,6 @@
 package controller.contactos.clientes;
 
 import controller.tools.FilesRouters;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -90,7 +89,7 @@ public class FxClienteProcesoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         idCliente = "";
-        DetalleADO.GetDetailIdName("1", "0003", "RUC").forEach(e -> {
+        DetalleADO.GetDetailId("0003").forEach(e -> {
             cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         DetalleADO.GetDetailId("0004").forEach(e -> {
@@ -289,20 +288,9 @@ public class FxClienteProcesoController implements Initializable {
                 clienteTB.setCelular(txtCelular.getText().trim());
                 clienteTB.setEmail(txtEmail.getText().trim());
                 clienteTB.setDireccion(txtDireccion.getText().trim());
+                clienteTB.setRepresentante(txtRepresentante.getText().trim());
                 clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
 
-//                FacturacionTB facturacionTB = new FacturacionTB();
-//                facturacionTB.setTipoDocumentoFacturacion(cbDocumentTypeFactura.getSelectionModel().getSelectedIndex() >= 0 ? cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get()
-//                        : 0);
-//                facturacionTB.setNumeroDocumentoFacturacion(txtDocumentNumberFactura.getText());
-//                facturacionTB.setRazonSocial(txtBusinessName.getText().trim());
-//                facturacionTB.setNombreComercial(txtTradename.getText().trim());
-//                facturacionTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0 ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo() : "");
-//                facturacionTB.setDepartamento(cbDepartamento.getSelectionModel().getSelectedIndex() >= 0 ? cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad() : 0);
-//                facturacionTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0 ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
-//                facturacionTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0 ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
-//
-//                clienteTB.setFacturacionTB(facturacionTB);
                 String result = ClienteADO.CrudCliente(clienteTB);
 
                 switch (result) {
@@ -312,7 +300,7 @@ public class FxClienteProcesoController implements Initializable {
                         break;
                     case "updated":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Actualizado correctamente.", false);
-
+                        Tools.Dispose(window);
                         break;
                     case "duplicate":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.", false);
@@ -328,10 +316,7 @@ public class FxClienteProcesoController implements Initializable {
                         break;
                 }
 
-            } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", "No hay conexión al servidor.", false);
-
-            }
+            } 
         }
     }
 
