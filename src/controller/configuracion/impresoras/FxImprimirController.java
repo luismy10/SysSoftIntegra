@@ -45,6 +45,7 @@ public class FxImprimirController implements Initializable {
     private void executeImprimir() {
         if (cbImpresoras.getSelectionModel().getSelectedIndex() >= 0) {
             if (ticketController != null) {
+                billPrintable.setSheetWidth(ticketController.getSheetWidth());
                 ArrayList<HBox> object = new ArrayList<>();
                 int rows = 0;
                 int lines = 0;

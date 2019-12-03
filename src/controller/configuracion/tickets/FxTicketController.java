@@ -315,128 +315,7 @@ public class FxTicketController implements Initializable {
         }
 
     }
-
-    private Pos getAlignment(String align) {
-        switch (align) {
-            case "CENTER":
-                return Pos.CENTER;
-            case "CENTER_LEFT":
-                return Pos.CENTER_LEFT;
-            case "CENTER_RIGHT":
-                return Pos.CENTER_RIGHT;
-            default:
-                return Pos.CENTER_LEFT;
-        }
-    }
-
-    private void searchTicket() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_TICKET_BUSQUEDA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxTicketBusquedaController controller = fXMLLoader.getController();
-            controller.setInitTicketController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
-
-    private void nuevoTicket() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_TICKET_PROCESO);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxTicketProcesoController controller = fXMLLoader.getController();
-            controller.setInitTicketController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Nuevo formato", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
-
-    private void editarTicket() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_TICKET_PROCESO);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxTicketProcesoController controller = fXMLLoader.getController();
-            controller.setInitTicketController(this);
-            controller.editarTicket(lblNombre.getText(), sheetWidth);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Editar formato", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
-
-    private void windowTextMultilinea(HBox hBox) {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_TICKET_MULTILINEA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxTicketMultilineaController controller = fXMLLoader.getController();
-            controller.setInitTicketController(this);
-            controller.setLoadComponent(hBox, sheetWidth);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar texto multilinea", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
-
-    private void windowTextVar(HBox hBox) {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_TICKET_VARIABLE);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxTicketVariableController controller = fXMLLoader.getController();
-            controller.setInitTicketController(this);
-            controller.setLoadComponent(hBox, sheetWidth);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar variable", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
-
+    
     private HBox addElement(VBox contenedor, String id) {
         ImageView imgRemove = new ImageView(new Image("/view/image/remove-item.png"));
         imgRemove.setFitWidth(20);
@@ -710,6 +589,127 @@ public class FxTicketController implements Initializable {
         vbContenedor.setPrefWidth(Control.USE_COMPUTED_SIZE);
     }
 
+    private Pos getAlignment(String align) {
+        switch (align) {
+            case "CENTER":
+                return Pos.CENTER;
+            case "CENTER_LEFT":
+                return Pos.CENTER_LEFT;
+            case "CENTER_RIGHT":
+                return Pos.CENTER_RIGHT;
+            default:
+                return Pos.CENTER_LEFT;
+        }
+    }    
+
+    private void searchTicket() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_TICKET_BUSQUEDA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketBusquedaController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void nuevoTicket() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_TICKET_PROCESO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketProcesoController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Nuevo formato", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void editarTicket() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_TICKET_PROCESO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketProcesoController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            controller.editarTicket(lblNombre.getText(), sheetWidth);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Editar formato", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void windowTextMultilinea(HBox hBox) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_TICKET_MULTILINEA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketMultilineaController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            controller.setLoadComponent(hBox, sheetWidth);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar texto multilinea", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void windowTextVar(HBox hBox) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_TICKET_VARIABLE);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketVariableController controller = fXMLLoader.getController();
+            controller.setInitTicketController(this);
+            controller.setLoadComponent(hBox, sheetWidth);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar variable", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
     private void openWindowImpresora() {
         try {
             if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
@@ -877,6 +877,7 @@ public class FxTicketController implements Initializable {
         sheetWidth = widthPage;
         lblColumnas.setText("" + sheetWidth);
         vbContenedor.setPrefWidth(sheetWidth * pointWidth);
+        
         for (short i = 0; i < hbEncabezado.getChildren().size(); i++) {
             HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
             short newwidth = (short) (sheetWidth / hBox.getChildren().size());
@@ -886,6 +887,27 @@ public class FxTicketController implements Initializable {
                 fieldTicket.setPrefWidth(newwidth * pointWidth);
             }
         }
+        
+        for (short i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+            HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
+            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
+            for (short j = 0; j < hBox.getChildren().size(); j++) {
+                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                fieldTicket.setColumnWidth(newwidth);
+                fieldTicket.setPrefWidth(newwidth * pointWidth);
+            }
+        }
+        
+        for (short i = 0; i < hbPie.getChildren().size(); i++) {
+            HBox hBox = (HBox) hbPie.getChildren().get(i);
+            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
+            for (short j = 0; j < hBox.getChildren().size(); j++) {
+                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                fieldTicket.setColumnWidth(newwidth);
+                fieldTicket.setPrefWidth(newwidth * pointWidth);
+            }
+        }
+        
     }
 
     public VBox getHbEncabezado() {
@@ -900,7 +922,7 @@ public class FxTicketController implements Initializable {
         return hbPie;
     }
 
-    public int getSheetWidth() {
+    public short getSheetWidth() {
         return sheetWidth;
     }
 

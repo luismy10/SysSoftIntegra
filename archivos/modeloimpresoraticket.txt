@@ -1,27 +1,30 @@
-                                                            
-                     Documento de venta                     
-                       V000-00000000                        
-AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE LIMA PERU HUANCAYO  
-                                                            
-----------------------------------------                    
-DESCRIPCION.                                                
-CANT.     P.UNIT.     DESCT.     IMPORTE                    
-----------------------------------------                    
-Descripcion del articulo para la venta                      
-1000      0000.00    0000.00     0000.00                    
-----------------------------------------                    
-VALOR VENTA                      M 00.00                    
-DESCUENTO                        M 00.00                    
-SUB IMPORTE                      M 00.00                    
-TOTAL                            M 00.00                    
-----------------------------------------                    
+                                        
+             NOTA DE VENTA              
+             T001-00000002              
+AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
+LIMA PERU HUANCAYO                      
+----------------------------------------
+DESCRIPCION.                            
+CANT.     P.UNIT.     DESCT.     IMPORTE
+----------------------------------------
+PINTURA RP 30ML                         
+10.00     30.00         0%        300.00
+ALAMBRE ROJO 3X4                        
+20.00     3.00          0%         60.00
+ARENA FINA                              
+1.00      80.00         0%         80.00
+----------------------------------------
+VALOR VENTA                    S/ 440.00
+DESCUENTO                        S/ 0.00
+SUB IMPORTE                    S/ 440.00
+TOTAL                          S/ 440.00
 
-                                                           
+                                       
 
-                                                           
+                                       
 
-                                                           
+                                       
 
-                                                           
+                                       
 
-                                                           
+                                       

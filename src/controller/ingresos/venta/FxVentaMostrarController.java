@@ -348,7 +348,7 @@ public class FxVentaMostrarController implements Initializable {
         }
     }
 
-    private void calcelVenta() {
+    private void cancelVenta() {
         try {
             URL url = getClass().getResource(FilesRouters.FX_VENTA_DEVOLUCION);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -415,7 +415,7 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onMouseClickedTvVentas(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            if (tvVentas.getSelectionModel().getSelectedIndex() > 0) {
+            if (tvVentas.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!lblLoad.isVisible()) {
                     setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
                 }
@@ -426,7 +426,7 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onKeyPressedTvVentas(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (tvVentas.getSelectionModel().getSelectedIndex() > 0) {
+            if (tvVentas.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!lblLoad.isVisible()) {
                     setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
                 }
@@ -437,13 +437,13 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            calcelVenta();
+            cancelVenta();
         }
     }
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
-        calcelVenta();
+        cancelVenta();
     }
 
     @FXML

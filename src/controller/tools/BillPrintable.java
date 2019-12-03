@@ -345,6 +345,7 @@ public class BillPrintable implements Printable {
             } else {
                 p.toFile("./archivos/modeloimpresoraticket.txt");
                 printDoc("./archivos/modeloimpresoraticket.txt", nombreimpresora, cortar);
+                Tools.AlertMessageInformation(window, "Imprimir", "Se envío correctamente la impresión");
             }
         } catch (Exception e) {
             Tools.AlertMessageError(window, messageClassTitle, messageClassContent + " " + e.getLocalizedMessage());
