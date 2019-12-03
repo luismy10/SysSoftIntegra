@@ -73,7 +73,7 @@ public class FxImprimirController implements Initializable {
                         lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
                     }
                 }
-                billPrintable.modelTicket(apWindow, ticketController.getSheetWidth(), rows + lines + 1 + 5, lines, object, "Imprimir", "Error al imprimir el ticket.",cbImpresoras.getSelectionModel().getSelectedItem(),cbCortarPapel.isSelected());
+                billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Imprimir", "Error al imprimir el ticket.",cbImpresoras.getSelectionModel().getSelectedItem(),cbCortarPapel.isSelected());
             }
         } else {
             Tools.AlertMessageWarning(apWindow, "Imprimir", "Seleccione un impresora para continuar.");
