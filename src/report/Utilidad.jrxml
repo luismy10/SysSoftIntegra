@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0680276-c4ca-4fbd-9077-aafcde36e2a5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -31,7 +32,7 @@
 	<title>
 		<band height="77" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="204" height="30" forecolor="#032A5E" uuid="7f881812-d943-4fc9-b4c8-a244516161b6"/>
+				<reportElement x="0" y="0" width="226" height="30" forecolor="#032A5E" uuid="7f881812-d943-4fc9-b4c8-a244516161b6"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
@@ -65,7 +66,7 @@
 				<text><![CDATA[Producto:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="104" y="32" width="162" height="22" forecolor="#666666" uuid="57a73077-9a57-4b22-a0b8-0fd664fa5ff8"/>
+				<reportElement stretchType="RelativeToTallestObject" x="104" y="32" width="162" height="22" forecolor="#4E4E4E" uuid="57a73077-9a57-4b22-a0b8-0fd664fa5ff8"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="5"/>
@@ -80,7 +81,7 @@
 				<text><![CDATA[Orden: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="639" y="32" width="162" height="22" forecolor="#666666" uuid="b7d0a078-72a8-489c-a00a-bb0fa64fd987"/>
+				<reportElement stretchType="RelativeToTallestObject" x="640" y="32" width="162" height="22" forecolor="#4E4E4E" uuid="b7d0a078-72a8-489c-a00a-bb0fa64fd987"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="5"/>
@@ -95,7 +96,7 @@
 				<text><![CDATA[Categoría]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="104" y="55" width="162" height="22" forecolor="#666666" uuid="6f1b1bc0-8bb7-4063-96d0-76bfa958c6ad"/>
+				<reportElement stretchType="RelativeToTallestObject" x="104" y="55" width="162" height="22" forecolor="#4E4E4E" uuid="6f1b1bc0-8bb7-4063-96d0-76bfa958c6ad"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="5"/>
@@ -110,7 +111,7 @@
 				<text><![CDATA[Marca:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="381" y="32" width="162" height="22" forecolor="#666666" uuid="465b624e-b67e-4c69-aac3-d3fb8e5319f1"/>
+				<reportElement stretchType="RelativeToTallestObject" x="381" y="32" width="162" height="22" forecolor="#4E4E4E" uuid="465b624e-b67e-4c69-aac3-d3fb8e5319f1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="5"/>
@@ -125,7 +126,7 @@
 				<text><![CDATA[Presentación:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="381" y="55" width="162" height="22" forecolor="#666666" uuid="6b7cab80-2bc5-4b90-a638-e80eb04076d3"/>
+				<reportElement stretchType="RelativeToTallestObject" x="381" y="55" width="162" height="22" forecolor="#4E4E4E" uuid="6b7cab80-2bc5-4b90-a638-e80eb04076d3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="5"/>
@@ -195,14 +196,14 @@
 					</textElement>
 					<text><![CDATA[Utilidad]]></text>
 				</staticText>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="50" height="26" forecolor="#FFFFFF" uuid="e524f65f-055d-4916-aabe-bc0e9d0a3fb6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[N°]]></text>
+				</staticText>
 			</frame>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="50" height="26" forecolor="#FFFFFF" uuid="e524f65f-055d-4916-aabe-bc0e9d0a3fb6"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[N°]]></text>
-			</staticText>
 			<staticText>
 				<reportElement positionType="FixRelativeToBottom" x="50" y="0" width="160" height="26" forecolor="#FFFFFF" uuid="d1df8c3b-fb83-4275-9e32-a0c6cca37676"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -215,21 +216,21 @@
 	<detail>
 		<band height="31" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="50" height="30" forecolor="#666666" uuid="45fa28d5-6bd4-47f6-81f1-6b4986464a81"/>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="50" height="30" forecolor="#4E4E4E" uuid="45fa28d5-6bd4-47f6-81f1-6b4986464a81"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="0" width="160" height="30" forecolor="#666666" uuid="73cb4017-9316-435f-ae5d-2f1f98c06471"/>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="0" width="160" height="30" forecolor="#4E4E4E" uuid="73cb4017-9316-435f-ae5d-2f1f98c06471"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombreMarca}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#">
-				<reportElement x="210" y="0" width="60" height="30" forecolor="#666666" uuid="7f0e9192-d340-46a0-a418-cd3a328548a1">
+				<reportElement stretchType="RelativeToTallestObject" x="210" y="0" width="60" height="30" forecolor="#666666" uuid="7f0e9192-d340-46a0-a418-cd3a328548a1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c47fa6b8-5106-4978-83b8-7259a8c06559"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -239,7 +240,7 @@
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#">
-				<reportElement x="331" y="0" width="95" height="30" forecolor="#666666" uuid="b4feefab-3fcb-4b86-8092-44ee89d6733c">
+				<reportElement stretchType="RelativeToTallestObject" x="331" y="0" width="95" height="30" forecolor="#4E4E4E" uuid="b4feefab-3fcb-4b86-8092-44ee89d6733c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d92585cc-2340-4851-be35-69aef04708be"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -248,7 +249,7 @@
 				<textFieldExpression><![CDATA[$F{costoVenta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#">
-				<reportElement x="425" y="0" width="95" height="30" forecolor="#666666" uuid="f0c68e29-726c-4970-a270-0847c0a166e1">
+				<reportElement stretchType="RelativeToTallestObject" x="425" y="0" width="95" height="30" forecolor="#4E4E4E" uuid="f0c68e29-726c-4970-a270-0847c0a166e1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="416cf7ea-e8f4-40d3-94d7-009191e589f7"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -257,28 +258,28 @@
 				<textFieldExpression><![CDATA[$F{costoVentaTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#">
-				<reportElement x="519" y="0" width="95" height="30" forecolor="#666666" uuid="b81c6abd-d5a7-47f3-919a-72aa52449e3d">
+				<reportElement stretchType="RelativeToTallestObject" x="519" y="0" width="95" height="30" forecolor="#4E4E4E" uuid="b81c6abd-d5a7-47f3-919a-72aa52449e3d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c02aeb2d-5b76-4013-a0ce-de00eb4ec485"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{precioVenta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#">
-				<reportElement x="613" y="0" width="95" height="30" forecolor="#666666" uuid="a9bdfb13-033b-4e30-899c-c82e7fb7d606">
+				<reportElement stretchType="RelativeToTallestObject" x="613" y="0" width="95" height="30" forecolor="#4E4E4E" uuid="a9bdfb13-033b-4e30-899c-c82e7fb7d606">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6b5b3064-3f99-4c6f-a68f-3f435313451a"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{precioVentaTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#">
-				<reportElement x="707" y="0" width="95" height="30" forecolor="#666666" uuid="9925749e-052f-48a1-9b2c-42ce745e96ab">
+				<reportElement stretchType="RelativeToTallestObject" x="707" y="0" width="95" height="30" forecolor="#4E4E4E" uuid="9925749e-052f-48a1-9b2c-42ce745e96ab">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dfb32814-03b1-4dd9-8aa0-ed5d3d750d37"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{utilidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="270" y="0" width="61" height="30" forecolor="#666666" uuid="e3a96d8e-e061-4355-ac51-c30e1a412394">
+				<reportElement x="270" y="0" width="61" height="30" forecolor="#4E4E4E" uuid="e3a96d8e-e061-4355-ac51-c30e1a412394">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0145d52e-3796-499f-95af-88f1d293cc86"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -343,7 +344,7 @@
 	<pageFooter>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="80" height="30" forecolor="#666666" uuid="3b0a4efd-cebc-4633-90ba-19274b1be95b"/>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="80" height="30" forecolor="#4E4E4E" uuid="3b0a4efd-cebc-4633-90ba-19274b1be95b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 					<paragraph lineSpacing="AtLeast"/>
@@ -351,21 +352,21 @@
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" x="160" y="0" width="420" height="30" forecolor="#666666" uuid="b1b3e441-e3d4-4523-a4fa-4c9d68932d1d"/>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="0" width="420" height="30" forecolor="#4E4E4E" uuid="b1b3e441-e3d4-4523-a4fa-4c9d68932d1d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Generado por SYS SOFT INTEGRA]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy h:mm a">
-				<reportElement x="581" y="0" width="220" height="30" forecolor="#666666" uuid="6a67ae48-1661-4a01-b140-a3077bce1fcb"/>
+				<reportElement stretchType="RelativeToTallestObject" x="581" y="0" width="220" height="30" forecolor="#4E4E4E" uuid="6a67ae48-1661-4a01-b140-a3077bce1fcb"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="80" y="0" width="80" height="30" forecolor="#666666" uuid="31c1f5b5-7d8f-4fe0-8543-d70907077165"/>
+				<reportElement stretchType="RelativeToTallestObject" x="80" y="0" width="80" height="30" forecolor="#4E4E4E" uuid="31c1f5b5-7d8f-4fe0-8543-d70907077165"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="12"/>
 				</textElement>

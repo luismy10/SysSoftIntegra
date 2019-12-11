@@ -8,7 +8,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="122" splitType="Stretch"/>
+		<band height="79" splitType="Stretch"/>
 	</title>
 	<pageHeader>
 		<band height="88" splitType="Stretch"/>
@@ -17,15 +17,15 @@
 		<band height="39" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="42" splitType="Stretch"/>
+		<band height="151" splitType="Stretch"/>
 	</detail>
 	<columnFooter>
 		<band height="100" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="45" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
