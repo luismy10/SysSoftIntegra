@@ -276,7 +276,7 @@ public class FxVentaEstructuraController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
     }
@@ -833,7 +833,7 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                 }
                 if (addElement) {
-                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
+                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombreImpuesto(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
                     totalImpuestos += sumaElement;
                     addElement = false;
                     sumaElement = 0;
@@ -897,7 +897,7 @@ public class FxVentaEstructuraController implements Initializable {
 
         arrayArticulosImpuesto.clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         txtSearch.requestFocus();
@@ -984,7 +984,7 @@ public class FxVentaEstructuraController implements Initializable {
         String valor = "";
         for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
             if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombre();
+                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
                 break;
             }
         }

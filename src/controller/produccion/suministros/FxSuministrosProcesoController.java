@@ -404,12 +404,12 @@ public class FxSuministrosProcesoController implements Initializable {
         cbImpuesto.getItems().clear();
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
         list1.forEach(e -> {
-            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         vbImpuestos.getChildren().clear();
         list1.forEach(e -> {
-            CheckBoxModel checkBox = new CheckBoxModel(e.getNombre());
+            CheckBoxModel checkBox = new CheckBoxModel(e.getNombreImpuesto());
             checkBox.setValor(e.getValor());
             checkBox.setOnAction(event -> {
 

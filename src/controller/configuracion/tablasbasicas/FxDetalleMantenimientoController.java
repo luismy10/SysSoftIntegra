@@ -48,9 +48,9 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private TextField txtSearchDetail;
     @FXML
-    private TableView<DetalleTB> tvDetail;
-    @FXML
     private Text lblItems;
+    @FXML
+    private TableView<DetalleTB> tvDetail;
     @FXML
     private TableColumn<DetalleTB, Integer> tcNumero;
     @FXML
@@ -82,6 +82,13 @@ public class FxDetalleMantenimientoController implements Initializable {
         tcNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
         tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getDescripcion());
         tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstado());
+
+        tcNumero.prefWidthProperty().bind(tvDetail.widthProperty().multiply(0.06));
+        tcCodAuxiliar.prefWidthProperty().bind(tvDetail.widthProperty().multiply(0.15));
+        tcNombre.prefWidthProperty().bind(tvDetail.widthProperty().multiply(0.25));
+        tcDescripcion.prefWidthProperty().bind(tvDetail.widthProperty().multiply(0.40));
+        tcEstado.prefWidthProperty().bind(tvDetail.widthProperty().multiply(0.12));
+
         validarProceso = "0";
     }
 

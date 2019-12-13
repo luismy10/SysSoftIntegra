@@ -40,7 +40,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.ArticuloADO;
 import model.ArticuloTB;
 import model.DetalleADO;
 import model.DetalleTB;
@@ -160,7 +159,7 @@ public class FxArticulosController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         cbCategoria.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("-- Seleccione --")));
@@ -373,7 +372,7 @@ public class FxArticulosController implements Initializable {
         String valor = "";
         for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
             if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombre();
+                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
                 break;
             }
         }
