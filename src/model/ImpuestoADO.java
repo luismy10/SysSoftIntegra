@@ -287,7 +287,7 @@ public class ImpuestoADO {
         if (DBUtil.getConnection() != null) {
             PreparedStatement statement = null;    
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT Operacion,Nombre,Valor,CodigoAltero FROM ImpuestoTB WHERE IdImpuesto = ?");
+                statement = DBUtil.getConnection().prepareStatement("SELECT Operacion,Nombre,Valor,CodigoAlterno FROM ImpuestoTB WHERE IdImpuesto = ?");
                 statement.setInt(1, idImpuesto);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
@@ -295,7 +295,7 @@ public class ImpuestoADO {
                         impuestoTB.setOperacion(resultSet.getInt("Operacion"));
                         impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                         impuestoTB.setValor(resultSet.getDouble("Valor"));
-                        impuestoTB.setCodigoAlterno(resultSet.getString("CodigoAltero"));
+                        impuestoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
                     }
                 }
             } catch (SQLException ex) {

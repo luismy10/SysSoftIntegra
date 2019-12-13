@@ -809,15 +809,15 @@ public class FxVentaEstructuraController implements Initializable {
     public void calculateTotales() {
 
         tvList.getItems().forEach(e -> subTotal += e.getSubImporte());
-        lblValorVenta.setText(Tools.roundingValue(subTotal, 2));
+        lblValorVenta.setText(Tools.roundingValue(subTotal, 6));
         subTotal = 0;
 
         tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
-        lblDescuento.setText((Tools.roundingValue(descuento * (-1), 2)));
+        lblDescuento.setText((Tools.roundingValue(descuento * (-1), 6)));
         descuento = 0;
 
         tvList.getItems().forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-        lblSubImporte.setText(Tools.roundingValue(subTotalImporte, 2));
+        lblSubImporte.setText(Tools.roundingValue(subTotalImporte, 6));
         subTotalImporte = 0;
 
         vbImpuestos.getChildren().clear();
@@ -833,7 +833,7 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                 }
                 if (addElement) {
-                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombreImpuesto(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
+                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombreImpuesto(), monedaSimbolo, Tools.roundingValue(sumaElement, 6));
                     totalImpuestos += sumaElement;
                     addElement = false;
                     sumaElement = 0;
@@ -842,7 +842,7 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        lblImporteTotal.setText(Tools.roundingValue(totalImporte + totalImpuestos, 2));
+        lblImporteTotal.setText(Tools.roundingValue(totalImporte + totalImpuestos, 6));
         lblTotalPagar.setText(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(totalImporte + totalImpuestos, 1)), 2));
         lblTotal.setText(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(totalImporte + totalImpuestos, 1)), 2));
         totalImporte = 0;

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +43,9 @@ public class FxImpuestoProcesoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idImpuesto = 0;
-        cbOperaciones.getItems().addAll(DetalleADO.GetDetailIdName("2", "0010", ""));
+        DetalleADO.GetDetailIdName("2", "0010", "").forEach(e -> {
+            cbOperaciones.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
     }
 
     public void setUpdateImpuesto(int idImpuesto) {
@@ -64,15 +67,22 @@ public class FxImpuestoProcesoController implements Initializable {
 
         task.setOnSucceeded(w -> {
             ImpuestoTB impuestoTB = task.getValue();
-            for (int i = 0; i < cbOperaciones.getItems().size(); i++) {
-                if (cbOperaciones.getItems().get(i).getIdDetalle().get() == impuestoTB.getOperacion()) {
-                    cbOperaciones.getSelectionModel().select(i);
-                    break;
+            if (impuestoTB != null) {
+
+                ObservableList<DetalleTB> lsori = cbOperaciones.getItems();
+                if (impuestoTB.getOperacion() != 0) {
+                    for (int i = 0; i < lsori.size(); i++) {
+                        if (impuestoTB.getOperacion() == lsori.get(i).getIdDetalle().get()) {
+                            cbOperaciones.getSelectionModel().select(i);
+                            break;
+                        }
+                    }
                 }
+
+                txtNombreImpuesto.setText(impuestoTB.getNombreImpuesto());
+                txtValor.setText(Tools.roundingValue(impuestoTB.getValor(), 2));
+                txtCodigoAlterno.setText(impuestoTB.getCodigoAlterno());
             }
-            txtNombreImpuesto.setText(impuestoTB.getNombreImpuesto());
-            txtValor.setText(Tools.roundingValue(impuestoTB.getValor(), 2));
-            txtCodigoAlterno.setText(impuestoTB.getCodigoAlterno());
         });
 
         exec.execute(task);
