@@ -371,6 +371,7 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setDescuento(0);
             suministroTB.setDescuentoSumado(0);
 
+            suministroTB.setPrecioVentaGeneralUnico(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             suministroTB.setPrecioVentaGeneralReal(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
 

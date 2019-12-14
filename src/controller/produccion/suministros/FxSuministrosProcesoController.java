@@ -244,7 +244,8 @@ public class FxSuministrosProcesoController implements Initializable {
         lblTitle.setText("Registrar datos del Producto");
     }
 
-    private void clearElements() {
+    private void clearElements() { 
+        spWindow.setVvalue(0);
         idSuministro = "";
         tvPreciosNormal.clear();
         idMedida = 0;
@@ -787,6 +788,13 @@ public class FxSuministrosProcesoController implements Initializable {
                     }
                 }
 
+                if (suministroTB.getImagenTB().equalsIgnoreCase("")) {
+                    lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+                } else {
+                    lnPrincipal.setImage(new Image(new File(suministroTB.getImagenTB()).toURI().toString()));
+                    selectFile = new File(suministroTB.getImagenTB());
+                }
+
             }
         });
 
@@ -973,6 +981,7 @@ public class FxSuministrosProcesoController implements Initializable {
 //            exec.shutdown();
 //        }
 //    }
+    
     private void aValidityProcess() {
         //primera validacion
         if (cbOrigen.getSelectionModel().getSelectedIndex() < 0) {

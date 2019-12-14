@@ -71,13 +71,12 @@ public class FxVentaCantidadesController implements Initializable {
                 ? (Double.parseDouble(txtCantidad.getText()) <= 0 ? oldCantidad : Double.parseDouble(txtCantidad.getText()))
                 : oldCantidad;
         suministroTB.setCantidad(cantidad);
-        
-        double porcentajeRestante = suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getDescuento() / 100.00);
+        double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
 
         suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-
         suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
-        suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+
+        suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
         suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
         suministroTB.setTotalImporte(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
 
