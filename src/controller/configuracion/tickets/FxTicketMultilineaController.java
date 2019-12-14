@@ -27,7 +27,7 @@ public class FxTicketMultilineaController implements Initializable {
     private FxTicketController ticketController;
 
     private HBox hBox;
-    
+
     private int sheetWidth;
 
     @Override
@@ -35,23 +35,26 @@ public class FxTicketMultilineaController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void setLoadComponent(HBox hBox,int sheetWidth) {
+    public void setLoadComponent(HBox hBox, int sheetWidth) {
         this.hBox = hBox;
         this.sheetWidth = sheetWidth;
     }
 
     private void addTextMultilinea() {
         if (!textArea.getText().trim().isEmpty()) {
-            int widthContent = 0;
-            for (int i = 0; i < hBox.getChildren().size(); i++) {
-                TextFieldTicket fieldTicket = ((TextFieldTicket) hBox.getChildren().get(i));
-                widthContent += fieldTicket.getColumnWidth();
+            short widthContent = 0;
+            for (short i = 0; i < hBox.getChildren().size(); i++) {
+                widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
             }
             if (widthContent <= sheetWidth) {
-                int widthNew = sheetWidth - widthContent;
-                TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, 1, widthNew, Pos.CENTER_LEFT, true,"");
-                hBox.getChildren().add(field);
-                Tools.Dispose(window);
+                short widthNew = (short) (sheetWidth - widthContent);
+                if (widthNew <= 0 || widthNew > sheetWidth) {
+                    Tools.AlertMessageWarning(window, "Ticket", "No hay espacio suficiente en la fila.");
+                } else {
+                    TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, (short) 1, widthNew, Pos.CENTER_LEFT, true, "");
+                    hBox.getChildren().add(field);
+                    Tools.Dispose(window);
+                }
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El área de texto no puede estar vacío.", false);

@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 public class ClienteADO {
 
     public static String CrudCliente(ClienteTB clienteTB) {
-        String selectStmt = "{call Sp_Crud_Persona_Cliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String selectStmt = "{call Sp_Crud_Persona_Cliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
         CallableStatement callableStatement = null;
         try {
             DBUtil.dbConnect();
@@ -27,18 +27,9 @@ public class ClienteADO {
             callableStatement.setString("Celular", clienteTB.getCelular());
             callableStatement.setString("Email", clienteTB.getEmail());
             callableStatement.setString("Direccion", clienteTB.getDireccion());
+            callableStatement.setString("Representante", clienteTB.getRepresentante());
             callableStatement.setInt("Estado", clienteTB.getEstado());
-//            callableStatement.setString("UsuarioRegistro", clienteTB.getUsuarioRegistro());
-            //facturación
-//            callableStatement.setInt("TipoDocumentoFactura", clienteTB.getFacturacionTB().getTipoDocumentoFacturacion());
-//            callableStatement.setString("NumeroDocumentoFactura", clienteTB.getFacturacionTB().getNumeroDocumentoFacturacion());
-//            callableStatement.setString("RazonSocial", clienteTB.getFacturacionTB().getRazonSocial());
-//            callableStatement.setString("NombreComercial", clienteTB.getFacturacionTB().getNombreComercial());
-//            callableStatement.setString("Pais", clienteTB.getFacturacionTB().getPais());
-//            callableStatement.setInt("Ciudad", clienteTB.getFacturacionTB().getDepartamento());
-//            callableStatement.setInt("Provincia", clienteTB.getFacturacionTB().getProvincia());
-//            callableStatement.setInt("Distrito", clienteTB.getFacturacionTB().getDistrito());
-            //
+
             callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
             callableStatement.execute();
             return callableStatement.getString("Message");
@@ -56,7 +47,7 @@ public class ClienteADO {
         }
     }
 
-    public static ObservableList<ClienteTB> ListCliente(String... value) {
+    public static ObservableList<ClienteTB> ListCliente(String value) {
         String selectStmt = "{call Sp_Listar_Clientes(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -64,7 +55,7 @@ public class ClienteADO {
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value[0]);
+            preparedStatement.setString(1, value);
             rsEmps = preparedStatement.executeQuery();
 
             while (rsEmps.next()) {
@@ -75,8 +66,8 @@ public class ClienteADO {
                 clienteTB.setNombres(rsEmps.getString("Nombres"));
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
-                clienteTB.setDireccion(rsEmps.getString("Direccion")); 
-                clienteTB.setRepresentante(rsEmps.getString("Representante")); 
+                clienteTB.setDireccion(rsEmps.getString("Direccion"));
+                clienteTB.setRepresentante(rsEmps.getString("Representante"));
                 clienteTB.setEstadoName(rsEmps.getString("Estado"));
                 empList.add(clienteTB);
             }
@@ -112,7 +103,7 @@ public class ClienteADO {
 
             while (rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setId(rsEmps.getInt("Filas"));
+                clienteTB.setId(rsEmps.getRow());
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setApellidos(rsEmps.getString("Apellidos"));
@@ -154,7 +145,7 @@ public class ClienteADO {
                 clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
-                clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento")); 
+                clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setApellidos(rsEmps.getString("Apellidos"));
                 clienteTB.setNombres(rsEmps.getString("Nombres"));
                 clienteTB.setSexo(rsEmps.getInt("Sexo"));
@@ -164,17 +155,7 @@ public class ClienteADO {
                 clienteTB.setEmail(rsEmps.getString("Email"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 clienteTB.setEstado(rsEmps.getInt("Estado"));
-                //facturación
-//                FacturacionTB facturacionTB = new FacturacionTB();
-//                facturacionTB.setTipoDocumentoFacturacion(rsEmps.getInt("TipoFactura"));
-//                facturacionTB.setNumeroDocumentoFacturacion(rsEmps.getString("NumeroFactura"));
-//                facturacionTB.setRazonSocial(rsEmps.getString("RazonSocial"));
-//                facturacionTB.setNombreComercial(rsEmps.getString("NombreComercial"));
-//                facturacionTB.setPais(rsEmps.getString("Pais"));
-//                facturacionTB.setDepartamento(rsEmps.getInt("Ciudad"));
-//                facturacionTB.setProvincia(rsEmps.getInt("Provincia"));
-//                facturacionTB.setDistrito(rsEmps.getInt("Distrito"));
-//                clienteTB.setFacturacionTB(facturacionTB);
+
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
@@ -195,11 +176,7 @@ public class ClienteADO {
     }
 
     public static ClienteTB GetByIdClienteVenta(String documento) {
-        String selectStmt = "select ci.IdCliente,\n"
-                + "		ci.Apellidos,ci.Nombres, ci.NumeroDocumento, ci.Direccion\n"
-                + "		from ClienteTB as ci inner join FacturacionTB as f\n"
-                + "		on ci.IdCliente = f.IdCliente\n"
-                + "		where ci.NumeroDocumento = ?";
+        String selectStmt = "select ci.IdCliente,ci.Apellidos,ci.Nombres, ci.NumeroDocumento, ci.Direccion from ClienteTB as ci where ci.NumeroDocumento = ?";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ClienteTB clienteTB = null;

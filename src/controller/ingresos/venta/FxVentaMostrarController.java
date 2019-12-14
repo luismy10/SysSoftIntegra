@@ -3,7 +3,6 @@ package controller.ingresos.venta;
 import controller.tools.BillPrintable;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
-import controller.tools.TextFieldTicket;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -19,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -109,10 +107,6 @@ public class FxVentaMostrarController implements Initializable {
 
     private String idVenta;
 
-    private int sheetWidth;
-
-    private double pointWidth;
-
     private double efectivo, vuelto;
 
     private double subImporte;
@@ -159,8 +153,6 @@ public class FxVentaMostrarController implements Initializable {
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
             arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
         });
-        pointWidth = 7.825;
-        sheetWidth = 40;
     }
 
     private void fillVentasTable(String value) {
@@ -280,6 +272,10 @@ public class FxVentaMostrarController implements Initializable {
         calcularTotales();
 
     }
+    
+     private void loadTicket() {
+        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
+    }
 
     private void imprimirVenta(String ticket) {
         if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
@@ -300,7 +296,7 @@ public class FxVentaMostrarController implements Initializable {
                     hBox.setId("dc_" + m + "" + i);
                     HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                     rows++;
-                    lines = billPrintable.hbDetalle(hBox, box, arrList, m, pointWidth);
+                    lines = billPrintable.hbDetalle(hBox, box, arrList, m);
                     object.add(hBox);
                 }
             }
@@ -311,28 +307,12 @@ public class FxVentaMostrarController implements Initializable {
                 rows++;
                 lines = billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto);
             }
-            billPrintable.modelTicket(apWindow, sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
+            billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 
         } else {
             Tools.AlertMessageWarning(apWindow, "Detalle de venta", "No esta configurado la impresora :D");
         }
-    }
-
-    private void loadTicket() {
-        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie, pointWidth);
-    }
-
-    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, int lines, int widthColumn, Pos align, boolean editable, String variable) {
-        TextFieldTicket field = new TextFieldTicket(titulo, id);
-        field.setMultilineas(multilinea);
-        field.setLines(lines);
-        field.setColumnWidth(widthColumn);
-        field.setVariable(variable);
-        field.setEditable(editable);
-        field.setPreferredSize((double) widthColumn * pointWidth, 30);
-        field.setAlignment(align);
-        return field;
-    }
+    }   
 
     private void calcularTotales() {
         if (arrList != null) {
@@ -368,7 +348,7 @@ public class FxVentaMostrarController implements Initializable {
         }
     }
 
-    private void calcelVenta() {
+    private void cancelVenta() {
         try {
             URL url = getClass().getResource(FilesRouters.FX_VENTA_DEVOLUCION);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -435,7 +415,7 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onMouseClickedTvVentas(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            if (tvVentas.getSelectionModel().getSelectedIndex() > 0) {
+            if (tvVentas.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!lblLoad.isVisible()) {
                     setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
                 }
@@ -446,7 +426,7 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onKeyPressedTvVentas(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (tvVentas.getSelectionModel().getSelectedIndex() > 0) {
+            if (tvVentas.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!lblLoad.isVisible()) {
                     setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
                 }
@@ -457,13 +437,13 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            calcelVenta();
+            cancelVenta();
         }
     }
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
-        calcelVenta();
+        cancelVenta();
     }
 
     @FXML

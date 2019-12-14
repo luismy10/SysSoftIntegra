@@ -39,7 +39,7 @@ public class FxTicketVariableController implements Initializable {
 
     private HBox hBox;
 
-    private int sheetWidth;
+    private short sheetWidth;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,19 +49,19 @@ public class FxTicketVariableController implements Initializable {
         listPie = new ArrayList<>();
     }
 
-    public void setLoadComponent(HBox hBox, int sheetWidth) {
+    public void setLoadComponent(HBox hBox, short sheetWidth) {
         this.hBox = hBox;
         this.sheetWidth = sheetWidth;
         if (hBox.getId().substring(0, 2).equalsIgnoreCase("cb")) {
             listCabecera.add(new TicketTB("Representante de la empresa", Session.COMPANY_REPRESENTANTE, "repeempresa"));
-            listCabecera.add(new TicketTB("Telefono de la empresa", Session.COMPANY_TELEFONO, "telempresa"));
-            listCabecera.add(new TicketTB("Celular de la empresa", Session.COMPANY_CELULAR, "celempresa"));
-            listCabecera.add(new TicketTB("Pagina web de la empresa", Session.COMPANY_PAGINAWEB, "pagwempresa"));
-            listCabecera.add(new TicketTB("Email de la empresa", Session.COMPANY_EMAIL, "emailempresa"));
-            listCabecera.add(new TicketTB("Dirección de la empresa", Session.COMPANY_DOMICILIO, "direcempresa"));
-            listCabecera.add(new TicketTB("Ruc de la empresa", Session.COMPANY_NUM_DOCUMENTO, "rucempresa"));
-            listCabecera.add(new TicketTB("Razón social de la empresa", Session.COMPANY_RAZON_SOCIAL, "razoempresa"));
-            listCabecera.add(new TicketTB("Nombre comercial de la empresa", Session.COMPANY_NOMBRE_COMERCIAL, "nomcomempresa"));
+            listCabecera.add(new TicketTB("Telefono de la empresa", Session.COMPANY_TELEFONO.isEmpty() ? "TELEFONO" : Session.COMPANY_TELEFONO, "telempresa"));
+            listCabecera.add(new TicketTB("Celular de la empresa", Session.COMPANY_CELULAR.isEmpty() ? "CELULAR" : Session.COMPANY_CELULAR, "celempresa"));
+            listCabecera.add(new TicketTB("Pagina web de la empresa", Session.COMPANY_PAGINAWEB.isEmpty() ? "WWW.COMPANY.COM" : Session.COMPANY_PAGINAWEB, "pagwempresa"));
+            listCabecera.add(new TicketTB("Email de la empresa", Session.COMPANY_EMAIL.isEmpty() ? "COMPANY@EMAIL.COM" : Session.COMPANY_EMAIL, "emailempresa"));
+            listCabecera.add(new TicketTB("Dirección de la empresa", Session.COMPANY_DOMICILIO.isEmpty() ? "DIRECCION" : Session.COMPANY_DOMICILIO, "direcempresa"));
+            listCabecera.add(new TicketTB("Ruc de la empresa", Session.COMPANY_NUM_DOCUMENTO.isEmpty() ? "56232665" : Session.COMPANY_NUM_DOCUMENTO, "rucempresa"));
+            listCabecera.add(new TicketTB("Razón social de la empresa", Session.COMPANY_RAZON_SOCIAL.isEmpty() ? "COMPANY" : Session.COMPANY_RAZON_SOCIAL, "razoempresa"));
+            listCabecera.add(new TicketTB("Nombre comercial de la empresa", Session.COMPANY_NOMBRE_COMERCIAL.isEmpty() ? "COMPANY" : Session.COMPANY_NOMBRE_COMERCIAL, "nomcomempresa"));
             listCabecera.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual"));
             listCabecera.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));
             listCabecera.add(new TicketTB("Nombre del documento de venta", "Documento de venta", "docventa"));
@@ -92,16 +92,19 @@ public class FxTicketVariableController implements Initializable {
 
     private void addTextVariable() {
         if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
-            int widthContent = 0;
-            for (int i = 0; i < hBox.getChildren().size(); i++) {
-                TextFieldTicket fieldTicket = ((TextFieldTicket) hBox.getChildren().get(i));
-                widthContent += fieldTicket.getColumnWidth();
+            short widthContent = 0;
+            for (short i = 0; i < hBox.getChildren().size(); i++) {
+                widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
             }
             if (widthContent <= sheetWidth) {
-                int widthNew = sheetWidth - widthContent;
-                TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable());
-                hBox.getChildren().add(field);
-                Tools.Dispose(window);
+                short widthNew = (short) (sheetWidth - widthContent);
+                if (widthNew <= 0 || widthNew > sheetWidth) {
+                    Tools.AlertMessageWarning(window, "Ticket", "No hay espacio suficiente en la fila.");
+                } else {
+                    TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, (short) 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable());
+                    hBox.getChildren().add(field);
+                    Tools.Dispose(window);
+                }
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "Seleccione un item de la lista.", false);

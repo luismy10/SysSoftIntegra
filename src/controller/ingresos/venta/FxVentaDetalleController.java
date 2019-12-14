@@ -110,10 +110,6 @@ public class FxVentaDetalleController implements Initializable {
 
     private VBox hbPie;
 
-    private int sheetWidth;
-
-    private double pointWidth;
-
     private String nombreTicketImpresion;
 
     private double totalVenta;
@@ -128,8 +124,6 @@ public class FxVentaDetalleController implements Initializable {
         hbEncabezado = new VBox();
         hbDetalleCabecera = new VBox();
         hbPie = new VBox();
-        pointWidth = 7.825;
-        sheetWidth = 40;
     }
 
     public void setInitComponents(String idVenta) {
@@ -272,6 +266,10 @@ public class FxVentaDetalleController implements Initializable {
         }
 
     }
+    
+     private void loadTicket() {
+        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
+    }
 
     public void imprimirVenta(String ticket) {
         if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
@@ -293,7 +291,7 @@ public class FxVentaDetalleController implements Initializable {
                     hBox.setId("dc_" + m + "" + i);
                     HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                     rows++;
-                    lines = billPrintable.hbDetalle(hBox, box, arrList, m, pointWidth);
+                    lines = billPrintable.hbDetalle(hBox, box, arrList, m);
                     object.add(hBox);
                 }
             }
@@ -305,16 +303,12 @@ public class FxVentaDetalleController implements Initializable {
                 lines = billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto);
             }
 
-            billPrintable.modelTicket(window, sheetWidth, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.",Session.NOMBRE_IMPRESORA ,Session.CORTAPAPEL_IMPRESORA);
+            billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.",Session.NOMBRE_IMPRESORA ,Session.CORTAPAPEL_IMPRESORA);
 
         } else {
             Tools.AlertMessageWarning(window, "Detalle de venta", "No esta configurado la impresora :D");
         }
-    }
-
-    private void loadTicket() {
-        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie, pointWidth);
-    }
+    }   
 
     private void calcularTotales() {
         if (arrList != null) {

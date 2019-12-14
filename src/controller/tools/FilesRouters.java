@@ -296,4 +296,6 @@ public final class FilesRouters {
 
     public static final String FX_ASIGNACION_PROCESO = "/view/produccion/asignacion/FxAsignacionProceso.fxml";
 
+    public static final String FX_REPORTE_VIEW= "/view/reporte/FxReportView.fxml";
+
 }

@@ -1,21 +1,23 @@
                                         
              NOTA DE VENTA              
-             T001-00000008              
+             T001-00000002              
 AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
 LIMA PERU HUANCAYO                      
 ----------------------------------------
 DESCRIPCION.                            
 CANT.     P.UNIT.     DESCT.     IMPORTE
 ----------------------------------------
-SELLADOR CPP BLANCO X 5 GL              
-1.00      108.00        0%        108.00
-PINTURA LATEX PATO CPP CELESTE GL       
-3.00      29.00         0%         87.00
+PINTURA RP 30ML                         
+10.00     30.00         0%        300.00
+ALAMBRE ROJO 3X4                        
+20.00     3.00          0%         60.00
+ARENA FINA                              
+1.00      80.00         0%         80.00
 ----------------------------------------
-VALOR VENTA                    S/ 195.00
+VALOR VENTA                    S/ 440.00
 DESCUENTO                        S/ 0.00
-SUB IMPORTE                    S/ 195.00
-TOTAL                          S/ 195.00
+SUB IMPORTE                    S/ 440.00
+TOTAL                          S/ 440.00
 
                                        
 

@@ -190,6 +190,20 @@ public class Tools {
         }
         return resultado;
     }
+    
+     public static boolean isNumericShort(String cadena) {
+        if (cadena == null || cadena.isEmpty()) {
+            return false;
+        }
+        boolean resultado;
+        try {
+            Short.parseShort(cadena);
+            resultado = true;
+        } catch (NumberFormatException ex) {
+            resultado = false;
+        }
+        return resultado;
+    }
 
     public static String[] getDataPeople(String data) {
         if (data != null) {

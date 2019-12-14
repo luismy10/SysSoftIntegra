@@ -94,7 +94,9 @@ public class FxVentaProcesoController implements Initializable {
 
     private boolean state_view_pago;
 
-    private String documento, subTotal, descuento, importeTotal;
+    private String documento;
+
+    private double subTotal, descuento, importeTotal;
 
     private String idCliente;
 
@@ -123,15 +125,15 @@ public class FxVentaProcesoController implements Initializable {
         this.tvList = tvList;
         this.documento = documento;
         moneda_simbolo = ventaTB.getMonedaName();
+        Session.TICKET_SIMBOLOMONEDA = moneda_simbolo;
         lblComprobante.setText(ventaTB.getComprobanteName());
         lblTotal.setText(moneda_simbolo + " " + total);
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(0, 2));
         tota_venta = Double.parseDouble(total);
-        this.subTotal = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(subTotal), 2);
-        this.descuento = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(descuento), 2);
-        this.importeTotal = moneda_simbolo + " " + Tools.roundingValue(Double.parseDouble(importeTotal), 2);
+        this.subTotal = Double.parseDouble(subTotal);
+        this.descuento = Double.parseDouble(descuento);
+        this.importeTotal = Double.parseDouble(importeTotal);
         setClienteProcesoVenta(Session.IDCLIENTE, Session.DATOSCLIENTE, Session.N_DOCUMENTO_CLIENTE, Session.DIRECCION_CLIENTE);
-
         txtEfectivo.requestFocus();
     }
 
@@ -197,9 +199,9 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setTipo(2);
                 ventaTB.setEstado(2);
                 ventaTB.setEfectivo(0);
-                ventaTB.setVuelto(0);                
+                ventaTB.setVuelto(0);
                 ventaTB.setCliente(idCliente);
-                
+
                 CuentasClienteTB cuentasCliente = new CuentasClienteTB();
                 cuentasCliente.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getIdPlazos());
                 cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
@@ -227,9 +229,9 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setEstado(1);
                 ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
                 ventaTB.setVuelto(vuelto);
-                
+
                 ventaTB.setCliente(idCliente);
-                
+
                 if (vuelto < 0) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "Su cambio no puede ser negativo.", false);
                 } else {
@@ -241,7 +243,7 @@ public class FxVentaProcesoController implements Initializable {
                             case "register":
                                 short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
                                 if (value == 1) {
-                                    ventaEstructuraController.imprimirVenta(documento, tvList, subTotal, descuento, importeTotal, lblTotal.getText(), Double.parseDouble(txtEfectivo.getText()), vuelto, result[1],result[2]);
+                                    ventaEstructuraController.imprimirVenta(documento, tvList, Tools.roundingValue(subTotal, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(importeTotal, 2), Tools.roundingValue(tota_venta, 2), Double.parseDouble(txtEfectivo.getText()), vuelto, result[1], result[2]);
                                     ventaEstructuraController.resetVenta();
                                     Tools.Dispose(window);
                                 } else {

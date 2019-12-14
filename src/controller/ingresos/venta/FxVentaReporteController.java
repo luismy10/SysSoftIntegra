@@ -2,6 +2,7 @@ package controller.ingresos.venta;
 
 import controller.configuracion.empleados.FxEmpleadosListaController;
 import controller.contactos.clientes.FxClienteListaController;
+import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -30,9 +31,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.VentaADO;
@@ -41,7 +39,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class FxVentaReporteController implements Initializable {
 
@@ -167,18 +164,21 @@ public class FxVentaReporteController implements Initializable {
 
                 JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneral.jasper"), map, new JRBeanCollectionDataSource(list));
 
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxReportViewController controller = fXMLLoader.getController();
+                controller.setJasperPrint(jasperPrint);
+                controller.show();
+                Stage stage = WindowStage.StageLoader(parent, "Reporte General de Ventas");
+                stage.setResizable(true);
+                stage.show();
+                stage.requestFocus();
 
-                JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-                jasperViewer.setIconImage(new ImageIcon(getClass().getResource(FilesRouters.IMAGE_ICON)).getImage());
-                jasperViewer.setTitle("Reporte General de Ventas");
-                jasperViewer.setSize(840, 650);
-                jasperViewer.setLocationRelativeTo(null);
-                jasperViewer.setVisible(true);
-                jasperViewer.requestFocus();
             }
 
-        } catch (HeadlessException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | JRException ex) {
+        } catch (HeadlessException | JRException | IOException ex) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Reporte General de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage(), false);
         }
     }

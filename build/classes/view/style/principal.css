@@ -503,7 +503,7 @@
  ******************************************************************************/
 
 .buttonLightDefault{
-    BACKGROUND: #2796c4;
+    BACKGROUND: #3c8dbc;
     BACKGROUND_PRESSED: #175a75;
 
     BORDER_HOVER: #175a75;
@@ -1553,6 +1553,74 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-padding: 0.167em 0.333em 0.167em 0.333em; /* 2 4 2 4 */
     -fx-shape: "M 0 0 h 7 l -3.5 4 z";
 }
+
+/*******************************************************************************
+ *                                                                             *
+ * Slider                                                                      *
+ *                                                                             *
+ ******************************************************************************/
+
+
+.slider {
+    track_hover_color: #666666;
+    thumb_hover_color: #171717;
+    thumb_pressed_color: #cccccc;
+    -show-value-on-interaction: true;
+}
+
+.slider .thumb {
+    -fx-background-color: #1a2226;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0.5em; /* 6 */
+
+    -fx-padding: 1em 0.333333em 1em 0.333333em;  /* 12 4 12 4 */
+}
+
+.slider:vertical .thumb {
+    -fx-padding: 0.333333em 1em 0.333333em 1em; /* 4 12 4 12 */
+}
+
+.slider .track {
+    -fx-background-color: #c6c6c6;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0.083333em; /* 1 */
+
+}
+
+.slider .fill {
+    -fx-background-color: accent_color;
+    -fx-padding: 0.083333em; /* 1 */
+}
+
+/* hover */
+.slider:hover .track{
+    -fx-background-color: track_hover_color;
+}
+
+.slider:hover .thumb{
+    -fx-background-color: thumb_hover_color;
+}
+
+/* pressed */
+.slider .thumb:pressed {
+    -fx-background-color: thumb_pressed_color;
+}
+
+/* disabled */
+.slider:disabled {
+    -fx-opacity: 0.2;
+}
+
+/* Slider popup showing its value */
+.slider-popup .label {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #cccccc;
+    -fx-text-fill: #111;
+    -fx-padding: 0.5em 0.75em 0.5em 0.75em; /* 6 9 6 9 */
+}
+
+
 
 /*******************************************************************************
  *                                                                             *

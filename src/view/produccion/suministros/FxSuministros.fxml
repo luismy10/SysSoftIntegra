@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.suministros.FxSuministrosController">
+<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.suministros.FxSuministrosController">
    <children>
       <VBox HBox.hgrow="ALWAYS">
          <children>
@@ -151,7 +151,6 @@
                                         <TableColumn fx:id="tcNumeracion" prefWidth="75.0" style="-fx-alignment: CENTER;" text="N°" />
                                         <TableColumn fx:id="tcClave" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Alterna" />
                                           <TableColumn fx:id="tcDescripcion" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                                          <TableColumn fx:id="tcCosto" prefWidth="167.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
                                           <TableColumn fx:id="tcCategoria" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Categoria" />
                                           <TableColumn fx:id="tcMarca" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Marca" />
                                           <TableColumn fx:id="tcEstado" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Estado" />
