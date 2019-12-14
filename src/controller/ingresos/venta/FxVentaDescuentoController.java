@@ -25,37 +25,39 @@ public class FxVentaDescuentoController implements Initializable {
 
     private SuministroTB suministroTB;
 
-    private int index;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initComponents(SuministroTB suministroTB, int index) {
+    public void initComponents(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
         txtPrecioVenta.setText(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 2));
-        this.index = index;
     }
 
     private void executeDescuento() {
         if (Tools.isNumeric(txtPrecioVenta.getText()) && Tools.isNumeric(txtPorcentajeDescuento.getText())) {
-            double precio = Double.parseDouble(txtPrecioVenta.getText());
+
+            double precio = suministroTB.getPrecioVentaGeneralUnico();
+
             double descuento = Double.parseDouble(txtPorcentajeDescuento.getText());
             double porcentajeRestante = precio * (descuento / 100.00);
             double preciocalculado = precio - porcentajeRestante;
-            
-            suministroTB.setPrecioVentaGeneralReal(Tools.calculateValueNeto(suministroTB.getImpuestoValor(), precio));
 
-            suministroTB.setPrecioVentaGeneral(preciocalculado);
-            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+            suministroTB.setPrecioVentaGeneralUnico(precio);
+            suministroTB.setPrecioVentaGeneralReal(preciocalculado);
+
+            double impuesto = (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00));
+
+            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
             suministroTB.setDescuento(descuento);
             suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-            suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
-            suministroTB.setTotalImporte(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
+            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
             ventaEstructuraController.getTvList().refresh();
             ventaEstructuraController.calculateTotales();

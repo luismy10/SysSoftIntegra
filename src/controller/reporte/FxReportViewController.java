@@ -96,8 +96,8 @@ public class FxReportViewController implements Initializable {
         if (jasperPrint.getPages().size() > 0) {
             reportPages = jasperPrint.getPages().size();
             lblReportPages.setText("/ " + reportPages);
+            disableUnnecessaryButtons(1);
             viewPage(0);
-            disableUnnecessaryButtons(reportPages);
         }
     }
 
@@ -126,10 +126,10 @@ public class FxReportViewController implements Initializable {
     }
 
     private void disableUnnecessaryButtons(int pageNumber) {
-        btnBackPage.setDisable((pageNumber == 1));
-        btnFirstPage.setDisable((pageNumber == 1));
-        btnNextPage.setDisable((pageNumber == reportPages));
-        btnLastPage.setDisable((pageNumber == reportPages));
+        btnBackPage.setDisable(pageNumber == 1);
+        btnFirstPage.setDisable(pageNumber == 1);
+        btnNextPage.setDisable(pageNumber == reportPages);
+        btnLastPage.setDisable(pageNumber == reportPages);
     }
 
     @FXML

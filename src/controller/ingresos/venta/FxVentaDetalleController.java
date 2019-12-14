@@ -141,7 +141,7 @@ public class FxVentaDetalleController implements Initializable {
                 protected ArrayList<Object> call() {
                     arrayArticulos.clear();
                     ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                        arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+                        arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
                     });
                     ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
                     return objects;
@@ -337,7 +337,7 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addElement) {
-                    addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombre(), simboloMoneda + " " + Tools.roundingValue(sumaElement, 2));
+                    addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombreImpuesto(), simboloMoneda + " " + Tools.roundingValue(sumaElement, 2));
                     totalImpuestos += sumaElement;
                     addElement = false;
                     sumaElement = 0;

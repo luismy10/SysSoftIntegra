@@ -1,50 +1,39 @@
-
 package model;
 
 import javafx.scene.image.ImageView;
 
-
 public class ImpuestoTB {
-    
+
     private int idImpuesto;
-    private String nombre;
+    private int operacion;
+    private String nombreOperacion;
+    private String nombreImpuesto;
     private double valor;
     private boolean predeterminado;
     private String codigoAlterno;
     private boolean sistema;
     private ImageView imagePredeterminado;
-    
-    public ImpuestoTB(){
+
+    public ImpuestoTB() {
     }
 
-    public ImpuestoTB(int idImpuesto, String nombre, Boolean predeterminado) {
+    public ImpuestoTB(int idImpuesto, String nombreImpuesto, Boolean predeterminado) {
         this.idImpuesto = idImpuesto;
-        this.nombre = nombre;
+        this.nombreImpuesto = nombreImpuesto;
         this.predeterminado = predeterminado;
     }
 
-    public ImpuestoTB(int idImpuesto, String nombre, double valor) {
+    public ImpuestoTB(int idImpuesto, String nombreImpuesto, double valor) {
         this.idImpuesto = idImpuesto;
-        this.nombre = nombre;
+        this.nombreImpuesto = nombreImpuesto;
         this.valor = valor;
-    }    
-
-    public ImpuestoTB(int idImpuesto, String nombre, double valor, boolean predeterminado) {
-        this.idImpuesto = idImpuesto;
-        this.nombre = nombre;
-        this.valor = valor;
-        this.predeterminado = predeterminado;
     }
-    
-    
-    
-    public ImpuestoTB(int idImpuesto, String nombre, double valor, boolean predeterminado, String codigoAlterno, ImageView imagePredeterminado) {
+
+    public ImpuestoTB(int idImpuesto, String nombreImpuesto, double valor, boolean predeterminado) {
         this.idImpuesto = idImpuesto;
-        this.nombre = nombre;
+        this.nombreImpuesto = nombreImpuesto;
         this.valor = valor;
         this.predeterminado = predeterminado;
-        this.codigoAlterno = codigoAlterno;
-        this.imagePredeterminado = imagePredeterminado;
     }
 
     public int getIdImpuesto() {
@@ -55,12 +44,28 @@ public class ImpuestoTB {
         this.idImpuesto = idImpuesto;
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getOperacion() {
+        return operacion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setOperacion(int operacion) {
+        this.operacion = operacion;
+    }
+
+    public String getNombreOperacion() {
+        return nombreOperacion;
+    }
+
+    public void setNombreOperacion(String nombreOperacion) {
+        this.nombreOperacion = nombreOperacion == null ? "" : nombreOperacion;
+    }
+
+    public String getNombreImpuesto() {
+        return nombreImpuesto;
+    }
+
+    public void setNombreImpuesto(String nombreImpuesto) {
+        this.nombreImpuesto = nombreImpuesto;
     }
 
     public double getValor() {
@@ -102,14 +107,10 @@ public class ImpuestoTB {
     public void setSistema(boolean sistema) {
         this.sistema = sistema;
     }
-    
-    
 
     @Override
     public String toString() {
-        return nombre;
+        return nombreImpuesto;
     }
-    
-    
-           
+
 }

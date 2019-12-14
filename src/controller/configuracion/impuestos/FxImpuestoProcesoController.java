@@ -3,15 +3,21 @@ package controller.configuracion.impuestos;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 
@@ -20,7 +26,9 @@ public class FxImpuestoProcesoController implements Initializable {
     @FXML
     private AnchorPane window;
     @FXML
-    private TextField txtNombre;
+    private ComboBox<DetalleTB> cbOperaciones;
+    @FXML
+    private TextField txtNombreImpuesto;
     @FXML
     private TextField txtValor;
     @FXML
@@ -35,16 +43,52 @@ public class FxImpuestoProcesoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         idImpuesto = 0;
-
+        DetalleADO.GetDetailIdName("2", "0010", "").forEach(e -> {
+            cbOperaciones.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
     }
 
-    public void setUpdateImpuesto(int idImpuesto, String nombre, String valor, String codigoAlterno) {
+    public void setUpdateImpuesto(int idImpuesto) {
         this.idImpuesto = idImpuesto;
-        txtNombre.setText(nombre);
-        txtValor.setText(valor);
-        txtCodigoAlterno.setText(codigoAlterno);
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ImpuestoTB> task = new Task<ImpuestoTB>() {
+            @Override
+            public ImpuestoTB call() {
+                return ImpuestoADO.GetImpuestoById(idImpuesto);
+            }
+        };
+
+        task.setOnSucceeded(w -> {
+            ImpuestoTB impuestoTB = task.getValue();
+            if (impuestoTB != null) {
+
+                ObservableList<DetalleTB> lsori = cbOperaciones.getItems();
+                if (impuestoTB.getOperacion() != 0) {
+                    for (int i = 0; i < lsori.size(); i++) {
+                        if (impuestoTB.getOperacion() == lsori.get(i).getIdDetalle().get()) {
+                            cbOperaciones.getSelectionModel().select(i);
+                            break;
+                        }
+                    }
+                }
+
+                txtNombreImpuesto.setText(impuestoTB.getNombreImpuesto());
+                txtValor.setText(Tools.roundingValue(impuestoTB.getValor(), 2));
+                txtCodigoAlterno.setText(impuestoTB.getCodigoAlterno());
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     @FXML
@@ -59,35 +103,38 @@ public class FxImpuestoProcesoController implements Initializable {
     }
 
     private void onProccesImpuesto() {
-        if (txtNombre.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "Ingrese el nombre del impuesto.", false);
-            txtNombre.requestFocus();
+        if (cbOperaciones.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(window, "Impuesto", "Ingrese el nombre del impuesto de la operación.");
+            cbOperaciones.requestFocus();
+        } else if (txtNombreImpuesto.getText().trim().isEmpty()) {
+            Tools.AlertMessageWarning(window, "Impuesto", "Ingrese el nombre del impuesto.");
+            txtNombreImpuesto.requestFocus();
         } else if (!Tools.isNumeric(txtValor.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "Ingrese el valor del impuesto.", false);
+            Tools.AlertMessageWarning(window, "Impuesto", "Ingrese el valor del impuesto.");
             txtValor.requestFocus();
         } else {
             ImpuestoTB impuestoTB = new ImpuestoTB();
             impuestoTB.setIdImpuesto(idImpuesto);
-            impuestoTB.setNombre(txtNombre.getText().trim());
+            impuestoTB.setOperacion(cbOperaciones.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            impuestoTB.setNombreImpuesto(txtNombreImpuesto.getText().trim());
             impuestoTB.setValor(Double.parseDouble(txtValor.getText()));
             impuestoTB.setPredeterminado(false);
             impuestoTB.setCodigoAlterno(txtCodigoAlterno.getText().isEmpty() ? "0" : txtCodigoAlterno.getText().trim());
             impuestoTB.setSistema(false);
             String result = ImpuestoADO.CrudImpuesto(impuestoTB);
             if (result.equalsIgnoreCase("duplicated")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "Hay un impuesto con el mismo nombre.", false);
-                txtNombre.requestFocus();
+                Tools.AlertMessageWarning(window, "Impuesto", "Hay un impuesto con el mismo nombre.");
+                txtNombreImpuesto.requestFocus();
             } else if (result.equalsIgnoreCase("updated")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Impuesto", "Se actualizo correctamente.", false);
+                Tools.AlertMessageInformation(window, "Impuesto", "Se actualizó correctamente.");
                 impuestoController.fillTabletTax();
                 Tools.Dispose(window);
             } else if (result.equalsIgnoreCase("inserted")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Impuesto", "Se ingreso correctamente.", false);
+                Tools.AlertMessageInformation(window, "Impuesto", "Se ingreso correctamente.");
                 impuestoController.fillTabletTax();
                 Tools.Dispose(window);
             } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Impuesto", result, false);
-
+                Tools.AlertMessageError(window, "Impuesto", result);
             }
         }
     }

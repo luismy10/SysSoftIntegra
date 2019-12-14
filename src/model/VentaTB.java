@@ -37,6 +37,12 @@ public class VentaTB {
     public VentaTB() {
 
     }
+
+    public VentaTB(int id, String fechaVenta, double total) {
+        this.id = id;
+        this.fechaVenta = fechaVenta;
+        this.total = total;
+    }
     
     
 

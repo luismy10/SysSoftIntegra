@@ -14,13 +14,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="window" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tablasbasicas.FxDetalleMantenimientoController">
+<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tablasbasicas.FxDetalleMantenimientoController">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <HBox VBox.vgrow="ALWAYS">
          <children>
-            <VBox minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+            <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+                  <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                      <children>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -29,7 +29,7 @@
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Mantenimiento de los detalles básicos" />
                      </children>
                   </HBox>
-                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                  <VBox>
                      <children>
                         <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                            <children>
@@ -85,7 +85,7 @@
                                           <TextField fx:id="txtSearchMaintenance" onAction="#onActionSearchItems" onKeyReleased="#onKeyReleasedSearchItems" promptText="Buscar...." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <ListView fx:id="lvMaintenance" minHeight="-Infinity" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="288.0" prefWidth="260.0" VBox.vgrow="SOMETIMES" />
+                                    <ListView fx:id="lvMaintenance" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="288.0" prefWidth="260.0" VBox.vgrow="SOMETIMES" />
                                     <HBox style="-fx-spacing: 0.8333333333333334em;" visible="false">
                                        <children>
                                           <Text fill="#23283a" onMouseClicked="#onMouseClickedAgregar" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Agrear(+)" underline="true">

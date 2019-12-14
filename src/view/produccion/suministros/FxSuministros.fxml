@@ -153,7 +153,7 @@
                                           <TableColumn fx:id="tcDescripcion" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
                                           <TableColumn fx:id="tcCategoria" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Categoria" />
                                           <TableColumn fx:id="tcMarca" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Marca" />
-                                          <TableColumn fx:id="tcEstado" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Estado" />
+                                          <TableColumn fx:id="tcCosto" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
                                       </columns>
                                     </TableView>
                                     <HBox alignment="CENTER" style="-fx-background-color: cccccc;">

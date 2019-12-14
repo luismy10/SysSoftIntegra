@@ -77,13 +77,14 @@ public class FxSuministrosController implements Initializable {
     private TableColumn<SuministroTB, String> tcClave;
     @FXML
     private TableColumn<SuministroTB, String> tcDescripcion;
-//    private TableColumn<SuministroTB, String> tcCosto;
+
     @FXML
     private TableColumn<SuministroTB, String> tcCategoria;
     @FXML
     private TableColumn<SuministroTB, String> tcMarca;
     @FXML
-    private TableColumn<SuministroTB, String> tcEstado;
+    private TableColumn<SuministroTB, String> tcCosto;
+//    private TableColumn<SuministroTB, String> tcEstado;
     @FXML
     private ComboBox<HideableItem<DetalleTB>> cbCategoria;
     @FXML
@@ -135,8 +136,8 @@ public class FxSuministrosController implements Initializable {
     private FxSuministrosProcesoController suministrosProcesoController;
 
     private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
-    
-     private ObservableList<PrivilegioTB> privilegioTBs;
+
+    private ObservableList<PrivilegioTB> privilegioTBs;
 
     private int paginacion;
 
@@ -207,22 +208,22 @@ public class FxSuministrosController implements Initializable {
         )
         );
         tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
-//        tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
         tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
         tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
-        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName().get()));
+        tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
+//        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName().get()));
 
         tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));//+1
         tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));//+2
-        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));//+4
-//        tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.03));
+        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));//+4       
         tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
         tcMarca.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
-        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
+        tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+//        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         paginacion = 1;
@@ -230,7 +231,7 @@ public class FxSuministrosController implements Initializable {
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
-         this.privilegioTBs=privilegioTBs;
+        this.privilegioTBs = privilegioTBs;
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             hbContenedorBotonos.getChildren().remove(btnAgregar);
         } else {
@@ -363,7 +364,10 @@ public class FxSuministrosController implements Initializable {
         task.setOnSucceeded((e) -> {
             ModeloGenerico generico = task.getValue();
             tvList.setItems((ObservableList<SuministroTB>) generico.getObjectoE());
-
+            if (!tvList.getItems().isEmpty()) {
+                tvList.getSelectionModel().select(0);
+                onViewDetailSuministro();
+            }
             totalPaginacion = (int) generico.getObjectoO();
             lblPaginaActual.setText(paginacion + "");
             lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -529,7 +533,7 @@ public class FxSuministrosController implements Initializable {
         String valor = "";
         for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
             if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombre();
+                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
                 break;
             }
         }

@@ -101,11 +101,11 @@ public class FxSuministrosCompraController implements Initializable {
     public void cargarComboBox() {
         cbImpuesto.getItems().clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            this.cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            this.cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
         vbImpuestos.getChildren().clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            CheckBoxModel checkBox = new CheckBoxModel(e.getNombre());
+            CheckBoxModel checkBox = new CheckBoxModel(e.getNombreImpuesto());
             checkBox.setValor(e.getValor());
             checkBox.getStyleClass().add("check-box-contenido");
             vbImpuestos.getChildren().add(checkBox);
@@ -224,7 +224,7 @@ public class FxSuministrosCompraController implements Initializable {
         suministrosTB.setTotalImporte(suministrosTB.getCantidad() * suministrosTB.getCostoCompra());
 
         suministrosTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
-        suministrosTB.setImpuestoArticuloName(cbImpuesto.getSelectionModel().getSelectedItem().getNombre());
+        suministrosTB.setImpuestoArticuloName(cbImpuesto.getSelectionModel().getSelectedItem().getNombreImpuesto());
         suministrosTB.setImpuestoValor(cbImpuesto.getSelectionModel().getSelectedItem().getValor());
         suministrosTB.setImpuestoSumado(suministrosTB.getCantidad() * (suministrosTB.getCostoCompra() * (suministrosTB.getImpuestoValor() / 100.00)));
 

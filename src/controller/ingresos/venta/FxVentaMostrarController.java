@@ -151,7 +151,7 @@ public class FxVentaMostrarController implements Initializable {
         arrayArticulos = new ArrayList<>();
         arrayArticulos.clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
     }
 

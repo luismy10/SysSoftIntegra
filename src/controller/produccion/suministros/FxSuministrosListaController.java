@@ -159,7 +159,7 @@ public class FxSuministrosListaController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         paginacion = 1;
@@ -352,7 +352,7 @@ public class FxSuministrosListaController implements Initializable {
         String valor = "";
         for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
             if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombre();
+                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
                 break;
             }
         }
@@ -371,6 +371,7 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setDescuento(0);
             suministroTB.setDescuentoSumado(0);
 
+            suministroTB.setPrecioVentaGeneralUnico(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             suministroTB.setPrecioVentaGeneralReal(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
 

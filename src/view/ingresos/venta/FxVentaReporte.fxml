@@ -39,13 +39,13 @@
             </HBox>
             <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
               <tabs>
-                <Tab text="General">
+                <Tab text="Reporte General">
                   <content>
                     <AnchorPane style="-fx-background-color: white;">
                            <children>
-                              <VBox style="-fx-padding: 0  0.8333333333333334em  0.8333333333333334em 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox style="-fx-padding: 0.8333333333333334em 0  0.8333333333333334em 0;">
+                                    <HBox style="-fx-padding: 0.8333333333333334em;">
                                        <children>
                                           <Button mnemonicParsing="false" onAction="#onActionReporteGeneral" onKeyPressed="#onKeyPressedReporteGeneral" styleClass="buttonLight" text="Reporte">
                                              <graphic>
@@ -59,7 +59,7 @@
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />
-                                    <HBox style="-fx-padding: 0.8333333333333334em 0  0.8333333333333334em 0; -fx-spacing: 0.8333333333333334em;">
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
@@ -92,7 +92,7 @@
                                        </children>
                                     </HBox>
                                     <Separator />
-                                    <HBox style="-fx-padding: 0.8333333333333334em 0  0.8333333333333334em 0; -fx-spacing: 0.8333333333333334em;">
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <VBox>
                                              <children>
@@ -196,6 +196,102 @@
                         </AnchorPane>
                   </content>
                 </Tab>
+                  <Tab text="Reporte Global">
+                    <content>
+                      <AnchorPane style="-fx-background-color: white;">
+                           <children>
+                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox style="-fx-padding: 0.8333333333333334em;">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#onActionPrueba" onKeyPressed="#onKeyPressedPrueba" styleClass="buttonLight" text="Reporte">
+                                             <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
+                                                   <image>
+                                                      <Image url="@../../image/reports.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <Separator prefWidth="200.0" />
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                             <children>
+                                                <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/calendar.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <DatePicker fx:id="dpFechaInicialGlobal" prefWidth="220.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                             <children>
+                                                <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/calendar.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <DatePicker fx:id="dpFechaFinalGlobal" minWidth="-Infinity" prefWidth="220.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <Separator prefWidth="200.0" />
+                                    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <GridPane style="-fx-hgap: 0.4166666666666667em; -fx-vgap: 1em;">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label styleClass="labelOpenSansRegular14" text="Ordenar por:" textFill="#1a2226">
+                                                         <graphic>
+                                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../image/ordenar.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Label>
+                                                      <ComboBox fx:id="cbOrdenar" prefWidth="220.0" GridPane.columnIndex="1" />
+                                                      <ComboBox fx:id="cbOrden" prefWidth="220.0" GridPane.columnIndex="2" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Separator />
+                                    <HBox style="-fx-padding: 0.8333333333333334em;">
+                                       <children>
+                                          <CheckBox fx:id="cbMostrarVenta" mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Mostrar detalle de cada venta" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
          </children>

@@ -621,11 +621,14 @@ public class VentaADO {
                 ventaTB.setCliente(resultSet.getString("Cliente"));
                 ventaTB.setSerie(resultSet.getString("Serie") + "-" + resultSet.getString("Numeracion"));
                 ventaTB.setTipoName(resultSet.getString("Tipo"));
-                ventaTB.setEstadoName(resultSet.getString("Estado"));
+                ventaTB.setEstado(resultSet.getInt("Estado"));
+                ventaTB.setEstadoName(resultSet.getString("EstadoName"));
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                ventaTB.setTotal(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO")
-                        ? -resultSet.getDouble("Total") : resultSet.getDouble("Total"));
-                ventaTB.setTotalFormat(ventaTB.getMonedaName() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+                ventaTB.setTotal(resultSet.getDouble("Total"));
+                ventaTB.setTotalFormat(ventaTB.getMonedaName() + " " + Tools.roundingValue(
+                        resultSet.getInt("Estado") == 3
+                        ? -resultSet.getDouble("Total") : resultSet.getDouble("Total"),
+                        2));
                 arrayList.add(ventaTB);
             }
         } catch (SQLException ex) {
@@ -643,6 +646,47 @@ public class VentaADO {
 
             }
 
+        }
+        return arrayList;
+    }
+
+    public static ArrayList<VentaTB> GetReporteSumaVentaPorDia(String fechaInicial, String fechaFinal, boolean tipoOrden, boolean ordern) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<VentaTB> arrayList = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Reporte_Ventas_Sumadas_Por_Fecha(?,?,?,?)}");
+            preparedStatement.setString(1, fechaInicial);
+            preparedStatement.setString(2, fechaFinal);
+            preparedStatement.setBoolean(3, tipoOrden);
+            preparedStatement.setBoolean(4, ordern);
+            resultSet = preparedStatement.executeQuery();
+          
+            while (resultSet.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setFechaVenta(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+                ventaTB.setEstado(resultSet.getInt("Estado"));
+                ventaTB.setMonedaName(resultSet.getString("Simbolo"));
+                ventaTB.setTotal(ventaTB.getEstado() == 3
+                        ? 0 : resultSet.getDouble("Total"));
+                arrayList.add(ventaTB);
+            
+            }
+        } catch (SQLException ex) {
+            System.out.println("Venta ADO:" + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
         }
         return arrayList;
     }

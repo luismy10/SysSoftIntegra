@@ -111,16 +111,15 @@ public class FxMovimientosController implements Initializable {
             }
         };
 
+        task.setOnScheduled((WorkerStateEvent e) -> {
+            lblLoad.setVisible(true);
+        });
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
         });
-
         task.setOnFailed((WorkerStateEvent e) -> {
             lblLoad.setVisible(false);
-        });
-        task.setOnScheduled((WorkerStateEvent e) -> {
-            lblLoad.setVisible(true);
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -129,20 +128,51 @@ public class FxMovimientosController implements Initializable {
     }
 
     private void executeReload() {
-        cbMovimiento.getItems().clear();
-        cbMovimiento.getItems().add(new TipoMovimientoTB(0, "--TODOS--", false));
-        TipoMovimientoADO.Get_list_Tipo_Movimiento(true, true).forEach(e -> {
-            cbMovimiento.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
-        });
-        cbMovimiento.getSelectionModel().select(0);
 
         Tools.actualDate(Tools.getDate(), dtFechaInicio);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
 
-        fillTableMovimiento(false, opcion,
-                cbMovimiento.getSelectionModel().getSelectedIndex() >= 0
-                ? cbMovimiento.getSelectionModel().getSelectedItem().getIdTipoMovimiento()
-                : 0, Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal));
+        cbMovimiento.getItems().clear();
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ObservableList<MovimientoInventarioTB>> task = new Task<ObservableList<MovimientoInventarioTB>>() {
+            @Override
+            public ObservableList<MovimientoInventarioTB> call() {
+                cbMovimiento.getItems().add(new TipoMovimientoTB(0, "--TODOS--", false));
+                TipoMovimientoADO.Get_list_Tipo_Movimiento(true, true).forEach(e -> {
+                    cbMovimiento.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
+                });
+
+                return MovimientoInventarioADO.ListMovimientoInventario(false, opcion,
+                        cbMovimiento.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbMovimiento.getSelectionModel().getSelectedItem().getIdTipoMovimiento()
+                        : 0, Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal), vbPrincipal, hbWindow
+                );
+            }
+        };
+
+        task.setOnScheduled((WorkerStateEvent e) -> {
+            lblLoad.setVisible(true);
+        });
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvList.setItems(task.getValue());
+            if (!cbMovimiento.getItems().isEmpty()) {
+                cbMovimiento.getSelectionModel().select(0);
+            }
+            lblLoad.setVisible(false);
+        });
+        task.setOnFailed((WorkerStateEvent e) -> {
+            lblLoad.setVisible(false);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     private void openWindowRealizarMovimientoProducto() {

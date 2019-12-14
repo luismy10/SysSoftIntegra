@@ -40,6 +40,7 @@ public class SuministroTB {
     
     private double precioVentaGeneral;
     private double precioVentaGeneralReal;
+    private double precioVentaGeneralUnico;
     private double precioVentaGeneralAuxiliar;
     private short precioMargenGeneral;
     private double precioUtilidadGeneral;
@@ -314,6 +315,14 @@ public class SuministroTB {
 
     public void setPrecioVentaGeneralReal(double precioVentaGeneralReal) {
         this.precioVentaGeneralReal = precioVentaGeneralReal;
+    }
+
+    public double getPrecioVentaGeneralUnico() {
+        return precioVentaGeneralUnico;
+    }
+
+    public void setPrecioVentaGeneralUnico(double precioVentaGeneralUnico) {
+        this.precioVentaGeneralUnico = precioVentaGeneralUnico;
     }
 
     public double getPrecioVentaGeneralAuxiliar() {

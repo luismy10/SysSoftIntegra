@@ -381,12 +381,12 @@ public class FxSuministrosProcesoModalController implements Initializable {
         cbImpuesto.getItems().clear();
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
         list1.forEach(e -> {
-            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         vbImpuestos.getChildren().clear();
         list1.forEach(e -> {
-            CheckBoxModel checkBox = new CheckBoxModel(e.getNombre());
+            CheckBoxModel checkBox = new CheckBoxModel(e.getNombreImpuesto());
             checkBox.setValor(e.getValor());
             checkBox.setOnAction(event -> {
 
@@ -770,7 +770,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
                             : 0;
                 }
                 double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
-                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 4));
+                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 6));
 
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
@@ -789,7 +789,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             } else {
                 //toma el valor del impuesto del combo box
                 double valorCalculado = Double.parseDouble(cos.getText());
-                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 4));
+                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 6));
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
 //
@@ -825,11 +825,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                         double porcentaje = (precio * 100.00) / costo;
 
-                        int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 4)), 0)));
+                        int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 6)), 0)));
 
-                        prec.setText(Tools.roundingValue(precio, 4));
+                        prec.setText(Tools.roundingValue(precio, 6));
                         mar.setText(String.valueOf(recalculado));
-                        util.setText(Tools.roundingValue((precio - costo), 4));
+                        util.setText(Tools.roundingValue((precio - costo), 6));
                     }
                 } else {
                     double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
@@ -837,9 +837,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                     double precio = Tools.calculateValueNeto(impuesto, precioNeto);
 
-                    prec.setText(Tools.roundingValue(precio, 4));
+                    prec.setText(Tools.roundingValue(precio, 6));
                     mar.setText(String.valueOf(0));
-                    util.setText(Tools.roundingValue((0), 4));
+                    util.setText(Tools.roundingValue((0), 6));
                 }
             }
         }
@@ -858,7 +858,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             int recalculado = (int) Math.abs(100
                     - Double.parseDouble(
                             Tools.roundingValue(Double.parseDouble(
-                                    Tools.roundingValue(porcentaje, 4)), 0)));
+                                    Tools.roundingValue(porcentaje, 6)), 0)));
 
             double impuesto = Tools.calculateTax(
                     cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
@@ -869,8 +869,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
             double precioimpuesto = (precio + impuesto);
 
             mar.setText(String.valueOf(recalculado));
-            uti.setText(Tools.roundingValue((precio - costo), 4));
-            preneto.setText(Tools.roundingValue(precioimpuesto, 4));
+            uti.setText(Tools.roundingValue((precio - costo), 6));
+            preneto.setText(Tools.roundingValue(precioimpuesto, 6));
         }
     }
 
@@ -889,9 +889,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     precio);
             double precioimpuesto = (precio + impuesto);
 
-            pre.setText(Tools.roundingValue(precio, 4));
-            uti.setText(Tools.roundingValue((precio - costo), 4));
-            preneto.setText(Tools.roundingValue(precioimpuesto, 4));
+            pre.setText(Tools.roundingValue(precio, 6));
+            uti.setText(Tools.roundingValue((precio - costo), 6));
+            preneto.setText(Tools.roundingValue(precioimpuesto, 6));
         }
     }
 
@@ -914,11 +914,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     int recalculado = (int) Math.abs(100
                             - Double.parseDouble(
                                     Tools.roundingValue(Double.parseDouble(
-                                            Tools.roundingValue(porcentaje, 4)), 0)));
+                                            Tools.roundingValue(porcentaje, 6)), 0)));
 
-                    pre.setText(Tools.roundingValue(precio, 4));
+                    pre.setText(Tools.roundingValue(precio, 6));
                     mar.setText(String.valueOf(recalculado));
-                    uti.setText(Tools.roundingValue((precio - costo), 4));
+                    uti.setText(Tools.roundingValue((precio - costo), 6));
                 }
             } else {
                 double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
@@ -926,9 +926,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                 double precio = Tools.calculateValueNeto(impuesto, precioNeto);
 
-                pre.setText(Tools.roundingValue(precio, 4));
+                pre.setText(Tools.roundingValue(precio, 6));
                 mar.setText(String.valueOf(0));
-                uti.setText(Tools.roundingValue((0), 4));
+                uti.setText(Tools.roundingValue((0), 6));
             }
         }
     }

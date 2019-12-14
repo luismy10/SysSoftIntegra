@@ -157,7 +157,7 @@ public class FxComprasDetalleController implements Initializable {
             protected ArrayList<Object> call() throws Exception {
                 arrayArticulos.clear();
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
                 });
                 ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
                 return objects;
