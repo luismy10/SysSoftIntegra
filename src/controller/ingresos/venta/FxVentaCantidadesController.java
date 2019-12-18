@@ -73,12 +73,15 @@ public class FxVentaCantidadesController implements Initializable {
         suministroTB.setCantidad(cantidad);
         double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
 
+        suministroTB.setDescuentoCalculado(porcentajeRestante);
         suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+
+        double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
 
         suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-        suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
-        suministroTB.setTotalImporte(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
+        suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+        suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
         ventaEstructuraController.getTvList().refresh();
         ventaEstructuraController.calculateTotales();

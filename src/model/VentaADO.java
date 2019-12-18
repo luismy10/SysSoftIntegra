@@ -91,17 +91,16 @@ public class VentaADO {
                     + ",Cantidad\n"
                     + ",CantidadGranel\n"
                     + ",CostoVenta\n"
-                    + ",CostoVentaGranel\n"
                     + ",PrecioVenta\n"
-                    + ",PrecioVentaGranel\n"
                     + ",Descuento\n"
+                    + ",DescuentoCalculado\n"
+                    + ",IdOperacion\n"
                     + ",IdImpuesto\n"
                     + ",NombreImpuesto\n"
                     + ",ValorImpuesto\n"
-                    + ",ImpuestoSumado\n"
                     + ",Importe)\n"
                     + "VALUES\n"
-                    + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             suministro_update_unidad = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad - ? WHERE IdSuministro = ?");
             suministro_update_granel = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad - (? / PrecioVentaGeneral) WHERE IdSuministro = ?");
@@ -174,15 +173,14 @@ public class VentaADO {
 
                 detalle_venta.setDouble(4, cantidadGranel);
                 detalle_venta.setDouble(5, tvList.getItems().get(i).getCostoCompra());
-                detalle_venta.setDouble(6, 0);
-                detalle_venta.setDouble(7, tvList.getItems().get(i).getPrecioVentaGeneralReal());
-                detalle_venta.setDouble(8, 0);
-                detalle_venta.setDouble(9, tvList.getItems().get(i).getDescuento());
+                detalle_venta.setDouble(6, tvList.getItems().get(i).getPrecioVentaGeneralReal());
+                detalle_venta.setDouble(7, tvList.getItems().get(i).getDescuento());
+                detalle_venta.setDouble(8, tvList.getItems().get(i).getDescuentoCalculado());
+                detalle_venta.setDouble(9, tvList.getItems().get(i).getImpuestoOperacion());
                 detalle_venta.setDouble(10, tvList.getItems().get(i).getImpuestoArticulo());
                 detalle_venta.setString(11, tvList.getItems().get(i).getImpuestoArticuloName());
                 detalle_venta.setDouble(12, tvList.getItems().get(i).getImpuestoValor());
-                detalle_venta.setDouble(13, tvList.getItems().get(i).getImpuestoSumado());
-                detalle_venta.setDouble(14, tvList.getItems().get(i).getTotalImporte());
+                detalle_venta.setDouble(13, tvList.getItems().get(i).getTotalImporte());
                 detalle_venta.addBatch();
 
                 if (tvList.getItems().get(i).isInventario() && tvList.getItems().get(i).getValorInventario() == 1) {
@@ -395,7 +393,15 @@ public class VentaADO {
                     ventaTB = new VentaTB();
                     ventaTB.setFechaVenta(resultSetVenta.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
                     ventaTB.setHoraVenta(resultSetVenta.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                    ventaTB.setCliente(resultSetVenta.getString("Apellidos") + " " + resultSetVenta.getString("Nombres"));
+                    //Cliente start
+                    ClienteTB clienteTB = new ClienteTB();
+                    clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
+                    clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
+                    clienteTB.setApellidos(resultSetVenta.getString("Apellidos"));
+                    clienteTB.setNombres(resultSetVenta.getString("Nombres"));
+                    clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
+                    ventaTB.setClienteTB(clienteTB);
+                    //Cliente end
                     ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
                     ventaTB.setComproabanteNameImpresion(resultSetVenta.getString("NombreImpresion"));
                     ventaTB.setSerie(resultSetVenta.getString("Serie"));
@@ -403,12 +409,16 @@ public class VentaADO {
                     ventaTB.setObservaciones(resultSetVenta.getString("Observaciones"));
                     ventaTB.setTipoName(resultSetVenta.getString("Tipo"));
                     ventaTB.setEstadoName(resultSetVenta.getString("Estado"));
-                    ventaTB.setMonedaName(resultSetVenta.getString("Simbolo"));
                     ventaTB.setEfectivo(resultSetVenta.getDouble("Efectivo"));
                     ventaTB.setVuelto(resultSetVenta.getDouble("Vuelto"));
                     ventaTB.setTotal(resultSetVenta.getDouble("Total"));
                     ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
-
+                    //moneda start
+                    MonedaTB monedaTB = new MonedaTB();
+                    monedaTB.setAbreviado(resultSetVenta.getString("Abreviado")); 
+                    monedaTB.setSimbolo(resultSetVenta.getString("Simbolo"));
+                    ventaTB.setMonedaTB(monedaTB);
+                    //moneda end
                     objects.add(ventaTB);
                 } else {
                     objects.add(ventaTB);
@@ -443,20 +453,31 @@ public class VentaADO {
                     suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
                     suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
                     suministroTB.setUnidadCompraName(resultSetLista.getString("UnidadCompra"));
-                    suministroTB.setImpuestoArticulo(resultSetLista.getInt("IdImpuesto"));
+
                     suministroTB.setCantidad(resultSetLista.getDouble("Cantidad"));
                     suministroTB.setCantidadGranel(resultSetLista.getDouble("CantidadGranel"));
                     suministroTB.setCostoCompra(resultSetLista.getDouble("CostoVenta"));
-                    suministroTB.setPrecioVentaGeneral(resultSetLista.getDouble("PrecioVenta"));
+
                     suministroTB.setDescuento(resultSetLista.getDouble("Descuento"));
-                    suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
-                    double porcentajeDecimal = suministroTB.getDescuento() / 100.00;
-                    double porcentajeRestante = suministroTB.getPrecioVentaGeneral() * porcentajeDecimal;
+
+                    suministroTB.setPrecioVentaGeneralUnico(resultSetLista.getDouble("PrecioVenta") + resultSetLista.getDouble("DescuentoCalculado"));
+                    suministroTB.setPrecioVentaGeneralReal(resultSetLista.getDouble("PrecioVenta"));
+
+                    double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+
+                    suministroTB.setImpuestoArticuloName(resultSetLista.getString("NombreImpuesto"));
+                    suministroTB.setImpuestoArticulo(resultSetLista.getInt("IdImpuesto"));
                     suministroTB.setImpuestoValor(resultSetLista.getDouble("ValorImpuesto"));
-                    suministroTB.setImpuestoSumado(resultSetLista.getDouble("ImpuestoSumado"));
-                    suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
-                    suministroTB.setTotalImporte(resultSetLista.getDouble("Importe"));
+
+                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+
+                    suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                    suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+
                     empList.add(suministroTB);
                 }
                 objects.add(empList);
@@ -662,7 +683,7 @@ public class VentaADO {
             preparedStatement.setBoolean(3, tipoOrden);
             preparedStatement.setBoolean(4, ordern);
             resultSet = preparedStatement.executeQuery();
-          
+
             while (resultSet.next()) {
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setFechaVenta(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
@@ -671,7 +692,7 @@ public class VentaADO {
                 ventaTB.setTotal(ventaTB.getEstado() == 3
                         ? 0 : resultSet.getDouble("Total"));
                 arrayList.add(ventaTB);
-            
+
             }
         } catch (SQLException ex) {
             System.out.println("Venta ADO:" + ex.getLocalizedMessage());

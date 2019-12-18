@@ -49,26 +49,31 @@ public class FxVentaGranelController implements Initializable {
                 ? (Double.parseDouble(txtImporte.getText()) <= 0 ? oldPrecio : Double.parseDouble(txtImporte.getText()))
                 : oldPrecio;
 
-        double value = opcion ? importe + suministroTB.getPrecioVentaGeneral() : importe;
+        double value = opcion ? importe + suministroTB.getPrecioVentaGeneralUnico(): importe;
 
         double porcentajeRestante = value * (suministroTB.getDescuento() / 100.00);
         double preciocalculado = value - porcentajeRestante;
 
-        suministroTB.setPrecioVentaGeneralReal(Tools.calculateValueNeto(suministroTB.getImpuestoValor(), value));
+        suministroTB.setDescuentoCalculado(porcentajeRestante);
+        suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-        suministroTB.setPrecioVentaGeneral(preciocalculado);
-        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+        suministroTB.setPrecioVentaGeneralUnico(value);
+        suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
-        suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-        suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
-        suministroTB.setTotalImporte(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
+        double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+
+        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+        suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+
+        suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+        suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+        suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
         ventaEstructuraController.getTvList().refresh();
         ventaEstructuraController.calculateTotales();
         Tools.Dispose(window);
         ventaEstructuraController.getTxtSearch().requestFocus();
         ventaEstructuraController.getTxtSearch().clear();
-
     }
 
     @FXML

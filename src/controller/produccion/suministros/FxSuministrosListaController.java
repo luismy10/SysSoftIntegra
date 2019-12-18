@@ -159,7 +159,7 @@ public class FxSuministrosListaController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getOperacion(),e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         paginacion = 1;
@@ -336,6 +336,17 @@ public class FxSuministrosListaController implements Initializable {
         }
         return ret;
     }
+    
+    public int getTaxValueOperacion(int impuesto) {
+        int valor = 0;
+        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
+            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
+                valor = arrayArticulosImpuesto.get(i).getOperacion();
+                break;
+            }
+        }
+        return valor;
+    }
 
     public double getTaxValue(int impuesto) {
         double valor = 0;
@@ -369,22 +380,24 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setCostoCompra(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
 
             suministroTB.setDescuento(0);
+            suministroTB.setDescuentoCalculado(0);
             suministroTB.setDescuentoSumado(0);
 
             suministroTB.setPrecioVentaGeneralUnico(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             suministroTB.setPrecioVentaGeneralReal(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
             suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
 
+            suministroTB.setImpuestoOperacion(getTaxValueOperacion(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()));
             suministroTB.setImpuestoArticulo(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo());
             suministroTB.setImpuestoArticuloName(getTaxName(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()));
             suministroTB.setImpuestoValor(getTaxValue(tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()));
-            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
 
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
 
-            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-            suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
-            suministroTB.setTotalImporte(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
+            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
             suministroTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             suministroTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());

@@ -44,16 +44,17 @@ public class FxVentaDescuentoController implements Initializable {
             double porcentajeRestante = precio * (descuento / 100.00);
             double preciocalculado = precio - porcentajeRestante;
 
+            suministroTB.setDescuento(descuento);
+            suministroTB.setDescuentoCalculado(porcentajeRestante);
+            suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+
             suministroTB.setPrecioVentaGeneralUnico(precio);
             suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
-            double impuesto = (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00));
+            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
 
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
-
-            suministroTB.setDescuento(descuento);
-            suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
             suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
             suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());

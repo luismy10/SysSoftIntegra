@@ -8,6 +8,7 @@ public class ClienteTB {
     private SimpleIntegerProperty id;
     private String idCliente;
     private int tipoDocumento;
+    private String tipoDocumentoName;
     private String numeroDocumento;
     private String apellidos;
     private String nombres;
@@ -47,6 +48,14 @@ public class ClienteTB {
 
     public void setTipoDocumento(int tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getTipoDocumentoName() {
+        return tipoDocumentoName;
+    }
+
+    public void setTipoDocumentoName(String tipoDocumentoName) {
+        this.tipoDocumentoName = tipoDocumentoName;
     }
 
     public String getNumeroDocumento() {

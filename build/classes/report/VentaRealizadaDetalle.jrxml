@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="120" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="004c1a4f-7bb5-4a27-9d30-1b3356608805">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="688"/>
+	<property name="ireport.y" value="16"/>
+	<parameter name="VALOR_VENTA" class="java.lang.String"/>
+	<parameter name="DESCUENTO" class="java.lang.String"/>
+	<parameter name="SUB_TOTAL" class="java.lang.String"/>
+	<parameter name="TOTAL" class="java.lang.String"/>
+	<field name="impuestoArticuloName" class="java.lang.String"/>
+	<field name="impuestoValor" class="java.lang.Double"/>
+	<columnHeader>
+		<band height="58">
+			<staticText>
+				<reportElement x="318" y="38" width="123" height="20" forecolor="#1A2226" uuid="4e30bd70-02bd-4b69-9437-a3b1c6e03093"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Sub Importe:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="19" width="123" height="20" uuid="9412492f-6185-47d0-94c2-be877a5ed417"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Descuento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="0" width="123" height="20" uuid="dd9aec9f-cf18-42da-94db-7cf335955850"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Valor Venta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="456" y="38" width="100" height="20" forecolor="#1A2226" uuid="e98c40b7-ded2-4cfb-8f51-aa5d4fbf832a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SUB_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="19" width="100" height="20" forecolor="#1A2226" uuid="a34d38d3-08dd-441d-9ce9-c3fa596bddec"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESCUENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="0" width="100" height="20" forecolor="#1A2226" uuid="c21cdd80-832d-485d-b2a2-f1a83c5faa23"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VALOR_VENTA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="318" y="57" width="237" height="1" forecolor="#1A2226" uuid="53cb9b5d-cb0a-4586-b630-ffd92cdef154"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="318" y="0" width="123" height="20" forecolor="#1A2226" uuid="aaebbfe8-ccdd-4aaf-a1f7-14550d747325"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{impuestoArticuloName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="0" width="100" height="20" forecolor="#1A2226" uuid="286328c2-3e81-4e14-a50a-2d86bf3f1903"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{impuestoValor})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20">
+			<rectangle>
+				<reportElement x="318" y="0" width="236" height="20" forecolor="#0D4E9E" backcolor="#0D4E9E" uuid="23d99dc2-750d-4267-8bdc-76d9ee836034"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="318" y="0" width="123" height="20" forecolor="#FFFFFF" uuid="998e2a0f-a525-4ce7-bc9c-16db8461e73c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total importe:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="456" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="2bf79560-e766-49c9-9046-f439a98d835b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
