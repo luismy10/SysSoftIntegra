@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tickets.FxTicketVariableController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tickets.FxTicketVariableController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -29,7 +29,7 @@
                      <children>
                         <Label styleClass="labelOpenSansRegular14" text="Doble click para agregar a la lista" />
                         <ListView fx:id="lvLista" onMouseClicked="#onMouseClickedList" prefHeight="280.0" prefWidth="320.0" />
-                        <TextField fx:id="txtContenido" styleClass="text-field-normal" />
+                        <TextField fx:id="txtContenido" disable="true" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

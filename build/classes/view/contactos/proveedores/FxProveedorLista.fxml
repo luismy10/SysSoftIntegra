@@ -55,8 +55,8 @@
                         <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefWidth="970.0" styleClass="table-view-principal">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcDocument" prefWidth="190.0" style="-fx-alignment: CENTER;" text="Documento" />
-                              <TableColumn fx:id="tcRepresentative" prefWidth="455.0" text="Razón social/Nombre comercial" />
+                              <TableColumn fx:id="tcDocument" prefWidth="190.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
+                              <TableColumn fx:id="tcRepresentative" prefWidth="455.0" text="Datos personales/Razón social o Nombre comercial" />
                               <TableColumn fx:id="tcMovil" prefWidth="240.0" text="Tel/Cel" />
                            </columns>
                         </TableView>

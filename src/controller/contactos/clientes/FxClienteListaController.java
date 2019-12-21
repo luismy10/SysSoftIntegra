@@ -76,13 +76,8 @@ public class FxClienteListaController implements Initializable {
             }
         });
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
-        tcPersona.setCellValueFactory(cellData
-                -> Bindings.concat(
-                        cellData.getValue().getApellidos() + " ",
-                        cellData.getValue().getNombres()
-                )
-        );
+        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoDocumentoName() + ": " + cellData.getValue().getNumeroDocumento()));
+        tcPersona.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getApellidos() + " ", cellData.getValue().getNombres()));
         tcDireccion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDireccion()));
     }
 

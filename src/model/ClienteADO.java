@@ -105,6 +105,7 @@ public class ClienteADO {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setId(rsEmps.getRow());
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                clienteTB.setTipoDocumentoName(rsEmps.getString("Documento")); 
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setApellidos(rsEmps.getString("Apellidos"));
                 clienteTB.setNombres(rsEmps.getString("Nombres"));

@@ -186,7 +186,7 @@ public class FxVentaDetalleController implements Initializable {
                         lblTipo.setText(ventaTB.getTipoName());
                         lblEstado.setText(ventaTB.getEstadoName());
                         btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
-                        lblTotalVenta.setText(ventaTB.getMonedaName() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+                        lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
                         simboloMoneda = ventaTB.getMonedaTB().getSimbolo();
                         efectivo = ventaTB.getEfectivo();
                         vuelto = ventaTB.getVuelto();
@@ -495,13 +495,14 @@ public class FxVentaDetalleController implements Initializable {
             map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
 
             map.put("FECHAEMISION", ventaTB.getFechaVenta());
-            map.put("MONEDA", simboloMoneda);
+            map.put("MONEDA", ventaTB.getMonedaTB().getAbreviado());
 
             map.put("VALOR_VENTA", lblValorVenta.getText());
             map.put("DESCUENTO", lblDescuento.getText());
             map.put("SUB_TOTAL", lblSubTotal.getText());
             map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
             map.put("TOTAL", lblTotal.getText());
+            map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaDetalleController.class.getResourceAsStream("/report/VentaRealizada.jasper"), map, new JRBeanCollectionDataSource(list));
 

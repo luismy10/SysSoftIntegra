@@ -83,7 +83,9 @@ public class FxProveedorListaController implements Initializable {
         });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
+        tcDocument.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getTipoDocumentoName().get() + ": " + cellData.getValue().getNumeroDocumento().get())
+        );
         tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getRazonSocial().get() + "\n" + cellData.getValue().getNombreComercial().get()
         ));
