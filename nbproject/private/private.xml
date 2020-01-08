@@ -3,8 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/tickets/FxTicketVariableController.java</file>
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/ingresos/venta/FxVentaDetalleController.java</file>
+            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/tools/BillPrintable.java</file>
+            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/impresoras/FxImprimirController.java</file>
             <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/tickets/FxTicketController.java</file>
         </group>
     </open-files>

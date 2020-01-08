@@ -10,12 +10,12 @@
     font-family: 'Roboto'; 
     src: url('Roboto-Regular.ttf'); 
 } 
+@font-face {
+    font-family: 'Monospace'; 
+    src: url('Monospace.ttf'); 
+} 
 
 /*OPEN SANS FONT*/
-@font-face { 
-    font-family: 'Open Regular'; 
-    src: url('OpenSans-Regular.ttf'); 
-} 
 
 .labelForm{
     -fx-font-family:"Roboto";  

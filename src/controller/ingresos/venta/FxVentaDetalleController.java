@@ -292,7 +292,7 @@ public class FxVentaDetalleController implements Initializable {
                 object.add((HBox) hbEncabezado.getChildren().get(i));
                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                 rows++;
-                lines = billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket);
+                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket);
             }
 
             for (int m = 0; m < arrList.size(); m++) {
@@ -301,16 +301,23 @@ public class FxVentaDetalleController implements Initializable {
                     hBox.setId("dc_" + m + "" + i);
                     HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                     rows++;
-                    lines = billPrintable.hbDetalle(hBox, box, arrList, m);
+                    lines += billPrintable.hbDetalle(hBox, box, arrList, m);
                     object.add(hBox);
                 }
             }
 
             for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                System.out.println((HBox) hbPie.getChildren().get(i)); 
                 object.add((HBox) hbPie.getChildren().get(i));
+//                if(){
+//                    
+//                }else{
+//                    
+//                }
                 HBox box = ((HBox) hbPie.getChildren().get(i));
                 rows++;
-                lines = billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto);
+                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto);
+           
             }
 
             billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);

@@ -770,7 +770,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
                             : 0;
                 }
                 double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
-                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 6));
+                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 8));
 
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
@@ -789,7 +789,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             } else {
                 //toma el valor del impuesto del combo box
                 double valorCalculado = Double.parseDouble(cos.getText());
-                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 6));
+                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 8));
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
 //
@@ -825,11 +825,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                         double porcentaje = (precio * 100.00) / costo;
 
-                        int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 6)), 0)));
+                        int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 8)), 0)));
 
-                        prec.setText(Tools.roundingValue(precio, 6));
+                        prec.setText(Tools.roundingValue(precio, 8));
                         mar.setText(String.valueOf(recalculado));
-                        util.setText(Tools.roundingValue((precio - costo), 6));
+                        util.setText(Tools.roundingValue((precio - costo), 8));
                     }
                 } else {
                     double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
@@ -837,9 +837,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                     double precio = Tools.calculateValueNeto(impuesto, precioNeto);
 
-                    prec.setText(Tools.roundingValue(precio, 6));
+                    prec.setText(Tools.roundingValue(precio, 8));
                     mar.setText(String.valueOf(0));
-                    util.setText(Tools.roundingValue((0), 6));
+                    util.setText(Tools.roundingValue((0), 8));
                 }
             }
         }
@@ -858,7 +858,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             int recalculado = (int) Math.abs(100
                     - Double.parseDouble(
                             Tools.roundingValue(Double.parseDouble(
-                                    Tools.roundingValue(porcentaje, 6)), 0)));
+                                    Tools.roundingValue(porcentaje, 8)), 0)));
 
             double impuesto = Tools.calculateTax(
                     cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
@@ -869,8 +869,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
             double precioimpuesto = (precio + impuesto);
 
             mar.setText(String.valueOf(recalculado));
-            uti.setText(Tools.roundingValue((precio - costo), 6));
-            preneto.setText(Tools.roundingValue(precioimpuesto, 6));
+            uti.setText(Tools.roundingValue((precio - costo), 8));
+            preneto.setText(Tools.roundingValue(precioimpuesto, 8));
         }
     }
 
@@ -889,9 +889,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     precio);
             double precioimpuesto = (precio + impuesto);
 
-            pre.setText(Tools.roundingValue(precio, 6));
-            uti.setText(Tools.roundingValue((precio - costo), 6));
-            preneto.setText(Tools.roundingValue(precioimpuesto, 6));
+            pre.setText(Tools.roundingValue(precio, 8));
+            uti.setText(Tools.roundingValue((precio - costo), 8));
+            preneto.setText(Tools.roundingValue(precioimpuesto, 8));
         }
     }
 
@@ -914,11 +914,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     int recalculado = (int) Math.abs(100
                             - Double.parseDouble(
                                     Tools.roundingValue(Double.parseDouble(
-                                            Tools.roundingValue(porcentaje, 6)), 0)));
+                                            Tools.roundingValue(porcentaje, 8)), 0)));
 
-                    pre.setText(Tools.roundingValue(precio, 6));
+                    pre.setText(Tools.roundingValue(precio, 8));
                     mar.setText(String.valueOf(recalculado));
-                    uti.setText(Tools.roundingValue((precio - costo), 6));
+                    uti.setText(Tools.roundingValue((precio - costo), 8));
                 }
             } else {
                 double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
@@ -926,9 +926,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                 double precio = Tools.calculateValueNeto(impuesto, precioNeto);
 
-                pre.setText(Tools.roundingValue(precio, 6));
+                pre.setText(Tools.roundingValue(precio, 8));
                 mar.setText(String.valueOf(0));
-                uti.setText(Tools.roundingValue((0), 6));
+                uti.setText(Tools.roundingValue((0), 8));
             }
         }
     }

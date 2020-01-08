@@ -938,7 +938,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbEncabezado.getChildren().get(i));
             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
             rows++;
-            lines = billPrintable.hbEncebezado(box, documento, ticket);
+            lines += billPrintable.hbEncebezado(box, documento, ticket);
         }
 
         for (int m = 0; m < tvList.getItems().size(); m++) {
@@ -947,7 +947,7 @@ public class FxVentaEstructuraController implements Initializable {
                 hBox.setId("dc_" + m + "" + i);
                 HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                 rows++;
-                lines = billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
+                lines += billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
                 object.add(hBox);
             }
         }
@@ -956,7 +956,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbPie.getChildren().get(i));
             HBox box = ((HBox) hbPie.getChildren().get(i));
             rows++;
-            lines = billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel);
+            lines += billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel);
         }
         billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", nombre_impresora, cortar);
 

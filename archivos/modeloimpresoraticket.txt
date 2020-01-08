@@ -1,23 +1,26 @@
                                         
              NOTA DE VENTA              
-             T001-00000002              
+             T001-00000011              
 AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
-LIMA PERU HUANCAYO                      
+LIMA - PERU - HUANCAYO                  
 ----------------------------------------
 DESCRIPCION.                            
 CANT.     P.UNIT.     DESCT.     IMPORTE
 ----------------------------------------
 PINTURA RP 30ML                         
-10.00     30.00         0%        300.00
+1.00      30.00         0%         30.00
 ALAMBRE ROJO 3X4                        
-20.00     3.00          0%         60.00
-ARENA FINA                              
-1.00      80.00         0%         80.00
+10.00     3.00          0%         30.00
+AGUA CIELO 10ML                         
+1.00      1.18          0%          1.00
 ----------------------------------------
-VALOR VENTA                    S/ 440.00
+VALOR VENTA                     S/ 61.00
 DESCUENTO                        S/ 0.00
-SUB IMPORTE                    S/ 440.00
-TOTAL                          S/ 440.00
+SUB IMPORTE                     S/ 61.00
+----------------------------------------
+TOTAL                           S/ 61.00
+----------------------------------------
+CODIGO       6636100000011              
 
                                        
 

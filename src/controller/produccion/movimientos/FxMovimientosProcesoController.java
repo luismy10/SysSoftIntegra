@@ -165,7 +165,7 @@ public class FxMovimientosProcesoController implements Initializable {
 
         if (!tvList.getItems().isEmpty()) {
             int validete = 0;
-            validete = tvList.getItems().stream().filter((e) -> (e.getMovimiento() <= 0)).map((_item) -> 1).reduce(validete, Integer::sum);
+            validete = tvList.getItems().stream().filter((SuministroTB e) -> e.getMovimiento() <= 0).map((_item) -> 1).reduce(validete, Integer::sum);
             if (validete > 0) {
                 openAlertMessageWarning("Su nueva existencia de un producto no puede ser menor que 0.");
             } else if (cbAjuste.getSelectionModel().getSelectedIndex() < 0) {

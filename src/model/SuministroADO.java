@@ -660,6 +660,7 @@ public class SuministroADO {
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico")); 
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
@@ -708,6 +709,7 @@ public class SuministroADO {
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico")); 
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));

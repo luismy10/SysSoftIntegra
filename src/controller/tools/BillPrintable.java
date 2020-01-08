@@ -40,11 +40,11 @@ import org.json.simple.JSONObject;
 public class BillPrintable implements Printable {
 
     private String tickt;
-    
+
     private short sheetWidth;
 
     public BillPrintable() {
-        sheetWidth=0;
+        sheetWidth = 0;
     }
 
     @Override
@@ -182,7 +182,7 @@ public class BillPrintable implements Printable {
             } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
                 fieldTicket.setText(Session.TICKET_CODIGOVENTA);
             }
-            lines += fieldTicket.getLines();
+            lines = fieldTicket.getLines();
         }
         return lines;
     }
@@ -204,8 +204,8 @@ public class BillPrintable implements Printable {
             } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
                 fieldTicket.setText(Tools.roundingValue(arrList.get(m).getTotalImporte(), 2));
             }
-            hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(),fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable()));
-            lines += fieldTicket.getLines();
+            hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable()));
+            lines = fieldTicket.getLines();
         }
         return lines;
     }
@@ -233,7 +233,7 @@ public class BillPrintable implements Printable {
             } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
                 fieldTicket.setText(Session.TICKET_CODIGOVENTA);
             }
-            lines += fieldTicket.getLines();
+            lines = fieldTicket.getLines();
         }
         return lines;
     }
@@ -410,13 +410,14 @@ public class BillPrintable implements Printable {
         return bArray;
     }
 
-    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable) {
+    private TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
         field.setColumnWidth(widthColumn);
         field.setVariable(variable);
         field.setEditable(editable);
+        field.getStyleClass().add("text-field-ticket");
         field.setAlignment(align);
         return field;
     }
@@ -426,7 +427,9 @@ public class BillPrintable implements Printable {
         hbEncabezado.getChildren().clear();
         hbDetalleCabecera.getChildren().clear();
         hbPie.getChildren().clear();
+
         sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
+
         if (jSONObject.get("cabecera") != null) {
             JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
             for (int i = 0; i < cabeceraObjects.size(); i++) {
@@ -461,7 +464,7 @@ public class BillPrintable implements Printable {
                     Iterator it = array.iterator();
                     while (it.hasNext()) {
                         JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()),Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                         box.getChildren().add(field);
                     }
                 }
@@ -485,9 +488,12 @@ public class BillPrintable implements Printable {
                         TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
                         box.getChildren().add(field);
                     }
+
                 }
+
             }
         }
+
     }
 
     private HBox generateElement(VBox contenedor, String id) {
@@ -526,6 +532,6 @@ public class BillPrintable implements Printable {
 
     public void setSheetWidth(short sheetWidth) {
         this.sheetWidth = sheetWidth;
-    }    
+    }
 
 }

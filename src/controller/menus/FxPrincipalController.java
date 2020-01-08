@@ -168,7 +168,7 @@ public class FxPrincipalController implements Initializable {
                 @Override
                 protected ObservableList<MenuTB> call() throws Exception {
                     Thread.sleep(1000);
-                  
+
                     btnInicio.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxInicio, btnInicio));
                     btnOperaciones.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxOperaciones, btnOperaciones));
                     btnConsultas.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxConsultas, btnConsultas));
@@ -263,13 +263,17 @@ public class FxPrincipalController implements Initializable {
     public void initInicioController() {
         Stage stage = (Stage) spWindow.getScene().getWindow();
         stage.setOnCloseRequest(c -> {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            short option = Tools.AlertMessageConfirmation(spWindow, "SysSoft Integra", "¿Está seguro de cerrar la aplicación?");
-            if (option == 1) {
-                System.exit(0);
-            } else {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                c.consume();
+            try {
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                short option = Tools.AlertMessageConfirmation(spWindow, "SysSoft Integra", "¿Está seguro de cerrar la aplicación?");
+                if (option == 1) {
+                    System.exit(0);
+                } else {
+                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    c.consume();
+                }
+            } catch (Exception ex) {
+                System.out.println("Close window:" + ex.getLocalizedMessage());
             }
         });
 
