@@ -4,7 +4,7 @@ import javafx.scene.control.TextField;
 
 public class TextFieldTicket extends TextField {
 
-    private short columnWidth;
+    private int columnWidth;
 
     private boolean multilineas;
 
@@ -22,11 +22,11 @@ public class TextFieldTicket extends TextField {
         setPrefHeight(height);
     }
 
-    public short getColumnWidth() {
+    public int getColumnWidth() {
         return columnWidth;
     }
 
-    public void setColumnWidth(short columnWidth) {
+    public void setColumnWidth(int columnWidth) {
         this.columnWidth = columnWidth;
     }
 

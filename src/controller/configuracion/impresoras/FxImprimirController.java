@@ -7,7 +7,6 @@ import controller.tools.TextFieldTicket;
 import controller.tools.Tools;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -110,7 +109,7 @@ public class FxImprimirController implements Initializable {
                     //band
                     Element bandtitle = doc.createElement("band");
                     addAttr(doc, bandtitle, "height", "" + 100);
-                    addStaticText(doc, bandtitle, 0, 0, 313, 50);
+                    addStaticText(doc, bandtitle, 0, 0, 313, 50);  
 //            addTextField(doc, bandtitle, 0, 50, 100, 50);
                     //create new elements
 

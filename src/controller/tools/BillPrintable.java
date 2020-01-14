@@ -41,7 +41,7 @@ public class BillPrintable implements Printable {
 
     private String tickt;
 
-    private short sheetWidth;
+    private int sheetWidth;
 
     public BillPrintable() {
         sheetWidth = 0;
@@ -410,7 +410,7 @@ public class BillPrintable implements Printable {
         return bArray;
     }
 
-    private TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable) {
+    private TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, int widthColumn, Pos align, boolean editable, String variable) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
@@ -530,7 +530,7 @@ public class BillPrintable implements Printable {
         }
     }
 
-    public void setSheetWidth(short sheetWidth) {
+    public void setSheetWidth(int sheetWidth) {
         this.sheetWidth = sheetWidth;
     }
 

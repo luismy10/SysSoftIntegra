@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="SysSoftIntegra.jnlp">
+  <information>
+    <title>SysSoftIntegra</title>
+    <vendor>Aleza</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="SysSoftIntegra.jar" size="70731453" download="eager" />
+    <jar href="lib\Arial.jar" size="140549" download="eager" />
+    <jar href="lib\Monospace.jar" size="361151" download="eager" />
+    <jar href="lib\Util.jar" size="11957" download="eager" />
+    <jar href="lib\barbecue-1.5-beta1.jar" size="91079" download="eager" />
+    <jar href="lib\commons-beanutils-1.8.2.jar" size="231891" download="eager" />
+    <jar href="lib\commons-collections-3.2.1.jar" size="575389" download="eager" />
+    <jar href="lib\commons-digester-2.1.jar" size="196768" download="eager" />
+    <jar href="lib\commons-javaflow-20060411.jar" size="96529" download="eager" />
+    <jar href="lib\commons-logging-1.1.1.jar" size="60686" download="eager" />
+    <jar href="lib\groovy-all-1.7.5.jar" size="5482221" download="eager" />
+    <jar href="lib\iText-2.1.7.jar" size="1130070" download="eager" />
+    <jar href="lib\iText-5.0.5.jar" size="1599728" download="eager" />
+    <jar href="lib\jasperreports-4.7.1.jar" size="3998149" download="eager" />
+    <jar href="lib\jasperreports-fonts-4.0.0.jar" size="2480052" download="eager" />
+    <jar href="lib\jasperreports-javaflow-4.7.1.jar" size="4041522" download="eager" />
+    <jar href="lib\json-simple-1.1.1.jar" size="23737" download="eager" />
+    <jar href="lib\png-encoder-1.5.jar" size="18117" download="eager" />
+    <jar href="lib\poi-3.12-20150511.jar" size="2136557" download="eager" />
+    <jar href="lib\poi-3.7.jar" size="1675036" download="eager" />
+    <jar href="lib\poi-excelant-3.12-20150511.jar" size="30462" download="eager" />
+    <jar href="lib\poi-ooxml-3.12-20150511.jar" size="1222491" download="eager" />
+    <jar href="lib\poi-ooxml-schemas-3.12-20150511.jar" size="5617718" download="eager" />
+    <jar href="lib\poi-scratchpad-3.12-20150511.jar" size="1303692" download="eager" />
+    <jar href="lib\rtextpr.jar" size="181415" download="eager" />
+    <jar href="lib\sqljdbc4.jar" size="584207" download="eager" />
+    <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="SysSoftIntegra" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="controller.preloader.SysSoftIntegra"  name="SysSoftIntegra" />
+  <update check="always"/>
+</jnlp>

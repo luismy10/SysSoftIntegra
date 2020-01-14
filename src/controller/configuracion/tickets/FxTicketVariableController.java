@@ -39,7 +39,7 @@ public class FxTicketVariableController implements Initializable {
 
     private HBox hBox;
 
-    private short sheetWidth;
+    private int sheetWidth;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,7 +49,7 @@ public class FxTicketVariableController implements Initializable {
         listPie = new ArrayList<>();
     }
 
-    public void setLoadComponent(HBox hBox, short sheetWidth) {
+    public void setLoadComponent(HBox hBox, int sheetWidth) {
         this.hBox = hBox;
         this.sheetWidth = sheetWidth;
         if (hBox.getId().substring(0, 2).equalsIgnoreCase("cb")) {
