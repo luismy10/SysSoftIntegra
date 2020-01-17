@@ -415,6 +415,7 @@ public class VentaADO {
                     ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
                     //moneda start
                     MonedaTB monedaTB = new MonedaTB();
+                    monedaTB.setNombre(resultSetVenta.getString("Nombre"));
                     monedaTB.setAbreviado(resultSetVenta.getString("Abreviado")); 
                     monedaTB.setSimbolo(resultSetVenta.getString("Simbolo"));
                     ventaTB.setMonedaTB(monedaTB);

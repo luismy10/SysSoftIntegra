@@ -2,6 +2,7 @@ package controller.ingresos.venta;
 
 import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
+import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
@@ -112,6 +113,8 @@ public class FxVentaDetalleController implements Initializable {
     private ArrayList<ImpuestoTB> arrayArticulos;
 
     private BillPrintable billPrintable;
+    
+    private ConvertMonedaCadena monedaCadena;
 
     private VentaTB ventaTB;
 
@@ -135,6 +138,7 @@ public class FxVentaDetalleController implements Initializable {
         hbEncabezado = new VBox();
         hbDetalleCabecera = new VBox();
         hbPie = new VBox();
+        monedaCadena = new ConvertMonedaCadena();
     }
 
     public void setInitComponents(String idVenta) {
@@ -510,6 +514,7 @@ public class FxVentaDetalleController implements Initializable {
             map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
             map.put("TOTAL", lblTotal.getText());
             map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
+            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaDetalleController.class.getResourceAsStream("/report/VentaRealizada.jasper"), map, new JRBeanCollectionDataSource(list));
 

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="120" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="004c1a4f-7bb5-4a27-9d30-1b3356608805">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="1000"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="40"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="VALOR_VENTA" class="java.lang.String"/>
 	<parameter name="DESCUENTO" class="java.lang.String"/>
 	<parameter name="SUB_TOTAL" class="java.lang.String"/>
 	<parameter name="TOTAL" class="java.lang.String"/>
 	<parameter name="SIMBOLO" class="java.lang.String"/>
+	<parameter name="VALORSOLES" class="java.lang.String"/>
 	<field name="impuestoArticuloName" class="java.lang.String"/>
 	<field name="impuestoValor" class="java.lang.Double"/>
 	<columnHeader>
@@ -60,6 +61,14 @@
 			<line>
 				<reportElement x="318" y="57" width="237" height="1" forecolor="#1A2226" uuid="53cb9b5d-cb0a-4586-b630-ffd92cdef154"/>
 			</line>
+			<textField>
+				<reportElement x="0" y="0" width="295" height="20" forecolor="#1A2226" uuid="3fa9463c-e8f6-451b-920e-f325cf53a38f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VALORSOLES}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>

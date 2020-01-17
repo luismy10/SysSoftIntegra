@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -17,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.suministros.FxSuministrosCompraController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.suministros.FxSuministrosCompraController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -63,7 +62,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="txtCantidad" onAction="#onActionAdd" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" promptText="0.00" styleClass="text-field-normal" />
+                  <TextField fx:id="txtCantidad" onAction="#onActionAdd" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
                   <Label fx:id="lblMedida" styleClass="labelRobotoBold14" text="Medida" textFill="#034f8a" />
                </children>
                <padding>
@@ -74,20 +73,6 @@
                <children>
                   <HBox style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <VBox style="-fx-spacing: 0.4166666666666667em;">
-                           <children>
-                              <Label styleClass="labelRoboto14" text="Impuesto" textFill="#23283a">
-                                 <font>
-                                    <Font name="Roboto" size="14.0" />
-                                 </font>
-                              </Label>
-                              <ScrollPane fitToWidth="true" prefHeight="100.0" prefWidth="253.0" style="-fx-border-color: #ccc;" VBox.vgrow="ALWAYS">
-                                 <content>
-                                    <VBox fx:id="vbImpuestos" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;" />
-                                 </content>
-                              </ScrollPane>
-                           </children>
-                        </VBox>
                         <VBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>
                               <VBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
@@ -97,17 +82,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtCosto" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" promptText="0.00" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                 <children>
-                                    <Label styleClass="labelRoboto14" text="Costo Calculado" textFill="#23283a">
-                                       <font>
-                                          <Font name="Roboto" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtCostoPromedio" disable="true" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" prefHeight="30.0" prefWidth="200.0" promptText="0.00" styleClass="text-field-normal" text="0.00" />
+                                    <TextField fx:id="txtCosto" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -119,7 +94,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" prefWidth="200.0" promptText="0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                              <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" prefWidth="220.0" promptText="0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>
@@ -129,61 +104,68 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <VBox style="-fx-padding: 0em 0.8333333333333334em 0.8333333333333334em 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
                <children>
+                  <VBox style="-fx-spacing: 0.4166666666666667em;">
+                     <children>
+                        <Label styleClass="labelRoboto14" text="Impuesto" textFill="#23283a">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane fitToWidth="true" prefHeight="160.0" prefWidth="180.0" style="-fx-border-color: #ccc;" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="vbImpuestos" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
                   <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                     <columnConstraints>
                       <ColumnConstraints minWidth="10.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label styleClass="labelRoboto14" text="Precio" textFill="#23283a" GridPane.columnIndex="1">
+                        <TextField fx:id="txtPrecio" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecio" onKeyTyped="#onKeyTypedPrecio" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtPrecioNeto" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecioNeto" onKeyTyped="#onKeyTypedPrecioNeto" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtMargen" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtUtilidad" disable="true" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#23283a" GridPane.rowIndex="2">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtPrecio" disable="true" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecio" onKeyTyped="#onKeyTypedPrecio" prefHeight="30.0" prefWidth="120.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="txtPrecioNeto" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecioNeto" onKeyTyped="#onKeyTypedPrecioNeto" prefWidth="120.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtMargen" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" prefWidth="120.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField fx:id="txtUtilidad" disable="true" prefWidth="120.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#23283a" GridPane.rowIndex="3">
+                        <Label styleClass="labelRoboto14" text="Precio de Venta Neto" textFill="#23283a" GridPane.rowIndex="1">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelRoboto14" text="Precio de Venta Neto" textFill="#23283a" GridPane.rowIndex="2">
+                        <Label styleClass="labelRoboto14" text="Margen %" textFill="#23283a" GridPane.rowIndex="3">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelRoboto14" text="Margen %" textFill="#23283a" GridPane.rowIndex="4">
+                        <Label styleClass="labelRoboto14" text="Utilidad" textFill="#23283a" GridPane.rowIndex="4">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelRoboto14" text="Utilidad" textFill="#23283a" GridPane.rowIndex="5">
+                        <Label styleClass="labelRoboto14" text="Precio" textFill="#23283a">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelRoboto14" text="Impuesto" textFill="#23283a" GridPane.rowIndex="1">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="cbImpuesto" maxWidth="1.7976931348623157E308" onAction="#onActionImpuesto" prefWidth="217.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
-            </VBox>
+            </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
                <children>
                   <Label styleClass="labelRoboto14" text="Observación:" />

@@ -27,6 +27,7 @@
 	<parameter name="SUB_TOTAL" class="java.lang.String"/>
 	<parameter name="TOTAL" class="java.lang.String"/>
 	<parameter name="SIMBOLO" class="java.lang.String"/>
+	<parameter name="VALORSOLES" class="java.lang.String"/>
 	<field name="cantidad" class="java.lang.Double"/>
 	<field name="unidadCompraName" class="java.lang.String"/>
 	<field name="nombreMarca" class="java.lang.String"/>
@@ -34,13 +35,49 @@
 	<field name="descuento" class="java.lang.Double"/>
 	<field name="totalImporte" class="java.lang.Double"/>
 	<title>
-		<band height="160" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Center">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="91" height="79" uuid="e6a83d49-27b6-4fd3-aedc-c3e1e823afad"/>
-				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
-			</image>
+		<band height="153">
 			<frame>
-				<reportElement positionType="Float" mode="Opaque" x="351" y="0" width="204" height="79" uuid="3c3592a9-2e95-46b6-be8a-a0c7fdff60bb">
+				<reportElement positionType="Float" x="113" y="0" width="236" height="22" uuid="0d633340-0b81-40d3-8da5-e8bc066350fb"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="22" uuid="ff568e9e-76ec-4428-9176-d182b1389392"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{EMPRESA}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="113" y="23" width="236" height="20" uuid="cddf5708-97dd-429d-8e92-175f96a24f87"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="20" uuid="aa7a4559-85db-4682-9490-d23c9b6af90d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{DIRECCION}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="113" y="43" width="236" height="20" uuid="92ee3eb0-ceb8-43a5-bcfe-c6bb8a17bdd4"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="20" uuid="33fa0d85-370b-402d-97de-50a49bf83dff"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{TELEFONOCELULAR}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="113" y="63" width="236" height="20" uuid="248de619-0602-4ed4-b98e-326d0cfcbace"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="20" uuid="2d056071-73c1-4a47-9396-9e36ec694a94"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{EMAIL}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" mode="Opaque" x="350" y="1" width="204" height="79" uuid="f30095fd-dd06-4ac5-ad45-c0c09771a620">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -50,29 +87,33 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="204" height="27" forecolor="#1A2226" uuid="28d8805f-4a2a-4fed-a0ab-cec88ad76f5e"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="204" height="27" forecolor="#1A2226" uuid="1d3d1580-d33d-4ed9-bc2b-b6cbe230f606"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{DOCUMENTOEMPRESA}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="27" width="204" height="26" forecolor="#1A2226" uuid="0a5dbd6b-b5d6-4de3-9881-6c38bb734158"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="27" width="204" height="26" forecolor="#1A2226" uuid="a7d6cf9b-6edf-469e-a23d-003d9b025d4a"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{NOMBREDOCUMENTO}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="53" width="204" height="26" forecolor="#1A2226" uuid="acadd895-d297-4b61-85b0-cd2d9ee9ec79"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="53" width="204" height="26" forecolor="#1A2226" uuid="7b840bda-06c1-45b6-9eda-207125322258"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{NUMERODOCUMENTO}]]></textFieldExpression>
 				</textField>
 			</frame>
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="2" width="101" height="82" uuid="d6d532f1-9fd1-40f3-bb1b-0e403babee0e"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
 			<frame>
-				<reportElement x="0" y="100" width="554" height="20" uuid="4d398a18-cce2-4c18-bb15-618b508e3993"/>
+				<reportElement positionType="Float" x="0" y="92" width="554" height="20" uuid="4d398a18-cce2-4c18-bb15-618b508e3993"/>
 				<staticText>
 					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" forecolor="#0D4E9E" uuid="2010e7c4-ce42-4921-b497-0f3f13e923bf"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -91,7 +132,7 @@
 					<reportElement positionType="FixRelativeToBottom" x="70" y="16" width="190" height="1" forecolor="#1A2226" uuid="430bdc9c-f10a-4b7b-b508-9de4ebf43135"/>
 				</line>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="285" y="0" width="90" height="20" forecolor="#0D4E9E" uuid="fa106f2f-c480-429b-ab05-2e36cc535ec4"/>
+					<reportElement stretchType="RelativeToBandHeight" x="290" y="0" width="83" height="20" forecolor="#0D4E9E" uuid="9dd604b1-496c-435b-b360-c1eb14f3ab36"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
@@ -109,7 +150,7 @@
 				</line>
 			</frame>
 			<frame>
-				<reportElement x="0" y="120" width="554" height="20" uuid="89ea7c6d-ea27-4da7-85cb-2761fd74cbb9"/>
+				<reportElement positionType="Float" x="0" y="112" width="554" height="20" uuid="89ea7c6d-ea27-4da7-85cb-2761fd74cbb9"/>
 				<textField>
 					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" forecolor="#0D4E9E" uuid="402123b3-2bd5-452e-9287-3ae29ccf43fb"/>
 					<textElement verticalAlignment="Middle">
@@ -127,8 +168,11 @@
 				<line>
 					<reportElement positionType="FixRelativeToBottom" x="70" y="16" width="190" height="1" forecolor="#1A2226" uuid="175de367-2a47-4daf-b040-078412eec518"/>
 				</line>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="374" y="16" width="180" height="1" forecolor="#1A2226" uuid="5d4bbff1-ec91-47db-b769-f2dfca1bf1d1"/>
+				</line>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="285" y="0" width="90" height="20" forecolor="#0D4E9E" uuid="c23fe86c-4b0e-4c86-9585-238f19fd9702"/>
+					<reportElement stretchType="RelativeToBandHeight" x="290" y="0" width="83" height="20" forecolor="#0D4E9E" uuid="0c6b7f4f-a850-4bea-8419-7c2707d6078f"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
@@ -141,12 +185,9 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$P{MONEDA}]]></textFieldExpression>
 				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="374" y="16" width="180" height="1" forecolor="#1A2226" uuid="5d4bbff1-ec91-47db-b769-f2dfca1bf1d1"/>
-				</line>
 			</frame>
 			<frame>
-				<reportElement x="0" y="140" width="554" height="20" uuid="bd074321-f825-49eb-83bf-9962ab710157">
+				<reportElement positionType="Float" x="0" y="132" width="554" height="20" uuid="bd074321-f825-49eb-83bf-9962ab710157">
 					<property name="com.jaspersoft.studio.layout"/>
 				</reportElement>
 				<staticText>
@@ -166,37 +207,6 @@
 				<line>
 					<reportElement positionType="FixRelativeToBottom" x="70" y="16" width="484" height="1" forecolor="#1A2226" uuid="92651757-3ddc-49a2-b56c-0f6a5b3617db"/>
 				</line>
-			</frame>
-			<frame>
-				<reportElement positionType="Float" x="93" y="0" width="255" height="76" uuid="3fb6c259-cbab-47f7-92d7-30cac13cebff"/>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="22" width="255" height="18" isPrintWhenDetailOverflows="true" uuid="ee74f513-9fd8-4509-a176-625886dc2690"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{DIRECCION}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="255" height="22" isPrintWhenDetailOverflows="true" uuid="f3e24a77-beb4-4bf4-bf31-415206ae7e56"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="12" isBold="true" isStrikeThrough="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{EMPRESA}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="40" width="255" height="18" isPrintWhenDetailOverflows="true" uuid="58a9556f-094c-438a-a37e-317fb4fa6434"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{TELEFONOCELULAR}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="58" width="255" height="18" isPrintWhenDetailOverflows="true" uuid="b17f979d-929e-483f-87a3-d9a5b2cf03cc"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{EMAIL}]]></textFieldExpression>
-				</textField>
 			</frame>
 		</band>
 	</title>
@@ -378,6 +388,9 @@
 				</subreportParameter>
 				<subreportParameter name="DESCUENTO">
 					<subreportParameterExpression><![CDATA[$P{DESCUENTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="VALORSOLES">
+					<subreportParameterExpression><![CDATA[$P{VALORSOLES}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[$P{CALCULAR_TOTALES}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "VentaRealizadaDetalle.jasper"]]></subreportExpression>

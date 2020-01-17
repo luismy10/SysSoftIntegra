@@ -293,5 +293,9 @@ public class Tools {
     public static Timestamp getDateHour() {
         return new Timestamp(new Date().getTime());
     }
-
+    
+    public static int convertMMtoPX(double milimetro) {
+        return (int) (Double.parseDouble(Tools.roundingValue(2.83465 * milimetro, 0)) * 1.3333333333333333);
+    }
+    
 }

@@ -22,7 +22,7 @@ public class FxTicketProcesoController implements Initializable {
     @FXML
     private TextField txtNombre;
     @FXML
-    private TextField txtMilimetros;
+    private TextField txtColumnas;
     @FXML
     private ComboBox<TicketTB> cbTpo;
     @FXML
@@ -30,43 +30,30 @@ public class FxTicketProcesoController implements Initializable {
 
     private FxTicketController ticketController;
 
-    private boolean opcion;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         cbTpo.getItems().addAll(TicketADO.ListTipoTicket());
-        opcion = false;
     }
 
-    public void editarTicket(String name, double column) {
-        opcion = true;
+    public void editarTicket(String name, short column) {
         btnSave.setText("Editar");
         btnSave.getStyleClass().add("buttonLightWarning");
         txtNombre.setText(name);
-        txtMilimetros.setText(column + "");
+        txtColumnas.setText(column + "");
     }
 
     private void addTicket() {
-        if (!Tools.isNumeric(txtMilimetros.getText().trim())) {
-            Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo milímetro no es un número");
-            txtMilimetros.requestFocus();
-        } else if (Double.parseDouble(txtMilimetros.getText()) <= 0) {
-            Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo milímetro es menor que 0");
-            txtMilimetros.requestFocus();
+        if (!Tools.isNumericInteger(txtColumnas.getText().trim())) {
+            Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna no es un número");
+            txtColumnas.requestFocus();
+        } else if (Short.parseShort(txtColumnas.getText()) <= 0) {
+            Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna es menor que 0");
+            txtColumnas.requestFocus();
         } else {
-            if (opcion) {
-                ticketController.editarTicket(txtNombre.getText().trim(), Short.parseShort(txtMilimetros.getText()));
-                Tools.Dispose(window);
-            } else {
-                ticketController.agregarTicket(txtNombre.getText().trim(), convertMMtoPX(Double.parseDouble(txtMilimetros.getText())),Double.parseDouble(txtMilimetros.getText()));
-                Tools.Dispose(window);
-            }
+            ticketController.editarTcket(txtNombre.getText().trim(), Short.parseShort(txtColumnas.getText()));
+            Tools.Dispose(window);
         }
-    }
-
-    private int convertMMtoPX(double milimetro) {
-        return (int) (Double.parseDouble(Tools.roundingValue(2.83465 * milimetro, 0)) * 1.3333333333333333);
     }
 
     @FXML
@@ -96,10 +83,7 @@ public class FxTicketProcesoController implements Initializable {
     @FXML
     private void onKeyTypedColumnas(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-            event.consume();
-        }
-        if (c == '.' && txtMilimetros.getText().equalsIgnoreCase(".")) {
+        if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
         }
     }

@@ -1,3 +1,5 @@
+
+
 package controller.configuracion.tickets;
 
 import controller.configuracion.impresoras.FxImprimirController;
@@ -76,7 +78,7 @@ public class FxTicketController implements Initializable {
 
     private TextFieldTicket reference;
 
-    private int sheetWidth;
+    private short sheetWidth;
 
     private double pointWidth;
 
@@ -92,274 +94,230 @@ public class FxTicketController implements Initializable {
     }
 
     public void loadTicket(int idTicket, String nombre, String ruta) {
-//        if (ruta != null) {
-//            this.idTicket = idTicket;
-//            JSONObject jSONObject = Json.obtenerObjetoJSON(ruta);
-//            hbEncabezado.getChildren().clear();
-//            hbDetalleCabecera.getChildren().clear();
-//            hbPie.getChildren().clear();
-//            lblNombre.setText(nombre);
-//
-//            sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
-//            lblColumnas.setText("" + sheetWidth);
-//
-//            vbContenedor.setPrefWidth(sheetWidth * pointWidth);
-//
-//            if (jSONObject.get("cabecera") != null) {
-//                JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
-//                for (int i = 0; i < cabeceraObjects.size(); i++) {
-//                    HBox box = generateElement(hbEncabezado, "cb");
-//                    JSONObject objectObtener = Json.obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
-//                    if (objectObtener.get("text") != null) {
-//                        JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-//                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-//                        box.getChildren().add(field);
-//                    } else if (objectObtener.get("list") != null) {
-//                        JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
-//                        Iterator it = array.iterator();
-//                        while (it.hasNext()) {
-//                            JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-//                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-//                            box.getChildren().add(field);
-//                        }
-//                    }
-//                }
-//            }
-//            if (jSONObject.get("detalle") != null) {
-//                JSONObject detalleObjects = Json.obtenerObjetoJSON(jSONObject.get("detalle").toString());
-//                for (int i = 0; i < detalleObjects.size(); i++) {
-//                    HBox box = generateElement(hbDetalleCabecera, "dr");
-//                    JSONObject objectObtener = Json.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
-//                    if (objectObtener.get("text") != null) {
-//                        JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-//                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-//                        box.getChildren().add(field);
-//                    } else if (objectObtener.get("list") != null) {
-//                        JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
-//                        Iterator it = array.iterator();
-//                        while (it.hasNext()) {
-//                            JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-//                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-//                            box.getChildren().add(field);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (jSONObject.get("pie") != null) {
-//                JSONObject pieObjects = Json.obtenerObjetoJSON(jSONObject.get("pie").toString());
-//                for (int i = 0; i < pieObjects.size(); i++) {
-//                    HBox box = generateElement(hbPie, "cp");
-//                    JSONObject objectObtener = Json.obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
-//                    if (objectObtener.get("text") != null) {
-//                        JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-//                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-//                        box.getChildren().add(field);
-//                    } else if (objectObtener.get("list") != null) {
-//                        JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
-//                        Iterator it = array.iterator();
-//                        while (it.hasNext()) {
-//                            JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-//                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
-//                            box.getChildren().add(field);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-    }
+        if (ruta != null) {
+            this.idTicket = idTicket;
+            JSONObject jSONObject = Json.obtenerObjetoJSON(ruta);
+            hbEncabezado.getChildren().clear();
+            hbDetalleCabecera.getChildren().clear();
+            hbPie.getChildren().clear();
+            lblNombre.setText(nombre);
 
-    private void saveTicket() {
-//        try {
-//            if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
-//
-//                int validateEncabezado = 0;
-//                for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-//                    HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
-//                    if (hBox.getChildren().isEmpty()) {
-//                        validateEncabezado++;
-//                    }
-//                }
-//
-//                int validateDetalle = 0;
-//                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-//                    HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
-//                    if (hBox.getChildren().isEmpty()) {
-//                        validateDetalle++;
-//                    }
-//                }
-//
-//                int validatePie = 0;
-//                for (int i = 0; i < hbPie.getChildren().size(); i++) {
-//                    HBox hBox = (HBox) hbPie.getChildren().get(i);
-//                    if (hBox.getChildren().isEmpty()) {
-//                        validatePie++;
-//                    }
-//                }
-//
-//                if (validateEncabezado > 0) {
-//                    Tools.AlertMessageWarning(vbWindow, "Ticket", "La cabecera del ticket tiene un campo sin contenido agrege o borra.");
-//                } else if (validateDetalle > 0) {
-//                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El Detalle del ticket tiene un campo sin contenido agrege o borra.");
-//                } else if (validatePie > 0) {
-//                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie del ticket tiene un campo sin contenido agrege o borra.");
-//                } else {
-//                    JSONObject sampleObject = new JSONObject();
-//                    sampleObject.put("column", sheetWidth);
-//                    JSONObject cabecera = new JSONObject();
-//                    for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-//                        HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
-//                        JSONObject cb = new JSONObject();
-//                        if (hBox.getChildren().size() > 1) {
-//                            JSONArray kids = new JSONArray();
-//                            for (int v = 0; v < hBox.getChildren().size(); v++) {
-//                                TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
-//                                JSONObject cbkid = new JSONObject();
-//                                cbkid.put("value", field.getText());
-//                                cbkid.put("width", field.getColumnWidth());
-//                                cbkid.put("align", field.getAlignment().toString());
-//                                cbkid.put("multiline", field.isMultilineas());
-//                                cbkid.put("lines", field.getLines());
-//                                cbkid.put("editable", field.isEditable());
-//                                cbkid.put("variable", field.getVariable());
-//                                kids.add(cbkid);
-//                            }
-//                            cb.put("list", kids);
-//                        } else {
-//                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
-//                            JSONObject cbkid = new JSONObject();
-//                            cbkid.put("value", field.getText());
-//                            cbkid.put("width", field.getColumnWidth());
-//                            cbkid.put("align", field.getAlignment().toString());
-//                            cbkid.put("multiline", field.isMultilineas());
-//                            cbkid.put("lines", field.getLines());
-//                            cbkid.put("editable", field.isEditable());
-//                            cbkid.put("variable", field.getVariable());
-//                            cb.put("text", cbkid);
-//                        }
-//                        cabecera.put("cb_" + (i + 1), cb);
-//                    }
-//
-//                    JSONObject detalle = new JSONObject();
-//                    for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-//                        HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
-//                        JSONObject cb = new JSONObject();
-//                        if (hBox.getChildren().size() > 1) {
-//                            JSONArray kids = new JSONArray();
-//                            for (int v = 0; v < hBox.getChildren().size(); v++) {
-//                                TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
-//                                JSONObject cbkid = new JSONObject();
-//                                cbkid.put("value", field.getText());
-//                                cbkid.put("width", field.getColumnWidth());
-//                                cbkid.put("align", field.getAlignment().toString());
-//                                cbkid.put("multiline", field.isMultilineas());
-//                                cbkid.put("lines", field.getLines());
-//                                cbkid.put("editable", field.isEditable());
-//                                cbkid.put("variable", field.getVariable());
-//                                kids.add(cbkid);
-//                            }
-//                            cb.put("list", kids);
-//                        } else {
-//                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
-//                            JSONObject cbkid = new JSONObject();
-//                            cbkid.put("value", field.getText());
-//                            cbkid.put("width", field.getColumnWidth());
-//                            cbkid.put("align", field.getAlignment().toString());
-//                            cbkid.put("multiline", field.isMultilineas());
-//                            cbkid.put("lines", field.getLines());
-//                            cbkid.put("editable", field.isEditable());
-//                            cbkid.put("variable", field.getVariable());
-//                            cb.put("text", cbkid);
-//                        }
-//                        detalle.put("dr_" + (i + 1), cb);
-//                    }
-//
-//                    JSONObject pie = new JSONObject();
-//                    for (int i = 0; i < hbPie.getChildren().size(); i++) {
-//                        HBox hBox = (HBox) hbPie.getChildren().get(i);
-//                        JSONObject cb = new JSONObject();
-//                        if (hBox.getChildren().size() > 1) {
-//                            JSONArray kids = new JSONArray();
-//                            for (int v = 0; v < hBox.getChildren().size(); v++) {
-//                                TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
-//                                JSONObject cbkid = new JSONObject();
-//                                cbkid.put("value", field.getText());
-//                                cbkid.put("width", field.getColumnWidth());
-//                                cbkid.put("align", field.getAlignment().toString());
-//                                cbkid.put("multiline", field.isMultilineas());
-//                                cbkid.put("lines", field.getLines());
-//                                cbkid.put("editable", field.isEditable());
-//                                cbkid.put("variable", field.getVariable());
-//                                kids.add(cbkid);
-//                            }
-//                            cb.put("list", kids);
-//                        } else {
-//                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
-//                            JSONObject cbkid = new JSONObject();
-//                            cbkid.put("value", field.getText());
-//                            cbkid.put("width", field.getColumnWidth());
-//                            cbkid.put("align", field.getAlignment().toString());
-//                            cbkid.put("multiline", field.isMultilineas());
-//
-//                            cbkid.put("lines", field.getLines());
-//                            cbkid.put("editable", field.isEditable());
-//                            cbkid.put("variable", field.getVariable());
-//                            cb.put("text", cbkid);
-//                        }
-//                        pie.put("cp_" + (i + 1), cb);
-//                    }
-//
-//                    sampleObject.put("cabecera", cabecera);
-//                    sampleObject.put("detalle", detalle);
-//                    sampleObject.put("pie", pie);
-//
-//                    Files.write(Paths.get("./archivos/ticketventa.json"), sampleObject.toJSONString().getBytes());
-//                    TicketTB ticketTB = new TicketTB();
-//                    ticketTB.setId(idTicket);
-//                    ticketTB.setNombreTicket(lblNombre.getText());
-//                    ticketTB.setRuta(sampleObject.toJSONString());
-//                    String result = TicketADO.CrudTicket(ticketTB);
-//                    if (result.equalsIgnoreCase("duplicate")) {
-//                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El nombre del formato ya existe, intente con otro.");
-//                    } else if (result.equalsIgnoreCase("updated")) {
-//                        Tools.AlertMessageInformation(vbWindow, "Ticket", "Se actualizo correctamente el formato.");
-//                        Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
-//                    } else if (result.equalsIgnoreCase("registered")) {
-//                        Tools.AlertMessageInformation(vbWindow, "Ticket", "Se guardo correctamente el formato.");
-//                        Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
-//                    } else {
-//                        Tools.AlertMessageError(vbWindow, "Ticket", result);
-//                    }
-//                }
-//            } else {
-//                if (hbEncabezado.getChildren().isEmpty()) {
-//                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado del ticket está vacío.");
-//                } else if (hbDetalleCabecera.getChildren().isEmpty()) {
-//                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle del ticket está vacío.");
-//                } else if (hbPie.getChildren().isEmpty()) {
-//                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie del ticket está vacío.");
-//                }
-//            }
-//
-//        } catch (IOException ex) {
-//            Tools.AlertMessageError(vbWindow, "Ticket", "No se pudo guardar la hoja con problemas de formato.");
-//        }
+            sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
+            lblColumnas.setText("" + sheetWidth);
 
-    }
+            vbContenedor.setPrefWidth(sheetWidth * pointWidth);
 
-    private HBox generateElement(VBox contenedor, String id) {
-        if (contenedor.getChildren().isEmpty()) {
-            return addElement(contenedor, id + "1");
-        } else {
-            HBox hBox = (HBox) contenedor.getChildren().get(contenedor.getChildren().size() - 1);
-            String idGenerate = hBox.getId();
-            String codigo = idGenerate.substring(2);
-            int valor = Integer.parseInt(codigo) + 1;
-            String newCodigo = id + valor;
-            return addElement(contenedor, newCodigo);
+            if (jSONObject.get("cabecera") != null) {
+                JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
+                for (int i = 0; i < cabeceraObjects.size(); i++) {
+                    HBox box = generateElement(hbEncabezado, "cb");
+                    JSONObject objectObtener = Json.obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
+                    if (objectObtener.get("text") != null) {
+                        JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    } else if (objectObtener.get("list") != null) {
+                        JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
+                        Iterator it = array.iterator();
+                        while (it.hasNext()) {
+                            JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            box.getChildren().add(field);
+                        }
+                    }
+                }
+            }
+            if (jSONObject.get("detalle") != null) {
+                JSONObject detalleObjects = Json.obtenerObjetoJSON(jSONObject.get("detalle").toString());
+                for (int i = 0; i < detalleObjects.size(); i++) {
+                    HBox box = generateElement(hbDetalleCabecera, "dr");
+                    JSONObject objectObtener = Json.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
+                    if (objectObtener.get("text") != null) {
+                        JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    } else if (objectObtener.get("list") != null) {
+                        JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
+                        Iterator it = array.iterator();
+                        while (it.hasNext()) {
+                            JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            box.getChildren().add(field);
+                        }
+                    }
+                }
+            }
+
+            if (jSONObject.get("pie") != null) {
+                JSONObject pieObjects = Json.obtenerObjetoJSON(jSONObject.get("pie").toString());
+                for (int i = 0; i < pieObjects.size(); i++) {
+                    HBox box = generateElement(hbPie, "cp");
+                    JSONObject objectObtener = Json.obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
+                    if (objectObtener.get("text") != null) {
+                        JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        box.getChildren().add(field);
+                    } else if (objectObtener.get("list") != null) {
+                        JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
+                        Iterator it = array.iterator();
+                        while (it.hasNext()) {
+                            JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            box.getChildren().add(field);
+                        }
+                    }
+                }
+            }
         }
     }
 
+    private void saveTicket() {
+        try {
+            if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
+                JSONObject sampleObject = new JSONObject();
+                sampleObject.put("column", sheetWidth);
+                JSONObject cabecera = new JSONObject();
+                for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                    HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
+                    JSONObject cb = new JSONObject();
+                    if (hBox.getChildren().size() > 1) {
+                        JSONArray kids = new JSONArray();
+                        for (int v = 0; v < hBox.getChildren().size(); v++) {
+                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                            JSONObject cbkid = new JSONObject();
+                            cbkid.put("value", field.getText());
+                            cbkid.put("width", field.getColumnWidth());
+                            cbkid.put("align", field.getAlignment().toString());
+                            cbkid.put("multiline", field.isMultilineas());
+                            cbkid.put("lines", field.getLines());
+                            cbkid.put("editable", field.isEditable());
+                            cbkid.put("variable", field.getVariable());
+                            kids.add(cbkid);
+                        }
+                        cb.put("list", kids);
+                    } else {
+                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                        JSONObject cbkid = new JSONObject();
+                        cbkid.put("value", field.getText());
+                        cbkid.put("width", field.getColumnWidth());
+                        cbkid.put("align", field.getAlignment().toString());
+                        cbkid.put("multiline", field.isMultilineas());
+                        cbkid.put("lines", field.getLines());
+                        cbkid.put("editable", field.isEditable());
+                        cbkid.put("variable", field.getVariable());
+                        cb.put("text", cbkid);
+                    }
+                    cabecera.put("cb_" + (i + 1), cb);
+                }
+
+                JSONObject detalle = new JSONObject();
+                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                    HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
+                    JSONObject cb = new JSONObject();
+                    if (hBox.getChildren().size() > 1) {
+                        JSONArray kids = new JSONArray();
+                        for (int v = 0; v < hBox.getChildren().size(); v++) {
+                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                            JSONObject cbkid = new JSONObject();
+                            cbkid.put("value", field.getText());
+                            cbkid.put("width", field.getColumnWidth());
+                            cbkid.put("align", field.getAlignment().toString());
+                            cbkid.put("multiline", field.isMultilineas());
+                            cbkid.put("lines", field.getLines());
+                            cbkid.put("editable", field.isEditable());
+                            cbkid.put("variable", field.getVariable());
+                            kids.add(cbkid);
+                        }
+                        cb.put("list", kids);
+                    } else {
+                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                        JSONObject cbkid = new JSONObject();
+                        cbkid.put("value", field.getText());
+                        cbkid.put("width", field.getColumnWidth());
+                        cbkid.put("align", field.getAlignment().toString());
+                        cbkid.put("multiline", field.isMultilineas());
+                        cbkid.put("lines", field.getLines());
+                        cbkid.put("editable", field.isEditable());
+                        cbkid.put("variable", field.getVariable());
+                        cb.put("text", cbkid);
+                    }
+                    detalle.put("dr_" + (i + 1), cb);
+                }
+
+                JSONObject pie = new JSONObject();
+                for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                    HBox hBox = (HBox) hbPie.getChildren().get(i);
+                    JSONObject cb = new JSONObject();
+                    if (hBox.getChildren().size() > 1) {
+                        JSONArray kids = new JSONArray();
+                        for (int v = 0; v < hBox.getChildren().size(); v++) {
+                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                            JSONObject cbkid = new JSONObject();
+                            cbkid.put("value", field.getText());
+                            cbkid.put("width", field.getColumnWidth());
+                            cbkid.put("align", field.getAlignment().toString());
+                            cbkid.put("multiline", field.isMultilineas());
+                            cbkid.put("lines", field.getLines());
+                            cbkid.put("editable", field.isEditable());
+                            cbkid.put("variable", field.getVariable());
+                            kids.add(cbkid);
+                        }
+                        cb.put("list", kids);
+                    } else {
+                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                        JSONObject cbkid = new JSONObject();
+                        cbkid.put("value", field.getText());
+                        cbkid.put("width", field.getColumnWidth());
+                        cbkid.put("align", field.getAlignment().toString());
+                        cbkid.put("multiline", field.isMultilineas());
+
+                        cbkid.put("lines", field.getLines());
+                        cbkid.put("editable", field.isEditable());
+                        cbkid.put("variable", field.getVariable());
+                        cb.put("text", cbkid);
+                    }
+                    pie.put("cp_" + (i + 1), cb);
+                }
+
+                sampleObject.put("cabecera", cabecera);
+                sampleObject.put("detalle", detalle);
+                sampleObject.put("pie", pie);
+
+                Files.write(Paths.get("./archivos/ticketventa.json"), sampleObject.toJSONString().getBytes());
+                TicketTB ticketTB = new TicketTB();
+                ticketTB.setId(idTicket);
+                ticketTB.setNombreTicket(lblNombre.getText());
+                ticketTB.setRuta(sampleObject.toJSONString());
+                String result = TicketADO.CrudTicket(ticketTB);
+                if (result.equalsIgnoreCase("duplicate")) {
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El nombre del formato ya existe, intente con otro.");
+                } else if (result.equalsIgnoreCase("updated")) {
+                    Tools.AlertMessageInformation(vbWindow, "Ticket", "Se actualizo correctamente el formato.");
+                    Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
+                } else if (result.equalsIgnoreCase("registered")) {
+                    Tools.AlertMessageInformation(vbWindow, "Ticket", "Se guardo correctamente el formato.");
+                    Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
+                } else {
+                    Tools.AlertMessageError(vbWindow, "Ticket", result);
+                }
+            } else {
+                if (hbEncabezado.getChildren().isEmpty()) {
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado está vacío.");
+                } else if (hbDetalleCabecera.getChildren().isEmpty()) {
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle cabecera está vacío.");
+                } else if (hbPie.getChildren().isEmpty()) {
+                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie está vacío.");
+                }
+            }
+
+        } catch (IOException ex) {
+            Tools.AlertMessageError(vbWindow, "Ticket", "No se pudo guardar la hoja con problemas de formato.");
+            System.out.println(ex.getLocalizedMessage());
+            System.out.println(ex);
+        }
+
+    }
+    
     private HBox addElement(VBox contenedor, String id) {
         ImageView imgRemove = new ImageView(new Image("/view/image/remove-item.png"));
         imgRemove.setFitWidth(20);
@@ -458,7 +416,7 @@ public class FxTicketController implements Initializable {
         return hBox;
     }
 
-    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, int widthColumn, Pos align, boolean editable, String variable) {
+    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
@@ -605,6 +563,19 @@ public class FxTicketController implements Initializable {
         }
     }
 
+    private HBox generateElement(VBox contenedor, String id) {
+        if (contenedor.getChildren().isEmpty()) {
+            return addElement(contenedor, id + "1");
+        } else {
+            HBox hBox = (HBox) contenedor.getChildren().get(contenedor.getChildren().size() - 1);
+            String idGenerate = hBox.getId();
+            String codigo = idGenerate.substring(2);
+            int valor = Integer.parseInt(codigo) + 1;
+            String newCodigo = id + valor;
+            return addElement(contenedor, newCodigo);
+        }
+    }
+
     private void clearPane() {
         hbEncabezado.getChildren().clear();
         hbDetalleCabecera.getChildren().clear();
@@ -631,7 +602,7 @@ public class FxTicketController implements Initializable {
             default:
                 return Pos.CENTER_LEFT;
         }
-    }
+    }    
 
     private void searchTicket() {
         try {
@@ -648,6 +619,7 @@ public class FxTicketController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
+
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -668,6 +640,7 @@ public class FxTicketController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
+
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -689,6 +662,7 @@ public class FxTicketController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
+
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -710,6 +684,7 @@ public class FxTicketController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
+
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -731,6 +706,7 @@ public class FxTicketController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
+
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -762,52 +738,7 @@ public class FxTicketController implements Initializable {
                 }
             }
         } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
 
-    public void agregarTicket(String nombre, int widthPage, double mm) {
-        lblNombre.setText(nombre);
-        sheetWidth = widthPage;
-        lblColumnas.setText(mm + " mm");
-        vbContenedor.setPrefWidth(sheetWidth);
-        System.out.println(widthPage + " - " + mm);
-    }
-
-    public void editarTicket(String nombre, int widthPage) {
-        lblNombre.setText(nombre);
-        sheetWidth = widthPage;
-        lblColumnas.setText("" + sheetWidth);
-        vbContenedor.setPrefWidth(sheetWidth * pointWidth);
-
-        for (short i = 0; i < hbEncabezado.getChildren().size(); i++) {
-            HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
-            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
-            for (short j = 0; j < hBox.getChildren().size(); j++) {
-                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
-                fieldTicket.setColumnWidth(newwidth);
-                fieldTicket.setPrefWidth(newwidth * pointWidth);
-            }
-        }
-
-        for (short i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-            HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
-            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
-            for (short j = 0; j < hBox.getChildren().size(); j++) {
-                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
-                fieldTicket.setColumnWidth(newwidth);
-                fieldTicket.setPrefWidth(newwidth * pointWidth);
-            }
-        }
-
-        for (short i = 0; i < hbPie.getChildren().size(); i++) {
-            HBox hBox = (HBox) hbPie.getChildren().get(i);
-            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
-            for (short j = 0; j < hBox.getChildren().size(); j++) {
-                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
-                fieldTicket.setColumnWidth(newwidth);
-                fieldTicket.setPrefWidth(newwidth * pointWidth);
-            }
         }
     }
 
@@ -816,6 +747,7 @@ public class FxTicketController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             nuevoTicket();
         }
+
     }
 
     @FXML
@@ -942,8 +874,42 @@ public class FxTicketController implements Initializable {
         clearPane();
     }
 
-    public VBox getVbContenedor() {
-        return vbContenedor;
+    public void editarTcket(String nombre, short widthPage) {
+        lblNombre.setText(nombre);
+        sheetWidth = widthPage;
+        lblColumnas.setText("" + sheetWidth);
+        vbContenedor.setPrefWidth(sheetWidth * pointWidth);
+        
+        for (short i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
+            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
+            for (short j = 0; j < hBox.getChildren().size(); j++) {
+                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                fieldTicket.setColumnWidth(newwidth);
+                fieldTicket.setPrefWidth(newwidth * pointWidth);
+            }
+        }
+        
+        for (short i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+            HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
+            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
+            for (short j = 0; j < hBox.getChildren().size(); j++) {
+                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                fieldTicket.setColumnWidth(newwidth);
+                fieldTicket.setPrefWidth(newwidth * pointWidth);
+            }
+        }
+        
+        for (short i = 0; i < hbPie.getChildren().size(); i++) {
+            HBox hBox = (HBox) hbPie.getChildren().get(i);
+            short newwidth = (short) (sheetWidth / hBox.getChildren().size());
+            for (short j = 0; j < hBox.getChildren().size(); j++) {
+                TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                fieldTicket.setColumnWidth(newwidth);
+                fieldTicket.setPrefWidth(newwidth * pointWidth);
+            }
+        }
+        
     }
 
     public VBox getHbEncabezado() {
@@ -958,12 +924,12 @@ public class FxTicketController implements Initializable {
         return hbPie;
     }
 
-    public int getSheetWidth() {
+    public short getSheetWidth() {
         return sheetWidth;
     }
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
     }
-
+    
 }
