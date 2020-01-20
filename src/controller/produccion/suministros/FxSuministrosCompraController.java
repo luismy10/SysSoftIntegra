@@ -3,8 +3,8 @@ package controller.produccion.suministros;
 import controller.egresos.compras.FxComprasController;
 import controller.egresos.compras.FxComprasEditarController;
 import controller.inventario.lote.FxLoteProcesoController;
-import controller.tools.CheckBoxModel;
 import controller.tools.FilesRouters;
+import controller.tools.RadioButtonModel;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -17,10 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -95,17 +95,20 @@ public class FxSuministrosCompraController implements Initializable {
     }
 
     public void cargarComboBox() {
-//        cbImpuesto.getItems().clear();
-//        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-//            this.cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-//        });
+
         vbImpuestos.getChildren().clear();
+        ToggleGroup toggleGroup = new ToggleGroup();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            CheckBoxModel checkBox = new CheckBoxModel(e.getNombreImpuesto());
-            checkBox.setValor(e.getValor());
-            checkBox.getStyleClass().add("check-box-contenido");
-            vbImpuestos.getChildren().add(checkBox);
+            RadioButtonModel radioButtonModel = new RadioButtonModel(e.getNombreImpuesto());
+            radioButtonModel.setId(e.getIdImpuesto() + "");
+            radioButtonModel.setValor(e.getValor());
+            radioButtonModel.setToggleGroup(toggleGroup);
+            radioButtonModel.setOnAction(event -> {
+                onActionImpuesto();
+            });
+            vbImpuestos.getChildren().add(radioButtonModel);
         });
+
     }
 
     public void setLoadData(String value[], String medida, boolean lote) {
@@ -113,26 +116,29 @@ public class FxSuministrosCompraController implements Initializable {
         lblClave.setText(value[1]);
         lblDescripcion.setText(value[2]);
         txtCosto.setText("" + value[3]);
-//        txtCostoPromedio.setText("" + value[3]);
         txtPrecio.setText("" + value[4]);
         txtMargen.setText("" + value[5]);
         txtUtilidad.setText("" + value[6]);
         lblMedida.setText(medida);
-//        int impuesto = Integer.parseInt(value[7]);
-//        if (impuesto != 0) {
-//            for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
-//                if (cbImpuesto.getItems().get(i).getIdImpuesto() == impuesto) {
-//                    cbImpuesto.getSelectionModel().select(i);
-//                    break;
-//                }
-//            }
-//        } else {
-//            cbImpuesto.getSelectionModel().select(0);
-//        }
+        int impuesto = Integer.parseInt(value[7]);
+        if (impuesto != 0) {
+            if (!vbImpuestos.getChildren().isEmpty()) {
+                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                    if (Integer.parseInt(((RadioButtonModel) vbImpuestos.getChildren().get(i)).getId()) == impuesto) {
+                        ((RadioButtonModel) vbImpuestos.getChildren().get(i)).setSelected(true);
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (!vbImpuestos.getChildren().isEmpty()) {
+                ((RadioButtonModel) vbImpuestos.getChildren().get(0)).setSelected(true);
+            }
+        }
 
         validarlote = lote;
         this.lote = lote;
-//        calculateForPrecio(txtPrecio, txtCostoPromedio, txtMargen, txtUtilidad, txtPrecioNeto);
+        calculateForPrecio(txtPrecio, txtCosto, txtMargen, txtUtilidad, txtPrecioNeto);
     }
 
     public void setLoadEdit(SuministroTB suministroTB, int index, ObservableList<LoteTB> loteTBs) {
@@ -140,24 +146,28 @@ public class FxSuministrosCompraController implements Initializable {
         lblClave.setText(suministroTB.getClave());
         lblDescripcion.setText(suministroTB.getNombreMarca());
         txtCantidad.setText("" + suministroTB.getCantidad());
-//        txtCostoPromedio.setText(Tools.roundingValue(suministroTB.getCostoCompraReal(), 4));
-        txtDescuento.setText(Tools.roundingValue(suministroTB.getDescuento(), 4));
-
-        txtPrecio.setText(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 4));
+        txtDescuento.setText(Tools.roundingValue(suministroTB.getDescuento(), 0));
+        txtCosto.setText(Tools.roundingValue(suministroTB.getCostoCompra(), 8));
+        txtPrecio.setText(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 8));
         txtMargen.setText("" + suministroTB.getPrecioMargenGeneral());
-        txtUtilidad.setText(Tools.roundingValue(suministroTB.getPrecioUtilidadGeneral(), 4));
+        txtUtilidad.setText(Tools.roundingValue(suministroTB.getPrecioUtilidadGeneral(), 8));
 
-//        int impuesto = suministroTB.getImpuestoArticulo();
-//        if (impuesto != 0) {
-//            for (int i = 0; i < cbImpuesto.getItems().size(); i++) {
-//                if (cbImpuesto.getItems().get(i).getIdImpuesto() == impuesto) {
-//                    cbImpuesto.getSelectionModel().select(i);
-//                    break;
-//                }
-//            }
-//        } else {
-//            cbImpuesto.getSelectionModel().select(0);
-//        }
+        int impuesto = suministroTB.getImpuestoArticulo();
+        if (impuesto != 0) {
+            if (!vbImpuestos.getChildren().isEmpty()) {
+                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                    if (Integer.parseInt(((RadioButtonModel) vbImpuestos.getChildren().get(i)).getId()) == impuesto) {
+                        ((RadioButtonModel) vbImpuestos.getChildren().get(i)).setSelected(true);
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (!vbImpuestos.getChildren().isEmpty()) {
+                ((RadioButtonModel) vbImpuestos.getChildren().get(0)).setSelected(true);
+            }
+        }
+
         editarSuministros = true;
         validarlote = suministroTB.isLote();
         lote = suministroTB.isLote();
@@ -166,7 +176,7 @@ public class FxSuministrosCompraController implements Initializable {
         this.loteTBs = loteTBs;
         cantidadinicial = suministroTB.getCantidad();
         txtDescuento.setText(suministroTB.getDescripcion());
-//        calculateForPrecio(txtPrecio, txtCostoPromedio, txtMargen, txtUtilidad, txtPrecioNeto);
+        calculateForPrecio(txtPrecio, txtCosto, txtMargen, txtUtilidad, txtPrecioNeto);
     }
 
     private void calculateForPrecio(TextField pre, TextField cos, TextField mar, TextField uti, TextField preneto) {
@@ -182,24 +192,73 @@ public class FxSuministrosCompraController implements Initializable {
             int recalculado = (int) Math.abs(100
                     - Double.parseDouble(
                             Tools.roundingValue(Double.parseDouble(
-                                    Tools.roundingValue(porcentaje, 4)), 0)));
+                                    Tools.roundingValue(porcentaje, 8)), 0)));
 
-//            double impuesto = Tools.calculateTax(
-//                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
-//                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
-//                    : 0,
-//                    precio);
             double impuesto = 0;
+            for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                impuesto += Tools.calculateTax(((RadioButtonModel) vbImpuestos.getChildren().get(i)).isSelected()
+                        ? ((RadioButtonModel) vbImpuestos.getChildren().get(i)).getValor()
+                        : 0, precio);
+            }
 
             double precioimpuesto = (precio + impuesto);
 
             mar.setText(String.valueOf(recalculado));
-            uti.setText(Tools.roundingValue((precio - costo), 4));
-            preneto.setText(Tools.roundingValue(precioimpuesto, 4));
+            uti.setText(Tools.roundingValue((precio - costo), 8));
+            preneto.setText(Tools.roundingValue(precioimpuesto, 8));
         }
     }
 
-    private void addSuministros(double costo) {
+    private boolean validateStock(TableView<SuministroTB> view, SuministroTB suministroTB) {
+        boolean ret = false;
+        for (int i = 0; i < view.getItems().size(); i++) {
+            if (view.getItems().get(i).getClave().equals(suministroTB.getClave())) {
+                ret = true;
+                break;
+            }
+        }
+        return ret;
+    }
+
+    public void addSuministrosList() throws IOException {
+        if (!Tools.isNumeric(txtCantidad.getText())) {
+            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
+            txtCantidad.requestFocus();
+        } else if (Double.parseDouble(txtCantidad.getText()) <= 0) {
+            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "La cantidad no puede ser menor o igual a 0", false);
+            txtCantidad.requestFocus();
+//        } else if (cbImpuesto.getSelectionModel().getSelectedIndex() < 0) {
+//            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Seleccione el impuesto", false);
+//            cbImpuesto.requestFocus();
+        } else if (!Tools.isNumeric(txtCosto.getText())) {
+            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el costo", false);
+            txtCosto.requestFocus();
+        } else if (Double.parseDouble(txtCosto.getText()) <= 0) {
+            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El costo no puede ser menor o igual a 0", false);
+            txtCosto.requestFocus();
+        } else if (!Tools.isNumeric(txtPrecio.getText())) {
+            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio 1", false);
+            txtPrecio.requestFocus();
+        } else if (Double.parseDouble(txtPrecio.getText()) <= 0) {
+            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El precio de venta 1 no puede ser menor o igual a 0", false);
+            txtPrecio.requestFocus();
+        } else {
+            int idImpuesto = 0;
+            String nombreImpuesto = "";
+            double valorImpuesto = 0;
+            for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                RadioButtonModel rbm = ((RadioButtonModel) vbImpuestos.getChildren().get(i));
+                if (rbm.isSelected()) {
+                    idImpuesto = Integer.parseInt(rbm.getId());
+                    nombreImpuesto = rbm.getText();
+                    valorImpuesto = rbm.getValor();
+                }
+            }
+            addSuministros(Double.parseDouble(txtCosto.getText()), idImpuesto, nombreImpuesto, valorImpuesto);
+        }
+    }
+
+    private void addSuministros(double costo, int idImpuesto, String nombreImpuesto, double valorImpuesto) {
         SuministroTB suministrosTB = new SuministroTB();
         suministrosTB.setIdSuministro(idSuminisitro);
         suministrosTB.setClave(lblClave.getText());
@@ -220,9 +279,9 @@ public class FxSuministrosCompraController implements Initializable {
         suministrosTB.setSubImporte(suministrosTB.getCantidad() * suministrosTB.getCostoCompraReal());
         suministrosTB.setTotalImporte(suministrosTB.getCantidad() * suministrosTB.getCostoCompra());
 
-//        suministrosTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
-//        suministrosTB.setImpuestoArticuloName(cbImpuesto.getSelectionModel().getSelectedItem().getNombreImpuesto());
-//        suministrosTB.setImpuestoValor(cbImpuesto.getSelectionModel().getSelectedItem().getValor());
+        suministrosTB.setImpuestoArticulo(idImpuesto);
+        suministrosTB.setImpuestoArticuloName(nombreImpuesto);
+        suministrosTB.setImpuestoValor(valorImpuesto);
         suministrosTB.setImpuestoSumado(suministrosTB.getCantidad() * (suministrosTB.getCostoCompra() * (suministrosTB.getImpuestoValor() / 100.00)));
 
         suministrosTB.setPrecioVentaGeneral(Double.parseDouble(txtPrecio.getText()));
@@ -273,44 +332,6 @@ public class FxSuministrosCompraController implements Initializable {
             }
         }
 
-    }
-
-    private boolean validateStock(TableView<SuministroTB> view, SuministroTB suministroTB) {
-        boolean ret = false;
-        for (int i = 0; i < view.getItems().size(); i++) {
-            if (view.getItems().get(i).getClave().equals(suministroTB.getClave())) {
-                ret = true;
-                break;
-            }
-        }
-        return ret;
-    }
-
-    public void addSuministrosList() throws IOException {
-        if (!Tools.isNumeric(txtCantidad.getText())) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
-            txtCantidad.requestFocus();
-        } else if (Double.parseDouble(txtCantidad.getText()) <= 0) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "La cantidad no puede ser menor o igual a 0", false);
-            txtCantidad.requestFocus();
-//        } else if (cbImpuesto.getSelectionModel().getSelectedIndex() < 0) {
-//            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Seleccione el impuesto", false);
-//            cbImpuesto.requestFocus();
-//        } else if (!Tools.isNumeric(txtCostoPromedio.getText())) {
-//            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el costo", false);
-//            txtCostoPromedio.requestFocus();
-//        } else if (Double.parseDouble(txtCostoPromedio.getText()) <= 0) {
-//            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El costo no puede ser menor o igual a 0", false);
-//            txtCostoPromedio.requestFocus();
-        } else if (!Tools.isNumeric(txtPrecio.getText())) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el precio 1", false);
-            txtPrecio.requestFocus();
-        } else if (Double.parseDouble(txtPrecio.getText()) <= 0) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El precio de venta 1 no puede ser menor o igual a 0", false);
-            txtPrecio.requestFocus();
-        } else {
-//            addSuministros(Double.parseDouble(txtCostoPromedio.getText()));
-        }
     }
 
     private void openWindowLote(SuministroTB suministroTB) {
@@ -442,12 +463,10 @@ public class FxSuministrosCompraController implements Initializable {
             if (!vbImpuestos.getChildren().isEmpty()) {
                 double totalImpuesto = 0;
                 for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
-                    totalImpuesto += ((CheckBoxModel) vbImpuestos.getChildren().get(i)).isSelected()
-                            ? (Double.parseDouble(txtCosto.getText()) * ((double) ((CheckBoxModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
+                    totalImpuesto += ((RadioButtonModel) vbImpuestos.getChildren().get(i)).isSelected()
+                            ? (Double.parseDouble(txtCosto.getText()) * ((double) ((RadioButtonModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
                             : 0;
                 }
-                double valorCalculado = Double.parseDouble(txtCosto.getText()) + totalImpuesto;
-//                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 4));
 
 //                if (Tools.isNumeric(txtPrecioNeto.getText())) {
 //                    double costo = Double.parseDouble(txtCostoPromedio.getText());
@@ -469,8 +488,6 @@ public class FxSuministrosCompraController implements Initializable {
 //                }
             } else {
                 //toma el valor del impuesto del combo box
-                double valorCalculado = Double.parseDouble(txtCosto.getText());
-//                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 4));
 
 //                if (Tools.isNumeric(txtPrecioNeto.getText())) {
 //                    double costo = Double.parseDouble(txtCostoPromedio.getText());
@@ -494,28 +511,32 @@ public class FxSuministrosCompraController implements Initializable {
         }
     }
 
-    private void onActionImpuesto(ActionEvent event) {
-        if (
-//                Tools.isNumeric(txtCostoPromedio.getText()) && 
-                Tools.isNumeric(txtPrecioNeto.getText())) {
-//            if (Double.parseDouble(txtCostoPromedio.getText()) <= 0) {
-//                return;
-//            }
-//            double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
+    private void onActionImpuesto() {
+        if (Tools.isNumeric(txtCosto.getText()) && Tools.isNumeric(txtPrecioNeto.getText())) {
+            if (Double.parseDouble(txtCosto.getText()) <= 0) {
+                return;
+            }
+
             double impuesto = 0;
-//            double costo = Double.parseDouble(txtCostoPromedio.getText());
-            double costo = 0;
+            for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                impuesto += ((RadioButtonModel) vbImpuestos.getChildren().get(i)).isSelected()
+                        ? ((RadioButtonModel) vbImpuestos.getChildren().get(i)).getValor()
+                        : 0;
+            }
+
+            double costo = Double.parseDouble(txtCosto.getText());
+
             double precioNeto = Double.parseDouble(txtPrecioNeto.getText());
 
             double precio = Tools.calculateValueNeto(impuesto, precioNeto);
 
             double porcentaje = (precio * 100.00) / costo;
 
-            int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 4)), 0)));
+            int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 8)), 0)));
 
-            txtPrecio.setText(Tools.roundingValue(precio, 4));
+            txtPrecio.setText(Tools.roundingValue(precio, 8));
             txtMargen.setText(String.valueOf(recalculado));
-            txtUtilidad.setText(Tools.roundingValue((precio - costo), 4));
+            txtUtilidad.setText(Tools.roundingValue((precio - costo), 8));
 
         }
     }
@@ -531,37 +552,38 @@ public class FxSuministrosCompraController implements Initializable {
             int recalculado = (int) Math.abs(100
                     - Double.parseDouble(
                             Tools.roundingValue(Double.parseDouble(
-                                    Tools.roundingValue(porcentaje, 4)), 0)));
-
-//            double impuesto = Tools.calculateTax(
-//                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
-//                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
-//                    : 0,
-//                    precio);
+                                    Tools.roundingValue(porcentaje, 8)), 0)));
 
             double impuesto = 0;
+            for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                impuesto += Tools.calculateTax(((RadioButtonModel) vbImpuestos.getChildren().get(i)).isSelected()
+                        ? ((RadioButtonModel) vbImpuestos.getChildren().get(i)).getValor()
+                        : 0, precio);
+            }
 
             double precioimpuesto = (precio + impuesto);
 
             txtMargen.setText(String.valueOf(recalculado));
-            txtUtilidad.setText(Tools.roundingValue((precio - costo), 4));
-            txtPrecioNeto.setText(Tools.roundingValue(precioimpuesto, 4));
+            txtUtilidad.setText(Tools.roundingValue((precio - costo), 8));
+            txtPrecioNeto.setText(Tools.roundingValue(precioimpuesto, 8));
         }
     }
 
     @FXML
     private void onKeyRealesdPrecioNeto(KeyEvent event) {
-        if (Tools.isNumeric(txtPrecioNeto.getText()) 
-//                && Tools.isNumeric(txtCostoPromedio.getText())
-                ) {
-//            if (Double.parseDouble(txtCostoPromedio.getText()) <= 0) {
-//                return;
-//            }
+        if (Tools.isNumeric(txtPrecioNeto.getText()) && Tools.isNumeric(txtCosto.getText())) {
+            if (Double.parseDouble(txtCosto.getText()) <= 0) {
+                return;
+            }
+            double costo = Double.parseDouble(txtCosto.getText());
 
-//            double costo = Double.parseDouble(txtCostoPromedio.getText());
-            double costo = 0;
-//            double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
-            double impuesto = 0 ;
+            double impuesto = 0;
+            for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                impuesto += ((RadioButtonModel) vbImpuestos.getChildren().get(i)).isSelected()
+                        ? ((RadioButtonModel) vbImpuestos.getChildren().get(i)).getValor()
+                        : 0;
+            }
+
             double precioNeto = Double.parseDouble(txtPrecioNeto.getText());
 
             double precio = Tools.calculateValueNeto(impuesto, precioNeto);
@@ -571,37 +593,36 @@ public class FxSuministrosCompraController implements Initializable {
             int recalculado = (int) Math.abs(100
                     - Double.parseDouble(
                             Tools.roundingValue(Double.parseDouble(
-                                    Tools.roundingValue(porcentaje, 4)), 0)));
+                                    Tools.roundingValue(porcentaje, 8)), 0)));
 
-            txtPrecio.setText(Tools.roundingValue(precio, 4));
+            txtPrecio.setText(Tools.roundingValue(precio, 8));
             txtMargen.setText(String.valueOf(recalculado));
-            txtUtilidad.setText(Tools.roundingValue((precio - costo), 4));
+            txtUtilidad.setText(Tools.roundingValue((precio - costo), 8));
         }
     }
 
     @FXML
     private void onKeyReleasedMargen(KeyEvent event) {
-        if (Tools.isNumeric(txtMargen.getText()) 
-//                && Tools.isNumeric(txtCostoPromedio.getText())
-                ) {
+        if (Tools.isNumeric(txtMargen.getText()) && Tools.isNumeric(txtCosto.getText())) {
             //toma el valor del impuesto del combo box
-//            double costo = Double.parseDouble(txtCostoPromedio.getText());
-            double costo = 0;
+            double costo = Double.parseDouble(txtCosto.getText());
+
             int margen = Integer.parseInt(txtMargen.getText());
 
             double precio = Tools.calculateAumento(margen, costo);
 
-//            double impuesto = Tools.calculateTax(
-//                    cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
-//                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
-//                    : 0,
-//                    precio);
             double impuesto = 0;
+            for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+                impuesto += Tools.calculateTax(((RadioButtonModel) vbImpuestos.getChildren().get(i)).isSelected()
+                        ? ((RadioButtonModel) vbImpuestos.getChildren().get(i)).getValor()
+                        : 0, precio);
+            }
+
             double precioimpuesto = (precio + impuesto);
 
-            txtPrecio.setText(Tools.roundingValue(precio, 2));
-            txtUtilidad.setText(Tools.roundingValue((precio - costo), 4));
-            txtPrecioNeto.setText(Tools.roundingValue(precioimpuesto, 4));
+            txtPrecio.setText(Tools.roundingValue(precio, 8));
+            txtUtilidad.setText(Tools.roundingValue((precio - costo), 8));
+            txtPrecioNeto.setText(Tools.roundingValue(precioimpuesto, 8));
         }
     }
 

@@ -1620,6 +1620,81 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-padding: 0.5em 0.75em 0.5em 0.75em; /* 6 9 6 9 */
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Radio Button                                                                *
+ *                                                                             *
+ ******************************************************************************/
+
+.radio-button {
+    -fx-text-fill: #23283a;
+    -fx-font-size: 1.1666666666666667em; 
+    -fx-font-family: "Roboto"; 
+}
+
+.radio-button > .radio  {
+    -fx-background-color: transparent;
+    -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+    -fx-background-insets: 0;
+
+    /* Two borders exist because of the focus ring, if they didn't the size of the control would change on focus
+       - The first one is the border of the control
+       - The second one is the border of the focus ring
+    */
+    /*noinspection CssInvalidFunction*/
+    
+    -fx-border-radius: 1em;
+    -fx-border-color: #999999;
+    -fx-border-insets: 0px, -2px;
+    -fx-border-width: 1px, 1px;
+
+    -fx-padding: 0.5em; /* 6px -- padding from outside edge to the inner black dot */
+}
+
+.radio-button > .radio > .dot {
+    -fx-background-color: white;
+    -fx-background-insets: 0px, 0;
+    -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+
+    -fx-padding: 0.5em; /* 6px -- radius of the inner black dot when selected */
+}
+
+/* hover */
+.radio-button:hover > .radio {
+    -fx-background-color: white;
+    -fx-border-color: #7a7a7a;
+}
+
+.radio-button:selected:hover > .radio > .dot {
+    -fx-background-color: #3c8dbc;
+}
+
+/* selected */
+.radio-button:selected > .radio {
+    -fx-border-color: #7a7a7a;
+}
+
+.radio-button:selected > .radio > .dot {
+    -fx-background-color: #3c8dbc;
+}
+
+/* focused */
+.radio-button:focused > .radio
+{ 
+    -fx-border-color:#00aff0;
+}
+
+
+/* disabled */
+.radio-button:disabled
+{
+    -fx-opacity: 0.4;
+}
+
+.radio-button:disabled > .radio
+{
+    -fx-border-color: #333333;
+}
 
 
 /*******************************************************************************
@@ -1630,7 +1705,7 @@ totally specific (always using direct child) and cover all cases, which would be
 
 .check-box-contenido {
     -fx-text-fill:  #23283a;
-    -fx-font-family:"Open Regular";  
+    -fx-font-family:"Roboto";  
     -fx-font-size: 1.1666666666666667em;
 }
 

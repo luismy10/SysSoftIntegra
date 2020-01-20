@@ -39,7 +39,7 @@
                                     <Image url="@../../image/producto.png" />
                                  </image>
                               </ImageView>
-                              <Text fx:id="lblTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Datos del artículo">
+                              <Text fx:id="lblTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Datos del producto">
                                  <font>
                                     <Font name="Roboto" size="18.0" />
                                  </font>
@@ -218,20 +218,6 @@
                                                          <children>
                                                             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                                                <children>
-                                                                  <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                                     <children>
-                                                                        <Label styleClass="labelRoboto14" text="Impuesto" textFill="#23283a">
-                                                                           <font>
-                                                                              <Font name="Roboto" size="14.0" />
-                                                                           </font>
-                                                                        </Label>
-                                                                        <ScrollPane fitToWidth="true" prefHeight="30.0" style="-fx-border-color: #ccc;" VBox.vgrow="ALWAYS">
-                                                                           <content>
-                                                                              <VBox fx:id="vbImpuestos" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;" />
-                                                                           </content>
-                                                                        </ScrollPane>
-                                                                     </children>
-                                                                  </VBox>
                                                                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                                                      <children>
                                                                         <VBox style="-fx-spacing: 0.4166666666666667em;">
@@ -244,19 +230,9 @@
                                                                               <TextField fx:id="txtCosto" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" prefHeight="30.0" prefWidth="200.0" promptText="0.00" styleClass="text-field-normal" />
                                                                            </children>
                                                                         </VBox>
-                                                                        <VBox style="-fx-spacing: 0.4166666666666667em;">
-                                                                           <children>
-                                                                              <Label styleClass="labelRoboto14" text="Costo Calculado" textFill="#23283a">
-                                                                                 <font>
-                                                                                    <Font name="Roboto" size="14.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <TextField fx:id="txtCostoPromedio" disable="true" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedCosto" onKeyTyped="#onKeyTypedCosto" prefHeight="30.0" prefWidth="200.0" promptText="0.00" styleClass="text-field-normal" text="0.00" />
-                                                                           </children>
-                                                                        </VBox>
                                                                      </children>
                                                                   </VBox>
-                                                                  <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="SOMETIMES">
+                                                                  <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                                                      <children>
                                                                         <Label styleClass="labelRoboto14" text="Valor de salida del producto" />
                                                                         <VBox alignment="CENTER_LEFT" style="-fx-spacing: 1.1666666666666667em;" VBox.vgrow="ALWAYS">

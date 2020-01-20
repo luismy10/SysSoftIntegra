@@ -127,32 +127,32 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                      <RowConstraints vgrow="SOMETIMES" />
                         <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
                         <RowConstraints vgrow="SOMETIMES" />
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField fx:id="txtPrecio" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecio" onKeyTyped="#onKeyTypedPrecio" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtPrecioNeto" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecioNeto" onKeyTyped="#onKeyTypedPrecioNeto" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtPrecio" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecio" onKeyTyped="#onKeyTypedPrecio" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtPrecioNeto" onAction="#onActionAdd" onKeyReleased="#onKeyRealesdPrecioNeto" onKeyTyped="#onKeyTypedPrecioNeto" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="txtMargen" onAction="#onActionAdd" onKeyReleased="#onKeyReleasedMargen" onKeyTyped="#onKeyTypedMargen" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="txtUtilidad" disable="true" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#23283a" GridPane.rowIndex="2">
+                        <Label styleClass="labelRoboto14" text="Precio Venta Bruto" textFill="#23283a" GridPane.rowIndex="1">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelRoboto14" text="Precio de Venta Neto" textFill="#23283a" GridPane.rowIndex="1">
+                        <Label styleClass="labelRoboto14" text="Precio Venta Neto(con desc e %)" textFill="#23283a" GridPane.rowIndex="2">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelRoboto14" text="Margen %" textFill="#23283a" GridPane.rowIndex="3">
+                        <Label styleClass="labelRoboto14" text="Margen de Utilidad %" textFill="#23283a" GridPane.rowIndex="3">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelRoboto14" text="Utilidad" textFill="#23283a" GridPane.rowIndex="4">
+                        <Label styleClass="labelRoboto14" text="Utilidad(precio bruto - costo)" textFill="#23283a" GridPane.rowIndex="4">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

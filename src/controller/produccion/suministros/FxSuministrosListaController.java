@@ -155,7 +155,7 @@ public class FxSuministrosListaController implements Initializable {
         tcCategoriaMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName() + "\n" + cellData.getValue().getMarcaName()));
         tcTipoProducto.setCellValueFactory(new PropertyValueFactory<>("imageValorInventario"));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(getTaxName(cellData.getValue().getImpuestoArticulo())));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (getTaxValue(cellData.getValue().getImpuestoArticulo()) / 100.00)), 2)));
+        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (getTaxValue(cellData.getValue().getImpuestoArticulo()) / 100.00)), 4)));
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
@@ -257,11 +257,11 @@ public class FxSuministrosListaController implements Initializable {
                         tvList.getSelectionModel().getSelectedItem().getIdSuministro(),
                         tvList.getSelectionModel().getSelectedItem().getClave(),
                         tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-                        "" + tvList.getSelectionModel().getSelectedItem().getCostoCompra(),
-                        "" + tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral(),
-                        "" + tvList.getSelectionModel().getSelectedItem().getPrecioMargenGeneral(),
-                        "" + tvList.getSelectionModel().getSelectedItem().getPrecioUtilidadGeneral(),
-                        "" + tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()
+                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getCostoCompra(), 8),
+                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral(), 8),
+                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getPrecioMargenGeneral(), 8),
+                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getPrecioUtilidadGeneral(), 8),
+                        ""+tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()
                     },
                             tvList.getSelectionModel().getSelectedItem().getUnidadCompraName(),
                             tvList.getSelectionModel().getSelectedItem().isLote()
