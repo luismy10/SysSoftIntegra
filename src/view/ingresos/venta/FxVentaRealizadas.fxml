@@ -150,7 +150,7 @@
                                     <HBox fx:id="hbVendedor">
                                        <children>
                                           <TextField fx:id="txtVendedor" disable="true" prefWidth="200.0" styleClass="text-field-normal" />
-                                          <Button fx:id="btnVendedor" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionVendedor" onKeyPressed="#onKeyPressedVendedor" styleClass="buttonBorder">
+                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionVendedor" onKeyPressed="#onKeyPressedVendedor" styleClass="buttonBorder">
                                              <graphic>
                                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

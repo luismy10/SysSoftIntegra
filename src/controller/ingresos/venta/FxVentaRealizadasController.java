@@ -87,8 +87,6 @@ public class FxVentaRealizadasController implements Initializable {
     private Button btnMostrar;
     @FXML
     private Button btnRecargar;
-    @FXML
-    private Button btnVendedor;
 
     private AnchorPane vbPrincipal;
 

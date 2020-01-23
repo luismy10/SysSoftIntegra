@@ -224,7 +224,7 @@ public class FxVentaMostrarController implements Initializable {
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
                         lblFechaHora.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getCliente());
+                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento()+" "+ventaTB.getClienteTB().getInformacion());
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         nombreTicketImpresion = ventaTB.getComproabanteNameImpresion();
                         lblComprobante.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
@@ -289,7 +289,7 @@ public class FxVentaMostrarController implements Initializable {
                 object.add((HBox) hbEncabezado.getChildren().get(i));
                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket,ventaTB.getClienteTB().getNumeroDocumento(),ventaTB.getClienteTB().getNumeroDocumento());
+                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket,ventaTB.getClienteTB().getNumeroDocumento(),ventaTB.getClienteTB().getInformacion());
             }
 
             for (int m = 0; m < arrList.size(); m++) {
