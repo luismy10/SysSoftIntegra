@@ -4,7 +4,7 @@
 AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
 LIMA - PERU - HUANCAYO                  
 ----------------------------------------
-00000000        00000000                
+00000000        PUBLICO GENERAL         
 ----------------------------------------
 DESCRIPCION.                            
 CANT.     P.UNIT.     DESCT.     IMPORTE
