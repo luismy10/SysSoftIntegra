@@ -252,13 +252,13 @@ public class FxComprasController implements Initializable {
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getCostoCompraReal(), 2)));
+                Tools.roundingValue(cellData.getValue().getCostoCompraReal(), 4)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%"
         ));
         //tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoArticuloName()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)));
+                Tools.roundingValue(cellData.getValue().getTotalImporte(), 4)));
 
     }
 

@@ -4,6 +4,7 @@ package model;
 
 public class KardexTB {
     
+    private int id;
     private int idKardex;
     private String idArticulo;
     private String fecha;
@@ -12,16 +13,20 @@ public class KardexTB {
     private int movimiento;
     private String movimientoName;
     private String detalle;
-    private double cantidad;
-    private double cUnitario;
-    private double cTotal;
-    
+    private double inicial;
+    private double cantidad;    
     private double cantidadTotal;
-    private double cUnictarioTotal;
-    private double cTotalTotal;
     
     public KardexTB(){
         
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdKardex() {
@@ -80,6 +85,14 @@ public class KardexTB {
         this.movimientoName = movimientoName;
     }
 
+    public double getInicial() {
+        return inicial;
+    }
+
+    public void setInicial(double inicial) {
+        this.inicial = inicial;
+    }
+
     public String getDetalle() {
         return detalle;
     }
@@ -96,22 +109,6 @@ public class KardexTB {
         this.cantidad = cantidad;
     }
 
-    public double getcUnitario() {
-        return cUnitario;
-    }
-
-    public void setcUnitario(double cUnitario) {
-        this.cUnitario = cUnitario;
-    }
-
-    public double getcTotal() {
-        return cTotal;
-    }
-
-    public void setcTotal(double cTotal) {
-        this.cTotal = cTotal;
-    }
-
     public double getCantidadTotal() {
         return cantidadTotal;
     }
@@ -119,22 +116,5 @@ public class KardexTB {
     public void setCantidadTotal(double cantidadTotal) {
         this.cantidadTotal = cantidadTotal;
     }
-
-    public double getcUnictarioTotal() {
-        return cUnictarioTotal;
-    }
-
-    public void setcUnictarioTotal(double cUnictarioTotal) {
-        this.cUnictarioTotal = cUnictarioTotal;
-    }
-
-    public double getcTotalTotal() {
-        return cTotalTotal;
-    }
-
-    public void setcTotalTotal(double cTotalTotal) {
-        this.cTotalTotal = cTotalTotal;
-    }
-    
-    
+  
 }

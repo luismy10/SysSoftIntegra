@@ -119,17 +119,14 @@ public class SplashScreen extends Preloader {
                     ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
                     if (clienteTB != null) {
                         Session.IDCLIENTE = clienteTB.getIdCliente();
-                        Session.DATOSCLIENTE = clienteTB.getApellidos() + " " + clienteTB.getNombres();
+                        Session.DATOSCLIENTE = clienteTB.getInformacion();
                         Session.N_DOCUMENTO_CLIENTE = clienteTB.getNumeroDocumento();
                         Session.DIRECCION_CLIENTE = clienteTB.getDireccion();
                     } else {
                         ClienteTB clienteInsert = new ClienteTB();
                         clienteInsert.setTipoDocumento(1);
                         clienteInsert.setNumeroDocumento("00000000");
-                        clienteInsert.setApellidos("PUBLICO");
-                        clienteInsert.setNombres("GENERAL");
-                        clienteInsert.setSexo(0);
-                        clienteInsert.setFechaNacimiento(null);
+                        clienteInsert.setInformacion("PUBLICO GENERAL");                      
                         clienteInsert.setTelefono("");
                         clienteInsert.setCelular("");
                         clienteInsert.setEmail("");
@@ -141,7 +138,7 @@ public class SplashScreen extends Preloader {
                             ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");
                             if (clienteTB != null) {
                                 Session.IDCLIENTE = clienteSelect.getIdCliente();
-                                Session.DATOSCLIENTE = clienteSelect.getApellidos() + " " + clienteTB.getNombres();
+                                Session.DATOSCLIENTE = clienteSelect.getInformacion();
                                 Session.N_DOCUMENTO_CLIENTE = clienteSelect.getNumeroDocumento();
                                 Session.DIRECCION_CLIENTE = clienteSelect.getDireccion();
                             }

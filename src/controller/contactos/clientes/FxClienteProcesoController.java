@@ -18,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -47,13 +46,7 @@ public class FxClienteProcesoController implements Initializable {
     @FXML
     private TextField txtDocumentNumber;
     @FXML
-    private TextField txtLastName;
-    @FXML
-    private TextField txtFirstName;
-    @FXML
-    private ComboBox<DetalleTB> cbSex;
-    @FXML
-    private DatePicker dpBirthdate;
+    private TextField txtInformacion;
     @FXML
     private Button btnDirectory;
     @FXML
@@ -92,9 +85,6 @@ public class FxClienteProcesoController implements Initializable {
         DetalleADO.GetDetailId("0003").forEach(e -> {
             cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        DetalleADO.GetDetailId("0004").forEach(e -> {
-            cbSex.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
@@ -128,10 +118,9 @@ public class FxClienteProcesoController implements Initializable {
 
             txtDocumentNumber.setText(clienteTB.getNumeroDocumento());
             txtDocumentNumber.setDisable(clienteTB.getNumeroDocumento().equals("00000000"));
-            txtLastName.setText(clienteTB.getApellidos());
-            txtFirstName.setText(clienteTB.getNombres());
+            txtInformacion.setText(clienteTB.getInformacion());
 
-            information = clienteTB.getApellidos() + " " + clienteTB.getNombres();
+            information = clienteTB.getInformacion();
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             for (int i = 0; i < lsest.size(); i++) {
@@ -140,19 +129,7 @@ public class FxClienteProcesoController implements Initializable {
                     break;
                 }
             }
-            if (clienteTB.getSexo() != 0) {
-                ObservableList<DetalleTB> lssex = cbSex.getItems();
-                for (int i = 0; i < lssex.size(); i++) {
-                    if (clienteTB.getSexo() == lssex.get(i).getIdDetalle().get()) {
-                        cbSex.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
 
-            if (clienteTB.getFechaNacimiento() != null) {
-                Tools.actualDate(clienteTB.getFechaNacimiento().toString(), dpBirthdate);
-            }
             txtTelefono.setText(clienteTB.getTelefono());
             txtCelular.setText(clienteTB.getCelular());
             txtEmail.setText(clienteTB.getEmail());
@@ -254,14 +231,9 @@ public class FxClienteProcesoController implements Initializable {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el documento de identificación, por favor.", false);
 
             txtDocumentNumber.requestFocus();
-        } else if (txtLastName.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el apellido paterno, por favor.", false);
-
-            txtLastName.requestFocus();
-        } else if (txtFirstName.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el primero nombre, por favor.", false);
-
-            txtFirstName.requestFocus();
+        } else if (txtInformacion.getText().equalsIgnoreCase("")) {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese la información del cliente, por favor.", false);
+            txtInformacion.requestFocus();
         } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Seleccione el estado, por favor.", false);
             cbEstado.requestFocus();
@@ -273,22 +245,14 @@ public class FxClienteProcesoController implements Initializable {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(idCliente);
                 clienteTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                clienteTB.setApellidos(txtLastName.getText().trim());
-                clienteTB.setNombres(txtFirstName.getText().trim());
-                clienteTB.setNumeroDocumento(txtDocumentNumber.getText().trim());
-                clienteTB.setSexo(cbSex.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbSex.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                        : 0);
-                if (dpBirthdate.getValue() != null) {
-                    clienteTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
-                } else {
-                    clienteTB.setFechaNacimiento(null);
-                }
+                clienteTB.setInformacion(txtInformacion.getText().trim().toUpperCase());
+                clienteTB.setNumeroDocumento(txtDocumentNumber.getText().trim().toUpperCase());
+//              clienteTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));
                 clienteTB.setTelefono(txtTelefono.getText().trim());
                 clienteTB.setCelular(txtCelular.getText().trim());
                 clienteTB.setEmail(txtEmail.getText().trim());
-                clienteTB.setDireccion(txtDireccion.getText().trim());
-                clienteTB.setRepresentante(txtRepresentante.getText().trim());
+                clienteTB.setDireccion(txtDireccion.getText().trim().toUpperCase());
+                clienteTB.setRepresentante(txtRepresentante.getText().trim().toUpperCase());
                 clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
 
                 String result = ClienteADO.CrudCliente(clienteTB);
@@ -316,7 +280,7 @@ public class FxClienteProcesoController implements Initializable {
                         break;
                 }
 
-            } 
+            }
         }
     }
 

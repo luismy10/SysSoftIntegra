@@ -87,26 +87,26 @@ public class FxArticuloKardexController implements Initializable {
         tcC1.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getCantidad(), 2) : "")
         );
-        tcCo1.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getcUnitario(), 2) : "")
-        );
-        tcCe1.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getcTotal(), 2) : "")
-        );
+//        tcCo1.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getcUnitario(), 2) : "")
+//        );
+//        tcCe1.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getcTotal(), 2) : "")
+//        );
 
         tcC2.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getCantidad(), 2))
         );
-        tcCo2.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getcUnitario(), 2))
-        );
-        tcCe2.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getcTotal(), 2))
-        );
+//        tcCo2.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getcUnitario(), 2))
+//        );
+//        tcCe2.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getcTotal(), 2))
+//        );
 
         tcC3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidadTotal(), 2)));
-        tcCo3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getcUnictarioTotal(), 2)));
-        tcCe3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getcTotalTotal(), 2)));
+//        tcCo3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getcUnictarioTotal(), 2)));
+//        tcCe3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getcTotalTotal(), 2)));
 
         tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcDetalle.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
@@ -169,8 +169,8 @@ public class FxArticuloKardexController implements Initializable {
             validationSearch = false;
             if (!tvList.getItems().isEmpty()) {
                 lblCantidadTotal.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getCantidadTotal(), 2));
-                lblCostoPromedio.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getcUnictarioTotal(), 2));
-                lblCostoTotal.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getcTotalTotal(), 2));
+//                lblCostoPromedio.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getcUnictarioTotal(), 2));
+//                lblCostoTotal.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getcTotalTotal(), 2));
             }
         });
         task.setOnFailed((WorkerStateEvent event) -> {

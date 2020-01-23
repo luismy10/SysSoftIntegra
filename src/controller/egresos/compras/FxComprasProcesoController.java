@@ -162,7 +162,7 @@ public class FxComprasProcesoController implements Initializable {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Compra", result, false);
                 }
             } else if (rbOtroMedioPago.isSelected()) {
-                compraTB.setObservaciones(txtObservacion.getText().trim());
+                compraTB.setObservaciones(txtObservacion.getText().trim().toUpperCase());
                 String result = CompraADO.CrudCompra((short) 3, idCaja, compraTB, tvList, loteTBs, null);
                 if (result.equalsIgnoreCase("register")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Compra", "Se registró correctamente la compra.", false);
@@ -212,7 +212,7 @@ public class FxComprasProcesoController implements Initializable {
                 }
             }
         } else if (rbOtroMedioPago.isSelected()) {
-            if (!Tools.isText(txtObservacion.getText().trim())) {
+            if (!Tools.isText(txtObservacion.getText().trim().toUpperCase())) {
                 executeCrud(1, 1, "");
             } else {
                 Tools.AlertMessageWarning(window, "Compra", "Ingrese una observación de la compra.");

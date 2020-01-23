@@ -142,7 +142,7 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <HBox minWidth="-Infinity" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                        <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
@@ -191,7 +191,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px; -fx-padding: 0.8333333333333334em;">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Producto seleccionado" textAlignment="CENTER" wrappingWidth="320.0" HBox.hgrow="ALWAYS" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Producto seleccionado" textAlignment="CENTER" wrappingWidth="300.0" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <VBox alignment="CENTER" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
@@ -201,7 +201,7 @@
                                                 <Image url="@../../image/no-image.png" />
                                              </image>
                                           </ImageView>
-                                          <Text fx:id="lblName" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="-" textAlignment="CENTER" wrappingWidth="320.0" />
+                                          <Text fx:id="lblName" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="-" textAlignment="CENTER" wrappingWidth="300.0" />
                                           <Text fx:id="lblPrice" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="-" />
                                           <Text fx:id="lblPriceBruto" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="-" />
                                           <Text fx:id="lblImpuesto" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="-" />
@@ -210,7 +210,7 @@
                                     <HBox alignment="CENTER_LEFT" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="labelRobotoMedium14">
                                        <children>
                                           <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium14" text="CANT. ACTUAL" />
-                                          <Label fx:id="lblQuantity" ellipsisString="" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" styleClass="labelRobotoBold14" text="-" textFill="#117c02" wrapText="true" />
+                                          <Label fx:id="lblQuantity" ellipsisString="" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0" styleClass="labelRobotoBold14" text="-" textFill="#117c02" wrapText="true" />
                                        </children>
                                     </HBox>
                                  </children>

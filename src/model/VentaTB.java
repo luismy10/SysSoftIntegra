@@ -33,6 +33,8 @@ public class VentaTB {
     private double efectivo;
     private double vuelto;
     private String codigo;
+    private ClienteTB clienteTB;
+    private MonedaTB monedaTB;
 
     public VentaTB() {
 
@@ -43,8 +45,6 @@ public class VentaTB {
         this.fechaVenta = fechaVenta;
         this.total = total;
     }
-    
-    
 
     public int getId() {
         return id;
@@ -252,6 +252,22 @@ public class VentaTB {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo == null ? "" : codigo;
+    }
+
+    public ClienteTB getClienteTB() {
+        return clienteTB;
+    }
+
+    public void setClienteTB(ClienteTB clienteTB) {
+        this.clienteTB = clienteTB;
+    }
+
+    public MonedaTB getMonedaTB() {
+        return monedaTB;
+    }
+
+    public void setMonedaTB(MonedaTB monedaTB) {
+        this.monedaTB = monedaTB;
     }
 
 }

@@ -52,11 +52,11 @@ public class FxTicketController implements Initializable {
     @FXML
     private VBox vbContenedor;
     @FXML
-    private VBox hbEncabezado;
+    private AnchorPane apEncabezado;
     @FXML
-    private VBox hbDetalleCabecera;
+    private AnchorPane apDetalleCabecera;
     @FXML
-    private VBox hbPie;
+    private AnchorPane apPie;
     @FXML
     private TextField txtAnchoColumna;
     @FXML
@@ -75,6 +75,8 @@ public class FxTicketController implements Initializable {
     private AnchorPane vbPrincipal;
 
     private TextFieldTicket reference;
+
+    private HBox HboxReference;
 
     private short sheetWidth;
 
@@ -95,9 +97,9 @@ public class FxTicketController implements Initializable {
         if (ruta != null) {
             this.idTicket = idTicket;
             JSONObject jSONObject = Json.obtenerObjetoJSON(ruta);
-            hbEncabezado.getChildren().clear();
-            hbDetalleCabecera.getChildren().clear();
-            hbPie.getChildren().clear();
+            apEncabezado.getChildren().clear();
+            apDetalleCabecera.getChildren().clear();
+            apPie.getChildren().clear();
             lblNombre.setText(nombre);
 
             sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
@@ -108,7 +110,7 @@ public class FxTicketController implements Initializable {
             if (jSONObject.get("cabecera") != null) {
                 JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
                 for (int i = 0; i < cabeceraObjects.size(); i++) {
-                    HBox box = generateElement(hbEncabezado, "cb");
+                    HBox box = generateElement(apEncabezado, "cb");
                     JSONObject objectObtener = Json.obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
@@ -128,7 +130,7 @@ public class FxTicketController implements Initializable {
             if (jSONObject.get("detalle") != null) {
                 JSONObject detalleObjects = Json.obtenerObjetoJSON(jSONObject.get("detalle").toString());
                 for (int i = 0; i < detalleObjects.size(); i++) {
-                    HBox box = generateElement(hbDetalleCabecera, "dr");
+                    HBox box = generateElement(apDetalleCabecera, "dr");
                     JSONObject objectObtener = Json.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
@@ -149,7 +151,7 @@ public class FxTicketController implements Initializable {
             if (jSONObject.get("pie") != null) {
                 JSONObject pieObjects = Json.obtenerObjetoJSON(jSONObject.get("pie").toString());
                 for (int i = 0; i < pieObjects.size(); i++) {
-                    HBox box = generateElement(hbPie, "cp");
+                    HBox box = generateElement(apPie, "cp");
                     JSONObject objectObtener = Json.obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
@@ -171,155 +173,213 @@ public class FxTicketController implements Initializable {
 
     private void saveTicket() {
         try {
-            if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
-                JSONObject sampleObject = new JSONObject();
-                sampleObject.put("column", sheetWidth);
-                JSONObject cabecera = new JSONObject();
-                for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-                    HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
-                    JSONObject cb = new JSONObject();
-                    if (hBox.getChildren().size() > 1) {
-                        JSONArray kids = new JSONArray();
-                        for (int v = 0; v < hBox.getChildren().size(); v++) {
-                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
-                            JSONObject cbkid = new JSONObject();
-                            cbkid.put("value", field.getText());
-                            cbkid.put("width", field.getColumnWidth());
-                            cbkid.put("align", field.getAlignment().toString());
-                            cbkid.put("multiline", field.isMultilineas());
-                            cbkid.put("lines", field.getLines());
-                            cbkid.put("editable", field.isEditable());
-                            cbkid.put("variable", field.getVariable());
-                            kids.add(cbkid);
-                        }
-                        cb.put("list", kids);
-                    } else {
-                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
-                        JSONObject cbkid = new JSONObject();
-                        cbkid.put("value", field.getText());
-                        cbkid.put("width", field.getColumnWidth());
-                        cbkid.put("align", field.getAlignment().toString());
-                        cbkid.put("multiline", field.isMultilineas());
-                        cbkid.put("lines", field.getLines());
-                        cbkid.put("editable", field.isEditable());
-                        cbkid.put("variable", field.getVariable());
-                        cb.put("text", cbkid);
-                    }
-                    cabecera.put("cb_" + (i + 1), cb);
-                }
-
-                JSONObject detalle = new JSONObject();
-                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                    HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
-                    JSONObject cb = new JSONObject();
-                    if (hBox.getChildren().size() > 1) {
-                        JSONArray kids = new JSONArray();
-                        for (int v = 0; v < hBox.getChildren().size(); v++) {
-                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
-                            JSONObject cbkid = new JSONObject();
-                            cbkid.put("value", field.getText());
-                            cbkid.put("width", field.getColumnWidth());
-                            cbkid.put("align", field.getAlignment().toString());
-                            cbkid.put("multiline", field.isMultilineas());
-                            cbkid.put("lines", field.getLines());
-                            cbkid.put("editable", field.isEditable());
-                            cbkid.put("variable", field.getVariable());
-                            kids.add(cbkid);
-                        }
-                        cb.put("list", kids);
-                    } else {
-                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
-                        JSONObject cbkid = new JSONObject();
-                        cbkid.put("value", field.getText());
-                        cbkid.put("width", field.getColumnWidth());
-                        cbkid.put("align", field.getAlignment().toString());
-                        cbkid.put("multiline", field.isMultilineas());
-                        cbkid.put("lines", field.getLines());
-                        cbkid.put("editable", field.isEditable());
-                        cbkid.put("variable", field.getVariable());
-                        cb.put("text", cbkid);
-                    }
-                    detalle.put("dr_" + (i + 1), cb);
-                }
-
-                JSONObject pie = new JSONObject();
-                for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                    HBox hBox = (HBox) hbPie.getChildren().get(i);
-                    JSONObject cb = new JSONObject();
-                    if (hBox.getChildren().size() > 1) {
-                        JSONArray kids = new JSONArray();
-                        for (int v = 0; v < hBox.getChildren().size(); v++) {
-                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
-                            JSONObject cbkid = new JSONObject();
-                            cbkid.put("value", field.getText());
-                            cbkid.put("width", field.getColumnWidth());
-                            cbkid.put("align", field.getAlignment().toString());
-                            cbkid.put("multiline", field.isMultilineas());
-                            cbkid.put("lines", field.getLines());
-                            cbkid.put("editable", field.isEditable());
-                            cbkid.put("variable", field.getVariable());
-                            kids.add(cbkid);
-                        }
-                        cb.put("list", kids);
-                    } else {
-                        TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
-                        JSONObject cbkid = new JSONObject();
-                        cbkid.put("value", field.getText());
-                        cbkid.put("width", field.getColumnWidth());
-                        cbkid.put("align", field.getAlignment().toString());
-                        cbkid.put("multiline", field.isMultilineas());
-
-                        cbkid.put("lines", field.getLines());
-                        cbkid.put("editable", field.isEditable());
-                        cbkid.put("variable", field.getVariable());
-                        cb.put("text", cbkid);
-                    }
-                    pie.put("cp_" + (i + 1), cb);
-                }
-
-                sampleObject.put("cabecera", cabecera);
-                sampleObject.put("detalle", detalle);
-                sampleObject.put("pie", pie);
-
-                Files.write(Paths.get("./archivos/ticketventa.json"), sampleObject.toJSONString().getBytes());
-                TicketTB ticketTB = new TicketTB();
-                ticketTB.setId(idTicket);
-                ticketTB.setNombreTicket(lblNombre.getText());
-                ticketTB.setRuta(sampleObject.toJSONString());
-                String result = TicketADO.CrudTicket(ticketTB);
-                if (result.equalsIgnoreCase("duplicate")) {
-                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El nombre del formato ya existe, intente con otro.");
-                } else if (result.equalsIgnoreCase("updated")) {
-                    Tools.AlertMessageInformation(vbWindow, "Ticket", "Se actualizo correctamente el formato.");
-                    Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
-                } else if (result.equalsIgnoreCase("registered")) {
-                    Tools.AlertMessageInformation(vbWindow, "Ticket", "Se guardo correctamente el formato.");
-                    Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
-                } else {
-                    Tools.AlertMessageError(vbWindow, "Ticket", result);
-                }
-            } else {
-                if (hbEncabezado.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado está vacío.");
-                } else if (hbDetalleCabecera.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle cabecera está vacío.");
-                } else if (hbPie.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie está vacío.");
+            int valideteUno = 0;
+            int valideteDos = 0;
+            int valideteTree = 0;
+            for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
+                HBox hBox = (HBox) apEncabezado.getChildren().get(i);
+                if (hBox.getChildren().isEmpty()) {
+                    valideteUno++;
                 }
             }
 
+            for (int i = 0; i < apDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = (HBox) apDetalleCabecera.getChildren().get(i);
+                if (hBox.getChildren().isEmpty()) {
+                    valideteDos++;
+                }
+            }
+
+            for (int i = 0; i < apPie.getChildren().size(); i++) {
+                HBox hBox = (HBox) apPie.getChildren().get(i);
+                if (hBox.getChildren().isEmpty()) {
+                    valideteTree++;
+                }
+            }
+
+            if (valideteUno > 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ticket", "Hay una fila en la cabecera sin contenido");
+            } else if (valideteDos > 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ticket", "Hay una fila en el detalle sin contenido");
+            } else if (valideteTree > 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ticket", "Hay una fila en el pie sin contenido");
+            } else {
+                if (!apEncabezado.getChildren().isEmpty() && !apDetalleCabecera.getChildren().isEmpty() && !apPie.getChildren().isEmpty()) {
+                    JSONObject sampleObject = new JSONObject();
+                    sampleObject.put("column", sheetWidth);
+                    JSONObject cabecera = new JSONObject();
+                    for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
+                        HBox hBox = (HBox) apEncabezado.getChildren().get(i);
+                        JSONObject cb = new JSONObject();
+                        if (hBox.getChildren().size() > 1) {
+                            JSONArray kids = new JSONArray();
+                            for (int v = 0; v < hBox.getChildren().size(); v++) {
+                                TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                                JSONObject cbkid = new JSONObject();
+                                cbkid.put("value", field.getText());
+                                cbkid.put("width", field.getColumnWidth());
+                                cbkid.put("align", field.getAlignment().toString());
+                                cbkid.put("multiline", field.isMultilineas());
+                                cbkid.put("lines", field.getLines());
+                                cbkid.put("editable", field.isEditable());
+                                cbkid.put("variable", field.getVariable());
+                                kids.add(cbkid);
+                            }
+                            cb.put("list", kids);
+                        } else {
+                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                            JSONObject cbkid = new JSONObject();
+                            cbkid.put("value", field.getText());
+                            cbkid.put("width", field.getColumnWidth());
+                            cbkid.put("align", field.getAlignment().toString());
+                            cbkid.put("multiline", field.isMultilineas());
+                            cbkid.put("lines", field.getLines());
+                            cbkid.put("editable", field.isEditable());
+                            cbkid.put("variable", field.getVariable());
+                            cb.put("text", cbkid);
+                        }
+                        cabecera.put("cb_" + (i + 1), cb);
+                    }
+
+                    JSONObject detalle = new JSONObject();
+                    for (int i = 0; i < apDetalleCabecera.getChildren().size(); i++) {
+                        HBox hBox = (HBox) apDetalleCabecera.getChildren().get(i);
+                        JSONObject cb = new JSONObject();
+                        if (hBox.getChildren().size() > 1) {
+                            JSONArray kids = new JSONArray();
+                            for (int v = 0; v < hBox.getChildren().size(); v++) {
+                                TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                                JSONObject cbkid = new JSONObject();
+                                cbkid.put("value", field.getText());
+                                cbkid.put("width", field.getColumnWidth());
+                                cbkid.put("align", field.getAlignment().toString());
+                                cbkid.put("multiline", field.isMultilineas());
+                                cbkid.put("lines", field.getLines());
+                                cbkid.put("editable", field.isEditable());
+                                cbkid.put("variable", field.getVariable());
+                                kids.add(cbkid);
+                            }
+                            cb.put("list", kids);
+                        } else {
+                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                            JSONObject cbkid = new JSONObject();
+                            cbkid.put("value", field.getText());
+                            cbkid.put("width", field.getColumnWidth());
+                            cbkid.put("align", field.getAlignment().toString());
+                            cbkid.put("multiline", field.isMultilineas());
+                            cbkid.put("lines", field.getLines());
+                            cbkid.put("editable", field.isEditable());
+                            cbkid.put("variable", field.getVariable());
+                            cb.put("text", cbkid);
+                        }
+                        detalle.put("dr_" + (i + 1), cb);
+                    }
+
+                    JSONObject pie = new JSONObject();
+                    for (int i = 0; i < apPie.getChildren().size(); i++) {
+                        HBox hBox = (HBox) apPie.getChildren().get(i);
+                        JSONObject cb = new JSONObject();
+                        if (hBox.getChildren().size() > 1) {
+                            JSONArray kids = new JSONArray();
+                            for (int v = 0; v < hBox.getChildren().size(); v++) {
+                                TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(v);
+                                JSONObject cbkid = new JSONObject();
+                                cbkid.put("value", field.getText());
+                                cbkid.put("width", field.getColumnWidth());
+                                cbkid.put("align", field.getAlignment().toString());
+                                cbkid.put("multiline", field.isMultilineas());
+                                cbkid.put("lines", field.getLines());
+                                cbkid.put("editable", field.isEditable());
+                                cbkid.put("variable", field.getVariable());
+                                kids.add(cbkid);
+                            }
+                            cb.put("list", kids);
+                        } else {
+                            TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
+                            JSONObject cbkid = new JSONObject();
+                            cbkid.put("value", field.getText());
+                            cbkid.put("width", field.getColumnWidth());
+                            cbkid.put("align", field.getAlignment().toString());
+                            cbkid.put("multiline", field.isMultilineas());
+
+                            cbkid.put("lines", field.getLines());
+                            cbkid.put("editable", field.isEditable());
+                            cbkid.put("variable", field.getVariable());
+                            cb.put("text", cbkid);
+                        }
+                        pie.put("cp_" + (i + 1), cb);
+                    }
+
+                    sampleObject.put("cabecera", cabecera);
+                    sampleObject.put("detalle", detalle);
+                    sampleObject.put("pie", pie);
+
+                    Files.write(Paths.get("./archivos/ticketventa.json"), sampleObject.toJSONString().getBytes());
+                    TicketTB ticketTB = new TicketTB();
+                    ticketTB.setId(idTicket);
+                    ticketTB.setNombreTicket(lblNombre.getText());
+                    ticketTB.setRuta(sampleObject.toJSONString());
+                    String result = TicketADO.CrudTicket(ticketTB);
+                    if (result.equalsIgnoreCase("duplicate")) {
+                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El nombre del formato ya existe, intente con otro.");
+                    } else if (result.equalsIgnoreCase("updated")) {
+                        Tools.AlertMessageInformation(vbWindow, "Ticket", "Se actualizo correctamente el formato.");
+                        Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
+                    } else if (result.equalsIgnoreCase("registered")) {
+                        Tools.AlertMessageInformation(vbWindow, "Ticket", "Se guardo correctamente el formato.");
+                        Session.RUTA_TICKET_VENTA = sampleObject.toJSONString();
+                    } else {
+                        Tools.AlertMessageError(vbWindow, "Ticket", result);
+                    }
+                } else {
+                    if (apEncabezado.getChildren().isEmpty()) {
+                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado está vacío.");
+                    } else if (apDetalleCabecera.getChildren().isEmpty()) {
+                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle cabecera está vacío.");
+                    } else if (apPie.getChildren().isEmpty()) {
+                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie está vacío.");
+                    }
+                }
+            }
         } catch (IOException ex) {
             Tools.AlertMessageError(vbWindow, "Ticket", "No se pudo guardar la hoja con problemas de formato.");
             System.out.println(ex.getLocalizedMessage());
             System.out.println(ex);
         }
-
     }
-    
-    private HBox addElement(VBox contenedor, String id) {
+
+    private HBox generateElement(AnchorPane contenedor, String id) {
+        if (contenedor.getChildren().isEmpty()) {
+            return addElement(contenedor, id + "1", true);
+        } else {
+            HBox hBox = (HBox) contenedor.getChildren().get(contenedor.getChildren().size() - 1);
+            String idGenerate = hBox.getId();
+            String codigo = idGenerate.substring(2);
+            int valor = Integer.parseInt(codigo) + 1;
+            String newCodigo = id + valor;
+            return addElement(contenedor, newCodigo, true);
+        }
+    }
+
+    private HBox addElement(AnchorPane contenedor, String id, boolean useLayout) {
+        double layoutY = 0;
+        if (useLayout) {
+            for (int i = 0; i < contenedor.getChildren().size(); i++) {
+                layoutY += ((HBox) contenedor.getChildren().get(i)).getPrefHeight();
+            }
+        }
+
         ImageView imgRemove = new ImageView(new Image("/view/image/remove-item.png"));
         imgRemove.setFitWidth(20);
         imgRemove.setFitHeight(20);
+
+        ImageView imgMoveDown = new ImageView(new Image("/view/image/movedown.png"));
+        imgMoveDown.setFitWidth(20);
+        imgMoveDown.setFitHeight(20);
+
+        ImageView imgMoveUp = new ImageView(new Image("/view/image/moveup.png"));
+        imgMoveUp.setFitWidth(20);
+        imgMoveUp.setFitHeight(20);
 
         ImageView imgText = new ImageView(new Image("/view/image/text.png"));
         imgText.setFitWidth(20);
@@ -343,10 +403,14 @@ public class FxTicketController implements Initializable {
 
         HBox hBox = new HBox();
         hBox.setId(id);
+        hBox.setLayoutX(0);
+        hBox.setLayoutY(layoutY);
+        hBox.setPrefWidth(sheetWidth * pointWidth);
         hBox.setPrefHeight(30);
         hBox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;");
         hBox.addEventHandler(MouseEvent.MOUSE_PRESSED, (Event event) -> {
             hBox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
+            HboxReference = hBox;
         });
         hBox.addEventHandler(MouseEvent.MOUSE_EXITED, (Event event) -> {
             hBox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: white;");
@@ -358,22 +422,26 @@ public class FxTicketController implements Initializable {
         remove.setOnAction(e -> {
             contenedor.getChildren().remove(hBox);
         });
+
         MenuItem text = new MenuItem("Agregar Texto");
         text.setGraphic(imgText);
         text.setOnAction(e -> {
             TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, (short) 0, (short) 13, Pos.CENTER_LEFT, true, "");
             hBox.getChildren().add(field);
         });
+
         MenuItem textVariable = new MenuItem("Agregar Variable");
         textVariable.setGraphic(imgTextVariable);
         textVariable.setOnAction(e -> {
             windowTextVar(hBox);
         });
+
         MenuItem textMultilinea = new MenuItem("Agregar Texto Multilínea");
         textMultilinea.setGraphic(imgTextLines);
         textMultilinea.setOnAction(e -> {
             windowTextMultilinea(hBox);
         });
+
         MenuItem textUnaLinea = new MenuItem("Agregar Línea");
         textUnaLinea.setGraphic(imgUnaLinea);
         textUnaLinea.setOnAction(e -> {
@@ -384,6 +452,7 @@ public class FxTicketController implements Initializable {
             TextFieldTicket field = addElementTextField("iu", value, false, (short) 0, sheetWidth, Pos.CENTER_LEFT, false, "");
             hBox.getChildren().add(field);
         });
+
         MenuItem textDosLineas = new MenuItem("Agregar Doble Línea");
         textDosLineas.setGraphic(imgDobleLinea);
         textDosLineas.setOnAction(e -> {
@@ -395,7 +464,20 @@ public class FxTicketController implements Initializable {
             hBox.getChildren().add(field);
         });
 
-        contextMenu.getItems().addAll(text, textVariable, textMultilinea, textUnaLinea, textDosLineas, remove);
+        MenuItem moveUp = new MenuItem("Subir elemento");
+        moveUp.setGraphic(imgMoveUp);
+        moveUp.setOnAction(e -> {
+            moveUpHBox(contenedor);
+        });
+
+        MenuItem moveDown = new MenuItem("Bajar elemento");
+        moveDown.setGraphic(imgMoveDown);
+        moveDown.setOnAction(e -> {
+            moveDownHBox(contenedor);
+        });
+
+        contextMenu.getItems().addAll(text, textVariable, textMultilinea, textUnaLinea, textDosLineas, remove, moveUp, moveDown);
+
         hBox.setOnContextMenuRequested((ContextMenuEvent event) -> {
             contextMenu.show(hBox, event.getSceneX(), event.getSceneY());
             short widthContent = 0;
@@ -410,7 +492,9 @@ public class FxTicketController implements Initializable {
             textDosLineas.setDisable((widthContent + 13) > sheetWidth);
 
         });
-        contenedor.getChildren().add(hBox);
+        if (useLayout) {
+            contenedor.getChildren().add(hBox);
+        }
         return hBox;
     }
 
@@ -489,6 +573,7 @@ public class FxTicketController implements Initializable {
             field.setColumnWidth(sheetWidth);
             field.setPrefWidth(((double) field.getColumnWidth() * pointWidth));
         });
+
         MenuItem textLeft = new MenuItem("Alineación Izquierda");
         textLeft.setGraphic(imgTextLeft);
         textLeft.setOnAction(e -> {
@@ -561,23 +646,10 @@ public class FxTicketController implements Initializable {
         }
     }
 
-    private HBox generateElement(VBox contenedor, String id) {
-        if (contenedor.getChildren().isEmpty()) {
-            return addElement(contenedor, id + "1");
-        } else {
-            HBox hBox = (HBox) contenedor.getChildren().get(contenedor.getChildren().size() - 1);
-            String idGenerate = hBox.getId();
-            String codigo = idGenerate.substring(2);
-            int valor = Integer.parseInt(codigo) + 1;
-            String newCodigo = id + valor;
-            return addElement(contenedor, newCodigo);
-        }
-    }
-
     private void clearPane() {
-        hbEncabezado.getChildren().clear();
-        hbDetalleCabecera.getChildren().clear();
-        hbPie.getChildren().clear();
+        apEncabezado.getChildren().clear();
+        apDetalleCabecera.getChildren().clear();
+        apPie.getChildren().clear();
         txtAnchoColumna.setText("");
         cbAlignment.getSelectionModel().select(null);
         cbMultilinea.setSelected(false);
@@ -600,7 +672,7 @@ public class FxTicketController implements Initializable {
             default:
                 return Pos.CENTER_LEFT;
         }
-    }    
+    }
 
     private void searchTicket() {
         try {
@@ -712,27 +784,61 @@ public class FxTicketController implements Initializable {
 
     private void openWindowImpresora() {
         try {
-            if (!hbEncabezado.getChildren().isEmpty() && !hbDetalleCabecera.getChildren().isEmpty() && !hbPie.getChildren().isEmpty()) {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_IMPRIMIR);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxImprimirController controller = fXMLLoader.getController();
-                controller.setInitTicketController(this);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir Prueba", vbWindow.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-                stage.show();
+
+            int valideteUno = 0;
+            int valideteDos = 0;
+            int valideteTree = 0;
+            for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
+                HBox hBox = (HBox) apEncabezado.getChildren().get(i);
+                if (hBox.getChildren().isEmpty()) {
+                    valideteUno++;
+                }
+            }
+
+            for (int i = 0; i < apDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = (HBox) apDetalleCabecera.getChildren().get(i);
+                if (hBox.getChildren().isEmpty()) {
+                    valideteDos++;
+                }
+            }
+
+            for (int i = 0; i < apPie.getChildren().size(); i++) {
+                HBox hBox = (HBox) apPie.getChildren().get(i);
+                if (hBox.getChildren().isEmpty()) {
+                    valideteTree++;
+                }
+            }
+
+            if (valideteUno > 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ticket", "Hay una fila en la cabecera sin contenido");
+            } else if (valideteDos > 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ticket", "Hay una fila en el detalle sin contenido");
+            } else if (valideteTree > 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ticket", "Hay una fila en el pie sin contenido");
             } else {
-                if (hbEncabezado.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado está vacío.");
-                } else if (hbDetalleCabecera.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle cabecera está vacío.");
-                } else if (hbPie.getChildren().isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie está vacío.");
+
+                if (!apEncabezado.getChildren().isEmpty() && !apDetalleCabecera.getChildren().isEmpty() && !apPie.getChildren().isEmpty()) {
+                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                    URL url = getClass().getResource(FilesRouters.FX_IMPRIMIR);
+                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                    Parent parent = fXMLLoader.load(url.openStream());
+                    //Controlller here
+                    FxImprimirController controller = fXMLLoader.getController();
+                    controller.setInitTicketController(this);
+                    //
+                    Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir Prueba", vbWindow.getScene().getWindow());
+                    stage.setResizable(false);
+                    stage.sizeToScene();
+                    stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                    stage.show();
+                } else {
+                    if (apEncabezado.getChildren().isEmpty()) {
+                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El encabezado está vacío.");
+                    } else if (apDetalleCabecera.getChildren().isEmpty()) {
+                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El detalle cabecera está vacío.");
+                    } else if (apPie.getChildren().isEmpty()) {
+                        Tools.AlertMessageWarning(vbWindow, "Ticket", "El pie está vacío.");
+                    }
                 }
             }
         } catch (IOException ex) {
@@ -791,35 +897,17 @@ public class FxTicketController implements Initializable {
 
     @FXML
     private void onMouseClickedEncabezadoAdd(MouseEvent event) {
-        generateElement(hbEncabezado, "cb");
-    }
-
-    @FXML
-    private void onMouseClickedPieAdd(MouseEvent event) {
-        if (hbPie.getChildren().isEmpty()) {
-            addElement(hbPie, "cp1");
-        } else {
-            HBox hBox = (HBox) hbPie.getChildren().get(hbPie.getChildren().size() - 1);
-            String idGenerate = hBox.getId();
-            String codigo = idGenerate.substring(2);
-            int valor = Integer.parseInt(codigo) + 1;
-            String newCodigo = "cp" + valor;
-            addElement(hbPie, newCodigo);
-        }
+        generateElement(apEncabezado, "cb");
     }
 
     @FXML
     private void onMouseClickedDetalleCabeceraAdd(MouseEvent event) {
-        if (hbDetalleCabecera.getChildren().isEmpty()) {
-            addElement(hbDetalleCabecera, "dr1");
-        } else {
-            HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(hbDetalleCabecera.getChildren().size() - 1);
-            String idGenerate = hBox.getId();
-            String codigo = idGenerate.substring(2);
-            int valor = Integer.parseInt(codigo) + 1;
-            String newCodigo = "dr" + valor;
-            addElement(hbDetalleCabecera, newCodigo);
-        }
+        generateElement(apDetalleCabecera, "dr");
+    }
+
+    @FXML
+    private void onMouseClickedPieAdd(MouseEvent event) {
+        generateElement(apPie, "cp");
     }
 
     @FXML
@@ -877,9 +965,9 @@ public class FxTicketController implements Initializable {
         sheetWidth = widthPage;
         lblColumnas.setText("" + sheetWidth);
         vbContenedor.setPrefWidth(sheetWidth * pointWidth);
-        
-        for (short i = 0; i < hbEncabezado.getChildren().size(); i++) {
-            HBox hBox = (HBox) hbEncabezado.getChildren().get(i);
+
+        for (short i = 0; i < apEncabezado.getChildren().size(); i++) {
+            HBox hBox = (HBox) apEncabezado.getChildren().get(i);
             short newwidth = (short) (sheetWidth / hBox.getChildren().size());
             for (short j = 0; j < hBox.getChildren().size(); j++) {
                 TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
@@ -887,9 +975,9 @@ public class FxTicketController implements Initializable {
                 fieldTicket.setPrefWidth(newwidth * pointWidth);
             }
         }
-        
-        for (short i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-            HBox hBox = (HBox) hbDetalleCabecera.getChildren().get(i);
+
+        for (short i = 0; i < apDetalleCabecera.getChildren().size(); i++) {
+            HBox hBox = (HBox) apDetalleCabecera.getChildren().get(i);
             short newwidth = (short) (sheetWidth / hBox.getChildren().size());
             for (short j = 0; j < hBox.getChildren().size(); j++) {
                 TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
@@ -897,9 +985,9 @@ public class FxTicketController implements Initializable {
                 fieldTicket.setPrefWidth(newwidth * pointWidth);
             }
         }
-        
-        for (short i = 0; i < hbPie.getChildren().size(); i++) {
-            HBox hBox = (HBox) hbPie.getChildren().get(i);
+
+        for (short i = 0; i < apPie.getChildren().size(); i++) {
+            HBox hBox = (HBox) apPie.getChildren().get(i);
             short newwidth = (short) (sheetWidth / hBox.getChildren().size());
             for (short j = 0; j < hBox.getChildren().size(); j++) {
                 TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
@@ -907,19 +995,19 @@ public class FxTicketController implements Initializable {
                 fieldTicket.setPrefWidth(newwidth * pointWidth);
             }
         }
-        
+
     }
 
-    public VBox getHbEncabezado() {
-        return hbEncabezado;
+    public AnchorPane getHbEncabezado() {
+        return apEncabezado;
     }
 
-    public VBox getHbDetalleCabecera() {
-        return hbDetalleCabecera;
+    public AnchorPane getHbDetalleCabecera() {
+        return apDetalleCabecera;
     }
 
-    public VBox getHbPie() {
-        return hbPie;
+    public AnchorPane getHbPie() {
+        return apPie;
     }
 
     public short getSheetWidth() {
@@ -928,6 +1016,69 @@ public class FxTicketController implements Initializable {
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
+    }
+
+    private void moveUpHBox(AnchorPane anchorPane) {
+        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+
+            if (((HBox) anchorPane.getChildren().get(i)).equals(HboxReference)) {
+                if (i == 0) {
+                    break;
+                }
+                HBox previous = (HBox) anchorPane.getChildren().get(i - 1);
+
+                HBox oldHbox = addElement(anchorPane, previous.getId(), false);
+                oldHbox.setLayoutY(previous.getLayoutY());
+                for (int r = 0; r < HboxReference.getChildren().size(); r++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    oldHbox.getChildren().add(fieldTicket);
+                }
+
+                HBox newHbox = addElement(anchorPane, HboxReference.getId(), false);
+                newHbox.setLayoutY(HboxReference.getLayoutY());
+                for (int a = 0; a < previous.getChildren().size(); a++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) previous.getChildren().get(a);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    newHbox.getChildren().add(fieldTicket);
+                }
+
+                anchorPane.getChildren().set(i - 1, oldHbox);
+                anchorPane.getChildren().set(i, newHbox);
+
+            }
+        }
+    }
+
+    private void moveDownHBox(AnchorPane anchorPane) {
+        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+            if (((HBox) anchorPane.getChildren().get(i)).equals(HboxReference)) {
+                if (anchorPane.getChildren().size() == (i + 1)) {
+                    break;
+                }
+
+                HBox later = (HBox) anchorPane.getChildren().get(i + 1);
+
+                HBox oldHbox = addElement(anchorPane, later.getId(), false);
+                oldHbox.setLayoutY(later.getLayoutY());
+                for (int r = 0; r < HboxReference.getChildren().size(); r++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    oldHbox.getChildren().add(fieldTicket);
+                }
+
+                HBox newHbox = addElement(anchorPane, HboxReference.getId(), false);
+                newHbox.setLayoutY(HboxReference.getLayoutY());
+                for (int a = 0; a < later.getChildren().size(); a++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) later.getChildren().get(a);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    newHbox.getChildren().add(fieldTicket);
+                }
+
+                anchorPane.getChildren().set(i, newHbox);
+                anchorPane.getChildren().set(i + 1, oldHbox);
+            }
+        }
     }
 
 }

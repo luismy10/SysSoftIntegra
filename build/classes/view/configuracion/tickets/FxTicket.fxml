@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -35,7 +36,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button disable="true" mnemonicParsing="false" onAction="#onActionNuevo" onKeyPressed="#onKeyPressNuevo" styleClass="buttonLight" text="Nuevo">
+            <Button mnemonicParsing="false" onAction="#onActionNuevo" onKeyPressed="#onKeyPressNuevo" styleClass="buttonLight" text="Nuevo">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -108,7 +109,7 @@
                                                             </ImageView>
                                                          </children>
                                                       </HBox>
-                                                      <VBox fx:id="hbEncabezado" />
+                                                      <AnchorPane fx:id="apEncabezado" />
                                                       <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
                                                          <children>
                                                             <Label styleClass="labelMonospaced13" text="Detalle" textFill="WHITE" />
@@ -119,7 +120,7 @@
                                                             </ImageView>
                                                          </children>
                                                       </HBox>
-                                                      <VBox fx:id="hbDetalleCabecera" />
+                                                      <AnchorPane fx:id="apDetalleCabecera" />
                                                       <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
                                                          <children>
                                                             <Label styleClass="labelMonospaced13" text="Pie" textFill="WHITE" />
@@ -130,7 +131,7 @@
                                                             </ImageView>
                                                          </children>
                                                       </HBox>
-                                                      <VBox fx:id="hbPie" />
+                                                      <AnchorPane fx:id="apPie" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -159,7 +160,7 @@
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Alineación" />
-                                          <ComboBox fx:id="cbAlignment" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
+                                          <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
@@ -210,7 +211,7 @@
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Columnas por Renglón" />
+                              <Label styleClass="labelRoboto14" text="Tamaño" />
                               <Label fx:id="lblColumnas" styleClass="labelRobotoBold16" text="0" textFill="#0f67a1" />
                            </children>
                         </VBox>

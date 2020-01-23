@@ -62,11 +62,7 @@ public class FxClienteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
-        tcPersona.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getApellidos() + " ",
-                cellData.getValue().getNombres() + " "
-        )
-        );
+        tcPersona.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getInformacion()));
         tcContacto.setCellValueFactory(cellData -> Bindings.concat(
                 (!Tools.isText(cellData.getValue().getTelefono()) ? "TEL: " + cellData.getValue().getTelefono() : "Sin número telefónico")
                 + "\n"

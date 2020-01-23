@@ -25,7 +25,7 @@
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Seleccionar Precio" />
+                  <Label text="Seleccionar Precio" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />

@@ -2,7 +2,6 @@ package controller.produccion.suministros;
 
 import controller.configuracion.tablasbasicas.FxDetalleListaController;
 import controller.inventario.articulo.FxCodigoBarrasController;
-import controller.tools.CheckBoxModel;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -89,8 +88,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private TextField txtCosto;
     @FXML
-    private TextField txtCostoPromedio;
-    @FXML
     private CheckBox cbLote;
     @FXML
     private CheckBox cbInventario;
@@ -141,8 +138,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     private Text lblTitle;
     @FXML
     private TextField txtClaveSat;
-    @FXML
-    private VBox vbImpuestos;
     @FXML
     private TableView<PreciosTB> tvPrecios;
     @FXML
@@ -263,7 +258,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         cbInventario.setSelected(false);
         vbInventario.setDisable(true);
         txtCosto.clear();
-        txtCostoPromedio.clear();
         txtUtilidad1.clear();
         rbValorUnidad.setSelected(true);
         txtNombreGenerico.clear();
@@ -384,17 +378,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
             cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
-        vbImpuestos.getChildren().clear();
-        list1.forEach(e -> {
-            CheckBoxModel checkBox = new CheckBoxModel(e.getNombreImpuesto());
-            checkBox.setValor(e.getValor());
-            checkBox.setOnAction(event -> {
-
-            });
-            checkBox.getStyleClass().add("check-box-contenido");
-            vbImpuestos.getChildren().add(checkBox);
-        });
-
         cbEstado.getItems().clear();
         ObservableList<DetalleTB> list2 = (ObservableList<DetalleTB>) objects.get(2);
         list2.forEach(e -> {
@@ -509,18 +492,18 @@ public class FxSuministrosProcesoModalController implements Initializable {
             }
             txtPrecioVentaNetoPersonalizado.requestFocus();
         } else if (cbInventario.isSelected()) {
-            if (!estadoOrigen && !Tools.isNumeric(txtCostoPromedio.getText())) {
+            if (!estadoOrigen && !Tools.isNumeric(txtCosto.getText())) {
                 openAlertMessageWarning("Ingrese el costo del producto, por favor.");
                 if (!selectionModel.isSelected(1)) {
                     selectionModel.select(1);
                 }
-                txtCostoPromedio.requestFocus();
-            } else if (!estadoOrigen && Double.parseDouble(txtCostoPromedio.getText()) <= 0) {
+                txtCosto.requestFocus();
+            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) <= 0) {
                 openAlertMessageWarning("El costo del producto no puede ser menor o igual a 0, por favor.");
                 if (!selectionModel.isSelected(1)) {
                     selectionModel.select(1);
                 }
-                txtCostoPromedio.requestFocus();
+                txtCosto.requestFocus();
             } else if (!estadoOrigen && rbPrecioNormal.isSelected() && !Tools.isNumeric(txtMargen1.getText())) {
                 openAlertMessageWarning("Ingrese el margen, por favor.");
                 if (!selectionModel.isSelected(1)) {
@@ -590,8 +573,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     : 0);
 
             //agregar lista de precios
-            suministroTB.setCostoCompra(Tools.isNumeric(txtCostoPromedio.getText())
-                    ? Double.parseDouble(txtCostoPromedio.getText())
+            suministroTB.setCostoCompra(Tools.isNumeric(txtCosto.getText())
+                    ? Double.parseDouble(txtCosto.getText())
                     : 0);
 
             double precioValidado = rbPrecioNormal.isSelected()
@@ -762,15 +745,15 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     private void calculateForCosto(TextField cos) {
         if (Tools.isNumeric(cos.getText())) {
-            if (!vbImpuestos.getChildren().isEmpty()) {
-                double totalImpuesto = 0;
-                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
-                    totalImpuesto += ((CheckBoxModel) vbImpuestos.getChildren().get(i)).isSelected()
-                            ? (Double.parseDouble(cos.getText()) * ((double) ((CheckBoxModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
-                            : 0;
-                }
-                double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
-                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 6));
+//            if (!vbImpuestos.getChildren().isEmpty()) {
+//                double totalImpuesto = 0;
+//                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+//                    totalImpuesto += ((CheckBoxModel) vbImpuestos.getChildren().get(i)).isSelected()
+//                            ? (Double.parseDouble(cos.getText()) * ((double) ((CheckBoxModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
+//                            : 0;
+//                }
+//                double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
+//                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
@@ -786,10 +769,10 @@ public class FxSuministrosProcesoModalController implements Initializable {
 //                prec.setText(Tools.roundingValue(precio, 2));
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
-            } else {
+//            } else {
                 //toma el valor del impuesto del combo box
-                double valorCalculado = Double.parseDouble(cos.getText());
-                txtCostoPromedio.setText(Tools.roundingValue(valorCalculado, 6));
+//                double valorCalculado = Double.parseDouble(cos.getText());
+//                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
 //
@@ -805,7 +788,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 //                prec.setText(Tools.roundingValue(precio, 2));
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
-            }
+//            }
         }
     }
 
@@ -825,11 +808,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                         double porcentaje = (precio * 100.00) / costo;
 
-                        int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 6)), 0)));
+                        int recalculado = (int) Math.abs(100 - Double.parseDouble(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(porcentaje, 8)), 0)));
 
-                        prec.setText(Tools.roundingValue(precio, 6));
+                        prec.setText(Tools.roundingValue(precio, 8));
                         mar.setText(String.valueOf(recalculado));
-                        util.setText(Tools.roundingValue((precio - costo), 6));
+                        util.setText(Tools.roundingValue((precio - costo), 8));
                     }
                 } else {
                     double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
@@ -837,9 +820,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                     double precio = Tools.calculateValueNeto(impuesto, precioNeto);
 
-                    prec.setText(Tools.roundingValue(precio, 6));
+                    prec.setText(Tools.roundingValue(precio, 8));
                     mar.setText(String.valueOf(0));
-                    util.setText(Tools.roundingValue((0), 6));
+                    util.setText(Tools.roundingValue((0), 8));
                 }
             }
         }
@@ -858,7 +841,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             int recalculado = (int) Math.abs(100
                     - Double.parseDouble(
                             Tools.roundingValue(Double.parseDouble(
-                                    Tools.roundingValue(porcentaje, 6)), 0)));
+                                    Tools.roundingValue(porcentaje, 8)), 0)));
 
             double impuesto = Tools.calculateTax(
                     cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
@@ -869,8 +852,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
             double precioimpuesto = (precio + impuesto);
 
             mar.setText(String.valueOf(recalculado));
-            uti.setText(Tools.roundingValue((precio - costo), 6));
-            preneto.setText(Tools.roundingValue(precioimpuesto, 6));
+            uti.setText(Tools.roundingValue((precio - costo), 8));
+            preneto.setText(Tools.roundingValue(precioimpuesto, 8));
         }
     }
 
@@ -889,9 +872,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     precio);
             double precioimpuesto = (precio + impuesto);
 
-            pre.setText(Tools.roundingValue(precio, 6));
-            uti.setText(Tools.roundingValue((precio - costo), 6));
-            preneto.setText(Tools.roundingValue(precioimpuesto, 6));
+            pre.setText(Tools.roundingValue(precio, 8));
+            uti.setText(Tools.roundingValue((precio - costo), 8));
+            preneto.setText(Tools.roundingValue(precioimpuesto, 8));
         }
     }
 
@@ -914,11 +897,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     int recalculado = (int) Math.abs(100
                             - Double.parseDouble(
                                     Tools.roundingValue(Double.parseDouble(
-                                            Tools.roundingValue(porcentaje, 6)), 0)));
+                                            Tools.roundingValue(porcentaje, 8)), 0)));
 
-                    pre.setText(Tools.roundingValue(precio, 6));
+                    pre.setText(Tools.roundingValue(precio, 8));
                     mar.setText(String.valueOf(recalculado));
-                    uti.setText(Tools.roundingValue((precio - costo), 6));
+                    uti.setText(Tools.roundingValue((precio - costo), 8));
                 }
             } else {
                 double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getValor() : 0;
@@ -926,9 +909,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
                 double precio = Tools.calculateValueNeto(impuesto, precioNeto);
 
-                pre.setText(Tools.roundingValue(precio, 6));
+                pre.setText(Tools.roundingValue(precio, 8));
                 mar.setText(String.valueOf(0));
-                uti.setText(Tools.roundingValue((0), 6));
+                uti.setText(Tools.roundingValue((0), 8));
             }
         }
     }
@@ -1207,54 +1190,54 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     @FXML
     private void onActionImpuesto(ActionEvent event) {
-        calculateImpuesto(txtCostoPromedio, txtMargen1, txtUtilidad1, txtPrecioVentaNeto1, txtPrecio1);
-        calculateImpuesto(txtCostoPromedio, txtMargen2, txtUtilidad2, txtPrecioVentaNeto2, txtPrecio2);
-        calculateImpuesto(txtCostoPromedio, txtMargen3, txtUtilidad3, txtPrecioVentaNeto3, txtPrecio3);
+        calculateImpuesto(txtCosto, txtMargen1, txtUtilidad1, txtPrecioVentaNeto1, txtPrecio1);
+        calculateImpuesto(txtCosto, txtMargen2, txtUtilidad2, txtPrecioVentaNeto2, txtPrecio2);
+        calculateImpuesto(txtCosto, txtMargen3, txtUtilidad3, txtPrecioVentaNeto3, txtPrecio3);
     }
 
     @FXML
     private void onKeyRealesedPrecio1(KeyEvent event) {
-        calculateForPrecio(txtPrecio1, txtCostoPromedio, txtMargen1, txtUtilidad1, txtPrecioVentaNeto1);
+        calculateForPrecio(txtPrecio1, txtCosto, txtMargen1, txtUtilidad1, txtPrecioVentaNeto1);
     }
 
     @FXML
     private void onKeyRealesedPrecio2(KeyEvent event) {
-        calculateForPrecio(txtPrecio2, txtCostoPromedio, txtMargen2, txtUtilidad2, txtPrecioVentaNeto2);
+        calculateForPrecio(txtPrecio2, txtCosto, txtMargen2, txtUtilidad2, txtPrecioVentaNeto2);
     }
 
     @FXML
     private void onKeyRealesedPrecio3(KeyEvent event) {
-        calculateForPrecio(txtPrecio3, txtCostoPromedio, txtMargen3, txtUtilidad3, txtPrecioVentaNeto3);
+        calculateForPrecio(txtPrecio3, txtCosto, txtMargen3, txtUtilidad3, txtPrecioVentaNeto3);
     }
 
     @FXML
     private void onKeyRealesedPrecioNeto1(KeyEvent event) {
-        calculateForPrecioNeto(txtPrecioVentaNeto1, txtCostoPromedio, txtPrecio1, txtMargen1, txtUtilidad1);
+        calculateForPrecioNeto(txtPrecioVentaNeto1, txtCosto, txtPrecio1, txtMargen1, txtUtilidad1);
     }
 
     @FXML
     private void onKeyRealesedPrecioNeto2(KeyEvent event) {
-        calculateForPrecioNeto(txtPrecioVentaNeto2, txtCostoPromedio, txtPrecio2, txtMargen2, txtUtilidad2);
+        calculateForPrecioNeto(txtPrecioVentaNeto2, txtCosto, txtPrecio2, txtMargen2, txtUtilidad2);
     }
 
     @FXML
     private void onKeyRealesedPrecioNeto3(KeyEvent event) {
-        calculateForPrecioNeto(txtPrecioVentaNeto3, txtCostoPromedio, txtPrecio3, txtMargen3, txtUtilidad3);
+        calculateForPrecioNeto(txtPrecioVentaNeto3, txtCosto, txtPrecio3, txtMargen3, txtUtilidad3);
     }
 
     @FXML
     private void onKeyReleasedMargen1(KeyEvent event) {
-        calculateForMargen(txtMargen1, txtCostoPromedio, txtPrecio1, txtUtilidad1, txtPrecioVentaNeto1);
+        calculateForMargen(txtMargen1, txtCosto, txtPrecio1, txtUtilidad1, txtPrecioVentaNeto1);
     }
 
     @FXML
     private void onKeyReleasedMargen2(KeyEvent event) {
-        calculateForMargen(txtMargen2, txtCostoPromedio, txtPrecio2, txtUtilidad2, txtPrecioVentaNeto2);
+        calculateForMargen(txtMargen2, txtCosto, txtPrecio2, txtUtilidad2, txtPrecioVentaNeto2);
     }
 
     @FXML
     private void onKeyReleasedMargen3(KeyEvent event) {
-        calculateForMargen(txtMargen3, txtCostoPromedio, txtPrecio3, txtUtilidad3, txtPrecioVentaNeto3);
+        calculateForMargen(txtMargen3, txtCosto, txtPrecio3, txtUtilidad3, txtPrecioVentaNeto3);
     }
 
     @FXML
@@ -1275,7 +1258,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     @FXML
     private void onKeyRealesedPrecioNetoPerzonalizado(KeyEvent event) {
-        calculateForPrecioNeto(txtPrecioVentaNetoPersonalizado, txtCostoPromedio, txtPrecioVentaBrutoPersonalizado, txtMargenPersonalizado, txtUtilidadPersonalizado);
+        calculateForPrecioNeto(txtPrecioVentaNetoPersonalizado, txtCosto, txtPrecioVentaBrutoPersonalizado, txtMargenPersonalizado, txtUtilidadPersonalizado);
 
     }
 
@@ -1292,7 +1275,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     @FXML
     private void onKeyReleasedMargenPersonalizado(KeyEvent event) {
-        calculateForMargen(txtMargenPersonalizado, txtCostoPromedio, txtPrecioVentaBrutoPersonalizado, txtUtilidadPersonalizado, txtPrecioVentaNetoPersonalizado);
+        calculateForMargen(txtMargenPersonalizado, txtCosto, txtPrecioVentaBrutoPersonalizado, txtUtilidadPersonalizado, txtPrecioVentaNetoPersonalizado);
     }
 
     @FXML
@@ -1321,7 +1304,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
             txtPrecio2.clear();
             txtPrecio3.clear();
             txtCosto.clear();
-            txtCostoPromedio.clear();
             txtMargen1.setText("30");
             txtUtilidad1.clear();
             cbImpuesto.getSelectionModel().select(-1);

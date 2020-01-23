@@ -82,10 +82,8 @@ public class MovimientoInventarioADO {
                         + "Tipo,"
                         + "Movimiento,"
                         + "Detalle,"
-                        + "Cantidad,"
-                        + "CUnitario,"
-                        + "CTotal) "
-                        + "VALUES(?,?,?,?,?,?,?,?,?)");
+                        + "Cantidad) "
+                        + "VALUES(?,?,?,?,?,?,?)");
 
                 statementMovimientoDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO "
                         + "MovimientoInventarioDetalleTB("
@@ -117,8 +115,6 @@ public class MovimientoInventarioADO {
                             suministro_kardex.setInt(5, inventarioTB.getTipoMovimiento());
                             suministro_kardex.setString(6, inventarioTB.getObservacion());
                             suministro_kardex.setDouble(7, tableView.getItems().get(i).getMovimiento());
-                            suministro_kardex.setDouble(8, tableView.getItems().get(i).getCostoCompra());
-                            suministro_kardex.setDouble(9, tableView.getItems().get(i).getMovimiento() * tableView.getItems().get(i).getCostoCompra());
                             suministro_kardex.addBatch();
                         }
                     }

@@ -133,11 +133,13 @@ public class ImpuestoADO {
             PreparedStatement statement = null;
             ResultSet resultSet = null;
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT IdImpuesto,Nombre,Valor,Predeterminado FROM ImpuestoTB");
+                statement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Impuesto_Calculo()}");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     ImpuestoTB impuestoTB = new ImpuestoTB();
-                    impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
+                    impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto")); 
+                    impuestoTB.setOperacion(resultSet.getInt("Operacion")); 
+                    impuestoTB.setNombreOperacion(resultSet.getString("OperacionNombre"));
                     impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                     impuestoTB.setValor(resultSet.getDouble("Valor"));
                     impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));

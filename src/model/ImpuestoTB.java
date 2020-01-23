@@ -36,6 +36,22 @@ public class ImpuestoTB {
         this.predeterminado = predeterminado;
     }
 
+    public ImpuestoTB(int idImpuesto, int operacion, String nombreImpuesto, double valor, boolean predeterminado) {
+        this.idImpuesto = idImpuesto;
+        this.operacion = operacion;
+        this.nombreImpuesto = nombreImpuesto;
+        this.valor = valor;
+        this.predeterminado = predeterminado;
+    }
+
+    public ImpuestoTB(int idImpuesto, String nombreOperacion, String nombreImpuesto, double valor, boolean predeterminado) {
+        this.idImpuesto = idImpuesto;
+        this.nombreOperacion = nombreOperacion;
+        this.nombreImpuesto = nombreImpuesto;
+        this.valor = valor;
+        this.predeterminado = predeterminado;
+    }
+
     public int getIdImpuesto() {
         return idImpuesto;
     }

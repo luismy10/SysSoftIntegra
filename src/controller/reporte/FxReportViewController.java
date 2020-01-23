@@ -15,7 +15,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -45,8 +44,7 @@ public class FxReportViewController implements Initializable {
     @FXML
     private ImageView imageView;
     @FXML
-    private Slider zoomLevel;
-    protected Node view;
+    private Slider zoomLevel;   
     @FXML
     private Label lblReportPages;
     @FXML

@@ -6,7 +6,6 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -60,7 +59,7 @@ public class FxProveedorController implements Initializable {
     @FXML
     private TableColumn<ProveedorTB, String> tcRepresentante;
 
-    private AnchorPane vbPrincipal;    
+    private AnchorPane vbPrincipal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,9 +92,8 @@ public class FxProveedorController implements Initializable {
         tcDocumentType.setCellValueFactory(cellData -> cellData.getValue().getTipoDocumentoName());
         tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
         tcBusinessName.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getRazonSocial().get() + "\n" + cellData.getValue().getNombreComercial().get()
-        )
-        );
+                cellData.getValue().getRazonSocial().get() // + "\n" + cellData.getValue().getNombreComercial().get()
+        ));
         tcContacto.setCellValueFactory(cellData
                 -> Bindings.concat(
                         !Tools.isText(cellData.getValue().getTelefono())
@@ -103,16 +101,16 @@ public class FxProveedorController implements Initializable {
                         : "CEL: " + cellData.getValue().getCelular()
                 )
         );
-        tcRepresentante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRepresentante()+""));
+        tcRepresentante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRepresentante() + ""));
         tcState.setCellValueFactory(cellData -> cellData.getValue().getEstadoName());
-        
+
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
         tcDocumentType.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcDocument.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
         tcBusinessName.prefWidthProperty().bind(tvList.widthProperty().multiply(0.21));
         tcContacto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
         tcRepresentante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcState.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));        
+        tcState.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
 
     }
 

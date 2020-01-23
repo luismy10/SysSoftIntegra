@@ -45,33 +45,21 @@ public class FxSuministrosKardexController implements Initializable {
     @FXML
     private TableView<KardexTB> tvList;
     @FXML
+    private TableColumn<KardexTB, String> tcNumero;
+    @FXML
     private TableColumn<KardexTB, String> tcFecha;
     @FXML
     private TableColumn<KardexTB, String> tcDetalle;
     @FXML
-    private TableColumn<KardexTB, String> tcC1;
+    private TableColumn<KardexTB, String> tcInicial;
     @FXML
-    private TableColumn<KardexTB, String> tcCo1;
+    private TableColumn<KardexTB, String> tcEntrada;
     @FXML
-    private TableColumn<KardexTB, String> tcCe1;
+    private TableColumn<KardexTB, String> tcSalida;
     @FXML
-    private TableColumn<KardexTB, String> tcC2;
-    @FXML
-    private TableColumn<KardexTB, String> tcCo2;
-    @FXML
-    private TableColumn<KardexTB, String> tcCe2;
-    @FXML
-    private TableColumn<KardexTB, String> tcC3;
-    @FXML
-    private TableColumn<KardexTB, String> tcCo3;
-    @FXML
-    private TableColumn<KardexTB, String> tcCe3;
+    private TableColumn<KardexTB, String> tcSaldo;
     @FXML
     private Label lblCantidadTotal;
-    @FXML
-    private Label lblCostoPromedio;
-    @FXML
-    private Label lblCostoTotal;
 
     private AnchorPane vbPrincipal;
 
@@ -79,50 +67,59 @@ public class FxSuministrosKardexController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + "\n" + cellData.getValue().getHora()));
         tcDetalle.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMovimientoName() + "\n" + cellData.getValue().getDetalle().toUpperCase()));
-
-        tcC1.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getCantidad(), 2) : "")
-        );
-        tcCo1.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getcUnitario(), 2) : "")
-        );
-        tcCe1.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getcTotal(), 2) : "")
-        );
-
-        tcC2.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getCantidad(), 2))
-        );
-        tcCo2.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getcUnitario(), 2))
-        );
-        tcCe2.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipo() == 1 ? "" : Tools.roundingValue(cellData.getValue().getcTotal(), 2))
-        );
-
-        tcC3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidadTotal(), 2)));
-        tcCo3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getcUnictarioTotal(), 2)));
-        tcCe3.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getcTotalTotal(), 2)));
-
-        tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcDetalle.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
-
-        tcC1.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcCo1.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcCe1.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-
-        tcC2.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcCo2.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcCe2.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-
-        tcC3.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcCo3.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcCe3.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-
+        tcInicial.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getInicial(), 4)));
+        tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getCantidad(), 4) : "0.0000"));
+        tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 2 ? Tools.roundingValue(cellData.getValue().getCantidad(), 4) : "0.0000"));
+        tcSaldo.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidadTotal(), 4)));
+//        tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+//        tcDetalle.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+//
+//        tcC1.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+//        tcCo1.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+//        tcCe1.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+//
+//        tcC2.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+//        tcCo2.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+//        tcCe2.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
         validationSearch = false;
+    }
 
+    public void fillKardexTable(String value) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        Task<ObservableList<KardexTB>> task = new Task<ObservableList<KardexTB>>() {
+            @Override
+            public ObservableList<KardexTB> call() {
+                return KardexADO.List_Kardex_By_Id_Suministro(value);
+            }
+        };
+
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvList.setItems(task.getValue());
+            lblLoad.setVisible(false);
+            validationSearch = false;
+            if (!tvList.getItems().isEmpty()) {
+                lblCantidadTotal.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getCantidadTotal(), 2));
+            }
+        });
+        task.setOnFailed((WorkerStateEvent event) -> {
+            lblLoad.setVisible(false);
+            validationSearch = false;
+        });
+        task.setOnScheduled((WorkerStateEvent event) -> {
+            lblLoad.setVisible(true);
+            validationSearch = true;
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     private void openWindowSuministros() {
@@ -145,43 +142,6 @@ public class FxSuministrosKardexController implements Initializable {
             controller.fillSuministrosTablePaginacion();
         } catch (IOException ex) {
             System.out.println("Error en la vista suministros lista:" + ex.getLocalizedMessage());
-        }
-    }
-
-    public void fillKardexTable(String value) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-        Task<ObservableList<KardexTB>> task = new Task<ObservableList<KardexTB>>() {
-            @Override
-            public ObservableList<KardexTB> call() {
-                return KardexADO.List_Kardex_By_Id_Suministro(value);
-            }
-        };
-
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems(task.getValue());
-            lblLoad.setVisible(false);
-            validationSearch = false;
-            if (!tvList.getItems().isEmpty()) {
-                lblCantidadTotal.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getCantidadTotal(), 2));
-                lblCostoPromedio.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getcUnictarioTotal(), 2));
-                lblCostoTotal.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getcTotalTotal(), 2));
-            }
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
-            lblLoad.setVisible(false);
-            validationSearch = false;
-        });
-        task.setOnScheduled((WorkerStateEvent event) -> {
-            lblLoad.setVisible(true);
-            validationSearch = true;
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
         }
     }
 

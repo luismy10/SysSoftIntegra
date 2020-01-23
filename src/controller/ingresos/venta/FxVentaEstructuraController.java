@@ -361,10 +361,14 @@ public class FxVentaEstructuraController implements Initializable {
                         || medida_cambio_cantidades && suministroTB.getUnidadVenta() == 3) {
 
                     suministroTB.setCantidad(value);
+
                     double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
 
+                    suministroTB.setDescuentoCalculado(porcentajeRestante);
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+
+                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
 
                     suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
                     suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -399,15 +403,16 @@ public class FxVentaEstructuraController implements Initializable {
                     double porcentajeRestante = value * (suministroTB.getDescuento() / 100.00);
                     double preciocalculado = value - porcentajeRestante;
 
-                    suministroTB.setPrecioVentaGeneralUnico(Tools.calculateValueNeto(suministroTB.getImpuestoValor(), value));
+                    suministroTB.setDescuentoCalculado(porcentajeRestante);
+                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+
+                    suministroTB.setPrecioVentaGeneralUnico(value);
                     suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
-                    double impuesto = (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00));
+                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
 
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
-
-                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
                     suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
                     suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -861,11 +866,11 @@ public class FxVentaEstructuraController implements Initializable {
         lblImporteTotalMoneda.setText(monedaSimbolo);
         lblTotalPagarMoneda.setText(monedaSimbolo);
 
-        lblTotal.setText("0.00");
-        lblValorVenta.setText("0.00");
-        lblDescuento.setText("0.00");
-        lblImporteTotal.setText("0.00");
-        lblTotalPagar.setText("0.00");
+        lblTotal.setText("0.000000");
+        lblValorVenta.setText("0.000000");
+        lblDescuento.setText("0.000000");
+        lblImporteTotal.setText("0.000000");
+        lblTotalPagar.setText("0.000000");
 
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
@@ -912,19 +917,19 @@ public class FxVentaEstructuraController implements Initializable {
         billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
     }
 
-    public void imprimirVenta(String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta) {
+    public void imprimirVenta(String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
         if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
-            loadEstructura(Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta);
+            loadEstructura(Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta,numCliente,infoCliente);
         } else {
             Tools.AlertMessageWarning(window, "Venta", "No esta configurado la impresora :D");
         }
     }
 
-    public void imprimirPrueba(String nombre_impresora, boolean costar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta) {
-        loadEstructura(nombre_impresora, costar, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta);
+    public void imprimirPrueba(String nombre_impresora, boolean costar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
+        loadEstructura(nombre_impresora, costar, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta, numCliente, infoCliente);
     }
 
-    private void loadEstructura(String nombre_impresora, boolean cortar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta) {
+    private void loadEstructura(String nombre_impresora, boolean cortar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
         loadTicket();
         ArrayList<HBox> object = new ArrayList<>();
         int rows = 0;
@@ -933,7 +938,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbEncabezado.getChildren().get(i));
             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
             rows++;
-            lines = billPrintable.hbEncebezado(box, documento, ticket);
+            lines += billPrintable.hbEncebezado(box, documento, ticket,numCliente,infoCliente);
         }
 
         for (int m = 0; m < tvList.getItems().size(); m++) {
@@ -942,7 +947,7 @@ public class FxVentaEstructuraController implements Initializable {
                 hBox.setId("dc_" + m + "" + i);
                 HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                 rows++;
-                lines = billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
+                lines += billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
                 object.add(hBox);
             }
         }
@@ -951,7 +956,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbPie.getChildren().get(i));
             HBox box = ((HBox) hbPie.getChildren().get(i));
             rows++;
-            lines = billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel);
+            lines += billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel,numCliente,infoCliente);
         }
         billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", nombre_impresora, cortar);
 
@@ -1147,22 +1152,24 @@ public class FxVentaEstructuraController implements Initializable {
                 suministroTB.setCostoCompra(a.getCostoCompra());
 
                 suministroTB.setDescuento(0);
+                suministroTB.setDescuentoCalculado(0);
                 suministroTB.setDescuentoSumado(0);
 
                 suministroTB.setPrecioVentaGeneralUnico(a.getPrecioVentaGeneral());
                 suministroTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
                 suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
 
+                suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
                 suministroTB.setImpuestoArticulo(a.getImpuestoArticulo());
                 suministroTB.setImpuestoArticuloName(getTaxName(a.getImpuestoArticulo()));
                 suministroTB.setImpuestoValor(getTaxValue(a.getImpuestoArticulo()));
-                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
 
                 suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
 
-                suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
-                suministroTB.setTotalImporte(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
+                suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
                 suministroTB.setInventario(a.isInventario());
                 suministroTB.setUnidadVenta(a.getUnidadVenta());
@@ -1208,8 +1215,11 @@ public class FxVentaEstructuraController implements Initializable {
                 suministroTB.setCantidad(suministroTB.getCantidad() + 1);
                 double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
 
+                suministroTB.setDescuentoCalculado(porcentajeRestante);
                 suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+
+                double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
 
                 suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
                 suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -1231,8 +1241,11 @@ public class FxVentaEstructuraController implements Initializable {
                 suministroTB.setCantidad(suministroTB.getCantidad() - 1);
                 double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
 
+                suministroTB.setDescuentoCalculado(porcentajeRestante);
                 suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+
+                double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
 
                 suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
                 suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());

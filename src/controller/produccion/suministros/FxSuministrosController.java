@@ -77,7 +77,6 @@ public class FxSuministrosController implements Initializable {
     private TableColumn<SuministroTB, String> tcClave;
     @FXML
     private TableColumn<SuministroTB, String> tcDescripcion;
-
     @FXML
     private TableColumn<SuministroTB, String> tcCategoria;
     @FXML

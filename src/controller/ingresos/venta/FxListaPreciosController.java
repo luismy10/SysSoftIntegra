@@ -74,16 +74,20 @@ public class FxListaPreciosController implements Initializable {
             double porcentajeRestante = precio * (suministroTB.getDescuento() / 100.00);
             double preciocalculado = precio - porcentajeRestante;
 
-            suministroTB.setPrecioVentaGeneralReal(Tools.calculateValueNeto(suministroTB.getImpuestoValor(), precio));
-
+            suministroTB.setDescuentoCalculado(porcentajeRestante);
             suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-            suministroTB.setPrecioVentaGeneral(preciocalculado);
-            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+            suministroTB.setPrecioVentaGeneralUnico(precio);
+            suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
-            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-            suministroTB.setSubImporteDescuento(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
-            suministroTB.setTotalImporte(suministroTB.getSubImporte() - suministroTB.getDescuentoSumado());
+            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+
+            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+
+            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
             ventaEstructuraController.getTvList().refresh();
             ventaEstructuraController.calculateTotales();

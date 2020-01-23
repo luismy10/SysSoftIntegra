@@ -37,7 +37,7 @@ public class SuministroTB {
     private double cantidadGranel;
     private double costoCompra;
     private double costoCompraReal;
-    
+
     private double precioVentaGeneral;
     private double precioVentaGeneralReal;
     private double precioVentaGeneralUnico;
@@ -54,32 +54,29 @@ public class SuministroTB {
     private ImageView imageLote;
     private double descuento;
     private double descuentoSumado;
-    private double subImporte;
-    
+    private double descuentoCalculado;
+
     private double subImporteDescuento;
     private double movimiento;
     private double diferencia;
 
+    private double subImporte;
     private double totalImporte;
     private String imagenTB;
     private String claveSat;
     private boolean tipoPrecio;
 
+    private int impuestoOperacion;
     private int impuestoArticulo;
     private String impuestoArticuloName;
-    private double impuestoValor;
     private double impuestoSumado;
+    private double impuestoValor;
 
     private String descripcion;
-
     private TextField txtMovimiento;
-
     private CheckBox validar;
-
     private Label estadoAsignacion;
-    
     private Button remover;
-    
     private boolean cambios;
 
     public SuministroTB() {
@@ -130,7 +127,7 @@ public class SuministroTB {
     }
 
     public void setClaveAlterna(String claveAlterna) {
-        this.claveAlterna = claveAlterna == null ? "":claveAlterna;
+        this.claveAlterna = claveAlterna == null ? "" : claveAlterna;
     }
 
     public String getNombreMarca() {
@@ -357,6 +354,22 @@ public class SuministroTB {
         this.descuento = descuento;
     }
 
+    public double getDescuentoSumado() {
+        return descuentoSumado;
+    }
+
+    public void setDescuentoSumado(double descuentoSumado) {
+        this.descuentoSumado = descuentoSumado;
+    }
+
+    public double getDescuentoCalculado() {
+        return descuentoCalculado;
+    }
+
+    public void setDescuentoCalculado(double descuentoCalculado) {
+        this.descuentoCalculado = descuentoCalculado;
+    }
+
     public double getSubImporte() {
         return subImporte;
     }
@@ -445,6 +458,14 @@ public class SuministroTB {
         this.unidadVentaName = unidadVentaName;
     }
 
+    public int getImpuestoOperacion() {
+        return impuestoOperacion;
+    }
+
+    public void setImpuestoOperacion(int impuestoOperacion) {
+        this.impuestoOperacion = impuestoOperacion;
+    }
+
     public int getImpuestoArticulo() {
         return impuestoArticulo;
     }
@@ -461,14 +482,6 @@ public class SuministroTB {
         this.impuestoArticuloName = impuestoArticuloName == null ? "" : impuestoArticuloName;
     }
 
-    public double getImpuestoValor() {
-        return impuestoValor;
-    }
-
-    public void setImpuestoValor(double impuestoValor) {
-        this.impuestoValor = impuestoValor;
-    }
-
     public double getImpuestoSumado() {
         return impuestoSumado;
     }
@@ -477,12 +490,12 @@ public class SuministroTB {
         this.impuestoSumado = impuestoSumado;
     }
 
-    public double getDescuentoSumado() {
-        return descuentoSumado;
+    public double getImpuestoValor() {
+        return impuestoValor;
     }
 
-    public void setDescuentoSumado(double descuentoSumado) {
-        this.descuentoSumado = descuentoSumado;
+    public void setImpuestoValor(double impuestoValor) {
+        this.impuestoValor = impuestoValor;
     }
 
     public String getDescripcion() {
