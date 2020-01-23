@@ -1025,10 +1025,10 @@ public class FxTicketController implements Initializable {
                 if (i == 0) {
                     break;
                 }
-                HBox anterior = (HBox) anchorPane.getChildren().get(i - 1);
+                HBox previous = (HBox) anchorPane.getChildren().get(i - 1);
 
-                HBox oldHbox = addElement(anchorPane, anterior.getId(), false);
-                oldHbox.setLayoutY(anterior.getLayoutY());
+                HBox oldHbox = addElement(anchorPane, previous.getId(), false);
+                oldHbox.setLayoutY(previous.getLayoutY());
                 for (int r = 0; r < HboxReference.getChildren().size(); r++) {
                     TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
                     TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
@@ -1037,8 +1037,8 @@ public class FxTicketController implements Initializable {
 
                 HBox newHbox = addElement(anchorPane, HboxReference.getId(), false);
                 newHbox.setLayoutY(HboxReference.getLayoutY());
-                for (int a = 0; a < anterior.getChildren().size(); a++) {
-                    TextFieldTicket tftAnterior = (TextFieldTicket) anterior.getChildren().get(a);
+                for (int a = 0; a < previous.getChildren().size(); a++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) previous.getChildren().get(a);
                     TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
                     newHbox.getChildren().add(fieldTicket);
                 }
@@ -1057,10 +1057,10 @@ public class FxTicketController implements Initializable {
                     break;
                 }
 
-                HBox posterior = (HBox) anchorPane.getChildren().get(i + 1);
+                HBox later = (HBox) anchorPane.getChildren().get(i + 1);
 
-                HBox oldHbox = addElement(anchorPane, posterior.getId(), false);
-                oldHbox.setLayoutY(posterior.getLayoutY());
+                HBox oldHbox = addElement(anchorPane, later.getId(), false);
+                oldHbox.setLayoutY(later.getLayoutY());
                 for (int r = 0; r < HboxReference.getChildren().size(); r++) {
                     TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
                     TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
@@ -1069,8 +1069,8 @@ public class FxTicketController implements Initializable {
 
                 HBox newHbox = addElement(anchorPane, HboxReference.getId(), false);
                 newHbox.setLayoutY(HboxReference.getLayoutY());
-                for (int a = 0; a < posterior.getChildren().size(); a++) {
-                    TextFieldTicket tftAnterior = (TextFieldTicket) posterior.getChildren().get(a);
+                for (int a = 0; a < later.getChildren().size(); a++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) later.getChildren().get(a);
                     TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
                     newHbox.getChildren().add(fieldTicket);
                 }

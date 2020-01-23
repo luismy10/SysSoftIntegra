@@ -70,9 +70,13 @@ public class FxVentaProcesoController implements Initializable {
     private DatePicker dtVencimiento;
     // Cliente
     @FXML
+    private VBox vbCliente;
+    @FXML
     private TextField txtNumeroDocumento;
     @FXML
     private TextField txtDatos;
+    @FXML
+    private TextField txtDireccion;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -102,7 +106,6 @@ public class FxVentaProcesoController implements Initializable {
         state_view_pago = false;
         tota_venta = 0;
         setInitializePlazosVentas();
-
     }
 
     public void setInitializePlazosVentas() {
@@ -156,6 +159,11 @@ public class FxVentaProcesoController implements Initializable {
         txtDatos.setText(datos.equalsIgnoreCase("")
                 ? Session.DATOSCLIENTE
                 : datos);
+        
+        txtDireccion.setText(direccion.equalsIgnoreCase("")
+                ? Session.DIRECCION_CLIENTE
+                : direccion);
+
         ventaTB.setCliente(idCliente);
     }
 
@@ -351,10 +359,12 @@ public class FxVentaProcesoController implements Initializable {
         if (clienteTB != null) {
             idCliente = clienteTB.getIdCliente();
             txtDatos.setText(clienteTB.getInformacion());
+            txtDireccion.setText(clienteTB.getDireccion());
         } else {
             idCliente = Session.IDCLIENTE;
             txtNumeroDocumento.setText(Session.N_DOCUMENTO_CLIENTE);
             txtDatos.setText(Session.DATOSCLIENTE);
+            txtDireccion.setText(Session.DIRECCION_CLIENTE);
         }
     }
 

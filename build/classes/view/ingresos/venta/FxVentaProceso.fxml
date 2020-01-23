@@ -34,7 +34,7 @@
                            <children>
                               <VBox>
                                  <children>
-                                    <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
+                                    <VBox alignment="CENTER" style="-fx-spacing: 0.3333333333333333em; -fx-padding: 0.4166666666666667em;">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular18" text="Total a Pagar" />
                                           <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold30" text="M. 00.00" textFill="#1a2226">
@@ -50,36 +50,46 @@
                                        </children>
                                     </VBox>
                                     <Separator prefWidth="200.0" />
-                                    <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
+                                    <VBox fx:id="vbCliente" style="-fx-border-width: 1px 0 0 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <VBox style="-fx-border-width: 1px 0 0 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
                                              <children>
-                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" textFill="#1a2226">
-                                                         <graphic>
-                                                            <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../../image/search.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Label>
-                                                      <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionNumeroDocumentoSearch" onKeyTyped="#onKeyTypedDocumento" prefHeight="30.0" prefWidth="150.0" promptText="N° documento" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                                                      <TextField fx:id="txtDatos" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Tipo documento - Razon social o nombre de cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonBorder">
-                                                         <graphic>
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../../image/client.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
+                                                <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/search.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionNumeroDocumentoSearch" onKeyTyped="#onKeyTypedDocumento" prefHeight="30.0" prefWidth="150.0" promptText="N° documento" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtDatos" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Datos del cliente " styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonBorder">
+                                                   <graphic>
+                                                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/client.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
                                              </children>
-                                          </VBox>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/home.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <TextField fx:id="txtDireccion" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>
@@ -89,11 +99,11 @@
                                  <children>
                                     <HBox>
                                        <children>
-                                          <VBox fx:id="vbEfectivo" alignment="CENTER" onMouseClicked="#onMouseClickedEfectivo" style="-fx-padding: 0.8333333333333334em; -fx-cursor: hand; -fx-background-color: #265B7C;" HBox.hgrow="ALWAYS">
+                                          <VBox fx:id="vbEfectivo" alignment="CENTER" onMouseClicked="#onMouseClickedEfectivo" style="-fx-padding: 0.5em; -fx-cursor: hand; -fx-background-color: #265B7C;" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label fx:id="lblEfectivo" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Al contado" textFill="WHITE">
                                                    <graphic>
-                                                      <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/efectivo.png" />
                                                          </image>
@@ -102,11 +112,11 @@
                                                 </Label>
                                              </children>
                                           </VBox>
-                                          <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" style="-fx-padding: 0.8333333333333334em; -fx-cursor: hand;" visible="false" HBox.hgrow="ALWAYS">
+                                          <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" style="-fx-padding: 0.5em; -fx-cursor: hand;" visible="false" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Crédito" textFill="#1a2226">
                                                    <graphic>
-                                                      <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/client.png" />
                                                          </image>
@@ -124,7 +134,7 @@
                                  <children>
                                     <AnchorPane>
                                        <children>
-                                          <VBox fx:id="vbViewEfectivo" alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <VBox fx:id="vbViewEfectivo" alignment="CENTER" style="-fx-padding: 0.6666666666666666em; -fx-spacing: 0.6666666666666666em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                                    <children>
@@ -160,7 +170,7 @@
                                                 </HBox>
                                              </children>
                                           </VBox>
-                                          <VBox fx:id="vbViewCredito" alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <VBox fx:id="vbViewCredito" alignment="CENTER" style="-fx-padding: 0.6666666666666666em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
                                                 <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                                   <columnConstraints>
@@ -206,7 +216,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" />
+                                    <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-padding: 0em 0.8333333333333334em  0.8333333333333334em  0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">

@@ -64,11 +64,12 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Nombre comercial de la empresa", Session.COMPANY_NOMBRE_COMERCIAL.isEmpty() ? "COMPANY" : Session.COMPANY_NOMBRE_COMERCIAL, "nomcomempresa", (short) 0));
             listCabecera.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual", (short) 0));
             listCabecera.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual", (short) 0));
-            listCabecera.add(new TicketTB("Nombre del documento de venta", "Documento de venta", "docventa", (short) 0));
+            listCabecera.add(new TicketTB("Nombre del documento de venta", "NOMBRE DEL DOCUMENTO DE VENTA", "docventa", (short) 0));
             listCabecera.add(new TicketTB("Numeración del documento de venta", "V000-00000000", "numventa", (short) 0));
-            listCabecera.add(new TicketTB("Codigo de venta", "323565565232362654002", "codigo", (short) 0));
-            listCabecera.add(new TicketTB("Numero del documento del cliente", "Dni/Ruc u otros", "numcliente", (short) 0));
-            listCabecera.add(new TicketTB("Información del cliente", "PUBLICO GENERAL", "infocliente", (short) 0));
+            listCabecera.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo", (short) 0));
+            listCabecera.add(new TicketTB("Numero del documento del cliente", "NUMERO DOCUMENTO CLIENTE", "numcliente", (short) 0));
+            listCabecera.add(new TicketTB("Información del cliente", "DATOS DEL CLIENTE", "infocliente", (short) 0));
+            listCabecera.add(new TicketTB("Dirección del cliente", "DIRECCION DEL CLIENTE", "direcliente", (short) 0));
             lvLista.getItems().addAll(listCabecera);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
             listDetalleCuerpo.add(new TicketTB("Código de barras", "789456123789", "codbarrasarticulo", (short) 0));
@@ -80,9 +81,7 @@ public class FxTicketVariableController implements Initializable {
             lvLista.getItems().addAll(listDetalleCuerpo);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("cp")) {
             listPie.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual", (short) 0));
-            listPie.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual", (short) 0));
-            listPie.add(new TicketTB("Numero del documento del cliente", "Dni/Ruc u otros", "numcliente", (short) 0));
-            listPie.add(new TicketTB("Información del cliente", "PUBLICO GENERAL", "infocliente", (short) 0));
+            listPie.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual", (short) 0));            
             listPie.add(new TicketTB("Importe total", "M 00.00", "imptotal", (short) 0));
             listPie.add(new TicketTB("Sub total", "M 00.00", "subtotal", (short) 0));
             listPie.add(new TicketTB("Descuento total", "M 00.00", "dscttotal", (short) 0));
@@ -93,7 +92,10 @@ public class FxTicketVariableController implements Initializable {
             listPie.add(new TicketTB("Total a pagar", "M 00.00", "totalpagar", (short) 0));
             listPie.add(new TicketTB("Efectivo", "M 00.00", "efectivo", (short) 0));
             listPie.add(new TicketTB("Vuelto", "M 00.00", "vuelto", (short) 0));
-            listPie.add(new TicketTB("Codigo de venta", "323565565232362654002", "codigo", (short) 0));
+            listPie.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo", (short) 0));
+            listPie.add(new TicketTB("Numero del documento del cliente", "NUMERO DOCUMENTO CLIENTE", "numcliente", (short) 0));
+            listPie.add(new TicketTB("Información del cliente", "DATOS DEL CLIENTE", "infocliente", (short) 0));
+            listPie.add(new TicketTB("Dirección del cliente", "DIRECCION DEL CLIENTE", "direcliente", (short) 0));
             lvLista.getItems().addAll(listPie);
         }
     }
