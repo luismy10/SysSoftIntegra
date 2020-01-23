@@ -38,7 +38,7 @@
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Puntos:" />
-                        <TextField fx:id="txtMilimetros" onAction="#onActionAdd" onKeyTyped="#onKeyTypedColumnas" prefHeight="30.0" styleClass="text-field-normal" />
+                        <TextField fx:id="txtColumnas" onAction="#onActionAdd" onKeyTyped="#onKeyTypedColumnas" prefHeight="30.0" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

@@ -17,8 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -75,8 +73,6 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtNumeroDocumento;
     @FXML
     private TextField txtDatos;
-    @FXML
-    private Button btnCliente;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -188,11 +184,17 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private void onActionAceptar(ActionEvent event) {
         if (state_view_pago) {
-            if (cbPlazos.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "Seleccionar el plazo.", false);
+            if (txtNumeroDocumento.getText().trim().isEmpty()) {
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
+                txtNumeroDocumento.requestFocus();
+            } else if (txtDatos.getText().trim().isEmpty()) {
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cleinte.");
+                txtDatos.requestFocus();
+            } else if (cbPlazos.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Venta", "Seleccionar el plazo.");
                 cbPlazos.requestFocus();
             } else if (dtVencimiento.getValue() == null) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "El formato de la fecha no es correcto.", false);
+                Tools.AlertMessageWarning(window, "Venta", "El formato de la fecha no es correcto.");
                 dtVencimiento.requestFocus();
             } else {
                 ventaTB.setObservaciones(txtObservacion.getText().trim());
@@ -205,25 +207,31 @@ public class FxVentaProcesoController implements Initializable {
                 CuentasClienteTB cuentasCliente = new CuentasClienteTB();
                 cuentasCliente.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getIdPlazos());
                 cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
-                short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de continuar?", true);
+                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
                     tipo_comprobante = ventaEstructuraController.obtenerTipoComprobante().toLowerCase();
                     String[] result = VentaADO.CrudVenta(ventaTB, tvList, tipo_comprobante, cuentasCliente).split("/");
                     switch (result[0]) {
                         case "register":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se guardo correctamente la venta al crédito.", false);
+                            Tools.AlertMessageInformation(window, "Venta", "Se guardo correctamente la venta al crédito.");
                             ventaEstructuraController.resetVenta();
                             Tools.Dispose(window);
                             break;
                         default:
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Venta", result[0], false);
+                            Tools.AlertMessageError(window, "Venta", result[0]);
                             break;
                     }
                 }
             }
 
         } else {
-            if (Tools.isNumeric(txtEfectivo.getText().trim())) {
+            if (txtNumeroDocumento.getText().trim().isEmpty()) {
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
+                txtNumeroDocumento.requestFocus();
+            } else if (txtDatos.getText().trim().isEmpty()) {
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cleinte.");
+                txtDatos.requestFocus();
+            } else if (Tools.isNumeric(txtEfectivo.getText().trim())) {
                 ventaTB.setObservaciones(txtObservacion.getText().trim());
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
@@ -233,17 +241,17 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setCliente(idCliente);
 
                 if (vuelto < 0) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Venta", "Su cambio no puede ser negativo.", false);
+                    Tools.AlertMessageWarning(window, "Venta", "Su cambio no puede ser negativo.");
                 } else {
-                    short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Venta", "¿Esta seguro de continuar?", true);
+                    short confirmation = Tools.AlertMessageInformation(window, "Venta", "¿Esta seguro de continuar?");
                     if (confirmation == 1) {
                         tipo_comprobante = ventaEstructuraController.obtenerTipoComprobante().toLowerCase();
                         String[] result = VentaADO.CrudVenta(ventaTB, tvList, tipo_comprobante, new CuentasClienteTB()).split("/");
                         switch (result[0]) {
                             case "register":
-                                short value = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
+                                short value = Tools.AlertMessageConfirmation(window, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
                                 if (value == 1) {
-                                    ventaEstructuraController.imprimirVenta(documento, tvList, Tools.roundingValue(subTotal, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(importeTotal, 2), Tools.roundingValue(tota_venta, 2), Double.parseDouble(txtEfectivo.getText()), vuelto, result[1], result[2]);
+                                    ventaEstructuraController.imprimirVenta(documento, tvList, Tools.roundingValue(subTotal, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(importeTotal, 2), Tools.roundingValue(tota_venta, 2), Double.parseDouble(txtEfectivo.getText()), vuelto, result[1], result[2], txtNumeroDocumento.getText().trim(), txtDatos.getText().trim());
                                     ventaEstructuraController.resetVenta();
                                     Tools.Dispose(window);
                                 } else {
@@ -252,7 +260,7 @@ public class FxVentaProcesoController implements Initializable {
                                 }
                                 break;
                             default:
-                                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Venta", result[0], false);
+                                Tools.AlertMessageError(window, "Venta", result[0]);
                                 break;
                         }
                     }
@@ -342,11 +350,19 @@ public class FxVentaProcesoController implements Initializable {
         ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta(txtNumeroDocumento.getText().trim());
         if (clienteTB != null) {
             idCliente = clienteTB.getIdCliente();
-            txtDatos.setText(clienteTB.getApellidos() + " " + clienteTB.getNombres());
+            txtDatos.setText(clienteTB.getInformacion());
         } else {
             idCliente = Session.IDCLIENTE;
             txtNumeroDocumento.setText(Session.N_DOCUMENTO_CLIENTE);
             txtDatos.setText(Session.DATOSCLIENTE);
+        }
+    }
+
+    @FXML
+    private void onKeyTypedDocumento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
         }
     }
 

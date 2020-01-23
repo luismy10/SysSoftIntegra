@@ -117,6 +117,8 @@ public class FxVentaMostrarController implements Initializable {
 
     private double totalImporte;
 
+    private VentaTB ventaTB;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
@@ -217,7 +219,7 @@ public class FxVentaMostrarController implements Initializable {
                 ArrayList<Object> objects = task.getValue();
 
                 if (!objects.isEmpty()) {
-                    VentaTB ventaTB = (VentaTB) objects.get(0);
+                    ventaTB = (VentaTB) objects.get(0);
                     EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
@@ -287,7 +289,7 @@ public class FxVentaMostrarController implements Initializable {
                 object.add((HBox) hbEncabezado.getChildren().get(i));
                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket);
+                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket,ventaTB.getClienteTB().getNumeroDocumento(),ventaTB.getClienteTB().getNumeroDocumento());
             }
 
             for (int m = 0; m < arrList.size(); m++) {
@@ -305,7 +307,7 @@ public class FxVentaMostrarController implements Initializable {
                 object.add((HBox) hbPie.getChildren().get(i));
                 HBox box = ((HBox) hbPie.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto);
+                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto,ventaTB.getClienteTB().getNumeroDocumento(),ventaTB.getClienteTB().getNumeroDocumento());
             }
             billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 

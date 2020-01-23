@@ -10,10 +10,7 @@ public class ClienteTB {
     private int tipoDocumento;
     private String tipoDocumentoName;
     private String numeroDocumento;
-    private String apellidos;
-    private String nombres;
-    private int sexo;
-    private Date fechaNacimiento;
+    private String informacion;
     private String telefono;
     private String celular;
     private String email;
@@ -66,36 +63,12 @@ public class ClienteTB {
         this.numeroDocumento = numeroDocumento;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getInformacion() {
+        return informacion;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public int getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(int sexo) {
-        this.sexo = sexo;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setInformacion(String informacion) {
+        this.informacion = informacion == null ? "" : informacion;
     }
 
     public String getTelefono() {

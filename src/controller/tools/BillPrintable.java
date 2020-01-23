@@ -149,7 +149,7 @@ public class BillPrintable implements Printable {
         return Tools.roundingValue(value, 2);
     }
 
-    public int hbEncebezado(HBox box, String nombreTicketImpresion, String ticket) {
+    public int hbEncebezado(HBox box, String nombreTicketImpresion, String ticket, String numCliente, String infoCliente) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -181,6 +181,10 @@ public class BillPrintable implements Printable {
                 fieldTicket.setText(ticket);
             } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
                 fieldTicket.setText(Session.TICKET_CODIGOVENTA);
+            } else if (fieldTicket.getVariable().equalsIgnoreCase("numcliente")) {
+                fieldTicket.setText(numCliente);
+            } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
+                fieldTicket.setText(infoCliente);
             }
             lines = fieldTicket.getLines();
         }
@@ -210,7 +214,7 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, String valorVenta, String descuento, String subTotal, String total, double efectivo, double vuelto) {
+    public int hbPie(HBox box, String valorVenta, String descuento, String subTotal, String total, double efectivo, double vuelto, String numCliente, String infoCliente) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -232,6 +236,10 @@ public class BillPrintable implements Printable {
                 fieldTicket.setText(Session.TICKET_SIMBOLOMONEDA + " " + Tools.roundingValue(vuelto, 2));
             } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
                 fieldTicket.setText(Session.TICKET_CODIGOVENTA);
+            } else if (fieldTicket.getVariable().equalsIgnoreCase("numcliente")) {
+                fieldTicket.setText(numCliente);
+            } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
+                fieldTicket.setText(infoCliente);
             }
             lines = fieldTicket.getLines();
         }

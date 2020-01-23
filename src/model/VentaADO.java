@@ -113,10 +113,8 @@ public class VentaADO {
                     + "Tipo,"
                     + "Movimiento,"
                     + "Detalle,"
-                    + "Cantidad,"
-                    + "CUnitario,"
-                    + "CTotal) "
-                    + "VALUES(?,?,?,?,?,?,?,?,?)");
+                    + "Cantidad) "
+                    + "VALUES(?,?,?,?,?,?,?)");
 
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
@@ -206,11 +204,7 @@ public class VentaADO {
                 suministro_kardex.setDouble(7,
                         tvList.getItems().get(i).getValorInventario() == 1
                         ? tvList.getItems().get(i).getCantidad()
-                        : cantidadGranel);
-                suministro_kardex.setDouble(8, tvList.getItems().get(i).getCostoCompra());
-                suministro_kardex.setDouble(9, tvList.getItems().get(i).getValorInventario() == 2
-                        ? tvList.getItems().get(i).getCantidad() * tvList.getItems().get(i).getCostoCompra()
-                        : cantidadGranel * tvList.getItems().get(i).getCostoCompra());
+                        : cantidadGranel);            
                 suministro_kardex.addBatch();
 
             }
@@ -397,8 +391,7 @@ public class VentaADO {
                     ClienteTB clienteTB = new ClienteTB();
                     clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
-                    clienteTB.setApellidos(resultSetVenta.getString("Apellidos"));
-                    clienteTB.setNombres(resultSetVenta.getString("Nombres"));
+                    clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
                     ventaTB.setClienteTB(clienteTB);
                     //Cliente end

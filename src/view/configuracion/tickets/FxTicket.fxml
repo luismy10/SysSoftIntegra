@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -108,7 +109,7 @@
                                                             </ImageView>
                                                          </children>
                                                       </HBox>
-                                                      <VBox fx:id="hbEncabezado" />
+                                                      <AnchorPane fx:id="apEncabezado" />
                                                       <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
                                                          <children>
                                                             <Label styleClass="labelMonospaced13" text="Detalle" textFill="WHITE" />
@@ -159,7 +160,7 @@
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Alineación" />
-                                          <ComboBox fx:id="cbAlignment" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
+                                          <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
@@ -186,6 +187,33 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Variable" />
                                           <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Movimiento" />
+                                          <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#onActionArriba" styleClass="buttonLight" text="Arriba">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/moveup.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                                <Button mnemonicParsing="false" onAction="#onActionAbajo" styleClass="buttonLight" text="Abajo">
+                                                   <graphic>
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/movedown.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>

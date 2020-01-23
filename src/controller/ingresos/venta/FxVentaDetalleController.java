@@ -113,7 +113,7 @@ public class FxVentaDetalleController implements Initializable {
     private ArrayList<ImpuestoTB> arrayArticulos;
 
     private BillPrintable billPrintable;
-    
+
     private ConvertMonedaCadena monedaCadena;
 
     private VentaTB ventaTB;
@@ -182,7 +182,7 @@ public class FxVentaDetalleController implements Initializable {
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
                         lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getClienteTB().getApellidos() + " " + ventaTB.getClienteTB().getNombres());
+                        lblCliente.setText(ventaTB.getClienteTB().getInformacion());
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         nombreTicketImpresion = ventaTB.getComproabanteNameImpresion();
                         lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
@@ -296,7 +296,7 @@ public class FxVentaDetalleController implements Initializable {
                 object.add((HBox) hbEncabezado.getChildren().get(i));
                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket);
+                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
             }
 
             for (int m = 0; m < arrList.size(); m++) {
@@ -311,7 +311,7 @@ public class FxVentaDetalleController implements Initializable {
             }
 
             for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                System.out.println((HBox) hbPie.getChildren().get(i)); 
+                System.out.println((HBox) hbPie.getChildren().get(i));
                 object.add((HBox) hbPie.getChildren().get(i));
 //                if(){
 //                    
@@ -320,8 +320,7 @@ public class FxVentaDetalleController implements Initializable {
 //                }
                 HBox box = ((HBox) hbPie.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto);
-           
+                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
             }
 
             billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
@@ -500,7 +499,7 @@ public class FxVentaDetalleController implements Initializable {
 
             map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
             map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
-            map.put("DATOSCLIENTE", ventaTB.getClienteTB().getApellidos() + " " + ventaTB.getClienteTB().getNombres());
+            map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
             map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
             map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
             map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());

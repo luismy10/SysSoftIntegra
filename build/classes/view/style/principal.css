@@ -1137,7 +1137,7 @@
 .table-view-principal .table-cell {
     -fx-font-family:"Roboto"; 
     -fx-font-size: 1.1666666666666667em;
-    -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;/*9px 2px 9px 2*/
+    -fx-padding: 0.75em 0.3333333333333333em 0.75em 0.3333333333333333em;/*9px 4px 9px 4PX*/
     -fx-text-fill:#1a2226;
 }
 
@@ -2094,7 +2094,7 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-color: #999999;
     -fx-padding:0.16666666666666666em 0 0.16666666666666666em 0;
 
-    -fx-font-size:13px; 
+    -fx-font-size:12.5px; 
     -fx-font-family:"Monospaced"; 
 }
 .text-field-ticket:hover{

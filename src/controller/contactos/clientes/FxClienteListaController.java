@@ -77,7 +77,7 @@ public class FxClienteListaController implements Initializable {
         });
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoDocumentoName() + ": " + cellData.getValue().getNumeroDocumento()));
-        tcPersona.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getApellidos() + " ", cellData.getValue().getNombres()));
+        tcPersona.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getInformacion()));
         tcDireccion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDireccion()));
     }
 
@@ -137,11 +137,11 @@ public class FxClienteListaController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (ventaReporteController != null) {
                 ventaReporteController.setClienteVentaReporte(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
-                        tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                        tvList.getSelectionModel().getSelectedItem().getInformacion());
                 Tools.Dispose(apWindow);
             } else if (ventaProcesoController != null) {
                 ventaProcesoController.setClienteProcesoVenta(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
-                        tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres(),
+                        tvList.getSelectionModel().getSelectedItem().getInformacion(),
                         tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
                         tvList.getSelectionModel().getSelectedItem().getDireccion());
                 Tools.Dispose(apWindow);

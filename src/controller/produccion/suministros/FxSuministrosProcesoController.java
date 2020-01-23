@@ -2,7 +2,6 @@ package controller.produccion.suministros;
 
 import controller.configuracion.tablasbasicas.FxDetalleListaController;
 import controller.inventario.articulo.FxCodigoBarrasController;
-import controller.tools.CheckBoxModel;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -145,7 +144,6 @@ public class FxSuministrosProcesoController implements Initializable {
     private Text lblTitle;
     @FXML
     private TextField txtClaveSat;
-    private VBox vbImpuestos;
     @FXML
     private TableView<PreciosTB> tvPrecios;
     @FXML
@@ -315,8 +313,8 @@ public class FxSuministrosProcesoController implements Initializable {
         PreciosTB precios = new PreciosTB();
         precios.setId(tvPrecios.getItems().isEmpty() ? 1 : tvPrecios.getItems().size() + 1);
         precios.setNombre("Precio " + precios.getId());
-        precios.setValor(Double.parseDouble("0.00"));
-        precios.setFactor(Double.parseDouble("1.00"));
+        precios.setValor(Double.parseDouble("0.00000000"));
+        precios.setFactor(Double.parseDouble("1.00000000"));
 
         TextField tfNombre = new TextField("Precio " + precios.getId());
         tfNombre.getStyleClass().add("text-field-normal");
@@ -325,7 +323,7 @@ public class FxSuministrosProcesoController implements Initializable {
         });
         precios.setTxtNombre(tfNombre);
 
-        TextField tfValor = new TextField("0.00");
+        TextField tfValor = new TextField("0.00000000");
         tfValor.getStyleClass().add("text-field-normal");
         tfValor.setOnKeyReleased(event -> {
             precios.setValor(!Tools.isNumeric(tfValor.getText()) ? 0 : Double.parseDouble(tfValor.getText()));
@@ -402,17 +400,6 @@ public class FxSuministrosProcesoController implements Initializable {
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
         list1.forEach(e -> {
             cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-        });
-
-        vbImpuestos.getChildren().clear();
-        list1.forEach(e -> {
-            CheckBoxModel checkBox = new CheckBoxModel(e.getNombreImpuesto());
-            checkBox.setValor(e.getValor());
-            checkBox.setOnAction(event -> {
-
-            });
-            checkBox.getStyleClass().add("check-box-contenido");
-            vbImpuestos.getChildren().add(checkBox);
         });
 
         cbEstado.getItems().clear();
@@ -1285,15 +1272,15 @@ public class FxSuministrosProcesoController implements Initializable {
 
     private void calculateForCosto(TextField cos) {
         if (Tools.isNumeric(cos.getText())) {
-            if (!vbImpuestos.getChildren().isEmpty()) {
-                double totalImpuesto = 0;
-                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
-                    totalImpuesto += ((CheckBoxModel) vbImpuestos.getChildren().get(i)).isSelected()
-                            ? (Double.parseDouble(cos.getText()) * ((double) ((CheckBoxModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
-                            : 0;
-                }
-                double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
-                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
+//            if (!vbImpuestos.getChildren().isEmpty()) {
+//                double totalImpuesto = 0;
+//                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+//                    totalImpuesto += ((CheckBoxModel) vbImpuestos.getChildren().get(i)).isSelected()
+//                            ? (Double.parseDouble(cos.getText()) * ((double) ((CheckBoxModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
+//                            : 0;
+//                }
+//                double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
+//                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
@@ -1309,10 +1296,10 @@ public class FxSuministrosProcesoController implements Initializable {
 //                prec.setText(Tools.roundingValue(precio, 2));
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
-            } else {
+//            } else {
                 //toma el valor del impuesto del combo box
-                double valorCalculado = Double.parseDouble(cos.getText());
-                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
+//                double valorCalculado = Double.parseDouble(cos.getText());
+//                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
 //
@@ -1328,7 +1315,7 @@ public class FxSuministrosProcesoController implements Initializable {
 //                prec.setText(Tools.roundingValue(precio, 2));
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
-            }
+//            }
         }
     }
 

@@ -10,41 +10,101 @@ import javafx.collections.ObservableList;
 public class ClienteADO {
 
     public static String CrudCliente(ClienteTB clienteTB) {
-        String selectStmt = "{call Sp_Crud_Persona_Cliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-        CallableStatement callableStatement = null;
-        try {
-            DBUtil.dbConnect();
-            callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            //cliente
-            callableStatement.setString("IdCliente", clienteTB.getIdCliente());
-            callableStatement.setInt("TipoDocumento", clienteTB.getTipoDocumento());
-            callableStatement.setString("NumeroDocumento", clienteTB.getNumeroDocumento());
-            callableStatement.setString("Apellidos", clienteTB.getApellidos());
-            callableStatement.setString("Nombres", clienteTB.getNombres());
-            callableStatement.setInt("Sexo", clienteTB.getSexo());
-            callableStatement.setDate("FechaNacimiento", clienteTB.getFechaNacimiento());
-            callableStatement.setString("Telefono", clienteTB.getTelefono());
-            callableStatement.setString("Celular", clienteTB.getCelular());
-            callableStatement.setString("Email", clienteTB.getEmail());
-            callableStatement.setString("Direccion", clienteTB.getDireccion());
-            callableStatement.setString("Representante", clienteTB.getRepresentante());
-            callableStatement.setInt("Estado", clienteTB.getEstado());
-
-            callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
-            callableStatement.execute();
-            return callableStatement.getString("Message");
-        } catch (SQLException e) {
-            return e.getLocalizedMessage();
-        } finally {
+        String result = "";
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            CallableStatement codigoCliente = null;
+            PreparedStatement preparedCliente = null;
+            PreparedStatement preparedValidation = null;
             try {
-                if (callableStatement != null) {
-                    callableStatement.close();
+                DBUtil.getConnection().setAutoCommit(false);
+                preparedValidation = DBUtil.getConnection().prepareStatement("select IdCliente from ClienteTB where IdCliente = ?");
+                preparedValidation.setString(1, clienteTB.getIdCliente());
+                if (preparedValidation.executeQuery().next()) {
+                    preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ClienteTB where IdCliente <> ? and NumeroDocumento = ?");
+                    preparedValidation.setString(1, clienteTB.getIdCliente());
+                    preparedValidation.setString(2, clienteTB.getNumeroDocumento());
+                    if (preparedValidation.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "duplicate";
+                    } else {
+                        preparedCliente = DBUtil.getConnection().prepareStatement("update ClienteTB set TipoDocumento=?,NumeroDocumento=?,Informacion=UPPER(?),Telefono=?,Celular=?,Email=?,Direccion=?,Representante=?,Estado=? where IdCliente = ?");
+
+                        preparedCliente.setInt(1, clienteTB.getTipoDocumento());
+                        preparedCliente.setString(2, clienteTB.getNumeroDocumento());
+                        preparedCliente.setString(3, clienteTB.getInformacion());
+                        preparedCliente.setString(4, clienteTB.getTelefono());
+                        preparedCliente.setString(5, clienteTB.getCelular());
+                        preparedCliente.setString(6, clienteTB.getEmail());
+                        preparedCliente.setString(7, clienteTB.getDireccion());
+                        preparedCliente.setString(8, clienteTB.getRepresentante());
+                        preparedCliente.setInt(9, clienteTB.getEstado());
+                        preparedCliente.setString(10, clienteTB.getIdCliente());
+
+                        preparedCliente.addBatch();
+                        preparedCliente.executeBatch();
+
+                        DBUtil.getConnection().commit();
+                        result = "updated";
+                    }
+
+                } else {
+                    preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ClienteTB where NumeroDocumento = ?");
+                    preparedValidation.setString(1, clienteTB.getNumeroDocumento());
+                    if (preparedValidation.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "duplicate";
+                    } else {
+                        codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
+                        codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
+                        codigoCliente.execute();
+                        String idSuministro = codigoCliente.getString(1);
+
+                        preparedCliente = DBUtil.getConnection().prepareStatement("insert into ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado)values(?,?,?,?,?,?,?,?,?,?)");
+                        preparedCliente.setString(1, idSuministro);
+                        preparedCliente.setInt(2, clienteTB.getTipoDocumento());
+                        preparedCliente.setString(3, clienteTB.getNumeroDocumento());
+                        preparedCliente.setString(4, clienteTB.getInformacion());
+                        preparedCliente.setString(5, clienteTB.getTelefono());
+                        preparedCliente.setString(6, clienteTB.getCelular());
+                        preparedCliente.setString(7, clienteTB.getEmail());
+                        preparedCliente.setString(8, clienteTB.getDireccion());
+                        preparedCliente.setString(9, clienteTB.getRepresentante());
+                        preparedCliente.setInt(10, clienteTB.getEstado());
+
+                        preparedCliente.addBatch();
+                        preparedCliente.executeBatch();
+
+                        DBUtil.getConnection().commit();
+                        result = "registered";
+                    }
                 }
-                DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-                return ex.getLocalizedMessage();
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException exr) {
+                }
+                result = ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (codigoCliente != null) {
+                        codigoCliente.close();
+                    }
+                    if (preparedValidation != null) {
+                        preparedValidation.close();
+                    }
+                    if (preparedCliente != null) {
+                        preparedCliente.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
             }
+        } else {
+            result = "No se puedo establecer una conexión, intente nuevamente.";
         }
+        return result;
     }
 
     public static ObservableList<ClienteTB> ListCliente(String value) {
@@ -62,8 +122,7 @@ public class ClienteADO {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setId(rsEmps.getRow());
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
-                clienteTB.setNombres(rsEmps.getString("Nombres"));
+                clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
@@ -105,10 +164,9 @@ public class ClienteADO {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setId(rsEmps.getRow());
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
-                clienteTB.setTipoDocumentoName(rsEmps.getString("Documento")); 
+                clienteTB.setTipoDocumentoName(rsEmps.getString("Documento"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
-                clienteTB.setNombres(rsEmps.getString("Nombres"));
+                clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 empList.add(clienteTB);
             }
@@ -147,10 +205,7 @@ public class ClienteADO {
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
-                clienteTB.setNombres(rsEmps.getString("Nombres"));
-                clienteTB.setSexo(rsEmps.getInt("Sexo"));
-                clienteTB.setFechaNacimiento(rsEmps.getDate("FechaNacimiento"));
+                clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTB.setEmail(rsEmps.getString("Email"));
@@ -177,7 +232,7 @@ public class ClienteADO {
     }
 
     public static ClienteTB GetByIdClienteVenta(String documento) {
-        String selectStmt = "select ci.IdCliente,ci.Apellidos,ci.Nombres, ci.NumeroDocumento, ci.Direccion from ClienteTB as ci where ci.NumeroDocumento = ?";
+        String selectStmt = "select ci.IdCliente,ci.Informacion, ci.NumeroDocumento, ci.Direccion from ClienteTB as ci where ci.NumeroDocumento = ?";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ClienteTB clienteTB = null;
@@ -190,13 +245,12 @@ public class ClienteADO {
             if (rsEmps.next()) {
                 clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
-                clienteTB.setApellidos(rsEmps.getString("Apellidos"));
-                clienteTB.setNombres(rsEmps.getString("Nombres"));
+                clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
+            System.out.println("La operación de selección de SQL ha fallado en GetByIdClienteVenta(): " + e);
         } finally {
             try {
                 if (preparedStatement != null) {

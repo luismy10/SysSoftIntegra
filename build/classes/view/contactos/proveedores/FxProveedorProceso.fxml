@@ -79,7 +79,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Razón social" textFill="#23283a">
+                                                      <Label prefHeight="18.0" styleClass="labelRoboto14" text="Razón social/Datos de la persona" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>

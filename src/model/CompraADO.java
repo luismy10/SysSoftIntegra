@@ -117,10 +117,8 @@ public class CompraADO extends DBUtil {
                     + "Tipo,"
                     + "Movimiento,"
                     + "Detalle,"
-                    + "Cantidad,"
-                    + "CUnitario,"
-                    + "CTotal) "
-                    + "VALUES(?,?,?,?,?,?,?,?,?)");
+                    + "Cantidad) "
+                    + "VALUES(?,?,?,?,?,?,?)");
 
             lote_compra = getConnection().prepareStatement("INSERT INTO "
                     + "LoteTB("
@@ -203,9 +201,7 @@ public class CompraADO extends DBUtil {
                 suministro_kardex.setShort(4, (short) 1);
                 suministro_kardex.setInt(5, 2);
                 suministro_kardex.setString(6, "Compra");
-                suministro_kardex.setDouble(7, tableView.getItems().get(i).getCantidad());
-                suministro_kardex.setDouble(8, tableView.getItems().get(i).getCostoCompraReal());
-                suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getCostoCompraReal());
+                suministro_kardex.setDouble(7, tableView.getItems().get(i).getCantidad());  
                 suministro_kardex.addBatch();
             }
 

@@ -917,19 +917,19 @@ public class FxVentaEstructuraController implements Initializable {
         billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
     }
 
-    public void imprimirVenta(String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta) {
+    public void imprimirVenta(String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
         if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
-            loadEstructura(Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta);
+            loadEstructura(Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta,numCliente,infoCliente);
         } else {
             Tools.AlertMessageWarning(window, "Venta", "No esta configurado la impresora :D");
         }
     }
 
-    public void imprimirPrueba(String nombre_impresora, boolean costar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta) {
-        loadEstructura(nombre_impresora, costar, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta);
+    public void imprimirPrueba(String nombre_impresora, boolean costar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
+        loadEstructura(nombre_impresora, costar, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta, numCliente, infoCliente);
     }
 
-    private void loadEstructura(String nombre_impresora, boolean cortar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta) {
+    private void loadEstructura(String nombre_impresora, boolean cortar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
         loadTicket();
         ArrayList<HBox> object = new ArrayList<>();
         int rows = 0;
@@ -938,7 +938,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbEncabezado.getChildren().get(i));
             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
             rows++;
-            lines += billPrintable.hbEncebezado(box, documento, ticket);
+            lines += billPrintable.hbEncebezado(box, documento, ticket,numCliente,infoCliente);
         }
 
         for (int m = 0; m < tvList.getItems().size(); m++) {
@@ -956,7 +956,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbPie.getChildren().get(i));
             HBox box = ((HBox) hbPie.getChildren().get(i));
             rows++;
-            lines += billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel);
+            lines += billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel,numCliente,infoCliente);
         }
         billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", nombre_impresora, cortar);
 

@@ -2,7 +2,6 @@ package controller.produccion.suministros;
 
 import controller.configuracion.tablasbasicas.FxDetalleListaController;
 import controller.inventario.articulo.FxCodigoBarrasController;
-import controller.tools.CheckBoxModel;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -139,7 +138,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     private Text lblTitle;
     @FXML
     private TextField txtClaveSat;
-    private VBox vbImpuestos;
     @FXML
     private TableView<PreciosTB> tvPrecios;
     @FXML
@@ -378,17 +376,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
         list1.forEach(e -> {
             cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-        });
-
-        vbImpuestos.getChildren().clear();
-        list1.forEach(e -> {
-            CheckBoxModel checkBox = new CheckBoxModel(e.getNombreImpuesto());
-            checkBox.setValor(e.getValor());
-            checkBox.setOnAction(event -> {
-
-            });
-            checkBox.getStyleClass().add("check-box-contenido");
-            vbImpuestos.getChildren().add(checkBox);
         });
 
         cbEstado.getItems().clear();
@@ -758,15 +745,15 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     private void calculateForCosto(TextField cos) {
         if (Tools.isNumeric(cos.getText())) {
-            if (!vbImpuestos.getChildren().isEmpty()) {
-                double totalImpuesto = 0;
-                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
-                    totalImpuesto += ((CheckBoxModel) vbImpuestos.getChildren().get(i)).isSelected()
-                            ? (Double.parseDouble(cos.getText()) * ((double) ((CheckBoxModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
-                            : 0;
-                }
-                double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
-                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
+//            if (!vbImpuestos.getChildren().isEmpty()) {
+//                double totalImpuesto = 0;
+//                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
+//                    totalImpuesto += ((CheckBoxModel) vbImpuestos.getChildren().get(i)).isSelected()
+//                            ? (Double.parseDouble(cos.getText()) * ((double) ((CheckBoxModel) vbImpuestos.getChildren().get(i)).getValor() / 100.00))
+//                            : 0;
+//                }
+//                double valorCalculado = Double.parseDouble(cos.getText()) + totalImpuesto;
+//                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
@@ -782,10 +769,10 @@ public class FxSuministrosProcesoModalController implements Initializable {
 //                prec.setText(Tools.roundingValue(precio, 2));
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
-            } else {
+//            } else {
                 //toma el valor del impuesto del combo box
-                double valorCalculado = Double.parseDouble(cos.getText());
-                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
+//                double valorCalculado = Double.parseDouble(cos.getText());
+//                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
 //                int margen = Integer.parseInt(mar.getText());
 //
@@ -801,7 +788,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 //                prec.setText(Tools.roundingValue(precio, 2));
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
-            }
+//            }
         }
     }
 
