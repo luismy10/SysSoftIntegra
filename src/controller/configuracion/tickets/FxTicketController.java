@@ -1053,12 +1053,33 @@ public class FxTicketController implements Initializable {
 
     @FXML
     private void onActionAbajo(ActionEvent event) {
-        System.out.println("---------------------------------------");
-        for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
-            HBoxModel bn = (HBoxModel) apEncabezado.getChildren().get(i);
-            bn.getChildren().forEach(child -> {
-                System.out.println(bn.getId() + ":" + bn.getLayoutY() + " - " + ((TextFieldTicket) child).getText());
-            });
+        for (int i = 0; i < apEncabezado.getChildren().size(); i++) {        
+            if (((HBoxModel) apEncabezado.getChildren().get(i)).equals(HboxReference)) {
+                if (apEncabezado.getChildren().size() == (i + 1) ) {
+                    break;
+                }
+
+                HBoxModel posterior = (HBoxModel) apEncabezado.getChildren().get(i + 1);
+
+                HBoxModel oldHbox = addElement(apEncabezado, posterior.getId(), false);
+                oldHbox.setLayoutY(posterior.getLayoutY());
+                for (int r = 0; r < HboxReference.getChildren().size(); r++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    oldHbox.getChildren().add(fieldTicket);
+                }
+
+                HBoxModel newHbox = addElement(apEncabezado, HboxReference.getId(), false);
+                newHbox.setLayoutY(HboxReference.getLayoutY());
+                for (int a = 0; a < posterior.getChildren().size(); a++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) posterior.getChildren().get(a);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    newHbox.getChildren().add(fieldTicket);
+                }
+
+                apEncabezado.getChildren().set(i, newHbox);
+                apEncabezado.getChildren().set(i + 1, oldHbox);
+            }
         }
     }
 
