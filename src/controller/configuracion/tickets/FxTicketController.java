@@ -351,21 +351,23 @@ public class FxTicketController implements Initializable {
 
     private HBoxModel generateElement(AnchorPane contenedor, String id) {
         if (contenedor.getChildren().isEmpty()) {
-            return addElement(contenedor, id + "1");
+            return addElement(contenedor, id + "1", true);
         } else {
             HBoxModel hBox = (HBoxModel) contenedor.getChildren().get(contenedor.getChildren().size() - 1);
             String idGenerate = hBox.getId();
             String codigo = idGenerate.substring(2);
             int valor = Integer.parseInt(codigo) + 1;
             String newCodigo = id + valor;
-            return addElement(contenedor, newCodigo);
+            return addElement(contenedor, newCodigo, true);
         }
     }
 
-    private HBoxModel addElement(AnchorPane contenedor, String id) {
+    private HBoxModel addElement(AnchorPane contenedor, String id, boolean useLayout) {
         double layoutY = 0;
-        for (int i = 0; i < contenedor.getChildren().size(); i++) {
-            layoutY += ((HBoxModel) contenedor.getChildren().get(i)).getPrefHeight();
+        if (useLayout) {
+            for (int i = 0; i < contenedor.getChildren().size(); i++) {
+                layoutY += ((HBoxModel) contenedor.getChildren().get(i)).getPrefHeight();
+            }
         }
 
         ImageView imgRemove = new ImageView(new Image("/view/image/remove-item.png"));
@@ -459,19 +461,21 @@ public class FxTicketController implements Initializable {
         hBox.setMenuItem(text);
         hBox.setOnContextMenuRequested((ContextMenuEvent event) -> {
             contextMenu.show(hBox, event.getSceneX(), event.getSceneY());
-//            short widthContent = 0;
-//            for (int i = 0; i < hBox.getChildren().size(); i++) {
-//                widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
-//            }
-//
-//            text.setDisable((widthContent + 13) > sheetWidth);
-//
-//            textUnaLinea.setDisable((widthContent + 13) > sheetWidth);
-//
-//            textDosLineas.setDisable((widthContent + 13) > sheetWidth);
+            short widthContent = 0;
+            for (int i = 0; i < hBox.getChildren().size(); i++) {
+                widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
+            }
+
+            text.setDisable((widthContent + 13) > sheetWidth);
+
+            textUnaLinea.setDisable((widthContent + 13) > sheetWidth);
+
+            textDosLineas.setDisable((widthContent + 13) > sheetWidth);
 
         });
-        contenedor.getChildren().add(hBox);
+        if (useLayout) {
+            contenedor.getChildren().add(hBox);
+        }
         return hBox;
     }
 
@@ -1019,95 +1023,21 @@ public class FxTicketController implements Initializable {
         for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
 
             if (((HBoxModel) apEncabezado.getChildren().get(i)).equals(HboxReference)) {
-
+                if (i == 0) {
+                    break;
+                }
                 HBoxModel anterior = (HBoxModel) apEncabezado.getChildren().get(i - 1);
 
-                HBoxModel oldHbox = new HBoxModel();
-                oldHbox.setId(anterior.getId());
-                oldHbox.setLayoutX(HboxReference.getLayoutX());
+                HBoxModel oldHbox = addElement(apEncabezado, anterior.getId(), false);
                 oldHbox.setLayoutY(anterior.getLayoutY());
-                oldHbox.setPrefWidth(HboxReference.getPrefWidth());
-                oldHbox.setPrefHeight(HboxReference.getPrefHeight());
-                oldHbox.setStyle(HboxReference.getStyle());
-                oldHbox.addEventHandler(MouseEvent.MOUSE_PRESSED, (Event e) -> {
-                    oldHbox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
-                    HboxReference = oldHbox;
-                });
-                oldHbox.addEventHandler(MouseEvent.MOUSE_EXITED, (Event e) -> {
-                    oldHbox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: white;");
-                });
-                ContextMenu oldHboxContextMenu = new ContextMenu();
-                ImageView oldimgText = new ImageView(new Image("/view/image/text.png"));
-                oldimgText.setFitWidth(20);
-                oldimgText.setFitHeight(20);
-                MenuItem oldText = new MenuItem("Agregar Texto");
-                oldText.setGraphic(oldimgText);
-                oldText.setOnAction(e -> {
-                    TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, (short) 0, (short) 13, Pos.CENTER_LEFT, true, "");
-                    oldHbox.getChildren().add(field);
-                });
-                oldHboxContextMenu.getItems().add(oldText);
-                oldHbox.setOnContextMenuRequested((ContextMenuEvent e) -> {
-                    oldHboxContextMenu.show(oldHbox, e.getSceneX(), e.getSceneY());
-//                    short widthContent = 0;
-//                    for (int i = 0; i < hBox.getChildren().size(); i++) {
-//                        widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
-//                    }
-//
-//                    text.setDisable((widthContent + 13) > sheetWidth);
-//
-//                    textUnaLinea.setDisable((widthContent + 13) > sheetWidth);
-//
-//                    textDosLineas.setDisable((widthContent + 13) > sheetWidth);
-
-                });
-
                 for (int r = 0; r < HboxReference.getChildren().size(); r++) {
                     TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
                     TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
                     oldHbox.getChildren().add(fieldTicket);
                 }
 
-                HBoxModel newHbox = new HBoxModel();
-                newHbox.setId(HboxReference.getId());
-                newHbox.setLayoutX(anterior.getLayoutX());
+                HBoxModel newHbox = addElement(apEncabezado, HboxReference.getId(), false);
                 newHbox.setLayoutY(HboxReference.getLayoutY());
-                newHbox.setPrefWidth(anterior.getPrefWidth());
-                newHbox.setPrefHeight(anterior.getPrefHeight());
-                newHbox.setStyle(anterior.getStyle());
-                newHbox.addEventHandler(MouseEvent.MOUSE_PRESSED, (Event e) -> {
-                    newHbox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
-                    HboxReference = newHbox;
-                });
-                newHbox.addEventHandler(MouseEvent.MOUSE_EXITED, (Event e) -> {
-                    newHbox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: white;");
-                });
-                ContextMenu newHboxContextMenu = new ContextMenu();
-                ImageView newimgText = new ImageView(new Image("/view/image/text.png"));
-                newimgText.setFitWidth(20);
-                newimgText.setFitHeight(20);
-                MenuItem newText = new MenuItem("Agregar Texto");
-                newText.setGraphic(newimgText);
-                newText.setOnAction(e -> {
-                    TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, (short) 0, (short) 13, Pos.CENTER_LEFT, true, "");
-                    newHbox.getChildren().add(field);
-                });
-                newHboxContextMenu.getItems().add(newText);
-                newHbox.setOnContextMenuRequested((ContextMenuEvent e) -> {
-                    newHboxContextMenu.show(newHbox, e.getSceneX(), e.getSceneY());
-//                    short widthContent = 0;
-//                    for (int i = 0; i < hBox.getChildren().size(); i++) {
-//                        widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
-//                    }
-//
-//                    text.setDisable((widthContent + 13) > sheetWidth);
-//
-//                    textUnaLinea.setDisable((widthContent + 13) > sheetWidth);
-//
-//                    textDosLineas.setDisable((widthContent + 13) > sheetWidth);
-
-                });
-
                 for (int a = 0; a < anterior.getChildren().size(); a++) {
                     TextFieldTicket tftAnterior = (TextFieldTicket) anterior.getChildren().get(a);
                     TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
