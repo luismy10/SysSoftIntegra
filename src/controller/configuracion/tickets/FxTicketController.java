@@ -507,10 +507,12 @@ public class FxTicketController implements Initializable {
         field.setEditable(editable);
         field.setPreferredSize((double) widthColumn * pointWidth, 30);
         field.getStyleClass().add("text-field-ticket");
+        field.setStyle("-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
         field.setAlignment(align);
         field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {
             if (newPropertyValue) {
-                field.setStyle("-fx-background-color: #cecece;");
+                field.setStyle("-fx-background-color: #cecece;"+"-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
+            
                 txtAnchoColumna.setText(field.getColumnWidth() + "");
                 reference = field;
                 cbAlignment.getItems().forEach(e -> {
@@ -526,7 +528,8 @@ public class FxTicketController implements Initializable {
 
                 txtVariable.setText(field.getVariable());
             } else {
-                field.setStyle("-fx-background-color: white;");
+                field.setStyle("-fx-background-color: white;"+"-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
+               
             }
         });
 

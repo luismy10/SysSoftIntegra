@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="spWindow" fitToWidth="true" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.suministros.FxSuministrosProcesoController">
+<ScrollPane fx:id="spWindow" fitToWidth="true" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.suministros.FxSuministrosProcesoController">
    <content>
       <VBox style="-fx-background-color: #e7e6e6;">
          <children>
@@ -494,7 +494,7 @@
                                           </GridPane>
                                           <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Clave del Producto o Servicio(SAT)" textFill="#23283a">
+                                                <Label styleClass="labelRoboto14" text="Clave única del producto" textFill="#23283a">
                                                    <font>
                                                       <Font name="Roboto" size="14.0" />
                                                    </font>

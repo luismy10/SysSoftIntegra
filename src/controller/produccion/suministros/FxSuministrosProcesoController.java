@@ -180,6 +180,8 @@ public class FxSuministrosProcesoController implements Initializable {
     private String idSuministro;
 
     private File selectFile;
+    
+    private String selectImage;
 
     private int idPresentacion;
 
@@ -195,7 +197,6 @@ public class FxSuministrosProcesoController implements Initializable {
 
     private AnchorPane vbContent;
 
-//    private boolean articulo;
     private boolean estadoOrigen;
 
     private ObservableList<PreciosTB> tvPreciosNormal;
@@ -248,6 +249,7 @@ public class FxSuministrosProcesoController implements Initializable {
         idCategoria = 0;
         idMarca = 0;
         selectFile = null;
+        selectImage = "";
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
         txtMargen1.setText("30");
         txtMargen2.setText("25");
@@ -609,8 +611,9 @@ public class FxSuministrosProcesoController implements Initializable {
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
                 } else {
                     lnPrincipal.setImage(new Image(new File(suministroTB.getImagenTB()).toURI().toString()));
-                    selectFile = new File(suministroTB.getImagenTB());
+                    selectImage = suministroTB.getImagenTB();
                 }
+               
                 txtClaveSat.setText(suministroTB.getClaveSat());
             }
 
@@ -776,7 +779,7 @@ public class FxSuministrosProcesoController implements Initializable {
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
                 } else {
                     lnPrincipal.setImage(new Image(new File(suministroTB.getImagenTB()).toURI().toString()));
-                    selectFile = new File(suministroTB.getImagenTB());
+                    selectImage = suministroTB.getImagenTB();
                 }
 
             }
@@ -1037,6 +1040,7 @@ public class FxSuministrosProcesoController implements Initializable {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             short confirmation = Tools.AlertMessage(spWindow.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Movimiento", "¿Está seguro de continuar?", true);
             if (confirmation == 1) {
+
                 SuministroTB suministroTB = new SuministroTB();
                 suministroTB.setIdSuministro(idSuministro);
                 suministroTB.setOrigen(cbOrigen.getSelectionModel().getSelectedIndex() >= 0
@@ -1046,9 +1050,8 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setClaveAlterna(txtClaveAlterna.getText().trim());
                 suministroTB.setNombreMarca(txtNombreMarca.getText().trim());
                 suministroTB.setNombreGenerico(txtNombreGenerico.getText().trim());
-                suministroTB.setImagenTB(selectFile != null
-                        ? "./img/" + selectFile.getName()
-                        : "");
+                suministroTB.setImagenFile(selectFile);
+                suministroTB.setImagenTB(selectImage);
                 suministroTB.setCategoria(idCategoria != 0
                         ? idCategoria
                         : 0);
@@ -1139,6 +1142,14 @@ public class FxSuministrosProcesoController implements Initializable {
 //                            break;
 //                    }
 //                } else {
+//            File fcom = new File("./img/" + selectFile.getName());
+//            selectFileImage();
+//            if (fcom.exists()) {
+//                fcom.delete();
+//                selectFileImage();
+//            } else {
+//                selectFileImage();
+//            }
                 String result = SuministroADO.CrudSuministro(
                         suministroTB,
                         rbPrecioNormal.isSelected() ? tvPreciosNormal : tvPrecios.getItems());
@@ -1233,29 +1244,17 @@ public class FxSuministrosProcesoController implements Initializable {
         }
     }
 
-    private void selectFileImage() {
-        if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
-            lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
-            FileInputStream inputStream = null;
-            byte[] buffer = new byte[1024];
-            try (FileOutputStream outputStream = new FileOutputStream("." + File.separator + "img" + File.separator + selectFile.getName())) {
-                inputStream = new FileInputStream(selectFile.getAbsolutePath());
-                int byteRead;
-                while ((byteRead = inputStream.read(buffer)) != 1) {
-                    outputStream.write(buffer, 0, byteRead);
-                }
-            } catch (Exception e) {
-                if (e.getMessage() != null) {
-                    System.out.println("Producto" + e.getLocalizedMessage());
-                }
-            } finally {
-                if (inputStream != null) {
-                    try {
-                        inputStream.close();
-                    } catch (IOException ex) {
-                        System.out.println(ex.getLocalizedMessage());
-                    }
-                }
+    private void openWindowFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importar una imagen");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        selectFile = fileChooser.showOpenDialog(spWindow.getScene().getWindow());
+        if (selectFile != null) {
+            selectFile = new File(selectFile.getAbsolutePath());
+            if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
+                lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+            } else {
+                Tools.AlertMessageWarning(spWindow, "Producto", "No seleccionó un formato correcto de imagen.");
             }
         }
     }
@@ -1297,7 +1296,7 @@ public class FxSuministrosProcesoController implements Initializable {
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
 //            } else {
-                //toma el valor del impuesto del combo box
+            //toma el valor del impuesto del combo box
 //                double valorCalculado = Double.parseDouble(cos.getText());
 //                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
@@ -1488,20 +1487,7 @@ public class FxSuministrosProcesoController implements Initializable {
 
     @FXML
     private void onActionPhoto(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Importar una imagen");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-        selectFile = fileChooser.showOpenDialog(spWindow.getScene().getWindow());
-        if (selectFile != null) {
-            selectFile = new File(selectFile.getAbsolutePath());
-            File fcom = new File("./img/" + selectFile.getName());
-            if (fcom.exists()) {
-                fcom.delete();
-                selectFileImage();
-            } else {
-                selectFileImage();
-            }
-        }
+        openWindowFile();
     }
 
     @FXML

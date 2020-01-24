@@ -1,6 +1,10 @@
 package model;
 
 import controller.tools.Tools;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,7 +89,11 @@ public class SuministroADO {
                             preparedSuministro.setInt(17, suministroTB.getEstado());
                             preparedSuministro.setBoolean(18, suministroTB.isLote());
                             preparedSuministro.setBoolean(19, suministroTB.isInventario());
-                            preparedSuministro.setString(20, suministroTB.getImagenTB());
+                            //------------------------------------------------------------
+                            preparedSuministro.setString(20, suministroTB.getImagenFile() != null
+                                    ? selectFileImage("./img/" + suministroTB.getIdSuministro() + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
+                                    : suministroTB.getImagenTB());
+                            //
                             preparedSuministro.setInt(21, suministroTB.getImpuestoArticulo());
                             preparedSuministro.setShort(22, suministroTB.getValorInventario());
                             preparedSuministro.setString(23, suministroTB.getClaveSat());
@@ -231,7 +239,13 @@ public class SuministroADO {
                             preparedSuministro.setInt(19, suministroTB.getEstado());
                             preparedSuministro.setBoolean(20, suministroTB.isLote());
                             preparedSuministro.setBoolean(21, suministroTB.isInventario());
-                            preparedSuministro.setString(22, suministroTB.getImagenTB());
+                            //------------------------------------------------------------
+                            preparedSuministro.setString(22, suministroTB.getImagenFile() != null
+                                    ? selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
+                                    : (suministroTB.getImagenTB().equalsIgnoreCase("") ? ""
+                                    : selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(new File(suministroTB.getImagenTB())), new File(suministroTB.getImagenTB())))
+                            );
+                            //
                             preparedSuministro.setInt(23, suministroTB.getImpuestoArticulo());
                             preparedSuministro.setShort(24, suministroTB.getValorInventario());
                             preparedSuministro.setString(25, suministroTB.getClaveSat());
@@ -370,6 +384,38 @@ public class SuministroADO {
             result = "No se puedo establecer una conexión, intente nuevamente.";
         }
         return result;
+    }
+
+    public static String selectFileImage(String ruta, File selectFile) {
+        String rutaValidada = ruta;
+        File fcom = new File(ruta);
+        if (fcom.exists()) {
+            fcom.delete();
+        }
+
+        FileInputStream inputStream = null;
+        byte[] buffer = new byte[1024];
+        try (FileOutputStream outputStream = new FileOutputStream(ruta)) {
+            inputStream = new FileInputStream(selectFile.getAbsolutePath());
+            int byteRead;
+            while ((byteRead = inputStream.read(buffer)) != 1) {
+                outputStream.write(buffer, 0, byteRead);
+                outputStream.flush();
+            }
+        } catch (Exception e) {
+            if (e.getMessage() != null) {
+                rutaValidada = "";
+            }
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    rutaValidada = "";
+                }
+            }
+        }
+        return rutaValidada;
     }
 
 //    private static String CrudSuministro_Articulo(SuministroTB suministroTB) {
@@ -583,7 +629,7 @@ public class SuministroADO {
                 suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
                 suministroTB.setLote(rsEmps.getBoolean("Lote"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                ImageView image = new ImageView(new Image(suministroTB.getValorInventario() == 1? "/view/image/unidad.png" : "/view/image/balanza.png"));
+                ImageView image = new ImageView(new Image(suministroTB.getValorInventario() == 1 ? "/view/image/unidad.png" : "/view/image/balanza.png"));
                 image.setFitWidth(32);
                 image.setFitHeight(32);
                 suministroTB.setImageValorInventario(image);
@@ -660,7 +706,7 @@ public class SuministroADO {
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico")); 
+                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
@@ -709,7 +755,7 @@ public class SuministroADO {
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico")); 
+                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
@@ -1064,7 +1110,7 @@ public class SuministroADO {
                 int rows = tvList.getItems().size();
 
                 for (int i = 0; i < tvList.getItems().size(); i++) {
-                    cantidad +=tvList.getItems().get(i).getMovimiento();
+                    cantidad += tvList.getItems().get(i).getMovimiento();
                     costoPromedio += tvList.getItems().get(i).getCostoCompra();
                     precioPromedio += tvList.getItems().get(i).getPrecioVentaGeneral();
 
@@ -1354,7 +1400,7 @@ public class SuministroADO {
                 suministroTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 suministroTB.setLote(rsEmps.getBoolean("Lote"));
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion")); 
+                suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion"));
                 suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
             }

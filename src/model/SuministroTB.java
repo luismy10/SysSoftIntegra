@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -63,6 +64,7 @@ public class SuministroTB {
     private double subImporte;
     private double totalImporte;
     private String imagenTB;
+    private File imagenFile;
     private String claveSat;
     private boolean tipoPrecio;
 
@@ -152,6 +154,14 @@ public class SuministroTB {
 
     public void setImagenTB(String imagenTB) {
         this.imagenTB = imagenTB == null ? "" : imagenTB;
+    }
+
+    public File getImagenFile() {
+        return imagenFile;
+    }
+
+    public void setImagenFile(File imagenFile) {
+        this.imagenFile = imagenFile;
     }
 
     public int getCategoria() {

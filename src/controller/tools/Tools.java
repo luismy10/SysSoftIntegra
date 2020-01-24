@@ -32,18 +32,21 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class Tools {
-    
-    public static short AlertMessageConfirmation(Node node,String title,String value){
-        return AlertMessage(node.getScene().getWindow(),Alert.AlertType.CONFIRMATION,title,value,true);
+
+    public static short AlertMessageConfirmation(Node node, String title, String value) {
+        return AlertMessage(node.getScene().getWindow(), Alert.AlertType.CONFIRMATION, title, value, true);
     }
-    public static short AlertMessageInformation(Node node,String title,String value){
-        return AlertMessage(node.getScene().getWindow(),Alert.AlertType.INFORMATION,title,value,false);
+
+    public static short AlertMessageInformation(Node node, String title, String value) {
+        return AlertMessage(node.getScene().getWindow(), Alert.AlertType.INFORMATION, title, value, false);
     }
-    public static short AlertMessageWarning(Node node,String title,String value){
-        return AlertMessage(node.getScene().getWindow(),Alert.AlertType.WARNING,title,value,false);
+
+    public static short AlertMessageWarning(Node node, String title, String value) {
+        return AlertMessage(node.getScene().getWindow(), Alert.AlertType.WARNING, title, value, false);
     }
-    public static short AlertMessageError(Node node,String title,String value){
-        return AlertMessage(node.getScene().getWindow(),Alert.AlertType.ERROR,title,value,false);
+
+    public static short AlertMessageError(Node node, String title, String value) {
+        return AlertMessage(node.getScene().getWindow(), Alert.AlertType.ERROR, title, value, false);
     }
 
     public static short AlertMessage(Window window, Alert.AlertType type, String title, String value, boolean validation) {
@@ -190,8 +193,8 @@ public class Tools {
         }
         return resultado;
     }
-    
-     public static boolean isNumericShort(String cadena) {
+
+    public static boolean isNumericShort(String cadena) {
         if (cadena == null || cadena.isEmpty()) {
             return false;
         }
@@ -293,9 +296,19 @@ public class Tools {
     public static Timestamp getDateHour() {
         return new Timestamp(new Date().getTime());
     }
-    
+
     public static int convertMMtoPX(double milimetro) {
         return (int) (Double.parseDouble(Tools.roundingValue(2.83465 * milimetro, 0)) * 1.3333333333333333);
     }
-    
+
+    public static String getFileExtension(File file) {
+        if (file == null) {
+            return "";
+        }
+        String name = file.getName();
+        int i = name.lastIndexOf('.');
+        String ext = i > 0 ? name.substring(i + 1) : "";
+        return ext;
+    }
+
 }
