@@ -175,6 +175,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     private File selectFile;
 
+    private String selectImage;
+
     private int idPresentacion;
 
     private int idCategoria;
@@ -230,6 +232,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
         idCategoria = 0;
         idMarca = 0;
         selectFile = null;
+        selectImage = "";
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
         txtMargen1.setText("30");
         txtMargen2.setText("25");
@@ -548,9 +551,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
             suministroTB.setClaveAlterna(txtClaveAlterna.getText().trim());
             suministroTB.setNombreMarca(txtNombreMarca.getText().trim());
             suministroTB.setNombreGenerico(txtNombreGenerico.getText().trim());
-            suministroTB.setImagenTB(selectFile != null
-                    ? "./img/" + selectFile.getName()
-                    : "");
+            suministroTB.setImagenFile(selectFile);
+            suministroTB.setImagenTB(selectImage);
             suministroTB.setCategoria(idCategoria != 0
                     ? idCategoria
                     : 0);
@@ -739,6 +741,21 @@ public class FxSuministrosProcesoModalController implements Initializable {
         }
     }
 
+    private void openWindowFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importar una imagen");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        selectFile = fileChooser.showOpenDialog(apWindow.getScene().getWindow());
+        if (selectFile != null) {
+            selectFile = new File(selectFile.getAbsolutePath());
+            if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
+                lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Producto", "No seleccionó un formato correcto de imagen.");
+            }
+        }
+    }
+
     private void closeWindow() {
         Tools.Dispose(apWindow);
     }
@@ -770,7 +787,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 //                uti.setText(Tools.roundingValue((precio - costo), 2));
 //                precneto.setText(Tools.roundingValue(precioimpuesto, 2));
 //            } else {
-                //toma el valor del impuesto del combo box
+            //toma el valor del impuesto del combo box
 //                double valorCalculado = Double.parseDouble(cos.getText());
 //                txtCosto.setText(Tools.roundingValue(valorCalculado, 8));
 //                double costo = Double.parseDouble(txtCostoPromedio.getText());
@@ -942,20 +959,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     @FXML
     private void onActionPhoto(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Importar una imagen");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-        selectFile = fileChooser.showOpenDialog(apWindow.getScene().getWindow());
-        if (selectFile != null) {
-            selectFile = new File(selectFile.getAbsolutePath());
-            File fcom = new File("./img/" + selectFile.getName());
-            if (fcom.exists()) {
-                fcom.delete();
-                selectFileImage();
-            } else {
-                selectFileImage();
-            }
-        }
+        openWindowFile();
     }
 
     @FXML

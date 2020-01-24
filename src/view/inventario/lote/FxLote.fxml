@@ -79,7 +79,7 @@
                            <children>
                               <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Busca por n° Lote o artículo (Presione enter para completar la busqueda)" textFill="#020203">
+                                    <Label styleClass="labelOpenSansRegular14" text="Busca por n° Lote o artículo (Presione enter para completar la busqueda)" textFill="#1a2226">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>

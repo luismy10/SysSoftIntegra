@@ -8,7 +8,7 @@ public class RadioButtonModel extends RadioButton{
 
     
     private double valor;
-
+    
     public RadioButtonModel() {
     }
     
@@ -23,7 +23,7 @@ public class RadioButtonModel extends RadioButton{
     public void setValor(double valor) {
         this.valor = valor;
     }
-    
+
     
     
     

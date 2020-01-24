@@ -143,6 +143,7 @@ public class ImpuestoADO {
                     impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                     impuestoTB.setValor(resultSet.getDouble("Valor"));
                     impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                    impuestoTB.setSistema(resultSet.getBoolean("Sistema")); 
                     empList.add(impuestoTB);
                 }
             } catch (SQLException ex) {

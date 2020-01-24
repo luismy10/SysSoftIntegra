@@ -159,7 +159,7 @@ public class FxSuministrosListaController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getOperacion(),e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getOperacion(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
         paginacion = 1;
@@ -253,16 +253,11 @@ public class FxSuministrosListaController implements Initializable {
                     } else {
                         controller.setInitComprasEditarController(comprasEditarController);
                     }
-                    controller.setLoadData(new String[]{
-                        tvList.getSelectionModel().getSelectedItem().getIdSuministro(),
-                        tvList.getSelectionModel().getSelectedItem().getClave(),
-                        tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getCostoCompra(), 8),
-                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral(), 8),
-                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getPrecioMargenGeneral(), 8),
-                        Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getPrecioUtilidadGeneral(), 8),
-                        ""+tvList.getSelectionModel().getSelectedItem().getImpuestoArticulo()
-                    },
+                    controller.setLoadData(
+                            tvList.getSelectionModel().getSelectedItem().getIdSuministro(),
+                            tvList.getSelectionModel().getSelectedItem().getClave(),
+                            tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
+                            Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getCostoCompra(), 8),
                             tvList.getSelectionModel().getSelectedItem().getUnidadCompraName(),
                             tvList.getSelectionModel().getSelectedItem().isLote()
                     );
@@ -336,7 +331,7 @@ public class FxSuministrosListaController implements Initializable {
         }
         return ret;
     }
-    
+
     public int getTaxValueOperacion(int impuesto) {
         int valor = 0;
         for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
