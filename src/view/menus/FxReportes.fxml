@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxReportesController">
+<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxReportesController">
    <children>
       <VBox HBox.hgrow="ALWAYS">
          <children>
@@ -68,6 +68,24 @@
                            </graphic>
                         </Button>
                         <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Finanzas">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionUtilidades" onKeyPressed="#onKeyPressedUtilidades" styleClass="buttonTransparent" text="Productos">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/producto.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

@@ -19,15 +19,15 @@
 	<parameter name="MONEDA" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="CALCULAR_TOTALES" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Aleza\\Documents\\NetBeansProjects\\SysSoftIntegra\\src\\report\\"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="VALOR_VENTA" class="java.lang.String"/>
 	<parameter name="DESCUENTO" class="java.lang.String"/>
 	<parameter name="SUB_TOTAL" class="java.lang.String"/>
 	<parameter name="TOTAL" class="java.lang.String"/>
 	<parameter name="SIMBOLO" class="java.lang.String"/>
 	<parameter name="VALORSOLES" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Ruberfc\\Documents\\NetBeansProjects\\SysSoftIntegra\\src\\report\\"]]></defaultValueExpression>
+	</parameter>
 	<field name="cantidad" class="java.lang.Double"/>
 	<field name="unidadCompraName" class="java.lang.String"/>
 	<field name="nombreMarca" class="java.lang.String"/>
@@ -372,7 +372,7 @@
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" forecolor="#1A2226" uuid="77df819a-f75f-4be5-bdd0-d5f7eaf46543"/>
 			</line>
-			<subreport>
+			<subreport runToBottom="true">
 				<reportElement x="0" y="1" width="555" height="49" uuid="863b923c-0158-471c-a855-d0cfba890f10"/>
 				<subreportParameter name="TOTAL">
 					<subreportParameterExpression><![CDATA[$P{TOTAL}]]></subreportParameterExpression>
@@ -393,7 +393,7 @@
 					<subreportParameterExpression><![CDATA[$P{VALORSOLES}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[$P{CALCULAR_TOTALES}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "VentaRealizadaDetalle.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["report/VentaRealizadaDetalle.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>

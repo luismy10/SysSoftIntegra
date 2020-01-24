@@ -511,6 +511,7 @@ public class FxVentaDetalleController implements Initializable {
             map.put("DESCUENTO", lblDescuento.getText());
             map.put("SUB_TOTAL", lblSubTotal.getText());
             map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
+//            map.put("SUBREPORT_DIR", "VentaRealizadaDetalle.jasper");
             map.put("TOTAL", lblTotal.getText());
             map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
             map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));

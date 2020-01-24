@@ -647,7 +647,7 @@ public class VentaADO {
                 arrayList.add(ventaTB);
             }
         } catch (SQLException ex) {
-            System.out.println("Venta ADO:" + ex.getLocalizedMessage());
+            System.out.println("Venta ADO GetReporteGenetalVentas():" + ex.getLocalizedMessage());
         } finally {
             try {
                 if (preparedStatement != null) {
