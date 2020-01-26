@@ -8,6 +8,7 @@ public class DetalleCompraTB {
     private String idArticulo;
     private double cantidad;
     private double precioCompra;
+    private double precioCompraCalculado;
     private double descuento;
     private int idImpuesto;
     private String nombreImpuesto;
@@ -15,6 +16,7 @@ public class DetalleCompraTB {
     private double impuestoSumado;
     private double importe;
     private String descripcion;    
+    private boolean lote;
     private ArrayList<LoteTB> listLote;
     private SuministroTB suministroTB;
     
@@ -51,6 +53,14 @@ public class DetalleCompraTB {
 
     public void setPrecioCompra(double precioCompra) {
         this.precioCompra = precioCompra;
+    }
+
+    public double getPrecioCompraCalculado() {
+        return precioCompraCalculado;
+    }
+
+    public void setPrecioCompraCalculado(double precioCompraCalculado) {
+        this.precioCompraCalculado = precioCompraCalculado;
     }
 
     public double getDescuento() {
@@ -100,6 +110,14 @@ public class DetalleCompraTB {
     public void setImporte(double importe) {
         this.importe = importe;
     }    
+
+    public boolean isLote() {
+        return lote;
+    }
+
+    public void setLote(boolean lote) {
+        this.lote = lote;
+    }
 
     public String getDescripcion() {
         return descripcion;

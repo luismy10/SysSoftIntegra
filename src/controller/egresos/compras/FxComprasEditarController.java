@@ -409,7 +409,7 @@ public class FxComprasEditarController implements Initializable {
                     suministroTB.setLote(e.isLote());
                     suministroTB.setUnidadVenta(e.getUnidadVenta());
                     suministroTB.setDescripcion(e.getDescripcion());
-                    controller.setLoadEdit(suministroTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
+//                    controller.setLoadEdit(suministroTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
                 } catch (IOException ex) {
                     System.out.println(ex.getLocalizedMessage());
                 }

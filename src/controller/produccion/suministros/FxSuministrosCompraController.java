@@ -28,7 +28,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.DetalleCompraTB;
-import model.DetalleVentaTB;
 import model.ImpuestoADO;
 import model.LoteTB;
 import model.SuministroTB;
@@ -64,11 +63,7 @@ public class FxSuministrosCompraController implements Initializable {
 
     private String idSuminisitro;
 
-    private boolean lote;
-
-    private boolean validarlote;
-
-    private boolean loteedit;
+    private boolean loteSuministro;
 
     private int indexcompra;
 
@@ -80,8 +75,7 @@ public class FxSuministrosCompraController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
         editarSuministros = false;
-        lote = loteedit = false;
-        validarlote = false;
+        loteSuministro = false;
         idSuminisitro = "";
         indexcompra = 0;
         cantidadinicial = 0;
@@ -108,15 +102,14 @@ public class FxSuministrosCompraController implements Initializable {
         }
     }
 
-    public void setLoadData(String idSuminostro, String clave,String nombreSuministro,String costo,String medida, boolean lote) {
+    public void setLoadData(String idSuminostro, String clave, String nombreSuministro, String costo, String medida, boolean lote) {
         this.idSuminisitro = idSuminostro;
         lblClave.setText(clave);
         lblDescripcion.setText(nombreSuministro);
         txtCosto.setText(costo);
         lblMedida.setText(medida);
         onActionImpuesto();
-        validarlote = lote;
-        this.lote = lote;
+        loteSuministro = lote;
     }
 
     public void setLoadEdit(DetalleCompraTB detalleCompraTB, int index, ObservableList<LoteTB> loteTBs) {
@@ -125,8 +118,8 @@ public class FxSuministrosCompraController implements Initializable {
         lblDescripcion.setText(detalleCompraTB.getSuministroTB().getNombreMarca());
         txtCantidad.setText("" + detalleCompraTB.getCantidad());
         txtDescuento.setText(Tools.roundingValue(detalleCompraTB.getDescuento(), 0));
-        txtCosto.setText(Tools.roundingValue(detalleCompraTB.getPrecioCompra(), 8));        
-        
+        txtCosto.setText(Tools.roundingValue(detalleCompraTB.getPrecioCompra(), 8));
+
         int impuesto = detalleCompraTB.getIdImpuesto();
         if (impuesto != 0) {
             if (!vbImpuestos.getChildren().isEmpty()) {
@@ -144,15 +137,12 @@ public class FxSuministrosCompraController implements Initializable {
         }
         onActionImpuesto();
         txtObservacion.setText(detalleCompraTB.getDescripcion());
-        
+
         editarSuministros = true;
-//        validarlote = suministroTB.isLote();
-//        lote = suministroTB.isLote();
         indexcompra = index;
-        loteedit = true;
         this.loteTBs = loteTBs;
-//        cantidadinicial = suministroTB.getCantidad();
-       
+        cantidadinicial = detalleCompraTB.getCantidad();
+
     }
 
     private boolean validateStock(TableView<DetalleCompraTB> view, String clave) {
@@ -199,7 +189,7 @@ public class FxSuministrosCompraController implements Initializable {
 
     private void addSuministros(int idImpuesto, String nombreImpuesto, double valorImpuesto) {
         DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
-        detalleCompraTB.setIdArticulo(idSuminisitro);        
+        detalleCompraTB.setIdArticulo(idSuminisitro);
         //
         SuministroTB suministrosTB = new SuministroTB();
         suministrosTB.setClave(lblClave.getText());
@@ -216,9 +206,10 @@ public class FxSuministrosCompraController implements Initializable {
         double totalDescuento = detalleCompraTB.getPrecioCompra() * (detalleCompraTB.getDescuento() / 100.00);
         double nuevoPrecioCompra = detalleCompraTB.getPrecioCompra() - totalDescuento;
         double totalImpuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), nuevoPrecioCompra);
+        detalleCompraTB.setPrecioCompraCalculado((totalDescuento == 0 ? 0 : -1 * totalDescuento));
         detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * totalImpuesto);
         detalleCompraTB.setImporte(detalleCompraTB.getCantidad() * (nuevoPrecioCompra + totalImpuesto));
-
+        detalleCompraTB.setLote(loteSuministro);
 //
 //        suministrosTB.setDescuento(!Tools.isNumeric(txtDescuento.getText()) ? 0
 //                : Double.parseDouble(txtDescuento.getText()));
@@ -236,10 +227,9 @@ public class FxSuministrosCompraController implements Initializable {
 //
 //        suministrosTB.setImpuestoSumado(suministrosTB.getCantidad() * (suministrosTB.getCostoCompra() * (suministrosTB.getImpuestoValor() / 100.00)));
 //
-//        suministrosTB.setLote(lote);
         if (comprasController != null) {
             if (!validateStock(comprasController.getTvList(), detalleCompraTB.getSuministroTB().getClave()) && !editarSuministros) {
-                if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
+                if (loteSuministro) {
                     openWindowLote(suministrosTB);
                 } else {
                     comprasController.getTvList().getItems().add(detalleCompraTB);
@@ -247,7 +237,7 @@ public class FxSuministrosCompraController implements Initializable {
                     Tools.Dispose(apWindow);
                 }
             } else if (editarSuministros) {
-                if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
+                if (loteSuministro) {
                     openWindowLote(suministrosTB);
                 } else {
                     comprasController.getTvList().getItems().set(indexcompra, detalleCompraTB);
@@ -312,16 +302,16 @@ public class FxSuministrosCompraController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.show();
-            if (!loteedit) {
-                controller.setLoadData(suministroTB.getIdSuministro(), suministroTB.getClave(),
-                        suministroTB.getNombreMarca(),
-                        String.valueOf(suministroTB.getCantidad()));
-            } else {
-                controller.setEditData(new String[]{suministroTB.getIdSuministro(), suministroTB.getClave(),
-                    suministroTB.getNombreMarca(),
-                    String.valueOf(suministroTB.getCantidad())},
-                        loteTBs);
-            }
+//            if (!loteedit) {
+//                controller.setLoadData(suministroTB.getIdSuministro(), suministroTB.getClave(),
+//                        suministroTB.getNombreMarca(),
+//                        String.valueOf(suministroTB.getCantidad()));
+//            } else {
+//                controller.setEditData(new String[]{suministroTB.getIdSuministro(), suministroTB.getClave(),
+//                    suministroTB.getNombreMarca(),
+//                    String.valueOf(suministroTB.getCantidad())},
+//                        loteTBs);
+//            }
         } catch (IOException ex) {
             System.out.println("Suministros controller" + ex.getLocalizedMessage());
 
@@ -391,8 +381,8 @@ public class FxSuministrosCompraController implements Initializable {
         onActionImpuesto();
     }
 
-    public void setValidarlote(boolean validarlote) {
-        this.validarlote = validarlote;
+    public void setValidarlote(boolean loteSuministro) {
+        this.loteSuministro = loteSuministro;
     }
 
     public void setCantidadInicial(double cantidadinicial) {

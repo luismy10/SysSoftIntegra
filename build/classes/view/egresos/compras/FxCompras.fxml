@@ -130,21 +130,21 @@
                                  <columns>
                                     <TableColumn fx:id="tcArticulo" prefWidth="379.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
-                                    <TableColumn fx:id="tcCosto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Costo U.N" />
-                                    <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Descuento" />
-                                    <TableColumn fx:id="tcImpuesto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Impuesto" />
-                                    <TableColumn fx:id="tcImporte" prefWidth="148.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
+                                    <TableColumn fx:id="tcCosto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Costo Unit." />
+                                    <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Descuento %" />
+                                    <TableColumn fx:id="tcImpuesto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Impuesto %" />
+                                    <TableColumn fx:id="tcImporte" prefWidth="148.0" style="-fx-alignment: CENTER;" text="Total" />
                                  </columns>
                               </TableView>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: white;">
+                        <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1.6666666666666667em;">
                            <children>
-                              <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1.6666666666666667em;">
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Total Bruto" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Total Bruto:" textFill="#1a2226" />
                                           <HBox spacing="5.0">
                                              <children>
                                                 <Text fx:id="lblMonedaSubTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
@@ -152,10 +152,10 @@
                                              </children>
                                           </HBox>
                                        </children>
-                                    </VBox>
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                    </HBox>
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Descuento" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Descuento:" textFill="#1a2226" />
                                           <HBox spacing="5.0">
                                              <children>
                                                 <Text fx:id="lblMonedaDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
@@ -163,10 +163,10 @@
                                              </children>
                                           </HBox>
                                        </children>
-                                    </VBox>
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                    </HBox>
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Sub Total" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Sub Total:" textFill="#1a2226" />
                                           <HBox spacing="5.0">
                                              <children>
                                                 <Text fx:id="lblMonedaSubTotalNuevo" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
@@ -174,11 +174,11 @@
                                              </children>
                                           </HBox>
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                     <HBox fx:id="hbAgregarImpuesto" style="-fx-spacing: 1.1666666666666667em;" />
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Total Neto" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Total Neto:" textFill="#1a2226" />
                                           <HBox spacing="5.0">
                                              <children>
                                                 <Text fx:id="lblMonedaTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M." />
@@ -186,9 +186,9 @@
                                              </children>
                                           </HBox>
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </VBox>
                            </children>
                         </HBox>
                         <HBox style="-fx-background-color: white;">
