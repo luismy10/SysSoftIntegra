@@ -11,7 +11,7 @@ public class DetalleVentaTB {
     private double precioVenta;
     private double descuento;
     private double importe;
-    private ArticuloTB articuloTB;
+    private SuministroTB suministroTB;
     
     public DetalleVentaTB(){
         
@@ -79,17 +79,14 @@ public class DetalleVentaTB {
 
     public void setImporte(double importe) {
         this.importe = importe;
+    } 
+
+    public SuministroTB getSuministroTB() {
+        return suministroTB;
     }
 
-    public ArticuloTB getArticuloTB() {
-        return articuloTB;
+    public void setSuministroTB(SuministroTB suministroTB) {
+        this.suministroTB = suministroTB;
     }
-
-    public void setArticuloTB(ArticuloTB articuloTB) {
-        this.articuloTB = articuloTB;
-    }
-
-    
-    
     
 }

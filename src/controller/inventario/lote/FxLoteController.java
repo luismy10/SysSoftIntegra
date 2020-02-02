@@ -83,7 +83,7 @@ public class FxLoteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcNumeroLote.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroLote()));
-        tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getArticuloTB().getClave() + "\n" + cellData.getValue().getArticuloTB().getNombreMarca()));
+        tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSuministroTB().getClave() + "\n" + cellData.getValue().getSuministroTB().getNombreMarca()));
         tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCaducidad().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
         tcActual.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getExistenciaActual(), 2)));
         tcPorCaducar.setCellValueFactory(new PropertyValueFactory<>("lblEstado"));
@@ -153,8 +153,8 @@ public class FxLoteController implements Initializable {
         controller.setEditBatchRealizado(new String[]{
             tvList.getSelectionModel().getSelectedItem().getNumeroLote(),
             tvList.getSelectionModel().getSelectedItem().getIdLote() + "",
-            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getClave(),
-            tvList.getSelectionModel().getSelectedItem().getArticuloTB().getNombreMarca(),
+            tvList.getSelectionModel().getSelectedItem().getSuministroTB().getClave(),
+            tvList.getSelectionModel().getSelectedItem().getSuministroTB().getNombreMarca(),
             tvList.getSelectionModel().getSelectedItem().getExistenciaActual() + "",
             tvList.getSelectionModel().getSelectedItem().getFechaCaducidad() + ""
         });
@@ -176,7 +176,7 @@ public class FxLoteController implements Initializable {
                 list.add(new LoteTB(
                         tvList.getItems().get(i).getId(),
                         tvList.getItems().get(i).getNumeroLote(),
-                        tvList.getItems().get(i).getArticuloTB().getClave() + "\n" + tvList.getItems().get(i).getArticuloTB().getNombreMarca(),
+                        tvList.getItems().get(i).getSuministroTB().getClave() + "\n" + tvList.getItems().get(i).getSuministroTB().getNombreMarca(),
                         tvList.getItems().get(i).getFechaCaducidad().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                         Tools.roundingValue(tvList.getItems().get(i).getExistenciaActual(), 2)));
             }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class DetalleCompraTB {
     
+    private int id;
     private String idCompra;
     private String idArticulo;
     private double cantidad;
@@ -21,8 +22,16 @@ public class DetalleCompraTB {
     private SuministroTB suministroTB;
     
     public DetalleCompraTB() {
-    }    
+    }  
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getIdCompra() {
         return idCompra;
     }

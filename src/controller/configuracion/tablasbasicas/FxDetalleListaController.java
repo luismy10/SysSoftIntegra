@@ -1,8 +1,7 @@
 package controller.configuracion.tablasbasicas;
 
-import controller.inventario.articulo.FxArticuloProcesoController;
-import controller.produccion.suministros.FxSuministrosProcesoController;
-import controller.produccion.suministros.FxSuministrosProcesoModalController;
+import controller.inventario.suministros.FxSuministrosProcesoController;
+import controller.inventario.suministros.FxSuministrosProcesoModalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -36,10 +35,8 @@ public class FxDetalleListaController implements Initializable {
 
     private String idMantenimiento;
 
-    private FxArticuloProcesoController articuloProcesoController;
-
     private FxSuministrosProcesoController suministrosProcesoController;
-    
+
     private FxSuministrosProcesoModalController suministrosProcesoModalController;
 
     @Override
@@ -104,13 +101,7 @@ public class FxDetalleListaController implements Initializable {
     }
 
     private void selectDetail() {
-        if (articuloProcesoController != null) {
-            if (idMantenimiento.equalsIgnoreCase("0007")) {
-                articuloProcesoController.setIdMarca(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                articuloProcesoController.getTxtMarca().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
-                Tools.Dispose(window);
-            }
-        } else if (suministrosProcesoController != null) {
+        if (suministrosProcesoController != null) {
             if (idMantenimiento.equalsIgnoreCase("0006")) {
                 suministrosProcesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                 suministrosProcesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
@@ -128,7 +119,7 @@ public class FxDetalleListaController implements Initializable {
                 suministrosProcesoController.getTxtPresentacion().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
                 Tools.Dispose(window);
             }
-        }else if(suministrosProcesoModalController != null){
+        } else if (suministrosProcesoModalController != null) {
             if (idMantenimiento.equalsIgnoreCase("0006")) {
                 suministrosProcesoModalController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
                 suministrosProcesoModalController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
@@ -205,14 +196,10 @@ public class FxDetalleListaController implements Initializable {
         }
     }
 
-    public void setControllerArticulo(FxArticuloProcesoController articuloProcesoController) {
-        this.articuloProcesoController = articuloProcesoController;
-    }
-
     public void setControllerSuministro(FxSuministrosProcesoController suministrosProcesoController) {
         this.suministrosProcesoController = suministrosProcesoController;
     }
-    
+
     public void setControllerSuministroModal(FxSuministrosProcesoModalController suministrosProcesoModalController) {
         this.suministrosProcesoModalController = suministrosProcesoModalController;
     }

@@ -4,8 +4,6 @@ import controller.tools.Tools;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -27,8 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import model.ArticuloADO;
-import model.ArticuloTB;
+import model.SuministroTB;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -44,23 +41,23 @@ public class FxImportarInventarioController implements Initializable {
     @FXML
     private Label lblLoad;
     @FXML
-    private TableView<ArticuloTB> tvList;
+    private TableView<SuministroTB> tvList;
     @FXML
-    private TableColumn<ArticuloTB, String> tcId;
+    private TableColumn<SuministroTB, String> tcId;
     @FXML
-    private TableColumn<ArticuloTB, String> tcClave;
+    private TableColumn<SuministroTB, String> tcClave;
     @FXML
-    private TableColumn<ArticuloTB, String> tcArticulo;
+    private TableColumn<SuministroTB, String> tcArticulo;
     @FXML
-    private TableColumn<ArticuloTB, String> tcLote;
+    private TableColumn<SuministroTB, String> tcLote;
     @FXML
-    private TableColumn<ArticuloTB, String> tcCaducidad;
+    private TableColumn<SuministroTB, String> tcCaducidad;
     @FXML
-    private TableColumn<ArticuloTB, Double> tcCompra;
+    private TableColumn<SuministroTB, Double> tcCompra;
     @FXML
-    private TableColumn<ArticuloTB, Double> tcPrecio;
+    private TableColumn<SuministroTB, Double> tcPrecio;
     @FXML
-    private TableColumn<ArticuloTB, Double> tcExistencias;
+    private TableColumn<SuministroTB, Double> tcExistencias;
     @FXML
     private Label lblTotaImportadas;
     @FXML
@@ -75,13 +72,13 @@ public class FxImportarInventarioController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdArticulo()));
+        tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdSuministro()));
         tcClave.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave()));
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
         tcLote.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().isLote() ? "SI" : "NO"
         ));
-        tcCaducidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro().get().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))));
+        tcCaducidad.setCellValueFactory(cellData -> Bindings.concat());
         tcCompra.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCostoCompra()).asObject());
         tcPrecio.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrecioVentaGeneral()).asObject());
         tcExistencias.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCantidad()).asObject());
@@ -128,13 +125,13 @@ public class FxImportarInventarioController implements Initializable {
             file = new File(file.getAbsolutePath());
             if (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) {
 
-                Service<ObservableList<ArticuloTB>> service = new Service<ObservableList<ArticuloTB>>() {
+                Service<ObservableList<SuministroTB>> service = new Service<ObservableList<SuministroTB>>() {
                     @Override
-                    protected Task<ObservableList<ArticuloTB>> createTask() {
-                        return new Task<ObservableList<ArticuloTB>>() {
+                    protected Task<ObservableList<SuministroTB>> createTask() {
+                        return new Task<ObservableList<SuministroTB>>() {
                             @Override
-                            protected ObservableList<ArticuloTB> call() throws Exception {
-                                ObservableList<ArticuloTB> listImportada = FXCollections.observableArrayList();
+                            protected ObservableList<SuministroTB> call() throws Exception {
+                                ObservableList<SuministroTB> listImportada = FXCollections.observableArrayList();
                                 try {
                                     Workbook workbook = WorkbookFactory.create(file);
                                     Sheet sheet = workbook.getSheetAt(0);
@@ -156,12 +153,12 @@ public class FxImportarInventarioController implements Initializable {
                                             try {
                                                 count++;
                                                 updateMessage("" + count);
-                                                ArticuloTB articuloTB = new ArticuloTB();
-                                                articuloTB.setIdArticulo(cell1.getStringCellValue());
+                                                SuministroTB articuloTB = new SuministroTB();
+                                                articuloTB.setIdSuministro(cell1.getStringCellValue());
                                                 articuloTB.setClave(cell2.getStringCellValue());
                                                 articuloTB.setNombreMarca(cell3.getStringCellValue());
                                                 articuloTB.setLote(cell4.getStringCellValue().equalsIgnoreCase("SI"));
-                                                articuloTB.setFechaRegistro(new java.sql.Date(cell5.getDateCellValue().getTime()).toLocalDate());
+//                                                articuloTB.setFechaRegistro(new java.sql.Date(cell5.getDateCellValue().getTime()).toLocalDate());
                                                 articuloTB.setCostoCompra(cell6.getNumericCellValue());
                                                 articuloTB.setPrecioVentaGeneral(cell7.getNumericCellValue());
                                                 articuloTB.setCantidad(cell8.getNumericCellValue());
@@ -186,7 +183,7 @@ public class FxImportarInventarioController implements Initializable {
                 lblTotaImportadas.textProperty().bind(service.messageProperty());
 
                 service.setOnSucceeded((WorkerStateEvent e) -> {
-                    tvList.setItems((ObservableList<ArticuloTB>) service.getValue());
+                    tvList.setItems((ObservableList<SuministroTB>) service.getValue());
                     lblLoad.setVisible(false);
                     btnImportar.setDisable(false);
                     btnIniciar.setDisable(false);

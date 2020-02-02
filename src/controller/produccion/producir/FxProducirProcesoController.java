@@ -1,6 +1,6 @@
 package controller.produccion.producir;
 
-import controller.produccion.suministros.FxSuministrosListaController;
+import controller.inventario.suministros.FxSuministrosListaController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;

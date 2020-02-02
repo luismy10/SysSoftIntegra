@@ -1,13 +1,9 @@
 package model;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
 
 public class CompraTB {
 
-    /*
-    Atributos para las vistas en general
-     */
     private int id;
     private String idCompra;
     private String proveedor;
@@ -16,11 +12,13 @@ public class CompraTB {
     private String numeracion;
     private int tipoMoneda;
     private String tipoMonedaName;
-    private String fecha;
-    private String hora;
+    private String fechaCompra;
+    private String horaCompra;
+    private String fechaVencimiento;
+    private String horaVencimiento;
     private double subTotal;
     private double descuento;
-    private SimpleDoubleProperty total;
+    private double total;
     private String observaciones;
     private String notas;
     
@@ -33,26 +31,11 @@ public class CompraTB {
     private String usuario;
     
     private ProveedorTB proveedorTB;
-    private ArticuloTB articuloTB;
-
-    /*
-     Atributos para el reporte
-     */
-    private String fechaCompraReporte;
-    private String serienumeracionReporte;
-    private String proveedorReporte;
-    private String totalReporte;
+    private SuministroTB suministroTB;
+    private MonedaTB monedaTB;
 
     public CompraTB() {
 
-    }
-
-    public CompraTB(int id, String fechaCompraReporte, String serienumeracionReporte, String proveedorReporte, String totalReporte) {
-        this.id = id;
-        this.fechaCompraReporte = fechaCompraReporte;
-        this.serienumeracionReporte = serienumeracionReporte;
-        this.proveedorReporte = proveedorReporte;
-        this.totalReporte = totalReporte;
     }
 
     public int getId() {
@@ -119,21 +102,38 @@ public class CompraTB {
         this.tipoMonedaName = tipoMonedaName == null ? "" : tipoMonedaName;
     }
 
-    public String getFecha() {
-        return fecha;
+    public String getFechaCompra() {
+        return fechaCompra;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFechaCompra(String fechaCompra) {
+        this.fechaCompra = fechaCompra;
     }
 
-    public String getHora() {
-        return hora;
+    public String getHoraCompra() {
+        return horaCompra;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setHoraCompra(String horaCompra) {
+        this.horaCompra = horaCompra;
     }
+
+    public String getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(String fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public String getHoraVencimiento() {
+        return horaVencimiento;
+    }
+
+    public void setHoraVencimiento(String horaVencimiento) {
+        this.horaVencimiento = horaVencimiento;
+    }
+
 
     public double getSubTotal() {
         return subTotal;
@@ -151,12 +151,12 @@ public class CompraTB {
         this.descuento = descuento;
     }
 
-    public SimpleDoubleProperty getTotal() {
+    public double getTotal() {
         return total;
     }
 
     public void setTotal(double total) {
-        this.total = new SimpleDoubleProperty(total);
+        this.total = total;
     }
 
     public String getObservaciones() {
@@ -183,44 +183,20 @@ public class CompraTB {
         this.proveedorTB = proveedorTB;
     }
 
-    public ArticuloTB getArticuloTB() {
-        return articuloTB;
+    public SuministroTB getSuministroTB() {
+        return suministroTB;
     }
 
-    public void setArticuloTB(ArticuloTB articuloTB) {
-        this.articuloTB = articuloTB;
+    public void setSuministroTB(SuministroTB suministroTB) {
+        this.suministroTB = suministroTB;
     }
 
-    public String getSerienumeracionReporte() {
-        return serienumeracionReporte;
+    public MonedaTB getMonedaTB() {
+        return monedaTB;
     }
 
-    public void setSerienumeracionReporte(String serienumeracionReporte) {
-        this.serienumeracionReporte = serienumeracionReporte;
-    }
-
-    public String getProveedorReporte() {
-        return proveedorReporte;
-    }
-
-    public void setProveedorReporte(String proveedorReporte) {
-        this.proveedorReporte = proveedorReporte;
-    }
-
-    public String getFechaCompraReporte() {
-        return fechaCompraReporte;
-    }
-
-    public void setFechaCompraReporte(String fechaCompraReporte) {
-        this.fechaCompraReporte = fechaCompraReporte;
-    }
-
-    public String getTotalReporte() {
-        return totalReporte;
-    }
-
-    public void setTotalReporte(String totalReporte) {
-        this.totalReporte = totalReporte;
+    public void setMonedaTB(MonedaTB monedaTB) {
+        this.monedaTB = monedaTB;
     }
 
     public int getTipo() {

@@ -145,78 +145,74 @@ public final class FilesRouters {
     //--------------------------------------------------------------------------------------------------
     //PROCESO DE COMPRAS
     //--------------------------------------------------------------------------------------------------
-    public static final String FX_AMARTIZAR_PAGOS = "/view/egresos/compras/FxAmortizarPagos.fxml";
+    public static final String FX_AMARTIZAR_PAGOS = "/view/consultas/compras/FxAmortizarPagos.fxml";
 
-    public static final String FX_COMPRAS = "/view/egresos/compras/FxCompras.fxml";
+    public static final String FX_COMPRAS = "/view/operaciones/compras/FxCompras.fxml";
 
-    public static final String FX_COMPRAS_DETALLE = "/view/egresos/compras/FxComprasDetalle.fxml";
+    public static final String FX_COMPRAS_DETALLE = "/view/consultas/compras/FxComprasDetalle.fxml";
 
-    public static final String FX_COMPRAS_EDITAR = "/view/egresos/compras/FxComprasEditar.fxml";
+    public static final String FX_COMPRAS_EDITAR = "/view/consultas/compras/FxComprasEditar.fxml";
 
-    public static final String FX_COMPRAS_LISTA = "/view/egresos/compras/FxComprasLista.fxml";
+    public static final String FX_COMPRAS_LISTA = "/view/operaciones/compras/FxComprasLista.fxml";
 
-    public static final String FX_COMPRAS_CANCELAR = "/view/egresos/compras/FxComprasCancelar.fxml";
+    public static final String FX_COMPRAS_CANCELAR = "/view/consultas/compras/FxComprasCancelar.fxml";
 
-    public static final String FX_COMPRAS_PROCESO = "/view/egresos/compras/FxComprasProceso.fxml";
+    public static final String FX_COMPRAS_PROCESO = "/view/operaciones/compras/FxComprasProceso.fxml";
 
-    public static final String FX_COMPRAS_REALIZADAS = "/view/egresos/compras/FxComprasRealizadas.fxml";
+    public static final String FX_COMPRAS_REALIZADAS = "/view/consultas/compras/FxComprasRealizadas.fxml";
 
-    public static final String FX_HISTORIAL_PAGOS = "/view/egresos/compras/FxHistorialPagos.fxml";
+    public static final String FX_COMPRAS_CREDITO = "/view/operaciones/compras/FxComprasCredito.fxml";
 
-    public static final String FX_PLAZOS = "/view/egresos/compras/FxPlazos.fxml";
-
-    //--------------------------------------------------------------------------------------------------
-    public static final String FX_CAJA = "/view/ingresos/cortecaja/FxCaja.fxml";
-
-    public static final String FX_CAJA_BUSQUEDA = "/view/ingresos/cortecaja/FxCajaBusqueda.fxml";
-
-    public static final String FX_CAJA_CERRAR_CAJA = "/view/ingresos/cortecaja/FxCajaCerrarCaja.fxml";
-
-    public static final String FX_CAJA_PROCESO = "/view/ingresos/cortecaja/FxCajaProceso.fxml";
-
-    public static final String FX_CAJA_CONSULTA = "/view/ingresos/cortecaja/FxCajaConsultas.fxml";
+    public static final String FX_PLAZOS = "/view/egresos/operaciones/FxPlazos.fxml";
 
     //--------------------------------------------------------------------------------------------------
-    public static final String FX_IMPRESORA_TICKET = "/view/ingresos/venta/FxImpresoraTicket.fxml";
+    public static final String FX_CAJA = "/view/operaciones/cortecaja/FxCaja.fxml";
+
+    public static final String FX_CAJA_BUSQUEDA = "/view/operaciones/cortecaja/FxCajaBusqueda.fxml";
+
+    public static final String FX_CAJA_CERRAR_CAJA = "/view/operaciones/cortecaja/FxCajaCerrarCaja.fxml";
+
+    public static final String FX_CAJA_PROCESO = "/view/operaciones/cortecaja/FxCajaProceso.fxml";
+
+    public static final String FX_CAJA_CONSULTA = "/view/operaciones/cortecaja/FxCajaConsultas.fxml";
+
+    //--------------------------------------------------------------------------------------------------
+    public static final String FX_IMPRESORA_TICKET = "/view/operaciones/venta/FxImpresoraTicket.fxml";
 
     public static final String FX_IMPRIMIR = "/view/configuracion/impresoras/FxImprimir.fxml";
 
-    public static final String FX_LISTA_PRECIOS = "/view/ingresos/venta/FxListaPrecios.fxml";
+    public static final String FX_LISTA_PRECIOS = "/view/operaciones/venta/FxListaPrecios.fxml";
     //--------------------------------------------------------------------------------------------------
 
-    public static final String FX_VENTA = "/view/ingresos/venta/FxVenta.fxml";
+    public static final String FX_VENTA = "/view/operaciones/venta/FxVenta.fxml";
 
-    public static final String FX_VENTA_ABONO = "/view/ingresos/venta/FxVentaAbono.fxml";
+    public static final String FX_VENTA_ABONO = "/view/operaciones/venta/FxVentaAbono.fxml";
 
-    public static final String FX_VENTA_ABONO_PROCESO = "/view/ingresos/venta/FxVentaAbonoProceso.fxml";
+    public static final String FX_VENTA_ABONO_PROCESO = "/view/operaciones/venta/FxVentaAbonoProceso.fxml";
 
-    public static final String FX_VENTA_DESCUENTO = "/view/ingresos/venta/FxVentaDescuento.fxml";
+    public static final String FX_VENTA_DESCUENTO = "/view/operaciones/venta/FxVentaDescuento.fxml";
 
-    public static final String FX_VENTA_DETALLE = "/view/ingresos/venta/FxVentaDetalle.fxml";
+    public static final String FX_VENTA_DETALLE = "/view/operaciones/venta/FxVentaDetalle.fxml";
 
-    public static final String FX_VENTA_DEVOLUCION = "/view/ingresos/venta/FxVentaDevolucion.fxml";
+    public static final String FX_VENTA_DEVOLUCION = "/view/operaciones/venta/FxVentaDevolucion.fxml";
 
-    public static final String FX_VENTA_ESTRUCTURA = "/view/ingresos/venta/FxVentaEstructura.fxml";
+    public static final String FX_VENTA_ESTRUCTURA = "/view/operaciones/venta/FxVentaEstructura.fxml";
 
-    public static final String FX_VENTA_FONDO_INICIAL = "/view/ingresos/venta/FxVentaFondoInicial.fxml";
+    public static final String FX_VENTA_FONDO_INICIAL = "/view/operaciones/venta/FxVentaFondoInicial.fxml";
 
-    public static final String FX_VENTA_VALIDAR_CAJA = "/view/ingresos/venta/FxVentaValidarCaja.fxml";
+    public static final String FX_VENTA_VALIDAR_CAJA = "/view/operaciones/venta/FxVentaValidarCaja.fxml";
 
-    public static final String FX_VENTA_GRANEL = "/view/ingresos/venta/FxVentaGranel.fxml";
+    public static final String FX_VENTA_GRANEL = "/view/operaciones/venta/FxVentaGranel.fxml";
 
-    public static final String FX_VENTA_MOSTRAR = "/view/ingresos/venta/FxVentaMostrar.fxml";
+    public static final String FX_VENTA_MOSTRAR = "/view/operaciones/venta/FxVentaMostrar.fxml";
 
-    public static final String FX_VENTA_MOVIMIENTO = "/view/ingresos/venta/FxVentaMovimiento.fxml";
+    public static final String FX_VENTA_MOVIMIENTO = "/view/operaciones/venta/FxVentaMovimiento.fxml";
 
-    public static final String FX_VENTA_CANTIDADES = "/view/ingresos/venta/FxVentaCantidades.fxml";
+    public static final String FX_VENTA_CANTIDADES = "/view/operaciones/venta/FxVentaCantidades.fxml";
 
-    public static final String FX_VENTA_PROCESO = "/view/ingresos/venta/FxVentaProceso.fxml";
+    public static final String FX_VENTA_PROCESO = "/view/operaciones/venta/FxVentaProceso.fxml";
 
-    public static final String FX_VENTA_REALIZADAS = "/view/ingresos/venta/FxVentaRealizadas.fxml";
-
-    public static final String FX_VENTA_REPORTE = "/view/ingresos/venta/FxVentaReporte.fxml";
-
-    public static final String FX_VENTA_UTILIDADES = "/view/ingresos/venta/FxVentaUtilidades.fxml";
+    public static final String FX_VENTA_REALIZADAS = "/view/operaciones/venta/FxVentaRealizadas.fxml";
 
     public static final String FX_AJUSTE_INVENTARIO = "/view/inventario/ajusteinventario/FxAjusteInventario.fxml";
 
@@ -225,21 +221,7 @@ public final class FilesRouters {
     //--------------------------------------------------------------------------------------------------
     //PROCESO DE ARTICULOS
     //--------------------------------------------------------------------------------------------------
-    public static final String FX_ARTICULO_DETALLE = "/view/inventario/articulo/FxArticuloDetalle.fxml";
-
-    public static final String FX_ARTICULO_KARDEX = "/view/inventario/kardex/FxArticuloKardex.fxml";
-
-    public static final String FX_ARTICULO_HISTORIAL = "/view/inventario/articulo/FxArticuloHistorial.fxml";
-
-    public static final String FX_ARTICULO_LISTA = "/view/inventario/articulo/FxArticuloLista.fxml";
-
-    public static final String FX_ARTICULO_PROCESO = "/view/inventario/articulo/FxArticuloProceso.fxml";
-
     public static final String FX_ARTICULO_REPORTES = "/view/inventario/articulo/FxArticuloReportes.fxml";
-
-    public static final String FX_ARTICULO_SELECCIONADO = "/view/inventario/articulo/FxArticuloSeleccionado.fxml";
-
-    public static final String FX_ARTICULOS = "/view/inventario/articulo/FxArticulos.fxml";
 
     public static final String FX_CODIGO_BARRAS = "/view/inventario/articulo/FxCodigoBarras.fxml";
 
@@ -270,32 +252,51 @@ public final class FilesRouters {
     //--------------------------------------------------------------------------------------------------
     //PROCESO DE SUMINISTROS
     //--------------------------------------------------------------------------------------------------    
-    public static final String FX_SUMINISTROS = "/view/produccion/suministros/FxSuministros.fxml";
+    public static final String FX_SUMINISTROS = "/view/inventario/suministros/FxSuministros.fxml";
 
-    public static final String FX_SUMINISTROS_PROCESO = "/view/produccion/suministros/FxSuministrosProceso.fxml";
+    public static final String FX_SUMINISTROS_PROCESO = "/view/inventario/suministros/FxSuministrosProceso.fxml";
 
-    public static final String FX_SUMINISTROS_PROCESO_MODAL = "/view/produccion/suministros/FxSuministrosProcesoModal.fxml";
+    public static final String FX_SUMINISTROS_PROCESO_MODAL = "/view/inventario/suministros/FxSuministrosProcesoModal.fxml";
 
-    public static final String FX_SUMINISTROS_LISTA = "/view/produccion/suministros/FxSuministrosLista.fxml";
+    public static final String FX_SUMINISTROS_LISTA = "/view/inventario/suministros/FxSuministrosLista.fxml";
 
-    public static final String FX_SUMINISTROS_COMPRA = "/view/produccion/suministros/FxSuministrosCompra.fxml";
+    public static final String FX_SUMINISTROS_COMPRA = "/view/inventario/suministros/FxSuministrosCompra.fxml";
 
-    public static final String FX_SUMINISTROS_KARDEX = "/view/produccion/suministros/FxSuministrosKardex.fxml";
+    public static final String FX_SUMINISTROS_KARDEX = "/view/inventario/suministros/FxSuministrosKardex.fxml";
 
     //--------------------------------------------------------------------------------------------------
-    public static final String FX_MOVIMIENTOS = "/view/produccion/movimientos/FxMovimientos.fxml";
+    public static final String FX_MOVIMIENTOS = "/view/inventario/movimientos/FxMovimientos.fxml";
 
-    public static final String FX_MOVIMIENTOS_DETALLE = "/view/produccion/movimientos/FxMovimientosDetalle.fxml";
+    public static final String FX_MOVIMIENTOS_DETALLE = "/view/inventario/movimientos/FxMovimientosDetalle.fxml";
 
-    public static final String FX_MOVIMIENTOS_PROCESO = "/view/produccion/movimientos/FxMovimientosProceso.fxml";
-
-    public static final String FX_MOVIMIENTOS_PROCESO_ARTICULO = "/view/produccion/movimientos/FxMovimientosProcesoArticulo.fxml";
+    public static final String FX_MOVIMIENTOS_PROCESO = "/view/inventario/movimientos/FxMovimientosProceso.fxml";
 
     //--------------------------------------------------------------------------------------------------
     public static final String FX_ASIGNACION = "/view/produccion/asignacion/FxAsignacion.fxml";
 
     public static final String FX_ASIGNACION_PROCESO = "/view/produccion/asignacion/FxAsignacionProceso.fxml";
 
-    public static final String FX_REPORTE_VIEW= "/view/reporte/FxReportView.fxml";
+    public static final String FX_REPORTE_VIEW = "/view/reporte/FxReportView.fxml";
+
+    public static final String FX_VENTA_REPORTE = "/view/reporte/FxVentaReporte.fxml";
+
+    public static final String FX_VENTA_UTILIDADES = "/view/reporte/FxVentaUtilidades.fxml";
+    
+    public static final String FX_COMPRA_REPORTE= "/view/reporte/FxCompraReporte.fxml";
+    
+    public static final String FX_PRODUCTO_REPORTE = "/view/reporte/FxProductoReporte.fxml";
+
+    //--------------------------------------------------------------------------------------------------
+    public static final String FX_BANCOS = "/view/banco/FxBancos.fxml";
+
+    public static final String FX_BANCO_PROCESO = "/view/banco/FxBancoProceso.fxml";
+
+    public static final String FX_BANCO_HISTORIAL = "/view/banco/FxBancoHistorial.fxml";
+
+    public static final String FX_BANCO_AGREGAR = "/view/banco/FxBancoAgregarDinero.fxml";
+
+    public static final String FX_BANCO_RETIRAR = "/view/banco/FxBancoRetirarDinero.fxml";
+
+    public static final String FX_BANCO_TRANSFERIR = "/view/banco/FxBancoTranferencia.fxml";
 
 }

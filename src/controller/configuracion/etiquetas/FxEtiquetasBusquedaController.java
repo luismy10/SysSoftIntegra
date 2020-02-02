@@ -1,7 +1,6 @@
 package controller.configuracion.etiquetas;
 
-import controller.inventario.articulo.FxArticulosController;
-import controller.produccion.suministros.FxSuministrosController;
+import controller.inventario.suministros.FxSuministrosController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -31,7 +30,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.ArticuloTB;
 import model.EtiquetaADO;
 import model.EtiquetaTB;
 import model.SuministroTB;
@@ -49,7 +47,6 @@ public class FxEtiquetasBusquedaController implements Initializable {
 
     private FxEtiquetasController etiquetasController;
 
-//    private FxArticulosController articulosController;
     private FxSuministrosController suministrosController;
 
     @Override
@@ -134,10 +131,6 @@ public class FxEtiquetasBusquedaController implements Initializable {
             if (suministrosController != null) {
                 eventPreview(etiquetaReferent.getRuta(), suministrosController.getTvList().getSelectionModel().getSelectedItem());
             }
-//            } else if (articulosController != null) {
-//                eventPreview(etiquetaReferent.getRuta(), articulosController.getTvList().getSelectionModel().getSelectedItem());
-//            }
-
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "Seleccione una etiqueta para editarlo.", false);
         }
@@ -172,9 +165,6 @@ public class FxEtiquetasBusquedaController implements Initializable {
         this.etiquetasController = etiquetasController;
     }
 
-    public void setInitArticuloController(FxArticulosController articulosController) {
-//        this.articulosController = articulosController;
-    }
 
     public void setInitSuministroController(FxSuministrosController suministrosController) {
         this.suministrosController = suministrosController;

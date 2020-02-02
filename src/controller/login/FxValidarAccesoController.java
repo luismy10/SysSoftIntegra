@@ -1,7 +1,7 @@
 
 package controller.login;
 
-import controller.ingresos.venta.FxVentaRealizadasController;
+import controller.operaciones.venta.FxVentaRealizadasController;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;

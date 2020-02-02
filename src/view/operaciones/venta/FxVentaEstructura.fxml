@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaEstructuraController">
+   <children>
+      <VBox VBox.vgrow="ALWAYS">
+         <children>
+            <HBox fx:id="hbBotonesSuperior" alignment="CENTER_LEFT" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Button fx:id="btnCobrar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Cobrar(F1)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/complete.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnArticulo" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Productos(F2)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/articles.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnListaPrecio" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionListaPrecios" onKeyPressed="#onKeyPressedListaPrecios" styleClass="buttonLight" text="Lista de Precios(F3)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/prices.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnCantidad" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCantidad" onKeyPressed="#onKeyPressedCantidad" styleClass="buttonLight" text="Cantidad(F4)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnCambiarPrecio" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrecio" onKeyPressed="#onKeyPressedPrecio" styleClass="buttonLight" text="Cambiar Precio(F5)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/moneda.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnDescuento" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionDescuento" onKeyPressed="#onKeyPressedDescuento" styleClass="buttonLight" text="Descuento(F6)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/percentages.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnSumarPrecio" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrecioSumar" onKeyPressed="#onKeyPressedPrecioSumar" styleClass="buttonLight" text="Sumar Precio(F7)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/money.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" style="-fx-border-width: 1; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
+                                 <children>
+                                    <Label prefHeight="30.0" styleClass="labelRoboto14" text="CTRL+D" textFill="#1a2226">
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/barcode.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <VBox style="-fx-spacing: 0.5em;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Datos del producto(Para apuntar a la tabla puedes presionar (CTRL+W))" />
+                                    <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" onKeyReleased="#onKeyReleasedList" prefHeight="300.0" prefWidth="850.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                                       <columns>
+                                          <TableColumn fx:id="tcOpcion" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Opción" />
+                                          <TableColumn fx:id="tcCantidad" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Cantidad" />
+                                          <TableColumn fx:id="tcArticulo" prefWidth="176.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                                          <TableColumn fx:id="tcImpuesto" prefWidth="118.0" style="-fx-alignment: CENTER;" text="Impuesto" />
+                                          <TableColumn fx:id="tcPrecio" prefWidth="121.0" style="-fx-alignment: CENTER;" text="Precio" />
+                                          <TableColumn fx:id="tcDescuento" prefWidth="113.0" style="-fx-alignment: CENTER;" text="Descuento" />
+                                          <TableColumn fx:id="tcImporte" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox style="-fx-border-width: 1px; -fx-border-color: #cccccc;">
+                     <children>
+                        <VBox>
+                           <children>
+                              <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-padding: 0.6666666666666666em; -fx-spacing: 0.6666666666666666em;">
+                                 <children>
+                                    <Text fx:id="lblMoneda" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="M" />
+                                    <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="0.00" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 0.1666665em;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE" />
+                                          <Text fx:id="lblSerie" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="0000" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 0.1666665em;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA" />
+                                          <Text fx:id="lblNumeracion" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="00000000" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" style="-fx-border-color: #cccccc; -fx-spacing: 0.8333333333333334em; -fx-border-width: 1px 0 0 0;">
+                                 <children>
+                                    <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em 0em 0.8333333333333334em 0em;">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0em 0.8333333333333334em;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/recibo.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="210.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0em 0.8333333333333334em;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/moneda.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <ComboBox fx:id="cbMoneda" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="210.0" promptText="Moneda" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <ScrollPane fitToWidth="true" styleClass="scroll-pane-primary" HBox.hgrow="ALWAYS">
+                                       <content>
+                                          <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: white;">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Valor Venta:" textFill="#1a2226" />
+                                                      <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
+                                                         <children>
+                                                            <Text fx:id="lblSubTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
+                                                            <Text fx:id="lblValorVenta" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Descuento:" textFill="#1a2226" />
+                                                      <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
+                                                         <children>
+                                                            <Text fx:id="lblDescuentoMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M -" />
+                                                            <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Sub Importe" textFill="#1a2226" />
+                                                      <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
+                                                         <children>
+                                                            <Text fx:id="lblSubImporteMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M " />
+                                                            <Text fx:id="lblSubImporte" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
+                                                   <children>
+                                                      <VBox fx:id="vbImpuestos" style="-fx-spacing: 0.8333333333333334em;" />
+                                                   </children>
+                                                </HBox>
+                                                <VBox style="-fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 0.5em 0em 0em 0em;">
+                                                   <children>
+                                                      <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Total Importe" />
+                                                            <Text fx:id="lblImporteTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
+                                                            <Text fx:id="lblImporteTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0.4166666666666667em;">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="Total Importe(rdon.):" />
+                                                            <Text fx:id="lblTotalPagarMoneda" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="M" />
+                                                            <Text fx:id="lblTotalPagar" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="0.00" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox fx:id="hbBotonesInferior" alignment="CENTER_LEFT" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Button fx:id="btnQuitar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar(Supr)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/remove.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnMovimiento" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCashMovement" onKeyPressed="#onKeyPressedCashMovement" styleClass="buttonLight" text="Mov. de Caja">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/cash_movement.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnImpresora" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Impresora(F8)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/print.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnCancelar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar(F9)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/cancel.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnVentasPorDia" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasPorDia" onKeyPressed="#onKeyPressedVentasPorDia" styleClass="buttonLight" text="Ventas y Devoluciones(F10)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/view.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

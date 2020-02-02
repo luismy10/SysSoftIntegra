@@ -1200,7 +1200,7 @@
     -fx-font-family: "Segoe UI SemiBold";
     -fx-font-size: 1.1666666666666667em;  /* 14 */
     -fx-alignment: center;
-    -fx-padding:  0.6666666666666666em 0.5em 0.6666666666666666em 0.5em;      
+    -fx-padding:  0.5em;      
 }
 
 .table-view-secundario .column-header:hover{

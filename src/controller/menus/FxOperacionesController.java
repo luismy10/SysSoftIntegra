@@ -1,10 +1,9 @@
 package controller.menus;
 
-import controller.egresos.compras.FxComprasController;
-import controller.ingresos.cortecaja.FxCajaController;
-import controller.ingresos.venta.FxVentaController;
-import controller.inventario.articulo.FxArticulosController;
-import controller.produccion.movimientos.FxMovimientosController;
+import controller.operaciones.compras.FxComprasController;
+import controller.operaciones.cortecaja.FxCajaController;
+import controller.operaciones.venta.FxVentaController;
+import controller.inventario.movimientos.FxMovimientosController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -34,18 +33,11 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private HBox hbOperacionesUno;
     @FXML
-    private HBox hbOperacionesDos;
-    @FXML
     private VBox btnVentas;
     @FXML
     private VBox btnCompras;
     @FXML
     private VBox btnCorteCaja;
-    @FXML
-    private VBox btnMovimiento;
-    @FXML
-    private VBox btnArticulo;
-
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -61,24 +53,6 @@ public class FxOperacionesController implements Initializable {
     private VBox nodeVenta;
 
     private FxVentaController controllerVenta;
-
-    /*
-    Controller articulos
-     */
-    private FXMLLoader fXMLArticulo;
-
-    private VBox nodeArticulo;
-
-    private FxArticulosController controllerArticulo;
-
-    /*
-    Controller movimiento     
-     */
-    private FXMLLoader fXMLMovimiento;
-
-    private HBox nodeMovimiento;
-
-    private FxMovimientosController controllerMovimiento;
 
     /*
     Controller compra
@@ -104,14 +78,6 @@ public class FxOperacionesController implements Initializable {
             nodeVenta = fXMLVenta.load();
             controllerVenta = fXMLVenta.getController();
 
-            fXMLArticulo = new FXMLLoader(getClass().getResource(FilesRouters.FX_ARTICULOS));
-            nodeArticulo = fXMLArticulo.load();
-            controllerArticulo = fXMLArticulo.getController();
-
-            fXMLMovimiento = new FXMLLoader(getClass().getResource(FilesRouters.FX_MOVIMIENTOS));
-            nodeMovimiento = fXMLMovimiento.load();
-            controllerMovimiento = fXMLMovimiento.getController();
-
             fXMLCompra = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS));
             nodeCompra = fXMLCompra.load();
             controllerCompras = fXMLCompra.getController();
@@ -135,7 +101,7 @@ public class FxOperacionesController implements Initializable {
         }
 
         if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
-            hbOperacionesDos.getChildren().remove(btnArticulo);
+
         }
 
         if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
@@ -153,7 +119,7 @@ public class FxOperacionesController implements Initializable {
         }
 
         if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
-            hbOperacionesDos.getChildren().remove(btnMovimiento);
+
         }
 
     }
@@ -166,21 +132,8 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeVenta, 0d);
         AnchorPane.setBottomAnchor(nodeVenta, 0d);
         vbContent.getChildren().add(nodeVenta);
-        controllerVenta.loadValidarCaja();     
+        controllerVenta.loadValidarCaja();
         controllerVenta.loadElements();
-    }
-
-    private void openWindowArticulos() {
-        controllerArticulo.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeArticulo, 0d);
-        AnchorPane.setTopAnchor(nodeArticulo, 0d);
-        AnchorPane.setRightAnchor(nodeArticulo, 0d);
-        AnchorPane.setBottomAnchor(nodeArticulo, 0d);
-        vbContent.getChildren().add(nodeArticulo);
-        if (controllerArticulo.getTvList().getItems().isEmpty()) {
-            controllerArticulo.fillArticlesTablePaginacion();
-        }
     }
 
     private void openWindowCompra() {
@@ -201,24 +154,6 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeCorteCaja, 0d);
         AnchorPane.setBottomAnchor(nodeCorteCaja, 0d);
         vbContent.getChildren().add(nodeCorteCaja);
-
-    }
-
-    private void openWindowMovimientos() {
-        controllerMovimiento.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeMovimiento, 0d);
-        AnchorPane.setTopAnchor(nodeMovimiento, 0d);
-        AnchorPane.setRightAnchor(nodeMovimiento, 0d);
-        AnchorPane.setBottomAnchor(nodeMovimiento, 0d);
-        vbContent.getChildren().add(nodeMovimiento);
-        if (controllerMovimiento.getTvList().getItems().isEmpty()) {
-            controllerMovimiento.setOpcion((short) 2);
-            controllerMovimiento.fillTableMovimiento(false, (short) 2, 0, Tools.getDate(), Tools.getDate());
-        }
-    }
-
-    private void openWindowPrecios() {
 
     }
 
@@ -247,30 +182,6 @@ public class FxOperacionesController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedArticulos(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowArticulos();
-        }
-    }
-
-    @FXML
-    private void onActionArticulos(ActionEvent event) {
-        openWindowArticulos();
-    }
-
-    @FXML
-    private void onKeyPressedMovimientos(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowMovimientos();
-        }
-    }
-
-    @FXML
-    private void onActionMovimientos(ActionEvent event) {
-        openWindowMovimientos();
-    }
-
-    @FXML
     private void onKeyPressedCompras(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowCompra();
@@ -280,16 +191,6 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionCompras(ActionEvent event) {
         openWindowCompra();
-    }
-
-    private void onKeyPressedPrecios(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowPrecios();
-        }
-    }
-
-    private void onActionPrecios(ActionEvent event) {
-        openWindowPrecios();
     }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {

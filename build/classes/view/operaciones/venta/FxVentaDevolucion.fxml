@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaDevolucionController">
+   <children>
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/recibo.png" />
+                     </image>
+                  </ImageView>
+                  <Text fx:id="lblComprobante" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold22" text="Documento" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <HBox>
+                     <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular18" text="Total" />
+                                          <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold30" text="M. 00.00" textFill="#1a2226" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <Separator prefWidth="200.0" />
+                              <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <HBox>
+                                       <children>
+                                          <RadioButton fx:id="rbMovimiento" mnemonicParsing="false" onAction="#onActionMovimiento" selected="true" styleClass="labelOpenSansRegular14" text="Realizar movimiento de devolución de dinero" textFill="#1a2226" />
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Devolución en:" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0px 1.25em 0px 1.25em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Efectivo:">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/billetes.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <TextField fx:id="txtEfectivo" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedEfectivo" promptText="0.00" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Separator prefWidth="200.0" />
+                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/generar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aplicar">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/accept.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

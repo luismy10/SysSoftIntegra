@@ -98,46 +98,6 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox fx:id="hbOperacionesDos" alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-                     <children>
-                        <VBox fx:id="btnMovimiento" alignment="CENTER" visible="false">
-                           <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionMovimientos" onKeyPressed="#onKeyPressedMovimientos" styleClass="buttonTransparent" text="Movimientos">
-                                 <graphic>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
-                                       <image>
-                                          <Image url="@../image/ajuste-inventario.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
-                                 <font>
-                                    <Font name="Roboto" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </VBox>
-                        <VBox fx:id="btnArticulo" alignment="CENTER" visible="false">
-                           <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionArticulos" onKeyPressed="#onKeyPressedArticulos" styleClass="buttonTransparent" text="Artículos">
-                                 <graphic>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/articles.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
-                                 <font>
-                                    <Font name="Roboto" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
                </children>
             </VBox>
          </children>

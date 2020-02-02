@@ -1,9 +1,8 @@
 package controller.menus;
 
-import controller.egresos.compras.FxComprasRealizadasController;
-import controller.ingresos.cortecaja.FxCajaConsultasController;
-import controller.ingresos.venta.FxVentaRealizadasController;
-import controller.inventario.kardex.FxArticuloKardexController;
+import controller.consultas.compras.FxComprasRealizadasController;
+import controller.operaciones.cortecaja.FxCajaConsultasController;
+import controller.operaciones.venta.FxVentaRealizadasController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -33,15 +32,12 @@ public class FxConsultasController implements Initializable {
     @FXML
     private HBox hbOperacionesUno;
     @FXML
-    private HBox hbOperacionesDos;
-    @FXML
     private VBox btnVentas;
     @FXML
     private VBox btnCompras;
     @FXML
     private VBox btnCorteCaja;
-    @FXML
-    private VBox btnKardex;
+    
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -57,15 +53,6 @@ public class FxConsultasController implements Initializable {
     private VBox nodeVentaRealizadas;
 
     private FxVentaRealizadasController ventaRealizadasController;
-
-    /*
-    Controller kardex
-     */
-    private FXMLLoader fXMLKardex;
-
-    private HBox nodeKardex;
-
-    private FxArticuloKardexController controllerKardex;
 
     /*
     Controller compras realizadas
@@ -90,10 +77,6 @@ public class FxConsultasController implements Initializable {
             fXMLVentaRealizadas = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_REALIZADAS));
             nodeVentaRealizadas = fXMLVentaRealizadas.load();
             ventaRealizadasController = fXMLVentaRealizadas.getController();
-
-            fXMLKardex = new FXMLLoader(getClass().getResource(FilesRouters.FX_ARTICULO_KARDEX));
-            nodeKardex = fXMLKardex.load();
-            controllerKardex = fXMLKardex.getController();
 
             fXMLComprasRealizadas = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS_REALIZADAS));
             nodeComprasRealizadas = fXMLComprasRealizadas.load();
@@ -123,7 +106,7 @@ public class FxConsultasController implements Initializable {
         }
 
         if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-            hbOperacionesDos.getChildren().remove(btnKardex);
+        
         } else {
 
         }
@@ -155,16 +138,6 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setBottomAnchor(nodeComprasRealizadas, 0d);
         vbContent.getChildren().add(nodeComprasRealizadas);
         controllerComprasRealizadas.fillPurchasesTable((short) 0, "", Tools.getDate(), Tools.getDate(), 0);
-    }
-
-    private void openWindowKardex() {
-        controllerKardex.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeKardex, 0d);
-        AnchorPane.setTopAnchor(nodeKardex, 0d);
-        AnchorPane.setRightAnchor(nodeKardex, 0d);
-        AnchorPane.setBottomAnchor(nodeKardex, 0d);
-        vbContent.getChildren().add(nodeKardex);
     }
 
     private void openWindowCortesCaja() {
@@ -201,17 +174,6 @@ public class FxConsultasController implements Initializable {
         openWindowVentaRealizadas();
     }
 
-    @FXML
-    private void onKeyPressedKardex(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowKardex();
-        }
-    }
-
-    @FXML
-    private void onActionKardex(ActionEvent event) {
-        openWindowKardex();
-    }
 
     @FXML
     private void onKeyPressedCorteCaja(KeyEvent event) {

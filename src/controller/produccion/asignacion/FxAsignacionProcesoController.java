@@ -1,7 +1,6 @@
 package controller.produccion.asignacion;
 
-import controller.inventario.articulo.FxArticuloListaController;
-import controller.produccion.suministros.FxSuministrosListaController;
+import controller.inventario.suministros.FxSuministrosListaController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -230,26 +229,26 @@ public class FxAsignacionProcesoController implements Initializable {
     }
 
     private void openWindowArticulos() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_ARTICULO_LISTA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxArticuloListaController controller = fXMLLoader.getController();
-            controller.setInitAsignacionProcesoController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Artículo", hbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
-            stage.show();
-            controller.loadElements((short) 2, "");
-        } catch (IOException ex) {
-            System.out.println("Error en la vista ajustes:" + ex.getLocalizedMessage());
-        }
+//        try {
+//            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+//            URL url = getClass().getResource(FilesRouters.FX_ARTICULO_LISTA);
+//            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//            Parent parent = fXMLLoader.load(url.openStream());
+//            //Controlller here
+//            FxArticuloListaController controller = fXMLLoader.getController();
+//            controller.setInitAsignacionProcesoController(this);
+//            //
+//            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Artículo", hbWindow.getScene().getWindow());
+//            stage.setResizable(false);
+//            stage.sizeToScene();
+//            stage.setOnHiding((w) -> {
+//                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+//            });
+//            stage.show();
+//            controller.loadElements((short) 2, "");
+//        } catch (IOException ex) {
+//            System.out.println("Error en la vista ajustes:" + ex.getLocalizedMessage());
+//        }
     }
 
     private void removeProducto() {

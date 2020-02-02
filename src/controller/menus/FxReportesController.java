@@ -1,7 +1,9 @@
 package controller.menus;
 
-import controller.ingresos.venta.FxVentaReporteController;
-import controller.ingresos.venta.FxVentaUtilidadesController;
+import controller.reporte.FxCompraReporteController;
+import controller.reporte.FxProductoReporteController;
+import controller.reporte.FxVentaReporteController;
+import controller.reporte.FxVentaUtilidadesController;
 import controller.tools.FilesRouters;
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +39,22 @@ public class FxReportesController implements Initializable {
     private VBox nodeVenta;
 
     private FxVentaReporteController controllerReporteVenta;
+    /*
+    Controller compras
+     */
+    private FXMLLoader fXMLCompra;
+
+    private VBox nodeCompra;
+
+    private FxCompraReporteController controllerReporteCompra;
+    /*
+    Controller producto
+     */
+    private FXMLLoader fXMLProducto;
+
+    private VBox nodeProducto;
+
+    private FxProductoReporteController controllerReporteProducto;
 
     /*
     Controller utilidades
@@ -53,6 +71,14 @@ public class FxReportesController implements Initializable {
             fXMLVenta = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_REPORTE));
             nodeVenta = fXMLVenta.load();
             controllerReporteVenta = fXMLVenta.getController();
+
+            fXMLCompra = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRA_REPORTE));
+            nodeCompra = fXMLCompra.load();
+            controllerReporteCompra = fXMLCompra.getController();
+
+            fXMLProducto = new FXMLLoader(getClass().getResource(FilesRouters.FX_PRODUCTO_REPORTE));
+            nodeProducto = fXMLProducto.load();
+            controllerReporteProducto = fXMLProducto.getController();
 
             fXMLUtilidades = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_UTILIDADES));
             nodeUtilidades = fXMLUtilidades.load();
@@ -71,6 +97,26 @@ public class FxReportesController implements Initializable {
         AnchorPane.setRightAnchor(nodeVenta, 0d);
         AnchorPane.setBottomAnchor(nodeVenta, 0d);
         vbContent.getChildren().add(nodeVenta);
+    }
+
+    private void openWindowCompras() {
+        controllerReporteCompra.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeCompra, 0d);
+        AnchorPane.setTopAnchor(nodeCompra, 0d);
+        AnchorPane.setRightAnchor(nodeCompra, 0d);
+        AnchorPane.setBottomAnchor(nodeCompra, 0d);
+        vbContent.getChildren().add(nodeCompra);
+    }
+
+    private void openWindowProductos() {
+        controllerReporteProducto.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeProducto, 0d);
+        AnchorPane.setTopAnchor(nodeProducto, 0d);
+        AnchorPane.setRightAnchor(nodeProducto, 0d);
+        AnchorPane.setBottomAnchor(nodeProducto, 0d);
+        vbContent.getChildren().add(nodeProducto);
     }
 
     private void openWindowUtilidades() {
@@ -93,6 +139,30 @@ public class FxReportesController implements Initializable {
     @FXML
     private void onActionVentas(ActionEvent event) {
         openWindowVentas();
+    }
+
+    @FXML
+    private void onKeyPressedCompras(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCompras();
+        }
+    }
+
+    @FXML
+    private void onActionCompras(ActionEvent event) {
+        openWindowCompras();
+    }
+
+    @FXML
+    private void onKeyPressedProductos(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowProductos();
+        }
+    }
+
+    @FXML
+    private void onActionProductos(ActionEvent event) {
+        openWindowProductos();
     }
 
     @FXML

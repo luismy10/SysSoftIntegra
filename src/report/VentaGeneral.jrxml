@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5aa49b8b-1bb2-4be2-945b-96f1decae4ba">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -141,61 +140,61 @@
 		<band height="26" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="555" height="26" backcolor="#0D4E9E" uuid="4ac3670b-da19-470d-97c0-37116291bdce"/>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="25" forecolor="#FFFFFF" uuid="ff441356-a48a-44c5-a199-5ed05db972d5">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7cd9bfa0-5099-4320-ae37-eefc621745e9"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Compra]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="100" y="0" width="113" height="25" forecolor="#FFFFFF" uuid="1885086b-ab21-4bda-864c-098c1b553feb">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1973efa0-6044-4fc5-9f36-c2e00d30a561"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Proveedor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="213" y="0" width="100" height="25" forecolor="#FFFFFF" uuid="64a56a4a-f9a2-425a-93f4-83537fee7714">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fd08a060-393c-4b4d-ac27-ffb10e552f1f"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Serie/Numeración]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="314" y="0" width="80" height="25" forecolor="#FFFFFF" uuid="a55a79ed-3c8d-4e50-aef5-44c2aed310ba">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9cc3d7f-eba0-4c8d-993e-836791845a3c"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo de compra]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="394" y="0" width="80" height="25" forecolor="#FFFFFF" uuid="fcd260f5-4e31-44e8-8755-7f958653add2">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="33b56aa5-bfd6-4154-a4b0-49b192fe774d"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Estado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" x="474" y="0" width="80" height="25" forecolor="#FFFFFF" uuid="9b7d84cd-0455-4cf3-89e3-a7cfde03d5b7">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="27ffc401-c1c4-4537-a7e8-c2600b69bb48"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
 			</frame>
-			<staticText>
-				<reportElement x="0" y="0" width="100" height="25" forecolor="#FFFFFF" uuid="ff441356-a48a-44c5-a199-5ed05db972d5">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7cd9bfa0-5099-4320-ae37-eefc621745e9"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha de venta]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="100" y="0" width="113" height="25" forecolor="#FFFFFF" uuid="1885086b-ab21-4bda-864c-098c1b553feb">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1973efa0-6044-4fc5-9f36-c2e00d30a561"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Cliente]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="213" y="0" width="100" height="25" forecolor="#FFFFFF" uuid="64a56a4a-f9a2-425a-93f4-83537fee7714">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fd08a060-393c-4b4d-ac27-ffb10e552f1f"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Serie/Numeración]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="314" y="0" width="80" height="25" forecolor="#FFFFFF" uuid="a55a79ed-3c8d-4e50-aef5-44c2aed310ba">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9cc3d7f-eba0-4c8d-993e-836791845a3c"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Tipo de venta]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="394" y="0" width="80" height="25" forecolor="#FFFFFF" uuid="fcd260f5-4e31-44e8-8755-7f958653add2">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="33b56aa5-bfd6-4154-a4b0-49b192fe774d"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Estado]]></text>
-			</staticText>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="474" y="0" width="80" height="25" forecolor="#FFFFFF" uuid="9b7d84cd-0455-4cf3-89e3-a7cfde03d5b7">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="27ffc401-c1c4-4537-a7e8-c2600b69bb48"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>

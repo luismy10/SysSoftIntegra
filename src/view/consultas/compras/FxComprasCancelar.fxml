@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.consultas.compras.FxComprasCancelarController">
+   <children>
+      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox>
+               <children>
+                  <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <CheckBox fx:id="cbOpcionOne" mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Retirar articulos de inventario" />
+                     </children>
+                  </HBox>
+                  <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <CheckBox fx:id="cbOpcionDos" mnemonicParsing="false" onAction="#onActionOpcionDos" styleClass="check-box-contenido" text="Realizar movimiento para regresar dinero" />
+                     </children>
+                  </HBox>
+                  <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Label styleClass="labelRoboto14" text="Devolución en:" textFill="#23283a" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="hbDevolucion" alignment="CENTER_LEFT" disable="true" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Label styleClass="labelRoboto14" text="Efectivo:" textFill="#23283a" />
+                        <TextField fx:id="txtEfectivo" onAction="#onActionAplicar" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onActionAplicar" onKeyPressed="#onKeyPressedAplicar" styleClass="buttonLightDefault" text="Aplicar">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/accept.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

@@ -1,9 +1,9 @@
 package controller.contactos.proveedores;
 
-import controller.egresos.compras.FxComprasController;
-import controller.egresos.compras.FxComprasEditarController;
-import controller.produccion.movimientos.FxMovimientosProcesoArticuloController;
-import controller.produccion.movimientos.FxMovimientosProcesoController;
+import controller.operaciones.compras.FxComprasController;
+import controller.consultas.compras.FxComprasEditarController;
+import controller.inventario.movimientos.FxMovimientosProcesoController;
+import controller.reporte.FxCompraReporteController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -53,9 +53,9 @@ public class FxProveedorListaController implements Initializable {
 
     private FxMovimientosProcesoController movimientosProcesoController;
 
-    private FxMovimientosProcesoArticuloController movimientosProcesoArticuloController;
-
     private FxComprasEditarController comprasEditarController;
+
+    private FxCompraReporteController compraReporteController;
 
     private boolean status;
 
@@ -86,8 +86,7 @@ public class FxProveedorListaController implements Initializable {
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getTipoDocumentoName().get() + ": " + cellData.getValue().getNumeroDocumento().get())
         );
-        tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getRazonSocial().get() + "\n" + cellData.getValue().getNombreComercial().get()
+        tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRazonSocial().get()
         ));
         tcMovil.setCellValueFactory(cellData -> Bindings.concat(
                 (cellData.getValue().getTelefono().equals("") ? "Sin N° de Teléfono" : cellData.getValue().getTelefono())
@@ -158,6 +157,10 @@ public class FxProveedorListaController implements Initializable {
                 Tools.Dispose(apWindow);
             } else if (comprasEditarController != null) {
                 comprasEditarController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get(),
+                        tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
+                Tools.Dispose(apWindow);
+            }else if(compraReporteController != null){
+                compraReporteController.setInitCompraReporteValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor().get(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
                 Tools.Dispose(apWindow);
             }
@@ -271,16 +274,16 @@ public class FxProveedorListaController implements Initializable {
         this.comprasController = comprasController;
     }
 
-    public void setInitMovimientoProcesoArticuloController(FxMovimientosProcesoArticuloController movimientosProcesoArticuloController) {
-        this.movimientosProcesoArticuloController = movimientosProcesoArticuloController;
-    }
-
     public void setInitMovimientoProcesoController(FxMovimientosProcesoController movimientosProcesoController) {
         this.movimientosProcesoController = movimientosProcesoController;
     }
 
     public void setInitComprasEditarController(FxComprasEditarController comprasEditarController) {
         this.comprasEditarController = comprasEditarController;
+    }
+
+    public void setInitComprasReporteController(FxCompraReporteController compraReporteController) {
+        this.compraReporteController = compraReporteController;
     }
 
 }

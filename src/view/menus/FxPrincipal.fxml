@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="spWindow" fitToHeight="true" fitToWidth="true" prefWidth="800.0" styleClass="scroll-pane-primary" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxPrincipalController">
+<ScrollPane fx:id="spWindow" fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" styleClass="scroll-pane-primary" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxPrincipalController">
    <content>
       <AnchorPane fx:id="vbPrincipal">
          <children>
@@ -149,6 +149,29 @@
                                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/consultas.png" />
+                                             </image>
+                                             <effect>
+                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                   <bumpInput>
+                                                      <Shadow />
+                                                   </bumpInput>
+                                                   <light>
+                                                      <Light.Distant />
+                                                   </light>
+                                                </Lighting>
+                                             </effect>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="btnBancos" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Bancos / Cajas" textFill="WHITE">
+                                       <graphic>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/bank.png" />
                                              </image>
                                              <effect>
                                                 <Lighting diffuseConstant="1.5" specularConstant="0.0">

@@ -32,8 +32,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.ArticuloADO;
-import model.ArticuloTB;
+import model.SuministroTB;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -54,23 +53,23 @@ public class FxInventarioInicialController implements Initializable {
     @FXML
     private TextField txtSearch;
     @FXML
-    private TableView<ArticuloTB> tvList;
+    private TableView<SuministroTB> tvList;
     @FXML
-    private TableColumn<ArticuloTB, String> tcId;
+    private TableColumn<SuministroTB, String> tcId;
     @FXML
-    private TableColumn<ArticuloTB, String> tcClave;
+    private TableColumn<SuministroTB, String> tcClave;
     @FXML
-    private TableColumn<ArticuloTB, String> tcArticulo;
+    private TableColumn<SuministroTB, String> tcArticulo;
     @FXML
-    private TableColumn<ArticuloTB, String> tcLote;
+    private TableColumn<SuministroTB, String> tcLote;
     @FXML
-    private TableColumn<ArticuloTB, String> tcCaducidad;
+    private TableColumn<SuministroTB, String> tcCaducidad;
     @FXML
-    private TableColumn<ArticuloTB, Double> tcCompra;
+    private TableColumn<SuministroTB, Double> tcCompra;
     @FXML
-    private TableColumn<ArticuloTB, Double> tcPrecio;
+    private TableColumn<SuministroTB, Double> tcPrecio;
     @FXML
-    private TableColumn<ArticuloTB, Double> tcExistencias;
+    private TableColumn<SuministroTB, Double> tcExistencias;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -80,7 +79,7 @@ public class FxInventarioInicialController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdArticulo()));
+        tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdSuministro()));
         tcClave.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave()));
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
         tcLote.setCellValueFactory(cellData -> Bindings.concat(
@@ -100,16 +99,16 @@ public class FxInventarioInicialController implements Initializable {
             return t;
         });
 
-        Task<List<ArticuloTB>> task = new Task<List<ArticuloTB>>() {
+        Task<List<SuministroTB>> task = new Task<List<SuministroTB>>() {
             @Override
-            public ObservableList<ArticuloTB> call() {
+            public ObservableList<SuministroTB> call() {
                 //return ArticuloADO.ListIniciarInventario();
                 return null;
             }
         };
 
         task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems((ObservableList<ArticuloTB>) task.getValue());
+            tvList.setItems((ObservableList<SuministroTB>) task.getValue());
             lblLoad.setVisible(false);
         });
         task.setOnFailed((WorkerStateEvent event) -> {

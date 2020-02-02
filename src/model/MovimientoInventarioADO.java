@@ -1,7 +1,7 @@
 package model;
 
-import controller.produccion.movimientos.FxMovimientosController;
-import controller.produccion.movimientos.FxMovimientosDetalleController;
+import controller.inventario.movimientos.FxMovimientosController;
+import controller.inventario.movimientos.FxMovimientosDetalleController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -162,7 +162,7 @@ public class MovimientoInventarioADO {
         return result;
     }
     
-     public static String Crud_Movimiento_Inventario_Articulo(MovimientoInventarioTB inventarioTB, TableView<ArticuloTB> tableView) {
+     public static String Crud_Movimiento_Inventario_Articulo(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         String result = "";
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
@@ -232,26 +232,26 @@ public class MovimientoInventarioADO {
                 for (int i = 0; i < tableView.getItems().size(); i++) {
                     if (tableView.getItems().get(i).getValidar().isSelected()) {
                         statementMovimientoDetalle.setString(1, idMovimiento);
-                        statementMovimientoDetalle.setString(2, tableView.getItems().get(i).getIdArticulo());
-                        statementMovimientoDetalle.setDouble(3, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
+                        statementMovimientoDetalle.setString(2, tableView.getItems().get(i).getIdSuministro());
+//                        statementMovimientoDetalle.setDouble(3, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
                         statementMovimientoDetalle.setDouble(4, tableView.getItems().get(i).getCostoCompra());
                         statementMovimientoDetalle.setDouble(5, tableView.getItems().get(i).getPrecioVentaGeneral());
                         statementMovimientoDetalle.addBatch();
 
                         if (inventarioTB.getEstado() == 1) {
-                            articulo_update.setDouble(1, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
-                            articulo_update.setString(2, tableView.getItems().get(i).getIdArticulo());
+//                            articulo_update.setDouble(1, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
+//                            articulo_update.setString(2, tableView.getItems().get(i).getIdArticulo());
                             articulo_update.addBatch();
 
-                            articulo_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
+//                            articulo_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
                             articulo_kardex.setString(2, Tools.getDate());
                             articulo_kardex.setString(3, Tools.getHour());
                             articulo_kardex.setShort(4, inventarioTB.isTipoAjuste() ? (short) 1 : (short) 2);
                             articulo_kardex.setInt(5, inventarioTB.getTipoMovimiento());
                             articulo_kardex.setString(6, inventarioTB.getObservacion());
-                            articulo_kardex.setDouble(7, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
+//                            articulo_kardex.setDouble(7, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()));
                             articulo_kardex.setDouble(8, tableView.getItems().get(i).getCostoCompra());
-                            articulo_kardex.setDouble(9, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()) * tableView.getItems().get(i).getCostoCompra());
+//                            articulo_kardex.setDouble(9, Double.parseDouble(tableView.getItems().get(i).getMovimiento().getText()) * tableView.getItems().get(i).getCostoCompra());
                             articulo_kardex.addBatch();
                         }
 

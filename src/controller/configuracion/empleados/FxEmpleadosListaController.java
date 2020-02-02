@@ -1,7 +1,7 @@
 package controller.configuracion.empleados;
 
-import controller.ingresos.venta.FxVentaRealizadasController;
-import controller.ingresos.venta.FxVentaReporteController;
+import controller.operaciones.venta.FxVentaRealizadasController;
+import controller.reporte.FxVentaReporteController;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.List;

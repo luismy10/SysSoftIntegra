@@ -1,6 +1,6 @@
 package controller.inventario.lote;
 
-import controller.produccion.suministros.FxSuministrosCompraController;
+import controller.inventario.suministros.FxSuministrosCompraController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;

@@ -18,7 +18,7 @@ public class LoteTB {
     private double existenciaActual;
     private String idArticulo;
     private String idCompra;
-    private ArticuloTB articuloTB;
+    private SuministroTB suministroTB;
     private Label lblEstado;
     /*
     Atributos para el reporte
@@ -110,13 +110,13 @@ public class LoteTB {
         this.idCompra = idCompra;
     }
 
-    public ArticuloTB getArticuloTB() {
-        return articuloTB;
+    public SuministroTB getSuministroTB() {
+        return suministroTB;
     }
 
-    public void setArticuloTB(ArticuloTB articuloTB) {
-        this.articuloTB = articuloTB;
-    }
+    public void setSuministroTB(SuministroTB suministroTB) {
+        this.suministroTB = suministroTB;
+    } 
 
     public String getDescripcion() {
         return descripcion;

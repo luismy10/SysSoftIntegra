@@ -167,7 +167,7 @@ public class Tools {
     }
 
     public static boolean isNumeric(String cadena) {
-        if (cadena == null || cadena.isEmpty()) {
+        if (cadena.trim() == null || cadena.trim().isEmpty()) {
             return false;
         }
         boolean resultado;
@@ -181,7 +181,7 @@ public class Tools {
     }
 
     public static boolean isNumericInteger(String cadena) {
-        if (cadena == null || cadena.isEmpty()) {
+        if (cadena.trim() == null || cadena.trim().isEmpty()) {
             return false;
         }
         boolean resultado;
@@ -195,7 +195,7 @@ public class Tools {
     }
 
     public static boolean isNumericShort(String cadena) {
-        if (cadena == null || cadena.isEmpty()) {
+        if (cadena.trim() == null || cadena.trim().isEmpty()) {
             return false;
         }
         boolean resultado;
@@ -266,7 +266,7 @@ public class Tools {
     }
 
     public static boolean isText(String cadena) {
-        return (cadena == null || cadena.isEmpty());
+        return cadena.trim() == null || cadena.trim().isEmpty();
     }
 
     public static String getDate() {

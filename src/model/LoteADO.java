@@ -69,7 +69,7 @@ public class LoteADO {
                 loteTB.setId(rsEmps.getInt("Filas"));
                 loteTB.setIdLote(rsEmps.getLong("IdLote"));
                 loteTB.setNumeroLote(rsEmps.getString("NumeroLote"));
-                loteTB.setArticuloTB(new ArticuloTB(rsEmps.getString("Clave"), rsEmps.getString("NombreMarca")));
+//                loteTB.setArticuloTB(new ArticuloTB(rsEmps.getString("Clave"), rsEmps.getString("NombreMarca")));
                 loteTB.setFechaCaducidad(rsEmps.getDate("FechaCaducidad").toLocalDate());
                 loteTB.setExistenciaInicial(rsEmps.getDouble("ExistenciaInicial"));
                 loteTB.setExistenciaActual(rsEmps.getDouble("ExistenciaActual"));

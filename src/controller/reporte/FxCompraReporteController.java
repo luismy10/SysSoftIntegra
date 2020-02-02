@@ -1,0 +1,196 @@
+package controller.reporte;
+
+import controller.contactos.proveedores.FxProveedorListaController;
+import controller.tools.FilesRouters;
+import controller.tools.ObjectGlobal;
+import controller.tools.Tools;
+import controller.tools.WindowStage;
+import java.awt.HeadlessException;
+import java.io.IOException;
+import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import model.CompraADO;
+import model.CompraTB;
+import model.TipoDocumentoADO;
+import model.TipoDocumentoTB;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+public class FxCompraReporteController implements Initializable {
+
+    @FXML
+    private VBox vbWindow;
+    @FXML
+    private DatePicker dpFechaInicial;
+    @FXML
+    private DatePicker dpFechaFinal;
+    @FXML
+    private CheckBox cbDocumentosSeleccionar;
+    @FXML
+    private CheckBox cbProveedoresSeleccionar;
+    @FXML
+    private ComboBox<TipoDocumentoTB> cbDocumentos;
+    @FXML
+    private TextField txtProveedor;
+    @FXML
+    private Button btnProveedor;
+
+    private AnchorPane vbPrincipal;
+
+    private String idProveedor;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        Tools.actualDate(Tools.getDate(), dpFechaInicial);
+        Tools.actualDate(Tools.getDate(), dpFechaFinal);
+        cbDocumentos.getItems().clear();
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
+            cbDocumentos.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
+        });
+
+        idProveedor = "";
+    }
+
+    private void openWindowReporteGeneral() {
+        try {
+            if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "Seleccione un documento para generar el reporte.");
+                cbDocumentos.requestFocus();
+            } else if (!cbProveedoresSeleccionar.isSelected() && idProveedor.equalsIgnoreCase("") && txtProveedor.getText().isEmpty()) {
+                Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "Ingrese un empleado para generar el reporte.");
+                btnProveedor.requestFocus();
+            } else {
+                ArrayList<CompraTB> list = CompraADO.GetReporteGenetalCompras(
+                        Tools.getDatePicker(dpFechaInicial),
+                        Tools.getDatePicker(dpFechaFinal),
+                        cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                        idProveedor);
+                if (list.isEmpty()) {
+                    Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "No hay registros para mostrar en el reporte.");
+                    return;
+                }
+                
+                Map map = new HashMap();
+                map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+                map.put("DOCUMENTO", cbDocumentosSeleccionar.isSelected() ? "TODOS" : cbDocumentos.getSelectionModel().getSelectedItem().getNombre());
+                map.put("ORDEN", "TODOS");
+                map.put("PROVEEDOR", cbProveedoresSeleccionar.isSelected() ? "TODOS" : txtProveedor.getText().toUpperCase());
+                map.put("ESTADO", "TODOS");
+
+                JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/CompraGeneral.jasper"), map, new JRBeanCollectionDataSource(list));
+
+                URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxReportViewController controller = fXMLLoader.getController();
+                controller.setJasperPrint(jasperPrint);
+                controller.show();
+                Stage stage = WindowStage.StageLoader(parent, "Reporte General de Compras");
+                stage.setResizable(true);
+                stage.show();
+                stage.requestFocus();
+            }
+
+        } catch (HeadlessException | JRException | IOException ex) {
+            Tools.AlertMessageError(vbWindow, "Reporte General de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowProveedores() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxProveedorListaController controller = fXMLLoader.getController();
+            controller.setInitComprasReporteController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+            controller.fillCustomersTable("");
+        } catch (IOException ex) {
+            System.out.println("Controller reporte" + ex.getLocalizedMessage());
+        }
+    }
+
+    @FXML
+    private void onActionCbDocumentosSeleccionar(ActionEvent event) {
+        if (cbDocumentosSeleccionar.isSelected()) {
+            cbDocumentos.setDisable(true);
+            cbDocumentos.getSelectionModel().select(null);
+        } else {
+            cbDocumentos.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void onActionCbProveedoresSeleccionar(ActionEvent event) {
+        if (cbProveedoresSeleccionar.isSelected()) {
+            btnProveedor.setDisable(true);
+            txtProveedor.setText("");
+            idProveedor = "";
+        } else {
+            btnProveedor.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void onKeyPressedReporteGeneral(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowReporteGeneral();
+        }
+    }
+
+    @FXML
+    private void onActionReporteGeneral(ActionEvent event) {
+        openWindowReporteGeneral();
+    }
+
+    @FXML
+    private void onKeyPressedProveedor(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowProveedores();
+        }
+    }
+
+    @FXML
+    private void onActionProveedor(ActionEvent event) {
+        openWindowProveedores();
+    }
+
+    public void setInitCompraReporteValue(String idProveedor, String datosProveedor) {
+        this.idProveedor = idProveedor;
+        txtProveedor.setText(datosProveedor);
+    }
+
+    public void setContent(AnchorPane vbPrincipal) {
+        this.vbPrincipal = vbPrincipal;
+    }
+
+}
