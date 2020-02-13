@@ -41,7 +41,6 @@ public class UtilidadADO {
                 utilidad.setUtilidad(rsEmps.getDouble("Utilidad")); 
                 
                 utilidad.setValorInventario(rsEmps.getBoolean("ValorInventario"));
-                utilidad.setUnidadCompra(rsEmps.getString("UnidadCompra"));
                 utilidad.setSimboloMoneda(rsEmps.getString("Simbolo"));
 
                 list.add(utilidad);

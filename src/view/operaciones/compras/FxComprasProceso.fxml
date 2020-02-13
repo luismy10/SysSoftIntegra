@@ -18,18 +18,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasProcesoController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #CCCCCC; -fx-background-color: #FFFF;">
                <children>
-                  <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.8333333333333334em;">
+                  <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                      <children>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Total de la Compra" />
+                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="Total de la Compra" />
                         <HBox alignment="CENTER" style="-fx-spacing: 5px;">
                            <children>
-                              <Text fx:id="lblTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold22" text="M 00.00" />
+                              <Text fx:id="lblTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="M 00.00" />
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/billetes.png" />
@@ -44,7 +44,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
+                        <HBox>
                            <children>
                               <RadioButton fx:id="rbContado" mnemonicParsing="false" onAction="#onActionRbContado" selected="true" styleClass="labelOpenSansRegular14" text="Pago con Banco / Caja" />
                            </children>
@@ -78,7 +78,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
+                        <HBox>
                            <children>
                               <RadioButton fx:id="rbCredito" mnemonicParsing="false" onAction="#onActionRbCredito" styleClass="labelOpenSansRegular14" text="Crédito" />
                            </children>
@@ -119,10 +119,41 @@
                                                 <TableView fx:id="tvListaCredito" prefHeight="170.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                                   <columns>
                                                     <TableColumn fx:id="tcCredito" prefWidth="160.0" style="-fx-alignment: CENTER;" text="Crédito" />
-                                                      <TableColumn fx:id="tcFecha" prefWidth="160.0" style="-fx-alignment: CENTER;" text="Fecha" />
-                                                      <TableColumn fx:id="tcOpciones" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Opciones" />
+                                                      <TableColumn fx:id="tcFecha" prefWidth="170.0" style="-fx-alignment: CENTER;" text="Fecha" />
+                                                      <TableColumn fx:id="tcOpciones" prefWidth="140.0" style="-fx-alignment: CENTER;" text="Opciones" />
                                                   </columns>
                                                 </TableView>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox style="-fx-padding: 0.8333333333333334em;">
+               <children>
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox>
+                           <children>
+                              <RadioButton fx:id="rbBorrado" mnemonicParsing="false" onAction="#onActionRbBorrado" styleClass="labelOpenSansRegular14" text="Guardar" />
+                           </children>
+                        </HBox>
+                        <VBox fx:id="vbPagoBorrado" disable="true" style="-fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Label prefWidth="469.0" styleClass="labelOpenSansRegular14" text="La compra se guarda sin afectar el inventario o movimiento de banco/caja para ser editado y/o pagado posteriormente." wrapText="true" />
                                              </children>
                                           </HBox>
                                        </children>

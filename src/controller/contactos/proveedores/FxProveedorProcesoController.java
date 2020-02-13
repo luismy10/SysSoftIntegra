@@ -2,12 +2,10 @@ package controller.contactos.proveedores;
 
 import controller.contactos.clientes.FxPerfilController;
 import controller.tools.FilesRouters;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -133,8 +131,8 @@ public class FxProveedorProcesoController implements Initializable {
                     break;
                 }
             }
-            txtBusinessName.setText(proveedorTB.getRazonSocial().get());
-            txtTradename.setText(proveedorTB.getNombreComercial().get());
+            txtBusinessName.setText(proveedorTB.getRazonSocial());
+            txtTradename.setText(proveedorTB.getNombreComercial());
 
             if (proveedorTB.getPais() != null || !proveedorTB.getPais().equals("")) {
                 ObservableList<PaisTB> lspais = cbPais.getItems();

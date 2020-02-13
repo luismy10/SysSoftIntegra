@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="window" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasController">
+<ScrollPane fx:id="spWindow" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasController">
    <content>
       <VBox style="-fx-background-color: white;">
          <children>
@@ -117,7 +117,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Fecha de eleboración:" textFill="#1a2226" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Fecha de elaboración:" textFill="#1a2226" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Nro. comprobante:" textFill="#1a2226" GridPane.rowIndex="1" />
                                     <DatePicker fx:id="tpFechaCompra" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" />
                                     <TextField fx:id="cbNumeracion" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />

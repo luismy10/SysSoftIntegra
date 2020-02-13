@@ -87,7 +87,7 @@ public class FxComprasRealizadasController implements Initializable {
         ));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getProveedorTB().getNumeroDocumento().get() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().get()
+                cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial()
         ));
         tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
@@ -172,7 +172,7 @@ public class FxComprasRealizadasController implements Initializable {
                 Parent parent = fXMLLoader.load(url.openStream());
                 //Controlller here
                 FxComprasCreditoController controller = fXMLLoader.getController();
-                controller.loadData(tvList.getSelectionModel().getSelectedItem().getIdCompra(),tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial().get(), tvList.getSelectionModel().getSelectedItem().getTotal());     
+                controller.loadData(tvList.getSelectionModel().getSelectedItem().getIdCompra(),tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(), tvList.getSelectionModel().getSelectedItem().getTotal());     
                 controller.setInitControllerComprasRealizadas(this);
                 //
                 Stage stage = WindowStage.StageLoaderModal(parent, "Compras al crédito", vbWindow.getScene().getWindow());

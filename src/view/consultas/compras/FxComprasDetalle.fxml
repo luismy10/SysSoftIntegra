@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="cpWindow" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.consultas.compras.FxComprasDetalleController">
+<ScrollPane fx:id="cpWindow" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.consultas.compras.FxComprasDetalleController">
    <content>
       <VBox style="-fx-background-color: white;">
          <children>
@@ -58,7 +58,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressedEditar" styleClass="buttonLight" text="Editar">
+                  <Button fx:id="btnEditar" disable="true" mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressedEditar" styleClass="buttonLight" text="Editar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -67,7 +67,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Anular">
+                  <Button fx:id="btnAnular" disable="true" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Anular">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -117,8 +117,9 @@
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor:" textFill="#020203" />
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.25em;" GridPane.columnIndex="1">
                                        <children>
-                                          <Label fx:id="lblProveedor" styleClass="labelOpenSansRegular14" text="-" textFill="#1976d2" />
                                           <Label fx:id="lblDocumento" styleClass="labelOpenSansRegular14" text="-" textFill="#1976d2" />
+                                          <Label styleClass="labelOpenSansRegular14" text="-" textFill="#1976d2" />
+                                          <Label fx:id="lblProveedor" styleClass="labelOpenSansRegular14" text="-" textFill="#1976d2" />
                                        </children>
                                     </HBox>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Domicilio:" textFill="#020203" GridPane.rowIndex="1" />

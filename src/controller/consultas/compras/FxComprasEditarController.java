@@ -2,7 +2,6 @@ package controller.consultas.compras;
 
 import controller.operaciones.compras.FxComprasProcesoController;
 import controller.contactos.proveedores.FxProveedorListaController;
-import controller.inventario.suministros.FxSuministrosCompraController;
 import controller.inventario.suministros.FxSuministrosListaController;
 import controller.tools.FilesRouters;
 import controller.tools.Session; 
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -23,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -261,7 +258,7 @@ public class FxComprasEditarController implements Initializable {
                 if (arrayList.get(0) != null) {
                     CompraTB compraTB = (CompraTB) arrayList.get(0);
                     idProveedor = compraTB.getProveedor();
-                    txtProveedor.setText(compraTB.getProveedorTB().getRazonSocial().get());
+                    txtProveedor.setText(compraTB.getProveedorTB().getRazonSocial());
                     Tools.actualDate(compraTB.getFechaCompra(), tpFechaCompra);
                     cbNumeracion.setText(compraTB.getNumeracion());
 

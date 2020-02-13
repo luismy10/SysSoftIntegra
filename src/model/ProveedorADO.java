@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,7 +24,7 @@ public class ProveedorADO {
                 if (preparedValidation.executeQuery().next()) {
                     preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ProveedorTB where IdProveedor <> ? and NumeroDocumento = ?");
                     preparedValidation.setString(1, proveedorTB.getIdProveedor().get());
-                    preparedValidation.setString(2, proveedorTB.getNumeroDocumento().get());
+                    preparedValidation.setString(2, proveedorTB.getNumeroDocumento());
                     if (preparedValidation.executeQuery().next()) {
                         DBUtil.getConnection().rollback();
                         return "duplicate";
@@ -33,9 +32,9 @@ public class ProveedorADO {
                         preparedProveedor = DBUtil.getConnection().prepareCall("UPDATE ProveedorTB SET TipoDocumento=?,NumeroDocumento=?,RazonSocial=UPPER(?),NombreComercial=UPPER(?),Pais=?,Ciudad=?,Provincia=?,Distrito=?,Ambito=?,Estado=?,Telefono=?,Celular=?,Email=?,PaginaWeb=?,Direccion=?, Representante=? WHERE IdProveedor=?");
 
                         preparedProveedor.setInt(1, proveedorTB.getTipoDocumento());
-                        preparedProveedor.setString(2, proveedorTB.getNumeroDocumento().get());
-                        preparedProveedor.setString(3, proveedorTB.getRazonSocial().get());
-                        preparedProveedor.setString(4, proveedorTB.getNombreComercial().get());
+                        preparedProveedor.setString(2, proveedorTB.getNumeroDocumento());
+                        preparedProveedor.setString(3, proveedorTB.getRazonSocial());
+                        preparedProveedor.setString(4, proveedorTB.getNombreComercial());
                         preparedProveedor.setString(5, proveedorTB.getPais());
                         preparedProveedor.setInt(6, proveedorTB.getCiudad());
                         preparedProveedor.setInt(7, proveedorTB.getProvincia());
@@ -57,7 +56,7 @@ public class ProveedorADO {
                     }
                 } else {
                     preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ProveedorTB where NumeroDocumento = ?");
-                    preparedValidation.setString(1, proveedorTB.getNumeroDocumento().get());
+                    preparedValidation.setString(1, proveedorTB.getNumeroDocumento());
                     if (preparedValidation.executeQuery().next()) {
                         DBUtil.getConnection().rollback();
                         return "duplicate";
@@ -71,9 +70,9 @@ public class ProveedorADO {
                                 + "values(?,?,?,UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                         preparedProveedor.setString(1, idProveedor);
                         preparedProveedor.setInt(2, proveedorTB.getTipoDocumento());
-                        preparedProveedor.setString(3, proveedorTB.getNumeroDocumento().get());
-                        preparedProveedor.setString(4, proveedorTB.getRazonSocial().get());
-                        preparedProveedor.setString(5, proveedorTB.getNombreComercial().get());
+                        preparedProveedor.setString(3, proveedorTB.getNumeroDocumento());
+                        preparedProveedor.setString(4, proveedorTB.getRazonSocial());
+                        preparedProveedor.setString(5, proveedorTB.getNombreComercial());
                         preparedProveedor.setString(6, proveedorTB.getPais());
                         preparedProveedor.setInt(7, proveedorTB.getCiudad());
                         preparedProveedor.setInt(8, proveedorTB.getProvincia());
