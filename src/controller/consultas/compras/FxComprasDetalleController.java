@@ -420,10 +420,22 @@ public class FxComprasDetalleController implements Initializable {
         }
     }
 
-    private void eventEditarVenta() {
+    private void eventEditarVenta() throws IOException {
         
         if(compraTB!=null && compraTB.getEstado() == 4){
+            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS_EDITAR));
+            ScrollPane node = fXMLPrincipal.load();
             
+            FxComprasEditarController controller = fXMLPrincipal.getController();
+            controller.setInitComprasEditar(idCompra);
+            controller.setInitContentComprasEditar(this,vbPrincipal, vbContent);
+            
+            vbContent.getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            vbContent.getChildren().add(node);
         }
         
 //        if (estadoCompra.equals("anulado".toUpperCase())) {
@@ -516,15 +528,19 @@ public class FxComprasDetalleController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedEditar(KeyEvent event) {
+    private void onKeyPressedEditar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             eventEditarVenta();
         }
     }
 
     @FXML
-    private void onActionEditar(ActionEvent event) {
+    private void onActionEditar(ActionEvent event) throws IOException {
         eventEditarVenta();
+    }
+
+    public ScrollPane getCpWindow() {
+        return cpWindow;
     }
 
     public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane vbPrincipal, AnchorPane vbContent) {

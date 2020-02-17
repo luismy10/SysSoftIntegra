@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -16,6 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <ScrollPane fx:id="spWindow" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.consultas.compras.FxComprasEditarController">
@@ -24,17 +26,34 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
+                  <Label onMouseClicked="#onMouseClickedBehind" style="-fx-cursor: hand;">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                           <image>
+                              <Image url="@../../image/right.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                   <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/purchases.png" />
                      </image>
                   </ImageView>
                   <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Editar compra" />
+                  <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Roboto" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ProgressIndicator prefHeight="30.0" prefWidth="30.0" style="-fx-progress-color: #23283a;" />
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
-            <HBox fx:id="hbBotones" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <Button fx:id="btnRegistrar" mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightWarning" text="Registrar(F1)">
+                  <Button mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightWarning" text="Registrar(F1)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -43,7 +62,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Suministros(F2)">
+                  <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Productos(F2)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -52,7 +71,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar(F3)">
+                  <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar(F3)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -61,7 +80,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnQuitar" mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar(F4)">
+                  <Button mnemonicParsing="false" onAction="#onActionRemover" onKeyPressed="#onKeyPressedRemover" styleClass="buttonLight" text="Quitar(F4)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -70,7 +89,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnProveedor" mnemonicParsing="false" onAction="#onActionProviders" onKeyPressed="#onKeyPressedProviders" styleClass="buttonLight" text="Proveedor(F5)">
+                  <Button mnemonicParsing="false" onAction="#onActionProviders" onKeyPressed="#onKeyPressedProviders" styleClass="buttonLight" text="Proveedor(F5)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

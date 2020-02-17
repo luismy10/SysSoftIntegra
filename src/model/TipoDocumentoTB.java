@@ -6,6 +6,7 @@ public class TipoDocumentoTB {
 
     private int idTipoDocumento;
     private String nombre;
+    private String serie;
     private boolean predeterminado;
     private String nombreDocumento;
     private ImageView imagePredeterminado;
@@ -61,6 +62,14 @@ public class TipoDocumentoTB {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
     }
 
     public boolean isPredeterminado() {

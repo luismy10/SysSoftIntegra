@@ -146,7 +146,7 @@ public class FxComprasProcesoController implements Initializable {
                     if (comprasController != null) {
                         comprasController.clearComponents();
                     } else if (comprasEditarController != null) {
-                        comprasEditarController.disposeWindow();
+                        
                     }
                 } else {
                     Tools.AlertMessageError(apWindow, "Compra", result);
@@ -182,7 +182,7 @@ public class FxComprasProcesoController implements Initializable {
                     if (comprasController != null) {
                         comprasController.clearComponents();
                     } else if (comprasEditarController != null) {
-                        comprasEditarController.disposeWindow();
+                        
                     }
                 } else {
                     Tools.AlertMessageError(apWindow, "Compra", result);
@@ -202,7 +202,7 @@ public class FxComprasProcesoController implements Initializable {
                 if (comprasController != null) {
                     comprasController.clearComponents();
                 } else if (comprasEditarController != null) {
-                    comprasEditarController.disposeWindow();
+                    
                 }
             } else {
                 Tools.AlertMessageError(apWindow, "Compra", result);

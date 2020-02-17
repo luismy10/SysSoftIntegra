@@ -145,7 +145,7 @@ public class FxComprasRealizadasController implements Initializable {
     private void openWindowDetalleCompra() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS_DETALLE));
-            ScrollPane node = fXMLPrincipal.load();
+            ScrollPane node = fXMLPrincipal.load(); 
 
             FxComprasDetalleController controller = fXMLPrincipal.getController();
             controller.setInitComptrasController(this, vbPrincipal, vbContent);

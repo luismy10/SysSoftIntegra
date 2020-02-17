@@ -43,7 +43,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Suministros(F2)">
+                  <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Productos(F2)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

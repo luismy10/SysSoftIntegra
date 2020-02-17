@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="window" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasController">
+<ScrollPane fx:id="spWindow" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasController">
    <content>
       <VBox style="-fx-background-color: white;">
          <children>
@@ -43,7 +43,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Suministros(F2)">
+                  <Button fx:id="btnArticulo" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Productos(F2)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
