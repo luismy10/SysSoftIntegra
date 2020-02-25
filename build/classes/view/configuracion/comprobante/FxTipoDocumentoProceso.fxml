@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.comprobante.FxTipoDocumentoProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.comprobante.FxTipoDocumentoProcesoController">
    <children>
       <VBox>
          <children>
@@ -27,7 +27,17 @@
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Nombre del Comprobante" textFill="#1a2226" />
-                        <TextField fx:id="txtNombre" disable="true" onAction="#onActionGuardar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtNombre" onAction="#onActionGuardar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox style="-fx-padding: 0.8333333333333334em;">
+               <children>
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto14" text="Serie" textFill="#1a2226" />
+                        <TextField fx:id="txtSerie" onAction="#onActionGuardar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>

@@ -24,33 +24,42 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     @FXML
     private TextField txtValor;
     @FXML
+    private TextField txtSerie;
+    @FXML
     private Button btnGuardar;
-    
+   
     private int idTipoDocumento;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo,String nombre) {
+    public void initUpdate(int codigo,String nombre,String serie, String valor) {
         idTipoDocumento = codigo;
         txtNombre.setText(nombre);
+        txtSerie.setText(serie);
+        txtValor.setText(valor);
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
     }
 
     private void saveTipoImpuesto() {
         if (txtNombre.getText().trim().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de documento", "Ingrese el nombre del comprobante.", false);
+            Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese el nombre del comprobante.");
             txtNombre.requestFocus();
-        } else if (txtValor.getText().trim().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de documento", "Ingrese un nombre para la impresión", false);
+        }else if(txtSerie.getText().trim().isEmpty()){
+            Tools.AlertMessageWarning(window,"Tipo de documento","Ingrese serie del comprobante.");
+            txtSerie.requestFocus();
+        }else if (txtValor.getText().trim().isEmpty()) {
+            Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese un nombre para la impresión");
             txtValor.requestFocus();
         } else {
             TipoDocumentoTB documentoTB = new TipoDocumentoTB();
             documentoTB.setIdTipoDocumento(idTipoDocumento);
             documentoTB.setNombre(txtNombre.getText().toUpperCase().trim());
+            documentoTB.setSerie(txtSerie.getText().trim());
             documentoTB.setPredeterminado(false);
             documentoTB.setNombreDocumento(txtValor.getText().toUpperCase().trim());
             
@@ -61,7 +70,10 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             } else if (result.equalsIgnoreCase("duplicate")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de documento", "Ya existe comprobante con el mismo nombre", false);
                 txtNombre.requestFocus();
-            } else {
+            } else if(result.equalsIgnoreCase("inserted")){
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de documento", "Se ha insertado correctamente", false);
+                Tools.Dispose(window);
+            }else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Tipo de documento", result, false);
             }
         }

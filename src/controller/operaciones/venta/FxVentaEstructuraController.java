@@ -246,11 +246,13 @@ public class FxVentaEstructuraController implements Initializable {
                     break;
                 }
             }
-            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+
+            if (cbComprobante.getSelectionModel().getSelectedIndex() >= 0) {
+            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
             lblSerie.setText(array[0]);
             lblNumeracion.setText(array[1]);
         }
-
+        }
         cbMoneda.getItems().clear();
         MonedaADO.GetMonedasCombBox().forEach(e -> {
             cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado()));
@@ -477,7 +479,11 @@ public class FxVentaEstructuraController implements Initializable {
 
     private void openWindowVentaProceso() {
         try {
-            if (!tvList.getItems().isEmpty()) {
+            if (tvList.getItems().isEmpty()) {
+            Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
+            }else if(cbComprobante.getSelectionModel().getSelectedIndex()<0){
+            Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento");
+            }else{
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -513,12 +519,10 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setSubTotal(Double.parseDouble(lblValorVenta.getText()));
                 ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
                 ventaTB.setTotal(Double.parseDouble(lblImporteTotal.getText()));
-
+                //ahora ya tu trabajo pasale el nombre me avisas bye ok
                 controller.setInitComponents(ventaTB, cbComprobante.getSelectionModel().getSelectedItem().getNombreDocumento(), tvList,
-                        lblValorVenta.getText(), lblDescuento.getText(), lblSubImporte.getText(), lblTotalPagar.getText());
-            } else {
-                Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
-            }
+                        lblValorVenta.getText(), lblDescuento.getText(), lblSubImporte.getText(), lblTotalPagar.getText() );
+            } 
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
         }
@@ -817,15 +821,15 @@ public class FxVentaEstructuraController implements Initializable {
     public void calculateTotales() {
 
         tvList.getItems().forEach(e -> subTotal += e.getSubImporte());
-        lblValorVenta.setText(Tools.roundingValue(subTotal, 6));
+        lblValorVenta.setText(Tools.roundingValue(subTotal, 2));
         subTotal = 0;
 
         tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
-        lblDescuento.setText((Tools.roundingValue(descuento * (-1), 6)));
+        lblDescuento.setText((Tools.roundingValue(descuento * (-1), 2)));
         descuento = 0;
 
         tvList.getItems().forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-        lblSubImporte.setText(Tools.roundingValue(subTotalImporte, 6));
+        lblSubImporte.setText(Tools.roundingValue(subTotalImporte, 2));
         subTotalImporte = 0;
 
         vbImpuestos.getChildren().clear();
@@ -841,7 +845,7 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                 }
                 if (addElement) {
-                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombreImpuesto(), monedaSimbolo, Tools.roundingValue(sumaElement, 6));
+                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombreImpuesto(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
                     totalImpuestos += sumaElement;
                     addElement = false;
                     sumaElement = 0;
@@ -850,7 +854,7 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        lblImporteTotal.setText(Tools.roundingValue(totalImporte + totalImpuestos, 6));
+        lblImporteTotal.setText(Tools.roundingValue(totalImporte + totalImpuestos, 2));
         lblTotalPagar.setText(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(totalImporte + totalImpuestos, 1)), 2));
         lblTotal.setText(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(totalImporte + totalImpuestos, 1)), 2));
         totalImporte = 0;
@@ -866,11 +870,11 @@ public class FxVentaEstructuraController implements Initializable {
         lblImporteTotalMoneda.setText(monedaSimbolo);
         lblTotalPagarMoneda.setText(monedaSimbolo);
 
-        lblTotal.setText("0.000000");
-        lblValorVenta.setText("0.000000");
-        lblDescuento.setText("0.000000");
-        lblImporteTotal.setText("0.000000");
-        lblTotalPagar.setText("0.000000");
+        lblTotal.setText("0.00");
+        lblValorVenta.setText("0.00");
+        lblDescuento.setText("0.00");
+        lblImporteTotal.setText("0.00");
+        lblTotalPagar.setText("0.00");
 
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
@@ -884,9 +888,14 @@ public class FxVentaEstructuraController implements Initializable {
                     break;
                 }
             }
-            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
+            
+            if (cbComprobante.getSelectionModel().getSelectedIndex() >= 0) {
+            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
             lblSerie.setText(array[0]);
             lblNumeracion.setText(array[1]);
+        }
+            
+
         }
         cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
 
@@ -919,7 +928,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     public void imprimirVenta(String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
         if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
-            loadEstructura(Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta,numCliente,infoCliente);
+            loadEstructura(Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta, numCliente, infoCliente);
         } else {
             Tools.AlertMessageWarning(window, "Venta", "No esta configurado la impresora :D");
         }
@@ -938,7 +947,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbEncabezado.getChildren().get(i));
             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
             rows++;
-            lines += billPrintable.hbEncebezado(box, documento, ticket,numCliente,infoCliente);
+            lines += billPrintable.hbEncebezado(box, documento, ticket, numCliente, infoCliente);
         }
 
         for (int m = 0; m < tvList.getItems().size(); m++) {
@@ -956,7 +965,7 @@ public class FxVentaEstructuraController implements Initializable {
             object.add((HBox) hbPie.getChildren().get(i));
             HBox box = ((HBox) hbPie.getChildren().get(i));
             rows++;
-            lines += billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel,numCliente,infoCliente);
+            lines += billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel, numCliente, infoCliente);
         }
         billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", nombre_impresora, cortar);
 
@@ -1260,25 +1269,10 @@ public class FxVentaEstructuraController implements Initializable {
 
     @FXML
     private void onActionComprobante(ActionEvent event) {
-        String[] array;
-        switch (cbComprobante.getSelectionModel().getSelectedIndex()) {
-            case 0:
-                array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
-                lblSerie.setText(array[0]);
-                lblNumeracion.setText(array[1]);
-                break;
-            case 1:
-                array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
-                lblSerie.setText(array[0]);
-                lblNumeracion.setText(array[1]);
-                break;
-            case 2:
-                array = ComprobanteADO.GetSerieNumeracionEspecifico(this.cbComprobante.getSelectionModel().getSelectedItem().getNombre()).split("-");
-                lblSerie.setText(array[0]);
-                lblNumeracion.setText(array[1]);
-                break;
-            default:
-                break;
+        if (cbComprobante.getSelectionModel().getSelectedIndex() >= 0) {
+            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
         }
     }
 
@@ -1359,6 +1353,10 @@ public class FxVentaEstructuraController implements Initializable {
     public String obtenerTipoComprobante() {
         return cbComprobante.getSelectionModel().getSelectedItem().getNombre();
     }
+    
+    public int getIdTipoComprobante(){
+        return cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento();
+    }
 
     public TextField getTxtSearch() {
         return txtSearch;
@@ -1370,6 +1368,10 @@ public class FxVentaEstructuraController implements Initializable {
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
+    }
+    
+    public String getMonedaNombre(){
+        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
     }
 
 }

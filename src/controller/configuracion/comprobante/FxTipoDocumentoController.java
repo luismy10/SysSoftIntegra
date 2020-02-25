@@ -45,7 +45,13 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableView<TipoDocumentoTB> tvList;
     @FXML
+    //ese ojecto TipoDocumentoTB
+    //cuando tu consultas cualquier file de la tabla consultas al objecto en si
+    private TableColumn<TipoDocumentoTB, String> tcNumero;
+    @FXML
     private TableColumn<TipoDocumentoTB, String> tcTipoComprobante;
+    @FXML
+    private TableColumn<TipoDocumentoTB, String> tcSerie;
     @FXML
     private TableColumn<TipoDocumentoTB, String> tcNombreImpresion;
     @FXML
@@ -54,15 +60,24 @@ public class FxTipoDocumentoController implements Initializable {
     private boolean stateUpdate;
 
     private AnchorPane vbPrincipal;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcTipoComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
+        tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie()));
         tcNombreImpresion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreDocumento()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
+        
+        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
+        tcTipoComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
+        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
+        tcNombreImpresion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
         stateUpdate = false;
     }
 
+    
     public void fillTabletTipoDocumento() {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
@@ -105,6 +120,23 @@ public class FxTipoDocumentoController implements Initializable {
 
     }
 
+    private void openWindowAdd() throws IOException {
+        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        URL url = getClass().getResource(FilesRouters.FX_TIPO_DOCUMENTO_PROCESO);
+        FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxTipoDocumentoProcesoController controller = fXMLLoader.getController();
+        //
+        Stage stage = WindowStage.StageLoaderModal(parent, "Nuevo comprobante", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        });
+        stage.show();
+    }
+
     private void openWindowEdit() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -112,10 +144,19 @@ public class FxTipoDocumentoController implements Initializable {
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
+            //debes enviar mas parametros cuando editar falta la serie no llega
+            //recuenda  ah vrda ah pos ya me olvide ajjajaja
+            //todo lo que guarda la lista o la tabla son una coleccion de objectos que tipos hay tu defines
             FxTipoDocumentoProcesoController controller = fXMLLoader.getController();
 //            controller.setInitMoneyController(this);
+//hay esta muchacho vas progresando  gracia maestro :c
+//una ves que lo aggaras todo lo demas es facil ahora que sigue
+//hya tiene que apareces primero has la funcion 
             controller.initUpdate(tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                    tvList.getSelectionModel().getSelectedItem().getNombre());
+                    tvList.getSelectionModel().getSelectedItem().getNombre(),
+                    tvList.getSelectionModel().getSelectedItem().getSerie(),
+                    tvList.getSelectionModel().getSelectedItem().getNombreDocumento()
+                    );
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());
             stage.setResizable(false);
@@ -142,6 +183,18 @@ public class FxTipoDocumentoController implements Initializable {
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de comprobante", "Seleccione un elemento de la lista.", false);
         }
+    }
+
+    @FXML
+    private void onKeyPressedAdd(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowAdd();
+        }
+    }
+
+    @FXML
+    private void onActionAdd(ActionEvent event) throws IOException {
+        openWindowAdd();
     }
 
     @FXML

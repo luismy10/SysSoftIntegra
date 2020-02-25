@@ -202,7 +202,7 @@
                                                       <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
                                                          <children>
                                                             <Text fx:id="lblSubTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
-                                                            <Text fx:id="lblValorVenta" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                            <Text fx:id="lblValorVenta" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -213,7 +213,7 @@
                                                       <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
                                                          <children>
                                                             <Text fx:id="lblDescuentoMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M -" />
-                                                            <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                            <Text fx:id="lblDescuento" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -224,7 +224,7 @@
                                                       <HBox spacing="5.0" style="-fx-spacing: 0.4166666666666667em;">
                                                          <children>
                                                             <Text fx:id="lblSubImporteMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M " />
-                                                            <Text fx:id="lblSubImporte" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                            <Text fx:id="lblSubImporte" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -240,7 +240,7 @@
                                                          <children>
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Total Importe" />
                                                             <Text fx:id="lblImporteTotalMoneda" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="M" />
-                                                            <Text fx:id="lblImporteTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.000000" />
+                                                            <Text fx:id="lblImporteTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium16" text="0.00" />
                                                          </children>
                                                       </HBox>
                                                       <HBox alignment="CENTER" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0.4166666666666667em;">

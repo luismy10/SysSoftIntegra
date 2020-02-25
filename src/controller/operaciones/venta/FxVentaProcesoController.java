@@ -2,6 +2,7 @@ package controller.operaciones.venta;
 
 import controller.contactos.clientes.FxClienteListaController;
 import controller.operaciones.compras.FxPlazosController;
+import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.LocalTime;//call me
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -32,6 +34,7 @@ import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.CuentasClienteTB;
+import model.MonedaTB;
 import model.PlazosADO;
 import model.PlazosTB;
 import model.SuministroTB;
@@ -56,6 +59,7 @@ public class FxVentaProcesoController implements Initializable {
     private VBox vbEfectivo;
     @FXML
     private VBox vbCredito;
+    private VBox vbTarjeta;
     @FXML
     private VBox vbViewEfectivo;
     @FXML
@@ -64,6 +68,7 @@ public class FxVentaProcesoController implements Initializable {
     private Label lblEfectivo;
     @FXML
     private Label lblCredito;
+    private Label lblTarjeta;
     @FXML
     private ComboBox<PlazosTB> cbPlazos;
     @FXML
@@ -77,18 +82,26 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtDatos;
     @FXML
     private TextField txtDireccion;
+    @FXML
+    private Label lblMonedaLetras;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
     private TableView<SuministroTB> tvList;
 
-    private VentaTB ventaTB;
+    private ConvertMonedaCadena monedaCadena;
 
-    private String tipo_comprobante;
+    private VentaTB ventaTB;
 
     private String moneda_simbolo;
 
+    private ComboBox<MonedaTB> moneda;
+
     private double vuelto;
+
+    private double vueltoo;
+//    private double vueltoefectivo;
+//    private double vueltotarjeta;
 
     private double tota_venta;
 
@@ -99,13 +112,21 @@ public class FxVentaProcesoController implements Initializable {
     private double subTotal, descuento, importeTotal;
 
     private String idCliente;
+    @FXML
+    private VBox vbViewCredito1;
+    @FXML
+    private TextField txtTarjeta;
+    @FXML
+    private Label lblVueltoNombre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         state_view_pago = false;
         tota_venta = 0;
+        monedaCadena = new ConvertMonedaCadena();
         setInitializePlazosVentas();
+        lblVueltoNombre.setText("Su cambio: ");
     }
 
     public void setInitializePlazosVentas() {
@@ -128,10 +149,11 @@ public class FxVentaProcesoController implements Initializable {
         lblComprobante.setText(ventaTB.getComprobanteName());
         lblTotal.setText(moneda_simbolo + " " + total);
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(0, 2));
-        tota_venta = Double.parseDouble(total);
+        tota_venta = Double.parseDouble(total);//es double
         this.subTotal = Double.parseDouble(subTotal);
         this.descuento = Double.parseDouble(descuento);
         this.importeTotal = Double.parseDouble(importeTotal);
+        lblMonedaLetras.setText(monedaCadena.Convertir(total, true, ventaEstructuraController.getMonedaNombre()));
         setClienteProcesoVenta(Session.IDCLIENTE, Session.DATOSCLIENTE, Session.N_DOCUMENTO_CLIENTE, Session.DIRECCION_CLIENTE);
         txtEfectivo.requestFocus();
     }
@@ -159,7 +181,7 @@ public class FxVentaProcesoController implements Initializable {
         txtDatos.setText(datos.equalsIgnoreCase("")
                 ? Session.DATOSCLIENTE
                 : datos);
-        
+
         txtDireccion.setText(direccion.equalsIgnoreCase("")
                 ? Session.DIRECCION_CLIENTE
                 : direccion);
@@ -196,7 +218,7 @@ public class FxVentaProcesoController implements Initializable {
                 Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
                 txtNumeroDocumento.requestFocus();
             } else if (txtDatos.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cleinte.");
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cliente.");
                 txtDatos.requestFocus();
             } else if (cbPlazos.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Venta", "Seleccionar el plazo.");
@@ -217,8 +239,8 @@ public class FxVentaProcesoController implements Initializable {
                 cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    tipo_comprobante = ventaEstructuraController.obtenerTipoComprobante().toLowerCase();
-                    String[] result = VentaADO.CrudVenta(ventaTB, tvList, tipo_comprobante, cuentasCliente).split("/");
+
+                    String[] result = VentaADO.CrudVenta(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), cuentasCliente).split("/");
                     switch (result[0]) {
                         case "register":
                             Tools.AlertMessageInformation(window, "Venta", "Se guardo correctamente la venta al crédito.");
@@ -253,8 +275,7 @@ public class FxVentaProcesoController implements Initializable {
                 } else {
                     short confirmation = Tools.AlertMessageInformation(window, "Venta", "¿Esta seguro de continuar?");
                     if (confirmation == 1) {
-                        tipo_comprobante = ventaEstructuraController.obtenerTipoComprobante().toLowerCase();
-                        String[] result = VentaADO.CrudVenta(ventaTB, tvList, tipo_comprobante, new CuentasClienteTB()).split("/");
+                        String[] result = VentaADO.CrudVenta(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), new CuentasClienteTB()).split("/");
                         switch (result[0]) {
                             case "register":
                                 short value = Tools.AlertMessageConfirmation(window, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
@@ -277,12 +298,53 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
+    private void TotalAPagar() {
+        if(txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()){
+            lblVuelto.setText(moneda_simbolo + " 0.00");
+             NombreVuelto();
+        }else if(txtEfectivo.getText().isEmpty()){
+            if(Double.parseDouble(txtTarjeta.getText()) <= tota_venta ){
+                vueltoo = tota_venta - Double.parseDouble(txtTarjeta.getText());
+            }else{
+                vueltoo = Double.parseDouble(txtTarjeta.getText()) - tota_venta;
+            }
+             NombreVuelto();
+        }else if (txtTarjeta.getText().isEmpty()){
+            if(Double.parseDouble(txtEfectivo.getText()) <= tota_venta ){
+                vueltoo = tota_venta - Double.parseDouble(txtEfectivo.getText());
+            }else{
+                vueltoo = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
+            }
+             NombreVuelto();
+        }
+        else{
+            double suma = 0;
+            suma = (Double.parseDouble(txtEfectivo.getText())) + (Double.parseDouble(txtTarjeta.getText()));
+            if(suma >= tota_venta){
+                vueltoo = suma - tota_venta;
+            }
+            else{
+                vueltoo = tota_venta - suma;
+            }
+             NombreVuelto();
+        }
+        
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vueltoo, 2));
+      
+    }
+    
+    private void NombreVuelto(){
+        
+            lblVueltoNombre.setText( (tota_venta >= vueltoo ? "Por pagar: ":"Su cambio es: ") );
+             
+    }
+
     @FXML
     private void onKeyReleasedEfectivo(KeyEvent event) {
-        if (Tools.isNumeric(txtEfectivo.getText())) {
-            vuelto = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
-            lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        }
+        if(txtEfectivo.getText().isEmpty()){
+                vueltoo = tota_venta;
+            }
+        TotalAPagar();
     }
 
     @FXML
@@ -292,6 +354,25 @@ public class FxVentaProcesoController implements Initializable {
             event.consume();
         }
         if (c == '.' && txtEfectivo.getText().contains(".")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void OnKeyReleasedTarjeta(KeyEvent event) {
+        if(txtTarjeta.getText().isEmpty()){
+                vueltoo = tota_venta;
+            }
+        TotalAPagar();
+    }
+
+    @FXML
+    private void OnKeyTypedTarjeta(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+        if (c == '.' && txtTarjeta.getText().contains(".")) {
             event.consume();
         }
     }
@@ -316,6 +397,20 @@ public class FxVentaProcesoController implements Initializable {
 
     @FXML
     private void onMouseClickedCredito(MouseEvent event) {
+        if (!state_view_pago) {
+            vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
+            vbCredito.setStyle("-fx-background-color: #265B7C;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
+
+            lblEfectivo.setStyle("-fx-text-fill:#1a2226;");
+            lblCredito.setStyle("-fx-text-fill:white;");
+
+            vbViewEfectivo.setVisible(false);
+            vbViewCredito.setVisible(true);
+            state_view_pago = true;
+        }
+    }
+
+    private void onMouseClickedTarjeta(MouseEvent event) {
         if (!state_view_pago) {
             vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
             vbCredito.setStyle("-fx-background-color: #265B7C;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");

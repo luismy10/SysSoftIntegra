@@ -1,6 +1,6 @@
                                         
-             NOTA DE VENTA              
-             T001-00000006              
+                FACTURA                 
+             F002-00000002              
 AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
 LIMA - PERU - HUANCAYO                  
 ----------------------------------------
@@ -9,14 +9,14 @@ LIMA - PERU - HUANCAYO
 DESCRIPCION.                            
 CANT.     P.UNIT.     DESCT.     IMPORTE
 ========================================
-CELULAR                                 
-1.00      354.00        0%        300.00
+AGUA CIELO 10ML                         
+1.00      1.18          0%          1.00
 ----------------------------------------
-VALOR VENTA                    S/ 300.00
+VALOR VENTA                      S/ 1.00
 DESCUENTO                        S/ 0.00
-SUB IMPORTE                    S/ 300.00
+SUB IMPORTE                      S/ 1.00
 ----------------------------------------
-TOTAL                          S/ 354.00
+TOTAL                            S/ 1.20
 ----------------------------------------
 
                                        
