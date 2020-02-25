@@ -301,7 +301,6 @@ public class FxVentaProcesoController implements Initializable {
     private void TotalAPagar() {
         if(txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()){
             lblVuelto.setText(moneda_simbolo + " 0.00");
-             NombreVuelto();
         }else if(txtEfectivo.getText().isEmpty()){
             if(Double.parseDouble(txtTarjeta.getText()) <= tota_venta ){
                 vueltoo = tota_venta - Double.parseDouble(txtTarjeta.getText());
