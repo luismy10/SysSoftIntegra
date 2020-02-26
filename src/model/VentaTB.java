@@ -22,6 +22,7 @@ public class VentaTB {
     private String horaVenta;
     private double subTotal;
     private double descuento;
+    private double subImporte;
     private double total;
     private String totalFormat;
     private int tipo;
@@ -35,7 +36,8 @@ public class VentaTB {
     private String codigo;
     private ClienteTB clienteTB;
     private MonedaTB monedaTB;
-
+    private FormaPagoTB formaPagoTB;
+    
     public VentaTB() {
 
     }
@@ -166,6 +168,14 @@ public class VentaTB {
         this.descuento = descuento;
     }
 
+    public double getSubImporte() {
+        return subImporte;
+    }
+
+    public void setSubImporte(double subImporte) {
+        this.subImporte = subImporte;
+    }
+
     public int getTipo() {
         return tipo;
     }
@@ -268,6 +278,14 @@ public class VentaTB {
 
     public void setMonedaTB(MonedaTB monedaTB) {
         this.monedaTB = monedaTB;
+    }
+    
+    public FormaPagoTB getFormaPagoTB(){
+        return formaPagoTB;
+    }
+    
+    public void setFormaPagoTB(FormaPagoTB formaPagoTB){
+        this.formaPagoTB = formaPagoTB;
     }
 
 }

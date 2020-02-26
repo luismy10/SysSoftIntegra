@@ -248,10 +248,10 @@ public class FxVentaEstructuraController implements Initializable {
             }
 
             if (cbComprobante.getSelectionModel().getSelectedIndex() >= 0) {
-            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
-            lblSerie.setText(array[0]);
-            lblNumeracion.setText(array[1]);
-        }
+                String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
+                lblSerie.setText(array[0]);
+                lblNumeracion.setText(array[1]);
+            }
         }
         cbMoneda.getItems().clear();
         MonedaADO.GetMonedasCombBox().forEach(e -> {
@@ -480,10 +480,10 @@ public class FxVentaEstructuraController implements Initializable {
     private void openWindowVentaProceso() {
         try {
             if (tvList.getItems().isEmpty()) {
-            Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
-            }else if(cbComprobante.getSelectionModel().getSelectedIndex()<0){
-            Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento");
-            }else{
+                Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
+            } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento");
+            } else {
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -509,7 +509,6 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
                         ? cbComprobante.getSelectionModel().getSelectedItem().getNombre()
                         : "");
-
                 ventaTB.setMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
                 ventaTB.setMonedaName(monedaSimbolo);
                 ventaTB.setSerie(lblSerie.getText());
@@ -518,11 +517,11 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setHoraVenta(Tools.getHour());
                 ventaTB.setSubTotal(Double.parseDouble(lblValorVenta.getText()));
                 ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
+                ventaTB.setSubImporte(Double.parseDouble(lblSubImporte.getText()));
                 ventaTB.setTotal(Double.parseDouble(lblImporteTotal.getText()));
-                //ahora ya tu trabajo pasale el nombre me avisas bye ok
-                controller.setInitComponents(ventaTB, cbComprobante.getSelectionModel().getSelectedItem().getNombreDocumento(), tvList,
-                        lblValorVenta.getText(), lblDescuento.getText(), lblSubImporte.getText(), lblTotalPagar.getText() );
-            } 
+                //ire a comprar algo para levantarme vale ok
+                controller.setInitComponents(ventaTB, tvList, lblTotalPagar.getText());
+            }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
         }
@@ -888,13 +887,12 @@ public class FxVentaEstructuraController implements Initializable {
                     break;
                 }
             }
-            
+
             if (cbComprobante.getSelectionModel().getSelectedIndex() >= 0) {
-            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
-            lblSerie.setText(array[0]);
-            lblNumeracion.setText(array[1]);
-        }
-            
+                String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
+                lblSerie.setText(array[0]);
+                lblNumeracion.setText(array[1]);
+            }
 
         }
         cbComprobante.getSelectionModel().select(Session.DEFAULT_COMPROBANTE);
@@ -1353,8 +1351,8 @@ public class FxVentaEstructuraController implements Initializable {
     public String obtenerTipoComprobante() {
         return cbComprobante.getSelectionModel().getSelectedItem().getNombre();
     }
-    
-    public int getIdTipoComprobante(){
+
+    public int getIdTipoComprobante() {
         return cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento();
     }
 
@@ -1366,12 +1364,12 @@ public class FxVentaEstructuraController implements Initializable {
         return tvList;
     }
 
+    public String getMonedaNombre() {
+        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
+    } 
+
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
-    }
-    
-    public String getMonedaNombre(){
-        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
     }
 
 }

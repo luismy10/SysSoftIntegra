@@ -23,7 +23,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -34,7 +33,6 @@ import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.CuentasClienteTB;
-import model.MonedaTB;
 import model.PlazosADO;
 import model.PlazosTB;
 import model.SuministroTB;
@@ -59,7 +57,6 @@ public class FxVentaProcesoController implements Initializable {
     private VBox vbEfectivo;
     @FXML
     private VBox vbCredito;
-    private VBox vbTarjeta;
     @FXML
     private VBox vbViewEfectivo;
     @FXML
@@ -68,7 +65,6 @@ public class FxVentaProcesoController implements Initializable {
     private Label lblEfectivo;
     @FXML
     private Label lblCredito;
-    private Label lblTarjeta;
     @FXML
     private ComboBox<PlazosTB> cbPlazos;
     @FXML
@@ -84,7 +80,13 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtDireccion;
     @FXML
     private Label lblMonedaLetras;
-
+    @FXML
+    private VBox vbViewCredito1;
+    @FXML
+    private TextField txtTarjeta;
+    @FXML
+    private Label lblVueltoNombre;
+    
     private FxVentaEstructuraController ventaEstructuraController;
 
     private TableView<SuministroTB> tvList;
@@ -95,35 +97,22 @@ public class FxVentaProcesoController implements Initializable {
 
     private String moneda_simbolo;
 
-    private ComboBox<MonedaTB> moneda;
-
     private double vuelto;
-
-    private double vueltoo;
-//    private double vueltoefectivo;
-//    private double vueltotarjeta;
+    
+    private boolean estado = false;
 
     private double tota_venta;
 
     private boolean state_view_pago;
 
-    private String documento;
-
-    private double subTotal, descuento, importeTotal;
-
     private String idCliente;
-    @FXML
-    private VBox vbViewCredito1;
-    @FXML
-    private TextField txtTarjeta;
-    @FXML
-    private Label lblVueltoNombre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         state_view_pago = false;
         tota_venta = 0;
+        vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         setInitializePlazosVentas();
         lblVueltoNombre.setText("Su cambio: ");
@@ -140,19 +129,15 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
-    public void setInitComponents(VentaTB ventaTB, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total) {
+    public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList, String total) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
-        this.documento = documento;
         moneda_simbolo = ventaTB.getMonedaName();
         Session.TICKET_SIMBOLOMONEDA = moneda_simbolo;
         lblComprobante.setText(ventaTB.getComprobanteName());
         lblTotal.setText(moneda_simbolo + " " + total);
-        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(0, 2));
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
         tota_venta = Double.parseDouble(total);//es double
-        this.subTotal = Double.parseDouble(subTotal);
-        this.descuento = Double.parseDouble(descuento);
-        this.importeTotal = Double.parseDouble(importeTotal);
         lblMonedaLetras.setText(monedaCadena.Convertir(total, true, ventaEstructuraController.getMonedaNombre()));
         setClienteProcesoVenta(Session.IDCLIENTE, Session.DATOSCLIENTE, Session.N_DOCUMENTO_CLIENTE, Session.DIRECCION_CLIENTE);
         txtEfectivo.requestFocus();
@@ -259,9 +244,11 @@ public class FxVentaProcesoController implements Initializable {
                 Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
                 txtNumeroDocumento.requestFocus();
             } else if (txtDatos.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cleinte.");
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cliente.");
                 txtDatos.requestFocus();
-            } else if (Tools.isNumeric(txtEfectivo.getText().trim())) {
+            } else if (estado == false) {
+                Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
+            } else {
                 ventaTB.setObservaciones(txtObservacion.getText().trim());
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
@@ -269,18 +256,26 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setVuelto(vuelto);
 
                 ventaTB.setCliente(idCliente);
-
-                if (vuelto < 0) {
-                    Tools.AlertMessageWarning(window, "Venta", "Su cambio no puede ser negativo.");
-                } else {
-                    short confirmation = Tools.AlertMessageInformation(window, "Venta", "¿Esta seguro de continuar?");
+                    short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                     if (confirmation == 1) {
                         String[] result = VentaADO.CrudVenta(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), new CuentasClienteTB()).split("/");
                         switch (result[0]) {
                             case "register":
-                                short value = Tools.AlertMessageConfirmation(window, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
+                                short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
                                 if (value == 1) {
-                                    ventaEstructuraController.imprimirVenta(documento, tvList, Tools.roundingValue(subTotal, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(importeTotal, 2), Tools.roundingValue(tota_venta, 2), Double.parseDouble(txtEfectivo.getText()), vuelto, result[1], result[2], txtNumeroDocumento.getText().trim(), txtDatos.getText().trim());
+                                    ventaEstructuraController.imprimirVenta(
+                                            ventaEstructuraController.obtenerTipoComprobante(),
+                                            tvList,
+                                            Tools.roundingValue(ventaTB.getSubTotal(), 2),
+                                            Tools.roundingValue(ventaTB.getDescuento(), 2),
+                                            Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            Tools.roundingValue(tota_venta, 2), 
+                                            Double.parseDouble(txtEfectivo.getText()),
+                                            vuelto, 
+                                            result[1],
+                                            result[2],
+                                            txtNumeroDocumento.getText().trim(),
+                                            txtDatos.getText().trim());
                                     ventaEstructuraController.resetVenta();
                                     Tools.Dispose(window);
                                 } else {
@@ -293,57 +288,65 @@ public class FxVentaProcesoController implements Initializable {
                                 break;
                         }
                     }
-                }
+                
             }
         }
     }
 
     private void TotalAPagar() {
-        if(txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()){
+        
+        if (txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()) {
             lblVuelto.setText(moneda_simbolo + " 0.00");
-        }else if(txtEfectivo.getText().isEmpty()){
-            if(Double.parseDouble(txtTarjeta.getText()) <= tota_venta ){
-                vueltoo = tota_venta - Double.parseDouble(txtTarjeta.getText());
-            }else{
-                vueltoo = Double.parseDouble(txtTarjeta.getText()) - tota_venta;
+            lblVueltoNombre.setText("Por pagar: ");
+            estado = false;
+        } else if (txtEfectivo.getText().isEmpty()) {
+            if (Double.parseDouble(txtTarjeta.getText()) >= tota_venta) {
+                vuelto = Double.parseDouble(txtTarjeta.getText()) - tota_venta;
+                lblVueltoNombre.setText("Su cambio es: ");
+                estado = true;
+            } else {
+                vuelto = tota_venta - Double.parseDouble(txtTarjeta.getText());
+                lblVueltoNombre.setText("Por pagar: ");
+                estado = false;
             }
-             NombreVuelto();
-        }else if (txtTarjeta.getText().isEmpty()){
-            if(Double.parseDouble(txtEfectivo.getText()) <= tota_venta ){
-                vueltoo = tota_venta - Double.parseDouble(txtEfectivo.getText());
-            }else{
-                vueltoo = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
+
+        } else if (txtTarjeta.getText().isEmpty()) {
+            if (Double.parseDouble(txtEfectivo.getText()) >= tota_venta) {
+                vuelto = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
+                lblVueltoNombre.setText("Su cambio es: ");
+                estado = true;
+            } else {
+                vuelto = tota_venta - Double.parseDouble(txtEfectivo.getText());
+                lblVueltoNombre.setText("Por pagar: ");
+                estado = false;
             }
-             NombreVuelto();
+        } else {
+            double suma = (Double.parseDouble(txtEfectivo.getText())) + (Double.parseDouble(txtTarjeta.getText()));
+            if (suma >= tota_venta) {
+                vuelto = suma - tota_venta;
+                lblVueltoNombre.setText("Su cambio es: ");
+                estado = true;
+            } else {
+                vuelto = tota_venta - suma;
+                lblVueltoNombre.setText("Por pagar: ");
+                estado = false;
+            }
         }
-        else{
-            double suma = 0;
-            suma = (Double.parseDouble(txtEfectivo.getText())) + (Double.parseDouble(txtTarjeta.getText()));
-            if(suma >= tota_venta){
-                vueltoo = suma - tota_venta;
-            }
-            else{
-                vueltoo = tota_venta - suma;
-            }
-             NombreVuelto();
-        }
-        
-        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vueltoo, 2));
-      
-    }
-    
-    private void NombreVuelto(){
-        
-            lblVueltoNombre.setText( (tota_venta >= vueltoo ? "Por pagar: ":"Su cambio es: ") );
-             
+
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
+
     }
 
     @FXML
     private void onKeyReleasedEfectivo(KeyEvent event) {
-        if(txtEfectivo.getText().isEmpty()){
-                vueltoo = tota_venta;
-            }
-        TotalAPagar();
+        if (txtEfectivo.getText().isEmpty()) {
+            vuelto = tota_venta;
+            TotalAPagar();
+            return;
+        }
+        if(Tools.isNumeric(txtEfectivo.getText())){
+            TotalAPagar();
+        }
     }
 
     @FXML
@@ -359,10 +362,14 @@ public class FxVentaProcesoController implements Initializable {
 
     @FXML
     private void OnKeyReleasedTarjeta(KeyEvent event) {
-        if(txtTarjeta.getText().isEmpty()){
-                vueltoo = tota_venta;
-            }
-        TotalAPagar();
+        if (txtTarjeta.getText().isEmpty()) {
+            vuelto = tota_venta;
+            TotalAPagar();
+            return;
+        }
+        if(Tools.isNumeric(txtTarjeta.getText())){
+            TotalAPagar();
+        }
     }
 
     @FXML
