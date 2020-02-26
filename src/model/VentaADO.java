@@ -18,7 +18,7 @@ import javafx.scene.control.TableView;
 
 public class VentaADO {
 
-    public static String CrudVenta(VentaTB ventaTB, TableView<SuministroTB> tvList, int idTipoDocumento, CuentasClienteTB cuentasClienteTB) {
+    public static String CrudVenta(VentaTB ventaTB, ArrayList<FormaPagoTB> formaPagoTBs,TableView<SuministroTB> tvList, int idTipoDocumento, CuentasClienteTB cuentasClienteTB) {
 
         CallableStatement serie_numeracion = null;
         PreparedStatement venta = null;
@@ -30,7 +30,7 @@ public class VentaADO {
         PreparedStatement suministro_kardex = null;
         PreparedStatement cuentas_cliente = null;
         PreparedStatement movimiento_caja = null;
-
+        PreparedStatement forma_pago = null;
         try {
 
             DBUtil.dbConnect();
@@ -111,6 +111,8 @@ public class VentaADO {
                     + "Detalle,"
                     + "Cantidad) "
                     + "VALUES(?,?,?,?,?,?,?)");
+            
+            forma_pago = DBUtil.getConnection().prepareStatement("INSERT INTO dbo.FormaPagoTB (IdVenta,Nombre,Monto) VALUES(?,?,?)");
 
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
@@ -142,6 +144,13 @@ public class VentaADO {
             movimiento_caja.setDouble(8, 0);
             movimiento_caja.setDouble(9, ventaTB.getTotal() - 0);
             movimiento_caja.addBatch();
+           
+            for(FormaPagoTB formaPagoTB : formaPagoTBs){
+                forma_pago.setString(1, id_venta);
+                forma_pago.setString(2, formaPagoTB.getNombre());
+                forma_pago.setDouble(3, formaPagoTB.getMonto());
+                forma_pago.addBatch();
+            }        
 
             if (ventaTB.getEstado() == 2) {
                 cuentas_cliente.setString(1, id_venta);
@@ -207,6 +216,7 @@ public class VentaADO {
             }
 
             venta.executeBatch();
+            forma_pago.executeBatch();
             cuentas_cliente.executeBatch();
             comprobante.executeBatch();
             detalle_venta.executeBatch();

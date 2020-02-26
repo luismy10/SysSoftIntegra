@@ -121,6 +121,20 @@
                                     </TableView>
                                  </children>
                               </VBox>
+                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular16" text="Observación:" textFill="#1a2226">
+                                       <graphic>
+                                          <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/generar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <TextField fx:id="txtObservacion" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>

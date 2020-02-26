@@ -247,21 +247,7 @@
                                  </children>
                               </HBox>
                               <Separator prefWidth="200.0" />
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular16" text="Observación:" textFill="#1a2226">
-                                       <graphic>
-                                          <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/generar.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" style="-fx-padding: 0em 0.8333333333333334em  0.8333333333333334em  0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                              <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#onActionAceptar" styleClass="buttonLightSuccess" text="Aceptar">
                                        <graphic>

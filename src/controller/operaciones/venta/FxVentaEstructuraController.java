@@ -131,6 +131,8 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnVentasPorDia;
+    @FXML
+    private TextField txtObservacion;
     //-----------------------------------------------
     private AnchorPane vbPrincipal;
 
@@ -519,6 +521,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
                 ventaTB.setSubImporte(Double.parseDouble(lblSubImporte.getText()));
                 ventaTB.setTotal(Double.parseDouble(lblImporteTotal.getText()));
+                ventaTB.setObservaciones(txtObservacion.getText().trim());
                 //ire a comprar algo para levantarme vale ok
                 controller.setInitComponents(ventaTB, tvList, lblTotalPagar.getText());
             }
@@ -1366,7 +1369,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     public String getMonedaNombre() {
         return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
-    } 
+    }
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
