@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -21,6 +22,8 @@ public class CompraCreditoTB {
     private DatePicker dpFecha;
     private Button btnRemove;
     private Text txtEstado;
+    private CheckBox cbSeleccion;
+    private ProveedorTB proveedorTB;
 
     public CompraCreditoTB() {
 
@@ -138,5 +141,20 @@ public class CompraCreditoTB {
         this.txtEstado = txtEstado;
     }
 
+    public CheckBox getCbSeleccion() {
+        return cbSeleccion;
+    }
+
+    public void setCbSeleccion(CheckBox cbSeleccion) {
+        this.cbSeleccion = cbSeleccion;
+    }
+
+    public ProveedorTB getProveedorTB() {
+        return proveedorTB;
+    }
+
+    public void setProveedorTB(ProveedorTB proveedorTB) {
+        this.proveedorTB = proveedorTB;
+    }
 
 }

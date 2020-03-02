@@ -227,7 +227,7 @@ public class FxVentaUtilidadesController implements Initializable {
                         newUtilidad.setUtilidad(detalle_list.get(i).getUtilidad());
 
                         newUtilidad.setValorInventario(detalle_list.get(i).isValorInventario());
-                        newUtilidad.setUnidadCompra(detalle_list.get(i).getUnidadCompra());
+                        newUtilidad.setMedida(detalle_list.get(i).getMedida());
                         newUtilidad.setSimboloMoneda(detalle_list.get(i).getSimboloMoneda());
                         list.add(newUtilidad);
                     }

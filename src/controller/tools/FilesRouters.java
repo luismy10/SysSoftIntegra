@@ -145,7 +145,7 @@ public final class FilesRouters {
     //--------------------------------------------------------------------------------------------------
     //PROCESO DE COMPRAS
     //--------------------------------------------------------------------------------------------------
-    public static final String FX_AMARTIZAR_PAGOS = "/view/consultas/compras/FxAmortizarPagos.fxml";
+    public static final String FX_AMARTIZAR_PAGOS = "/view/operaciones/compras/FxAmortizarPagos.fxml";
 
     public static final String FX_COMPRAS = "/view/operaciones/compras/FxCompras.fxml";
 

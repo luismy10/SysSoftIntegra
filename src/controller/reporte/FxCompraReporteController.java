@@ -22,10 +22,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.CompraADO;
@@ -55,6 +58,14 @@ public class FxCompraReporteController implements Initializable {
     private TextField txtProveedor;
     @FXML
     private Button btnProveedor;
+    @FXML
+    private RadioButton rbContado;
+    @FXML
+    private RadioButton rbCredito;
+    @FXML
+    private CheckBox cbFormasPagoSeleccionar;
+    @FXML
+    private HBox hbFormasPago;
 
     private AnchorPane vbPrincipal;
 
@@ -68,7 +79,9 @@ public class FxCompraReporteController implements Initializable {
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
             cbDocumentos.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
         });
-
+        ToggleGroup groupFormaPago = new ToggleGroup();
+        rbContado.setToggleGroup(groupFormaPago);
+        rbCredito.setToggleGroup(groupFormaPago);
         idProveedor = "";
     }
 
@@ -78,19 +91,20 @@ public class FxCompraReporteController implements Initializable {
                 Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "Seleccione un documento para generar el reporte.");
                 cbDocumentos.requestFocus();
             } else if (!cbProveedoresSeleccionar.isSelected() && idProveedor.equalsIgnoreCase("") && txtProveedor.getText().isEmpty()) {
-                Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "Ingrese un empleado para generar el reporte.");
+                Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "Ingrese un proveedor para generar el reporte.");
                 btnProveedor.requestFocus();
             } else {
                 ArrayList<CompraTB> list = CompraADO.GetReporteGenetalCompras(
                         Tools.getDatePicker(dpFechaInicial),
                         Tools.getDatePicker(dpFechaFinal),
                         cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        idProveedor);
+                        idProveedor,
+                        cbFormasPagoSeleccionar.isSelected()? 0 : rbContado.isSelected() ? 1 : 2);
                 if (list.isEmpty()) {
-                    Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "No hay registros para mostrar en el reporte.");
+                    Tools.AlertMessageWarning(vbWindow, "Repsorte General de Compras", "No hay registros para mostrar en el reporte.");
                     return;
                 }
-                
+
                 Map map = new HashMap();
                 map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("DOCUMENTO", cbDocumentosSeleccionar.isSelected() ? "TODOS" : cbDocumentos.getSelectionModel().getSelectedItem().getNombre());
@@ -114,7 +128,7 @@ public class FxCompraReporteController implements Initializable {
             }
 
         } catch (HeadlessException | JRException | IOException ex) {
-            Tools.AlertMessageError(vbWindow, "Reporte General de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
+            Tools.AlertMessageError(vbWindow, "Reporte General de Compras", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 
@@ -157,6 +171,15 @@ public class FxCompraReporteController implements Initializable {
             idProveedor = "";
         } else {
             btnProveedor.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void onActionCbFormasPagoSeleccionar(ActionEvent event) {
+        if (cbFormasPagoSeleccionar.isSelected()) {
+            hbFormasPago.setDisable(true);
+        } else {
+            hbFormasPago.setDisable(false);
         }
     }
 

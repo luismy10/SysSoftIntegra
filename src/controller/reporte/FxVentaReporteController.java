@@ -20,7 +20,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -198,7 +197,7 @@ public class FxVentaReporteController implements Initializable {
             }
 
         } catch (HeadlessException | JRException | IOException ex) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Reporte General de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage(), false);
+            Tools.AlertMessageError(window, "Reporte General de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 
@@ -281,7 +280,7 @@ public class FxVentaReporteController implements Initializable {
                 stage.requestFocus();
             }
         } catch (HeadlessException | JRException | IOException ex) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Reporte Global de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage(), false);
+            Tools.AlertMessageError(window, "Reporte Global de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 

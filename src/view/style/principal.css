@@ -2086,6 +2086,19 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-font-size: 1.1666666666666667em;
 }
 
+.label-ultimo{
+    -fx-background-color: #1c88e7; 
+    -fx-background-radius: 0 2 2 0; 
+    -fx-font-weight: 700; 
+    -fx-border-color: #1063ab; 
+    -fx-border-width: 0 0 0 10; 
+    -fx-border-radius: 0 2 2 0; 
+    -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
+    -fx-text-fill: white; 
+    -fx-font-family: Roboto; 
+    -fx-font-size: 1.1666666666666667em;
+}
+
 .text-field-ticket{
     -fx-background-radius: 0, 0;
 

@@ -3,9 +3,11 @@ package model;
 import javafx.scene.image.ImageView;
 
 public class TipoDocumentoTB {
-
+    
+    private int id;
     private int idTipoDocumento;
     private String nombre;
+    private String serie;
     private boolean predeterminado;
     private String nombreDocumento;
     private ImageView imagePredeterminado;
@@ -47,6 +49,14 @@ public class TipoDocumentoTB {
         this.nombreDocumento = nombreDocumento;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getIdTipoDocumento() {
         return idTipoDocumento;
     }
@@ -61,6 +71,14 @@ public class TipoDocumentoTB {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
     }
 
     public boolean isPredeterminado() {

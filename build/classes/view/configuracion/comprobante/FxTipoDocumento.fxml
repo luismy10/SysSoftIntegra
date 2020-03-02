@@ -36,6 +36,15 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
+                  <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Nuevo">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -79,9 +88,11 @@
                            <children>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="332.0" prefWidth="652.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                  <columns>
-                                    <TableColumn fx:id="tcTipoComprobante" prefWidth="283.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de comprobante" />
-                                    <TableColumn fx:id="tcNombreImpresion" prefWidth="187.0" style="-fx-alignment: CENTER-LEFT;" text="Nombre de Impresión" />
-                                    <TableColumn fx:id="tcPredeterminado" prefWidth="157.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
+                                    <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N" />
+                                    <TableColumn fx:id="tcTipoComprobante" prefWidth="168.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de comprobante" />
+                                    <TableColumn fx:id="tcSerie" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Serie" />
+                                    <TableColumn fx:id="tcNombreImpresion" prefWidth="201.0" style="-fx-alignment: CENTER-LEFT;" text="Nombre de Impresión" />
+                                    <TableColumn fx:id="tcPredeterminado" prefWidth="119.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
                                  </columns>
                               </TableView>
                            </children>

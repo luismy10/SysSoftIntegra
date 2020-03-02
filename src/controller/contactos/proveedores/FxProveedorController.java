@@ -30,7 +30,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.ProveedorADO;
 import model.ProveedorTB;
 
@@ -89,10 +88,10 @@ public class FxProveedorController implements Initializable {
         });
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
-        tcDocumentType.setCellValueFactory(cellData -> cellData.getValue().getTipoDocumentoName());
-        tcDocument.setCellValueFactory(cellData -> cellData.getValue().getNumeroDocumento());
+        tcDocumentType.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoDocumentoName()));
+        tcDocument.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
         tcBusinessName.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getRazonSocial().get() // + "\n" + cellData.getValue().getNombreComercial().get()
+                cellData.getValue().getRazonSocial() // + "\n" + cellData.getValue().getNombreComercial().get()
         ));
         tcContacto.setCellValueFactory(cellData
                 -> Bindings.concat(
@@ -159,9 +158,7 @@ public class FxProveedorController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Proveedor", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
             controller.setValueAdd();
         } catch (IOException ix) {
@@ -182,11 +179,9 @@ public class FxProveedorController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Editr Proveedor", window.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding((WindowEvent WindowEvent) -> {
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                });
+                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
                 stage.show();
-                controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get());
+                controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
 
             } catch (IOException ix) {
                 System.out.println("Error en Proveedor Controller:" + ix.getLocalizedMessage());

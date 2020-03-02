@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -20,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="vbWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.reporte.FxCompraReporteController">
+<VBox fx:id="vbWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.reporte.FxCompraReporteController">
    <children>
       <VBox>
          <children>
@@ -110,7 +111,7 @@
                                                    <children>
                                                       <CheckBox fx:id="cbDocumentosSeleccionar" mnemonicParsing="false" onAction="#onActionCbDocumentosSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los Documentos" textFill="#1a2226" />
                                                       <CheckBox fx:id="cbProveedoresSeleccionar" mnemonicParsing="false" onAction="#onActionCbProveedoresSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los Proveedores" textFill="#1a2226" GridPane.rowIndex="1" />
-                                                      <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Todos las Formas de Compra" textFill="#1a2226" GridPane.rowIndex="2" />
+                                                      <CheckBox fx:id="cbFormasPagoSeleccionar" mnemonicParsing="false" onAction="#onActionCbFormasPagoSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos las Formas de Compra" textFill="#1a2226" GridPane.rowIndex="2" />
                                                       <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Documentos" textFill="#1a2226" GridPane.columnIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -153,10 +154,10 @@
                                                             </Button>
                                                          </children>
                                                       </HBox>
-                                                      <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em 0  0.4166666666666667em 0;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                      <HBox fx:id="hbFormasPago" disable="true" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em 0  0.4166666666666667em 0;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                          <children>
-                                                            <CheckBox disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="Al Contado" />
-                                                            <CheckBox disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="Al Credito" />
+                                                            <RadioButton fx:id="rbContado" mnemonicParsing="false" selected="true" text="Al Contado" />
+                                                            <RadioButton fx:id="rbCredito" mnemonicParsing="false" text="Al Crédito" />
                                                          </children>
                                                       </HBox>
                                                    </children>

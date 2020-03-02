@@ -1,6 +1,6 @@
                                         
-             NOTA DE VENTA              
-             T001-00000004              
+                 BOLETA                 
+             B001-00000007              
 AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
 LIMA - PERU - HUANCAYO                  
 ----------------------------------------
@@ -9,14 +9,14 @@ LIMA - PERU - HUANCAYO
 DESCRIPCION.                            
 CANT.     P.UNIT.     DESCT.     IMPORTE
 ========================================
-AGUA CIELO 10ML                         
-1.00      1.06         10%          0.90
+PINTURA RP 30ML                         
+1.00      30.00         0%         30.00
 ----------------------------------------
-VALOR VENTA                      S/ 1.00
-DESCUENTO                       S/ -0.10
-SUB IMPORTE                      S/ 0.90
+VALOR VENTA                     S/ 30.00
+DESCUENTO                        S/ 0.00
+SUB IMPORTE                     S/ 30.00
 ----------------------------------------
-TOTAL                            S/ 1.10
+TOTAL                           S/ 30.00
 ----------------------------------------
 
                                        

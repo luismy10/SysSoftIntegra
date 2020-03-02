@@ -43,14 +43,14 @@ public class ComprobanteADO {
         return "";
     }
     
-    public static String GetSerieNumeracionEspecifico(String tipo) {
+    public static String GetSerieNumeracionEspecifico(int idTipoDocumento) {
         CallableStatement callableStatement = null;
         try {
 
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");          
             callableStatement.registerOutParameter(1, Types.VARCHAR);
-            callableStatement.setString(2, tipo);
+            callableStatement.setInt(2, idTipoDocumento);
             callableStatement.execute();
             return callableStatement.getString(1);
 

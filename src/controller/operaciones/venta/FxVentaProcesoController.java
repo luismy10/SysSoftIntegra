@@ -2,6 +2,7 @@ package controller.operaciones.venta;
 
 import controller.contactos.clientes.FxClienteListaController;
 import controller.operaciones.compras.FxPlazosController;
+import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -10,7 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.LocalTime;//call me
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +34,7 @@ import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.CuentasClienteTB;
+import model.FormaPagoTB;
 import model.PlazosADO;
 import model.PlazosTB;
 import model.SuministroTB;
@@ -50,8 +53,6 @@ public class FxVentaProcesoController implements Initializable {
     private Label lblVuelto;
     @FXML
     private Text lblComprobante;
-    @FXML
-    private TextField txtObservacion;
     @FXML
     private VBox vbEfectivo;
     @FXML
@@ -77,26 +78,32 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtDatos;
     @FXML
     private TextField txtDireccion;
+    @FXML
+    private Label lblMonedaLetras;
+    @FXML
+    private VBox vbViewCredito1;
+    @FXML
+    private TextField txtTarjeta;
+    @FXML
+    private Label lblVueltoNombre;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
     private TableView<SuministroTB> tvList;
 
-    private VentaTB ventaTB;
+    private ConvertMonedaCadena monedaCadena;
 
-    private String tipo_comprobante;
+    private VentaTB ventaTB;
 
     private String moneda_simbolo;
 
     private double vuelto;
 
+    private boolean estado = false;
+
     private double tota_venta;
 
     private boolean state_view_pago;
-
-    private String documento;
-
-    private double subTotal, descuento, importeTotal;
 
     private String idCliente;
 
@@ -105,7 +112,10 @@ public class FxVentaProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
         state_view_pago = false;
         tota_venta = 0;
+        vuelto = 0.00;
+        monedaCadena = new ConvertMonedaCadena();
         setInitializePlazosVentas();
+        lblVueltoNombre.setText("Su cambio: ");
     }
 
     public void setInitializePlazosVentas() {
@@ -119,19 +129,16 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
-    public void setInitComponents(VentaTB ventaTB, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total) {
+    public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList, String total) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
-        this.documento = documento;
         moneda_simbolo = ventaTB.getMonedaName();
         Session.TICKET_SIMBOLOMONEDA = moneda_simbolo;
         lblComprobante.setText(ventaTB.getComprobanteName());
         lblTotal.setText(moneda_simbolo + " " + total);
-        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(0, 2));
-        tota_venta = Double.parseDouble(total);
-        this.subTotal = Double.parseDouble(subTotal);
-        this.descuento = Double.parseDouble(descuento);
-        this.importeTotal = Double.parseDouble(importeTotal);
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
+        tota_venta = Double.parseDouble(total);//es double
+        lblMonedaLetras.setText(monedaCadena.Convertir(total, true, ventaEstructuraController.getMonedaNombre()));
         setClienteProcesoVenta(Session.IDCLIENTE, Session.DATOSCLIENTE, Session.N_DOCUMENTO_CLIENTE, Session.DIRECCION_CLIENTE);
         txtEfectivo.requestFocus();
     }
@@ -159,7 +166,7 @@ public class FxVentaProcesoController implements Initializable {
         txtDatos.setText(datos.equalsIgnoreCase("")
                 ? Session.DATOSCLIENTE
                 : datos);
-        
+
         txtDireccion.setText(direccion.equalsIgnoreCase("")
                 ? Session.DIRECCION_CLIENTE
                 : direccion);
@@ -196,7 +203,7 @@ public class FxVentaProcesoController implements Initializable {
                 Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
                 txtNumeroDocumento.requestFocus();
             } else if (txtDatos.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cleinte.");
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cliente.");
                 txtDatos.requestFocus();
             } else if (cbPlazos.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Venta", "Seleccionar el plazo.");
@@ -205,7 +212,6 @@ public class FxVentaProcesoController implements Initializable {
                 Tools.AlertMessageWarning(window, "Venta", "El formato de la fecha no es correcto.");
                 dtVencimiento.requestFocus();
             } else {
-                ventaTB.setObservaciones(txtObservacion.getText().trim());
                 ventaTB.setTipo(2);
                 ventaTB.setEstado(2);
                 ventaTB.setEfectivo(0);
@@ -217,18 +223,18 @@ public class FxVentaProcesoController implements Initializable {
                 cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    tipo_comprobante = ventaEstructuraController.obtenerTipoComprobante().toLowerCase();
-                    String[] result = VentaADO.CrudVenta(ventaTB, tvList, tipo_comprobante, cuentasCliente).split("/");
-                    switch (result[0]) {
-                        case "register":
-                            Tools.AlertMessageInformation(window, "Venta", "Se guardo correctamente la venta al crédito.");
-                            ventaEstructuraController.resetVenta();
-                            Tools.Dispose(window);
-                            break;
-                        default:
-                            Tools.AlertMessageError(window, "Venta", result[0]);
-                            break;
-                    }
+
+//                    String[] result = VentaADO.CrudVenta(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), cuentasCliente).split("/");
+//                    switch (result[0]) {
+//                        case "register":
+//                            Tools.AlertMessageInformation(window, "Venta", "Se guardo correctamente la venta al crédito.");
+//                            ventaEstructuraController.resetVenta();
+//                            Tools.Dispose(window);
+//                            break;
+//                        default:
+//                            Tools.AlertMessageError(window, "Venta", result[0]);
+//                            break;
+//                    }
                 }
             }
 
@@ -237,51 +243,124 @@ public class FxVentaProcesoController implements Initializable {
                 Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
                 txtNumeroDocumento.requestFocus();
             } else if (txtDatos.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cleinte.");
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cliente.");
                 txtDatos.requestFocus();
-            } else if (Tools.isNumeric(txtEfectivo.getText().trim())) {
-                ventaTB.setObservaciones(txtObservacion.getText().trim());
+            } else if (estado == false) {
+                Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
+            } else {
+
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
-                ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
+                ventaTB.setEfectivo(Tools.isNumeric(txtEfectivo.getText()) ? Double.parseDouble(txtEfectivo.getText()) : 0);
                 ventaTB.setVuelto(vuelto);
-
                 ventaTB.setCliente(idCliente);
 
-                if (vuelto < 0) {
-                    Tools.AlertMessageWarning(window, "Venta", "Su cambio no puede ser negativo.");
-                } else {
-                    short confirmation = Tools.AlertMessageInformation(window, "Venta", "¿Esta seguro de continuar?");
-                    if (confirmation == 1) {
-                        tipo_comprobante = ventaEstructuraController.obtenerTipoComprobante().toLowerCase();
-                        String[] result = VentaADO.CrudVenta(ventaTB, tvList, tipo_comprobante, new CuentasClienteTB()).split("/");
-                        switch (result[0]) {
-                            case "register":
-                                short value = Tools.AlertMessageConfirmation(window, "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
-                                if (value == 1) {
-                                    ventaEstructuraController.imprimirVenta(documento, tvList, Tools.roundingValue(subTotal, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(importeTotal, 2), Tools.roundingValue(tota_venta, 2), Double.parseDouble(txtEfectivo.getText()), vuelto, result[1], result[2], txtNumeroDocumento.getText().trim(), txtDatos.getText().trim());
-                                    ventaEstructuraController.resetVenta();
-                                    Tools.Dispose(window);
-                                } else {
-                                    ventaEstructuraController.resetVenta();
-                                    Tools.Dispose(window);
-                                }
-                                break;
-                            default:
-                                Tools.AlertMessageError(window, "Venta", result[0]);
-                                break;
-                        }
+                ArrayList<FormaPagoTB> formaPagoTBs = new ArrayList();
+
+                if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
+                    FormaPagoTB formaPagoTB = new FormaPagoTB();
+                    formaPagoTB.setNombre("EFECTIVO");
+                    formaPagoTB.setMonto(Double.parseDouble(txtEfectivo.getText()));
+                    formaPagoTBs.add(formaPagoTB);
+                }
+
+                if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
+                    FormaPagoTB formaPagoTB = new FormaPagoTB();
+                    formaPagoTB.setNombre("TARJETA");
+                    formaPagoTB.setMonto(Double.parseDouble(txtTarjeta.getText()));
+                    formaPagoTBs.add(formaPagoTB);
+                }
+
+                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
+                if (confirmation == 1) {
+                    String[] result = VentaADO.CrudVenta(ventaTB, formaPagoTBs, tvList, ventaEstructuraController.getIdTipoComprobante(), new CuentasClienteTB()).split("/");
+                    switch (result[0]) {
+                        case "register":
+                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
+                            if (value == 1) {
+                                ventaEstructuraController.imprimirVenta(
+                                        ventaEstructuraController.obtenerTipoComprobante(),
+                                        tvList,
+                                        Tools.roundingValue(ventaTB.getSubTotal(), 2),
+                                        Tools.roundingValue(ventaTB.getDescuento(), 2),
+                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                        Tools.roundingValue(tota_venta, 2),
+                                        Double.parseDouble(txtEfectivo.getText()),
+                                        vuelto,
+                                        result[1],
+                                        result[2],
+                                        txtNumeroDocumento.getText().trim(),
+                                        txtDatos.getText().trim());
+                                ventaEstructuraController.resetVenta();
+                                Tools.Dispose(window);
+                            } else {
+                                ventaEstructuraController.resetVenta();
+                                Tools.Dispose(window);
+                            }
+                            break;
+                        default:
+                            Tools.AlertMessageError(window, "Venta", result[0]);
+                            break;
                     }
                 }
+
             }
         }
     }
 
+    private void TotalAPagar() {
+
+        if (txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()) {
+            lblVuelto.setText(moneda_simbolo + " 0.00");
+            lblVueltoNombre.setText("Por pagar: ");
+            estado = false;
+        } else if (txtEfectivo.getText().isEmpty()) {
+            if (Double.parseDouble(txtTarjeta.getText()) >= tota_venta) {
+                vuelto = Double.parseDouble(txtTarjeta.getText()) - tota_venta;
+                lblVueltoNombre.setText("Su cambio es: ");
+                estado = true;
+            } else {
+                vuelto = tota_venta - Double.parseDouble(txtTarjeta.getText());
+                lblVueltoNombre.setText("Por pagar: ");
+                estado = false;
+            }
+
+        } else if (txtTarjeta.getText().isEmpty()) {
+            if (Double.parseDouble(txtEfectivo.getText()) >= tota_venta) {
+                vuelto = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
+                lblVueltoNombre.setText("Su cambio es: ");
+                estado = true;
+            } else {
+                vuelto = tota_venta - Double.parseDouble(txtEfectivo.getText());
+                lblVueltoNombre.setText("Por pagar: ");
+                estado = false;
+            }
+        } else {
+            double suma = (Double.parseDouble(txtEfectivo.getText())) + (Double.parseDouble(txtTarjeta.getText()));
+            if (suma >= tota_venta) {
+                vuelto = suma - tota_venta;
+                lblVueltoNombre.setText("Su cambio es: ");
+                estado = true;
+            } else {
+                vuelto = tota_venta - suma;
+                lblVueltoNombre.setText("Por pagar: ");
+                estado = false;
+            }
+        }
+
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
+
+    }
+
     @FXML
     private void onKeyReleasedEfectivo(KeyEvent event) {
+        if (txtEfectivo.getText().isEmpty()) {
+            vuelto = tota_venta;
+            TotalAPagar();
+            return;
+        }
         if (Tools.isNumeric(txtEfectivo.getText())) {
-            vuelto = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
-            lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
+            TotalAPagar();
         }
     }
 
@@ -292,6 +371,29 @@ public class FxVentaProcesoController implements Initializable {
             event.consume();
         }
         if (c == '.' && txtEfectivo.getText().contains(".")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void OnKeyReleasedTarjeta(KeyEvent event) {
+        if (txtTarjeta.getText().isEmpty()) {
+            vuelto = tota_venta;
+            TotalAPagar();
+            return;
+        }
+        if (Tools.isNumeric(txtTarjeta.getText())) {
+            TotalAPagar();
+        }
+    }
+
+    @FXML
+    private void OnKeyTypedTarjeta(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+        if (c == '.' && txtTarjeta.getText().contains(".")) {
             event.consume();
         }
     }
@@ -316,6 +418,20 @@ public class FxVentaProcesoController implements Initializable {
 
     @FXML
     private void onMouseClickedCredito(MouseEvent event) {
+        if (!state_view_pago) {
+            vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
+            vbCredito.setStyle("-fx-background-color: #265B7C;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
+
+            lblEfectivo.setStyle("-fx-text-fill:#1a2226;");
+            lblCredito.setStyle("-fx-text-fill:white;");
+
+            vbViewEfectivo.setVisible(false);
+            vbViewCredito.setVisible(true);
+            state_view_pago = true;
+        }
+    }
+
+    private void onMouseClickedTarjeta(MouseEvent event) {
         if (!state_view_pago) {
             vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
             vbCredito.setStyle("-fx-background-color: #265B7C;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");

@@ -51,9 +51,9 @@ import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 
 public class FxComprasController implements Initializable {
-
-    @FXML
-    private ScrollPane window;
+    
+   @FXML
+    private ScrollPane spWindow;
     @FXML
     private TextField txtProveedor;
     @FXML
@@ -135,7 +135,7 @@ public class FxComprasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        window.setOnKeyReleased((KeyEvent event) -> {
+        spWindow.setOnKeyReleased((KeyEvent event) -> {
 
             if (null != event.getCode()) {
                 switch (event.getCode()) {
@@ -285,7 +285,7 @@ public class FxComprasController implements Initializable {
 
     private void openAlertMessageWarning(String message) {
         ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-        Tools.AlertMessageWarning(window, "Compras", message);
+        Tools.AlertMessageWarning(spWindow, "Compras", message);
         vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
     }
 
@@ -331,7 +331,7 @@ public class FxComprasController implements Initializable {
                 controller.setInitComprasController(this);
                 controller.setLoadProcess(compraTB, tvList, loteTBs, monedaSimbolo);
 //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Pago de la compra", window.getScene().getWindow());
+                Stage stage = WindowStage.StageLoaderModal(parent, "Pago de la compra", spWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
                 stage.setOnHiding((w) -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
@@ -353,7 +353,7 @@ public class FxComprasController implements Initializable {
             FxSuministrosListaController controller = fXMLLoader.getController();
             controller.setInitComprasController(this);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", window.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding((w) -> {
@@ -380,7 +380,7 @@ public class FxComprasController implements Initializable {
                     FxSuministrosCompraController controller = fXMLLoader.getController();
                     controller.setInitComprasController(this);
                     //
-                    Stage stage = WindowStage.StageLoaderModal(parent, "Editar suministro", window.getScene().getWindow());
+                    Stage stage = WindowStage.StageLoaderModal(parent, "Editar suministro", spWindow.getScene().getWindow());
                     stage.setResizable(false);
                     stage.show();
 
@@ -440,7 +440,7 @@ public class FxComprasController implements Initializable {
             FxProveedorListaController controller = fXMLLoader.getController();
             controller.setInitComprasController(this);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", window.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {

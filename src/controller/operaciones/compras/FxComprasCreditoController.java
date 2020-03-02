@@ -1,12 +1,19 @@
 package controller.operaciones.compras;
 
-import controller.consultas.compras.FxAmortizarPagosController;
+import controller.consultas.compras.FxComprasDetalleController;
 import controller.consultas.compras.FxComprasRealizadasController;
+import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
+import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.awt.HeadlessException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,6 +37,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.CompraADO;
 import model.CompraCreditoTB;
+import model.ProveedorTB;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class FxComprasCreditoController implements Initializable {
 
@@ -41,7 +54,7 @@ public class FxComprasCreditoController implements Initializable {
     @FXML
     private TableView<CompraCreditoTB> tvList;
     @FXML
-    private TableColumn<CompraCreditoTB, String> tcNumero;
+    private TableColumn<CompraCreditoTB, CheckBox> tcOpcion;
     @FXML
     private TableColumn<CompraCreditoTB, String> tcCouta;
     @FXML
@@ -59,10 +72,12 @@ public class FxComprasCreditoController implements Initializable {
 
     private String idCompra;
 
+    private double monto;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
-        tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
+        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("cbSeleccion"));
         tcCouta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCuota()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaRegistro()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("txtEstado"));
@@ -110,43 +125,88 @@ public class FxComprasCreditoController implements Initializable {
     }
 
     private void eventAmortizar() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            try {
-                URL url = getClass().getResource(FilesRouters.FX_AMARTIZAR_PAGOS);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxAmortizarPagosController controller = fXMLLoader.getController();
-                controller.setInitValues(idCompra, tvList.getSelectionModel().getSelectedItem().getIdCompraCredito(), tvList.getSelectionModel().getSelectedItem().getMonto());
-                controller.setInitAmortizarPagosController(this);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Generar Pago", apWindow.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.show();
+        int value = 0;
+        value = tvList.getItems().stream().map((CompraCreditoTB cctb) -> cctb.getCbSeleccion().isSelected() && !cctb.getCbSeleccion().isDisable() ? 1 : 0).reduce(value, Integer::sum);
+        if (value == 0) {
+            Tools.AlertMessageWarning(apWindow, "Generar Pago", "Seleccione un elemento de la lista para continuar.");
+            return;
+        }
 
-            } catch (IOException ex) {
-                System.out.println("Controller banco" + ex.getLocalizedMessage());
+        try {
+            URL url = getClass().getResource(FilesRouters.FX_AMARTIZAR_PAGOS);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxAmortizarPagosController controller = fXMLLoader.getController();
+            controller.setInitValues(idCompra, tvList);
+            controller.setInitAmortizarPagosController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Generar Pago", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println("Controller banco" + ex.getLocalizedMessage());
+        }
+
+    }
+
+    private void openWindowReport() {
+        try {
+            ArrayList<CompraCreditoTB> list = new ArrayList();
+            tvList.getItems().stream().filter((cctb) -> (cctb.getCbSeleccion().isSelected() && cctb.getCbSeleccion().isDisable() && cctb.isEstado())).forEachOrdered((CompraCreditoTB cctb) -> {
+                CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
+                compraCreditoTB.setId(1);
+                compraCreditoTB.setFechaPago("Se realizó el pago de la fecha del " + cctb.getFechaRegistro() + " por el monto de " + Tools.roundingValue(cctb.getMonto(), 2));
+                compraCreditoTB.setMonto(cctb.getMonto());
+                monto += cctb.getMonto();
+                list.add(compraCreditoTB);
+            });
+
+            if (list.isEmpty()) {
+                Tools.AlertMessageWarning(apWindow, "Compra realizada", "No hay registros para mostrar en el reporte.");
+                return;
             }
-        } else {
-            Tools.AlertMessageWarning(apWindow, "Compra al crédito", "Debe seleccionar una compra de la lista");
+
+            ProveedorTB proveedorTB = CompraADO.Obtener_Proveedor_Por_Id_Compra(idCompra);
+
+            InputStream imgInputStream
+                    = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+            Map map = new HashMap();
+            map.put("LOGO", imgInputStream);
+            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
+            map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
+            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
+
+            map.put("FECHA_EMISION", Tools.getDate("dd/MM/yyyy"));
+            map.put("PROVEEDOR", proveedorTB.getRazonSocial());
+            map.put("PROVEEDORNOMDOCUMENTO", proveedorTB.getTipoDocumentoName() + ":");
+            map.put("PROVEEDORNUMDOCUMENTO", proveedorTB.getNumeroDocumento());
+            map.put("PROVEEDORDIRECCION", proveedorTB.getDireccion());
+            map.put("PROVEEDOROTRODATOS", proveedorTB.getTelefono() + " - " + proveedorTB.getCelular() + " - " + proveedorTB.getEmail());
+
+            map.put("TOTAL", Tools.roundingValue(monto, 2));
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(FxComprasDetalleController.class.getResourceAsStream("/report/CompraAmortizar.jasper"), map, new JRBeanCollectionDataSource(list));
+
+            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxReportViewController controller = fXMLLoader.getController();
+            controller.setJasperPrint(jasperPrint);
+            controller.show();
+            Stage stage = WindowStage.StageLoader(parent, "Reporte de Pago");
+            stage.setResizable(true);
+            stage.show();
+            stage.requestFocus();
+        } catch (HeadlessException | JRException | IOException ex) {
+            Tools.AlertMessageError(apWindow, "Reporte de Pago", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
-    }
-
-    private void eventEditar() {
-
-    }
-
-    @FXML
-    private void onKeyPressedEditar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            eventEditar();
-        }
-    }
-
-    @FXML
-    private void onActionEditar(ActionEvent event) {
-        eventEditar();
     }
 
     @FXML
@@ -159,6 +219,18 @@ public class FxComprasCreditoController implements Initializable {
     @FXML
     private void onActionAmortizar(ActionEvent event) {
         eventAmortizar();
+    }
+
+    @FXML
+    private void onKeyPressedReporte(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowReport();
+        }
+    }
+
+    @FXML
+    private void onActionReporte(ActionEvent event) {
+        openWindowReport();
     }
 
     public void setInitControllerComprasRealizadas(FxComprasRealizadasController realizadasController) {

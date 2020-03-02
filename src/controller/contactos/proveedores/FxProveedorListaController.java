@@ -84,9 +84,9 @@ public class FxProveedorListaController implements Initializable {
 
         tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipoDocumentoName().get() + ": " + cellData.getValue().getNumeroDocumento().get())
+                cellData.getValue().getTipoDocumentoName() + ": " + cellData.getValue().getNumeroDocumento())
         );
-        tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRazonSocial().get()
+        tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRazonSocial()
         ));
         tcMovil.setCellValueFactory(cellData -> Bindings.concat(
                 (cellData.getValue().getTelefono().equals("") ? "Sin N° de Teléfono" : cellData.getValue().getTelefono())
@@ -148,20 +148,20 @@ public class FxProveedorListaController implements Initializable {
     private void executeEvent() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (comprasController != null) {
-                comprasController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get(),
-                        tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
+                comprasController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
+                        tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             } else if (movimientosProcesoController != null) {
                 movimientosProcesoController.setInitProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor().get(),
-                        tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
+                        tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             } else if (comprasEditarController != null) {
-                comprasEditarController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento().get(),
-                        tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
+                comprasEditarController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
+                        tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             }else if(compraReporteController != null){
                 compraReporteController.setInitCompraReporteValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor().get(),
-                        tvList.getSelectionModel().getSelectedItem().getRazonSocial().get());
+                        tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             }
         }

@@ -8,10 +8,10 @@ public class ProveedorTB {
     private SimpleIntegerProperty id;
     private SimpleStringProperty idProveedor;
     private int tipoDocumento;
-    private SimpleStringProperty tipoDocumentoName;
-    private SimpleStringProperty numeroDocumento;
-    private SimpleStringProperty razonSocial;
-    private SimpleStringProperty nombreComercial;
+    private String tipoDocumentoName;
+    private String numeroDocumento;
+    private String razonSocial;
+    private String nombreComercial;
     private String pais;
     private int ciudad;
     private int provincia;
@@ -31,12 +31,12 @@ public class ProveedorTB {
     }
 
     public ProveedorTB(String numeroDocumento, String razonSocial) {
-        this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
-        this.razonSocial = new SimpleStringProperty(razonSocial);
+        this.numeroDocumento = numeroDocumento;
+        this.razonSocial = razonSocial;
     }
 
     public ProveedorTB(String razonSocial) {
-        this.razonSocial = new SimpleStringProperty(razonSocial);
+        this.razonSocial = razonSocial;
     }
 
     public SimpleIntegerProperty getId() {
@@ -63,28 +63,28 @@ public class ProveedorTB {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public SimpleStringProperty getNumeroDocumento() {
+    public String getNumeroDocumento() {
         return numeroDocumento;
     }
 
     public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = new SimpleStringProperty(numeroDocumento);
+        this.numeroDocumento = numeroDocumento;
     }
 
-    public SimpleStringProperty getRazonSocial() {
+    public String getRazonSocial() {
         return razonSocial;
     }
 
     public void setRazonSocial(String razonSocial) {
-        this.razonSocial = new SimpleStringProperty(razonSocial);
+        this.razonSocial = razonSocial;
     }
 
-    public SimpleStringProperty getNombreComercial() {
+    public String getNombreComercial() {
         return nombreComercial;
     }
 
     public void setNombreComercial(String nombreComercial) {
-        this.nombreComercial = new SimpleStringProperty(nombreComercial != null ? nombreComercial : "");
+        this.nombreComercial = nombreComercial != null ? nombreComercial : "";
     }
 
     public String getPais() {
@@ -175,12 +175,12 @@ public class ProveedorTB {
         this.direccion = direccion;
     }
 
-    public SimpleStringProperty getTipoDocumentoName() {
+    public String getTipoDocumentoName() {
         return tipoDocumentoName;
     }
 
     public void setTipoDocumentoName(String tipoDocumentoName) {
-        this.tipoDocumentoName = new SimpleStringProperty(tipoDocumentoName);
+        this.tipoDocumentoName = tipoDocumentoName;
     }
 
     public SimpleStringProperty getEstadoName() {

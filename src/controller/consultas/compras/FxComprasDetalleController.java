@@ -1,5 +1,6 @@
 package controller.consultas.compras;
 
+import controller.reporte.FxReportViewController;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -24,7 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -37,23 +38,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import model.CompraADO;
 import model.CompraCreditoTB;
 import model.CompraTB;
 import model.DetalleCompraTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
-import model.ProveedorTB;
+import model.SuministroTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class FxComprasDetalleController implements Initializable {
 
@@ -97,6 +92,12 @@ public class FxComprasDetalleController implements Initializable {
     private Label lblTotalCompra;
     @FXML
     private Text lblValorLetras;
+    @FXML
+    private VBox vbCondicion;
+    @FXML
+    private Button btnEditar;
+    @FXML
+    private Button btnAnular;
 
     private double totalBruto;
 
@@ -114,8 +115,6 @@ public class FxComprasDetalleController implements Initializable {
 
     private String idCompra;
 
-    private String estadoCompra;
-
     private ObservableList<DetalleCompraTB> arrList = null;
 
     private ArrayList<ImpuestoTB> arrayArticulos;
@@ -123,8 +122,6 @@ public class FxComprasDetalleController implements Initializable {
     private ConvertMonedaCadena monedaCadena;
 
     private CompraTB compraTB = null;
-    @FXML
-    private VBox vbCondicion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -160,7 +157,7 @@ public class FxComprasDetalleController implements Initializable {
             protected ArrayList<Object> call() throws Exception {
                 arrayArticulos.clear();
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
                 });
                 ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
                 return objects;
@@ -180,8 +177,7 @@ public class FxComprasDetalleController implements Initializable {
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
                 compraTB = (CompraTB) objects.get(0);
-                ProveedorTB proveedorTB = (ProveedorTB) objects.get(1);
-                ObservableList<DetalleCompraTB> empList = (ObservableList<DetalleCompraTB>) objects.get(2);
+                ObservableList<DetalleCompraTB> empList = (ObservableList<DetalleCompraTB>) objects.get(1);
                 if (compraTB != null) {
                     lblFechaCompra.setText(compraTB.getFechaCompra() + " " + compraTB.getHoraCompra());
                     lblComprobante.setText(compraTB.getComprobanteName());
@@ -190,33 +186,35 @@ public class FxComprasDetalleController implements Initializable {
                     lblNotas.setText(compraTB.getNotas().equalsIgnoreCase("") ? "No tiene ninguna nota" : compraTB.getNotas());
                     lblEstado.setText(compraTB.getTipoName() + " - " + compraTB.getEstadoName());
                     lblTotalCompra.setText(compraTB.getTipoMonedaName() + " " + Tools.roundingValue(compraTB.getTotal(), 2));
-                    estadoCompra = compraTB.getEstadoName();
                     lblValorLetras.setText(monedaCadena.Convertir(Tools.roundingValue(compraTB.getTotal(), 2), true, compraTB.getMonedaTB().getNombre()));
-                }
 
-                if (proveedorTB != null) {
-                    lblDocumento.setText(proveedorTB.getNumeroDocumento().get());
-                    lblProveedor.setText(proveedorTB.getRazonSocial().get());
-                    lblDomicilio.setText(proveedorTB.getDireccion().equalsIgnoreCase("")
+                    lblDocumento.setText(compraTB.getProveedorTB().getNumeroDocumento());
+                    lblProveedor.setText(compraTB.getProveedorTB().getRazonSocial());
+                    lblDomicilio.setText(compraTB.getProveedorTB().getDireccion().equalsIgnoreCase("")
                             ? "No tiene un domicilio registrado"
-                            : proveedorTB.getDireccion());
-                    lblContacto.setText("Tel: " + proveedorTB.getTelefono() + " Cel: " + proveedorTB.getCelular());
-
+                            : compraTB.getProveedorTB().getDireccion());
+                    lblContacto.setText("Tel: " + compraTB.getProveedorTB().getTelefono() + " Cel: " + compraTB.getProveedorTB().getCelular());
                 }
 
                 fillArticlesTable(empList);
 
-                ArrayList<CompraCreditoTB> listComprasCredito = (ArrayList<CompraCreditoTB>) objects.get(3);
-                if (!listComprasCredito.isEmpty()) {
-                    for (int i = 0; i < listComprasCredito.size(); i++) {
-                        vbCondicion.getChildren().add(adddElementCondicion("Compra al crédito-Couto Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Vence el " + listComprasCredito.get(i).getFechaRegistro() + " por " + compraTB.getTipoMonedaName() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2) + " Estado " + (listComprasCredito.get(i).isEstado() ? "Pagado" : "Pendiente") + " " + (listComprasCredito.get(i).isEstado() ? "el " + listComprasCredito.get(i).getFechaPago() : "")));
-                    }
+                if (compraTB != null && compraTB.getEstado() == 4) {
+                    btnEditar.setDisable(false);
+                    vbCondicion.getChildren().add(adddElementCondicion("La compra se encuentra en un estado de guardado"));
                 } else {
-                    vbCondicion.getChildren().add(adddElementCondicion("Pago al contado por el valor de: " + lblTotalCompra.getText()));
+                    btnAnular.setDisable(false);
+                    ArrayList<CompraCreditoTB> listComprasCredito = (ArrayList<CompraCreditoTB>) objects.get(2);
+                    if (!listComprasCredito.isEmpty()) {
+                        for (int i = 0; i < listComprasCredito.size(); i++) {
+                            vbCondicion.getChildren().add(adddElementCondicion("Compra al crédito-Couto Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Vence el " + listComprasCredito.get(i).getFechaRegistro() + " por " + compraTB.getTipoMonedaName() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2) + " Estado " + (listComprasCredito.get(i).isEstado() ? "Pagado" : "Pendiente") + " " + (listComprasCredito.get(i).isEstado() ? "el " + listComprasCredito.get(i).getFechaPago() : "")));
+                        }
+                    } else {
+                        vbCondicion.getChildren().add(adddElementCondicion("Pago al contado por el valor de: " + lblTotalCompra.getText()));
+                    }
                 }
 
             } else {
-                Tools.AlertMessage(cpWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Compra", "Error el conectar al servidor, revise su conexión e intente nuevamente.", false);
+                Tools.AlertMessageWarning(cpWindow, "Detalle de Compra", "Error el conectar al servidor, revise su conexión e intente nuevamente.");
             }
             lblLoad.setVisible(false);
         });
@@ -317,70 +315,154 @@ public class FxComprasDetalleController implements Initializable {
 
     private void onEventReporte() {
         try {
+            ArrayList<SuministroTB> list = new ArrayList();
+            arrList.stream().map((DetalleCompraTB detalleCompraTB) -> {
+                SuministroTB stb = new SuministroTB();
+                stb.setCantidad(detalleCompraTB.getCantidad());
+                stb.setUnidadCompraName(detalleCompraTB.getSuministroTB().getUnidadCompraName());
+                stb.setNombreMarca(detalleCompraTB.getSuministroTB().getNombreMarca());
+                stb.setCostoCompra(detalleCompraTB.getPrecioCompra());
+                stb.setDescuento(detalleCompraTB.getDescuento());
+                stb.setTotalImporte(detalleCompraTB.getImporte());
+                return stb;
+            }).forEachOrdered((stb) -> {
+                list.add(stb);
+            });
 
-            InputStream dir = getClass().getResourceAsStream("/report/DetalleCompra.jasper");
+            boolean addOperacion = false;
+            double sumaOperacion = 0;
+
+            boolean addImpuesto = false;
+            double sumaImpuesto = 0;
+
+            ArrayList<SuministroTB> list_totales = new ArrayList();
+
+            for (int k = 0; k < arrayArticulos.size(); k++) {
+                for (int i = 0; i < arrList.size(); i++) {
+                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getIdImpuesto()) {
+                        addOperacion = true;
+                        sumaOperacion += (arrList.get(i).getCantidad() * arrList.get(i).getPrecioCompra()) - (arrList.get(i).getCantidad() * (arrList.get(i).getPrecioCompra() * (arrList.get(i).getDescuento() / 100.00)));
+                    }
+                }
+                if (addOperacion) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
+                    suministroTB.setImpuestoValor(sumaOperacion);
+                    list_totales.add(suministroTB);
+                    addOperacion = false;
+                    sumaOperacion = 0;
+                }
+            }
+
+            for (int k = 0; k < arrayArticulos.size(); k++) {
+                for (int i = 0; i < arrList.size(); i++) {
+                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getIdImpuesto()) {
+                        addImpuesto = true;
+                        sumaImpuesto += arrList.get(i).getImpuestoSumado();
+                    }
+                }
+                if (addImpuesto) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreImpuesto() + ":");
+                    suministroTB.setImpuestoValor(sumaImpuesto);
+                    list_totales.add(suministroTB);
+                    addImpuesto = false;
+                    sumaImpuesto = 0;
+                }
+            }
+
+            if (list.isEmpty()) {
+                Tools.AlertMessageWarning(cpWindow, "Compra realizada", "No hay registros para mostrar en el reporte.");
+                return;
+            }
+
             InputStream imgInputStream
                     = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
-            map.put("IDCOMPRA", idCompra);
-            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
             map.put("LOGO", imgInputStream);
-            map.put("EMAIL", "EMAIL" + Session.COMPANY_EMAIL);
-            map.put("TELEFONOCELULAR", "TEL:" + Session.COMPANY_TELEFONO + " CEL:" + Session.COMPANY_CELULAR);
+            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
+            map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
+            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
 
-            map.put("FECHACOMPRA", lblFechaCompra.getText());
-            map.put("PROVEEDOR", lblProveedor.getText());
-            map.put("PRODIRECCION", lblDomicilio.getText());
-            map.put("PROTELEFONOCELULAR", lblContacto.getText());
-            map.put("PROEMAIL", Session.COMPANY_EMAIL);
+            map.put("DATOSPROVEEDOR", lblProveedor.getText());
+            map.put("NUMERODOCUMENTOPROVEEDOR", lblDocumento.getText());
+            map.put("DIRECCIONPROVEEDOR", lblDomicilio.getText());
+            map.put("FECHAELABORACION", compraTB.getFechaCompra());
+            map.put("MONEDA", compraTB.getTipoMonedaName());
+            map.put("DOCUMENTOPROVEEDOR", compraTB.getProveedorTB().getTipoDocumentoName());
+
+            map.put("SIMBOLO", compraTB.getTipoMonedaName());
+            map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
+            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(compraTB.getTotal(), 2), true, compraTB.getMonedaTB().getNombre()));
+            map.put("VALOR_COMPRA", lblTotalBruto.getText());
+            map.put("DESCUENTO", lblDescuento.getText());
+            map.put("SUB_TOTAL", lblSubTotal.getText());
             map.put("TOTAL", lblTotalNeto.getText());
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(arrList));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(FxComprasDetalleController.class.getResourceAsStream("/report/CompraRealizada.jasper"), map, new JRBeanCollectionDataSource(list));
 
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-            jasperViewer.setIconImage(new ImageIcon(getClass().getResource(FilesRouters.IMAGE_ICON)).getImage());
-            jasperViewer.setTitle("Detalle de compra");
-            jasperViewer.setSize(840, 650);
-            jasperViewer.setLocationRelativeTo(null);
-            jasperViewer.setVisible(true);
-
-        } catch (HeadlessException | JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.out.println("Error al generar el reporte : " + ex);
+            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxReportViewController controller = fXMLLoader.getController();
+            controller.setJasperPrint(jasperPrint);
+            controller.show();
+            Stage stage = WindowStage.StageLoader(parent, "Reporte General de Compra");
+            stage.setResizable(true);
+            stage.show();
+            stage.requestFocus();
+        } catch (HeadlessException | JRException | IOException ex) {
+            Tools.AlertMessageError(cpWindow, "Reporte General de Compras", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 
-    private void eventEditarVenta() {
-
-        if (estadoCompra.equals("anulado".toUpperCase())) {
-            if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
-                try {
-                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                    URL url = getClass().getResource(FilesRouters.FX_COMPRAS_EDITAR);
-                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                    Parent parent = fXMLLoader.load(url.openStream());
-                    //Controlller here
-                    FxComprasEditarController controller = fXMLLoader.getController();
-                    controller.setInitComprasValue(idCompra);
-                    //
-                    Stage stage = WindowStage.StageLoaderModal(parent, "Editar su compra", cpWindow.getScene().getWindow());
-                    stage.setResizable(false);
-                    stage.sizeToScene();
-                    stage.setOnHiding((w) -> {
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                    });
-                    stage.show();
-                } catch (IOException ex) {
-                    System.out.println("Controller compras" + ex.getLocalizedMessage());
-                }
-            }
-        } else {
-            Tools.AlertMessageWarning(cpWindow, "Detalle de Compra", "Debe anular la compra para poder editar.");
+    private void eventEditarVenta() throws IOException {
+        
+        if(compraTB!=null && compraTB.getEstado() == 4){
+            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS_EDITAR));
+            ScrollPane node = fXMLPrincipal.load();
+            
+            FxComprasEditarController controller = fXMLPrincipal.getController();
+            controller.setInitComprasEditar(idCompra);
+            controller.setInitContentComprasEditar(this,vbPrincipal, vbContent);
+            
+            vbContent.getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            vbContent.getChildren().add(node);
         }
+        
+//        if (estadoCompra.equals("anulado".toUpperCase())) {
+//            if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
+//                try {
+//                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+//                    URL url = getClass().getResource(FilesRouters.FX_COMPRAS_EDITAR);
+//                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//                    Parent parent = fXMLLoader.load(url.openStream());
+//                    //Controlller here
+//                    FxComprasEditarController controller = fXMLLoader.getController();
+//                    controller.setInitComprasValue(idCompra);
+//                    //
+//                    Stage stage = WindowStage.StageLoaderModal(parent, "Editar su compra", cpWindow.getScene().getWindow());
+//                    stage.setResizable(false);
+//                    stage.sizeToScene();
+//                    stage.setOnHiding((w) -> {
+//                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+//                    });
+//                    stage.show();
+//                } catch (IOException ex) {
+//                    System.out.println("Controller compras" + ex.getLocalizedMessage());
+//                }
+//            }
+//        } else {
+//            Tools.AlertMessageWarning(cpWindow, "Detalle de Compra", "Debe anular la compra para poder editar.");
+//        }
     }
 
     private void eventCancelarVenta() {
@@ -446,15 +528,19 @@ public class FxComprasDetalleController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedEditar(KeyEvent event) {
+    private void onKeyPressedEditar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             eventEditarVenta();
         }
     }
 
     @FXML
-    private void onActionEditar(ActionEvent event) {
+    private void onActionEditar(ActionEvent event) throws IOException {
         eventEditarVenta();
+    }
+
+    public ScrollPane getCpWindow() {
+        return cpWindow;
     }
 
     public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane vbPrincipal, AnchorPane vbContent) {
