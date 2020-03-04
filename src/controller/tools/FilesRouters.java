@@ -201,6 +201,8 @@ public final class FilesRouters {
     public static final String FX_VENTA_FONDO_INICIAL = "/view/operaciones/venta/FxVentaFondoInicial.fxml";
 
     public static final String FX_VENTA_VALIDAR_CAJA = "/view/operaciones/venta/FxVentaValidarCaja.fxml";
+    
+    public static final String FX_CAJA_NO_REGISTRADA = "/view/operaciones/venta/FxCajaNoRegistrada.fxml";
 
     public static final String FX_VENTA_GRANEL = "/view/operaciones/venta/FxVentaGranel.fxml";
 

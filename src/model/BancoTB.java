@@ -13,6 +13,7 @@ public class BancoTB {
     private String hora;
     private String descripcion;
     private boolean sistema;
+    private boolean asignacion;
 
     public BancoTB() {
     }
@@ -108,6 +109,14 @@ public class BancoTB {
 
     public void setSistema(boolean sistema) {
         this.sistema = sistema;
+    }
+
+    public boolean isAsignacion() {
+        return asignacion;
+    }
+
+    public void setAsignacion(boolean asignacion) {
+        this.asignacion = asignacion;
     }
 
     @Override

@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/model/VentaTB.java</file>
+            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/preloader/SplashScreen.java</file>
             <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaEstructuraController.java</file>
+            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/tickets/FxTicketController.java</file>
+            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxImpresoraTicketController.java</file>
             <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaProcesoController.java</file>
         </group>
     </open-files>

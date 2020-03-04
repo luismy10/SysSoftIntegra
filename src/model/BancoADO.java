@@ -1,6 +1,11 @@
 package model;
 
+import controller.tools.Session;
 import controller.tools.Tools;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import static model.DBUtil.getConnection;
@@ -123,13 +129,14 @@ public class BancoADO {
                         preparedBanco.setString(6, bancoTB.getIdBanco());
                         preparedBanco.addBatch();
 
+                        preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
+
                         if (bancoTB.getSaldoInicial() > 0) {
                             codigoBancoHistorial = DBUtil.getConnection().prepareCall("{? = call Fc_Banco_Historial_Codigo_Alfanumerico()}");
                             codigoBancoHistorial.registerOutParameter(1, java.sql.Types.VARCHAR);
                             codigoBancoHistorial.execute();
                             String idBancoHistorial = codigoBancoHistorial.getString(1);
 
-                            preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
                             preparedBancoHistorial.setString(1, bancoTB.getIdBanco());
                             preparedBancoHistorial.setString(2, idBancoHistorial);
                             preparedBancoHistorial.setString(3, "");
@@ -140,7 +147,30 @@ public class BancoADO {
                             preparedBancoHistorial.setDouble(8, 0);
                             preparedBancoHistorial.addBatch();
                         }
+                        if (bancoTB.isAsignacion()) {
+                            String ruta = "./archivos/cajaSetting.properties";
+                            File file = new File(ruta);
+                            if (file.exists()) {
+                                file.delete();
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
+                                prop.setProperty("id", bancoTB.getIdBanco());
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la caja");
 
+                                Session.ID_BANCO = bancoTB.getIdBanco();
+                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                            } else {
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
+                                prop.setProperty("id", bancoTB.getIdBanco());
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la caja");
+
+                                Session.ID_BANCO = bancoTB.getIdBanco();
+                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                            }
+                        }
                         preparedBanco.executeBatch();
                         preparedBancoHistorial.executeBatch();
                         DBUtil.getConnection().commit();
@@ -170,13 +200,14 @@ public class BancoADO {
                         preparedBanco.setBoolean(9, false);
                         preparedBanco.addBatch();
 
+                        preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
+
                         if (bancoTB.getSaldoInicial() > 0) {
                             codigoBancoHistorial = DBUtil.getConnection().prepareCall("{? = call Fc_Banco_Historial_Codigo_Alfanumerico()}");
                             codigoBancoHistorial.registerOutParameter(1, java.sql.Types.VARCHAR);
                             codigoBancoHistorial.execute();
                             String idBancoHistorial = codigoBancoHistorial.getString(1);
 
-                            preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
                             preparedBancoHistorial.setString(1, idBanco);
                             preparedBancoHistorial.setString(2, idBancoHistorial);
                             preparedBancoHistorial.setString(2, "");
@@ -188,13 +219,38 @@ public class BancoADO {
                             preparedBancoHistorial.addBatch();
                         }
 
+                        if (bancoTB.isAsignacion()) {
+                            String ruta = "./archivos/cajaSetting.properties";
+                            File file = new File(ruta);
+                            if (file.exists()) {
+                                file.delete();
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
+                                prop.setProperty("id", idBanco);
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la caja");
+
+                                Session.ID_BANCO = idBanco;
+                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                            } else {
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
+                                prop.setProperty("id", idBanco);
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la caja");
+
+                                Session.ID_BANCO = idBanco;
+                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                            }
+                        }
+
                         preparedBanco.executeBatch();
                         preparedBancoHistorial.executeBatch();
                         DBUtil.getConnection().commit();
                         result = "inserted";
                     }
                 }
-            } catch (SQLException ex) {
+            } catch (SQLException | IOException ex) {
                 try {
                     DBUtil.getConnection().rollback();
                 } catch (SQLException e) {
@@ -426,6 +482,32 @@ public class BancoADO {
             result = "No se puedo establecer una conexión con el servidor, intente nuevamente.";
         }
         return result;
+    }
+
+    public static boolean ValidarBanco(String idBanco, String NombreBanco) {
+        boolean cajaValida = false;
+        PreparedStatement statementBanco = null;
+        try {
+            DBUtil.dbConnect();
+            statementBanco = DBUtil.getConnection().prepareStatement("SELECT * FROM Banco WHERE IdBanco = ? AND NombreCuenta = ?");
+            statementBanco.setString(1, idBanco);
+            statementBanco.setString(2, NombreBanco);
+            try (ResultSet result = statementBanco.executeQuery()) {
+                if (result.next()) {
+                    cajaValida = true;
+                }
+            }
+        } catch (SQLException ex) {
+            cajaValida = false;
+        }finally{
+            try{
+                if(statementBanco != null){
+                    statementBanco.close();
+                }
+            }catch(SQLException ex){                
+            }
+        }
+        return cajaValida;
     }
 
 }

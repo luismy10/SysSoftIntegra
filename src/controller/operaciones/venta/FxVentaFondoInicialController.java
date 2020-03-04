@@ -11,9 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.CajaADO;
 import model.CajaTB;
-import model.MovimientoCajaADO;
-import model.MovimientoCajaTB;
 
 public class FxVentaFondoInicialController implements Initializable {
 
@@ -30,8 +29,7 @@ public class FxVentaFondoInicialController implements Initializable {
     }
 
     private void eventAceptar() {
-        if (Tools.isNumeric(txtImporte.getText().trim())) {            
-  
+        if (Tools.isNumeric(txtImporte.getText().trim())) {
             CajaTB cajaTB = new CajaTB();
             cajaTB.setFechaApertura(Tools.getDate());
             cajaTB.setHoraApertura(Tools.getHour("HH:mm:ss"));
@@ -40,27 +38,16 @@ public class FxVentaFondoInicialController implements Initializable {
             cajaTB.setContado(0);
             cajaTB.setCalculado(0);
             cajaTB.setDiferencia(0);
-            cajaTB.setFechaRegistro(Tools.getDate());
-            cajaTB.setHoraRegistro(Tools.getHour());
+            cajaTB.setIdBanco(Session.ID_BANCO);
 
-            MovimientoCajaTB movimientoCaja = new MovimientoCajaTB(); 
-            movimientoCaja.setIdUsuario(Session.USER_ID);
-            movimientoCaja.setFechaMovimiento(Tools.getDate());
-            movimientoCaja.setHoraMovimiento(Tools.getHour());
-            movimientoCaja.setComentario("Apertura de caja");
-            movimientoCaja.setMovimiento("FONC");
-            movimientoCaja.setEntrada(Double.parseDouble(txtImporte.getText()));
-            movimientoCaja.setSalidas(0);
-            movimientoCaja.setSaldo(Double.parseDouble(txtImporte.getText()));
-
-            String result = MovimientoCajaADO.AperturarCaja_Movimiento(cajaTB, movimientoCaja);
+            String result = CajaADO.AperturarCaja(cajaTB);
             if (result.equalsIgnoreCase("registrado")) {
                 Tools.AlertMessageInformation(window, "Ventas", "Se aperturo correctamento la caja.");
                 ventaController.setAperturaCaja(true);
                 Tools.Dispose(window);
             } else {
                 Tools.AlertMessageError(window, "Ventas", result);
-                ventaController.setAperturaCaja(false);                
+                ventaController.setAperturaCaja(false);
             }
         }
     }

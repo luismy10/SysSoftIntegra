@@ -95,6 +95,20 @@ public class SplashScreen extends Preloader {
                     } catch (IOException ex) {                    
                         Session.ESTADO_IMPRESORA = false;
                     }
+                    String ruta2 = "./archivos/cajaSetting.properties";
+                    try(InputStream input = new FileInputStream(ruta2)){
+                        
+                        Properties prop = new Properties();
+                        prop.load(input);
+                        
+                        Session.ID_BANCO = prop.getProperty("id");
+                        Session.NOMBRE_BANCO = prop.getProperty("nombreBanco");
+                        
+                    } catch(IOException ex){    
+                        Session.ID_BANCO = "";
+                        Session.NOMBRE_BANCO = "";
+                    }
+                    
 
                     TicketTB ticketTB = TicketADO.GetTicketRuta(1);
                     if (ticketTB != null) {

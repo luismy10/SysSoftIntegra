@@ -14,24 +14,35 @@ public class CajaADO {
 
     public static String AperturarCaja(CajaTB cajaTB) {
         String result = "";
+        CallableStatement statementCodigoCaja = null;
         PreparedStatement statementCaja = null;
+        final String queryCaja = "INSERT INTO CajaTB(IdCaja,FechaApertura,FechaCierre,HoraApertura,HoraCierre,Estado,IdUsuario,Contado,Calculado,Diferencia,IdBanco)VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            String quey = "INSERT INTO CajaTB(Estado,IdUsuario,Contado,Calculado,Diferencia,FechaRegistro,HoraRegistro)VALUES(?,?,?,?,?,?,?)";
-            statementCaja = DBUtil.getConnection().prepareStatement(quey);
-            statementCaja.setBoolean(1, cajaTB.isEstado());
-            statementCaja.setString(2, cajaTB.getIdUsuario());
-            statementCaja.setDouble(3, cajaTB.getContado());
-            statementCaja.setDouble(4, cajaTB.getCalculado());
-            statementCaja.setDouble(5, cajaTB.getDiferencia());
-            statementCaja.setString(6, cajaTB.getFechaRegistro());
-            statementCaja.setString(7, cajaTB.getHoraRegistro());
+            statementCodigoCaja = DBUtil.getConnection().prepareCall("{? = call Fc_Caja_Codigo_Alfanumerico()}");
+            statementCodigoCaja.registerOutParameter(1, java.sql.Types.VARCHAR);
+            statementCodigoCaja.execute();
+            String idCaja = statementCodigoCaja.getString(1);
+
+            statementCaja = DBUtil.getConnection().prepareStatement(queryCaja);
+            statementCaja.setString(1, idCaja);
+            statementCaja.setString(2, cajaTB.getFechaApertura());
+            statementCaja.setString(3, cajaTB.getFechaApertura());
+            statementCaja.setString(4, cajaTB.getHoraApertura());
+            statementCaja.setString(5, cajaTB.getHoraApertura());
+            statementCaja.setBoolean(6, cajaTB.isEstado());
+            statementCaja.setString(7, cajaTB.getIdUsuario());
+            statementCaja.setDouble(8, cajaTB.getContado());
+            statementCaja.setDouble(9, cajaTB.getCalculado());
+            statementCaja.setDouble(10, cajaTB.getDiferencia());
+            statementCaja.setString(11, Session.ID_BANCO);
             statementCaja.addBatch();
 
             statementCaja.executeBatch();
             DBUtil.getConnection().commit();
+            Session.CAJA_ID = idCaja;
             result = "registrado";
         } catch (SQLException ex) {
             try {
@@ -42,6 +53,9 @@ public class CajaADO {
             }
         } finally {
             try {
+                if (statementCodigoCaja != null) {
+                    statementCodigoCaja.close();
+                }
                 if (statementCaja != null) {
                     statementCaja.close();
                 }
@@ -53,8 +67,8 @@ public class CajaADO {
         return result;
     }
 
-    public static String[] ValidarCreacionCaja(String idUsuario) {
-        String[] cajaTB = new String[3];
+    public static CajaTB ValidarCreacionCaja(String idUsuario) {
+        CajaTB cajaTB = new CajaTB();
         PreparedStatement statementValidar = null;
         PreparedStatement statementVentas = null;
         try {
@@ -62,31 +76,29 @@ public class CajaADO {
             statementValidar = DBUtil.getConnection().prepareStatement("SELECT * FROM CajaTB WHERE IdUsuario = ? AND Estado = 1");
             statementValidar.setString(1, idUsuario);
             if (statementValidar.executeQuery().next()) {
-
-                statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja FROM CajaTB WHERE IdUsuario = ? AND Estado = 1 AND CAST(FechaRegistro AS DATE) = CAST(GETDATE() AS DATE)");
+                statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja FROM CajaTB WHERE IdUsuario = ? AND Estado = 1 AND CAST(FechaApertura AS DATE) = CAST(GETDATE() AS DATE)");
                 statementValidar.setString(1, idUsuario);
-                if (statementValidar.executeQuery().next()) {                   
+                if (statementValidar.executeQuery().next()) {
                     ResultSet resultSet = statementValidar.executeQuery();
-                    cajaTB[0] = "2";
-                    cajaTB[1] = resultSet.next() ? "" + resultSet.getString("IdCaja") : "0";
+                    cajaTB.setId(2);
+                    cajaTB.setIdCaja(resultSet.next() ? "" + resultSet.getString("IdCaja") : "0");
                 } else {
                     statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja,FechaApertura,HoraApertura FROM CajaTB WHERE IdUsuario = ? AND Estado = 1");
                     statementValidar.setString(1, idUsuario);
                     ResultSet resultSet = statementValidar.executeQuery();
                     if (resultSet.next()) {
-                        cajaTB[0] = "3";
-                        cajaTB[1] = "" + resultSet.getString("IdCaja");
-                        cajaTB[2] = resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " "
-                                + resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
+                        cajaTB.setId(3);
+                        cajaTB.setIdCaja(resultSet.getString("IdCaja"));
+                        cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+                        cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     } else {
-                        cajaTB[0] = "3";
-                        cajaTB[1] = "0";
-                        cajaTB[2] = "No se pudo obtener los datos";
+                        cajaTB.setId(4);
+//                        cajaTB.setId(0);
                     }
                 }
             } else {
-                cajaTB[0] = "1";
-                cajaTB[1] = "";
+                cajaTB.setId(1);
+//                cajaTB.setId(0);
             }
 
         } catch (SQLException ex) {
@@ -95,6 +107,9 @@ public class CajaADO {
             try {
                 if (statementVentas != null) {
                     statementVentas.close();
+                }
+                if (statementValidar != null) {
+                    statementValidar.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
@@ -125,6 +140,7 @@ public class CajaADO {
                 if (statementCaja != null) {
                     statementCaja.close();
                 }
+
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
 
@@ -224,7 +240,7 @@ public class CajaADO {
         }
         return empList;
     }
-    
+
     public static ObservableList<CajaTB> ListarCajasAperturadasByUser(String idUsuario) {
         PreparedStatement statementLista = null;
         ObservableList<CajaTB> empList = FXCollections.observableArrayList();

@@ -175,10 +175,10 @@
                                  <children>
                                     <HBox>
                                        <children>
-                                          <VBox style="-fx-spacing: 0.6666666666666666em;">
+                                          <VBox fx:id="vbMetodoPago" style="-fx-spacing: 0.6666666666666666em;">
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor En Letras: " />
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Valor" />
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor En Letras: " />
+                                                <Text fx:id="lblValorVentaLetra" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Valor" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -187,16 +187,23 @@
                                        <children>
                                           <VBox>
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago: " />
-                                                <VBox />
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago:" />
+                                                <VBox fx:id="vbMetodoPago" />
                                              </children>
                                           </VBox>
                                           <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0">
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="valor: " />
-                                                <VBox />
+                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor" />
+                                                <VBox fx:id="vbValor" />
                                              </children>
                                           </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxWidth="-Infinity" minHeight="0.0" prefWidth="200.0" />
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Vuelto: " />
+                                          <Text fx:id="txtVuelto" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Text" />
                                        </children>
                                     </HBox>
                                  </children>

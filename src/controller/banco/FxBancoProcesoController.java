@@ -1,12 +1,17 @@
 package controller.banco;
 
 import controller.tools.Tools;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -36,10 +41,13 @@ public class FxBancoProcesoController implements Initializable {
     private TextField txtDescripcion;
     @FXML
     private Button btnProceso;
-
+    @FXML
+    private CheckBox cbAsignarCaja;
+    
     private FxBancosController bancosController;
 
     private String idBanco;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -68,7 +76,7 @@ public class FxBancoProcesoController implements Initializable {
                 }
             }
             cbMoneda.setDisable(bancoTB.getSaldoInicial() > 0);
-            txtSaldoInicial.setDisable(bancoTB.getSaldoInicial() > 0); 
+            txtSaldoInicial.setDisable(bancoTB.getSaldoInicial() > 0);
             txtSaldoInicial.setText(Tools.roundingValue(bancoTB.getSaldoInicial(), 4));
             txtDescripcion.setText(bancoTB.getDescripcion());
         }
@@ -94,6 +102,7 @@ public class FxBancoProcesoController implements Initializable {
             bancoTB.setHora(Tools.getHour());
             bancoTB.setSaldoInicial(Double.parseDouble(txtSaldoInicial.getText()));
             bancoTB.setDescripcion(txtDescripcion.getText().trim());
+            bancoTB.setAsignacion(cbAsignarCaja.isSelected());
             short option = Tools.AlertMessageConfirmation(apWindow, "Banco", "¿Está seguro de continuar?");
             if (option == 1) {
                 String result = BancoADO.Proceso_Banco(bancoTB);

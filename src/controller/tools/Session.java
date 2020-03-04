@@ -73,4 +73,12 @@ public class Session {
     public static String N_DOCUMENTO_CLIENTE;
     
     public static String DIRECCION_CLIENTE;
+    
+    /*
+    variables para la caja
+    */
+    
+    public static String ID_BANCO;
+    
+    public static String NOMBRE_BANCO;
 }

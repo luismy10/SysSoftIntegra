@@ -268,6 +268,9 @@ public class VentaADO {
                 if (movimiento_caja != null) {
                     movimiento_caja.close();
                 }
+                if(forma_pago != null){
+                    forma_pago.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }
@@ -375,10 +378,11 @@ public class VentaADO {
         return empList;
     }
 
-    public static ArrayList<Object> ListCompletaVentasDetalle(String value) {
+    public static ArrayList<Object> ListCompletaVentasDetalle(String idVenta) {
         PreparedStatement statementVenta = null;
         PreparedStatement statementCliente = null;
-        PreparedStatement preparedStatement = null;
+        PreparedStatement statementVentaDetalle = null;
+        PreparedStatement statementFormasPago = null;
 
         ArrayList<Object> objects = new ArrayList<>();
         DBUtil.dbConnect();
@@ -387,7 +391,7 @@ public class VentaADO {
             try {
 
                 statementVenta = DBUtil.getConnection().prepareStatement("{call Sp_Obtener_Venta_ById(?)}");
-                statementVenta.setString(1, value);
+                statementVenta.setString(1, idVenta);
                 ResultSet resultSetVenta = statementVenta.executeQuery();
                 VentaTB ventaTB = null;
                 if (resultSetVenta.next()) {
@@ -429,7 +433,7 @@ public class VentaADO {
                         + "from VentaTB as v inner join EmpleadoTB as e \n"
                         + "on v.Vendedor = e.IdEmpleado\n"
                         + "where v.IdVenta = ?");
-                statementCliente.setString(1, value);
+                statementCliente.setString(1, idVenta);
                 ResultSet resultSetCliente = statementCliente.executeQuery();
                 EmpleadoTB empleadoTB = null;
                 if (resultSetCliente.next()) {
@@ -441,9 +445,9 @@ public class VentaADO {
                     objects.add(empleadoTB);
                 }
 
-                preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Detalle_By_Id(?)}");
-                preparedStatement.setString(1, value);
-                ResultSet resultSetLista = preparedStatement.executeQuery();
+                statementVentaDetalle = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Detalle_By_Id(?)}");
+                statementVentaDetalle.setString(1, idVenta);
+                ResultSet resultSetLista = statementVentaDetalle.executeQuery();
                 ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
                 while (resultSetLista.next()) {
                     SuministroTB suministroTB = new SuministroTB();
@@ -482,6 +486,19 @@ public class VentaADO {
                     empList.add(suministroTB);
                 }
                 objects.add(empList);
+                
+                statementFormasPago = DBUtil.getConnection().prepareStatement("SELECT Nombre, Monto FROM FormaPagotB WHERE IdVenta = ?");
+                statementFormasPago.setString(1, idVenta);
+                ResultSet resulSetFormaPago = statementFormasPago.executeQuery();
+                ArrayList<FormaPagoTB> formaPagoTBs = new ArrayList<>();
+                while(resulSetFormaPago.next()){
+                    FormaPagoTB formaPagoTB = new FormaPagoTB();
+                    formaPagoTB.setNombre(resulSetFormaPago.getString("Nombre"));
+                    formaPagoTB.setMonto(resulSetFormaPago.getDouble("Monto"));
+                    formaPagoTBs.add(formaPagoTB);
+                }
+                objects.add(formaPagoTBs);
+                
             } catch (SQLException e) {
                 System.out.println("ListVentasDetalle:La operación de selección de SQL ha fallado: " + e.getLocalizedMessage());
 
@@ -493,8 +510,11 @@ public class VentaADO {
                     if (statementCliente != null) {
                         statementCliente.close();
                     }
-                    if (preparedStatement != null) {
-                        preparedStatement.close();
+                    if (statementVentaDetalle != null) {
+                        statementVentaDetalle.close();
+                    }
+                    if(statementFormasPago != null){
+                        statementFormasPago.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
