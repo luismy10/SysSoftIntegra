@@ -175,15 +175,15 @@
                                  <children>
                                     <HBox>
                                        <children>
-                                          <VBox>
+                                          <VBox style="-fx-spacing: 0.6666666666666666em;">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor En Letras: " />
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Valor" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Valor" />
                                              </children>
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <VBox>
                                              <children>
@@ -191,7 +191,6 @@
                                                 <VBox />
                                              </children>
                                           </VBox>
-                                          <VBox prefWidth="20.0" />
                                           <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="valor: " />
