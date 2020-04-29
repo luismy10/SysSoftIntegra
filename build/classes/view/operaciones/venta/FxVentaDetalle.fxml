@@ -58,7 +58,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnCancelarVenta" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar la venta">
+                  <Button fx:id="btnCancelarVenta" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Anular la venta">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -177,7 +177,7 @@
                                        <children>
                                           <VBox fx:id="vbMetodoPago" style="-fx-spacing: 0.6666666666666666em;">
                                              <children>
-                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor En Letras: " />
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor En Letras: " />
                                                 <Text fx:id="lblValorVentaLetra" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Valor" />
                                              </children>
                                           </VBox>
@@ -187,23 +187,22 @@
                                        <children>
                                           <VBox>
                                              <children>
-                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago:" />
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago:">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin></Text>
                                                 <VBox fx:id="vbMetodoPago" />
                                              </children>
                                           </VBox>
                                           <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0">
                                              <children>
-                                                <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor" />
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin></Text>
                                                 <VBox fx:id="vbValor" />
                                              </children>
                                           </VBox>
-                                       </children>
-                                    </HBox>
-                                    <Separator maxWidth="-Infinity" minHeight="0.0" prefWidth="200.0" />
-                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Vuelto: " />
-                                          <Text fx:id="txtVuelto" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Text" />
                                        </children>
                                     </HBox>
                                  </children>

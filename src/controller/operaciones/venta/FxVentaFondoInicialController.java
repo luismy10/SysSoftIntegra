@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.BancoHistorialTB;
 import model.CajaADO;
 import model.CajaTB;
 
@@ -38,9 +39,16 @@ public class FxVentaFondoInicialController implements Initializable {
             cajaTB.setContado(0);
             cajaTB.setCalculado(0);
             cajaTB.setDiferencia(0);
-            cajaTB.setIdBanco(Session.ID_BANCO);
-
-            String result = CajaADO.AperturarCaja(cajaTB);
+            cajaTB.setIdBanco(Session.ID_CUENTA_EFECTIVO);
+            
+            BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
+            bancoHistorialTB.setIdBanco(Session.ID_CUENTA_EFECTIVO);
+            bancoHistorialTB.setDescripcion("Apertura de Caja");
+            bancoHistorialTB.setFecha(Tools.getDate());
+            bancoHistorialTB.setHora(Tools.getHour());
+            bancoHistorialTB.setEntrada(Double.parseDouble(txtImporte.getText()));
+            
+            String result = CajaADO.AperturarCaja(cajaTB,bancoHistorialTB);
             if (result.equalsIgnoreCase("registrado")) {
                 Tools.AlertMessageInformation(window, "Ventas", "Se aperturo correctamento la caja.");
                 ventaController.setAperturaCaja(true);

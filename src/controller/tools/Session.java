@@ -57,9 +57,7 @@ public class Session {
     public static String NOMBRE_IMPRESORA;
     
     public static String RUTA_TICKET_VENTA;
-    
-    public static String CAJA_ID;
-    
+        
     public static String MONEDA;
     
     public static boolean CORTAPAPEL_IMPRESORA;
@@ -78,7 +76,12 @@ public class Session {
     variables para la caja
     */
     
-    public static String ID_BANCO;
+    public static String ID_CUENTA_EFECTIVO;
     
-    public static String NOMBRE_BANCO;
+    public static String NOMBRE_CUENTA_EFECTIVO;
+    
+    public static String ID_CUENTA_BANCARIA;
+    
+    public static String NOMBRE_CUENTA_BANCARIA;
+    
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;//call me
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -31,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.BancoHistorialTB;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.CuentasClienteTB;
@@ -271,12 +272,59 @@ public class FxVentaProcesoController implements Initializable {
                     formaPagoTBs.add(formaPagoTB);
                 }
 
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
+                BancoHistorialTB bancoHistorialEfectivo = null;
+                if (Tools.isNumeric(txtEfectivo.getText())) {
+                    if (Session.ID_CUENTA_EFECTIVO == null || Session.ID_CUENTA_EFECTIVO.equalsIgnoreCase("")) {
+                        Tools.AlertMessageWarning(window, "Venta", "No tiene un cuenta en efectivo aperturada!!");
+                        return;
+                    }
+                    bancoHistorialEfectivo = new BancoHistorialTB();
+                    bancoHistorialEfectivo.setIdBanco(Session.ID_CUENTA_EFECTIVO);
+                    bancoHistorialEfectivo.setDescripcion("Venta Efectivo");
+                    bancoHistorialEfectivo.setFecha(Tools.getDate());
+                    bancoHistorialEfectivo.setHora(Tools.getHour());
+                    bancoHistorialEfectivo.setEntrada((Double.parseDouble(txtEfectivo.getText())) > tota_venta ? tota_venta : (Double.parseDouble(txtEfectivo.getText())));
+                }
+
+                BancoHistorialTB bancoHistorialBancaria = null;
+                if (Tools.isNumeric(txtTarjeta.getText())) {
+                    if (Session.ID_CUENTA_BANCARIA == null || Session.ID_CUENTA_BANCARIA.equalsIgnoreCase("")) {
+                        Tools.AlertMessageWarning(window, "Venta", "No tiene un cuenta bancaria aperturada!!");
+                        return;
+                    }
+                    bancoHistorialBancaria = new BancoHistorialTB();
+                    bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
+                    bancoHistorialBancaria.setDescripcion("Venta con Tarjeta");
+                    bancoHistorialBancaria.setFecha(Tools.getDate());
+                    bancoHistorialBancaria.setHora(Tools.getHour());
+                    bancoHistorialBancaria.setEntrada(Double.parseDouble(txtTarjeta.getText()));
+                }
+                if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
+                    if ((Double.parseDouble(txtEfectivo.getText())) >= tota_venta) {
+                        Tools.AlertMessageWarning(window, "Venta", "Los valores ingresados no son correctos!!");
+                        return;
+                    }
+                    double efectivo = Double.parseDouble(txtEfectivo.getText());
+                    double tarjeta = Double.parseDouble(txtTarjeta.getText());
+                    if((efectivo + tarjeta) != tota_venta){
+                        Tools.AlertMessageWarning(window, "Venta", " El monto a pagar no debe ser mayor al total!!");
+                        return;
+                    }
+                }
+                
+                if(!Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())){
+                    if((Double.parseDouble(txtTarjeta.getText())) > tota_venta){
+                        Tools.AlertMessageWarning(window, "Venta", "El pago con tarjeta no debe ser mayor al total!!");
+                        return;
+                    }
+                }
+
+                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar xd?");
                 if (confirmation == 1) {
-                    String[] result = VentaADO.CrudVenta(ventaTB, formaPagoTBs, tvList, ventaEstructuraController.getIdTipoComprobante(), new CuentasClienteTB()).split("/");
+                    String[] result = VentaADO.registrarVentaContado(ventaTB, bancoHistorialEfectivo, bancoHistorialBancaria, formaPagoTBs, tvList, ventaEstructuraController.getIdTipoComprobante(), new CuentasClienteTB()).split("/");
                     switch (result[0]) {
                         case "register":
-                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realiazo la venta con éxito, ¿Desea imprimir el comprobante?");
+                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizo la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
                                 ventaEstructuraController.imprimirVenta(
                                         ventaEstructuraController.obtenerTipoComprobante(),

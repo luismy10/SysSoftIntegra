@@ -95,18 +95,33 @@ public class SplashScreen extends Preloader {
                     } catch (IOException ex) {                    
                         Session.ESTADO_IMPRESORA = false;
                     }
+                    
                     String ruta2 = "./archivos/cajaSetting.properties";
                     try(InputStream input = new FileInputStream(ruta2)){
                         
                         Properties prop = new Properties();
                         prop.load(input);
                         
-                        Session.ID_BANCO = prop.getProperty("id");
-                        Session.NOMBRE_BANCO = prop.getProperty("nombreBanco");
+                        Session.ID_CUENTA_EFECTIVO = prop.getProperty("id");
+                        Session.NOMBRE_CUENTA_EFECTIVO = prop.getProperty("nombreBanco");
                         
                     } catch(IOException ex){    
-                        Session.ID_BANCO = "";
-                        Session.NOMBRE_BANCO = "";
+                        Session.ID_CUENTA_EFECTIVO = "";
+                        Session.NOMBRE_CUENTA_EFECTIVO = "";
+                    }
+                    
+                    String ruta3 = "./archivos/bancoSetting.properties";
+                    try(InputStream input = new FileInputStream(ruta3)){
+                        
+                        Properties prop = new Properties();
+                        prop.load(input);
+                        
+                        Session.ID_CUENTA_BANCARIA = prop.getProperty("id");
+                        Session.NOMBRE_CUENTA_BANCARIA = prop.getProperty("nombreBanco");
+                        
+                    } catch(IOException ex){    
+                        Session.ID_CUENTA_BANCARIA = "";
+                        Session.NOMBRE_CUENTA_BANCARIA = "";
                     }
                     
 

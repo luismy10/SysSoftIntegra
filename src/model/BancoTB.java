@@ -14,6 +14,7 @@ public class BancoTB {
     private String descripcion;
     private boolean sistema;
     private boolean asignacion;
+    private short formaPago;
 
     public BancoTB() {
     }
@@ -123,5 +124,15 @@ public class BancoTB {
     public String toString() {
         return nombreCuenta;
     }
+
+    public short getFormaPago() {
+        return formaPago;
+    }
+
+    public void setFormaPago(short formaPago) {
+        this.formaPago = formaPago;
+    }
+    
+    
 
 }

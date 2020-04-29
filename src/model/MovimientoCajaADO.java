@@ -301,7 +301,7 @@ public class MovimientoCajaADO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Funacion ListarCajasAperturadas:" + ex.getLocalizedMessage());
+            System.out.println("Funcion ListarCajasAperturadas: " + ex.getLocalizedMessage());
         } finally {
             try {
                 if (statementLista != null) {

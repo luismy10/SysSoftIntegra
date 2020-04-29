@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -94,6 +95,12 @@
                         <TextField fx:id="txtDescripcion" onAction="#onActionGuardar" styleClass="text-field-normal" />
                      </children>
                   </VBox>
+               </children>
+            </HBox>
+            <HBox fx:id="hbCuenta" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <RadioButton fx:id="CuentaEfectivo" alignment="CENTER_RIGHT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" selected="true" text="Cuenta en Efectivo" />
+                  <RadioButton fx:id="CuentaBancaria" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Cuenta Bancaria" />
                </children>
             </HBox>
             <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">

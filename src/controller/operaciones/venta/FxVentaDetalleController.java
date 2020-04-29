@@ -52,6 +52,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sourceforge.barbecue.output.Output;
 
 public class FxVentaDetalleController implements Initializable {
 
@@ -97,8 +98,6 @@ public class FxVentaDetalleController implements Initializable {
     private VBox vbMetodoPago;
     @FXML
     private VBox vbValor;
-    @FXML
-    private Text txtVuelto;
 
     private AnchorPane windowinit;
 
@@ -204,7 +203,6 @@ public class FxVentaDetalleController implements Initializable {
                         vuelto = ventaTB.getVuelto();
                         totalVenta = ventaTB.getTotal();
                         lblValorVentaLetra.setText(monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
-                        txtVuelto.setText(Tools.roundingValue(vuelto, 2));
                         Session.TICKET_CODIGOVENTA = ventaTB.getCodigo();
                         Session.TICKET_SIMBOLOMONEDA = ventaTB.getMonedaTB().getSimbolo();
                     }
@@ -213,9 +211,10 @@ public class FxVentaDetalleController implements Initializable {
                         lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
                     }
                     fillVentasDetalleTable(empList);
-                    formaPagoTBs.forEach(em -> {
+                    formaPagoTBs.forEach(em -> {                        
                         addElementMetodoPago(em.getNombre());
                         addElementValor(Tools.roundingValue(em.getMonto(), 2));
+                       
                     });
                 }
 

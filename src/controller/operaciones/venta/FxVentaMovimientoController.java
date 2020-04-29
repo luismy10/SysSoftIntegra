@@ -48,27 +48,27 @@ public class FxVentaMovimientoController implements Initializable {
             Tools.AlertMessageWarning(window, "Ventas", "Ingrese un comentario.");
             txtComentario.requestFocus();
         } else {
-            MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
-            movimientoCaja.setIdCaja(Session.CAJA_ID);
-            movimientoCaja.setIdUsuario(Session.USER_ID);
-            movimientoCaja.setFechaMovimiento(Tools.getDate());
-            movimientoCaja.setComentario(txtComentario.getText().trim());
-            movimientoCaja.setMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex() == 0 ? "ENTR" : "SALI");
-            movimientoCaja.setEntrada(cbMovimiento.getSelectionModel().getSelectedIndex() == 0
-                    ? Double.parseDouble(txtMonto.getText()) : 0);
-            movimientoCaja.setSalidas(cbMovimiento.getSelectionModel().getSelectedIndex() == 0
-                    ? 0 : Double.parseDouble(txtMonto.getText()));
-            movimientoCaja.setSaldo(Double.parseDouble(txtMonto.getText()));
-
-            String result = MovimientoCajaADO.Registrar_Movimiento(movimientoCaja);
-            if (result.equalsIgnoreCase("registrado")) {
-                Tools.AlertMessageInformation(window, "Ventas", "Se registro correctamente el movimiento de caja.");
-                Tools.Dispose(window);
-                ventaEstructuraController.getTxtSearch().requestFocus();
-                ventaEstructuraController.getTxtSearch().selectAll();
-            } else {
-                Tools.AlertMessageWarning(window, "Ventas", result);
-            }
+//            MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
+//            movimientoCaja.setIdCaja(Session.CAJA_ID);
+//            movimientoCaja.setIdUsuario(Session.USER_ID);
+//            movimientoCaja.setFechaMovimiento(Tools.getDate());
+//            movimientoCaja.setComentario(txtComentario.getText().trim());
+//            movimientoCaja.setMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex() == 0 ? "ENTR" : "SALI");
+//            movimientoCaja.setEntrada(cbMovimiento.getSelectionModel().getSelectedIndex() == 0
+//                    ? Double.parseDouble(txtMonto.getText()) : 0);
+//            movimientoCaja.setSalidas(cbMovimiento.getSelectionModel().getSelectedIndex() == 0
+//                    ? 0 : Double.parseDouble(txtMonto.getText()));
+//            movimientoCaja.setSaldo(Double.parseDouble(txtMonto.getText()));
+//
+//            String result = MovimientoCajaADO.Registrar_Movimiento(movimientoCaja);
+//            if (result.equalsIgnoreCase("registrado")) {
+//                Tools.AlertMessageInformation(window, "Ventas", "Se registro correctamente el movimiento de caja.");
+//                Tools.Dispose(window);
+//                ventaEstructuraController.getTxtSearch().requestFocus();
+//                ventaEstructuraController.getTxtSearch().selectAll();
+//            } else {
+//                Tools.AlertMessageWarning(window, "Ventas", result);
+//            }
         }
     }
 

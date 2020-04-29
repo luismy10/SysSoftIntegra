@@ -1,6 +1,5 @@
 package controller.operaciones.venta;
 
-import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -8,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -16,7 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import model.MovimientoCajaTB;
 import model.SuministroTB;
 import model.VentaADO;
 
@@ -62,79 +59,50 @@ public class FxVentaDevolucionController implements Initializable {
     private void eventAceptar() {
         if (rbMovimiento.isSelected()) {
             if (!Tools.isNumeric(txtEfectivo.getText())) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ingrese el monto a devolver.", false);
+                Tools.AlertMessageWarning(window, "Detalle de venta", "Ingrese el monto a devolver.");
                 txtEfectivo.requestFocus();
             } else if (txtObservacion.getText().trim().isEmpty()) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ingrese un comentario.", false);
+                Tools.AlertMessageWarning(window, "Detalle de venta", "Ingrese un comentario.");
                 txtObservacion.requestFocus();
-            } else if (Session.CAJA_ID == null) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "No existe ninguna caja aperturada, para realizar la devolución.", false);
-            } else {
-                short validate = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Detalle de ventas", "¿Está seguro de cancelar la venta?", true);
+            } else{
+                short validate = Tools.AlertMessageConfirmation(window, "Detalle de ventas", "¿Está seguro de cancelar la venta?");
                 if (validate == 1) {
 
-                    MovimientoCajaTB cajaTB = new MovimientoCajaTB();
-                    cajaTB.setIdCaja(Session.CAJA_ID);
-                    cajaTB.setIdUsuario(Session.USER_ID);
-                    cajaTB.setFechaMovimiento(Tools.getDate());
-                    cajaTB.setHoraMovimiento(Tools.getHour());
-                    cajaTB.setComentario(txtObservacion.getText().trim());
-                    cajaTB.setMovimiento("VENCAN");
-                    cajaTB.setSalidas(Double.parseDouble(txtEfectivo.getText()));
-                    cajaTB.setSaldo(Double.parseDouble(txtEfectivo.getText()));
-
-                    String result = VentaADO.CancelTheSale(idVenta, arrList, totalVenta, cajaTB);
-                    if (result.equalsIgnoreCase("update")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", "Se ha cancelado con éxito.", false);
+                    String result = VentaADO.CancelTheSale(idVenta,arrList);
+                    if(result.equalsIgnoreCase("updated")){
+                        Tools.AlertMessageInformation(window, "Detalle de ventas", "Se anulo correctamente.");
                         Tools.Dispose(window);
-                        if (ventaDetalleController != null) {
-                            ventaDetalleController.setInitComponents(idVenta);
-                        } else if (ventaMostrarController != null) {
-
-                        }
-                    } else if (result.equalsIgnoreCase("scrambled")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ya está cancelada la venta!.", false);
-                    } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle de venta", result, false);
+                    }else{
+                        Tools.AlertMessageInformation(window, "Detalle de ventas", result);
                     }
+                    
+//                    MovimientoCajaTB cajaTB = new MovimientoCajaTB();
+//                    cajaTB.setIdCaja(Session.CAJA_ID);
+//                    cajaTB.setIdUsuario(Session.USER_ID);
+//                    cajaTB.setFechaMovimiento(Tools.getDate());
+//                    cajaTB.setHoraMovimiento(Tools.getHour());
+//                    cajaTB.setComentario(txtObservacion.getText().trim());
+//                    cajaTB.setMovimiento("VENCAN");
+//                    cajaTB.setSalidas(Double.parseDouble(txtEfectivo.getText()));
+//                    cajaTB.setSaldo(Double.parseDouble(txtEfectivo.getText()));
+//
+//                    String result = VentaADO.CancelTheSale(idVenta, arrList, totalVenta, cajaTB);
+//                    if (result.equalsIgnoreCase("update")) {
+//                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", "Se ha cancelado con éxito.", false);
+//                        Tools.Dispose(window);
+//                        if (ventaDetalleController != null) {
+//                            ventaDetalleController.setInitComponents(idVenta);
+//                        } else if (ventaMostrarController != null) {
+//
+//                        }
+//                    } else if (result.equalsIgnoreCase("scrambled")) {
+//                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ya está cancelada la venta!.", false);
+//                    } else {
+//                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle de venta", result, false);
+//                    }
                 }
             }
-        } else {
-
-            if (txtObservacion.getText().trim().isEmpty()) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ingrese un comentario.", false);
-                txtObservacion.requestFocus();
-            } else if (Session.CAJA_ID == null) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "No existe ninguna caja aperturada, para realizar la devolución.", false);
-            } else {
-                short validate = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Detalle de ventas", "¿Está seguro de cancelar la venta?", true);
-                if (validate == 1) {
-                    MovimientoCajaTB cajaTB = new MovimientoCajaTB();
-                    cajaTB.setIdCaja(Session.CAJA_ID);
-                    cajaTB.setIdUsuario(Session.USER_ID);
-                    cajaTB.setFechaMovimiento(Tools.getDate());
-                    cajaTB.setComentario(txtObservacion.getText().trim());
-                    cajaTB.setMovimiento("VENCAN");
-                    cajaTB.setSaldo(0);
-
-                    String result = VentaADO.CancelTheSale(idVenta, arrList, totalVenta, cajaTB);
-                    if (result.equalsIgnoreCase("update")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle de venta", "Se ha cancelado con éxito.", false);
-                        Tools.Dispose(window);
-                        if (ventaDetalleController != null) {
-                            ventaDetalleController.setInitComponents(idVenta);
-                        } else if (ventaMostrarController != null) {
-
-                        }
-                    } else if (result.equalsIgnoreCase("scrambled")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "Ya está cancelada la venta!.", false);
-                    } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle de venta", result, false);
-                    }
-                }
-            }
-
-        }
+        } 
 
     }
 

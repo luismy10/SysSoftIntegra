@@ -42,6 +42,7 @@ public class BancoADO {
                 bancoTB.setSaldoInicial(rsEmps.getDouble("SaldoInicial"));
                 bancoTB.setDescripcion(rsEmps.getString("Descripcion"));
                 bancoTB.setSistema(rsEmps.getBoolean("Sistema"));
+                bancoTB.setFormaPago(rsEmps.getShort("FormaPago"));
                 empList.add(bancoTB);
             }
         } catch (SQLException e) {
@@ -64,7 +65,7 @@ public class BancoADO {
     }
 
     public static BancoTB Obtener_Banco_Por_Id(String value) {
-        String selectStmt = "SELECT NombreCuenta,NumeroCuenta,IdMoneda,SaldoInicial,Descripcion FROM Banco WHERE IdBanco = ?";
+        String selectStmt = "SELECT NombreCuenta,NumeroCuenta,IdMoneda,SaldoInicial,Descripcion,FormaPago FROM Banco WHERE IdBanco = ?";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         BancoTB bancoTB = null;
@@ -80,6 +81,7 @@ public class BancoADO {
                 bancoTB.setIdMoneda(rsEmps.getInt("IdMoneda"));
                 bancoTB.setSaldoInicial(rsEmps.getDouble("SaldoInicial"));
                 bancoTB.setDescripcion(rsEmps.getString("Descripcion"));
+                bancoTB.setFormaPago(rsEmps.getShort("FormaPago"));
             }
         } catch (SQLException e) {
             System.out.println("Obtener_Banco_Por_Id - La operación de selección de SQL ha fallado: " + e);
@@ -147,30 +149,54 @@ public class BancoADO {
                             preparedBancoHistorial.setDouble(8, 0);
                             preparedBancoHistorial.addBatch();
                         }
-                        if (bancoTB.isAsignacion()) {
+                        if (bancoTB.isAsignacion() && bancoTB.getFormaPago() == 1) {
                             String ruta = "./archivos/cajaSetting.properties";
                             File file = new File(ruta);
                             if (file.exists()) {
                                 file.delete();
                                 OutputStream output = new FileOutputStream(ruta);
                                 Properties prop = new Properties();
+
                                 prop.setProperty("id", bancoTB.getIdBanco());
                                 prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
                                 prop.store(output, "Ruta de configuración de la caja");
-
-                                Session.ID_BANCO = bancoTB.getIdBanco();
-                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                                Session.ID_CUENTA_EFECTIVO = bancoTB.getIdBanco();
+                                Session.NOMBRE_CUENTA_EFECTIVO = bancoTB.getNombreCuenta();
                             } else {
                                 OutputStream output = new FileOutputStream(ruta);
                                 Properties prop = new Properties();
+
                                 prop.setProperty("id", bancoTB.getIdBanco());
                                 prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
                                 prop.store(output, "Ruta de configuración de la caja");
+                                Session.ID_CUENTA_EFECTIVO = bancoTB.getIdBanco();
+                                Session.NOMBRE_CUENTA_EFECTIVO = bancoTB.getNombreCuenta();
+                            }
+                        }else{
+                            String ruta = "./archivos/bancoSetting.properties";
+                            File file = new File(ruta);
+                            if (file.exists()) {
+                                file.delete();
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
 
-                                Session.ID_BANCO = bancoTB.getIdBanco();
-                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                                prop.setProperty("id", bancoTB.getIdBanco());
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la banco");
+                                Session.ID_CUENTA_BANCARIA = bancoTB.getIdBanco();
+                                Session.NOMBRE_CUENTA_BANCARIA = bancoTB.getNombreCuenta();
+                            } else {
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
+
+                                prop.setProperty("id", bancoTB.getIdBanco());
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la banco");
+                                Session.ID_CUENTA_BANCARIA = bancoTB.getIdBanco();
+                                Session.NOMBRE_CUENTA_BANCARIA = bancoTB.getNombreCuenta();
                             }
                         }
+                        
                         preparedBanco.executeBatch();
                         preparedBancoHistorial.executeBatch();
                         DBUtil.getConnection().commit();
@@ -188,7 +214,7 @@ public class BancoADO {
                         codigoBanco.execute();
                         String idBanco = codigoBanco.getString(1);
 
-                        preparedBanco = DBUtil.getConnection().prepareStatement("INSERT INTO Banco (IdBanco,NombreCuenta,NumeroCuenta,IdMoneda,SaldoInicial,FechaCreacion,HoraCreacion,Descripcion,Sistema)VALUES(?,?,?,?,?,?,?,?,?)");
+                        preparedBanco = DBUtil.getConnection().prepareStatement("INSERT INTO Banco (IdBanco,NombreCuenta,NumeroCuenta,IdMoneda,SaldoInicial,FechaCreacion,HoraCreacion,Descripcion,Sistema,FormaPago)VALUES(?,?,?,?,?,?,?,?,?,?)");
                         preparedBanco.setString(1, idBanco);
                         preparedBanco.setString(2, bancoTB.getNombreCuenta());
                         preparedBanco.setString(3, bancoTB.getNumeroCuenta());
@@ -198,6 +224,7 @@ public class BancoADO {
                         preparedBanco.setString(7, bancoTB.getHora());
                         preparedBanco.setString(8, bancoTB.getDescripcion());
                         preparedBanco.setBoolean(9, false);
+                        preparedBanco.setShort(10, bancoTB.getFormaPago());
                         preparedBanco.addBatch();
 
                         preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
@@ -210,37 +237,60 @@ public class BancoADO {
 
                             preparedBancoHistorial.setString(1, idBanco);
                             preparedBancoHistorial.setString(2, idBancoHistorial);
-                            preparedBancoHistorial.setString(2, "");
-                            preparedBancoHistorial.setString(3, "Apertura de cuenta");
-                            preparedBancoHistorial.setString(4, Tools.getDate());
-                            preparedBancoHistorial.setString(5, Tools.getHour());
-                            preparedBancoHistorial.setDouble(6, bancoTB.getSaldoInicial());
-                            preparedBancoHistorial.setDouble(7, 0);
+                            preparedBancoHistorial.setString(3, "");
+                            preparedBancoHistorial.setString(4, "Apertura de cuenta");
+                            preparedBancoHistorial.setString(5, Tools.getDate());
+                            preparedBancoHistorial.setString(6, Tools.getHour());
+                            preparedBancoHistorial.setDouble(7, bancoTB.getSaldoInicial());
+                            preparedBancoHistorial.setDouble(8, 0);
                             preparedBancoHistorial.addBatch();
                         }
 
-                        if (bancoTB.isAsignacion()) {
+                        if (bancoTB.isAsignacion() && bancoTB.getFormaPago() == 1) {
                             String ruta = "./archivos/cajaSetting.properties";
                             File file = new File(ruta);
                             if (file.exists()) {
                                 file.delete();
                                 OutputStream output = new FileOutputStream(ruta);
                                 Properties prop = new Properties();
+
                                 prop.setProperty("id", idBanco);
                                 prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
                                 prop.store(output, "Ruta de configuración de la caja");
-
-                                Session.ID_BANCO = idBanco;
-                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                                Session.ID_CUENTA_EFECTIVO = idBanco;
+                                Session.NOMBRE_CUENTA_EFECTIVO = bancoTB.getNombreCuenta();
                             } else {
                                 OutputStream output = new FileOutputStream(ruta);
                                 Properties prop = new Properties();
+
                                 prop.setProperty("id", idBanco);
                                 prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
                                 prop.store(output, "Ruta de configuración de la caja");
+                                Session.ID_CUENTA_EFECTIVO = idBanco;
+                                Session.NOMBRE_CUENTA_EFECTIVO = bancoTB.getNombreCuenta();
+                            }
+                        }else{
+                            String ruta = "./archivos/bancoSetting.properties";
+                            File file = new File(ruta);
+                            if (file.exists()) {
+                                file.delete();
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
 
-                                Session.ID_BANCO = idBanco;
-                                Session.NOMBRE_BANCO = bancoTB.getNombreCuenta();
+                                prop.setProperty("id", idBanco);
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la banco");
+                                Session.ID_CUENTA_BANCARIA = idBanco;
+                                Session.NOMBRE_CUENTA_BANCARIA = bancoTB.getNombreCuenta();
+                            } else {
+                                OutputStream output = new FileOutputStream(ruta);
+                                Properties prop = new Properties();
+
+                                prop.setProperty("id", idBanco);
+                                prop.setProperty("nombreBanco", bancoTB.getNombreCuenta());
+                                prop.store(output, "Ruta de configuración de la banco");
+                                Session.ID_CUENTA_BANCARIA = idBanco;
+                                Session.NOMBRE_CUENTA_BANCARIA = bancoTB.getNombreCuenta();
                             }
                         }
 
@@ -474,6 +524,7 @@ public class BancoADO {
                     if (preparedBancoHistorial != null) {
                         preparedBancoHistorial.close();
                     }
+                    DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
                     result = ex.getLocalizedMessage();
                 }
@@ -499,12 +550,12 @@ public class BancoADO {
             }
         } catch (SQLException ex) {
             cajaValida = false;
-        }finally{
-            try{
-                if(statementBanco != null){
+        } finally {
+            try {
+                if (statementBanco != null) {
                     statementBanco.close();
                 }
-            }catch(SQLException ex){                
+            } catch (SQLException ex) {
             }
         }
         return cajaValida;

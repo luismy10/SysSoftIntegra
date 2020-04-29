@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.CajaADO;
+import model.CajaTB;
 import model.MovimientoCajaADO;
 import model.MovimientoCajaTB;
 import model.PrivilegioTB;
@@ -71,18 +72,20 @@ public class FxCajaController implements Initializable {
     }
 
     private void corteCaja() {
-        String[] strings = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-        switch (strings[0]) {
-            case "1":
+        //es tan dificil busca en inter como es la estructura de un switch en java si lo se solo setoy ocupad dame un minuto
+        //TE FALTO TMR AHI LO CAMBIO
+        CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+        switch (cajaTB.getId()) {
+            case 1:
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Corte de caja", "No tiene ninguna caja aperturada.", false);
                 btnTerminarTurno.setDisable(true);
                 break;
-            case "2":
-                Session.CAJA_ID = strings[1];
+            case 2:
+                idActual = cajaTB.getIdCaja();
                 loadCaja();
                 break;
-            case "3":
-                Session.CAJA_ID = strings[1];
+            case 3:
+                idActual = cajaTB.getIdCaja();
                 loadCaja();
                 break;
             default:
@@ -92,7 +95,6 @@ public class FxCajaController implements Initializable {
     }
 
     private void loadCaja() {
-        idActual = Session.CAJA_ID;
         lblCargo.setText(Session.USER_NAME);
         lblFecha.setText(Tools.getDate("dd-MM-yyyy"));
 

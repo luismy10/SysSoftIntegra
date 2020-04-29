@@ -1,23 +1,12 @@
-<<<<<<< HEAD
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
-    </open-files>
-</project-private>
-=======
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/preloader/SplashScreen.java</file>
-            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaEstructuraController.java</file>
-            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/tickets/FxTicketController.java</file>
-            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxImpresoraTicketController.java</file>
+            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaDevolucionController.java</file>
+            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaDetalleController.java</file>
+            <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/model/VentaADO.java</file>
             <file>file:/C:/Users/rcorrea/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaProcesoController.java</file>
         </group>
     </open-files>
 </project-private>
->>>>>>> 4eeb34c8cee337033093bbcbd9e8eaa218107885

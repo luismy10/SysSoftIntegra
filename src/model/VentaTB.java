@@ -37,6 +37,7 @@ public class VentaTB {
     private ClienteTB clienteTB;
     private MonedaTB monedaTB;
     private FormaPagoTB formaPagoTB;
+    private boolean tipopago;
     
     public VentaTB() {
 
@@ -286,6 +287,14 @@ public class VentaTB {
     
     public void setFormaPagoTB(FormaPagoTB formaPagoTB){
         this.formaPagoTB = formaPagoTB;
+    }
+
+    public boolean isTipopago() {
+        return tipopago;
+    }
+
+    public void setTipopago(boolean tipopago) {
+        this.tipopago = tipopago;
     }
 
 }

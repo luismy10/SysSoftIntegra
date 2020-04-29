@@ -89,20 +89,19 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadValidarCaja() {
-       
-        if ("".equals(Session.ID_BANCO) && "".equals(Session.NOMBRE_BANCO)) {
-            openWindowCajaNoRegistrada("Su punto de venta no esta configurada para nosee");
+
+        if ("".equals(Session.ID_CUENTA_EFECTIVO) && "".equals(Session.NOMBRE_CUENTA_EFECTIVO)) {
+            openWindowCajaNoRegistrada("Su caja no esta configurada para este punto de venta, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
         } else {
-            boolean validate = BancoADO.ValidarBanco(Session.ID_BANCO, Session.NOMBRE_BANCO);
+            boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
             if (validate) {
                 CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-                System.out.println(cajaTB.getId());
                 switch (cajaTB.getId()) {
                     case 1:
                         openWindowFondoInicial();
                         break;
                     case 2:
-                        Session.CAJA_ID = cajaTB.getIdCaja();
+//                        Session.CAJA_ID = cajaTB.getIdCaja();
                         aperturaCaja = true;
                         hbContenedorVentas.setDisable(false);
                         break;
@@ -113,7 +112,7 @@ public class FxVentaController implements Initializable {
                         break;
                 }
             } else {
-                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico y la verga");
+                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
             }
         }
 
@@ -134,6 +133,10 @@ public class FxVentaController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                 if (aperturaCaja) {
+                    aperturaCaja = false;
+                    hbContenedorVentas.setDisable(true);
+                }
             });
             stage.show();
         } catch (IOException ex) {
@@ -182,6 +185,10 @@ public class FxVentaController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                if (aperturaCaja) {
+                    aperturaCaja = false;
+                    hbContenedorVentas.setDisable(true);
+                }
             });
             stage.show();
             controller.loadData(idCaja, dateTime);
