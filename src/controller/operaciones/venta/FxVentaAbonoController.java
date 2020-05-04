@@ -25,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.CajaADO;
+import model.CajaTB;
 import model.CuentasClienteADO;
 import model.CuentasClienteTB;
 import model.CuentasHistorialClienteADO;
@@ -136,41 +137,41 @@ public class FxVentaAbonoController implements Initializable {
 
     private void deleteAbono() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            short option = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Abono", "¿Está segudo de cancelar el abono?", true);
-            if (option == 1) {
-
-                String[] strings = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-                if (strings[0].equals("1")) {
-                } else if (strings[0].equals("2")) {
-                    Session.CAJA_ID = strings[1];
-                } else if (strings[0].equals("3")) {
-                    Session.CAJA_ID = strings[1];
-                }
-
-                if (Session.CAJA_ID == null) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "No existe ninguna caja aperturada, para realizar la devolución.", false);
-                } else {
-                    MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
-                    movimientoCaja.setIdCaja(Session.CAJA_ID);
-                    movimientoCaja.setIdUsuario(Session.USER_ID);
-                    movimientoCaja.setFechaMovimiento(Tools.getDate());
-                    movimientoCaja.setComentario("Eliminado el abono");
-                    movimientoCaja.setMovimiento("ABON");
-                    movimientoCaja.setEntrada(0);
-                    movimientoCaja.setSalidas(tvList.getSelectionModel().getSelectedItem().getAbono());
-                    movimientoCaja.setSaldo(tvList.getSelectionModel().getSelectedItem().getAbono());
-
-                    String result = CuentasHistorialClienteADO.Delete_CuentasHistorialCliente(idVenta,tvList.getSelectionModel().getSelectedItem().getIdCuentasHistorialCliente(),
-                            "se canceló el abono realizado de".toUpperCase() + " " + tvList.getSelectionModel().getSelectedItem().getAbono(),
-                            movimientoCaja);
-                    if (result.equalsIgnoreCase("deleted")) {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Abonar", "Se elimino el abono correctamente.", false);
-                        loadTableAbono();
-                    } else {
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", result, false);
-                    }
-                }
-            }
+//            short option = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Abono", "¿Está segudo de cancelar el abono?", true);
+//            if (option == 1) {
+//
+//                CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+//                if (cajaTB.getId() == 1) {
+//                } else if (cajaTB.getId() == 2) {//listo
+//                    Session.CAJA_ID = cajaTB.getIdCaja();
+//                } else if (cajaTB.getId() == 3) {
+//                    Session.CAJA_ID = cajaTB.getIdCaja();
+//                }
+//
+//                if (Session.CAJA_ID == null) {
+//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de venta", "No existe ninguna caja aperturada, para realizar la devolución.", false);
+//                } else {
+//                    MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
+//                    movimientoCaja.setIdCaja(Session.CAJA_ID);
+//                    movimientoCaja.setIdUsuario(Session.USER_ID);
+//                    movimientoCaja.setFechaMovimiento(Tools.getDate());
+//                    movimientoCaja.setComentario("Eliminado el abono");
+//                    movimientoCaja.setMovimiento("ABON");
+//                    movimientoCaja.setEntrada(0);
+//                    movimientoCaja.setSalidas(tvList.getSelectionModel().getSelectedItem().getAbono());
+//                    movimientoCaja.setSaldo(tvList.getSelectionModel().getSelectedItem().getAbono());
+//
+//                    String result = CuentasHistorialClienteADO.Delete_CuentasHistorialCliente(idVenta,tvList.getSelectionModel().getSelectedItem().getIdCuentasHistorialCliente(),
+//                            "se canceló el abono realizado de".toUpperCase() + " " + tvList.getSelectionModel().getSelectedItem().getAbono(),
+//                            movimientoCaja);
+//                    if (result.equalsIgnoreCase("deleted")) {
+//                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Abonar", "Se elimino el abono correctamente.", false);
+//                        loadTableAbono();
+//                    } else {
+//                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", result, false);
+//                    }
+//                }
+//            }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Abonar", "Seleccione una abono para cancelarlo.", false);
             tvList.requestFocus();

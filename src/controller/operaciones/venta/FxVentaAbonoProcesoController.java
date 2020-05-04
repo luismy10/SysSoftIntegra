@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import model.CajaADO;
+import model.CajaTB;
 import model.CuentasHistorialClienteADO;
 import model.CuentasHistorialClienteTB;
 import model.MovimientoCajaTB;
@@ -48,13 +49,20 @@ public class FxVentaAbonoProcesoController implements Initializable {
         this.idCuentasCliente = idCuentasCliente;
         this.total = total;
         this.pagado = pagado;
-        String[] strings = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-        if (strings[0].equals("1")) {
-        } else if (strings[0].equals("2")) {
-            Session.CAJA_ID = strings[1];
-        } else if (strings[0].equals("3")) {
-            Session.CAJA_ID = strings[1];
+        CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+        switch (cajaTB.getId()) {
+            case 1:
+                break;
+            case 2:
+              //  Session.CAJA_ID = cajaTB.getIdCaja();
+                break;
+            case 3:
+             //   Session.CAJA_ID = cajaTB.getIdCaja();
+                break;
+            default:
+                break;
         }
+        //EN LOS DEMAS ARREGLA
     }
 
     private void saveAbono() {
@@ -64,36 +72,35 @@ public class FxVentaAbonoProcesoController implements Initializable {
         } else if (Double.parseDouble(txtValorCuota.getText().trim()) <= 0) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Abonar", "El abono no puede ser menor a 0.", false);
             txtValorCuota.requestFocus();
-        } else if (Session.CAJA_ID == null) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Abonar", "No existe ninguna caja aperturada, para realizar la devolución.", false);
-        } else {
+        }
+        else {
             if ((pagado + Double.parseDouble(txtValorCuota.getText())) > total) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", "El abono ingresado sobrepasa al monto a cobrar.", false);
                 txtValorCuota.requestFocus();
             } else {
-                CuentasHistorialClienteTB historialClienteTB = new CuentasHistorialClienteTB();
-                historialClienteTB.setIdCuentaClientes(idCuentasCliente);
-                historialClienteTB.setAbono(Double.parseDouble(txtValorCuota.getText()));
-                historialClienteTB.setFechaAbono(LocalDateTime.now());
-                historialClienteTB.setReferencia(txtObservacion.getText().trim().equalsIgnoreCase("") ? "NINGUNO" : txtObservacion.getText().trim());
-
-                MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
-                movimientoCaja.setIdCaja(Session.CAJA_ID);
-                movimientoCaja.setIdUsuario(Session.USER_ID);
-                movimientoCaja.setFechaMovimiento(Tools.getDate());
-                movimientoCaja.setComentario("Abono");
-                movimientoCaja.setMovimiento("ABON");
-                movimientoCaja.setEntrada(Double.parseDouble(txtValorCuota.getText()));
-                movimientoCaja.setSalidas(0);
-                movimientoCaja.setSaldo(Double.parseDouble(txtValorCuota.getText()));
-
-                String result = CuentasHistorialClienteADO.Crud_CuentasHistorialCliente(historialClienteTB, movimientoCaja, (total == (pagado + Double.parseDouble(txtValorCuota.getText()))), idVenta);
-                if (result.equalsIgnoreCase("register")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Abonar", "Se registro correctamente el abono.", false);
-                    Tools.Dispose(window);
-                } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", result, false);
-                }
+//                CuentasHistorialClienteTB historialClienteTB = new CuentasHistorialClienteTB();
+//                historialClienteTB.setIdCuentaClientes(idCuentasCliente);
+//                historialClienteTB.setAbono(Double.parseDouble(txtValorCuota.getText()));
+//                historialClienteTB.setFechaAbono(LocalDateTime.now());
+//                historialClienteTB.setReferencia(txtObservacion.getText().trim().equalsIgnoreCase("") ? "NINGUNO" : txtObservacion.getText().trim());
+//
+//                MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
+//                movimientoCaja.setIdCaja(Session.CAJA_ID);
+//                movimientoCaja.setIdUsuario(Session.USER_ID);
+//                movimientoCaja.setFechaMovimiento(Tools.getDate());
+//                movimientoCaja.setComentario("Abono");
+//                movimientoCaja.setMovimiento("ABON");
+//                movimientoCaja.setEntrada(Double.parseDouble(txtValorCuota.getText()));
+//                movimientoCaja.setSalidas(0);
+//                movimientoCaja.setSaldo(Double.parseDouble(txtValorCuota.getText()));
+//
+//                String result = CuentasHistorialClienteADO.Crud_CuentasHistorialCliente(historialClienteTB, movimientoCaja, (total == (pagado + Double.parseDouble(txtValorCuota.getText()))), idVenta);
+//                if (result.equalsIgnoreCase("register")) {
+//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Abonar", "Se registro correctamente el abono.", false);
+//                    Tools.Dispose(window);
+//                } else {
+//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", result, false);
+//                }
             }
         }
     }

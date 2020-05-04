@@ -1,6 +1,5 @@
 package model;
 
-import controller.tools.Session;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,49 +11,99 @@ import javafx.collections.ObservableList;
 
 public class CajaADO {
 
-    public static String AperturarCaja(CajaTB cajaTB) {
+    public static String AperturarCaja(CajaTB cajaTB, BancoHistorialTB bancoHistorialTB) {
         String result = "";
+        CallableStatement statementCodigoCaja = null;
         PreparedStatement statementCaja = null;
-        try {
-            DBUtil.dbConnect();
-            DBUtil.getConnection().setAutoCommit(false);
 
-            String quey = "INSERT INTO CajaTB(Estado,IdUsuario,Contado,Calculado,Diferencia,FechaRegistro,HoraRegistro)VALUES(?,?,?,?,?,?,?)";
-            statementCaja = DBUtil.getConnection().prepareStatement(quey);
-            statementCaja.setBoolean(1, cajaTB.isEstado());
-            statementCaja.setString(2, cajaTB.getIdUsuario());
-            statementCaja.setDouble(3, cajaTB.getContado());
-            statementCaja.setDouble(4, cajaTB.getCalculado());
-            statementCaja.setDouble(5, cajaTB.getDiferencia());
-            statementCaja.setString(6, cajaTB.getFechaRegistro());
-            statementCaja.setString(7, cajaTB.getHoraRegistro());
-            statementCaja.addBatch();
+        CallableStatement codigoBancoHistorial = null;
+        PreparedStatement preparedBanco = null;
+        PreparedStatement preparedBancoHistorial = null;
 
-            statementCaja.executeBatch();
-            DBUtil.getConnection().commit();
-            result = "registrado";
-        } catch (SQLException ex) {
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
             try {
-                DBUtil.getConnection().rollback();
-                result = ex.getLocalizedMessage();
-            } catch (SQLException ex1) {
-                result = ex1.getLocalizedMessage();
-            }
-        } finally {
-            try {
-                if (statementCaja != null) {
-                    statementCaja.close();
-                }
-                DBUtil.dbDisconnect();
+
+                DBUtil.getConnection().setAutoCommit(false);
+
+                statementCodigoCaja = DBUtil.getConnection().prepareCall("{? = call Fc_Caja_Codigo_Alfanumerico()}");
+                statementCodigoCaja.registerOutParameter(1, java.sql.Types.VARCHAR);
+                statementCodigoCaja.execute();
+                String idCaja = statementCodigoCaja.getString(1);
+
+                statementCaja = DBUtil.getConnection().prepareStatement("INSERT INTO CajaTB(IdCaja,FechaApertura,FechaCierre,HoraApertura,HoraCierre,Estado,Contado,Calculado,Diferencia,IdUsuario,IdBanco)VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+                statementCaja.setString(1, idCaja);
+                statementCaja.setString(2, cajaTB.getFechaApertura());
+                statementCaja.setString(3, cajaTB.getFechaApertura());
+                statementCaja.setString(4, cajaTB.getHoraApertura());
+                statementCaja.setString(5, cajaTB.getHoraApertura());
+                statementCaja.setBoolean(6, cajaTB.isEstado());
+                statementCaja.setDouble(7, cajaTB.getContado());
+                statementCaja.setDouble(8, cajaTB.getCalculado());
+                statementCaja.setDouble(9, cajaTB.getDiferencia());
+                statementCaja.setString(10, cajaTB.getIdUsuario());
+                statementCaja.setString(11, cajaTB.getIdBanco());
+                statementCaja.addBatch();
+
+
+                preparedBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial + ? WHERE IdBanco = ?");
+                preparedBanco.setDouble(1, bancoHistorialTB.getEntrada());
+                preparedBanco.setString(2, bancoHistorialTB.getIdBanco());
+                preparedBanco.addBatch();
+
+                preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
+                preparedBancoHistorial.setString(1, bancoHistorialTB.getIdBanco());
+                preparedBancoHistorial.setString(2, "");
+                preparedBancoHistorial.setString(3, bancoHistorialTB.getDescripcion());
+                preparedBancoHistorial.setString(4, bancoHistorialTB.getFecha());
+                preparedBancoHistorial.setString(5, bancoHistorialTB.getHora());
+                preparedBancoHistorial.setDouble(6, bancoHistorialTB.getEntrada());
+                preparedBancoHistorial.setDouble(7, 0);
+                preparedBancoHistorial.addBatch();
+
+                statementCaja.executeBatch();
+                preparedBanco.executeBatch();
+                preparedBancoHistorial.executeBatch();
+                DBUtil.getConnection().commit();
+                result = "registrado";
             } catch (SQLException ex) {
-                result = ex.getLocalizedMessage();
+                try {
+                    DBUtil.getConnection().rollback();
+                    result = ex.getLocalizedMessage();
+                } catch (SQLException ex1) {
+                    result = ex1.getLocalizedMessage();
+                }
+            } finally {
+                try {
+                    if (statementCodigoCaja != null) {
+                        statementCodigoCaja.close();
+                    }
+                    if (statementCaja != null) {
+                        statementCaja.close();
+                    }
+
+                    if (codigoBancoHistorial != null) {
+                        codigoBancoHistorial.close();
+                    }
+                    if (preparedBanco != null) {
+                        preparedBanco.close();
+                    }
+                    if (preparedBancoHistorial != null) {
+                        preparedBancoHistorial.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
             }
+        } else {
+            result = "No se puedo establecer una conexión con el servidor, intente nuevamente.";
         }
         return result;
     }
 
-    public static String[] ValidarCreacionCaja(String idUsuario) {
-        String[] cajaTB = new String[3];
+    public static CajaTB ValidarCreacionCaja(String idUsuario) {
+        CajaTB cajaTB = new CajaTB();
         PreparedStatement statementValidar = null;
         PreparedStatement statementVentas = null;
         try {
@@ -62,31 +111,29 @@ public class CajaADO {
             statementValidar = DBUtil.getConnection().prepareStatement("SELECT * FROM CajaTB WHERE IdUsuario = ? AND Estado = 1");
             statementValidar.setString(1, idUsuario);
             if (statementValidar.executeQuery().next()) {
-
-                statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja FROM CajaTB WHERE IdUsuario = ? AND Estado = 1 AND CAST(FechaRegistro AS DATE) = CAST(GETDATE() AS DATE)");
+                statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja FROM CajaTB WHERE IdUsuario = ? AND Estado = 1 AND CAST(FechaApertura AS DATE) = CAST(GETDATE() AS DATE)");
                 statementValidar.setString(1, idUsuario);
-                if (statementValidar.executeQuery().next()) {                   
+                if (statementValidar.executeQuery().next()) {
                     ResultSet resultSet = statementValidar.executeQuery();
-                    cajaTB[0] = "2";
-                    cajaTB[1] = resultSet.next() ? "" + resultSet.getString("IdCaja") : "0";
+                    cajaTB.setId(2);
+                    cajaTB.setIdCaja(resultSet.next() ? "" + resultSet.getString("IdCaja") : "0");
                 } else {
                     statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja,FechaApertura,HoraApertura FROM CajaTB WHERE IdUsuario = ? AND Estado = 1");
                     statementValidar.setString(1, idUsuario);
                     ResultSet resultSet = statementValidar.executeQuery();
                     if (resultSet.next()) {
-                        cajaTB[0] = "3";
-                        cajaTB[1] = "" + resultSet.getString("IdCaja");
-                        cajaTB[2] = resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " "
-                                + resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
+                        cajaTB.setId(3);
+                        cajaTB.setIdCaja(resultSet.getString("IdCaja"));
+                        cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+                        cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     } else {
-                        cajaTB[0] = "3";
-                        cajaTB[1] = "0";
-                        cajaTB[2] = "No se pudo obtener los datos";
+                        cajaTB.setId(4);
+                        cajaTB.setIdCaja("");
                     }
                 }
             } else {
-                cajaTB[0] = "1";
-                cajaTB[1] = "";
+                cajaTB.setId(1);
+                cajaTB.setIdCaja("");
             }
 
         } catch (SQLException ex) {
@@ -95,6 +142,9 @@ public class CajaADO {
             try {
                 if (statementVentas != null) {
                     statementVentas.close();
+                }
+                if (statementValidar != null) {
+                    statementValidar.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
@@ -125,6 +175,7 @@ public class CajaADO {
                 if (statementCaja != null) {
                     statementCaja.close();
                 }
+
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
 
@@ -136,7 +187,6 @@ public class CajaADO {
     public static String CerrarAperturaCaja(String idCaja, String date, String time, boolean state, double contado, double calculado) {
         String cajaTB = "";
         PreparedStatement statementCaja = null;
-        PreparedStatement movimiento_caja = null;
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -150,20 +200,7 @@ public class CajaADO {
             statementCaja.setString(7, idCaja);
             statementCaja.addBatch();
 
-            movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,HoraMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?,?)");
-            movimiento_caja.setString(1, idCaja);
-            movimiento_caja.setString(2, Session.USER_ID);
-            movimiento_caja.setString(3, date);
-            movimiento_caja.setString(4, time);
-            movimiento_caja.setString(5, "Finalización del turno");
-            movimiento_caja.setString(6, "CERRAR");
-            movimiento_caja.setDouble(7, contado);
-            movimiento_caja.setDouble(8, 0);
-            movimiento_caja.setDouble(9, contado - 0);
-            movimiento_caja.addBatch();
-
             statementCaja.executeBatch();
-            movimiento_caja.executeBatch();
             DBUtil.getConnection().commit();
             cajaTB = "completed";
         } catch (SQLException ex) {
@@ -211,7 +248,7 @@ public class CajaADO {
                 empList.add(cajaTB);
             }
         } catch (SQLException ex) {
-            System.out.println("Error en la funcion ListarCajasAperturadas:" + ex.getLocalizedMessage());
+            System.out.println("Error en la funcion ListarCajasAperturadas xd:" + ex.getLocalizedMessage());
         } finally {
             try {
                 if (statementLista != null) {
@@ -224,7 +261,7 @@ public class CajaADO {
         }
         return empList;
     }
-    
+
     public static ObservableList<CajaTB> ListarCajasAperturadasByUser(String idUsuario) {
         PreparedStatement statementLista = null;
         ObservableList<CajaTB> empList = FXCollections.observableArrayList();

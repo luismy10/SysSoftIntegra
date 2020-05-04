@@ -38,9 +38,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EmpleadoTB;
+import model.FormaPagoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.SuministroTB;
@@ -50,6 +52,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sourceforge.barbecue.output.Output;
 
 public class FxVentaDetalleController implements Initializable {
 
@@ -89,6 +92,12 @@ public class FxVentaDetalleController implements Initializable {
     private Text lblTotalVenta;
     @FXML
     private Button btnCancelarVenta;
+    @FXML
+    private Text lblValorVentaLetra;
+    @FXML
+    private VBox vbMetodoPago;
+    @FXML
+    private VBox vbValor;
 
     private AnchorPane windowinit;
 
@@ -127,7 +136,7 @@ public class FxVentaDetalleController implements Initializable {
     private double totalVenta;
 
     private double efectivo, vuelto;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         arrayArticulos = new ArrayList<>();
@@ -136,6 +145,7 @@ public class FxVentaDetalleController implements Initializable {
         hbDetalleCabecera = new VBox();
         hbPie = new VBox();
         monedaCadena = new ConvertMonedaCadena();
+
     }
 
     public void setInitComponents(String idVenta) {
@@ -177,6 +187,7 @@ public class FxVentaDetalleController implements Initializable {
                     ventaTB = (VentaTB) objects.get(0);
                     EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
+                    ArrayList<FormaPagoTB> formaPagoTBs = (ArrayList<FormaPagoTB>) objects.get(3);
                     if (ventaTB != null) {
                         lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
                         lblCliente.setText(ventaTB.getClienteTB().getInformacion());
@@ -191,6 +202,7 @@ public class FxVentaDetalleController implements Initializable {
                         efectivo = ventaTB.getEfectivo();
                         vuelto = ventaTB.getVuelto();
                         totalVenta = ventaTB.getTotal();
+                        lblValorVentaLetra.setText(monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
                         Session.TICKET_CODIGOVENTA = ventaTB.getCodigo();
                         Session.TICKET_SIMBOLOMONEDA = ventaTB.getMonedaTB().getSimbolo();
                     }
@@ -199,6 +211,11 @@ public class FxVentaDetalleController implements Initializable {
                         lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
                     }
                     fillVentasDetalleTable(empList);
+                    formaPagoTBs.forEach(em -> {                        
+                        addElementMetodoPago(em.getNombre());
+                        addElementValor(Tools.roundingValue(em.getMonto(), 2));
+                       
+                    });
                 }
 
                 lblLoad.setVisible(false);
@@ -399,6 +416,20 @@ public class FxVentaDetalleController implements Initializable {
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
         return label;
+    }
+
+    private void addElementMetodoPago(String nombre) {
+        Text text = new Text(nombre);
+        text.setFill(Color.web("#1a2226"));
+        text.getStyleClass().add("labelOpenSansRegular16");
+        vbMetodoPago.getChildren().add(text);
+    }
+
+    private void addElementValor(String monto) {
+        Text text = new Text(monto);
+        text.setFill(Color.web("#1a2226"));
+        text.getStyleClass().add("labelOpenSansRegular16");
+        vbValor.getChildren().add(text);
     }
 
     private void addElementImpuesto(String id, String titulo, String total) {

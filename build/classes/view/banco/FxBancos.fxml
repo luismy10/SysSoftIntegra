@@ -89,12 +89,13 @@
                      <children>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvList" prefHeight="300.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="300.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcNumero" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Nro." />
                                     <TableColumn fx:id="tcNombreCuenta" prefWidth="156.0" style="-fx-alignment: CENTER-LEFT;" text="Nombre de la Cuenta" />
                                     <TableColumn fx:id="tcNumeroCuenta" prefWidth="156.0" style="-fx-alignment: CENTER-LEFT;" text="Número de la Cuenta" />
                                     <TableColumn fx:id="tcDescripcion" prefWidth="156.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                                    <TableColumn fx:id="tcForma" prefWidth="156.0" style="-fx-alignment: CENTER-LEFT;" text="Forma de Pago" />
                                     <TableColumn fx:id="tcSaldo" prefWidth="156.0" style="-fx-alignment: CENTER-RIGHT;" text="Saldo" />
                                  </columns>
                               </TableView>
