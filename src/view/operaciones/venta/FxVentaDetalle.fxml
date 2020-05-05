@@ -58,7 +58,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnCancelarVenta" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar la venta">
+                  <Button fx:id="btnCancelarVenta" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Anular la venta">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -171,30 +171,66 @@
                         </HBox>
                         <HBox style="-fx-padding: 0em 0.8333333333333334em;">
                            <children>
-                              <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                              <VBox prefHeight="200.0" prefWidth="453.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1em; -fx-padding: 0.5em 0  0.5em 0;">
+                                    <HBox>
+                                       <children>
+                                          <VBox fx:id="vbMetodoPago" style="-fx-spacing: 0.6666666666666666em;">
+                                             <children>
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor En Letras: " />
+                                                <Text fx:id="lblValorVentaLetra" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Valor" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago:">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin></Text>
+                                                <VBox fx:id="vbMetodoPago" />
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0">
+                                             <children>
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin></Text>
+                                                <VBox fx:id="vbValor" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Valor Venta:" />
                                           <Text fx:id="lblValorVenta" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1em; -fx-padding: 0.5em 0  0.5em 0;">
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Descuento:" />
                                           <Text fx:id="lblDescuento" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1em; -fx-padding: 0.5em 0  0.5em 0;">
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Sub Importe:" />
                                           <Text fx:id="lblSubTotal" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                        </children>
                                     </HBox>
                                     <Separator />
-                                    <VBox fx:id="hbAgregarImpuesto" />
+                                    <VBox fx:id="hbAgregarImpuesto" style="-fx-spacing: 0.8333333333333334em;" />
                                     <Separator />
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 1em; -fx-padding: 0.5em 0  0.5em 0;">
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Total Importe:" />
                                           <Text fx:id="lblTotal" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />

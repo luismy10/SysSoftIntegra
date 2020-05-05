@@ -13,6 +13,8 @@ public class BancoTB {
     private String hora;
     private String descripcion;
     private boolean sistema;
+    private boolean asignacion;
+    private short formaPago;
 
     public BancoTB() {
     }
@@ -110,9 +112,27 @@ public class BancoTB {
         this.sistema = sistema;
     }
 
+    public boolean isAsignacion() {
+        return asignacion;
+    }
+
+    public void setAsignacion(boolean asignacion) {
+        this.asignacion = asignacion;
+    }
+
     @Override
     public String toString() {
         return nombreCuenta;
     }
+
+    public short getFormaPago() {
+        return formaPago;
+    }
+
+    public void setFormaPago(short formaPago) {
+        this.formaPago = formaPago;
+    }
+    
+    
 
 }

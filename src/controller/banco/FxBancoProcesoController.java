@@ -1,18 +1,26 @@
 package controller.banco;
 
 import controller.tools.Tools;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import model.BancoADO;
 import model.BancoTB;
 import model.MonedaADO;
@@ -36,10 +44,20 @@ public class FxBancoProcesoController implements Initializable {
     private TextField txtDescripcion;
     @FXML
     private Button btnProceso;
-
+    @FXML
+    private CheckBox cbAsignarCaja;
+    @FXML
+    private HBox hbCuenta;
+    @FXML
+    private RadioButton CuentaEfectivo;
+    @FXML
+    private RadioButton CuentaBancaria;
+    
     private FxBancosController bancosController;
 
     private String idBanco;
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -50,6 +68,9 @@ public class FxBancoProcesoController implements Initializable {
         });
         cbMoneda.getSelectionModel().select(0);
         idBanco = "";
+        ToggleGroup group = new ToggleGroup();
+        CuentaEfectivo.setToggleGroup(group);
+        CuentaBancaria.setToggleGroup(group);  
     }
 
     public void loadEditBanco(String idBanco) {
@@ -68,8 +89,14 @@ public class FxBancoProcesoController implements Initializable {
                 }
             }
             cbMoneda.setDisable(bancoTB.getSaldoInicial() > 0);
-            txtSaldoInicial.setDisable(bancoTB.getSaldoInicial() > 0); 
+            txtSaldoInicial.setDisable(bancoTB.getSaldoInicial() > 0);
             txtSaldoInicial.setText(Tools.roundingValue(bancoTB.getSaldoInicial(), 4));
+            hbCuenta.setDisable(bancoTB.getSaldoInicial() > 0);
+            if(bancoTB.getFormaPago() == 1){
+                CuentaEfectivo.setSelected(true);
+            }else{
+                CuentaBancaria.setSelected(true);
+            }
             txtDescripcion.setText(bancoTB.getDescripcion());
         }
     }
@@ -94,6 +121,8 @@ public class FxBancoProcesoController implements Initializable {
             bancoTB.setHora(Tools.getHour());
             bancoTB.setSaldoInicial(Double.parseDouble(txtSaldoInicial.getText()));
             bancoTB.setDescripcion(txtDescripcion.getText().trim());
+            bancoTB.setAsignacion(cbAsignarCaja.isSelected());
+            bancoTB.setFormaPago(CuentaEfectivo.isSelected() ? (short)1:(short)2); 
             short option = Tools.AlertMessageConfirmation(apWindow, "Banco", "¿Está seguro de continuar?");
             if (option == 1) {
                 String result = BancoADO.Proceso_Banco(bancoTB);

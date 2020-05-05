@@ -8,7 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="SysSoftIntegra.jar" size="2865381" download="eager" />
+=======
+    <jar href="SysSoftIntegra.jar" size="2880124" download="eager" />
+>>>>>>> 0ac556d6b394a00010f6bb4a7ee113426b01e82b
     <jar href="lib\Util.jar" size="11957" download="eager" />
     <jar href="lib\barbecue-1.5-beta1.jar" size="91079" download="eager" />
     <jar href="lib\commons-beanutils-1.8.2.jar" size="231891" download="eager" />

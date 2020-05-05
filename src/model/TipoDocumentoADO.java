@@ -20,24 +20,51 @@ public class TipoDocumentoADO {
             PreparedStatement statementState = null;
             try {
                 DBUtil.getConnection().setAutoCommit(false);
-                statementState = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoDocumentoTB WHERE IdTipoDocumento <> ? AND Nombre = ? ");
+                statementState = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoDocumentoTB WHERE IdTipoDocumento = ? ");
                 statementState.setInt(1, documentoTB.getIdTipoDocumento());
-                statementState.setString(2, documentoTB.getNombre());
                 if (statementState.executeQuery().next()) {
-                    DBUtil.getConnection().rollback();
-                    result = "duplicate";
-                } else {
-                    statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?,Predeterminado=?,NombreImpresion=? WHERE IdTipoDocumento = ?");
-                    statementUpdate.setString(1, documentoTB.getNombre());
-                    statementUpdate.setBoolean(2, documentoTB.isPredeterminado());
-                    statementUpdate.setString(3, documentoTB.getNombreDocumento());
-                    statementUpdate.setInt(4, documentoTB.getIdTipoDocumento());
-                    statementUpdate.addBatch();
 
-                    statementUpdate.executeBatch();
-                    DBUtil.getConnection().commit();
-                    result = "updated";
+                    statementState = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoDocumentoTB WHERE IdTipoDocumento <> ? AND Nombre = ? ");
+                    statementState.setInt(1, documentoTB.getIdTipoDocumento());
+                    statementState.setString(2, documentoTB.getNombre());
+                    if (statementState.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "duplicate";
+                    } else {
+                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Predeterminado=?,NombreImpresion=? WHERE IdTipoDocumento = ?");
+                        statementUpdate.setString(1, documentoTB.getNombre());
+                        statementUpdate.setString(2, documentoTB.getSerie());
+                        statementUpdate.setBoolean(3, documentoTB.isPredeterminado());
+                        statementUpdate.setString(4, documentoTB.getNombreDocumento());
+                        statementUpdate.setInt(5, documentoTB.getIdTipoDocumento());
+                        statementUpdate.addBatch();
+
+                        statementUpdate.executeBatch();
+                        DBUtil.getConnection().commit();
+                        result = "updated";
+                    }
+
+                } else {
+                    statementState = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoDocumentoTB WHERE  Nombre = ? ");
+                    statementState.setString(1, documentoTB.getNombre());
+                    if (statementState.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "duplicate";
+                    } else {
+                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Predeterminado,NombreImpresion) VALUES(?,?,?,?)");
+                        statementUpdate.setString(1, documentoTB.getNombre());
+                        statementUpdate.setString(2, documentoTB.getSerie());
+                        statementUpdate.setBoolean(3, documentoTB.isPredeterminado());
+                        statementUpdate.setString(4, documentoTB.getNombreDocumento());
+                        statementUpdate.addBatch();
+
+                        statementUpdate.executeBatch();
+                        DBUtil.getConnection().commit();
+                        result = "inserted";
+                    }
+
                 }
+
             } catch (SQLException ex) {
                 try {
                     DBUtil.getConnection().rollback();
@@ -73,14 +100,19 @@ public class TipoDocumentoADO {
             statement = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoDocumentoTB");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                observableList.add(new TipoDocumentoTB(
-                        resultSet.getInt("IdTipoDocumento"),
-                        resultSet.getString("Nombre"),
-                        resultSet.getBoolean("Predeterminado"),
-                        resultSet.getString("NombreImpresion"),
-                        resultSet.getBoolean("Predeterminado")
-                        ? new ImageView(new Image("/view/image/checked.png", 22, 22, false, false))
-                        : new ImageView(new Image("/view/image/unchecked.png", 22, 22, false, false))));
+                //aca llenas toda la lista de ese objecto
+                TipoDocumentoTB tipoDocumentoTB = new TipoDocumentoTB();
+                tipoDocumentoTB.setId(resultSet.getRow());
+                tipoDocumentoTB.setIdTipoDocumento(resultSet.getInt("IdTipoDocumento"));
+                tipoDocumentoTB.setNombre(resultSet.getString("Nombre"));
+                tipoDocumentoTB.setSerie(resultSet.getString("Serie"));
+                tipoDocumentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                tipoDocumentoTB.setNombreDocumento(resultSet.getString("NombreImpresion"));
+                ImageView imageView=new ImageView(new Image(tipoDocumentoTB.isPredeterminado() ? "/view/image/checked.png" : "/view/image/unchecked.png"));
+                imageView.setFitWidth(22);
+                imageView.setFitHeight(22);
+                tipoDocumentoTB.setImagePredeterminado(imageView);
+                observableList.add(tipoDocumentoTB);
             }
         } catch (SQLException ex) {
             System.out.println("Tipo de Documento ADO:" + ex.getLocalizedMessage());
@@ -98,7 +130,7 @@ public class TipoDocumentoADO {
             }
         }
         return observableList;
-    }
+    }//para que sirve esto
 
     public static String ChangeDefaultState(boolean state, int id) {
         String result = null;
@@ -170,12 +202,13 @@ public class TipoDocumentoADO {
             PreparedStatement statement = null;
             ResultSet resultSet = null;
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Predeterminado,NombreImpresion FROM TipoDocumentoTB");
+                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Serie, Predeterminado,NombreImpresion FROM TipoDocumentoTB");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     TipoDocumentoTB documentoTB = new TipoDocumentoTB();
                     documentoTB.setIdTipoDocumento(resultSet.getInt("IdTipoDocumento"));
                     documentoTB.setNombre(resultSet.getString("Nombre"));
+                    documentoTB.setSerie(resultSet.getString("Serie"));
                     documentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                     documentoTB.setNombreDocumento(resultSet.getString("NombreImpresion"));
                     list.add(documentoTB);
@@ -197,6 +230,6 @@ public class TipoDocumentoADO {
             }
         }
         return list;
-    }
+    }//para que sirve esto
 
 }

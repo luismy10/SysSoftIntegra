@@ -167,7 +167,7 @@ public class FxComprasProcesoController implements Initializable {
                 Tools.AlertMessageWarning(apWindow, "Compra", "Hay fechas sin ingresar en la tabla.");
                 tvListaCredito.requestFocus();
             } else if (Double.parseDouble(lblMontoTotal.getText()) != Double.parseDouble(lblMontoPagar.getText())) {
-                Tools.AlertMessageWarning(apWindow, "Compra", "El monto total y el monto a pagar no son iquales.");
+                Tools.AlertMessageWarning(apWindow, "Compra", "El monto total y el monto a pagar no son iguales.");
                 tvListaCredito.requestFocus();
             } else {
                 compraTB.setTipo(2);

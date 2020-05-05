@@ -95,9 +95,9 @@ public class Tools {
         }
     }
 
-    public static short AlertMessage(Window window, Alert.AlertType type, String title, String value) {
+    public static short AlertMessage(Window window, String title, String value) {
         final URL url = Tools.class.getClass().getResource(FilesRouters.STYLE_ALERT);
-        Alert alert = new Alert(type);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
         alert.setTitle(title);

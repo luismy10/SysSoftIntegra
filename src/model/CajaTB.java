@@ -14,8 +14,7 @@ public class CajaTB {
     private double calculado;
     private double diferencia;
     private String idUsuario;
-    private String fechaRegistro;
-    private String horaRegistro;
+    private String idBanco;
     private EmpleadoTB empleadoTB;
     
     public CajaTB() {
@@ -110,21 +109,14 @@ public class CajaTB {
         this.idUsuario = idUsuario;
     }
 
-    public String getFechaRegistro() {
-        return fechaRegistro;
+    public String getIdBanco() {
+        return idBanco;
     }
 
-    public void setFechaRegistro(String fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
+    public void setIdBanco(String idBanco) {
+        this.idBanco = idBanco;
     }
-
-    public String getHoraRegistro() {
-        return horaRegistro;
-    }
-
-    public void setHoraRegistro(String horaRegistro) {
-        this.horaRegistro = horaRegistro;
-    }
+    
 
     public EmpleadoTB getEmpleadoTB() {
         return empleadoTB;

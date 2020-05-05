@@ -21,7 +21,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.BancoADO;
 import model.CajaADO;
+import model.CajaTB;
 import model.PrivilegioTB;
 
 public class FxVentaController implements Initializable {
@@ -87,21 +89,57 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadValidarCaja() {
-        String[] cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-        switch (cajaTB[0]) {
-            case "1":
-                openWindowFondoInicial();
-                break;
-            case "2":
-                Session.CAJA_ID = cajaTB[1];
-                aperturaCaja = true;
-                hbContenedorVentas.setDisable(false);              
-                break;
-            case "3":
-                openWindowValidarCaja(cajaTB[1], cajaTB[2]);
-                break;
-            default:
-                break;
+
+        if ("".equals(Session.ID_CUENTA_EFECTIVO) && "".equals(Session.NOMBRE_CUENTA_EFECTIVO)) {
+            openWindowCajaNoRegistrada("Su caja no esta configurada para este punto de venta, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
+        } else {
+            boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
+            if (validate) {
+                CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                switch (cajaTB.getId()) {
+                    case 1:
+                        openWindowFondoInicial();
+                        break;
+                    case 2:
+//                        Session.CAJA_ID = cajaTB.getIdCaja();
+                        aperturaCaja = true;
+                        hbContenedorVentas.setDisable(false);
+                        break;
+                    case 3:
+                        openWindowValidarCaja(cajaTB.getIdCaja(), cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
+            }
+        }
+
+    }
+
+    public void openWindowCajaNoRegistrada(String mensaje) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_CAJA_NO_REGISTRADA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+
+            FxCajaNoRegistrada controller = fXMLLoader.getController();
+            controller.initElements(mensaje);
+
+            Stage stage = WindowStage.StageLoaderModal(parent, "Caja no registrada", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> {
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                 if (aperturaCaja) {
+                    aperturaCaja = false;
+                    hbContenedorVentas.setDisable(true);
+                }
+            });
+            stage.show();
+        } catch (IOException ex) {
         }
     }
 
@@ -147,6 +185,10 @@ public class FxVentaController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                if (aperturaCaja) {
+                    aperturaCaja = false;
+                    hbContenedorVentas.setDisable(true);
+                }
             });
             stage.show();
             controller.loadData(idCaja, dateTime);

@@ -23,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -47,6 +48,8 @@ public class FxBancosController implements Initializable {
     private TableColumn<BancoTB, String> tcDescripcion;
     @FXML
     private TableColumn<BancoTB, String> tcSaldo;
+    @FXML
+    private TableColumn<BancoTB, String> tcForma;
 
     private AnchorPane vbPrincipal;
 
@@ -59,12 +62,14 @@ public class FxBancosController implements Initializable {
         tcNumeroCuenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroCuenta()));
         tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDescripcion()));
         tcSaldo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSimboloMoneda() + " " + Tools.roundingValue(cellData.getValue().getSaldoInicial(), 4)));
+        tcForma.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFormaPago() == (short) 1 ? "Efectivo" : "Banco"));
 
-        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcNombreCuenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
-        tcNumeroCuenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
-        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
-        tcSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+        tcNombreCuenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcNumeroCuenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.22));
+        tcSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
+        tcForma.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
 
     }
 
@@ -102,26 +107,21 @@ public class FxBancosController implements Initializable {
 
     private void eventViewBanco() {
         try {
-            if (tvList.getSelectionModel().getSelectedIndex() < 0) {
-                tvList.requestFocus();
-                if (!tvList.getItems().isEmpty()) {
-                    tvList.getSelectionModel().select(0);
-                }
-            } else {
-                FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_BANCO_HISTORIAL));
-                HBox node = fXMLPrincipal.load();
 
-                FxBancoHistorialController controller = fXMLPrincipal.getController();
-                controller.setInitComptrasController(this, vbPrincipal, vbContent);
-                controller.loadBanco(tvList.getSelectionModel().getSelectedItem().getIdBanco());
+            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_BANCO_HISTORIAL));
+            HBox node = fXMLPrincipal.load();
 
-                vbContent.getChildren().clear();
-                AnchorPane.setLeftAnchor(node, 0d);
-                AnchorPane.setTopAnchor(node, 0d);
-                AnchorPane.setRightAnchor(node, 0d);
-                AnchorPane.setBottomAnchor(node, 0d);
-                vbContent.getChildren().add(node);
-            }
+            FxBancoHistorialController controller = fXMLPrincipal.getController();
+            controller.setInitComptrasController(this, vbPrincipal, vbContent);
+            controller.loadBanco(tvList.getSelectionModel().getSelectedItem().getIdBanco());
+
+            vbContent.getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            vbContent.getChildren().add(node);
+
         } catch (IOException ex) {
             System.out.println("Controller banco" + ex.getLocalizedMessage());
         }
@@ -207,15 +207,38 @@ public class FxBancosController implements Initializable {
     }
 
     @FXML
+    private void onMouseClickedList(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                eventViewBanco();
+            }
+        }
+    }
+
+    @FXML
     private void onKeyPressedView(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            eventViewBanco();
+            if (tvList.getSelectionModel().getSelectedIndex() < 0) {
+                tvList.requestFocus();
+                if (!tvList.getItems().isEmpty()) {
+                    tvList.getSelectionModel().select(0);
+                }
+            } else {
+                eventViewBanco();
+            }
         }
     }
 
     @FXML
     private void onActionView(ActionEvent event) {
-        eventViewBanco();
+        if (tvList.getSelectionModel().getSelectedIndex() < 0) {
+            tvList.requestFocus();
+            if (!tvList.getItems().isEmpty()) {
+                tvList.getSelectionModel().select(0);
+            }
+        } else {
+            eventViewBanco();
+        }
     }
 
     @FXML
