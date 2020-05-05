@@ -129,7 +129,7 @@
                            <children>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="340.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                  <columns>
-                                    <TableColumn fx:id="tcItem" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Item" />
+                                    <TableColumn fx:id="tcItem" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Nro." />
                                     <TableColumn fx:id="tcArticulo" prefWidth="379.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
                                     <TableColumn fx:id="tcCosto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Costo Unit." />
