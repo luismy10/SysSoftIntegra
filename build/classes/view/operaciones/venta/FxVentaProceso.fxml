@@ -112,7 +112,7 @@
                                                 </Label>
                                              </children>
                                           </VBox>
-                                          <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" prefWidth="71.0" style="-fx-padding: 0.5em; -fx-cursor: hand;" HBox.hgrow="ALWAYS">
+                                          <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" prefWidth="71.0" style="-fx-padding: 0.5em; -fx-cursor: hand;" visible="false" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Crédito" textFill="#1a2226">
                                                    <graphic>
