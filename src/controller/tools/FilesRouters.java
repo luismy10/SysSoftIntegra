@@ -225,7 +225,7 @@ public final class FilesRouters {
     //--------------------------------------------------------------------------------------------------
     public static final String FX_ARTICULO_REPORTES = "/view/inventario/articulo/FxArticuloReportes.fxml";
 
-    public static final String FX_CODIGO_BARRAS = "/view/inventario/articulo/FxCodigoBarras.fxml";
+    public static final String FX_CODIGO_BARRAS = "/view/inventario/suministros/FxCodigoBarras.fxml";
 
     public static final String FX_REPORTE_OPCION = "/view/inventario/FxReporteOpcion.fxml";
 
