@@ -74,7 +74,7 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox style="-fx-padding: 0.8333333333333334em;">
+            <HBox minHeight="0.0" prefHeight="0.0" style="-fx-padding: 0.8333333333333334em;" visible="false">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
@@ -135,7 +135,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
+            <Separator prefWidth="200.0" visible="false" />
             <HBox style="-fx-padding: 0.8333333333333334em;">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
