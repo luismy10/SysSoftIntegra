@@ -1,5 +1,6 @@
 package model;
 
+import controller.tools.Tools;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 
 public class KardexADO {
 
@@ -102,7 +104,25 @@ public class KardexADO {
 
                 kardexTB.setInicial(cantidadInicial);
                 kardexTB.setCantidadTotal(cantidadTotal);
-
+                
+                Label lblInicial = new Label(Tools.roundingValue(kardexTB.getInicial(), 4));
+                lblInicial.getStyleClass().add("labelRoboto14");
+                lblInicial.setStyle("-fx-text-fill:#0066ff;-fx-font-weight:bold;");
+                Label lblEntreda = new Label(kardexTB.getTipo() == 1 ? Tools.roundingValue(kardexTB.getCantidad(), 4) : "0.0000");
+                lblEntreda.getStyleClass().add("labelRoboto14");
+                lblEntreda.setStyle("-fx-text-fill:#33cc33;-fx-font-weight:bold;");
+                Label lblSalida = new Label(kardexTB.getTipo() == 2 ? Tools.roundingValue(kardexTB.getCantidad()== 0 ? kardexTB.getCantidad(): -kardexTB.getCantidad(), 4):"0.0000");
+                lblSalida.getStyleClass().add("labelRoboto14");
+                lblSalida.setStyle("-fx-text-fill:#ff0000;-fx-font-weight:bold;");
+                Label lblSaldo = new Label(Tools.roundingValue(kardexTB.getCantidadTotal(), 4));
+                lblSaldo.getStyleClass().add("labelRoboto14");
+                lblSaldo.setStyle("-fx-text-fill:#000000;-fx-font-weight:bold;");
+                
+                kardexTB.setLblInicial(lblInicial);
+                kardexTB.setLblEntrada(lblEntreda);
+                kardexTB.setLblSalida(lblSalida);
+                kardexTB.setLblSaldo(lblSaldo);
+                
                 empList.add(kardexTB);
             }
         } catch (SQLException e) {

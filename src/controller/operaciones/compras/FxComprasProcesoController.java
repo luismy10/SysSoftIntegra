@@ -244,6 +244,7 @@ public class FxComprasProcesoController implements Initializable {
                 lblMontoPagar.setText(Tools.roundingValue(sumaMontos, 2));
             }
         });
+        
         txtCredito.setOnKeyReleased(event -> {
             if (Tools.isNumeric(txtCredito.getText())) {
                 compraCreditoTB.setMonto(Double.parseDouble(txtCredito.getText()));

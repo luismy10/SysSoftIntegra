@@ -23,14 +23,14 @@ public class CompraADO extends DBUtil {
     public static String Compra_Contado(BancoHistorialTB bancoHistorialTB, CompraTB compraTB, TableView<DetalleCompraTB> tableView, ObservableList<LoteTB> loteTBs) {
 
         CallableStatement codigo_compra = null;
-        CallableStatement codigoBancoHistorial = null;
         PreparedStatement compra = null;
         PreparedStatement detalle_compra = null;
-        PreparedStatement banco = null;
-        PreparedStatement detalle_banco = null;
         PreparedStatement suministro_update = null;
         PreparedStatement suministro_kardex = null;
-        PreparedStatement lote_compra = null;
+        //PreparedStatement lote_compra = null;
+
+        PreparedStatement preparedBanco = null;
+        PreparedStatement preparedBancoHistorial = null;
 
         dbConnect();
         if (getConnection() != null) {
@@ -43,11 +43,6 @@ public class CompraADO extends DBUtil {
                 codigo_compra.registerOutParameter(1, java.sql.Types.VARCHAR);
                 codigo_compra.execute();
                 String id_compra = codigo_compra.getString(1);
-
-                codigoBancoHistorial = DBUtil.getConnection().prepareCall("{? = call Fc_Banco_Historial_Codigo_Alfanumerico()}");
-                codigoBancoHistorial.registerOutParameter(1, java.sql.Types.VARCHAR);
-                codigoBancoHistorial.execute();
-                String idBancoHistorial = codigoBancoHistorial.getString(1);
 
                 compra = getConnection().prepareStatement("INSERT INTO "
                         + "CompraTB("
@@ -85,10 +80,6 @@ public class CompraADO extends DBUtil {
                         + "Descripcion)"
                         + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 
-                banco = getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial - ? WHERE IdBanco = ?");
-
-                detalle_banco = getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
-
                 suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ? WHERE IdSuministro = ?");
 
                 suministro_kardex = getConnection().prepareStatement("INSERT INTO "
@@ -102,7 +93,7 @@ public class CompraADO extends DBUtil {
                         + "Cantidad) "
                         + "VALUES(?,?,?,?,?,?,?)");
 
-                lote_compra = getConnection().prepareStatement("INSERT INTO "
+       /*         lote_compra = getConnection().prepareStatement("INSERT INTO "
                         + "LoteTB("
                         + "NumeroLote,"
                         + "FechaCaducidad,"
@@ -110,7 +101,24 @@ public class CompraADO extends DBUtil {
                         + "ExistenciaActual,"
                         + "IdArticulo,"
                         + "IdCompra) "
-                        + "VALUES(?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?)");*/
+
+                preparedBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial - ? WHERE IdBanco = ?");
+
+                preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
+
+                preparedBanco.setDouble(1, bancoHistorialTB.getSalida());
+                preparedBanco.setString(2, bancoHistorialTB.getIdBanco());
+                preparedBanco.addBatch();
+
+                preparedBancoHistorial.setString(1, bancoHistorialTB.getIdBanco());
+                preparedBancoHistorial.setString(2, "");
+                preparedBancoHistorial.setString(3, bancoHistorialTB.getDescripcion());
+                preparedBancoHistorial.setString(4, bancoHistorialTB.getFecha());
+                preparedBancoHistorial.setString(5, bancoHistorialTB.getHora());
+                preparedBancoHistorial.setDouble(6, 0);
+                preparedBancoHistorial.setDouble(7, bancoHistorialTB.getSalida());
+                preparedBancoHistorial.addBatch();
 
                 compra.setString(1, id_compra);
                 compra.setString(2, compraTB.getProveedor());
@@ -130,20 +138,6 @@ public class CompraADO extends DBUtil {
                 compra.setInt(16, compraTB.getEstado());
                 compra.setString(17, compraTB.getUsuario());
                 compra.addBatch();
-
-                banco.setDouble(1, bancoHistorialTB.getSalida());
-                banco.setString(2, bancoHistorialTB.getIdBanco());
-                banco.addBatch();
-
-                detalle_banco.setString(1, bancoHistorialTB.getIdBanco());
-                detalle_banco.setString(2, idBancoHistorial);
-                detalle_banco.setString(3, id_compra);
-                detalle_banco.setString(4, bancoHistorialTB.getDescripcion());
-                detalle_banco.setString(5, bancoHistorialTB.getFecha());
-                detalle_banco.setString(6, bancoHistorialTB.getHora());
-                detalle_banco.setDouble(7, bancoHistorialTB.getEntrada());
-                detalle_banco.setDouble(8, bancoHistorialTB.getSalida());
-                detalle_banco.addBatch();
 
                 for (int i = 0; i < tableView.getItems().size(); i++) {
                     detalle_compra.setString(1, id_compra);
@@ -186,11 +180,11 @@ public class CompraADO extends DBUtil {
 //            }
                 compra.executeBatch();
                 detalle_compra.executeBatch();
-                banco.executeBatch();
-                detalle_banco.executeBatch();
                 suministro_update.executeBatch();
                 suministro_kardex.executeBatch();
-                lote_compra.executeBatch();
+                preparedBanco.executeBatch();
+                preparedBancoHistorial.executeBatch();
+               // lote_compra.executeBatch();
                 getConnection().commit();
                 return "register";
             } catch (SQLException ex) {
@@ -205,20 +199,17 @@ public class CompraADO extends DBUtil {
                     if (codigo_compra != null) {
                         codigo_compra.close();
                     }
-                    if (codigoBancoHistorial != null) {
-                        codigoBancoHistorial.close();
-                    }
-                    if (banco != null) {
-                        banco.close();
-                    }
                     if (compra != null) {
                         compra.close();
                     }
                     if (detalle_compra != null) {
                         detalle_compra.close();
                     }
-                    if (detalle_banco != null) {
-                        detalle_banco.close();
+                    if (preparedBanco != null) {
+                        preparedBanco.close();
+                    }
+                    if (preparedBancoHistorial != null) {
+                        preparedBancoHistorial.close();
                     }
                     if (suministro_update != null) {
                         suministro_update.close();
@@ -226,9 +217,9 @@ public class CompraADO extends DBUtil {
                     if (suministro_kardex != null) {
                         suministro_kardex.close();
                     }
-                    if (lote_compra != null) {
+                    /*if (lote_compra != null) {
                         lote_compra.close();
-                    }
+                    }*/
                     dbDisconnect();
                 } catch (SQLException ex) {
                     return ex.getLocalizedMessage();

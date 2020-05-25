@@ -1,6 +1,8 @@
 
 package model;
 
+import javafx.scene.control.Label;
+
 
 public class KardexTB {
     
@@ -16,6 +18,11 @@ public class KardexTB {
     private double inicial;
     private double cantidad;    
     private double cantidadTotal;
+    
+    private Label lblInicial;
+    private Label lblEntrada;
+    private Label lblSalida;
+    private Label lblSaldo;
     
     public KardexTB(){
         
@@ -116,5 +123,39 @@ public class KardexTB {
     public void setCantidadTotal(double cantidadTotal) {
         this.cantidadTotal = cantidadTotal;
     }
+
+    public Label getLblInicial() {
+        return lblInicial;
+    }
+
+    public void setLblInicial(Label lblInicial) {
+        this.lblInicial = lblInicial;
+    }
+
+    public Label getLblEntrada() {
+        return lblEntrada;
+    }
+
+    public void setLblEntrada(Label lblEntrada) {
+        this.lblEntrada = lblEntrada;
+    }
+
+    public Label getLblSalida() {
+        return lblSalida;
+    }
+
+    public void setLblSalida(Label lblSalida) {
+        this.lblSalida = lblSalida;
+    }
+
+    public Label getLblSaldo() {
+        return lblSaldo;
+    }
+
+    public void setLblSaldo(Label lblSaldo) {
+        this.lblSaldo = lblSaldo;
+    }
+    
+    
   
 }

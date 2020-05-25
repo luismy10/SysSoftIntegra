@@ -1,5 +1,6 @@
 package controller.operaciones.venta;
 
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import model.BancoHistorialTB;
 import model.SuministroTB;
 import model.VentaADO;
 
@@ -68,14 +70,22 @@ public class FxVentaDevolucionController implements Initializable {
                 short validate = Tools.AlertMessageConfirmation(window, "Detalle de ventas", "¿Está seguro de cancelar la venta?");
                 if (validate == 1) {
 
-                    String result = VentaADO.CancelTheSale(idVenta, arrList);
+                    BancoHistorialTB bancoHistorialBancaria = new BancoHistorialTB();
+                    bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
+                    bancoHistorialBancaria.setDescripcion("Venta con Tarjeta");
+                    bancoHistorialBancaria.setFecha(Tools.getDate());
+                    bancoHistorialBancaria.setHora(Tools.getHour());
+                    bancoHistorialBancaria.setEntrada(0);
+                    bancoHistorialBancaria.setSalida(totalVenta);
+
+                    String result = VentaADO.CancelTheSale(idVenta, arrList, bancoHistorialBancaria);
                     if (result.equalsIgnoreCase("updated")) {
                         Tools.AlertMessageInformation(window, "Detalle de ventas", "Se anulo correctamente.");
                         Tools.Dispose(window);
                     } else if (result.equalsIgnoreCase("scrambled")) {
-                        Tools.AlertMessageWarning(window, "Detalle de venta", "Ya está anulada la venta!.");
+                        Tools.AlertMessageWarning(window, "Detalle de venta", "Ya está anulada la venta.");
                     } else {
-                        Tools.AlertMessageInformation(window, "Detalle de ventas", result);
+                        Tools.AlertMessageError(window, "Detalle de ventas", result);
                     }
 
 //                    MovimientoCajaTB cajaTB = new MovimientoCajaTB();

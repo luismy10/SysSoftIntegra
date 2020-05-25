@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -51,13 +52,13 @@ public class FxSuministrosKardexController implements Initializable {
     @FXML
     private TableColumn<KardexTB, String> tcDetalle;
     @FXML
-    private TableColumn<KardexTB, String> tcInicial;
+    private TableColumn<KardexTB, Label> tcInicial;
     @FXML
-    private TableColumn<KardexTB, String> tcEntrada;
+    private TableColumn<KardexTB, Label> tcEntrada;
     @FXML
-    private TableColumn<KardexTB, String> tcSalida;
+    private TableColumn<KardexTB, Label> tcSalida;
     @FXML
-    private TableColumn<KardexTB, String> tcSaldo;
+    private TableColumn<KardexTB, Label> tcSaldo;
     @FXML
     private Label lblCantidadTotal;
 
@@ -70,10 +71,14 @@ public class FxSuministrosKardexController implements Initializable {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + "\n" + cellData.getValue().getHora()));
         tcDetalle.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMovimientoName() + "\n" + cellData.getValue().getDetalle().toUpperCase()));
-        tcInicial.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getInicial(), 4)));
-        tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getCantidad(), 4) : "0.0000"));
-        tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 2 ? Tools.roundingValue(cellData.getValue().getCantidad(), 4) : "0.0000"));
-        tcSaldo.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidadTotal(), 4)));
+        tcInicial.setCellValueFactory(new PropertyValueFactory<>("lblInicial"));
+        tcEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntrada"));
+        tcSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
+        tcSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
+        //tcInicial.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getInicial(), 4)));
+        //tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getCantidad(), 4) : "0.0000"));
+        //tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 2 ? Tools.roundingValue(cellData.getValue().getCantidad() == 0 ?  cellData.getValue().getCantidad(): -cellData.getValue().getCantidad(), 4) : "0.0000"));
+        // tcSaldo.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidadTotal(), 4)));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
         tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));

@@ -1,9 +1,12 @@
 package model;
 
+import controller.tools.Session;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -84,8 +87,8 @@ public class ProveedorADO {
                         preparedProveedor.setString(14, proveedorTB.getEmail());
                         preparedProveedor.setString(15, proveedorTB.getPaginaWeb());
                         preparedProveedor.setString(16, proveedorTB.getDireccion());
-//                        preparedProveedor.setString(17, proveedorTB.getUsuarioRegistro());
-//                        preparedProveedor.setTimestamp(18, Timestamp.valueOf(proveedorTB.getFechaRegistro()));
+                        preparedProveedor.setString(17, Session.USER_ID);
+                        preparedProveedor.setTimestamp(18, Timestamp.valueOf(LocalDateTime.now()));
                         preparedProveedor.setString(19, proveedorTB.getRepresentante());
                         preparedProveedor.addBatch();
                         

@@ -319,7 +319,7 @@ public class FxVentaProcesoController implements Initializable {
                     }
                 }
 
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar xd?");
+                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
                     String[] result = VentaADO.registrarVentaContado(ventaTB, bancoHistorialEfectivo, bancoHistorialBancaria, formaPagoTBs, tvList, ventaEstructuraController.getIdTipoComprobante(), new CuentasClienteTB()).split("/");
                     switch (result[0]) {

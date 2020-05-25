@@ -29,8 +29,6 @@ public class VentaADO {
         //PreparedStatement cuentas_cliente = null;
         //PreparedStatement movimiento_caja = null;
         PreparedStatement forma_pago = null;
-
-        CallableStatement codigoBancoHistorial = null;
         PreparedStatement preparedBanco = null;
         PreparedStatement preparedBancoHistorial = null;
         try {
@@ -249,7 +247,10 @@ public class VentaADO {
                 suministro_kardex.setDouble(7,
                         tvList.getItems().get(i).getValorInventario() == 1
                         ? tvList.getItems().get(i).getCantidad()
-                        : cantidadGranel);
+                        : tvList.getItems().get(i).getValorInventario() == 2
+                        ? cantidadGranel
+                        : tvList.getItems().get(i).getCantidad()
+                );
                 suministro_kardex.addBatch();
 
             }
@@ -311,10 +312,6 @@ public class VentaADO {
 //                }
                 if (forma_pago != null) {
                     forma_pago.close();
-                }
-
-                if (codigoBancoHistorial != null) {
-                    codigoBancoHistorial.close();
                 }
                 if (preparedBanco != null) {
                     preparedBanco.close();
@@ -551,8 +548,7 @@ public class VentaADO {
                 objects.add(formaPagoTBs);
 
             } catch (SQLException e) {
-                System.out.println("ListVentasDetalle:La operación de selección de SQL ha fallado: " + e.getLocalizedMessage());
-
+                System.out.println("ListCompletaVentasDetalle() La operación de selección de SQL ha fallado: " + e.getLocalizedMessage());
             } finally {
                 try {
                     if (statementVenta != null) {
@@ -576,21 +572,21 @@ public class VentaADO {
         return objects;
     }
 
-    public static String CancelTheSale(String idVenta, ObservableList<SuministroTB> arrList) {
-        String result = null;
+    public static String CancelTheSale(String idVenta, ObservableList<SuministroTB> arrList, BancoHistorialTB bancoHistorialBancaria) {
 
+        String result = null;
+        PreparedStatement statementValidar = null;
         PreparedStatement statementVenta = null;
         PreparedStatement statementSuministro = null;
-        PreparedStatement statementValidar = null;
-        PreparedStatement preparedBanco = null;
-        PreparedStatement preparedBancoHistorial = null;
-        PreparedStatement suministro_kardex = null;
+        PreparedStatement statementKardex = null;
+        PreparedStatement statementBanco = null;
+        PreparedStatement statementBancoHistorial = null;
 
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            statementValidar = DBUtil.getConnection().prepareStatement("select * from VentaTB where IdVenta = ? and Estado = ?");
+            statementValidar = DBUtil.getConnection().prepareStatement("SELECT * FROM VentaTB WHERE IdVenta = ? and Estado = ?");
             statementValidar.setString(1, idVenta);
             statementValidar.setInt(2, 3);
             if (statementValidar.executeQuery().next()) {
@@ -598,15 +594,20 @@ public class VentaADO {
                 return "scrambled";
             } else {
 
-                statementVenta = DBUtil.getConnection().prepareStatement("update VentaTB set Estado = ? where IdVenta = ?");
+                statementVenta = DBUtil.getConnection().prepareStatement("UPDATE VentaTB "
+                        + "SET Estado = ? "
+                        + "WHERE IdVenta = ?");
+
                 statementVenta.setInt(1, 3);
                 statementVenta.setString(2, idVenta);
                 statementVenta.addBatch();
                 statementVenta.executeBatch();
 
-                statementSuministro = DBUtil.getConnection().prepareStatement("update SuministroTB set Cantidad = Cantidad + ? where IdSuministro = ?");
+                statementSuministro = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB "
+                        + "SET Cantidad = Cantidad + ? "
+                        + "WHERE IdSuministro = ?");
 
-                suministro_kardex = DBUtil.getConnection().prepareStatement("INSERT INTO "
+                statementKardex = DBUtil.getConnection().prepareStatement("INSERT INTO "
                         + "KardexSuministroTB("
                         + "IdSuministro,"
                         + "Fecha,"
@@ -614,67 +615,78 @@ public class VentaADO {
                         + "Tipo,"
                         + "Movimiento,"
                         + "Detalle,"
-                        + "Cantidad,"
-                        + "CUnitario,"
-                        + "CTotal) "
-                        + "VALUES(?,?,?,?,?,?,?,?,?)");
+                        + "Cantidad) "
+                        + "VALUES(?,?,?,?,?,?,?)");
 
-                for (int i = 0; i < arrList.size(); i++) {
-                    statementSuministro.setDouble(1, arrList.get(i).getCantidad());
-                    statementSuministro.setString(2, arrList.get(i).getIdSuministro());
-                    statementSuministro.addBatch();
-                    statementSuministro.executeBatch();
+                for (SuministroTB stb : arrList) {
+
+                    if (stb.isInventario() && stb.getValorInventario() == 1) {
+                        statementSuministro.setDouble(1, stb.getCantidad());
+                        statementSuministro.setString(2, stb.getIdSuministro());
+                        statementSuministro.addBatch();
+                    } else if (stb.isInventario() && stb.getValorInventario() == 2) {
+                        statementSuministro.setDouble(1, stb.getCantidadGranel());
+                        statementSuministro.setString(2, stb.getIdSuministro());
+                        statementSuministro.addBatch();
+                    } else if (stb.isInventario() && stb.getValorInventario() == 3) {
+                        statementSuministro.setDouble(1, stb.getCantidad());
+                        statementSuministro.setString(2, stb.getIdSuministro());
+                        statementSuministro.addBatch();
+                    }
+
+                    double cantidadGranel = stb.getPrecioVentaGeneralAuxiliar() <= 0 ? 0
+                            : stb.getPrecioVentaGeneralReal() / stb.getPrecioVentaGeneralAuxiliar();
+
+                    statementKardex.setString(1, stb.getIdSuministro());
+                    statementKardex.setString(2, Tools.getDate());
+                    statementKardex.setString(3, Tools.getHour());
+                    statementKardex.setShort(4, (short) 1);
+                    statementKardex.setInt(5, 2);
+                    statementKardex.setString(6, "Devolución de marcadería");
+                    statementKardex.setDouble(7,
+                            stb.getValorInventario() == 1
+                            ? stb.getCantidad()
+                            : stb.getValorInventario() == 2
+                            ? cantidadGranel
+                            : stb.getCantidad()
+                    );
+                    statementKardex.addBatch();
+
                 }
 
-                preparedBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial + ? WHERE IdBanco = ?");
-                preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
+                statementBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco "
+                        + "SET SaldoInicial = SaldoInicial - ? "
+                        + "WHERE IdBanco = ?");
 
-//                for (int i = 0; i < tvList.size(); i++) {
-//                    if (tvList.get(i).isInventario() && tvList.get(i).getValorInventario() == 1) {
-//                        statementSuministro.setDouble(1, tvList.get(i).getCantidad());
-//                        statementSuministro.setString(2, tvList.get(i).getIdSuministro());
-//                        statementSuministro.addBatch();
-//                    } else if (tvList.get(i).isInventario() && tvList.get(i).getValorInventario() == 2) {
-//                        statementSuministro.setDouble(1, tvList.get(i).getCantidadGranel());
-//                        statementSuministro.setString(2, tvList.get(i).getIdSuministro());
-//                        statementSuministro.addBatch();
-//                    }
-////
-//                    suministro_kardex.setString(1, tvList.get(i).getIdSuministro());
-//                    suministro_kardex.setString(2, Tools.getDate());
-//                    suministro_kardex.setString(3, Tools.getHour());
-//                    suministro_kardex.setShort(4, (short) 1);
-//                    suministro_kardex.setInt(5, 2);
-//                    suministro_kardex.setString(6, "Devolución");
-//                    suministro_kardex.setDouble(7,
-//                            tvList.get(i).getValorInventario() == 1
-//                            ? tvList.get(i).getCantidad()
-//                            : tvList.get(i).getCantidadGranel());
-//                    suministro_kardex.setDouble(8, tvList.get(i).getCostoCompra());
-//                    suministro_kardex.setDouble(9, tvList.get(i).getValorInventario() == 2
-//                            ? tvList.get(i).getCantidad() * tvList.get(i).getCostoCompra()
-//                            : tvList.get(i).getCantidadGranel() * tvList.get(i).getCostoCompra());
-//                    suministro_kardex.addBatch();
-//                }
-//                movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,IdUsuario,FechaMovimiento,HoraMovimiento,Comentario,Movimiento,Entrada,Salidas,Saldo)VALUES(?,?,?,?,?,?,?,?,?)");
-//                movimiento_caja.setString(1, cajaTB.getIdCaja());
-//                movimiento_caja.setString(2, cajaTB.getIdUsuario());
-//                movimiento_caja.setString(3, cajaTB.getFechaMovimiento());
-//                movimiento_caja.setString(4, cajaTB.getHoraMovimiento());
-//                movimiento_caja.setString(5, cajaTB.getComentario());
-//                movimiento_caja.setString(6, cajaTB.getMovimiento());
-//                movimiento_caja.setDouble(7, 0);
-//                movimiento_caja.setDouble(8, cajaTB.getSalidas());
-//                movimiento_caja.setDouble(9, cajaTB.getSaldo());
-//                movimiento_caja.addBatch();
-//
-//                statementVenta.executeBatch();
-//                statementSuministro.executeBatch();
-//                movimiento_caja.executeBatch();
-//                suministro_kardex.executeBatch();
-//                DBUtil.getConnection().commit();
-//                return "update";
-//            }
+                statementBanco.setDouble(1, bancoHistorialBancaria.getEntrada());
+                statementBanco.setString(2, bancoHistorialBancaria.getIdBanco());
+                statementBanco.addBatch();
+
+                statementBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB"
+                        + "(IdBanco,"
+                        + "IdProcedencia,"
+                        + "Descripcion,"
+                        + "Fecha,"
+                        + "Hora,"
+                        + "Entrada,"
+                        + "Salida)"
+                        + "VALUES(?,?,?,?,?,?,?)");
+
+                statementBancoHistorial.setString(1, bancoHistorialBancaria.getIdBanco());
+                statementBancoHistorial.setString(2, "");
+                statementBancoHistorial.setString(3, bancoHistorialBancaria.getDescripcion());
+                statementBancoHistorial.setString(4, bancoHistorialBancaria.getFecha());
+                statementBancoHistorial.setString(5, bancoHistorialBancaria.getHora());
+                statementBancoHistorial.setDouble(6, bancoHistorialBancaria.getEntrada());
+                statementBancoHistorial.setDouble(7, bancoHistorialBancaria.getSalida());
+                statementBancoHistorial.addBatch();
+
+                statementVenta.executeBatch();
+                statementSuministro.executeBatch();
+                statementKardex.executeBatch();
+                statementBanco.executeBatch();
+                statementBancoHistorial.executeBatch();
+
                 DBUtil.getConnection().commit();
                 result = "updated";
             }
@@ -698,8 +710,8 @@ public class VentaADO {
 //                if (historial_Banco != null) {
 //                    historial_Banco.close();
 //                }
-                if (suministro_kardex != null) {
-                    suministro_kardex.close();
+                if (statementKardex != null) {
+                    statementKardex.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
