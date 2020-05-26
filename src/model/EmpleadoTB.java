@@ -61,12 +61,14 @@ public class EmpleadoTB implements Serializable {
     
     private CheckBox validarEm;
     
+    private String informacion;
+    
 
     public EmpleadoTB() {
     }
 
-    public EmpleadoTB(String idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public EmpleadoTB(String informacion) {
+        this.informacion = informacion == null ? "" : informacion;
     }
 
     public EmpleadoTB(String idEmpleado, String apellidos, String nombres) {
@@ -75,12 +77,10 @@ public class EmpleadoTB implements Serializable {
         this.nombres = nombres;
     }
    
-
     public EmpleadoTB(String apellidos, String nombres) {
         this.apellidos = apellidos;
         this.nombres = nombres;
     }
-   
 
     public EmpleadoTB(String idEmpleado, int tipoDocumento, String apellidos, String nombres, int puesto, int estado) {
         this.idEmpleado = idEmpleado;
@@ -289,6 +289,14 @@ public class EmpleadoTB implements Serializable {
 
     public void setValidarEm(CheckBox validarEm) {
         this.validarEm = validarEm;
+    }
+
+    public String getInformacion() {
+        return informacion;
+    }
+
+    public void setInformacion(String informacion) {
+        this.informacion = informacion == null ? "" : informacion;
     }
 
     @Override

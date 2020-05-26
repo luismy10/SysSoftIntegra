@@ -5,12 +5,14 @@ public class BancoHistorialTB {
     private int id;
     private String idBanco;
     private String idBancoHistorial;
+    private String idEmpleado;
     private String idProcedencia;
     private String descripcion;
     private String fecha;
     private String hora;
     private double entrada;
     private double salida;
+    private EmpleadoTB empleadoTB;
 
     public BancoHistorialTB() {
         
@@ -38,6 +40,14 @@ public class BancoHistorialTB {
 
     public void setIdBancoHistorial(String idBancoHistorial) {
         this.idBancoHistorial = idBancoHistorial;
+    }
+
+    public String getIdEmpleado() {
+        return idEmpleado;
+    }
+
+    public void setIdEmpleado(String idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
     public String getIdProcedencia() {
@@ -87,5 +97,13 @@ public class BancoHistorialTB {
     public void setSalida(double salida) {
         this.salida = salida;
     }    
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
+    }
     
 }

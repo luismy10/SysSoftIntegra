@@ -224,7 +224,7 @@ public class FxVentaMostrarController implements Initializable {
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
                         lblFechaHora.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento()+" "+ventaTB.getClienteTB().getInformacion());
+                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + " " + ventaTB.getClienteTB().getInformacion());
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         nombreTicketImpresion = ventaTB.getComproabanteNameImpresion();
                         lblComprobante.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
@@ -280,6 +280,9 @@ public class FxVentaMostrarController implements Initializable {
     }
 
     private void imprimirVenta(String ticket) {
+        if ("".equals(idVenta) || idVenta == null) {
+            return;
+        }
         if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
             loadTicket();
             ArrayList<HBox> object = new ArrayList<>();
@@ -289,7 +292,7 @@ public class FxVentaMostrarController implements Initializable {
                 object.add((HBox) hbEncabezado.getChildren().get(i));
                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket,ventaTB.getClienteTB().getNumeroDocumento(),ventaTB.getClienteTB().getInformacion());
+                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
             }
 
             for (int m = 0; m < arrList.size(); m++) {
@@ -307,7 +310,7 @@ public class FxVentaMostrarController implements Initializable {
                 object.add((HBox) hbPie.getChildren().get(i));
                 HBox box = ((HBox) hbPie.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto,ventaTB.getClienteTB().getNumeroDocumento(),ventaTB.getClienteTB().getNumeroDocumento());
+                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getNumeroDocumento());
             }
             billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 
@@ -352,6 +355,10 @@ public class FxVentaMostrarController implements Initializable {
 
     private void cancelVenta() {
         try {
+            if ("".equals(idVenta) || idVenta == null) {
+                return;
+            }
+
             URL url = getClass().getResource(FilesRouters.FX_VENTA_DEVOLUCION);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -364,7 +371,7 @@ public class FxVentaMostrarController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {
-
+                idVenta = "";
             });
             stage.show();
         } catch (IOException ex) {
