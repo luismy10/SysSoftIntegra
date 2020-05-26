@@ -72,6 +72,7 @@ public class FxVentaDevolucionController implements Initializable {
 
                     BancoHistorialTB bancoHistorialBancaria = new BancoHistorialTB();
                     bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
+                    bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
                     bancoHistorialBancaria.setDescripcion("Venta con Tarjeta");
                     bancoHistorialBancaria.setFecha(Tools.getDate());
                     bancoHistorialBancaria.setHora(Tools.getHour());
