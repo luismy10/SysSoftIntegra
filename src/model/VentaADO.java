@@ -666,21 +666,23 @@ public class VentaADO {
 
                 statementBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB"
                         + "(IdBanco,"
+                        + "IdEmpleado,"
                         + "IdProcedencia,"
                         + "Descripcion,"
                         + "Fecha,"
                         + "Hora,"
                         + "Entrada,"
                         + "Salida)"
-                        + "VALUES(?,?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?,?,?)");
 
                 statementBancoHistorial.setString(1, bancoHistorialBancaria.getIdBanco());
-                statementBancoHistorial.setString(2, "");
-                statementBancoHistorial.setString(3, bancoHistorialBancaria.getDescripcion());
-                statementBancoHistorial.setString(4, bancoHistorialBancaria.getFecha());
-                statementBancoHistorial.setString(5, bancoHistorialBancaria.getHora());
-                statementBancoHistorial.setDouble(6, bancoHistorialBancaria.getEntrada());
-                statementBancoHistorial.setDouble(7, bancoHistorialBancaria.getSalida());
+                statementBancoHistorial.setString(2, bancoHistorialBancaria.getIdEmpleado());
+                statementBancoHistorial.setString(3, "");
+                statementBancoHistorial.setString(4, bancoHistorialBancaria.getDescripcion());
+                statementBancoHistorial.setString(5, bancoHistorialBancaria.getFecha());
+                statementBancoHistorial.setString(6, bancoHistorialBancaria.getHora());
+                statementBancoHistorial.setDouble(7, bancoHistorialBancaria.getEntrada());
+                statementBancoHistorial.setDouble(8, bancoHistorialBancaria.getSalida());
                 statementBancoHistorial.addBatch();
 
                 statementVenta.executeBatch();
