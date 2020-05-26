@@ -660,7 +660,7 @@ public class VentaADO {
                         + "SET SaldoInicial = SaldoInicial - ? "
                         + "WHERE IdBanco = ?");
 
-                statementBanco.setDouble(1, bancoHistorialBancaria.getEntrada());
+                statementBanco.setDouble(1, bancoHistorialBancaria.getSalida());
                 statementBanco.setString(2, bancoHistorialBancaria.getIdBanco());
                 statementBanco.addBatch();
 
