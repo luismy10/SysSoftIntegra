@@ -80,6 +80,7 @@ public class SuministroTB {
     private Label estadoAsignacion;
     private Button remover;
     private boolean cambios;
+    private Label lblCantidad;
 
     public SuministroTB() {
     }
@@ -570,6 +571,14 @@ public class SuministroTB {
 
     public void setCambios(boolean cambios) {
         this.cambios = cambios;
+    }
+
+    public Label getLblCantidad() {
+        return lblCantidad;
+    }
+
+    public void setLblCantidad(Label lblCantidad) {
+        this.lblCantidad = lblCantidad;
     }
 
 }

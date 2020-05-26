@@ -707,6 +707,8 @@ public class SuministroADO {
                 suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
+                suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
+                suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
@@ -718,6 +720,12 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setImagenTB(rsEmps.getString("Imagen"));
+                
+                Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
+                label.getStyleClass().add("labelRoboto14");
+                label.setStyle(suministroTB.getCantidad()>= suministroTB.getStockMinimo()? "-fx-text-fill:blue;":"-fx-text-fill:red;");
+                suministroTB.setLblCantidad(label);
+                
                 empList.add(suministroTB);
             }
         } catch (SQLException e) {
@@ -756,6 +764,8 @@ public class SuministroADO {
                 suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
+                suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
+                suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
@@ -767,6 +777,12 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setImagenTB(rsEmps.getString("Imagen"));
+                
+                Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
+                label.getStyleClass().add("labelRoboto14");
+                label.setStyle(suministroTB.getCantidad()>= suministroTB.getStockMinimo()? "-fx-text-fill:blue;":"-fx-text-fill:red;");
+                suministroTB.setLblCantidad(label);
+                
                 empList.add(suministroTB);
             }
         } catch (SQLException e) {

@@ -41,6 +41,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -84,7 +85,7 @@ public class FxSuministrosController implements Initializable {
     @FXML
     private TableColumn<SuministroTB, String> tcCosto;
     @FXML
-    private TableColumn<SuministroTB,String> tcCantidad;
+    private TableColumn<SuministroTB, Label> tcCantidad;
 //    private TableColumn<SuministroTB, String> tcEstado;
     @FXML
     private ComboBox<HideableItem<DetalleTB>> cbCategoria;
@@ -213,7 +214,8 @@ public class FxSuministrosController implements Initializable {
         tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
         tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
-        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(),2)));
+        tcCantidad.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
+//        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(),2)));
 //        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName().get()));
 
         tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));//+1

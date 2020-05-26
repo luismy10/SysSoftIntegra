@@ -233,6 +233,7 @@ public class FxComprasController implements Initializable {
             cbNumeracion.setDisable(true);
         }
         if (privilegioTBs.get(8).getIdPrivilegio() != 0 && !privilegioTBs.get(8).isEstado()) {
+            cbMoneda.setVisible(false);
             cbMoneda.setDisable(true);
         }
         if (privilegioTBs.get(9).getIdPrivilegio() != 0 && !privilegioTBs.get(9).isEstado()) {
