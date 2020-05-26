@@ -198,8 +198,8 @@ public class FxComprasController implements Initializable {
         initTable();
 
         tcItem.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
-        tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
         tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
         tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
