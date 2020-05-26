@@ -83,6 +83,8 @@ public class FxSuministrosController implements Initializable {
     private TableColumn<SuministroTB, String> tcMarca;
     @FXML
     private TableColumn<SuministroTB, String> tcCosto;
+    @FXML
+    private TableColumn<SuministroTB,String> tcCantidad;
 //    private TableColumn<SuministroTB, String> tcEstado;
     @FXML
     private ComboBox<HideableItem<DetalleTB>> cbCategoria;
@@ -141,6 +143,7 @@ public class FxSuministrosController implements Initializable {
     private int paginacion;
 
     private int totalPaginacion;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -210,14 +213,16 @@ public class FxSuministrosController implements Initializable {
         tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
         tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
+        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(),2)));
 //        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName().get()));
 
         tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));//+1
-        tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));//+2
-        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));//+4       
-        tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
-        tcMarca.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
-        tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
+        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.32));//+4       
+        tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));//+2
+        tcMarca.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));//+2
+        tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
 //        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
 
         arrayArticulosImpuesto = new ArrayList<>();

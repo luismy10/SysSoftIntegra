@@ -106,7 +106,6 @@ public class BancoADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             CallableStatement codigoBanco = null;
-            CallableStatement codigoBancoHistorial = null;
             PreparedStatement preparedBanco = null;
             PreparedStatement preparedBancoHistorial = null;
             PreparedStatement preparedValidation = null;
@@ -131,22 +130,17 @@ public class BancoADO {
                         preparedBanco.setString(6, bancoTB.getIdBanco());
                         preparedBanco.addBatch();
 
-                        preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
+                        preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
 
                         if (bancoTB.getSaldoInicial() > 0) {
-                            codigoBancoHistorial = DBUtil.getConnection().prepareCall("{? = call Fc_Banco_Historial_Codigo_Alfanumerico()}");
-                            codigoBancoHistorial.registerOutParameter(1, java.sql.Types.VARCHAR);
-                            codigoBancoHistorial.execute();
-                            String idBancoHistorial = codigoBancoHistorial.getString(1);
 
                             preparedBancoHistorial.setString(1, bancoTB.getIdBanco());
-                            preparedBancoHistorial.setString(2, idBancoHistorial);
-                            preparedBancoHistorial.setString(3, "");
-                            preparedBancoHistorial.setString(4, "Apertura de cuenta");
-                            preparedBancoHistorial.setString(5, Tools.getDate());
-                            preparedBancoHistorial.setString(6, Tools.getHour());
-                            preparedBancoHistorial.setDouble(7, bancoTB.getSaldoInicial());
-                            preparedBancoHistorial.setDouble(8, 0);
+                            preparedBancoHistorial.setString(2, "");
+                            preparedBancoHistorial.setString(3, "Apertura de cuenta");
+                            preparedBancoHistorial.setString(4, Tools.getDate());
+                            preparedBancoHistorial.setString(5, Tools.getHour());
+                            preparedBancoHistorial.setDouble(6, bancoTB.getSaldoInicial());
+                            preparedBancoHistorial.setDouble(7, 0);
                             preparedBancoHistorial.addBatch();
                         }
                         if (bancoTB.isAsignacion() && bancoTB.getFormaPago() == 1) {
@@ -227,22 +221,16 @@ public class BancoADO {
                         preparedBanco.setShort(10, bancoTB.getFormaPago());
                         preparedBanco.addBatch();
 
-                        preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
+                        preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
 
                         if (bancoTB.getSaldoInicial() > 0) {
-                            codigoBancoHistorial = DBUtil.getConnection().prepareCall("{? = call Fc_Banco_Historial_Codigo_Alfanumerico()}");
-                            codigoBancoHistorial.registerOutParameter(1, java.sql.Types.VARCHAR);
-                            codigoBancoHistorial.execute();
-                            String idBancoHistorial = codigoBancoHistorial.getString(1);
-
                             preparedBancoHistorial.setString(1, idBanco);
-                            preparedBancoHistorial.setString(2, idBancoHistorial);
-                            preparedBancoHistorial.setString(3, "");
-                            preparedBancoHistorial.setString(4, "Apertura de cuenta");
-                            preparedBancoHistorial.setString(5, Tools.getDate());
-                            preparedBancoHistorial.setString(6, Tools.getHour());
-                            preparedBancoHistorial.setDouble(7, bancoTB.getSaldoInicial());
-                            preparedBancoHistorial.setDouble(8, 0);
+                            preparedBancoHistorial.setString(2, "");
+                            preparedBancoHistorial.setString(3, "Apertura de cuenta");
+                            preparedBancoHistorial.setString(4, Tools.getDate());
+                            preparedBancoHistorial.setString(5, Tools.getHour());
+                            preparedBancoHistorial.setDouble(6, bancoTB.getSaldoInicial());
+                            preparedBancoHistorial.setDouble(7, 0);
                             preparedBancoHistorial.addBatch();
                         }
 
@@ -311,9 +299,6 @@ public class BancoADO {
                 try {
                     if (codigoBanco != null) {
                         codigoBanco.close();
-                    }
-                    if (codigoBancoHistorial != null) {
-                        codigoBancoHistorial.close();
                     }
                     if (preparedBanco != null) {
                         preparedBanco.close();
