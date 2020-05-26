@@ -2,6 +2,7 @@ package controller.operaciones.compras;
 
 import controller.consultas.compras.FxComprasEditarController;
 import controller.tools.FilesRouters;
+import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -133,6 +134,7 @@ public class FxComprasProcesoController implements Initializable {
 
                 BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
                 bancoHistorialTB.setIdBanco(cbCuentas.getSelectionModel().getSelectedItem().getIdBanco());
+                bancoHistorialTB.setIdEmpleado(Session.USER_ID);
                 bancoHistorialTB.setDescripcion("Salida de dinero por compra");
                 bancoHistorialTB.setFecha(Tools.getDate());
                 bancoHistorialTB.setHora(Tools.getHour());

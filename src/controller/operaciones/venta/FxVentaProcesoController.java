@@ -280,6 +280,7 @@ public class FxVentaProcesoController implements Initializable {
                     }
                     bancoHistorialEfectivo = new BancoHistorialTB();
                     bancoHistorialEfectivo.setIdBanco(Session.ID_CUENTA_EFECTIVO);
+                    bancoHistorialEfectivo.setIdEmpleado(Session.USER_ID);
                     bancoHistorialEfectivo.setDescripcion("Venta Efectivo");
                     bancoHistorialEfectivo.setFecha(Tools.getDate());
                     bancoHistorialEfectivo.setHora(Tools.getHour());
@@ -294,6 +295,7 @@ public class FxVentaProcesoController implements Initializable {
                     }
                     bancoHistorialBancaria = new BancoHistorialTB();
                     bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
+                    bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
                     bancoHistorialBancaria.setDescripcion("Venta con Tarjeta");
                     bancoHistorialBancaria.setFecha(Tools.getDate());
                     bancoHistorialBancaria.setHora(Tools.getHour());
@@ -306,14 +308,14 @@ public class FxVentaProcesoController implements Initializable {
                     }
                     double efectivo = Double.parseDouble(txtEfectivo.getText());
                     double tarjeta = Double.parseDouble(txtTarjeta.getText());
-                    if((efectivo + tarjeta) != tota_venta){
+                    if ((efectivo + tarjeta) != tota_venta) {
                         Tools.AlertMessageWarning(window, "Venta", " El monto a pagar no debe ser mayor al total!!");
                         return;
                     }
                 }
-                
-                if(!Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())){
-                    if((Double.parseDouble(txtTarjeta.getText())) > tota_venta){
+
+                if (!Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
+                    if ((Double.parseDouble(txtTarjeta.getText())) > tota_venta) {
                         Tools.AlertMessageWarning(window, "Venta", "El pago con tarjeta no debe ser mayor al total!!");
                         return;
                     }

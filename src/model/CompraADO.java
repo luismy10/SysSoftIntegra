@@ -105,19 +105,20 @@ public class CompraADO extends DBUtil {
 
                 preparedBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial - ? WHERE IdBanco = ?");
 
-                preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
+                preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdEmpleado,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
 
                 preparedBanco.setDouble(1, bancoHistorialTB.getSalida());
                 preparedBanco.setString(2, bancoHistorialTB.getIdBanco());
                 preparedBanco.addBatch();
 
                 preparedBancoHistorial.setString(1, bancoHistorialTB.getIdBanco());
-                preparedBancoHistorial.setString(2, "");
-                preparedBancoHistorial.setString(3, bancoHistorialTB.getDescripcion());
-                preparedBancoHistorial.setString(4, bancoHistorialTB.getFecha());
-                preparedBancoHistorial.setString(5, bancoHistorialTB.getHora());
-                preparedBancoHistorial.setDouble(6, 0);
-                preparedBancoHistorial.setDouble(7, bancoHistorialTB.getSalida());
+                preparedBancoHistorial.setString(2, bancoHistorialTB.getIdEmpleado());
+                preparedBancoHistorial.setString(3, "");
+                preparedBancoHistorial.setString(4, bancoHistorialTB.getDescripcion());
+                preparedBancoHistorial.setString(5, bancoHistorialTB.getFecha());
+                preparedBancoHistorial.setString(6, bancoHistorialTB.getHora());
+                preparedBancoHistorial.setDouble(7, 0);
+                preparedBancoHistorial.setDouble(8, bancoHistorialTB.getSalida());
                 preparedBancoHistorial.addBatch();
 
                 compra.setString(1, id_compra);

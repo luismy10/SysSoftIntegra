@@ -136,7 +136,7 @@ public class VentaADO {
             venta.addBatch();
 
             preparedBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial + ? WHERE IdBanco = ?");
-            preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
+            preparedBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdEmpleado,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
 
             if (bancoHistorialEfectivo != null) {
 
@@ -145,12 +145,13 @@ public class VentaADO {
                 preparedBanco.addBatch();
 
                 preparedBancoHistorial.setString(1, bancoHistorialEfectivo.getIdBanco());
-                preparedBancoHistorial.setString(2, "");
-                preparedBancoHistorial.setString(3, bancoHistorialEfectivo.getDescripcion());
-                preparedBancoHistorial.setString(4, bancoHistorialEfectivo.getFecha());
-                preparedBancoHistorial.setString(5, bancoHistorialEfectivo.getHora());
-                preparedBancoHistorial.setDouble(6, bancoHistorialEfectivo.getEntrada());
-                preparedBancoHistorial.setDouble(7, 0);
+                preparedBancoHistorial.setString(2, bancoHistorialEfectivo.getIdEmpleado());
+                preparedBancoHistorial.setString(3, "");
+                preparedBancoHistorial.setString(4, bancoHistorialEfectivo.getDescripcion());
+                preparedBancoHistorial.setString(5, bancoHistorialEfectivo.getFecha());
+                preparedBancoHistorial.setString(6, bancoHistorialEfectivo.getHora());
+                preparedBancoHistorial.setDouble(7, bancoHistorialEfectivo.getEntrada());
+                preparedBancoHistorial.setDouble(8, 0);
                 preparedBancoHistorial.addBatch();
             }
             if (bancoHistorialBancaria != null) {
@@ -160,12 +161,13 @@ public class VentaADO {
                 preparedBanco.addBatch();
 
                 preparedBancoHistorial.setString(1, bancoHistorialBancaria.getIdBanco());
-                preparedBancoHistorial.setString(2, "");
-                preparedBancoHistorial.setString(3, bancoHistorialBancaria.getDescripcion());
-                preparedBancoHistorial.setString(4, bancoHistorialBancaria.getFecha());
-                preparedBancoHistorial.setString(5, bancoHistorialBancaria.getHora());
-                preparedBancoHistorial.setDouble(6, bancoHistorialBancaria.getEntrada());
-                preparedBancoHistorial.setDouble(7, 0);
+                preparedBancoHistorial.setString(2, bancoHistorialEfectivo.getIdEmpleado());
+                preparedBancoHistorial.setString(3, "");
+                preparedBancoHistorial.setString(4, bancoHistorialBancaria.getDescripcion());
+                preparedBancoHistorial.setString(5, bancoHistorialBancaria.getFecha());
+                preparedBancoHistorial.setString(6, bancoHistorialBancaria.getHora());
+                preparedBancoHistorial.setDouble(7, bancoHistorialBancaria.getEntrada());
+                preparedBancoHistorial.setDouble(8, 0);
                 preparedBancoHistorial.addBatch();
             }
             //else{

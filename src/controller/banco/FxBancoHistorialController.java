@@ -45,6 +45,8 @@ public class FxBancoHistorialController implements Initializable {
     @FXML
     private TableColumn<BancoHistorialTB, String> tcNumero;
     @FXML
+    private TableColumn<BancoHistorialTB, String> tcUsuario;
+    @FXML
     private TableColumn<BancoHistorialTB, String> tcFecha;
     @FXML
     private TableColumn<BancoHistorialTB, String> tcDescripcion;
@@ -65,15 +67,17 @@ public class FxBancoHistorialController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + "\n" + cellData.getValue().getHora()));
+        tcUsuario.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEmpleadoTB().getInformacion()));
         tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDescripcion()));
         tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEntrada() == 0 ? "" : Tools.roundingValue(cellData.getValue().getEntrada(), 4)));
         tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSalida() == 0 ? "" : Tools.roundingValue(cellData.getValue().getSalida(), 4)));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
-        tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.22));
-        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
-        tcEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
+        tcUsuario.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
+        tcEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
+        tcSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
     }
 
     public void loadBanco(String idBanco) {
@@ -153,7 +157,25 @@ public class FxBancoHistorialController implements Initializable {
     }
 
     private void eventRetirar() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_BANCO_RETIRAR);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxBancoRetirarDineroController controller = fXMLLoader.getController();
+            controller.setInitBancosController(this);
+            controller.setIdBanco(idBanco);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Salida de dinero", hbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
 
+        } catch (IOException ex) {
+            System.out.println("Controller banco" + ex.getLocalizedMessage());
+        }
     }
 
     private void eventTransferencia() {
