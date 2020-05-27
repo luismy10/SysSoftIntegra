@@ -144,7 +144,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@efectivo.png" />
+                                                                        <Image url="@../../image/efectivo_1.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -158,7 +158,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@visa.png" />
+                                                                        <Image url="@../../image/visa.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>

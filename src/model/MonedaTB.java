@@ -3,7 +3,8 @@ package model;
 import javafx.scene.image.ImageView;
 
 public class MonedaTB {
-
+    
+    private int id;
     private int idMoneda;
     private String nombre;
     private String abreviado;
@@ -32,8 +33,14 @@ public class MonedaTB {
         this.simbolo = simbolo;
         this.predeterminado = predeterminado;
     }
-    
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getIdMoneda() {
         return idMoneda;

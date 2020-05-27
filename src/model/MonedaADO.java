@@ -95,6 +95,7 @@ public class MonedaADO {
                 ResultSet resultSet = statementList.executeQuery();
                 while (resultSet.next()) {
                     MonedaTB monedaTB = new MonedaTB();
+                    monedaTB.setId(resultSet.getRow());
                     monedaTB.setIdMoneda(resultSet.getInt("IdMoneda"));
                     monedaTB.setNombre(resultSet.getString("Nombre"));
                     monedaTB.setAbreviado(resultSet.getString("Abreviado"));
