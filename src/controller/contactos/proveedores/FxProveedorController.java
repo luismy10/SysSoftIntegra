@@ -199,7 +199,7 @@ public class FxProveedorController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Proveedor", "¿Esta seguro de eliminar al proveedor?", true);
             if (confirmation == 1) {
-                String result = ProveedorADO.RemoveProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor().get());
+                String result = ProveedorADO.RemoveProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor());
                 if (result.equalsIgnoreCase("removed")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proveedor", "Eliminado correctamente.", false);
                     fillCustomersTable("");

@@ -148,11 +148,11 @@ public class FxProveedorListaController implements Initializable {
     private void executeEvent() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (comprasController != null) {
-                comprasController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
+                comprasController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             } else if (movimientosProcesoController != null) {
-                movimientosProcesoController.setInitProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor().get(),
+                movimientosProcesoController.setInitProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             } else if (comprasEditarController != null) {
@@ -160,7 +160,7 @@ public class FxProveedorListaController implements Initializable {
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             }else if(compraReporteController != null){
-                compraReporteController.setInitCompraReporteValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor().get(),
+                compraReporteController.setInitCompraReporteValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             }

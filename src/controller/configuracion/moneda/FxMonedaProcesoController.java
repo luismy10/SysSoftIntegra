@@ -71,6 +71,7 @@ public class FxMonedaProcesoController implements Initializable {
             monedaTB.setSimbolo(txtSimbolo.getText().trim().toUpperCase());
             monedaTB.setTipoCambio(Double.parseDouble(txtTipoCambio.getText()));
             monedaTB.setPredeterminado(false);
+            monedaTB.setSistema(true);
             String result = MonedaADO.CrudMoneda(monedaTB);
             if (result.equalsIgnoreCase("inserted")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Moneda", "Se ingreso correctamente.", false);

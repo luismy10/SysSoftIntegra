@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import javafx.scene.control.Button;
 
 public class DetalleCompraTB {
     
@@ -20,6 +21,7 @@ public class DetalleCompraTB {
     private boolean lote;
     private ArrayList<LoteTB> listLote;
     private SuministroTB suministroTB;
+    private Button remove;
     
     public DetalleCompraTB() {
     }  
@@ -151,5 +153,13 @@ public class DetalleCompraTB {
     public void setSuministroTB(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
     }     
+
+    public Button getRemove() {
+        return remove;
+    }
+
+    public void setRemove(Button remove) {
+        this.remove = remove;
+    }
 
 }

@@ -4,42 +4,52 @@ package controller.tools;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
 
-public class SearchComboBox{
+public class SearchComboBox<T>{
     
+    private SearchComboBoxSkin searchComboBoxSkin;
     private final ComboBox comboBox;
-    private final FilteredList<String> filterList;
-    private BiPredicate<String, String> filter;
-
-    public SearchComboBox(ComboBox comboBox) {
+    private final FilteredList<T> filterList;
+    private BiPredicate<T, String> filter;
+    
+    public SearchComboBox(ComboBox comboBox){        
+        this(comboBox,FXCollections.observableArrayList());
+    }
+    
+    public SearchComboBox(ComboBox comboBox,ObservableList<T> items) {     
         this.comboBox = comboBox;
-        this.filterList = new FilteredList<>(FXCollections.observableArrayList());
+        this.filterList = new FilteredList<>(items);
         this.filter = (i, s) -> true;
-        this.comboBox.setSkin(new SearchComboBoxSkin(this));
+        this.comboBox.setItems(items);
+        this.searchComboBoxSkin = new SearchComboBoxSkin(this); 
+        this.comboBox.setSkin(searchComboBoxSkin);
     }
 
-    public void setFilter(BiPredicate<String, String> filter) {
+    public void setFilter(BiPredicate<T, String> filter) {
         this.filter = filter;
     }
 
-    public BiPredicate<String, String> getFilter() {
+    public BiPredicate<T, String> getFilter() {
         return filter;
     }
 
-    public void setPredicateFilter(Predicate<String> predicate) {
+    public void setPredicateFilter(Predicate<T> predicate) {
         filterList.setPredicate(predicate);
     }
 
-    public FilteredList<String> getFilterList() {
+    public FilteredList<T> getFilterList() {
         return filterList;
     }
 
+    public SearchComboBoxSkin getSearchComboBoxSkin() {
+        return searchComboBoxSkin;
+    }
+    
     public ComboBox getComboBox() {
         return comboBox;
     }
     
-    
-
 }

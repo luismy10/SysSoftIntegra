@@ -123,7 +123,7 @@ public class FxProveedorProcesoController implements Initializable {
         txtDocumentNumberFactura.setText(value[0]);
         ProveedorTB proveedorTB = ProveedorADO.GetIdLisProveedor(value[0]);
         if (proveedorTB != null) {
-            idProveedor = proveedorTB.getIdProveedor().get();
+            idProveedor = proveedorTB.getIdProveedor();
             ObservableList<DetalleTB> lstypefa = cbDocumentTypeFactura.getItems();
             for (int i = 0; i < lstypefa.size(); i++) {
                 if (proveedorTB.getTipoDocumento() == lstypefa.get(i).getIdDetalle().get()) {

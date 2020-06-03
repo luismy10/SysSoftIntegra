@@ -1,6 +1,4 @@
-
 package controller.inventario.suministros;
-
 
 import controller.tools.Tools;
 import java.awt.Graphics;
@@ -41,7 +39,7 @@ public class FxCodigoBarrasController implements Initializable {
     private String codigo;
 
     private FxSuministrosProcesoController suministrosProcesoController;
-    
+
     private FxSuministrosProcesoModalController suministrosProcesoModalController;
 
     @Override
@@ -49,11 +47,10 @@ public class FxCodigoBarrasController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         cbCodificacion.getItems().addAll("Code bar", "Code 128");
         cbCodificacion.getSelectionModel().select(0);
+        generarCodigo();
     }
 
-    @FXML
-    private void onActionGenerar(ActionEvent event) throws IOException {
-
+    private void generarCodigo() {
         if (cbCodificacion.getSelectionModel().getSelectedIndex() == 0 || cbCodificacion.getSelectionModel().getSelectedIndex() == 1) {
             Random rd = new Random();
             int dig5 = rd.nextInt(90000) + 10000;
@@ -95,14 +92,20 @@ public class FxCodigoBarrasController implements Initializable {
                 Logger.getLogger(FxCodigoBarrasController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Articulo", "Seleccione un tipo de codigo de barras.", false);
+            Tools.AlertMessageWarning(window, "Articulo", "Seleccione un tipo de codigo de barras.");
         }
-
     }
 
     @FXML
-    private void onActionCodificacion(ActionEvent event) {
+    private void onActionGenerar(ActionEvent event) throws IOException {
+        generarCodigo();
+    }
 
+    @FXML
+    private void onKeyPressedGenerar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            generarCodigo();
+        }
     }
 
     @FXML
@@ -123,14 +126,14 @@ public class FxCodigoBarrasController implements Initializable {
                 suministrosProcesoController.getTxtClave().setText(codigo);
                 Tools.Dispose(window);
             } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Suministro", "No genero el codigo de barras o no selecciono un tipo de codigo de barras.", false);
+                Tools.AlertMessageWarning(window, "Suministro", "No genero el codigo de barras o no selecciono un tipo de codigo de barras.");
             }
-        }else if(suministrosProcesoModalController != null){
+        } else if (suministrosProcesoModalController != null) {
             if (codigo != null && (cbCodificacion.getSelectionModel().getSelectedIndex() == 0 || cbCodificacion.getSelectionModel().getSelectedIndex() == 1)) {
                 suministrosProcesoModalController.getTxtClave().setText(codigo);
                 Tools.Dispose(window);
             } else {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Suministro", "No genero el codigo de barras o no selecciono un tipo de codigo de barras.", false);
+                Tools.AlertMessageWarning(window, "Suministro", "No genero el codigo de barras o no selecciono un tipo de codigo de barras.");
             }
         }
 
@@ -139,7 +142,7 @@ public class FxCodigoBarrasController implements Initializable {
     public void setControllerSuministro(FxSuministrosProcesoController suministrosProcesoController) {
         this.suministrosProcesoController = suministrosProcesoController;
     }
-    
+
     public void setControllerSuministroModal(FxSuministrosProcesoModalController suministrosProcesoModalController) {
         this.suministrosProcesoModalController = suministrosProcesoModalController;
     }

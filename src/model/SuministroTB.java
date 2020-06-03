@@ -572,4 +572,9 @@ public class SuministroTB {
         this.cambios = cambios;
     }
 
+    @Override
+    public String toString() {
+        return  nombreMarca ;
+    }
+    
 }

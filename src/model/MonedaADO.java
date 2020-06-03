@@ -49,12 +49,13 @@ public class MonedaADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicated";
                     } else {
-                        statementMoneda = DBUtil.getConnection().prepareStatement("INSERT INTO MonedaTB(Nombre,Abreviado,Simbolo,TipoCambio,Predeterminado) VALUES(?,?,?,?,?)");
+                        statementMoneda = DBUtil.getConnection().prepareStatement("INSERT INTO MonedaTB(Nombre,Abreviado,Simbolo,TipoCambio,Predeterminado,Sistema) VALUES(?,?,?,?,?,?)");
                         statementMoneda.setString(1, monedaTB.getNombre());
                         statementMoneda.setString(2, monedaTB.getAbreviado());
                         statementMoneda.setString(3, monedaTB.getSimbolo());
                         statementMoneda.setDouble(4, monedaTB.getTipoCambio());
                         statementMoneda.setBoolean(5, monedaTB.getPredeterminado());
+                        statementMoneda.setBoolean(6, monedaTB.getSistema());
                         statementMoneda.addBatch();
                         statementMoneda.executeBatch();
                         DBUtil.getConnection().commit();

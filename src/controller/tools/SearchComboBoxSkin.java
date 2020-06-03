@@ -1,7 +1,7 @@
-
 package controller.tools;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -13,22 +13,33 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.ProveedorTB;
+import model.SuministroTB;
 
-public class SearchComboBoxSkin extends ComboBoxListViewSkin{
+public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
 
+    private VBox box;
     private final TextField searchBox;
-    private final ListView itemView;
-
+    private final ListView<T> itemView;
     private boolean clickSelection = false;
 
     public SearchComboBoxSkin(SearchComboBox searchComboBox) {
         super(searchComboBox.getComboBox());
 
         searchBox = new TextField();
-        searchBox.setPromptText("Search Box");
-        searchBox.textProperty().addListener((p, o, text) -> {
-            searchComboBox.setPredicateFilter(item -> text.isEmpty() ? true : searchComboBox.getFilter().test(item, text));
+        searchBox.getStyleClass().add("text-field-normal");
+        searchBox.setPromptText("Ingrese los datos a buscar");
+        searchBox.textProperty().addListener((ObservableValue<? extends String> p, String o, String text) -> {
+            searchComboBox.setPredicateFilter(item
+                    -> text.isEmpty()
+                            ? true
+                            : searchComboBox.getFilter().test(item, text)
+            );
+//                if(!itemView.getItems().isEmpty()){
+//                   itemView.getSelectionModel().select(0);
+//                }
         });
 
         itemView = new ListView<>();
@@ -47,8 +58,31 @@ public class SearchComboBoxSkin extends ComboBoxListViewSkin{
 
         // ocultar popup al usar las teclas determindas ENTER, ESC, SPACE
         itemView.setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER || t.getCode() == KeyCode.SPACE || t.getCode() == KeyCode.ESCAPE) {
-                searchComboBox.getComboBox().hide();
+            if (null != t.getCode()) {
+                switch (t.getCode()) {
+                    case ENTER:
+                        searchComboBox.getComboBox().hide();
+//                        if (itemView.getSelectionModel().getSelectedItem() instanceof ProveedorTB) {
+//                            ProveedorTB proveedorTB = (ProveedorTB) itemView.getSelectionModel().getSelectedItem();
+//                        } else if (itemView.getSelectionModel().getSelectedItem() instanceof SuministroTB) {
+//                            SuministroTB suministroTB = (SuministroTB) itemView.getSelectionModel().getSelectedItem();
+//                        }
+                        break;
+                    case SPACE:
+                        searchComboBox.getComboBox().hide();
+                        break;
+                    case ESCAPE:
+                        searchComboBox.getComboBox().hide();
+                        break;
+                    case UP: break;
+                    case DOWN: break;
+                    case LEFT: break;
+                    case RIGHT: break;
+                    default:
+                        searchBox.requestFocus();
+                        searchBox.selectAll();
+                        break;
+                }
             }
         });
 
@@ -65,11 +99,10 @@ public class SearchComboBoxSkin extends ComboBoxListViewSkin{
         });
 
         // se ha hecho click sobre el ListView
-        itemView.addEventFilter(MouseEvent.ANY, me-> clickSelection = me.getEventType().equals(MouseEvent.MOUSE_PRESSED));
+        itemView.addEventFilter(MouseEvent.ANY, me -> clickSelection = me.getEventType().equals(MouseEvent.MOUSE_PRESSED));
 
-        searchComboBox.getComboBox().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            searchComboBox.getComboBox().show();
-        });
+        searchComboBox.getComboBox().addEventHandler(KeyEvent.KEY_PRESSED, event -> searchComboBox.getComboBox().show());
+
     }
 
     @Override
@@ -97,11 +130,14 @@ public class SearchComboBoxSkin extends ComboBoxListViewSkin{
     }
 
     private Node createPopupContent() {
-        VBox box = new VBox(searchBox, itemView);
-        box.setSpacing(0);
-        box.setPadding(new Insets(2.0));
-        box.getStyleClass().add("combo-box-popup");
-        box.setMaxWidth(getSkinnable().getPrefWidth());
+        box = new VBox(searchBox, itemView);
+        box.setSpacing(4.0);
+        box.setPadding(new Insets(4.0));
+        box.setStyle("-fx-background-color:white;-fx-border-color:#999;-fx-border-width:1px;");
+        box.setMinWidth(getSkinnable().getWidth());
+        box.setPrefWidth(getSkinnable().getWidth());
+        box.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(box, Priority.ALWAYS);
         return box;
     }
 
@@ -109,7 +145,9 @@ public class SearchComboBoxSkin extends ComboBoxListViewSkin{
     protected void handleControlPropertyChanged(String p) {
         super.handleControlPropertyChanged(p);
         if ("SHOWING".equals(p)) {
-            ComboBox scb = ((ComboBox) getSkinnable());
+            ComboBox<T> scb = ((ComboBox) getSkinnable());
+            box.setMinWidth(scb.getWidth());
+            box.setPrefWidth(scb.getWidth());
             if (scb.isShowing()) {
                 searchBox.clear();
                 searchBox.requestFocus();
@@ -117,4 +155,9 @@ public class SearchComboBoxSkin extends ComboBoxListViewSkin{
             }
         }
     }
+
+    public ListView<T> getItemView() {
+        return itemView;
+    }
+
 }

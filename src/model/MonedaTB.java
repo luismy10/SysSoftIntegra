@@ -11,6 +11,7 @@ public class MonedaTB {
     private String simbolo;
     private Double tipoCambio;
     private Boolean predeterminado;
+    private Boolean sistema;
     private ImageView imagePredeterminado;
 
     public MonedaTB() {
@@ -80,6 +81,14 @@ public class MonedaTB {
 
     public void setTipoCambio(Double tipoCambio) {
         this.tipoCambio = tipoCambio;
+    }
+
+    public Boolean getSistema() {
+        return sistema;
+    }
+
+    public void setSistema(Boolean sistema) {
+        this.sistema = sistema;
     }
 
     public Boolean getPredeterminado() {
