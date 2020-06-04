@@ -11,8 +11,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -174,6 +177,8 @@ public class FxVentaEstructuraController implements Initializable {
 
     private boolean medida_cambio_decuento;
 
+    private boolean stateSearch;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         hbEncabezado = new VBox();
@@ -231,6 +236,7 @@ public class FxVentaEstructuraController implements Initializable {
         });
         billPrintable = new BillPrintable();
         monedaSimbolo = "M";
+        stateSearch = false;
         initTable();
         loadWindow();
     }
@@ -454,6 +460,94 @@ public class FxVentaEstructuraController implements Initializable {
         tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+    }
+
+    private void filterSuministro(String search) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<SuministroTB> task = new Task<SuministroTB>() {
+            @Override
+            public SuministroTB call() {
+                return SuministroADO.Get_Suministro_By_Search(search);
+            }
+        };
+
+        task.setOnSucceeded((e) -> {
+            SuministroTB a = task.getValue();
+            if (a != null) {
+                SuministroTB suministroTB = new SuministroTB();
+                suministroTB.setIdSuministro(a.getIdSuministro());
+                suministroTB.setClave(a.getClave());
+                suministroTB.setNombreMarca(a.getNombreMarca());
+                suministroTB.setCantidad(1);
+                suministroTB.setCostoCompra(a.getCostoCompra());
+
+                suministroTB.setDescuento(0);
+                suministroTB.setDescuentoCalculado(0);
+                suministroTB.setDescuentoSumado(0);
+
+                suministroTB.setPrecioVentaGeneralUnico(a.getPrecioVentaGeneral());
+                suministroTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
+                suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
+
+                suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
+                suministroTB.setImpuestoArticulo(a.getImpuestoArticulo());
+                suministroTB.setImpuestoArticuloName(getTaxName(a.getImpuestoArticulo()));
+                suministroTB.setImpuestoValor(getTaxValue(a.getImpuestoArticulo()));
+                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
+
+                suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
+
+                suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+
+                suministroTB.setInventario(a.isInventario());
+                suministroTB.setUnidadVenta(a.getUnidadVenta());
+                suministroTB.setValorInventario(a.getValorInventario());
+
+                Button button = new Button();
+                button.getStyleClass().add("buttonBorder");
+                ImageView view = new ImageView(new Image("/view/image/remove.png"));
+                view.setFitWidth(24);
+                view.setFitHeight(24);
+                button.setGraphic(view);
+                button.setOnAction(buttonEvent -> {
+                    tvList.getItems().remove(suministroTB);
+                    calculateTotales();
+                });
+                button.setOnKeyPressed(buttonEvent -> {
+                    if (buttonEvent.getCode() == KeyCode.ENTER) {
+                        tvList.getItems().remove(suministroTB);
+                        calculateTotales();
+                    }
+                });
+                suministroTB.setRemover(button);
+
+                getAddArticulo(suministroTB);
+                txtSearch.clear();
+                txtSearch.requestFocus();
+
+            }
+            stateSearch = false;
+        });
+
+        task.setOnFailed((e) -> {
+            stateSearch = false;
+        });
+
+        task.setOnScheduled((e) -> {
+            stateSearch = true;
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     private void openWindowArticulos() {
@@ -1152,63 +1246,8 @@ public class FxVentaEstructuraController implements Initializable {
                 && event.getCode() != KeyCode.PRINTSCREEN
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
-            SuministroTB a = SuministroADO.Get_Suministro_By_Search(txtSearch.getText().trim());
-            if (a != null) {
-                SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setIdSuministro(a.getIdSuministro());
-                suministroTB.setClave(a.getClave());
-                suministroTB.setNombreMarca(a.getNombreMarca());
-                suministroTB.setCantidad(1);
-                suministroTB.setCostoCompra(a.getCostoCompra());
-
-                suministroTB.setDescuento(0);
-                suministroTB.setDescuentoCalculado(0);
-                suministroTB.setDescuentoSumado(0);
-
-                suministroTB.setPrecioVentaGeneralUnico(a.getPrecioVentaGeneral());
-                suministroTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
-                suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
-
-                suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
-                suministroTB.setImpuestoArticulo(a.getImpuestoArticulo());
-                suministroTB.setImpuestoArticuloName(getTaxName(a.getImpuestoArticulo()));
-                suministroTB.setImpuestoValor(getTaxValue(a.getImpuestoArticulo()));
-                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
-
-                suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
-
-                suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-
-                suministroTB.setInventario(a.isInventario());
-                suministroTB.setUnidadVenta(a.getUnidadVenta());
-                suministroTB.setValorInventario(a.getValorInventario());
-
-                Button button = new Button();
-                button.getStyleClass().add("buttonBorder");
-                ImageView view = new ImageView(new Image("/view/image/remove.png"));
-                view.setFitWidth(24);
-                view.setFitHeight(24);
-                button.setGraphic(view);
-                button.setOnAction(buttonEvent -> {
-                    tvList.getItems().remove(suministroTB);
-                    calculateTotales();
-                });
-                button.setOnKeyPressed(buttonEvent -> {
-                    if (buttonEvent.getCode() == KeyCode.ENTER) {
-                        tvList.getItems().remove(suministroTB);
-                        calculateTotales();
-                    }
-                });
-                suministroTB.setRemover(button);
-
-                getAddArticulo(suministroTB);
-                txtSearch.clear();
-                txtSearch.requestFocus();
-
-            } else {
-
+            if (!stateSearch) {
+                filterSuministro(txtSearch.getText().trim());
             }
         }
     }

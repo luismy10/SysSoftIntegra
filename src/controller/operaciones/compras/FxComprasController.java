@@ -165,6 +165,10 @@ public class FxComprasController implements Initializable {
                     case F5:
                         openWindowProvedores();
                         break;
+                    case F6:
+                        txtProducto.selectAll();
+                        txtProducto.requestFocus();
+                        break;
                 }
             }
         });
