@@ -31,7 +31,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.BancoADO;
 import model.BancoHistorialTB;
@@ -47,7 +46,7 @@ public class FxComprasProcesoController implements Initializable {
     @FXML
     private AnchorPane apWindow;
     @FXML
-    private Text lblTotal;
+    private Label lblTotal;
     @FXML
     private TextField txtEfectivo;
     @FXML

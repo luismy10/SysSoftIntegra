@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.valorinventario.FxValorInventarioController">
+<VBox style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.valorinventario.FxValorInventarioController">
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
@@ -21,7 +22,7 @@
                   <Image url="@../../image/almacen.png" />
                </image>
             </ImageView>
-            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Valor de inventario" />
+            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Inventario" />
             <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
                <font>
                   <Font name="Roboto" size="14.0" />
@@ -34,15 +35,46 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
          <children>
-            <Button mnemonicParsing="false" styleClass="buttonLight" text="Generar reporte">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/complete.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onActionAjuste" onKeyPressed="#onKeyPressedAjuste" styleClass="buttonLight" text="Ajuste">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/edit.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/reload.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/complete.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children></HBox>
+            <HBox>
+               <children>
+                  <HBox alignment="CENTER_LEFT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Label styleClass="labelRobotoBold16" text="Valor del inventario (PEN S/)" textFill="#0777ae" />
+                        <Label fx:id="lblValoTotal" styleClass="labelRoboto16" text="S/ 0000.0000" textFill="#1a2226" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
          </children>
       </HBox>
       <HBox style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
@@ -51,17 +83,14 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Consulta el valor del inventario actual, la cantidad de items inventariables que tienes y su costo promedio" textFill="#1a2226" />
+                              <Label styleClass="labelOpenSansRegular14" text="Opciones de Existencia" />
+                              <ComboBox prefWidth="220.0" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-                           <children>
-                              <Label styleClass="labelRobotoBold16" text="Valor del inventario (PEN S/)" textFill="#0777ae" />
-                              <Label fx:id="lblValoTotal" styleClass="labelRoboto16" text="S/ 0000.0000" textFill="#1a2226" />
-                           </children>
-                        </HBox>
+                        </VBox>
+                        <VBox />
+                        <VBox />
                      </children>
                   </HBox>
                   <HBox VBox.vgrow="ALWAYS">
@@ -70,11 +99,11 @@
                            <columns>
                               <TableColumn fx:id="tcNumero" prefWidth="75.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcDescripcion" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                              <TableColumn fx:id="tcUnidad" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Unidad" />
-                              <TableColumn fx:id="tcEstado" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Estado" />
-                              <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo promedio" />
-                              <TableColumn fx:id="tcTotal" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
+                              <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo Promedio" />
+                              <TableColumn fx:id="tcPrecio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio Venta" />
+                              <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Existencia" />
+                              <TableColumn fx:id="tcInventarioMinimo" prefWidth="143.199951171875" style="-fx-alignment: CENTER-RIGHT;" text="Inv. Mínimo" />
+                              <TableColumn fx:id="tcInventarioMaximo" prefWidth="131.2000732421875" style="-fx-alignment: CENTER-RIGHT;" text="Inv. Máximo" />
                            </columns>
                         </TableView>
                      </children>

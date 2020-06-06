@@ -1002,10 +1002,13 @@ public class SuministroADO {
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
+                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 suministroTB.setEstadoName(rsEmps.getString("Estado"));
                 suministroTB.setTotalImporte(rsEmps.getDouble("Total"));
+                suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
+                suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
                 empList.add(suministroTB);
             }
         } catch (SQLException e) {
