@@ -133,6 +133,10 @@ public class FxValorInventarioController implements Initializable {
         }
     }
     
+    private void generarReporte(){
+        
+    }
+    
     @FXML
     private void onKeyReleasedProducto(KeyEvent event) {
     
@@ -172,13 +176,13 @@ public class FxValorInventarioController implements Initializable {
     @FXML
     private void onKeyPressedReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            generarReporte();
         }
     }
 
     @FXML
     private void onActionReporte(ActionEvent event) {
-
+        generarReporte();
     }
     
     @FXML
