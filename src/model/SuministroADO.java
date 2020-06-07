@@ -986,14 +986,16 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static ObservableList<SuministroTB> ListInventario() {
-        String selectStmt = "{call Sp_Listar_Inventario_Suministros()}";
+    public static ObservableList<SuministroTB> ListInventario(String producto,short tipoExistencia) {
+        String selectStmt = "{call Sp_Listar_Inventario_Suministros(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, producto);
+            preparedStatement.setShort(2, tipoExistencia);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 SuministroTB suministroTB = new SuministroTB();
@@ -1009,11 +1011,20 @@ public class SuministroADO {
                 suministroTB.setTotalImporte(rsEmps.getDouble("Total"));
                 suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
                 suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
+
+                Label lblCantidad = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2) + " " + suministroTB.getUnidadCompraName());
+                lblCantidad.getStyleClass().add("label-existencia");
+                lblCantidad.getStyleClass().add(suministroTB.getCantidad() <= 0
+                        ? "label-existencia-negativa"
+                        : suministroTB.getCantidad() > 0 && suministroTB.getCantidad() <= suministroTB.getStockMinimo()
+                        ? "label-existencia-intermedia"
+                        : "label-existencia-normal");
+                suministroTB.setLblCantidad(lblCantidad);
+
                 empList.add(suministroTB);
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -1432,29 +1443,30 @@ public class SuministroADO {
         String selectStmt = "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB";
         PreparedStatement preparedStatement = null;
         List<SuministroTB> suministroTBs = new ArrayList<>();
-          try {
+        try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-             try (ResultSet rsEmps = preparedStatement.executeQuery()) {
-                 while (rsEmps.next()) {
-                     SuministroTB suministroTB = new SuministroTB();
-                     suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
-                     suministroTB.setClave(rsEmps.getString("Clave"));
-                     suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                     suministroTBs.add(suministroTB);
-                 }}
-          }catch(SQLException e){
-              
-          }finally{
-              try{
-                  if(preparedStatement != null){
-                      preparedStatement.close();
-                  }
-              }catch(SQLException e){
-                  
-              }
-          }
-          return suministroTBs;
+            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                while (rsEmps.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
+                    suministroTB.setClave(rsEmps.getString("Clave"));
+                    suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                    suministroTBs.add(suministroTB);
+                }
+            }
+        } catch (SQLException e) {
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+        return suministroTBs;
     }
 
 }

@@ -436,12 +436,11 @@
  ******************************************************************************/
 
 .buttonLight{
-    BACKGROUND: #cccccc;
+    BACKGROUND:  #d6d5d5;
     BACKGROUND_PRESSED: #999999;
+    BORDER_HOVER: #666666;
 
-    BORDER_HOVER: #7a7a7a;
-
-    TEXT: #111;
+    TEXT: #444;
     DEFAULT_BUTTON_TEXT: white;
 
     FOCUS_RING_BORDER: #111;
@@ -452,16 +451,18 @@
 .buttonLight{
     -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
 
-    -fx-border-color: transparent;
-    -fx-border-width: 1;
+    -fx-border-color: #999999;
+    -fx-border-width: 1px;
 
-    -fx-background-radius: 0;
-    -fx-background-insets: 0;
+    -fx-background-radius: 0px;
+    -fx-background-insets: 0px;
     -fx-background-color: BACKGROUND;
 
     -fx-font-family:"Roboto";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
+    
+    -fx-curso: hand;
 }
 .buttonLight:hover{
     -fx-border-color: BORDER_HOVER;
@@ -501,7 +502,7 @@
  ******************************************************************************/
 
 .buttonLightDefault{
-    BACKGROUND: #3c8dbc;
+    BACKGROUND: #007bff;
     BACKGROUND_PRESSED: #175a75;
 
     BORDER_HOVER: #175a75;
@@ -1188,7 +1189,7 @@
     -fx-font-family:"Open Regular"; 
     -fx-font-weight: 100;
     -fx-font-size: 1.1666666666666667em; 
-    -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;
+    -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em;/*8px 2px 8px 2px*/
 }
 .table-view-principal .column-header .label:hover{
     -fx-text-fill: white;
@@ -1374,7 +1375,7 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-padding: 0.5em 0.75em 0.5em 0.75em; /*7px 9px 7px 9px*/
 }
 .date-picker.date-picker > .arrow-button{
-    -fx-background-color:  #3c8dbc;
+    -fx-background-color:  #007bff;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
@@ -1477,26 +1478,23 @@ totally specific (always using direct child) and cover all cases, which would be
 }
 .combo-box.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
     -fx-font-family:"Roboto";  
-    -fx-font-size: 1.1666666666666667em;
+    -fx-font-size: 1.1666666666666667em;/*14px*/
     -fx-padding: 0.5em;
 }
 .combo-box > .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover{
     -fx-background-color: #00aff0;
     -fx-text-fill: white;
 }
-.combo-box:editable{
-    -fx-padding: 0; /*20 7 20 7*/
-}
 .combo-box .text-field{
     -fx-padding: 0.5em 0.75em 0.5em 0.75em; /*6px 9px 6px 9px*/
     -fx-background-color: white;
 }
 .combo-box.combo-box-base > .arrow-button {    
-    -fx-background-color: #3c8dbc;
+    -fx-background-color: #007bff;
     -fx-background-radius: 0;
-    -fx-padding: 1em 0.75em 1em 0.75em; /*12px 9px 12px 9px*/
+    -fx-padding: 1.0416666666666667em 0.75em 1.0416666666666667em 0.75em; /*12.5px 9px 12.5px 9px*/
     -fx-border-width:1;
-    -fx-border-color:  #3c8dbc;
+    -fx-border-color: #007bff;
 }
 .combo-box.combo-box-base > .arrow-button > .arrow {
     -fx-background-color: white;
@@ -1508,7 +1506,6 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-background-color: transparent, transparent, #eaeaea, transparent;
     -fx-text-fill: #adadad;
 }
-
 /*******************************************************************************
  *                                                                             *
  * List View                                                                   *
@@ -2114,6 +2111,32 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-stroke: green;
     -fx-stroke-width: 1;
     -fx-stroke-type: outside;
+}
+
+.label-existencia{
+    -fx-max-width: Infinity;
+    -fx-font-weight: bold;
+    -fx-alignment: center-right;
+    -fx-padding: 0.5em;/*6px*/
+    -fx-margin:30px;
+    -fx-font-size:1.1666666666666667em; /*14px*/
+    -fx-font-family:"Open Regular"; 
+    -fx-font-smoothing-type: lcd;
+}
+
+.label-existencia-negativa{
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
+
+.label-existencia-intermedia{
+    -fx-background-color: orange;
+    -fx-text-fill: white;
+}
+
+.label-existencia-normal{
+    -fx-background-color: green;
+    -fx-text-fill: white;
 }
 
 .label-asignacion{

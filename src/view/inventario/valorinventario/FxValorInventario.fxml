@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.valorinventario.FxValorInventarioController">
+<VBox style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.valorinventario.FxValorInventarioController">
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
@@ -35,7 +36,7 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
          <children>
-            <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAjuste" onKeyPressed="#onKeyPressedAjuste" styleClass="buttonLight" text="Ajuste">
                      <graphic>
@@ -67,10 +68,10 @@
                </children></HBox>
             <HBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                  <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
                         <Label styleClass="labelRobotoBold16" text="Valor del inventario (PEN S/)" textFill="#0777ae" />
-                        <Label fx:id="lblValoTotal" styleClass="labelRoboto16" text="S/ 0000.0000" textFill="#1a2226" />
+                        <Label fx:id="lblValoTotal" styleClass="labelRoboto16" text="M 00.0000" textFill="#1a2226" />
                      </children>
                   </HBox>
                </children>
@@ -83,14 +84,55 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <VBox style="-fx-spacing: 0.3333333333333333em;">
+                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Opciones de Existencia" />
-                              <ComboBox prefWidth="220.0" />
+                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Producto">
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/barcode.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefWidth="240.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Opciones de Existencia">
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/plazos.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <ComboBox fx:id="cbExistencia" onAction="#onActionExistencia" prefWidth="240.0" promptText="Seleccione" />
+                                 </children>
+                              </VBox>
                            </children>
-                        </VBox>
-                        <VBox />
-                        <VBox />
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox alignment="BOTTOM_CENTER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onActionModificar" onKeyPressed="#onKeyPressedModificar" styleClass="buttonLightDefault" text="Modificar Producto(s)">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/ajuste-inventario.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
                   <HBox VBox.vgrow="ALWAYS">

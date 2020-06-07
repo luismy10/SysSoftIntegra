@@ -24,19 +24,16 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                      <children>
-                        <HBox alignment="CENTER" style="-fx-spacing: 5px;">
-                           <children>
-                              <Label fx:id="lblTotal" styleClass="labelRobotoBold18" text="M 00.00">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/money.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Label>
-                           </children>
-                        </HBox>
+                        <Label styleClass="labelRobotoBold18" text="TOTAL EN EFECTIVO" />
+                        <Label fx:id="lblTotal" styleClass="labelRobotoBold18" text="M 00.00">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/money.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </VBox>
                </children>
@@ -118,9 +115,9 @@
                                  <children>
                                     <TableView fx:id="tvListaCredito" prefHeight="200.0" prefWidth="500.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                       <columns>
-                                        <TableColumn fx:id="tcCredito" prefWidth="172.00000607967377" style="-fx-alignment: CENTER;" text="Crédito" />
-                                          <TableColumn fx:id="tcFecha" prefWidth="172.0" style="-fx-alignment: CENTER;" text="Fecha" />
-                                          <TableColumn fx:id="tcOpciones" prefWidth="140.0" style="-fx-alignment: CENTER;" text="Opciones" />
+                                        <TableColumn fx:id="tcCredito" prefWidth="190.0" style="-fx-alignment: CENTER;" text="Crédito" />
+                                          <TableColumn fx:id="tcFecha" prefWidth="190.0" style="-fx-alignment: CENTER;" text="Fecha" />
+                                          <TableColumn fx:id="tcOpciones" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Acción" />
                                       </columns>
                                     </TableView>
                                  </children>
