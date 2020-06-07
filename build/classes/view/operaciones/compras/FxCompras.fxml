@@ -98,14 +98,7 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-<<<<<<< HEAD
-                                    <ComboBox fx:id="cbComprobante" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226" />
-                                    <TextField fx:id="txtProveedor" disable="true" prefHeight="30.0" promptText="Buscar...." styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Comprobante:" textFill="#1a2226" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Moneda:" textFill="#1a2226" GridPane.rowIndex="2" />
-                                    <ComboBox fx:id="cbMoneda" maxWidth="1.7976931348623157E308" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-=======
+
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Proveedor:" textFill="#1a2226">
                                        <graphic>
                                           <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
@@ -138,7 +131,7 @@
                                           </ImageView>
                                        </graphic></Label>
                                     <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" promptText="Ingrese ..." styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
->>>>>>> 27eb80526718cfde6af51758d1dae755cbaa2900
+
                                  </children>
                               </GridPane>
                               <GridPane hgap="10.0" vgap="10.0" HBox.hgrow="ALWAYS">
