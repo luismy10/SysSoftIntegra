@@ -40,6 +40,8 @@ public class FxMonedaController implements Initializable {
     private VBox window;
     @FXML
     private TableView<MonedaTB> tvList;
+        @FXML
+    private TableColumn<MonedaTB, String> tcNumero;
     @FXML
     private TableColumn<MonedaTB, String> tcMoneda;
     @FXML
@@ -57,12 +59,20 @@ public class FxMonedaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcMoneda.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getSimbolo() + " - " + cellData.getValue().getNombre()
         ));
         tcTipoCambio.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoCambio()));
         tcAbreviatura.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getAbreviado()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
+        
+        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcMoneda.prefWidthProperty().bind(tvList.widthProperty().multiply(0.24));
+        tcTipoCambio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.24));
+        tcAbreviatura.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        
         stateRequest = false;
     }
 

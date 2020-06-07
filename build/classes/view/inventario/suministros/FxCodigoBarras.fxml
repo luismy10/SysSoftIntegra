@@ -27,11 +27,11 @@
                   <VBox alignment="CENTER" style="-fx-spacing: 1.25em; -fx-padding: 1.25em;">
                      <children>
                         <Label styleClass="labelOpenSansRegular14" text="Tipo de Codificación" />
-                        <ComboBox fx:id="cbCodificacion" onAction="#onActionCodificacion" prefHeight="28.0" prefWidth="200.0" promptText="--Seleccionar--" />
+                        <ComboBox fx:id="cbCodificacion" prefHeight="28.0" prefWidth="200.0" promptText="--Seleccionar--" />
                         <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLightDefault" text="Generar" />
-                              <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyReleased="#onKeyPressedAceptar" styleClass="buttonLight" text="Aceptar" />
+                              <Button mnemonicParsing="false" onAction="#onActionGenerar" onKeyPressed="#onKeyPressedGenerar" styleClass="buttonLightDefault" text="Generar" />
+                              <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLight" text="Aceptar" />
                            </children>
                         </HBox>
                      </children>

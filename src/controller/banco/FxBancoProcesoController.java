@@ -1,17 +1,12 @@
 package controller.banco;
 
 import controller.tools.Tools;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -44,8 +39,6 @@ public class FxBancoProcesoController implements Initializable {
     private TextField txtDescripcion;
     @FXML
     private Button btnProceso;
-    @FXML
-    private CheckBox cbAsignarCaja;
     @FXML
     private HBox hbCuenta;
     @FXML
@@ -121,7 +114,6 @@ public class FxBancoProcesoController implements Initializable {
             bancoTB.setHora(Tools.getHour());
             bancoTB.setSaldoInicial(Double.parseDouble(txtSaldoInicial.getText()));
             bancoTB.setDescripcion(txtDescripcion.getText().trim());
-            bancoTB.setAsignacion(cbAsignarCaja.isSelected());
             bancoTB.setFormaPago(CuentaEfectivo.isSelected() ? (short)1:(short)2); 
             short option = Tools.AlertMessageConfirmation(apWindow, "Banco", "¿Está seguro de continuar?");
             if (option == 1) {

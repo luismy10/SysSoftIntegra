@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,10 +25,10 @@ public class ProveedorADO {
                 DBUtil.getConnection().setAutoCommit(false);
 
                 preparedValidation = DBUtil.getConnection().prepareStatement("select IdProveedor from ProveedorTB where IdProveedor = ?");
-                preparedValidation.setString(1, proveedorTB.getIdProveedor().get());
+                preparedValidation.setString(1, proveedorTB.getIdProveedor());
                 if (preparedValidation.executeQuery().next()) {
                     preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ProveedorTB where IdProveedor <> ? and NumeroDocumento = ?");
-                    preparedValidation.setString(1, proveedorTB.getIdProveedor().get());
+                    preparedValidation.setString(1, proveedorTB.getIdProveedor());
                     preparedValidation.setString(2, proveedorTB.getNumeroDocumento());
                     if (preparedValidation.executeQuery().next()) {
                         DBUtil.getConnection().rollback();
@@ -50,7 +52,7 @@ public class ProveedorADO {
                         preparedProveedor.setString(14, proveedorTB.getPaginaWeb());
                         preparedProveedor.setString(15, proveedorTB.getDireccion());
                         preparedProveedor.setString(16, proveedorTB.getRepresentante());
-                        preparedProveedor.setString(17, proveedorTB.getIdProveedor().get());
+                        preparedProveedor.setString(17, proveedorTB.getIdProveedor());
                         preparedProveedor.addBatch();
 
                         preparedProveedor.executeBatch();
@@ -220,31 +222,31 @@ public class ProveedorADO {
     public static ProveedorTB GetIdLisProveedor(String documento) {
         String selectStmt = "{call Sp_Get_Proveedor_By_Id(?)}";
         PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
         ProveedorTB proveedorTB = null;
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, documento);
-            rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                proveedorTB = new ProveedorTB();
-                proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
-                proveedorTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
-                proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
-                proveedorTB.setNombreComercial(rsEmps.getString("NombreComercial"));
-                proveedorTB.setPais(rsEmps.getString("Pais"));
-                proveedorTB.setCiudad(rsEmps.getInt("Ciudad"));
-                proveedorTB.setProvincia(rsEmps.getInt("Provincia"));
-                proveedorTB.setDistrito(rsEmps.getInt("Distrito"));
-                proveedorTB.setAmbito(rsEmps.getInt("Ambito"));
-                proveedorTB.setEstado(rsEmps.getInt("Estado"));
-                proveedorTB.setTelefono(rsEmps.getString("Telefono"));
-                proveedorTB.setCelular(rsEmps.getString("Celular"));
-                proveedorTB.setEmail(rsEmps.getString("Email"));
-                proveedorTB.setPaginaWeb(rsEmps.getString("PaginaWeb"));
-                proveedorTB.setDireccion(rsEmps.getString("Direccion"));
-                proveedorTB.setRepresentante(rsEmps.getString("Representante"));
+            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                while (rsEmps.next()) {
+                    proveedorTB = new ProveedorTB();
+                    proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
+                    proveedorTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
+                    proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
+                    proveedorTB.setNombreComercial(rsEmps.getString("NombreComercial"));
+                    proveedorTB.setPais(rsEmps.getString("Pais"));
+                    proveedorTB.setCiudad(rsEmps.getInt("Ciudad"));
+                    proveedorTB.setProvincia(rsEmps.getInt("Provincia"));
+                    proveedorTB.setDistrito(rsEmps.getInt("Distrito"));
+                    proveedorTB.setAmbito(rsEmps.getInt("Ambito"));
+                    proveedorTB.setEstado(rsEmps.getInt("Estado"));
+                    proveedorTB.setTelefono(rsEmps.getString("Telefono"));
+                    proveedorTB.setCelular(rsEmps.getString("Celular"));
+                    proveedorTB.setEmail(rsEmps.getString("Email"));
+                    proveedorTB.setPaginaWeb(rsEmps.getString("PaginaWeb"));
+                    proveedorTB.setDireccion(rsEmps.getString("Direccion"));
+                    proveedorTB.setRepresentante(rsEmps.getString("Representante"));
+                }
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
@@ -252,9 +254,6 @@ public class ProveedorADO {
             try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
@@ -294,6 +293,34 @@ public class ProveedorADO {
             }
         }
         return IdProveedor;
+    }
+
+    public static List<ProveedorTB> getSearchComboBoxProveedores() {
+         String selectStmt = "SELECT IdProveedor,RazonSocial FROM ProveedorTB";
+        PreparedStatement preparedStatement = null;
+        List<ProveedorTB> proveedorTBs = new ArrayList<>();
+          try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+             try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                 while (rsEmps.next()) {
+                     ProveedorTB proveedorTB = new ProveedorTB();
+                     proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
+                     proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
+                     proveedorTBs.add(proveedorTB);
+                 }}
+          }catch(SQLException e){
+              
+          }finally{
+              try{
+                  if(preparedStatement != null){
+                      preparedStatement.close();
+                  }
+              }catch(SQLException e){
+                  
+              }
+          }
+          return proveedorTBs;
     }
 
 }

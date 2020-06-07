@@ -17,10 +17,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -211,13 +214,21 @@ public class FxSuministrosCompraController implements Initializable {
         detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * totalImpuesto);
         detalleCompraTB.setImporte(detalleCompraTB.getCantidad() * (nuevoPrecioCompra + totalImpuesto));
         detalleCompraTB.setLote(loteSuministro);
+        Button btnRemove = new Button();
+        btnRemove.setId(detalleCompraTB.getIdArticulo());
+        btnRemove.getStyleClass().add("buttonLightError");
+        ImageView view = new ImageView(new Image("/view/image/remove.png"));
+        view.setFitWidth(32);
+        view.setFitHeight(32);
+        btnRemove.setGraphic(view);
+        detalleCompraTB.setRemove(btnRemove);
 
         if (comprasController != null) {
             if (!validateStock(comprasController.getTvList(), detalleCompraTB.getSuministroTB().getClave()) && !editarSuministros) {
                 if (loteSuministro) {
                     openWindowLote(suministrosTB);
                 } else {
-                    comprasController.getTvList().getItems().add(detalleCompraTB);
+                    comprasController.addSuministroToTable(detalleCompraTB);
                     comprasController.calculateTotals();
                     Tools.Dispose(apWindow);
                 }

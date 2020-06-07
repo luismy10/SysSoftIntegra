@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7d62a643-4a95-442f-a890-0f620d0c0de2">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="125"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="EMPRESA" class="java.lang.String"/>
 	<parameter name="DIRECCION" class="java.lang.String"/>
@@ -367,7 +367,7 @@
 					<subreportParameterExpression><![CDATA[$P{VALORSOLES}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[$P{CALCULAR_TOTALES}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "CompraRealizadaDetalle.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["report/CompraRealizadaDetalle.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>

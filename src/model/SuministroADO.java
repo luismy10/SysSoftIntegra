@@ -9,6 +9,8 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -1000,14 +1002,16 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static ObservableList<SuministroTB> ListInventario() {
-        String selectStmt = "{call Sp_Listar_Inventario_Suministros()}";
+    public static ObservableList<SuministroTB> ListInventario(String producto,short tipoExistencia) {
+        String selectStmt = "{call Sp_Listar_Inventario_Suministros(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, producto);
+            preparedStatement.setShort(2, tipoExistencia);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 SuministroTB suministroTB = new SuministroTB();
@@ -1016,15 +1020,27 @@ public class SuministroADO {
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
+                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 suministroTB.setEstadoName(rsEmps.getString("Estado"));
                 suministroTB.setTotalImporte(rsEmps.getDouble("Total"));
+                suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
+                suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
+
+                Label lblCantidad = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2) + " " + suministroTB.getUnidadCompraName());
+                lblCantidad.getStyleClass().add("label-existencia");
+                lblCantidad.getStyleClass().add(suministroTB.getCantidad() <= 0
+                        ? "label-existencia-negativa"
+                        : suministroTB.getCantidad() > 0 && suministroTB.getCantidad() <= suministroTB.getStockMinimo()
+                        ? "label-existencia-intermedia"
+                        : "label-existencia-normal");
+                suministroTB.setLblCantidad(lblCantidad);
+
                 empList.add(suministroTB);
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -1419,10 +1435,10 @@ public class SuministroADO {
                 suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion"));
                 suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
+                suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
-
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -1437,6 +1453,36 @@ public class SuministroADO {
             }
         }
         return suministroTB;
+    }
+
+    public static List<SuministroTB> getSearchComboBoxSuministros() {
+        String selectStmt = "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB";
+        PreparedStatement preparedStatement = null;
+        List<SuministroTB> suministroTBs = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                while (rsEmps.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
+                    suministroTB.setClave(rsEmps.getString("Clave"));
+                    suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                    suministroTBs.add(suministroTB);
+                }
+            }
+        } catch (SQLException e) {
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+        return suministroTBs;
     }
 
 }

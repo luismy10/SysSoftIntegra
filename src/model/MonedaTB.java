@@ -3,13 +3,15 @@ package model;
 import javafx.scene.image.ImageView;
 
 public class MonedaTB {
-
+    
+    private int id;
     private int idMoneda;
     private String nombre;
     private String abreviado;
     private String simbolo;
     private Double tipoCambio;
     private Boolean predeterminado;
+    private Boolean sistema;
     private ImageView imagePredeterminado;
 
     public MonedaTB() {
@@ -32,8 +34,14 @@ public class MonedaTB {
         this.simbolo = simbolo;
         this.predeterminado = predeterminado;
     }
-    
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getIdMoneda() {
         return idMoneda;
@@ -73,6 +81,14 @@ public class MonedaTB {
 
     public void setTipoCambio(Double tipoCambio) {
         this.tipoCambio = tipoCambio;
+    }
+
+    public Boolean getSistema() {
+        return sistema;
+    }
+
+    public void setSistema(Boolean sistema) {
+        this.sistema = sistema;
     }
 
     public Boolean getPredeterminado() {

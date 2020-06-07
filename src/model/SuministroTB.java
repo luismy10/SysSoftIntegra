@@ -75,12 +75,14 @@ public class SuministroTB {
     private double impuestoValor;
 
     private String descripcion;
+    private Label lblCantidad;
+    private TextField txtStockMinimo;
+    private TextField txtStockMaximo;
     private TextField txtMovimiento;
     private CheckBox validar;
     private Label estadoAsignacion;
     private Button remover;
     private boolean cambios;
-    private Label lblCantidad;
 
     public SuministroTB() {
     }
@@ -517,6 +519,30 @@ public class SuministroTB {
         this.descripcion = descripcion == null ? "" : descripcion;
     }
 
+    public Label getLblCantidad() {
+        return lblCantidad;
+    }
+
+    public void setLblCantidad(Label lblCantidad) {
+        this.lblCantidad = lblCantidad;
+    }
+
+    public TextField getTxtStockMinimo() {
+        return txtStockMinimo;
+    }
+
+    public void setTxtStockMinimo(TextField txtStockMinimo) {
+        this.txtStockMinimo = txtStockMinimo;
+    }
+
+    public TextField getTxtStockMaximo() {
+        return txtStockMaximo;
+    }
+
+    public void setTxtStockMaximo(TextField txtStockMaximo) {
+        this.txtStockMaximo = txtStockMaximo;
+    }
+
     public TextField getTxtMovimiento() {
         return txtMovimiento;
     }
@@ -573,12 +599,9 @@ public class SuministroTB {
         this.cambios = cambios;
     }
 
-    public Label getLblCantidad() {
-        return lblCantidad;
+    @Override
+    public String toString() {
+        return  nombreMarca ;
     }
-
-    public void setLblCantidad(Label lblCantidad) {
-        this.lblCantidad = lblCantidad;
-    }
-
+    
 }

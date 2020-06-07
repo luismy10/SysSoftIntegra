@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class ProveedorTB {
 
     private SimpleIntegerProperty id;
-    private SimpleStringProperty idProveedor;
+    private String idProveedor;
     private int tipoDocumento;
     private String tipoDocumentoName;
     private String numeroDocumento;
@@ -47,12 +47,12 @@ public class ProveedorTB {
         this.id = new SimpleIntegerProperty(id);
     }
 
-    public SimpleStringProperty getIdProveedor() {
+    public String getIdProveedor() {
         return idProveedor;
     }
 
     public void setIdProveedor(String idProveedor) {
-        this.idProveedor = new SimpleStringProperty(idProveedor);
+        this.idProveedor = idProveedor;
     }
 
     public int getTipoDocumento() {
@@ -198,5 +198,12 @@ public class ProveedorTB {
     public void setRepresentante(String representante) {
         this.representante = representante == null ? "" : representante;
     }
+
+    @Override
+    public String toString() {
+        return  razonSocial ;
+    }
+    
+    
 
 }

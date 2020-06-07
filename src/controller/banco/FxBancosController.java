@@ -2,10 +2,16 @@ package controller.banco;
 
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
+import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,12 +63,13 @@ public class FxBancosController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
-        tcNombreCuenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreCuenta()));
+        tcNombreCuenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreCuenta().toUpperCase()));
         tcNumeroCuenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroCuenta()));
-        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDescripcion()));
+        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDescripcion().toUpperCase()));
         tcSaldo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSimboloMoneda() + " " + Tools.roundingValue(cellData.getValue().getSaldoInicial(), 4)));
-        tcForma.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFormaPago() == (short) 1 ? "Efectivo" : "Banco"));
+        tcForma.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFormaPago() == (short) 1 ? "Efectivo".toUpperCase() : "Banco".toUpperCase()));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
         tcNombreCuenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
@@ -206,8 +213,80 @@ public class FxBancosController implements Initializable {
         }
     }
 
+    private void eventAsignarBanco() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short formaPago = tvList.getSelectionModel().getSelectedItem().getFormaPago();
+            String idBanco = tvList.getSelectionModel().getSelectedItem().getIdBanco();
+            String nombreBanco = tvList.getSelectionModel().getSelectedItem().getNombreCuenta();
+            try {
+                if (formaPago == 1) {
+                    String ruta = "./archivos/cajaSetting.properties";
+                    File file = new File(ruta);
+                    if (file.exists()) {
+                        file.delete();
+                        try (OutputStream output = new FileOutputStream(ruta)) {
+                            Properties prop = new Properties();
+
+                            prop.setProperty("id", idBanco);
+                            prop.setProperty("nombreBanco", nombreBanco);
+                            prop.store(output, "Ruta de configuración de la caja");
+                            Session.ID_CUENTA_EFECTIVO = idBanco;
+                            Session.NOMBRE_CUENTA_EFECTIVO = nombreBanco;
+                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
+                        }
+                    } else {
+                        try (OutputStream output = new FileOutputStream(ruta)) {
+                            Properties prop = new Properties();
+
+                            prop.setProperty("id", idBanco);
+                            prop.setProperty("nombreBanco", nombreBanco);
+                            prop.store(output, "Ruta de configuración de la caja");
+                            Session.ID_CUENTA_EFECTIVO = idBanco;
+                            Session.NOMBRE_CUENTA_EFECTIVO = nombreBanco;
+                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
+                        }
+                    }
+                } else if (formaPago == 2) {
+                    String ruta = "./archivos/bancoSetting.properties";
+                    File file = new File(ruta);
+                    if (file.exists()) {
+                        file.delete();
+                        try (OutputStream output = new FileOutputStream(ruta)) {
+                            Properties prop = new Properties();
+
+                            prop.setProperty("id", idBanco);
+                            prop.setProperty("nombreBanco", nombreBanco);
+                            prop.store(output, "Ruta de configuración de la banco");
+                            Session.ID_CUENTA_BANCARIA = idBanco;
+                            Session.NOMBRE_CUENTA_BANCARIA = nombreBanco;
+                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
+                        }
+                    } else {
+                        try (OutputStream output = new FileOutputStream(ruta)) {
+                            Properties prop = new Properties();
+
+                            prop.setProperty("id", idBanco);
+                            prop.setProperty("nombreBanco", nombreBanco);
+                            prop.store(output, "Ruta de configuración de la banco");
+                            Session.ID_CUENTA_BANCARIA = idBanco;
+                            Session.NOMBRE_CUENTA_BANCARIA = nombreBanco;
+                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
+                        }
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Tools.AlertMessageError(hbWindow, "Banco", "No se pudo crear el archivo por: " + ex.getLocalizedMessage());
+            } catch (IOException ex) {
+                Tools.AlertMessageError(hbWindow, "Banco", "No se pudo crear el archivo por: " + ex.getLocalizedMessage());
+            }
+
+        }
+
+    }
+
     @FXML
-    private void onMouseClickedList(MouseEvent event) {
+    private void onMouseClickedList(MouseEvent event
+    ) {
         if (event.getClickCount() == 2) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 eventViewBanco();
@@ -216,7 +295,8 @@ public class FxBancosController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedView(KeyEvent event) {
+    private void onKeyPressedView(KeyEvent event
+    ) {
         if (event.getCode() == KeyCode.ENTER) {
             if (tvList.getSelectionModel().getSelectedIndex() < 0) {
                 tvList.requestFocus();
@@ -230,7 +310,8 @@ public class FxBancosController implements Initializable {
     }
 
     @FXML
-    private void onActionView(ActionEvent event) {
+    private void onActionView(ActionEvent event
+    ) {
         if (tvList.getSelectionModel().getSelectedIndex() < 0) {
             tvList.requestFocus();
             if (!tvList.getItems().isEmpty()) {
@@ -242,51 +323,78 @@ public class FxBancosController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedNew(KeyEvent event) {
+    private void onKeyPressedNew(KeyEvent event
+    ) {
         if (event.getCode() == KeyCode.ENTER) {
             eventNewBanco();
         }
     }
 
     @FXML
-    private void onActionNew(ActionEvent event) {
+    private void onActionNew(ActionEvent event
+    ) {
         eventNewBanco();
     }
 
     @FXML
-    private void onKeyPressedEdit(KeyEvent event) {
+    private void onKeyPressedEdit(KeyEvent event
+    ) {
         if (event.getCode() == KeyCode.ENTER) {
             eventEditBanco();
         }
     }
 
     @FXML
-    private void onActionEdit(ActionEvent event) {
+    private void onActionEdit(ActionEvent event
+    ) {
         eventEditBanco();
     }
 
     @FXML
-    private void onActionRemove(ActionEvent event) {
+    private void onActionRemove(ActionEvent event
+    ) {
         eventRemoveBanco();
     }
 
     @FXML
-    private void onKeyPressedRemove(KeyEvent event) {
+    private void onKeyPressedRemove(KeyEvent event
+    ) {
         if (event.getCode() == KeyCode.ENTER) {
             eventRemoveBanco();
         }
     }
 
     @FXML
-    private void onKeyPressedReload(KeyEvent event) {
+    private void onKeyPressedReload(KeyEvent event
+    ) {
         if (event.getCode() == KeyCode.ENTER) {
             eventReloadBanco();
         }
     }
 
     @FXML
-    private void onActionReload(ActionEvent event) {
+    private void onActionReload(ActionEvent event
+    ) {
         eventReloadBanco();
+    }
+
+    @FXML
+    private void onKeyPressedAsignar(KeyEvent event
+    ) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventAsignarBanco();
+        }
+    }
+
+    @FXML
+    private void onActionAsignar(ActionEvent event
+    ) {
+        eventAsignarBanco();
+    }
+
+    @FXML
+    private void onKeyReleasedWindow(KeyEvent event) {
+        System.out.println(event);
     }
 
     public HBox getHbWindow() {

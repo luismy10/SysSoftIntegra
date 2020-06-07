@@ -242,33 +242,34 @@ public class FxSuministrosListaController implements Initializable {
     private void openWindowCompra(short option) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (tvList.getSelectionModel().getSelectedItem().isInventario()) {
-                try {
-                    URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
-                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                    Parent parent = fXMLLoader.load(url.openStream());
-                    //Controlller here
-                    FxSuministrosCompraController controller = fXMLLoader.getController();
-                    if (option == 1) {
-                        controller.setInitComprasController(comprasController);
-                    } else {
-                        controller.setInitComprasEditarController(comprasEditarController);
-                    }
-                    controller.setLoadData(
-                            tvList.getSelectionModel().getSelectedItem().getIdSuministro(),
-                            tvList.getSelectionModel().getSelectedItem().getClave(),
-                            tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-                            Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getCostoCompra(), 8),
-                            tvList.getSelectionModel().getSelectedItem().getUnidadCompraName(),
-                            tvList.getSelectionModel().getSelectedItem().isLote()
-                    );
-                    //
-                    Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", apWindow.getScene().getWindow());
-                    stage.setResizable(false);
-                    stage.sizeToScene();
-                    stage.show();
-                } catch (IOException ix) {
-                    System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
-                }
+                WindowStage.openWindowSuministroCompra(false,null,comprasController,tvList.getSelectionModel().getSelectedItem(),apWindow.getScene().getWindow());
+//                try {
+//                    URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
+//                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//                    Parent parent = fXMLLoader.load(url.openStream());
+//                    //Controlller here
+//                    FxSuministrosCompraController controller = fXMLLoader.getController();
+//                    if (option == 1) {
+//                        controller.setInitComprasController(comprasController);
+//                    } else {
+//                        controller.setInitComprasEditarController(comprasEditarController);
+//                    }
+//                    controller.setLoadData(
+//                            tvList.getSelectionModel().getSelectedItem().getIdSuministro(),
+//                            tvList.getSelectionModel().getSelectedItem().getClave(),
+//                            tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
+//                            Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getCostoCompra(), 8),
+//                            tvList.getSelectionModel().getSelectedItem().getUnidadCompraName(),
+//                            tvList.getSelectionModel().getSelectedItem().isLote()
+//                    );
+//                    //
+//                    Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", apWindow.getScene().getWindow());
+//                    stage.setResizable(false);
+//                    stage.sizeToScene();
+//                    stage.show();
+//                } catch (IOException ix) {
+//                    System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
+//                }
             } else {
                 Tools.AlertMessageWarning(apWindow, "Compra", "El producto no es inventariado, actualize sus campos.");
             }

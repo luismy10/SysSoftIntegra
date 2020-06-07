@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -16,9 +15,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasProcesoController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -26,21 +24,21 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                      <children>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="Total de la Compra" />
-                        <HBox alignment="CENTER" style="-fx-spacing: 5px;">
-                           <children>
-                              <Text fx:id="lblTotal" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="M 00.00" />
+                        <Label styleClass="labelRobotoBold18" text="TOTAL EN EFECTIVO" />
+                        <Label fx:id="lblTotal" styleClass="labelRobotoBold18" text="M 00.00">
+                           <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../image/billetes.png" />
-                                 </image></ImageView>
-                           </children>
-                        </HBox>
+                                    <Image url="@../../image/money.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em;">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
@@ -73,60 +71,55 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
-            <HBox minHeight="0.0" prefHeight="0.0" style="-fx-padding: 0.8333333333333334em;" visible="false">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox>
                            <children>
-                              <RadioButton fx:id="rbCredito" mnemonicParsing="false" onAction="#onActionRbCredito" styleClass="labelOpenSansRegular14" text="Crédito" />
+                              <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <RadioButton fx:id="rbCredito" mnemonicParsing="false" onAction="#onActionRbCredito" styleClass="labelOpenSansRegular14" text="Crédito" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Monto Total:" />
+                                          <Label fx:id="lblMontoTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#08435e" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Monto a Pagar:" />
+                                          <Label fx:id="lblMontoPagar" styleClass="labelRobotoBold14" text="0.00" textFill="#1a2226" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#oActionAgregarCredito" onKeyPressed="#onKeyPressedCredito" styleClass="buttonBorder">
+                                             <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/plus.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
                            </children>
                         </HBox>
                         <VBox fx:id="vbPagoCredito" disable="true" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <HBox>
+                              <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <VBox HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <HBox>
-                                             <children>
-                                                <HBox alignment="CENTER_LEFT">
-                                                   <children>
-                                                      <Button mnemonicParsing="false" onAction="#oActionAgregarCredito" onKeyPressed="#onKeyPressedCredito" styleClass="buttonBorder">
-                                                         <graphic>
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../../image/plus.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelOpenSansRegular14" text="Monto Total:" />
-                                                      <Label fx:id="lblMontoTotal" styleClass="labelOpenSansRegular14" text="0.00" textFill="#08435e" />
-                                                      <Label styleClass="labelOpenSansRegular14" text="Monto a Pagar:" />
-                                                      <Label fx:id="lblMontoPagar" styleClass="labelOpenSansRegular14" text="0.00" textFill="#1a2226" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </HBox>
-                                          <HBox VBox.vgrow="ALWAYS">
-                                             <children>
-                                                <TableView fx:id="tvListaCredito" prefHeight="170.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
-                                                  <columns>
-                                                    <TableColumn fx:id="tcCredito" prefWidth="160.0" style="-fx-alignment: CENTER;" text="Crédito" />
-                                                      <TableColumn fx:id="tcFecha" prefWidth="170.0" style="-fx-alignment: CENTER;" text="Fecha" />
-                                                      <TableColumn fx:id="tcOpciones" prefWidth="140.0" style="-fx-alignment: CENTER;" text="Opciones" />
-                                                  </columns>
-                                                </TableView>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
+                                    <TableView fx:id="tvListaCredito" prefHeight="200.0" prefWidth="500.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                      <columns>
+                                        <TableColumn fx:id="tcCredito" prefWidth="190.0" style="-fx-alignment: CENTER;" text="Crédito" />
+                                          <TableColumn fx:id="tcFecha" prefWidth="190.0" style="-fx-alignment: CENTER;" text="Fecha" />
+                                          <TableColumn fx:id="tcOpciones" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Acción" />
+                                      </columns>
+                                    </TableView>
                                  </children>
                               </HBox>
                            </children>
@@ -135,8 +128,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" visible="false" />
-            <HBox style="-fx-padding: 0.8333333333333334em;">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
@@ -166,7 +158,6 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightSuccess" text="Aceptar">

@@ -2,23 +2,28 @@ package controller.operaciones.compras;
 
 import controller.contactos.proveedores.FxProveedorListaController;
 import controller.inventario.suministros.FxSuministrosCompraController;
-import controller.inventario.suministros.FxSuministrosListaController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
+import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -29,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -46,18 +52,24 @@ import model.MonedaADO;
 import model.MonedaTB;
 import model.PrivilegioTB;
 import model.ProveedorADO;
+import model.ProveedorTB;
+import model.SuministroADO;
 import model.SuministroTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 
 public class FxComprasController implements Initializable {
-    
-   @FXML
+
+    @FXML
     private ScrollPane spWindow;
     @FXML
-    private TextField txtProveedor;
+    private ComboBox<ProveedorTB> cbProveedor;
     @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
+    @FXML
+    private TextField txtProducto;
+    @FXML
+    private Label lblMoneda;
     @FXML
     private TextField cbNumeracion;
     @FXML
@@ -65,7 +77,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private TableView<DetalleCompraTB> tvList;
     @FXML
-    private TableColumn<DetalleCompraTB, String> tcItem;
+    private TableColumn<DetalleCompraTB, Button> tcAccion;
     @FXML
     private TableColumn<DetalleCompraTB, String> tcArticulo;
     @FXML
@@ -117,8 +129,6 @@ public class FxComprasController implements Initializable {
 
     private AnchorPane vbPrincipal;
 
-    private String idProveedor;
-
     private double totalBruto;
 
     private double descuento;
@@ -133,10 +143,11 @@ public class FxComprasController implements Initializable {
 
     private String monedaSimbolo;
 
+    private boolean stateSearch;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         spWindow.setOnKeyReleased((KeyEvent event) -> {
-
             if (null != event.getCode()) {
                 switch (event.getCode()) {
                     case F1:
@@ -146,7 +157,7 @@ public class FxComprasController implements Initializable {
                         openWindowSuministrasAdd();
                         break;
                     case F3:
-                        openWindowArticulosEdit();
+                        openWindowSuministroEdit();
                         break;
                     case F4:
                         onViewRemove();
@@ -154,11 +165,15 @@ public class FxComprasController implements Initializable {
                     case F5:
                         openWindowProvedores();
                         break;
+                    case F6:
+                        txtProducto.selectAll();
+                        txtProducto.requestFocus();
+                        break;
                 }
             }
         });
-        idProveedor = "";
         monedaSimbolo = "M";
+        stateSearch = false;
         loteTBs = FXCollections.observableArrayList();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
 
@@ -190,6 +205,18 @@ public class FxComprasController implements Initializable {
             }
         }
 
+        List<ProveedorTB> proveedorTBs = ProveedorADO.getSearchComboBoxProveedores();
+        SearchComboBox<ProveedorTB> searchComboBox = new SearchComboBox<>(cbProveedor);
+        searchComboBox.getComboBox().getItems().addAll(proveedorTBs);
+        searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()));
+
+//        List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros();
+//        SearchComboBox<SuministroTB> scSuministros = new SearchComboBox<>(cbProducto);
+//        scSuministros.getComboBox().getItems().addAll(suministroTBs);
+//        scSuministros.setFilter((SuministroTB item, String text) -> item.getNombreMarca().toLowerCase().contains(text.toLowerCase()) || item.getClave().toLowerCase().contains(text.toLowerCase()));
+//        scSuministros.getComboBox().showingProperty().addListener(e -> {
+//            //Programar luego
+//        });
         lblMonedaSubTotal.setText(monedaSimbolo);
         lblMonedaDescuento.setText(monedaSimbolo);
         lblMonedaSubTotalNuevo.setText(monedaSimbolo);
@@ -197,7 +224,7 @@ public class FxComprasController implements Initializable {
 
         initTable();
 
-        tcItem.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+        tcAccion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
         tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
         tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
@@ -242,10 +269,15 @@ public class FxComprasController implements Initializable {
         if (privilegioTBs.get(10).getIdPrivilegio() != 0 && !privilegioTBs.get(10).isEstado()) {
             txtNotas.setDisable(true);
         }
+        if (privilegioTBs.get(11).getIdPrivilegio() != 0 && !privilegioTBs.get(11).isEstado()) {
+            cbMoneda.setVisible(false);
+            lblMoneda.setVisible(false);
+        }
     }
 
     private void initTable() {
-        tcItem.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
+        tcAccion.setCellValueFactory(new PropertyValueFactory<>("remove"));
+//        tcItem.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getSuministroTB().getClave() + "\n" + cellData.getValue().getSuministroTB().getNombreMarca()
         ));
@@ -259,29 +291,70 @@ public class FxComprasController implements Initializable {
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreImpuesto()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getImporte(), 4)));
-
     }
 
-    public void setInitComprasValue(String... value) {
-        idProveedor = ProveedorADO.GetProveedorId(value[0]);
-        txtProveedor.setText(value[1]);
+    public void setInitComprasValue(String idProveedor, String proveedor) {
+        for (ProveedorTB p : cbProveedor.getItems()) {
+            if (p.getIdProveedor().equalsIgnoreCase(idProveedor)) {
+                cbProveedor.getSelectionModel().select(p);
+                break;
+            }
+        }
     }
 
     public void clearComponents() {
-        idProveedor = "";
-        txtProveedor.clear();
         cbNumeracion.clear();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
         tvList.getItems().clear();
         loteTBs.clear();
         initTable();
-        lblTotalBruto.setText("0.00");
-        lblSubTotal.setText("0.00");
-        lblDescuento.setText("0.00");
-        lblTotalNeto.setText("0.00");
+        lblTotalBruto.setText("0.0000");
+        lblSubTotal.setText("0.0000");
+        lblDescuento.setText("0.0000");
+        lblTotalNeto.setText("0.0000");
         txtObservaciones.clear();
         txtNotas.clear();
         hbAgregarImpuesto.getChildren().clear();
+    }
+
+    private void filterProducto(String search) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<SuministroTB> task = new Task<SuministroTB>() {
+            @Override
+            public SuministroTB call() {
+                return SuministroADO.Get_Suministro_By_Search(search);
+            }
+        };
+
+        task.setOnSucceeded((e) -> {
+            SuministroTB a = task.getValue();
+            if (a != null) {
+                if (a.isInventario()) {
+                    WindowStage.openWindowSuministroCompra(true, vbPrincipal, this, a, spWindow.getScene().getWindow());
+                    txtProducto.clear();
+                    txtProducto.requestFocus();
+                }
+            }
+            stateSearch = false;
+        });
+
+        task.setOnFailed((e) -> {
+            stateSearch = false;
+        });
+
+        task.setOnScheduled((e) -> {
+            stateSearch = true;
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     private void openAlertMessageWarning(String message) {
@@ -291,25 +364,25 @@ public class FxComprasController implements Initializable {
     }
 
     private void openWindowRegister() {
-        try {
-            if (txtProveedor.getText().isEmpty() && idProveedor.equalsIgnoreCase("")) {
-                openAlertMessageWarning("Ingrese un proveedor, por favor.");
-                txtProveedor.requestFocus();
-            } else if (cbComprobante.getSelectionModel().getSelectedIndex() <= 0) {
-                openAlertMessageWarning("Seleccione tipo de comprobante, por favor.");
-                cbComprobante.requestFocus();
-            } else if (cbNumeracion.getText().isEmpty()) {
-                openAlertMessageWarning("Ingrese la numeración del comprobante, por favor.");
-                cbNumeracion.requestFocus();
-            } else if (tpFechaCompra.getValue() == null) {
-                openAlertMessageWarning("Ingrese la fecha de compra, por favor.");
-                tpFechaCompra.requestFocus();
-            } else if (tvList.getItems().isEmpty()) {
-                openAlertMessageWarning("Ingrese algún producto para realizar la compra, por favor.");
-                btnArticulo.requestFocus();
-            } else {
+        if (cbProveedor.getSelectionModel().getSelectedIndex() < 0) {
+            openAlertMessageWarning("Seleccione un proveedor, por favor.");
+            cbProveedor.requestFocus();
+        } else if (cbComprobante.getSelectionModel().getSelectedIndex() <= 0) {
+            openAlertMessageWarning("Seleccione tipo de comprobante, por favor.");
+            cbComprobante.requestFocus();
+        } else if (cbNumeracion.getText().isEmpty()) {
+            openAlertMessageWarning("Ingrese la numeración del comprobante, por favor.");
+            cbNumeracion.requestFocus();
+        } else if (tpFechaCompra.getValue() == null) {
+            openAlertMessageWarning("Ingrese la fecha de compra, por favor.");
+            tpFechaCompra.requestFocus();
+        } else if (tvList.getItems().isEmpty()) {
+            openAlertMessageWarning("Ingrese algún producto para realizar la compra, por favor.");
+            btnArticulo.requestFocus();
+        } else {
+            try {
                 CompraTB compraTB = new CompraTB();
-                compraTB.setProveedor(idProveedor);
+                compraTB.setProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
                 compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 compraTB.setNumeracion(cbNumeracion.getText().trim());
                 compraTB.setTipoMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 1
@@ -337,38 +410,17 @@ public class FxComprasController implements Initializable {
                 stage.sizeToScene();
                 stage.setOnHiding((w) -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
                 stage.show();
-
+            } catch (IOException ex) {
+                System.out.println("Controller compras" + ex.getLocalizedMessage());
             }
-        } catch (IOException ex) {
-            System.out.println("Controller compras" + ex.getLocalizedMessage());
         }
     }
 
     private void openWindowSuministrasAdd() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxSuministrosListaController controller = fXMLLoader.getController();
-            controller.setInitComprasController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", spWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
-            stage.show();
-            controller.fillSuministrosTablePaginacion();
-        } catch (IOException ex) {
-            System.out.println("Controller compras" + ex.getLocalizedMessage());
-        }
-
+        WindowStage.openWindowSuministrasAdd(vbPrincipal, spWindow, this);
     }
 
-    private void openWindowArticulosEdit() {
+    private void openWindowSuministroEdit() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             ObservableList<DetalleCompraTB> detalleCompraTBs;
             detalleCompraTBs = tvList.getSelectionModel().getSelectedItems();
@@ -429,6 +481,22 @@ public class FxComprasController implements Initializable {
         } else {
             openAlertMessageWarning("Seleccione un producto para removerlo.");
         }
+    }
+
+    public void addSuministroToTable(DetalleCompraTB detalleCompraTB) {
+        detalleCompraTB.getRemove().setOnAction(e -> {
+            tvList.getItems().remove(detalleCompraTB);
+            tvList.refresh();
+            calculateTotals();
+        });
+        detalleCompraTB.getRemove().setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                tvList.getItems().remove(detalleCompraTB);
+                tvList.refresh();
+                calculateTotals();
+            }
+        });
+        tvList.getItems().add(detalleCompraTB);
     }
 
     private void openWindowProvedores() {
@@ -513,6 +581,7 @@ public class FxComprasController implements Initializable {
         text1.getStyleClass().add("labelRobotoMedium16");
 
         HBox hBox = new HBox(text, text1);
+        hBox.setAlignment(Pos.TOP_RIGHT);
         hBox.setStyle("-fx-spacing: 0.8333333333333334em;");
         HBox vBox = new HBox(label, hBox);
         vBox.setStyle("-fx-spacing: 0.8333333333333334em;");
@@ -548,13 +617,13 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedEdit(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowArticulosEdit();
+            openWindowSuministroEdit();
         }
     }
 
     @FXML
     private void onActionEdit(ActionEvent event) {
-        openWindowArticulosEdit();
+        openWindowSuministroEdit();
     }
 
     @FXML
@@ -593,7 +662,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onMouseClickedList(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            openWindowArticulosEdit();
+            openWindowSuministroEdit();
         }
     }
 
@@ -606,6 +675,48 @@ public class FxComprasController implements Initializable {
             lblMonedaDescuento.setText(monedaSimbolo);
             lblMonedaTotal.setText(monedaSimbolo);
             calculateTotals();
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedProducto(KeyEvent event) {
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE) {
+            if (!stateSearch) {
+                filterProducto(txtProducto.getText().trim());
+            }
         }
     }
 
