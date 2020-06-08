@@ -30,7 +30,7 @@ public class SuministroTB {
     private String presentacionName;
 
     private int estado;
-    private SimpleStringProperty estadoName;
+    private String estadoName;
 
     private double stockMinimo;
     private double stockMaximo;
@@ -247,12 +247,12 @@ public class SuministroTB {
         this.lote = lote;
     }
 
-    public SimpleStringProperty getEstadoName() {
+    public String getEstadoName() {
         return estadoName;
     }
 
     public void setEstadoName(String estadoName) {
-        this.estadoName = new SimpleStringProperty(estadoName);
+        this.estadoName = estadoName;
     }
 
     public double getStockMinimo() {

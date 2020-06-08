@@ -52,7 +52,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sourceforge.barbecue.output.Output;
 
 public class FxVentaDetalleController implements Initializable {
 
@@ -515,6 +514,8 @@ public class FxVentaDetalleController implements Initializable {
             }
             InputStream imgInputStream
                     = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+            
+            InputStream dir = getClass().getResourceAsStream("/report/VentaRealizada.jasper");
 
             Map map = new HashMap();
             map.put("LOGO", imgInputStream);
@@ -543,7 +544,7 @@ public class FxVentaDetalleController implements Initializable {
             map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
             map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaDetalleController.class.getResourceAsStream("/report/VentaRealizada.jasper"), map, new JRBeanCollectionDataSource(list));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -558,7 +559,7 @@ public class FxVentaDetalleController implements Initializable {
             stage.requestFocus();
 
         } catch (HeadlessException | JRException | IOException ex) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Reporte de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage(), false);
+            Tools.AlertMessageError(window, "Reporte de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 
