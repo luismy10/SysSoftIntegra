@@ -436,7 +436,7 @@
  ******************************************************************************/
 
 .buttonLight{
-    BACKGROUND:  #d6d5d5;
+    BACKGROUND:   #ccc;
     BACKGROUND_PRESSED: #999999;
     BORDER_HOVER: #666666;
 
@@ -451,7 +451,7 @@
 .buttonLight{
     -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
 
-    -fx-border-color: #999999;
+    -fx-border-color:  #ccc;
     -fx-border-width: 1px;
 
     -fx-background-radius: 0px;
@@ -2140,6 +2140,7 @@ totally specific (always using direct child) and cover all cases, which would be
 }
 
 .label-asignacion{
+    -fx-max-width: Infinity;
     -fx-background-color: #c6e2cc; 
     -fx-background-radius: 0 2 2 0; 
     -fx-font-weight: 700; 
@@ -2147,11 +2148,13 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-width: 0 0 0 10; 
     -fx-border-radius: 0 2 2 0; 
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
-    -fx-text-fill: #309c40; -fx-font-family: Roboto; 
+    -fx-text-fill: #309c40; 
+    -fx-font-family: "Roboto"; 
     -fx-font-size: 1.1666666666666667em;
 }
 
 .label-proceso{
+    -fx-max-width: Infinity;
     -fx-background-color: #F1948A; 
     -fx-background-radius: 0 2 2 0; 
     -fx-font-weight: 700; 
@@ -2160,11 +2163,12 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-radius: 0 2 2 0; 
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
     -fx-text-fill: #990000; 
-    -fx-font-family: Roboto; 
+    -fx-font-family: "Roboto"; 
     -fx-font-size: 1.1666666666666667em;
 }
 
 .label-medio{
+    -fx-max-width: Infinity;
     -fx-background-color: #F9E434 ; 
     -fx-background-radius: 0 2 2 0; 
     -fx-font-weight: 700; 
@@ -2173,11 +2177,12 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-radius: 0 2 2 0; 
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
     -fx-text-fill: #6D5F02 ; 
-    -fx-font-family: Roboto; 
+    -fx-font-family: "Roboto"; 
     -fx-font-size: 1.1666666666666667em;
 }
 
 .label-ultimo{
+    -fx-max-width: Infinity;
     -fx-background-color: #1c88e7; 
     -fx-background-radius: 0 2 2 0; 
     -fx-font-weight: 700; 
@@ -2186,7 +2191,7 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-radius: 0 2 2 0; 
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
     -fx-text-fill: white; 
-    -fx-font-family: Roboto; 
+    -fx-font-family: "Roboto"; 
     -fx-font-size: 1.1666666666666667em;
 }
 

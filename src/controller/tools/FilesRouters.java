@@ -242,6 +242,8 @@ public final class FilesRouters {
     public static final String FX_LOTE_PROCESO = "/view/inventario/lote/FxLoteProceso.fxml";
 
     public static final String FX_VALOR_INVENTARIO = "/view/inventario/valorinventario/FxValorInventario.fxml";
+    
+    public static final String FX_INVENTARIO_AJUSTE = "/view/inventario/valorinventario/FxInventarioAjuste.fxml";
 
     public static final String FX_EQUIPOS = "/view/produccion/equipos/FxEquipos.fxml";
 
@@ -279,7 +281,9 @@ public final class FilesRouters {
     public static final String FX_ASIGNACION_PROCESO = "/view/produccion/asignacion/FxAsignacionProceso.fxml";
 
     public static final String FX_REPORTE_VIEW = "/view/reporte/FxReportView.fxml";
-
+    
+    public static final String FX_GLOBAL_REPORTE = "/view/reporte/FxGlobalReporte.fxml";
+    
     public static final String FX_VENTA_REPORTE = "/view/reporte/FxVentaReporte.fxml";
 
     public static final String FX_VENTA_UTILIDADES = "/view/reporte/FxVentaUtilidades.fxml";

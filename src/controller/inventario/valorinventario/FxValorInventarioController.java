@@ -1,7 +1,9 @@
 package controller.inventario.valorinventario;
 
+import controller.inventario.suministros.FxSuministrosListaController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
+import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -154,7 +156,25 @@ public class FxValorInventarioController implements Initializable {
     }
 
     private void openWindowAjuste() {
-
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_INVENTARIO_AJUSTE);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxInventarioAjusteController controller = fXMLLoader.getController();
+            controller.setInitValorInventarioController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Ajuste de inventario", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((w) -> {
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            });
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
     }
 
     private void generarReporte() {

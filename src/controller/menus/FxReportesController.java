@@ -1,6 +1,7 @@
 package controller.menus;
 
 import controller.reporte.FxCompraReporteController;
+import controller.reporte.FxGlobalReporteController;
 import controller.reporte.FxProductoReporteController;
 import controller.reporte.FxVentaReporteController;
 import controller.reporte.FxVentaUtilidadesController;
@@ -31,6 +32,15 @@ public class FxReportesController implements Initializable {
     private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
+    /*
+    Controller global
+     */
+    private FXMLLoader fXMLGlobal;
+
+    private VBox nodeGlobal;
+
+    private FxGlobalReporteController controllerReporteGlobal;
+
     /*
     Controller ventas
      */
@@ -68,6 +78,10 @@ public class FxReportesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            fXMLGlobal = new FXMLLoader(getClass().getResource(FilesRouters.FX_GLOBAL_REPORTE));
+            nodeGlobal = fXMLGlobal.load();
+            controllerReporteGlobal = fXMLGlobal.getController();
+
             fXMLVenta = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_REPORTE));
             nodeVenta = fXMLVenta.load();
             controllerReporteVenta = fXMLVenta.getController();
@@ -87,6 +101,16 @@ public class FxReportesController implements Initializable {
         } catch (IOException ex) {
             System.out.println("Error en Ingresos Controller:" + ex.getLocalizedMessage());
         }
+    }
+
+    private void openWindowGlobal() {
+        controllerReporteGlobal.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeGlobal, 0d);
+        AnchorPane.setTopAnchor(nodeGlobal, 0d);
+        AnchorPane.setRightAnchor(nodeGlobal, 0d);
+        AnchorPane.setBottomAnchor(nodeGlobal, 0d);
+        vbContent.getChildren().add(nodeGlobal);
     }
 
     private void openWindowVentas() {
@@ -127,6 +151,18 @@ public class FxReportesController implements Initializable {
         AnchorPane.setRightAnchor(nodeUtilidades, 0d);
         AnchorPane.setBottomAnchor(nodeUtilidades, 0d);
         vbContent.getChildren().add(nodeUtilidades);
+    }
+
+    @FXML
+    private void onKeyPressedGlobal(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowGlobal();
+        }
+    }
+
+    @FXML
+    private void onActionGlobal(ActionEvent event) {
+        openWindowGlobal();
     }
 
     @FXML
