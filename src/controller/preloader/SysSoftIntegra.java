@@ -5,6 +5,7 @@ import controller.login.FxLoginController;
 import controller.tools.FilesRouters;
 import controller.tools.WindowStage;
 import controller.tools.ObjectGlobal;
+import controller.tools.Session;
 import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,32 +17,54 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class SysSoftIntegra extends Application {
-        
+
     private FxLoginController loginController;
-    
+
     private Scene scene;
 
     @Override
     public void init() throws Exception {
-        URL urllogin = getClass().getResource(FilesRouters.FX_LOGIN);
-        FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
-        Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
-        loginController = fXMLLoaderLogin.getController();
+
         ObjectGlobal.PANE = new AnchorPane();
-        scene = new Scene(parent);
+
     }
-    
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
-        primaryStage.setScene(scene);
-        primaryStage.initStyle(StageStyle.DECORATED);
-        primaryStage.setTitle(FilesRouters.TITLE_APP);
-        primaryStage.centerOnScreen();
-        primaryStage.setMaximized(true);
-        primaryStage.show();
-        primaryStage.requestFocus();
-        loginController.initComponents();
+
+        if (Session.CONFIGURATION_STATE) {
+
+            URL urllogin = getClass().getResource(FilesRouters.FX_BIENVENIDA);
+            FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
+            Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
+            scene = new Scene(parent);
+
+            primaryStage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
+            primaryStage.setScene(scene);
+            primaryStage.initStyle(StageStyle.DECORATED);
+            primaryStage.setTitle(FilesRouters.TITLE_APP);
+            primaryStage.centerOnScreen();
+//            primaryStage.setMaximized(true);
+            primaryStage.show();
+            primaryStage.requestFocus();
+
+        } else {
+            URL urllogin = getClass().getResource(FilesRouters.FX_LOGIN);
+            FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
+            Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
+            loginController = fXMLLoaderLogin.getController();
+            scene = new Scene(parent);
+
+            primaryStage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
+            primaryStage.setScene(scene);
+            primaryStage.initStyle(StageStyle.DECORATED);
+            primaryStage.setTitle(FilesRouters.TITLE_APP);
+            primaryStage.centerOnScreen();
+            primaryStage.setMaximized(true);
+            primaryStage.show();
+            primaryStage.requestFocus();
+            loginController.initComponents();
+        }
     }
 
     public static void main(String[] args) {

@@ -59,7 +59,8 @@ public class FxGlobalReporteController implements Initializable {
             
             double compraContado = arrayList.get(0) == null ? 0 : arrayList.get(0);
             double compraCredito = arrayList.get(1) == null ? 0 : arrayList.get(1);
-            
+            double ventautilidad = arrayList.get(2) == null ? 0 : arrayList.get(2);
+            double comprasanuladas = arrayList.get(3) == null ? 0 : arrayList.get(3);
             InputStream dir = getClass().getResourceAsStream("/report/ReporteGeneral.jasper");
 
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
@@ -68,6 +69,9 @@ public class FxGlobalReporteController implements Initializable {
             map.put("COMPRASCONTADO", Tools.roundingValue(compraContado, 2));
             map.put("COMPRASCREDITO", Tools.roundingValue(compraCredito, 2));
             map.put("COMPRASTOTAL", Tools.roundingValue(compraContado + compraCredito, 2));
+            map.put("SALIDASCOMPRAS", Tools.roundingValue(compraContado, 2));
+            map.put("UTILIDADVENTA", Tools.roundingValue(ventautilidad, 2));
+            map.put("COMPRASANULADAS", Tools.roundingValue(comprasanuladas, 2));
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 

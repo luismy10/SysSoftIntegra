@@ -43,6 +43,7 @@ public class FxVentaFondoInicialController implements Initializable {
             
             BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
             bancoHistorialTB.setIdBanco(Session.ID_CUENTA_EFECTIVO);
+            bancoHistorialTB.setIdEmpleado(Session.USER_ID); 
             bancoHistorialTB.setDescripcion("Apertura de Caja");
             bancoHistorialTB.setFecha(Tools.getDate());
             bancoHistorialTB.setHora(Tools.getHour());

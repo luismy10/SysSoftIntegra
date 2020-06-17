@@ -1727,7 +1727,7 @@ totally specific (always using direct child) and cover all cases, which would be
 /* hover */
 .radio-button:hover > .radio {
     -fx-background-color: white;
-    -fx-border-color: #7a7a7a;
+    -fx-border-color: #0065d9;
 }
 
 .radio-button:selected:hover > .radio > .dot {
@@ -1736,11 +1736,11 @@ totally specific (always using direct child) and cover all cases, which would be
 
 /* selected */
 .radio-button:selected > .radio {
-    -fx-border-color: #7a7a7a;
+    -fx-border-color: #007bff;
 }
 
 .radio-button:selected > .radio > .dot {
-    -fx-background-color: #3c8dbc;
+    -fx-background-color: #007bff;
 }
 
 /* focused */
@@ -1804,7 +1804,7 @@ totally specific (always using direct child) and cover all cases, which would be
 
 /* selected */
 .check-box-contenido:selected > .box{
-    -fx-background-color: #3c8dbc;
+    -fx-background-color: #007bff;
     -fx-border-color: #666666;
 }
 
@@ -2222,4 +2222,16 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
     -fx-background-size: 100%;  
+}
+
+.chart-bar-propio1 .default-color0{
+    -fx-bar-fill:  #03A9F4;
+}
+
+.chart-bar-propio2 .default-color0{
+    -fx-bar-fill:  #4caf50;
+}
+
+.chart-bar-propio3 .default-color0{
+    -fx-bar-fill: red;
 }

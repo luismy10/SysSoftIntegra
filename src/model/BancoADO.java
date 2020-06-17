@@ -284,7 +284,7 @@ public class BancoADO {
                 statement = DBUtil.getConnection().prepareStatement("select IdBanco,NombreCuenta from Banco order by HoraCreacion ASC");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    list.add(new BancoTB(resultSet.getString("IdBanco"), resultSet.getString("NombreCuenta")));
+                    list.add(new BancoTB(resultSet.getString("IdBanco"), resultSet.getString("NombreCuenta").toUpperCase()));
                 }
             } catch (SQLException ex) {
                 System.out.println("Error¨Plazos: " + ex.getLocalizedMessage());
@@ -314,7 +314,7 @@ public class BancoADO {
         try {
             DBUtil.dbConnect();
 
-            preparedStatementBanco = DBUtil.getConnection().prepareStatement("SELECT dbo.Fc_Obtener_Simbolo_Moneda(IdMoneda) as Simbolo,SaldoInicial FROM Banco WHERE IdBanco = ?");
+            preparedStatementBanco = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Total_Banco(?)}");
             preparedStatementBanco.setString(1, idBanco);
             ResultSet rsEmpsBanco = preparedStatementBanco.executeQuery();
             if (rsEmpsBanco.next()) {

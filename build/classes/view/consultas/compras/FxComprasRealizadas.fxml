@@ -160,7 +160,7 @@
                                           <TableColumn fx:id="tcNumeracion" prefWidth="176.0" style="-fx-alignment: CENTER-LEFT;" text="Serie/Numeración" />
                                           <TableColumn fx:id="tcTipo" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de compra" />
                                           <TableColumn fx:id="tcEstado" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                                          <TableColumn fx:id="tcTotal" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
+                                          <TableColumn fx:id="tcTotal" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                        </columns>
                                     </TableView>
                                  </children>

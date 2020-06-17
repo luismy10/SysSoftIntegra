@@ -82,20 +82,21 @@ public class FxComprasRealizadasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(
-                LocalDate.parse(cellData.getValue().getFechaCompra()).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + "\n"
+                LocalDate.parse(cellData.getValue().getFechaCompra()).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)).toUpperCase() + "\n"
                 + cellData.getValue().getHoraCompra()
         ));
-        tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
+        tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getSerie().toUpperCase()+ " - N° " + cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial()
+                cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().toUpperCase()
         ));
         tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
-        tcFechaCompra.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
-        tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
+        tcFechaCompra.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
         tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
         tcTipo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
@@ -127,14 +128,14 @@ public class FxComprasRealizadasController implements Initializable {
         };
         task.setOnSucceeded(w -> {
             tvList.setItems(task.getValue());
-            lblLoad.setVisible(false);   
+            lblLoad.setVisible(false);
         });
         task.setOnFailed(w -> {
-            lblLoad.setVisible(false);         
+            lblLoad.setVisible(false);
         });
 
         task.setOnScheduled(w -> {
-            lblLoad.setVisible(true);          
+            lblLoad.setVisible(true);
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -145,7 +146,7 @@ public class FxComprasRealizadasController implements Initializable {
     private void openWindowDetalleCompra() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS_DETALLE));
-            ScrollPane node = fXMLPrincipal.load(); 
+            ScrollPane node = fXMLPrincipal.load();
 
             FxComprasDetalleController controller = fXMLPrincipal.getController();
             controller.setInitComptrasController(this, vbPrincipal, vbContent);
@@ -172,7 +173,7 @@ public class FxComprasRealizadasController implements Initializable {
                 Parent parent = fXMLLoader.load(url.openStream());
                 //Controlller here
                 FxComprasCreditoController controller = fXMLLoader.getController();
-                controller.loadData(tvList.getSelectionModel().getSelectedItem().getIdCompra(),tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(), tvList.getSelectionModel().getSelectedItem().getTotal());     
+                controller.loadData(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(), tvList.getSelectionModel().getSelectedItem().getTotal());
                 controller.setInitControllerComprasRealizadas(this);
                 //
                 Stage stage = WindowStage.StageLoaderModal(parent, "Compras al crédito", vbWindow.getScene().getWindow());

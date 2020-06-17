@@ -35,6 +35,8 @@ public final class FilesRouters {
     public static final String TITLE_APP = "SysSoftIntegra";
 
     public static final String FX_LOGIN = "/view/login/FxLogin.fxml";
+    
+    public static final String FX_BIENVENIDA = "/view/preloader/FxBienvenida.fxml";
 
     public static final String FX_VALIDAR_ACCESO = "/view/login/FxValidarAcceso.fxml";
 

@@ -722,12 +722,12 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setImagenTB(rsEmps.getString("Imagen"));
-                
+
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
                 label.getStyleClass().add("labelRoboto14");
-                label.setStyle(suministroTB.getCantidad()>= suministroTB.getStockMinimo()? "-fx-text-fill:blue;":"-fx-text-fill:red;");
+                label.setStyle(suministroTB.getCantidad() >= suministroTB.getStockMinimo() ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
                 suministroTB.setLblCantidad(label);
-                
+
                 empList.add(suministroTB);
             }
         } catch (SQLException e) {
@@ -779,12 +779,12 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setImagenTB(rsEmps.getString("Imagen"));
-                
+
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
                 label.getStyleClass().add("labelRoboto14");
-                label.setStyle(suministroTB.getCantidad()>= suministroTB.getStockMinimo()? "-fx-text-fill:blue;":"-fx-text-fill:red;");
+                label.setStyle(suministroTB.getCantidad() >= suministroTB.getStockMinimo() ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
                 suministroTB.setLblCantidad(label);
-                
+
                 empList.add(suministroTB);
             }
         } catch (SQLException e) {
@@ -1002,7 +1002,7 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static ObservableList<SuministroTB> ListInventario(String producto,short tipoExistencia) {
+    public static ObservableList<SuministroTB> ListInventario(String producto, short tipoExistencia) {
         String selectStmt = "{call Sp_Listar_Inventario_Suministros(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -1483,6 +1483,41 @@ public class SuministroADO {
             }
         }
         return suministroTBs;
+    }
+
+    public static String UpdatedInventarioStockMM(String idSuministro, String stockMinimo, String stockMaximo) {
+        PreparedStatement preparedUpdatedSuministro = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() == null) {
+            return "No se pudo conectar al servidor, intente nuevamente.";
+        }
+        try {
+            DBUtil.getConnection().setAutoCommit(false);
+
+            preparedUpdatedSuministro = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET StockMinimo = ? , StockMaximo = ? WHERE IdSuministro = ?");
+            preparedUpdatedSuministro.setDouble(1, Double.parseDouble(stockMinimo));
+            preparedUpdatedSuministro.setDouble(2, Double.parseDouble(stockMaximo));
+            preparedUpdatedSuministro.setString(3, idSuministro);
+            preparedUpdatedSuministro.addBatch();
+
+            preparedUpdatedSuministro.executeBatch();
+            DBUtil.getConnection().commit();
+            return "updated";
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException e) {
+            }
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (preparedUpdatedSuministro != null) {
+                    preparedUpdatedSuministro.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException e) {
+            }
+        }
     }
 
 }

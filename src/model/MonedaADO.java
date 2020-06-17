@@ -1,5 +1,6 @@
 package model;
 
+import controller.tools.Session;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -249,16 +250,18 @@ public class MonedaADO {
         return result;
     }
 
-    public static String GetMonedaPredetermined() {
+    public static void GetMonedaPredetermined() {
         PreparedStatement statement = null;
         try {
             DBUtil.dbConnect();
-            statement = DBUtil.getConnection().prepareStatement("SELECT Simbolo FROM MonedaTB WHERE Predeterminado = 1");
+            statement = DBUtil.getConnection().prepareStatement("SELECT IdMoneda,Simbolo FROM MonedaTB WHERE Predeterminado = 1");
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getString("Simbolo");
+                Session.MONEDA_ID = resultSet.getInt("IdMoneda");
+                Session.MONEDA_SIMBOLO = resultSet.getString("Simbolo");
             } else {
-                return "M";
+                Session.MONEDA_ID = 0;
+                Session.MONEDA_SIMBOLO = "M";
             }
         } catch (SQLException ex) {
             System.out.println("Error Moneda: " + ex.getLocalizedMessage());
@@ -272,7 +275,6 @@ public class MonedaADO {
                 System.out.println("Error Moneda: " + e.getLocalizedMessage());
             }
         }
-        return "M";
     }
 
     public static List<MonedaTB> GetMonedasCombBox() {

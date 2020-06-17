@@ -20,7 +20,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -33,8 +32,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.CompraADO;
 import model.CompraTB;
-import model.TipoDocumentoADO;
-import model.TipoDocumentoTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -49,11 +46,7 @@ public class FxCompraReporteController implements Initializable {
     @FXML
     private DatePicker dpFechaFinal;
     @FXML
-    private CheckBox cbDocumentosSeleccionar;
-    @FXML
     private CheckBox cbProveedoresSeleccionar;
-    @FXML
-    private ComboBox<TipoDocumentoTB> cbDocumentos;
     @FXML
     private TextField txtProveedor;
     @FXML
@@ -75,10 +68,6 @@ public class FxCompraReporteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
         Tools.actualDate(Tools.getDate(), dpFechaFinal);
-        cbDocumentos.getItems().clear();
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
-            cbDocumentos.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
-        });
         ToggleGroup groupFormaPago = new ToggleGroup();
         rbContado.setToggleGroup(groupFormaPago);
         rbCredito.setToggleGroup(groupFormaPago);
@@ -87,17 +76,13 @@ public class FxCompraReporteController implements Initializable {
 
     private void openWindowReporteGeneral() {
         try {
-            if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "Seleccione un documento para generar el reporte.");
-                cbDocumentos.requestFocus();
-            } else if (!cbProveedoresSeleccionar.isSelected() && idProveedor.equalsIgnoreCase("") && txtProveedor.getText().isEmpty()) {
+            if (!cbProveedoresSeleccionar.isSelected() && idProveedor.equalsIgnoreCase("") && txtProveedor.getText().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Reporte General de Compras", "Ingrese un proveedor para generar el reporte.");
                 btnProveedor.requestFocus();
             } else {
                 ArrayList<CompraTB> list = CompraADO.GetReporteGenetalCompras(
                         Tools.getDatePicker(dpFechaInicial),
                         Tools.getDatePicker(dpFechaFinal),
-                        cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                         idProveedor,
                         cbFormasPagoSeleccionar.isSelected()? 0 : rbContado.isSelected() ? 1 : 2);
                 if (list.isEmpty()) {
@@ -107,7 +92,6 @@ public class FxCompraReporteController implements Initializable {
 
                 Map map = new HashMap();
                 map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
-                map.put("DOCUMENTO", cbDocumentosSeleccionar.isSelected() ? "TODOS" : cbDocumentos.getSelectionModel().getSelectedItem().getNombre());
                 map.put("ORDEN", "TODOS");
                 map.put("PROVEEDOR", cbProveedoresSeleccionar.isSelected() ? "TODOS" : txtProveedor.getText().toUpperCase());
                 map.put("ESTADO", "TODOS");
@@ -150,16 +134,6 @@ public class FxCompraReporteController implements Initializable {
             controller.fillCustomersTable("");
         } catch (IOException ex) {
             System.out.println("Controller reporte" + ex.getLocalizedMessage());
-        }
-    }
-
-    @FXML
-    private void onActionCbDocumentosSeleccionar(ActionEvent event) {
-        if (cbDocumentosSeleccionar.isSelected()) {
-            cbDocumentos.setDisable(true);
-            cbDocumentos.getSelectionModel().select(null);
-        } else {
-            cbDocumentos.setDisable(false);
         }
     }
 

@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label fx:id="lblTitle" styleClass="labelRobotoBold16" text="Ajustar Inventario" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Ajustar Inventario" textFill="#1a2226">
                      <graphic>
                         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -44,13 +44,13 @@
                   <VBox style="-fx-spacing: 0.6666666666666666em;">
                      <children>
                         <Label styleClass="labelOpenSansRegular14" text="Stock mínimo" />
-                        <TextField fx:id="txtStockMinimo" onAction="#onActionGuardar" promptText="0.00" styleClass="text-field-normal" />
+                        <TextField fx:id="txtStockMinimo" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMinimo" promptText="0.00" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.6666666666666666em;">
                      <children>
                         <Label styleClass="labelOpenSansRegular14" text="Stockmáximo" />
-                        <TextField fx:id="stockMaximo" promptText="0.00" styleClass="text-field-normal" />
+                        <TextField fx:id="stockMaximo" onKeyTyped="#onKeyTypedMaxino" promptText="0.00" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SysSoftIntegra.jar" size="2932309" download="eager" />
+    <jar href="SysSoftIntegra.jar" size="2952269" download="eager" />
     <jar href="lib\Util.jar" size="11957" download="eager" />
     <jar href="lib\barbecue-1.5-beta1.jar" size="91079" download="eager" />
     <jar href="lib\commons-beanutils-1.8.2.jar" size="231891" download="eager" />
@@ -23,6 +23,7 @@
     <jar href="lib\jasperreports-fonts-4.0.0.jar" size="2480052" download="eager" />
     <jar href="lib\jasperreports-javaflow-4.7.1.jar" size="4041522" download="eager" />
     <jar href="lib\json-simple-1.1.1.jar" size="23737" download="eager" />
+    <jar href="lib\mysql-connector-java-5.1.23-bin.jar" size="834126" download="eager" />
     <jar href="lib\png-encoder-1.5.jar" size="18117" download="eager" />
     <jar href="lib\poi-3.12-20150511.jar" size="2136557" download="eager" />
     <jar href="lib\poi-3.7.jar" size="1675036" download="eager" />

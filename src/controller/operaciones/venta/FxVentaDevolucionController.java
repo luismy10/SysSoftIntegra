@@ -59,35 +59,32 @@ public class FxVentaDevolucionController implements Initializable {
     }
 
     private void eventAceptar() {
-        if (rbMovimiento.isSelected()) {
-            if (!Tools.isNumeric(txtEfectivo.getText())) {
-                Tools.AlertMessageWarning(window, "Detalle de venta", "Ingrese el monto a devolver.");
-                txtEfectivo.requestFocus();
-            } else if (txtObservacion.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Detalle de venta", "Ingrese un comentario.");
-                txtObservacion.requestFocus();
-            } else {
-                short validate = Tools.AlertMessageConfirmation(window, "Detalle de ventas", "¿Está seguro de cancelar la venta?");
-                if (validate == 1) {
 
-                    BancoHistorialTB bancoHistorialBancaria = new BancoHistorialTB();
-                    bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
-                    bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
-                    bancoHistorialBancaria.setDescripcion(txtObservacion.getText());
-                    bancoHistorialBancaria.setFecha(Tools.getDate());
-                    bancoHistorialBancaria.setHora(Tools.getHour());
-                    bancoHistorialBancaria.setEntrada(0);
-                    bancoHistorialBancaria.setSalida(totalVenta);
+        if (txtObservacion.getText().trim().isEmpty()) {
+            Tools.AlertMessageWarning(window, "Detalle de venta", "Ingrese un comentario.");
+            txtObservacion.requestFocus();
+        } else {
+            short validate = Tools.AlertMessageConfirmation(window, "Detalle de ventas", "¿Está seguro de cancelar la venta?");
+            if (validate == 1) {
 
-                    String result = VentaADO.CancelTheSale(idVenta, arrList, bancoHistorialBancaria);
-                    if (result.equalsIgnoreCase("updated")) {
-                        Tools.AlertMessageInformation(window, "Detalle de ventas", "Se anulo correctamente.");
-                        Tools.Dispose(window);
-                    } else if (result.equalsIgnoreCase("scrambled")) {
-                        Tools.AlertMessageWarning(window, "Detalle de venta", "Ya está anulada la venta.");
-                    } else {
-                        Tools.AlertMessageError(window, "Detalle de ventas", result);
-                    }
+                BancoHistorialTB bancoHistorialBancaria = new BancoHistorialTB();
+                bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
+                bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
+                bancoHistorialBancaria.setDescripcion(txtObservacion.getText());
+                bancoHistorialBancaria.setFecha(Tools.getDate());
+                bancoHistorialBancaria.setHora(Tools.getHour());
+                bancoHistorialBancaria.setEntrada(0);
+                bancoHistorialBancaria.setSalida(totalVenta);
+
+                String result = VentaADO.CancelTheSale(idVenta, arrList, bancoHistorialBancaria);
+                if (result.equalsIgnoreCase("updated")) {
+                    Tools.AlertMessageInformation(window, "Detalle de ventas", "Se anulo correctamente.");
+                    Tools.Dispose(window);
+                } else if (result.equalsIgnoreCase("scrambled")) {
+                    Tools.AlertMessageWarning(window, "Detalle de venta", "Ya está anulada la venta.");
+                } else {
+                    Tools.AlertMessageError(window, "Detalle de ventas", result);
+                }
 
 //                    MovimientoCajaTB cajaTB = new MovimientoCajaTB();
 //                    cajaTB.setIdCaja(Session.CAJA_ID);
@@ -113,7 +110,6 @@ public class FxVentaDevolucionController implements Initializable {
 //                    } else {
 //                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle de venta", result, false);
 //                    }
-                }
             }
         }
 

@@ -58,7 +58,7 @@
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" prefHeight="50.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                        <children>
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -75,7 +75,7 @@
                                                 </Lighting>
                                              </effect>
                                           </ImageView>
-                                          <Text fx:id="lblDatos" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Luis Alexander Lara Serna">
+                                          <Text fx:id="lblDatos" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Usuario conectado">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>

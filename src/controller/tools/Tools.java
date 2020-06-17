@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -273,6 +274,11 @@ public class Tools {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(date);
+    }
+
+    public static java.sql.Date getCurrentDate() throws ParseException {
+        Date dateCurrent = new SimpleDateFormat("yyyy-MM-dd").parse(getDate());
+        return new java.sql.Date(dateCurrent.getTime());
     }
 
     public static String getDate(String format) {

@@ -94,7 +94,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0em 0.8333333333333334em;">
                            <children>
                               <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Fecha Venta:" />
-                              <Text fx:id="lblFechaVenta" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="20/10/2018" />
+                              <Text fx:id="lblFechaVenta" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="20/10/2018" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0em 0.8333333333333334em;">
@@ -112,27 +112,30 @@
                                     <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cliente:" textFill="#020203" />
-                                    <Text fx:id="lblCliente" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Comprobante y Numeración:" textFill="#020203" GridPane.rowIndex="1" />
+                                    <Text fx:id="lblCliente" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Comprobante" textFill="#020203" GridPane.rowIndex="1" />
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.25em;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
-                                          <Text fx:id="lblComprobante" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" />
-                                          <Text fx:id="lblSerie" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" />
+                                          <Text fx:id="lblComprobante" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" />
+                                          <Text fx:id="lblSerie" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" />
                                        </children>
                                     </HBox>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado:" textFill="#020203" GridPane.rowIndex="3" />
-                                    <Text fx:id="lblEstado" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado de venta:" textFill="#020203" GridPane.rowIndex="3" />
+                                    <Text fx:id="lblEstado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Observaciones:" textFill="#020203" GridPane.rowIndex="4" />
-                                    <Text fx:id="lblObservaciones" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Text fx:id="lblObservaciones" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Vendedor:" textFill="#020203" GridPane.rowIndex="5" />
-                                    <Text fx:id="lblVendedor" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Tipo de venta" textFill="#020203" GridPane.rowIndex="2" />
-                                    <Text fx:id="lblTipo" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Text fx:id="lblVendedor" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Tipo de venta:" textFill="#020203" GridPane.rowIndex="2" />
+                                    <Text fx:id="lblTipo" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Total:" textFill="#020203" GridPane.rowIndex="6" />
-                                    <Text fx:id="lblTotalVenta" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Text fx:id="lblTotalVenta" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Total en letras:" textFill="#020203" GridPane.rowIndex="7" />
+                                    <Text fx:id="lblValorVentaLetra" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                  </children>
                               </GridPane>
                            </children>
@@ -173,16 +176,6 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="453.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <HBox>
-                                       <children>
-                                          <VBox fx:id="vbMetodoPago" style="-fx-spacing: 0.6666666666666666em;">
-                                             <children>
-                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor En Letras: " />
-                                                <Text fx:id="lblValorVentaLetra" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Valor" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
                                     <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <VBox>
@@ -212,19 +205,19 @@
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Valor Venta:" />
-                                          <Text fx:id="lblValorVenta" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
+                                          <Text fx:id="lblValorVenta" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Descuento:" />
-                                          <Text fx:id="lblDescuento" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
+                                          <Text fx:id="lblDescuento" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Sub Importe:" />
-                                          <Text fx:id="lblSubTotal" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
+                                          <Text fx:id="lblSubTotal" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                        </children>
                                     </HBox>
                                     <Separator />
@@ -233,7 +226,7 @@
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Total Importe:" />
-                                          <Text fx:id="lblTotal" fill="#004db9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
+                                          <Text fx:id="lblTotal" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
                                        </children>
                                     </HBox>
                                  </children>

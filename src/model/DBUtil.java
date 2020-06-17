@@ -14,15 +14,15 @@ public class DBUtil {
     private static final String DATABASENAME = ObjectGlobal.DATABASENAME;
     private static final String USER = ObjectGlobal.USER;
     private static final String PASSWORD = ObjectGlobal.PASSWORD;//Qz0966lb
-    private static final String URL = "jdbc:sqlserver://" + ADDRES + ":" + PORT + ";databaseName=" + DATABASENAME + "";
-    
+    //private static final String URL = "jdbc:sqlserver://" + ADDRES + ":" + PORT + ";databaseName=" + DATABASENAME + "";
+    private static final String URL = "jdbc:mysql://"+ ADDRES +":"+PORT+"/"+DATABASENAME+"";
      public static void dbConnect()  {
         try {   
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+           //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+           Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.getLocalizedMessage());
-            System.out.println("entro");
+            System.out.println("Error en conexión: "+e.getLocalizedMessage());
         }
     }
 

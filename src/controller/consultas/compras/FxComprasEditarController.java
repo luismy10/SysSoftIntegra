@@ -281,7 +281,7 @@ public class FxComprasEditarController implements Initializable {
             } else {
                 CompraTB compraTB = new CompraTB();
                 compraTB.setProveedor(idProveedor);
-                compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
+//                compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 compraTB.setNumeracion(cbNumeracion.getText().trim());
                 compraTB.setTipoMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 1
                         ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
@@ -301,7 +301,7 @@ public class FxComprasEditarController implements Initializable {
 //              Controlller here
                 FxComprasProcesoController controller = fXMLLoader.getController();
                 controller.setInitComprasEditarController(this);
-                controller.setLoadProcess(compraTB, tvList, loteTBs, monedaSimbolo);
+                controller.setLoadProcess(compraTB, tvList, loteTBs);
 //
                 Stage stage = WindowStage.StageLoaderModal(parent, "Pago de la compra", spWindow.getScene().getWindow());
                 stage.setResizable(false);

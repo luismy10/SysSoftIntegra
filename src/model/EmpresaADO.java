@@ -48,6 +48,29 @@ public class EmpresaADO {
         }
     }
 
+    public static boolean isConfiguration() {
+        PreparedStatement statementValidate = null;
+        try {
+            DBUtil.dbConnect();
+            statementValidate = DBUtil.getConnection().prepareStatement("select * from EmpresaTB");         
+            if(statementValidate.executeQuery().next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (statementValidate != null) {
+                    statementValidate.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException e) {
+
+            }
+        }
+        return false;
+    }
+
     public static EmpresaTB GetEmpresa() {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -94,5 +117,4 @@ public class EmpresaADO {
         return empresaTB;
     }
 
-    
 }

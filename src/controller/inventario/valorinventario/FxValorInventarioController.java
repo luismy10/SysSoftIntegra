@@ -1,6 +1,5 @@
 package controller.inventario.valorinventario;
 
-import controller.inventario.suministros.FxSuministrosListaController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -140,7 +139,7 @@ public class FxValorInventarioController implements Initializable {
             tvList.setItems(task.getValue());
             double total = 0;
             total = tvList.getItems().stream().map((l) -> l.getTotalImporte()).reduce(total, (accumulator, _item) -> accumulator + _item);
-            lblValoTotal.setText(Session.MONEDA + Tools.roundingValue(total, 4));
+            lblValoTotal.setText(Session.MONEDA_SIMBOLO + Tools.roundingValue(total, 4));
             lblLoad.setVisible(false);
         });
         task.setOnFailed((WorkerStateEvent event) -> {
@@ -156,34 +155,35 @@ public class FxValorInventarioController implements Initializable {
     }
 
     private void openWindowAjuste() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_INVENTARIO_AJUSTE);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxInventarioAjusteController controller = fXMLLoader.getController();
-            controller.setInitValorInventarioController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Ajuste de inventario", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
-            stage.show();
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            try {
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                URL url = getClass().getResource(FilesRouters.FX_INVENTARIO_AJUSTE);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxInventarioAjusteController controller = fXMLLoader.getController();
+                controller.setInitValorInventarioController(this);
+                controller.setLoadComponents(tvList.getSelectionModel().getSelectedItem().getIdSuministro(),tvList.getSelectionModel().getSelectedItem().getClave(), tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+                //
+                Stage stage = WindowStage.StageLoaderModal(parent, "Ajuste de inventario", vbWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.setOnHiding((w) -> {
+                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                });
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
         }
     }
 
     private void generarReporte() {
-
         if (tvList.getItems().isEmpty()) {
             Tools.AlertMessageWarning(vbWindow, "Reporte Inventario", "No hay datos en la lista para mostrar en el reporte");
             return;
         }
-
         try {
             InputStream dir = getClass().getResourceAsStream("/report/InventarioActual.jasper");
 
@@ -208,7 +208,6 @@ public class FxValorInventarioController implements Initializable {
         } catch (HeadlessException | JRException | IOException ex) {
             Tools.AlertMessageError(vbWindow, "Reporte de Inventario", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
-
     }
 
     @FXML
@@ -302,6 +301,10 @@ public class FxValorInventarioController implements Initializable {
         }
     }
 
+    public ComboBox<String> getCbExistencia() {
+        return cbExistencia;
+    }   
+    
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
     }

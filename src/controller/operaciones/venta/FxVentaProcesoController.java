@@ -130,16 +130,16 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
-    public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList, String total) {
+    public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList, double total) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
         Session.TICKET_SIMBOLOMONEDA = moneda_simbolo;
         lblComprobante.setText(ventaTB.getComprobanteName());
-        lblTotal.setText(moneda_simbolo + " " + total);
-        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        tota_venta = Double.parseDouble(total);//es double
-        lblMonedaLetras.setText(monedaCadena.Convertir(total, true, ventaEstructuraController.getMonedaNombre()));
+        tota_venta = total;
+        lblTotal.setText(moneda_simbolo + " " + Tools.roundingValue(total, 2));
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));        
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ventaEstructuraController.getMonedaNombre()));
         setClienteProcesoVenta(Session.IDCLIENTE, Session.DATOSCLIENTE, Session.N_DOCUMENTO_CLIENTE, Session.DIRECCION_CLIENTE);
         txtEfectivo.requestFocus();
     }

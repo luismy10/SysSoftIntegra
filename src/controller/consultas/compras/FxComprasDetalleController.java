@@ -36,6 +36,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.CompraADO;
@@ -59,19 +60,13 @@ public class FxComprasDetalleController implements Initializable {
     @FXML
     private Text lblFechaCompra;
     @FXML
-    private Label lblDocumento;
-    @FXML
     private Label lblProveedor;
     @FXML
-    private Label lblDomicilio;
+    private Label lblTipo;
     @FXML
     private Label lblEstado;
     @FXML
-    private Label lblContacto;
-    @FXML
     private Label lblComprobante;
-    @FXML
-    private Label lblNumeracion;
     @FXML
     private GridPane gpList;
     @FXML
@@ -91,21 +86,19 @@ public class FxComprasDetalleController implements Initializable {
     @FXML
     private Label lblTotalCompra;
     @FXML
-    private Text lblValorLetras;
+    private Label lblValorLetras;
     @FXML
     private VBox vbCondicion;
+    @FXML
+    private Button btnReporte;
     @FXML
     private Button btnEditar;
     @FXML
     private Button btnAnular;
-
-    private double totalBruto;
-
-    private double descuento;
-
-    private double subTotal;
-
-    private double totalNeto;
+    @FXML
+    private Button btnNotaDebito;
+    @FXML
+    private Label lblMetodoPago;
 
     private FxComprasRealizadasController comprascontroller;
 
@@ -117,30 +110,26 @@ public class FxComprasDetalleController implements Initializable {
 
     private ObservableList<DetalleCompraTB> arrList = null;
 
+    private ArrayList<CompraCreditoTB> listComprasCredito;
+
     private ArrayList<ImpuestoTB> arrayArticulos;
 
     private ConvertMonedaCadena monedaCadena;
 
     private CompraTB compraTB = null;
 
+    private double totalBruto;
+
+    private double descuento;
+
+    private double subTotal;
+
+    private double totalNeto;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         arrayArticulos = new ArrayList<>();
         monedaCadena = new ConvertMonedaCadena();
-    }
-
-    private Label addElementGridPane(String id, String nombre, Pos pos) {
-        Label label = new Label(nombre);
-        label.setId(id);
-        label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
-        label.getStyleClass().add("labelRoboto14");
-        label.setAlignment(pos);
-        label.setWrapText(true);
-        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
-        label.setMaxWidth(Double.MAX_VALUE);
-        label.setMaxHeight(Double.MAX_VALUE);
-        return label;
     }
 
     public void setLoadDetalle(String idCompra) {
@@ -179,39 +168,62 @@ public class FxComprasDetalleController implements Initializable {
                 compraTB = (CompraTB) objects.get(0);
                 ObservableList<DetalleCompraTB> empList = (ObservableList<DetalleCompraTB>) objects.get(1);
                 if (compraTB != null) {
-                    lblFechaCompra.setText(compraTB.getFechaCompra() + " " + compraTB.getHoraCompra());
-                    lblComprobante.setText(compraTB.getComprobanteName());
-                    lblNumeracion.setText(compraTB.getNumeracion());
-                    lblObservacion.setText(compraTB.getObservaciones().equalsIgnoreCase("") ? "No tiene ninguna observación" : compraTB.getObservaciones());
-                    lblNotas.setText(compraTB.getNotas().equalsIgnoreCase("") ? "No tiene ninguna nota" : compraTB.getNotas());
-                    lblEstado.setText(compraTB.getTipoName() + " - " + compraTB.getEstadoName());
+                    lblProveedor.setText(compraTB.getProveedorTB().getNumeroDocumento()
+                            + " " + compraTB.getProveedorTB().getRazonSocial().toUpperCase()
+                            + " TEL: " + compraTB.getProveedorTB().getTelefono() + " CEL: " + compraTB.getProveedorTB().getCelular());
+                    lblFechaCompra.setText(compraTB.getFechaCompra().toUpperCase() + " " + compraTB.getHoraCompra());
+                    lblComprobante.setText(compraTB.getSerie() + " - N °" + compraTB.getNumeracion());
+                    lblObservacion.setText(compraTB.getObservaciones().equalsIgnoreCase("") ? "NO TIENE NINGUNA OBSERVACIÓN" : compraTB.getObservaciones());
+                    lblNotas.setText(compraTB.getNotas().equalsIgnoreCase("") ? "NO TIENE NINGUNA NOTA" : compraTB.getNotas());
+                    lblTipo.setText(compraTB.getTipoName());
+                    lblEstado.setText(compraTB.getEstadoName());
                     lblTotalCompra.setText(compraTB.getTipoMonedaName() + " " + Tools.roundingValue(compraTB.getTotal(), 2));
                     lblValorLetras.setText(monedaCadena.Convertir(Tools.roundingValue(compraTB.getTotal(), 2), true, compraTB.getMonedaTB().getNombre()));
 
-                    lblDocumento.setText(compraTB.getProveedorTB().getNumeroDocumento());
-                    lblProveedor.setText(compraTB.getProveedorTB().getRazonSocial());
-                    lblDomicilio.setText(compraTB.getProveedorTB().getDireccion().equalsIgnoreCase("")
-                            ? "No tiene un domicilio registrado"
-                            : compraTB.getProveedorTB().getDireccion());
-                    lblContacto.setText("Tel: " + compraTB.getProveedorTB().getTelefono() + " Cel: " + compraTB.getProveedorTB().getCelular());
+                    switch (compraTB.getEstado()) {
+                        case 2:
+                            btnReporte.setDisable(false);
+                            btnEditar.setDisable(true);
+                            btnAnular.setDisable(false);
+                            btnNotaDebito.setDisable(false);
+                            break;
+                        case 3:
+                            btnReporte.setDisable(false);
+                            btnEditar.setDisable(true);
+                            btnAnular.setDisable(true);
+                            btnNotaDebito.setDisable(true);
+                            lblEstado.setTextFill(Color.web("#990000"));
+                            break;
+                        case 4:
+                            btnReporte.setDisable(false);
+                            btnEditar.setDisable(false);
+                            btnAnular.setDisable(true);
+                            btnNotaDebito.setDisable(true);
+                            vbCondicion.getChildren().add(adddElementCondicion("La compra se encuentra en un estado de guardado"));
+                            lblMetodoPago.setText("");
+                            break;
+                        default:
+                            btnReporte.setDisable(false);
+                            btnEditar.setDisable(true);
+                            btnAnular.setDisable(false);
+                            btnNotaDebito.setDisable(false);
+                            break;
+                    }
+
+                    listComprasCredito = (ArrayList<CompraCreditoTB>) objects.get(2);
+                    if (!listComprasCredito.isEmpty()) {
+                        lblMetodoPago.setText("Método de pago al crédito");
+                        for (int i = 0; i < listComprasCredito.size(); i++) {
+                            vbCondicion.getChildren().add(adddElementCondicion("Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Vence el " + listComprasCredito.get(i).getFechaRegistro() + " por " + compraTB.getTipoMonedaName() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2) + " Estado " + (listComprasCredito.get(i).isEstado() ? "Pagado" : "Pendiente") + " " + (listComprasCredito.get(i).isEstado() ? "el " + listComprasCredito.get(i).getFechaPago() : "")));
+                        }
+                    } else {
+                        lblMetodoPago.setText("Método de pago al contado");
+                        vbCondicion.getChildren().add(adddElementCondicion("Pago al contado por el valor de: " + lblTotalCompra.getText()));
+                    }
+
                 }
 
                 fillArticlesTable(empList);
-
-                if (compraTB != null && compraTB.getEstado() == 4) {
-                    btnEditar.setDisable(false);
-                    vbCondicion.getChildren().add(adddElementCondicion("La compra se encuentra en un estado de guardado"));
-                } else {
-                    btnAnular.setDisable(false);
-                    ArrayList<CompraCreditoTB> listComprasCredito = (ArrayList<CompraCreditoTB>) objects.get(2);
-                    if (!listComprasCredito.isEmpty()) {
-                        for (int i = 0; i < listComprasCredito.size(); i++) {
-                            vbCondicion.getChildren().add(adddElementCondicion("Compra al crédito-Couto Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Vence el " + listComprasCredito.get(i).getFechaRegistro() + " por " + compraTB.getTipoMonedaName() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2) + " Estado " + (listComprasCredito.get(i).isEstado() ? "Pagado" : "Pendiente") + " " + (listComprasCredito.get(i).isEstado() ? "el " + listComprasCredito.get(i).getFechaPago() : "")));
-                        }
-                    } else {
-                        vbCondicion.getChildren().add(adddElementCondicion("Pago al contado por el valor de: " + lblTotalCompra.getText()));
-                    }
-                }
 
             } else {
                 Tools.AlertMessageWarning(cpWindow, "Detalle de Compra", "Error el conectar al servidor, revise su conexión e intente nuevamente.");
@@ -222,7 +234,6 @@ public class FxComprasDetalleController implements Initializable {
         if (!executor.isShutdown()) {
             executor.shutdown();
         }
-
     }
 
     private void fillArticlesTable(ObservableList<DetalleCompraTB> arr) {
@@ -240,7 +251,20 @@ public class FxComprasDetalleController implements Initializable {
             }
             calcularTotales();
         }
+    }
 
+    private Label addElementGridPane(String id, String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setId(id);
+        label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
+        label.getStyleClass().add("labelRoboto14");
+        label.setAlignment(pos);
+        label.setWrapText(true);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
     }
 
     private void calcularTotales() {
@@ -302,7 +326,7 @@ public class FxComprasDetalleController implements Initializable {
         txtTitulo.getStyleClass().add("labelOpenSansRegular14");
 
         Text txtTotal = new Text(total);
-        txtTotal.setStyle("-fx-fill:#004db9");
+        txtTotal.setStyle("-fx-fill:#055bd3");
         txtTotal.getStyleClass().add("labelOpenSansRegular14");
 
         HBox hBox = new HBox(txtTitulo, txtTotal);
@@ -383,16 +407,17 @@ public class FxComprasDetalleController implements Initializable {
             map.put("LOGO", imgInputStream);
             map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
-            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
-            map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
+            map.put("TELEFONOCELULAR", "TEL.: " + Session.COMPANY_TELEFONO + " CEL.: " + Session.COMPANY_CELULAR);
+            map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL.toUpperCase());
             map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
+            map.put("NUMEROCOMPRA", idCompra);
 
-            map.put("DATOSPROVEEDOR", lblProveedor.getText());
-            map.put("NUMERODOCUMENTOPROVEEDOR", lblDocumento.getText());
-            map.put("DIRECCIONPROVEEDOR", lblDomicilio.getText());
-            map.put("FECHAELABORACION", compraTB.getFechaCompra());
+            map.put("FECHAELABORACION", compraTB.getFechaCompra().toUpperCase());
             map.put("MONEDA", compraTB.getTipoMonedaName());
-            map.put("DOCUMENTOPROVEEDOR", compraTB.getProveedorTB().getTipoDocumentoName());
+            map.put("DATOSPROVEEDOR", compraTB.getProveedorTB().getNumeroDocumento() + "-" + compraTB.getProveedorTB().getRazonSocial());
+            map.put("DIRECCIONPROVEEDOR", compraTB.getProveedorTB().getDireccion());
+            map.put("PROVEEDORTELEFONOS", "TEL.: " + compraTB.getProveedorTB().getTelefono() + "  CEL.: " + compraTB.getProveedorTB().getCelular());
+            map.put("PROVEEDOREMAIL", compraTB.getProveedorTB().getEmail());
 
             map.put("SIMBOLO", compraTB.getTipoMonedaName());
             map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
@@ -421,15 +446,15 @@ public class FxComprasDetalleController implements Initializable {
     }
 
     private void eventEditarVenta() throws IOException {
-        
-        if(compraTB!=null && compraTB.getEstado() == 4){
+
+        if (compraTB != null && compraTB.getEstado() == 4) {
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS_EDITAR));
             ScrollPane node = fXMLPrincipal.load();
-            
+
             FxComprasEditarController controller = fXMLPrincipal.getController();
             controller.setInitComprasEditar(idCompra);
-            controller.setInitContentComprasEditar(this,vbPrincipal, vbContent);
-            
+            controller.setInitContentComprasEditar(this, vbPrincipal, vbContent);
+
             vbContent.getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
@@ -437,7 +462,7 @@ public class FxComprasDetalleController implements Initializable {
             AnchorPane.setBottomAnchor(node, 0d);
             vbContent.getChildren().add(node);
         }
-        
+
 //        if (estadoCompra.equals("anulado".toUpperCase())) {
 //            if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
 //                try {
@@ -466,30 +491,27 @@ public class FxComprasDetalleController implements Initializable {
     }
 
     private void eventCancelarVenta() {
-//        if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
-//
-//            try {
-//                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-//                URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CANCELAR);
-//                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-//                Parent parent = fXMLLoader.load(url.openStream());
-//                //Controlller here
-//                FxComprasCancelarController controller = fXMLLoader.getController();
-//                controller.setTableList(arrList);
-//                controller.setIdCompra(idCompra);
-//                //
-//                Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar su compra", cpWindow.getScene().getWindow());
-//                stage.setResizable(false);
-//                stage.sizeToScene();
-//                stage.setOnHiding((w) -> {
-//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-//                });
-//                stage.show();
-//            } catch (IOException ex) {
-//                System.out.println("Controller compras" + ex.getLocalizedMessage());
-//            }
-//
-//        }
+        if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
+            try {
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CANCELAR);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxComprasCancelarController controller = fXMLLoader.getController();
+                controller.setComprasDetalleController(this);
+                controller.loadComponents();
+                //
+                Stage stage = WindowStage.StageLoaderModal(parent, "Anular su compra", cpWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("Controller compras" + ex.getLocalizedMessage());
+            }
+
+        }
     }
 
     @FXML
@@ -541,6 +563,18 @@ public class FxComprasDetalleController implements Initializable {
 
     public ScrollPane getCpWindow() {
         return cpWindow;
+    }
+
+    public CompraTB getCompraTB() {
+        return compraTB;
+    }
+
+    public ObservableList<DetalleCompraTB> getArrList() {
+        return arrList;
+    }
+
+    public ArrayList<CompraCreditoTB> getListComprasCredito() {
+        return listComprasCredito;
     }
 
     public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane vbPrincipal, AnchorPane vbContent) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7d62a643-4a95-442f-a890-0f620d0c0de2">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="2.1961500000000007"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="125"/>
+	<property name="ireport.y" value="195"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="EMPRESA" class="java.lang.String"/>
 	<parameter name="DIRECCION" class="java.lang.String"/>
@@ -10,7 +10,6 @@
 	<parameter name="EMAIL" class="java.lang.String"/>
 	<parameter name="DOCUMENTOEMPRESA" class="java.lang.String"/>
 	<parameter name="DATOSPROVEEDOR" class="java.lang.String"/>
-	<parameter name="NUMERODOCUMENTOPROVEEDOR" class="java.lang.String"/>
 	<parameter name="DIRECCIONPROVEEDOR" class="java.lang.String"/>
 	<parameter name="FECHAELABORACION" class="java.lang.String"/>
 	<parameter name="MONEDA" class="java.lang.String"/>
@@ -25,6 +24,9 @@
 	<parameter name="TOTAL" class="java.lang.String"/>
 	<parameter name="SIMBOLO" class="java.lang.String"/>
 	<parameter name="VALORSOLES" class="java.lang.String"/>
+	<parameter name="NUMEROCOMPRA" class="java.lang.String"/>
+	<parameter name="PROVEEDORTELEFONOS" class="java.lang.String"/>
+	<parameter name="PROVEEDOREMAIL" class="java.lang.String"/>
 	<field name="cantidad" class="java.lang.Double"/>
 	<field name="unidadCompraName" class="java.lang.String"/>
 	<field name="nombreMarca" class="java.lang.String"/>
@@ -35,45 +37,15 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="153">
+		<band height="179">
 			<image scaleImage="FillFrame">
-				<reportElement x="0" y="0" width="101" height="82" uuid="8bb31660-d501-40c8-bd08-5d8311c1056f"/>
+				<reportElement x="0" y="0" width="103" height="87" uuid="8bb31660-d501-40c8-bd08-5d8311c1056f"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<frame>
-				<reportElement positionType="Float" x="111" y="65" width="236" height="20" uuid="af517621-2812-4a75-baf1-e4b28407fe1b"/>
+				<reportElement positionType="Float" x="108" y="2" width="250" height="22" uuid="15af7d4c-fc98-4978-b691-deee11130ea2"/>
 				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="20" uuid="16ab5641-5de4-4bd6-993c-75cbeb96af5f"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{EMAIL}]]></textFieldExpression>
-				</textField>
-			</frame>
-			<frame>
-				<reportElement positionType="Float" x="111" y="45" width="236" height="20" uuid="d36fbe3d-4a0f-476b-992f-f0ea0816cb54"/>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="20" uuid="b715106c-ea35-4ec2-94b3-87cd19a731f3"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{TELEFONOCELULAR}]]></textFieldExpression>
-				</textField>
-			</frame>
-			<frame>
-				<reportElement positionType="Float" x="111" y="25" width="236" height="20" uuid="ff4bb87b-5262-460f-b605-7df6716098f3"/>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="20" uuid="dd83e3ff-fb36-4489-9b38-1143461ab99c"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{DIRECCION}]]></textFieldExpression>
-				</textField>
-			</frame>
-			<frame>
-				<reportElement positionType="Float" x="111" y="2" width="236" height="22" uuid="15af7d4c-fc98-4978-b691-deee11130ea2"/>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="236" height="22" uuid="b47348e6-0f3f-40cd-9850-832c773e9014"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="250" height="22" uuid="b47348e6-0f3f-40cd-9850-832c773e9014"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
@@ -81,7 +53,37 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" mode="Opaque" x="351" y="3" width="204" height="22" uuid="14825aa5-9ed9-4624-a467-b2e3d8229f40">
+				<reportElement positionType="Float" x="108" y="25" width="250" height="20" uuid="ff4bb87b-5262-460f-b605-7df6716098f3"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="250" height="20" uuid="dd83e3ff-fb36-4489-9b38-1143461ab99c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{DIRECCION}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="108" y="46" width="250" height="20" uuid="d36fbe3d-4a0f-476b-992f-f0ea0816cb54"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="250" height="20" uuid="b715106c-ea35-4ec2-94b3-87cd19a731f3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{TELEFONOCELULAR}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="108" y="67" width="250" height="20" uuid="af517621-2812-4a75-baf1-e4b28407fe1b"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="250" height="20" uuid="16ab5641-5de4-4bd6-993c-75cbeb96af5f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{EMAIL}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" mode="Opaque" x="363" y="1" width="190" height="85" uuid="14825aa5-9ed9-4624-a467-b2e3d8229f40">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -91,115 +93,97 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="204" height="22" forecolor="#1A2226" uuid="bd475531-4dcb-49c6-8f9c-66f296457a0e"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="190" height="27" forecolor="#1A2226" uuid="bd475531-4dcb-49c6-8f9c-66f296457a0e"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{DOCUMENTOEMPRESA}]]></textFieldExpression>
 				</textField>
-			</frame>
-			<frame>
-				<reportElement positionType="Float" x="0" y="92" width="554" height="20" uuid="36550374-9729-4080-a437-641c91e61516"/>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" forecolor="#0D4E9E" uuid="f0d9095e-eab7-4e6f-9530-eba2ac85c05f"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial"/>
+					<reportElement x="0" y="29" width="190" height="27" uuid="2331e6df-3bf4-4e18-ac61-c2707f7ea69a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Proveedor:]]></text>
+					<text><![CDATA[COMPRA]]></text>
 				</staticText>
 				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="70" y="0" width="190" height="20" forecolor="#1A2226" uuid="bc114a12-e6ba-4d10-bb3a-46471059835d"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="58" width="190" height="27" forecolor="#1A2226" uuid="f9305778-377c-44e2-833e-919606a9b072"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{DATOSPROVEEDOR}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{NUMEROCOMPRA}]]></textFieldExpression>
 				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="70" y="16" width="190" height="1" forecolor="#1A2226" uuid="124f427f-4c4d-4d28-8bde-6af8de0a6ea9"/>
-				</line>
-				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="268" y="0" width="105" height="20" forecolor="#0D4E9E" uuid="380995fa-639c-4406-9b89-f051bb5f9014"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<text><![CDATA[Fecha de Elaboración:]]></text>
-				</staticText>
-				<textField>
-					<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="375" y="0" width="179" height="20" forecolor="#1A2226" uuid="ccf04cde-7870-49e5-af3f-eb2a12eb4aee"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{FECHAELABORACION}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="374" y="16" width="180" height="1" forecolor="#1A2226" uuid="ab55228a-7344-4d05-91b4-dc6f2db97e3c"/>
-				</line>
 			</frame>
-			<frame>
-				<reportElement positionType="Float" x="0" y="112" width="554" height="20" uuid="46a24d20-2e09-44d4-a7f9-3f6a90c2cf19"/>
-				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" forecolor="#0D4E9E" uuid="945e5e1e-b214-4534-841a-2f7e26a63239"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{DOCUMENTOPROVEEDOR}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="70" y="0" width="190" height="20" forecolor="#1A2226" uuid="53b04850-3340-4e1d-b421-14ad1eef90b5"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{NUMERODOCUMENTOPROVEEDOR}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="70" y="16" width="190" height="1" forecolor="#1A2226" uuid="067cde7f-5867-4a24-9ca2-562901953d67"/>
-				</line>
-				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="268" y="0" width="105" height="20" forecolor="#0D4E9E" uuid="03975af8-8ee6-41a7-9463-ee12519f5d06"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<text><![CDATA[Moneda:]]></text>
-				</staticText>
-				<textField>
-					<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="375" y="0" width="179" height="20" forecolor="#1A2226" uuid="c5d7ef90-72f9-4431-ae23-518a2870d7d3"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{MONEDA}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="374" y="16" width="180" height="1" forecolor="#1A2226" uuid="ef594127-aefa-41b1-96d6-a8b03ea35f72"/>
-				</line>
-			</frame>
-			<frame>
-				<reportElement positionType="Float" x="0" y="132" width="554" height="20" uuid="210430c6-1010-40e0-b2bc-c9a3cb4ff3d3">
-					<property name="com.jaspersoft.studio.layout"/>
-				</reportElement>
-				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" forecolor="#0D4E9E" uuid="593e1fda-ce85-49b9-9648-3a797a1ceab9"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<text><![CDATA[Dirección:]]></text>
-				</staticText>
-				<textField>
-					<reportElement stretchType="RelativeToBandHeight" x="70" y="0" width="484" height="20" forecolor="#1A2226" uuid="7410113b-9283-4ac3-abf1-2d18ea4e50df"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{DIRECCIONPROVEEDOR}]]></textFieldExpression>
-				</textField>
-				<line>
-					<reportElement positionType="FixRelativeToBottom" x="70" y="16" width="484" height="1" forecolor="#1A2226" uuid="d6a121f2-c311-43c7-b8ff-908a00f9bdd0"/>
-				</line>
-			</frame>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="119" width="100" height="20" backcolor="#CCCCCC" uuid="22e1c366-06bc-4d01-982f-6bd700b6b4b6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Proveedor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="99" width="100" height="20" backcolor="#CCCCCC" uuid="f9f7cfee-ac9a-4260-8cde-ddae774b6189"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Fecha de compra:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="139" width="100" height="20" backcolor="#CCCCCC" uuid="5bef9f2e-4d1b-42a0-a9c1-8f9d3ccef76f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="159" width="100" height="20" backcolor="#CCCCCC" uuid="2d26b253-bb3a-4b6b-8eb6-d7630e383467"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Contactos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Opaque" x="100" y="99" width="454" height="20" forecolor="#000000" backcolor="#E7E7E7" uuid="ccf04cde-7870-49e5-af3f-eb2a12eb4aee"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FECHAELABORACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="100" y="119" width="454" height="20" forecolor="#000000" backcolor="#E7E7E7" uuid="bc114a12-e6ba-4d10-bb3a-46471059835d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATOSPROVEEDOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="100" y="139" width="454" height="20" forecolor="#000000" backcolor="#E7E7E7" uuid="7410113b-9283-4ac3-abf1-2d18ea4e50df"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DIRECCIONPROVEEDOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="100" y="159" width="454" height="20" forecolor="#000000" backcolor="#E7E7E7" uuid="a71b5541-6c0c-4fd2-89b2-355e531e6d01"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PROVEEDORTELEFONOS}+" "+$P{PROVEEDOREMAIL}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="26" splitType="Stretch">
 			<frame>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="555" height="26" backcolor="#0D4E9E" uuid="48b47f8b-ad01-4c54-82d7-4980dc1c6731">
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="555" height="26" forecolor="#1A2226" backcolor="#1A2226" uuid="48b47f8b-ad01-4c54-82d7-4980dc1c6731">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 				</reportElement>
 				<staticText>
@@ -213,18 +197,6 @@
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Cantidad]]></text>
-				</staticText>
-				<staticText>
-					<reportElement stretchType="RelativeToTallestObject" x="140" y="0" width="190" height="26" forecolor="#FFFFFF" uuid="d3358f26-b46c-4d50-9414-06339135ac9f">
-						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
-					</reportElement>
-					<box>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Descripción]]></text>
 				</staticText>
 				<staticText>
 					<reportElement stretchType="RelativeToTallestObject" x="480" y="0" width="75" height="26" forecolor="#FFFFFF" uuid="82bb38cf-8731-4af5-afcd-41ff72f9f014">
@@ -271,6 +243,18 @@
 					</textElement>
 					<text><![CDATA[Descuento]]></text>
 				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" x="140" y="0" width="190" height="26" forecolor="#FFFFFF" uuid="d3358f26-b46c-4d50-9414-06339135ac9f">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripción]]></text>
+				</staticText>
 			</frame>
 		</band>
 	</columnHeader>
@@ -307,18 +291,18 @@
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{costoCompra})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="405" y="0" width="75" height="28" uuid="48f41418-a602-4c1f-8b63-33a780b3fdbd"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{descuento})).setScale(2, RoundingMode.HALF_UP)+"%"]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="480" y="0" width="75" height="28" uuid="c75fc831-4c45-40e9-939d-c798b5c3999d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{totalImporte})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="0" width="75" height="28" uuid="48f41418-a602-4c1f-8b63-33a780b3fdbd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{descuento})).setScale(2, RoundingMode.HALF_UP)+"%"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -1,89 +1,136 @@
 package controller.consultas.compras;
 
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import model.BancoADO;
+import model.BancoHistorialTB;
+import model.BancoTB;
 import model.CompraADO;
-import model.SuministroTB;
 
 public class FxComprasCancelarController implements Initializable {
 
     @FXML
     private AnchorPane apWindow;
     @FXML
-    private CheckBox cbOpcionOne;
+    private CheckBox cbIngresoDinero;
     @FXML
-    private CheckBox cbOpcionDos;
+    private HBox hbIngresoDinero;
+    @FXML
+    private Label lblTotal;
+    @FXML
+    private ComboBox<BancoTB> cbCuentas;
     @FXML
     private TextField txtEfectivo;
     @FXML
-    private HBox hbDevolucion;
+    private TextField txtObservacion;
 
-    private String idCompra;
-    
-    private ObservableList<SuministroTB> arrList;
+    private FxComprasDetalleController comprasDetalleController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
     }
 
-    private void eventAplicarCancelacion(String idCompra) {
-        short value = Tools.AlertMessageConfirmation(apWindow, "Detalle de la compra", "¿Está seguro de continuar?");
-        if (value == 1) {
-            String result = CompraADO.cancelarVenta(idCompra,arrList,cbOpcionOne.isSelected(),cbOpcionDos.isSelected());
-            if (result.equalsIgnoreCase("cancel")) {
-                Tools.AlertMessageWarning(apWindow, "Detalle de la compra", "La compra ya se encuentra cancelada o anulada.");
-                Tools.Dispose(apWindow);
-            } else if (result.equalsIgnoreCase("updated")) {
-                Tools.AlertMessageInformation(apWindow, "Detalle de la compra", "Se completo correctamente los cambios.");
-                Tools.Dispose(apWindow);
+    public void loadComponents() {
+        lblTotal.setText(comprasDetalleController.getCompraTB().getTipoMonedaName() + " " + Tools.roundingValue(comprasDetalleController.getCompraTB().getTotal(), 2));
+        txtEfectivo.setText(Tools.roundingValue(comprasDetalleController.getCompraTB().getTotal(), 2));
+        cbCuentas.getItems().addAll(BancoADO.GetBancoComboBox());
+    }
+
+    private void executeAceptar() {
+        if (cbIngresoDinero.isSelected()) {
+            if (cbCuentas.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(apWindow, "Compra", "Seleccione una cuenta.");
+                cbCuentas.requestFocus();
+            } else if (txtObservacion.getText().trim().isEmpty()) {
+                Tools.AlertMessageWarning(apWindow, "Detalle de venta", "Ingrese un comentario.");
+                txtObservacion.requestFocus();
             } else {
-                Tools.AlertMessageError(apWindow, "Detalle de la compra", result);
+                short value = Tools.AlertMessageConfirmation(apWindow, "Detalle de la compra", "¿Está seguro de continuar?");
+                if (value == 1) {
+
+                    BancoHistorialTB bancoHistorialBancaria = new BancoHistorialTB();
+                    bancoHistorialBancaria.setIdBanco(cbCuentas.getSelectionModel().getSelectedItem().getIdBanco());
+                    bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
+                    bancoHistorialBancaria.setDescripcion("INGRESO POR COMPRA ANULADA");
+                    bancoHistorialBancaria.setFecha(Tools.getDate());
+                    bancoHistorialBancaria.setHora(Tools.getHour());
+                    bancoHistorialBancaria.setEntrada(comprasDetalleController.getCompraTB().getTotal());
+                    bancoHistorialBancaria.setSalida(0);
+                    
+                    if(comprasDetalleController.getListComprasCredito().isEmpty()){
+                        
+                    }
+
+                    String result = CompraADO.cancelarCompraTotal(comprasDetalleController.getCompraTB().getIdCompra(), comprasDetalleController.getArrList(), bancoHistorialBancaria);
+                    if (result.equalsIgnoreCase("scrambled")) {
+                        Tools.AlertMessageWarning(apWindow, "Detalle de la compra", "La compra ya se encuentra anulada.");
+                        Tools.Dispose(apWindow);
+                    } else if (result.equalsIgnoreCase("updated")) {
+                        Tools.AlertMessageInformation(apWindow, "Detalle de la compra", "Se completo correctamente los cambios.");
+                        Tools.Dispose(apWindow);
+                        comprasDetalleController.setLoadDetalle(comprasDetalleController.getCompraTB().getIdCompra());
+
+                    } else {
+                        Tools.AlertMessageError(apWindow, "Detalle de la compra", result);
+                    }
+                }
+            }
+        } else {
+
+            short value = Tools.AlertMessageConfirmation(apWindow, "Detalle de la compra", "¿Está seguro de continuar?");
+            if (value == 1) {
+                String result = CompraADO.cancelarCompraProducto(comprasDetalleController.getCompraTB().getIdCompra(), comprasDetalleController.getArrList());
+                if (result.equalsIgnoreCase("cancel")) {
+                    Tools.AlertMessageWarning(apWindow, "Detalle de la compra", "La compra ya se encuentra anulada.");
+                    Tools.Dispose(apWindow);
+                } else if (result.equalsIgnoreCase("updated")) {
+                    Tools.AlertMessageInformation(apWindow, "Detalle de la compra", "Se completo correctamente los cambios.");
+                    Tools.Dispose(apWindow);
+                    comprasDetalleController.setLoadDetalle(comprasDetalleController.getCompraTB().getIdCompra());
+                } else {
+                    Tools.AlertMessageError(apWindow, "Detalle de la compra", result);
+                }
             }
         }
 
     }
 
     @FXML
-    private void onActionAplicar(ActionEvent event) {
-        eventAplicarCancelacion(idCompra);
+    private void onActionAceptar(ActionEvent event
+    ) {
+        executeAceptar();
     }
 
     @FXML
-    private void onKeyPressedAplicar(KeyEvent event) {
+    private void onKeyPressedAceptar(KeyEvent event
+    ) {
         if (event.getCode() == KeyCode.ENTER) {
-            eventAplicarCancelacion(idCompra);
+            executeAceptar();
         }
     }
-    
-     @FXML
-    private void onActionOpcionDos(ActionEvent event) {
-        if(cbOpcionDos.isSelected()){
-            hbDevolucion.setDisable(false);
-        }else{
-            hbDevolucion.setDisable(true);
-        }
-    }
-    
-    public void setIdCompra(String idCompra) {
-        this.idCompra = idCompra;
+
+    @FXML
+    private void onActionIngresoDinero(ActionEvent event
+    ) {
+        hbIngresoDinero.setDisable(!cbIngresoDinero.isSelected());
     }
 
-    public void setTableList(ObservableList<SuministroTB> arrList) {
-        this.arrList = arrList;
+    public void setComprasDetalleController(FxComprasDetalleController comprasDetalleController) {
+        this.comprasDetalleController = comprasDetalleController;
     }
-
-   
 
 }

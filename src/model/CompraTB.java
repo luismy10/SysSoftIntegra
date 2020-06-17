@@ -7,8 +7,8 @@ public class CompraTB {
     private int id;
     private String idCompra;
     private String proveedor;
-    private int comprobante;
-    private String comprobanteName;
+    private int tipoDocumento;
+    private String serie;
     private String numeracion;
     private int tipoMoneda;
     private String tipoMonedaName;
@@ -62,20 +62,20 @@ public class CompraTB {
         this.proveedor = proveedor;
     }
 
-    public int getComprobante() {
-        return comprobante;
+    public int getTipoDocumento() {
+        return tipoDocumento;
     }
 
-    public void setComprobante(int comprobante) {
-        this.comprobante = comprobante;
+    public void setTipoDocumento(int tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+   
+    public String getSerie() {
+        return serie;
     }
 
-    public String getComprobanteName() {
-        return comprobanteName;
-    }
-
-    public void setComprobanteName(String comprobanteName) {
-        this.comprobanteName = comprobanteName;
+    public void setSerie(String serie) {
+        this.serie = serie;
     }
 
     public String getNumeracion() {

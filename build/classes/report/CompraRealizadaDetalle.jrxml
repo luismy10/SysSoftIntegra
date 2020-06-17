@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="120" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="3d61843f-cb48-4d9b-8f65-bd0d66b39814">
 	<property name="ireport.zoom" value="2.4793388429752063"/>
-	<property name="ireport.x" value="285"/>
+	<property name="ireport.x" value="703"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="VALORSOLES" class="java.lang.String"/>
 	<parameter name="VALOR_COMPRA" class="java.lang.String"/>
@@ -26,7 +26,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Valor Venta:]]></text>
+				<text><![CDATA[Valor Bruto:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="318" y="19" width="123" height="20" uuid="7174957b-af8e-4b7c-b178-f8ab69305d4d"/>
@@ -40,7 +40,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Sub Importe:]]></text>
+				<text><![CDATA[Sub Total:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="318" y="57" width="237" height="1" forecolor="#1A2226" uuid="9647403f-ee5e-459b-93d5-2e1881919086"/>
@@ -93,14 +93,14 @@
 	<summary>
 		<band height="20">
 			<rectangle>
-				<reportElement x="318" y="0" width="236" height="20" forecolor="#0D4E9E" backcolor="#0D4E9E" uuid="df147f26-1ea1-47c3-977e-1809191443d4"/>
+				<reportElement x="318" y="0" width="236" height="20" forecolor="#1A2226" backcolor="#1A2226" uuid="df147f26-1ea1-47c3-977e-1809191443d4"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="318" y="0" width="123" height="20" forecolor="#FFFFFF" uuid="d32b3637-33e0-482a-9caa-0d9e9024b8ae"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Total importe:]]></text>
+				<text><![CDATA[Total Neto:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="456" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="40c4ee06-9599-488f-ac81-c19a8952c819"/>

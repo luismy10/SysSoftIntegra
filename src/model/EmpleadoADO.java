@@ -228,13 +228,13 @@ public class EmpleadoADO {
 
     public static EmpleadoTB GetValidateUser(String user, String clave) {
 
-        String selectStmt = "SELECT IdEmpleado,Apellidos,Nombres,dbo.Fc_Obtener_Nombre_Rol(Rol) as RolName,Estado,Rol FROM EmpleadoTB\n"
-                + "WHERE Usuario = ? and Clave = ? and Estado = 1";
+        String selectStmt = "{CALL Sp_Validar_Ingreso(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         EmpleadoTB empleadoTB = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
+            System.out.println("model.EmpleadoADO.GetValidateUser()");
             try {
                 preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
                 preparedStatement.setString(1, user);

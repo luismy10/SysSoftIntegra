@@ -108,11 +108,11 @@ public class FxComprasProcesoController implements Initializable {
         cbCuentas.getSelectionModel().select(0);
     }
 
-    public void setLoadProcess(CompraTB compraTB, TableView<DetalleCompraTB> tvList, ObservableList<LoteTB> loteTBs, String simboloMoneda) {
+    public void setLoadProcess(CompraTB compraTB, TableView<DetalleCompraTB> tvList, ObservableList<LoteTB> loteTBs) {
         this.compraTB = compraTB;
         this.tvList = tvList;
         this.loteTBs = loteTBs;
-        lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(compraTB.getTotal(), 2));
+        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(compraTB.getTotal(), 2));
         lblMontoTotal.setText(Tools.roundingValue(compraTB.getTotal(), 2));
         txtEfectivo.setText(Tools.roundingValue(compraTB.getTotal(), 2));
     }

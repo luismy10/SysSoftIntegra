@@ -437,7 +437,7 @@ public class FxVentaDetalleController implements Initializable {
         text.getStyleClass().add("labelOpenSansRegular14");
 
         Text text1 = new Text(total);
-        text1.setStyle("-fx-fill:#1976d2;");
+        text1.setStyle("-fx-fill:#055bd3;");
         text1.getStyleClass().add("labelOpenSansRegular14");
 
         HBox hBox = new HBox(text, text1);

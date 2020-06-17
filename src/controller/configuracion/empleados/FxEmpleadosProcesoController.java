@@ -231,6 +231,7 @@ public class FxEmpleadosProcesoController implements Initializable {
                     }
                 }
             }
+            
         }
     }
 

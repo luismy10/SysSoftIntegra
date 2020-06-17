@@ -140,7 +140,7 @@ public class FxCajaController implements Initializable {
             totalDineroCaja = totalDineroCaja - devolucionesEfectivo.getSaldo();
         }
 
-        lblTotalDineroCaja.setText(Session.MONEDA + " " + Tools.roundingValue(Math.abs(totalDineroCaja), 2));
+        lblTotalDineroCaja.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(Math.abs(totalDineroCaja), 2));
         btnTerminarTurno.setDisable(false);
     }
 

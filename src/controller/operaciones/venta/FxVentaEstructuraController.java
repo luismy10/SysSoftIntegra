@@ -20,9 +20,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -34,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -89,8 +92,6 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private TableColumn<SuministroTB, String> tcImporte;
     @FXML
-    private Text lblMoneda;
-    @FXML
     private Text lblTotal;
     @FXML
     private Text lblSerie;
@@ -101,27 +102,15 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private Text lblSubTotalMoneda;
+    private Label lblValorVenta;
     @FXML
-    private Text lblValorVenta;
+    private Label lblDescuento;
     @FXML
-    private Text lblDescuentoMoneda;
+    private Label lblSubImporte;
     @FXML
-    private Text lblDescuento;
+    private Label lblImporteTotal;
     @FXML
-    private Text lblSubImporteMoneda;
-    @FXML
-    private Text lblSubImporte;
-    @FXML
-    private VBox vbImpuestos;
-    @FXML
-    private Text lblImporteTotalMoneda;
-    @FXML
-    private Text lblImporteTotal;
-    @FXML
-    private Text lblTotalPagarMoneda;
-    @FXML
-    private Text lblTotalPagar;
+    private Label lblTotalPagar;
     @FXML
     private HBox hbBotonesInferior;
     @FXML
@@ -136,6 +125,8 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnVentasPorDia;
     @FXML
     private TextField txtObservacion;
+    @FXML
+    private GridPane gpTotales;
     //-----------------------------------------------
     private AnchorPane vbPrincipal;
 
@@ -146,6 +137,8 @@ public class FxVentaEstructuraController implements Initializable {
     private double subTotalImporte;
 
     private double totalImporte;
+
+    private double total;
 
     private String monedaSimbolo;
 
@@ -181,6 +174,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         hbEncabezado = new VBox();
         hbDetalleCabecera = new VBox();
         hbPie = new VBox();
@@ -277,12 +271,6 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         Session.TICKET_SIMBOLOMONEDA = monedaSimbolo;
-        lblMoneda.setText(monedaSimbolo);
-        lblSubTotalMoneda.setText(monedaSimbolo);
-        lblDescuentoMoneda.setText(monedaSimbolo);
-        lblSubImporteMoneda.setText(monedaSimbolo);
-        lblImporteTotalMoneda.setText(monedaSimbolo);
-        lblTotalPagarMoneda.setText(monedaSimbolo);
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
@@ -611,13 +599,13 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setNumeracion(lblNumeracion.getText());
                 ventaTB.setFechaVenta(Tools.getDate());
                 ventaTB.setHoraVenta(Tools.getHour());
-                ventaTB.setSubTotal(Double.parseDouble(lblValorVenta.getText()));
-                ventaTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
-                ventaTB.setSubImporte(Double.parseDouble(lblSubImporte.getText()));
-                ventaTB.setTotal(Double.parseDouble(lblImporteTotal.getText()));
+                ventaTB.setSubTotal(subTotal);
+                ventaTB.setDescuento(descuento);
+                ventaTB.setSubImporte(subTotalImporte);
+                ventaTB.setTotal(totalImporte);
                 ventaTB.setObservaciones(txtObservacion.getText().trim());
                 //ire a comprar algo para levantarme vale ok
-                controller.setInitComponents(ventaTB, tvList, lblTotalPagar.getText());
+                controller.setInitComponents(ventaTB, tvList, total);
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
@@ -916,19 +904,20 @@ public class FxVentaEstructuraController implements Initializable {
 
     public void calculateTotales() {
 
-        tvList.getItems().forEach(e -> subTotal += e.getSubImporte());
-        lblValorVenta.setText(Tools.roundingValue(subTotal, 2));
         subTotal = 0;
+        tvList.getItems().forEach(e -> subTotal += e.getSubImporte());
+        lblValorVenta.setText(monedaSimbolo + " " + Tools.roundingValue(subTotal, 2));
 
-        tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
-        lblDescuento.setText((Tools.roundingValue(descuento * (-1), 2)));
         descuento = 0;
+        tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
+        lblDescuento.setText(monedaSimbolo + " " + (Tools.roundingValue(descuento * (-1), 2)));
 
-        tvList.getItems().forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-        lblSubImporte.setText(Tools.roundingValue(subTotalImporte, 2));
         subTotalImporte = 0;
+        tvList.getItems().forEach(e -> subTotalImporte += e.getSubImporteDescuento());
+        lblSubImporte.setText(monedaSimbolo + " " + Tools.roundingValue(subTotalImporte, 2));
 
-        vbImpuestos.getChildren().clear();
+        gpTotales.getChildren().clear();
+
         boolean addElement = false;
         double sumaElement = 0;
         double totalImpuestos = 0;
@@ -941,36 +930,58 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                 }
                 if (addElement) {
-                    addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombreImpuesto(), monedaSimbolo, Tools.roundingValue(sumaElement, 2));
+                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, 2 + (k + 1));
+                    gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, 2 + (k + 1));
                     totalImpuestos += sumaElement;
+
                     addElement = false;
                     sumaElement = 0;
                 }
             }
         }
 
-        tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        lblImporteTotal.setText(Tools.roundingValue(totalImporte + totalImpuestos, 2));
-        lblTotalPagar.setText(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(totalImporte + totalImpuestos, 1)), 2));
-        lblTotal.setText(Tools.roundingValue(Double.parseDouble(Tools.roundingValue(totalImporte + totalImpuestos, 1)), 2));
         totalImporte = 0;
+        total = 0;
+        tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
+        total = totalImporte + totalImpuestos;
+        lblImporteTotal.setText(monedaSimbolo + " " + Tools.roundingValue(total, 2));
+        lblTotalPagar.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));
+        lblTotal.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));
 
+    }
+
+    private Label addLabelTitle(String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setStyle("-fx-text-fill:#1a2226;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
+        label.getStyleClass().add("labelRoboto14");
+        label.setAlignment(pos);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Control.USE_COMPUTED_SIZE);
+        label.setMaxHeight(Control.USE_COMPUTED_SIZE);
+        return label;
+    }
+
+    private Label addLabelTotal(String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setStyle("-fx-text-fill:#000000;");
+        label.getStyleClass().add("labelRobotoMedium16");
+        label.setAlignment(pos);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
     }
 
     public void resetVenta() {
         tvList.getItems().clear();
-        lblMoneda.setText(monedaSimbolo);
-        lblSubTotalMoneda.setText(monedaSimbolo);
-        lblDescuentoMoneda.setText(monedaSimbolo);
-        lblSubImporteMoneda.setText(monedaSimbolo);
-        lblImporteTotalMoneda.setText(monedaSimbolo);
-        lblTotalPagarMoneda.setText(monedaSimbolo);
 
-        lblTotal.setText("0.00");
-        lblValorVenta.setText("0.00");
-        lblDescuento.setText("0.00");
-        lblImporteTotal.setText("0.00");
-        lblTotalPagar.setText("0.00");
+        lblTotal.setText("M 0.00");
+        lblValorVenta.setText("M 0.00");
+        lblDescuento.setText("M 0.00");
+        lblImporteTotal.setText("M 0.00");
+        lblTotalPagar.setText("M 0.00");
 
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
@@ -1101,29 +1112,6 @@ public class FxVentaEstructuraController implements Initializable {
             }
         }
         return valor;
-    }
-
-    private void addElementImpuesto(String id, String titulo, String moneda, String total) {
-
-        Label label = new Label(titulo);
-        label.setStyle("-fx-text-fill:#1a2226;");
-        label.getStyleClass().add("labelRoboto14");
-
-        Text text = new Text(moneda);
-        text.setStyle("-fx-fill:#1a2226");
-        text.getStyleClass().add("labelRobotoMedium16");
-        Text text1 = new Text(total);
-        text1.setStyle("-fx-fill:#1a2226");
-        text1.getStyleClass().add("labelRobotoMedium16");
-
-        HBox box = new HBox(text, text1);
-        box.setStyle("-fx-spacing: 0.4166666666666667em;");
-
-        HBox hBox = new HBox(label, box);
-        hBox.setId(id);
-        hBox.setStyle("-fx-spacing: 0.8333333333333334em;");
-
-        vbImpuestos.getChildren().add(hBox);
     }
 
     @FXML
@@ -1320,12 +1308,6 @@ public class FxVentaEstructuraController implements Initializable {
     private void onActionMoneda(ActionEvent event) {
         if (cbMoneda.getSelectionModel().getSelectedIndex() >= 0) {
             monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
-            lblMoneda.setText(monedaSimbolo);
-            lblSubTotalMoneda.setText(monedaSimbolo);
-            lblDescuentoMoneda.setText(monedaSimbolo);
-            lblSubImporteMoneda.setText(monedaSimbolo);
-            lblImporteTotalMoneda.setText(monedaSimbolo);
-            lblTotalPagarMoneda.setText(monedaSimbolo);
             calculateTotales();
         }
     }

@@ -178,7 +178,7 @@ public class FxVentaReporteController implements Initializable {
                 map.put("CLIENTE", cbClientesSeleccionar.isSelected() ? "TODOS" : txtClientes.getText().toUpperCase());
                 map.put("ESTADO", "TODOS");
                 map.put("VENDEDOR", cbVendedoresSeleccionar.isSelected() ? "TODOS" : txtVendedores.getText().toUpperCase());
-                map.put("TOTALACUMULADO", Session.MONEDA + " " + Tools.roundingValue(totalsumado, 2));
+                map.put("TOTALACUMULADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalsumado, 2));
 
                 JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneral.jasper"), map, new JRBeanCollectionDataSource(list));
 
@@ -262,7 +262,7 @@ public class FxVentaReporteController implements Initializable {
                 map.put("PERIODO", dpFechaInicialGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinalGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("MOSTRAR", "Día");
                 map.put("ORDEN", cbOrdenar.getSelectionModel().getSelectedItem() + " - " + cbOrden.getSelectionModel().getSelectedItem());
-                map.put("TOTAL", Session.MONEDA + " " + total);
+                map.put("TOTAL", Session.MONEDA_SIMBOLO + " " + total);
                 map.put("DETALLE_VENTA", new JRBeanCollectionDataSource(detail_list));
 
                 JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneralTotales.jasper"), map, new JRBeanCollectionDataSource(newList));
