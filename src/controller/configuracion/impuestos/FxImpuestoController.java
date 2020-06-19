@@ -168,8 +168,8 @@ public class FxImpuestoController implements Initializable {
                     fillTabletTax();
                 } else if (result.equalsIgnoreCase("sistema")) {
                     Tools.AlertMessageWarning(window, "Impuesto", "No se puede eliminar el impuesto, ya que es del sistema.");
-                } else if (result.equalsIgnoreCase("articulo")) {
-                    Tools.AlertMessageWarning(window, "Impuesto", "No se puede eliminar el impuesto, está ligado a un artículo.");
+                } else if (result.equalsIgnoreCase("suministro")) {
+                    Tools.AlertMessageWarning(window, "Impuesto", "No se puede eliminar el impuesto, está ligado a un producto.");
                 } else {
                     Tools.AlertMessageError(window, "Impuesto", result);
                 }

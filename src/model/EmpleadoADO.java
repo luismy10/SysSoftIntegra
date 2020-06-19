@@ -351,5 +351,61 @@ public class EmpleadoADO {
         }
         return empleadoTBs;
     }
+      
+    public static String DeleteEmpleadoById(String idEmpleado){
+        String result = "";
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null){
+            PreparedStatement statementValidation = null;
+            PreparedStatement statementEmpleado = null;
+            try{
+                DBUtil.getConnection().setAutoCommit(false);
+                statementValidation = DBUtil.getConnection().prepareCall("SELECT * FROM CajaTB WHERE IdUsuario = ?");
+                statementValidation.setString(1, idEmpleado);
+                if (statementValidation.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    result = "caja";
+                } else {
+                    statementValidation = DBUtil.getConnection().prepareCall("SELECT * FROM CompraTB WHERE Usuario = ?");
+                    statementValidation.setString(1, idEmpleado);
+                    if (statementValidation.executeQuery().next()) {
+                        DBUtil.getConnection().rollback();
+                        result = "compra";
+                    } else {
+                        statementEmpleado = DBUtil.getConnection().prepareStatement("DELETE FROM EmpleadoTB WHERE IdEmpleado = ?");
+                        statementEmpleado.setString(1, idEmpleado);
+                        statementEmpleado.addBatch();
+                        statementEmpleado.executeBatch();
+                        DBUtil.getConnection().commit();
+                        result = "deleted";
+                    }
+                }
+            }
+            catch(SQLException ex){
+                try {
+                    result = ex.getLocalizedMessage();
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException e) {
+                    result = e.getLocalizedMessage();
+                }
+            }
+            finally{ 
+                try {
+                    if (statementValidation != null) {
+                        statementValidation.close();
+                    }
+                    if (statementEmpleado != null) {
+                        statementEmpleado.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+        } else{
+            result = "No se puedo conectar el servidor, revise su conexión.";
+        }
+        return result;
+    }
 
 }

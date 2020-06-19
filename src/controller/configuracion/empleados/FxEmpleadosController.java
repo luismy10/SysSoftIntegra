@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -201,9 +202,33 @@ public class FxEmpleadosController implements Initializable {
             }
         }
     }
+    
+    @FXML
+    private void onActionDelete(ActionEvent event) {
+        if(tvList.getSelectionModel().getSelectedIndex() >= 0){
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Empleado", "¿Está seguro de eliminar al empleado?", true);
+            if(confirmation == 1){
+                String resultado = EmpleadoADO.DeleteEmpleadoById(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
+                if(resultado.equalsIgnoreCase("deleted")){
+                    Tools.AlertMessageInformation(window, "Empleado", "Se eliminó el empleado correctamente.");                           
+                } else if (resultado.equalsIgnoreCase("caja")) {
+                    Tools.AlertMessageWarning(window, "Empleado", "No se puede eliminar el empleado, porque hizo aperturada de caja(s).");
+                } else if (resultado.equalsIgnoreCase("compra")) {
+                    Tools.AlertMessageWarning(window, "Empleado", "No se puede eliminar el empleado, porque hizo compra(s).");
+                } else {
+                    Tools.AlertMessageError(window, "Empleado", resultado);
+                }
+                
+            }
+        } else{
+            Tools.AlertMessageWarning(window, "Empleado", "Seleccione un elemento de la lista.");
+        }
+    }
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
     }
+
+    
 
 }

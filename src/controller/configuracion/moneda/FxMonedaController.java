@@ -179,7 +179,7 @@ public class FxMonedaController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             String result = MonedaADO.RemoveElement(tvList.getSelectionModel().getSelectedItem().getIdMoneda());
             if (result.equalsIgnoreCase("predetermined")) {
-                Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está predeterminado la moneda.");
+                Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está predeterminado.");
             } else if (result.equalsIgnoreCase("venta")) {
                 Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está ligado a una venta");
             } else if (result.equalsIgnoreCase("compra")) {

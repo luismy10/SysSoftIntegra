@@ -237,11 +237,11 @@ public class ImpuestoADO {
             PreparedStatement statementImpuesto = null;
             try {
                 DBUtil.getConnection().setAutoCommit(false);
-                statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM ArticuloTB WHERE Impuesto = ?");
+                statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM SuministroTB WHERE Impuesto = ?");
                 statementValidation.setInt(1, idImpuesto);
                 if (statementValidation.executeQuery().next()) {
                     DBUtil.getConnection().rollback();
-                    result = "articulo";
+                    result = "suministro";
                 } else {
                     statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM ImpuestoTB WHERE IdImpuesto = ? AND Sistema = ?");
                     statementValidation.setInt(1, idImpuesto);

@@ -209,7 +209,7 @@ public class MonedaADO {
                         DBUtil.getConnection().rollback();
                         result = "venta";
                     } else {
-                        statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE TipoMoneda ?");
+                        statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE TipoMoneda = ?");
                         statementValidate.setInt(1, idMoneda);
                         if (statementValidate.executeQuery().next()) {
                             DBUtil.getConnection().rollback();
