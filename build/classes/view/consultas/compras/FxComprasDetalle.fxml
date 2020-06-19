@@ -79,15 +79,6 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnNotaDebito" disable="true" mnemonicParsing="false" styleClass="buttonLight" text="Nota de débito">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/sumisnistro.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;">

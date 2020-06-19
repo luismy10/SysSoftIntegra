@@ -1,9 +1,9 @@
 {
     "body":{
         "addres":"localhost",
-        "port":"3306",
+        "port":"1433",
         "dbname":"puntoventasyssoftdbdesarrollo",
-        "user":"root",
-        "password":""
+        "user":"sa",
+        "password":"123456"
     }
 }

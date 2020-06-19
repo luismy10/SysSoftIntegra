@@ -79,15 +79,6 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnNotaDebito" disable="true" mnemonicParsing="false" styleClass="buttonLight" text="Nota de débito">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/sumisnistro.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;">
@@ -192,30 +183,53 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Total Bruto:" />
-                                          <Text fx:id="lblTotalBruto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
+                                          <GridPane style="-fx-hgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Total Bruto:" />
+                                                <Label fx:id="lblTotalBruto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
+                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Descuento:" GridPane.rowIndex="1" />
+                                                <Label fx:id="lblDescuento" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Sub Total:" GridPane.rowIndex="2" />
+                                                <Label fx:id="lblSubTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             </children>
+                                          </GridPane>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                    <HBox>
                                        <children>
-                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Descuento:" />
-                                          <Text fx:id="lblDescuento" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
+                                          <GridPane fx:id="gpImpuestos" style="-fx-hgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                             </columnConstraints>
+                                          </GridPane>
                                        </children>
                                     </HBox>
                                     <Separator />
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Sub Total:" />
-                                          <Text fx:id="lblSubTotal" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
-                                       </children>
-                                    </HBox>
-                                    <Separator />
-                                    <VBox fx:id="hbAgregarImpuesto" style="-fx-spacing: 0.8333333333333334em;" />
-                                    <Separator />
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
-                                       <children>
-                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Total Neto:" />
-                                          <Text fx:id="lblTotalNeto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="M. 0.00" />
+                                          <GridPane style="-fx-hgap: 0.8333333333333334em;">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Total Neto:" />
+                                                <Label fx:id="lblTotalNeto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
+                                             </children>
+                                          </GridPane>
                                        </children>
                                     </HBox>
                                  </children>

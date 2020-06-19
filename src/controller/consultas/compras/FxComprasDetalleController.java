@@ -70,15 +70,13 @@ public class FxComprasDetalleController implements Initializable {
     @FXML
     private GridPane gpList;
     @FXML
-    private Text lblTotalNeto;
+    private Label lblTotalNeto;
     @FXML
-    private Text lblDescuento;
+    private Label lblDescuento;
     @FXML
-    private Text lblSubTotal;
+    private Label lblSubTotal;
     @FXML
-    private Text lblTotalBruto;
-    @FXML
-    private VBox hbAgregarImpuesto;
+    private Label lblTotalBruto;
     @FXML
     private Label lblObservacion;
     @FXML
@@ -95,8 +93,6 @@ public class FxComprasDetalleController implements Initializable {
     private Button btnEditar;
     @FXML
     private Button btnAnular;
-    @FXML
-    private Button btnNotaDebito;
     @FXML
     private Label lblMetodoPago;
 
@@ -125,6 +121,8 @@ public class FxComprasDetalleController implements Initializable {
     private double subTotal;
 
     private double totalNeto;
+    @FXML
+    private GridPane gpImpuestos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -185,20 +183,17 @@ public class FxComprasDetalleController implements Initializable {
                             btnReporte.setDisable(false);
                             btnEditar.setDisable(true);
                             btnAnular.setDisable(false);
-                            btnNotaDebito.setDisable(false);
                             break;
                         case 3:
                             btnReporte.setDisable(false);
                             btnEditar.setDisable(true);
                             btnAnular.setDisable(true);
-                            btnNotaDebito.setDisable(true);
                             lblEstado.setTextFill(Color.web("#990000"));
                             break;
                         case 4:
                             btnReporte.setDisable(false);
                             btnEditar.setDisable(false);
                             btnAnular.setDisable(true);
-                            btnNotaDebito.setDisable(true);
                             vbCondicion.getChildren().add(adddElementCondicion("La compra se encuentra en un estado de guardado"));
                             lblMetodoPago.setText("");
                             break;
@@ -206,7 +201,6 @@ public class FxComprasDetalleController implements Initializable {
                             btnReporte.setDisable(false);
                             btnEditar.setDisable(true);
                             btnAnular.setDisable(false);
-                            btnNotaDebito.setDisable(false);
                             break;
                     }
 
@@ -220,11 +214,8 @@ public class FxComprasDetalleController implements Initializable {
                         lblMetodoPago.setText("Método de pago al contado");
                         vbCondicion.getChildren().add(adddElementCondicion("Pago al contado por el valor de: " + lblTotalCompra.getText()));
                     }
-
                 }
-
                 fillArticlesTable(empList);
-
             } else {
                 Tools.AlertMessageWarning(cpWindow, "Detalle de Compra", "Error el conectar al servidor, revise su conexión e intente nuevamente.");
             }
@@ -287,7 +278,8 @@ public class FxComprasDetalleController implements Initializable {
         lblSubTotal.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subTotal, 2));
         subTotal = 0;
 
-        hbAgregarImpuesto.getChildren().clear();
+        gpImpuestos.getChildren().clear();
+
         boolean addElement = false;
         double sumaElement = 0;
 
@@ -299,7 +291,8 @@ public class FxComprasDetalleController implements Initializable {
                 }
             }
             if (addElement) {
-                addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombreImpuesto(), compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2));
+                gpImpuestos.add(addLabelTitle( arrayArticulos.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, 2 + (k + 1));
+                gpImpuestos.add(addLabelTotal(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, 2 + (k + 1));
                 addElement = false;
                 sumaElement = 0;
             }
@@ -320,21 +313,28 @@ public class FxComprasDetalleController implements Initializable {
         return txtTitulo;
     }
 
-    private void addElementImpuesto(String id, String titulo, String total) {
-        Text txtTitulo = new Text(titulo);
-        txtTitulo.setStyle("-fx-fill:#020203");
-        txtTitulo.getStyleClass().add("labelOpenSansRegular14");
+    private Label addLabelTitle(String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setStyle("-fx-text-fill:#1a2226;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
+        label.getStyleClass().add("labelRoboto14");
+        label.setAlignment(pos);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Control.USE_COMPUTED_SIZE);
+        label.setMaxHeight(Control.USE_COMPUTED_SIZE);
+        return label;
+    }
 
-        Text txtTotal = new Text(total);
-        txtTotal.setStyle("-fx-fill:#055bd3");
-        txtTotal.getStyleClass().add("labelOpenSansRegular14");
-
-        HBox hBox = new HBox(txtTitulo, txtTotal);
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.setStyle("-fx-spacing: 0.8333333333333334em");
-        hBox.setId(id);
-
-        hbAgregarImpuesto.getChildren().add(hBox);
+    private Label addLabelTotal(String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setStyle("-fx-text-fill:#000000;");
+        label.getStyleClass().add("labelRobotoMedium16");
+        label.setAlignment(pos);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
     }
 
     private void onEventReporte() {
