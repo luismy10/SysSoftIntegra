@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class GlobalADO {
 
@@ -70,13 +68,15 @@ public class GlobalADO {
                     totalcencelado += resultSet.getDouble("totalcancelado");
                 }
                 list.add(totalcencelado);
-
             } catch (SQLException ex) {
                 System.out.println(ex.getLocalizedMessage());
             } finally {
                 try {
                     if (resultSet != null) {
                         resultSet.close();
+                    }
+                    if(preparedGlobal != null){
+                        preparedGlobal.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
@@ -176,11 +176,15 @@ public class GlobalADO {
         return arrayList;
     }
 
-    public static String RegistrarInicioPrograma(EmpresaTB empresaTB, MonedaTB monedaTB, EmpleadoTB empleadoTB) {
+    public static String RegistrarInicioPrograma(EmpresaTB empresaTB, MonedaTB monedaTB, EmpleadoTB empleadoTB, ImpuestoTB impuestoTB, TipoDocumentoTB tipoDocumentoTB, ClienteTB clienteTB) {
         PreparedStatement statementEmpresa = null;
         PreparedStatement statementMoneda = null;
         PreparedStatement statementEmpleado = null;
+        PreparedStatement statementImpuesto = null;
+        PreparedStatement statementTipoDocumento = null;
+        PreparedStatement statementCliente = null;
         CallableStatement codigoEmpleado = null;
+        CallableStatement codigoCliente = null;
         String result = "";
         try {
             DBUtil.dbConnect();
@@ -282,12 +286,52 @@ public class GlobalADO {
             statementEmpleado.setString(20, empleadoTB.getClave());
             statementEmpleado.addBatch();
 
+            statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Predeterminado,CodigoAlterno,Sistema)VALUES(?,?,?,?,?,?)");
+            statementImpuesto.setInt(1, impuestoTB.getOperacion());
+            statementImpuesto.setString(2, impuestoTB.getNombreImpuesto());
+            statementImpuesto.setDouble(3, impuestoTB.getValor());
+            statementImpuesto.setBoolean(4, impuestoTB.getPredeterminado());
+            statementImpuesto.setString(5, impuestoTB.getCodigoAlterno());
+            statementImpuesto.setBoolean(6, impuestoTB.isSistema());
+            statementImpuesto.addBatch();
+
+            statementTipoDocumento = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Predeterminado,NombreImpresion,Sistema)VALUES(?,?,?,?,?)");
+            statementTipoDocumento.setString(1, tipoDocumentoTB.getNombre());
+            statementTipoDocumento.setString(2, tipoDocumentoTB.getSerie());
+            statementTipoDocumento.setBoolean(3, tipoDocumentoTB.isPredeterminado());
+            statementTipoDocumento.setString(4, tipoDocumentoTB.getNombreDocumento());
+            statementTipoDocumento.setBoolean(5, tipoDocumentoTB.isSistema());
+            statementTipoDocumento.addBatch();
+
+            codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
+            codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
+            codigoCliente.execute();
+            String idSuministro = codigoCliente.getString(1);
+
+            statementCliente = DBUtil.getConnection().prepareStatement("INSERT INTO ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+            statementCliente.setString(1, idSuministro);
+            statementCliente.setInt(2, clienteTB.getTipoDocumento());
+            statementCliente.setString(3, clienteTB.getNumeroDocumento());
+            statementCliente.setString(4, clienteTB.getInformacion());
+            statementCliente.setString(5, clienteTB.getTelefono());
+            statementCliente.setString(6, clienteTB.getCelular());
+            statementCliente.setString(7, clienteTB.getEmail());
+            statementCliente.setString(8, clienteTB.getDireccion());
+            statementCliente.setString(9, clienteTB.getRepresentante());
+            statementCliente.setInt(10, clienteTB.getEstado());
+            statementCliente.setBoolean(11, clienteTB.isPredeterminado());
+            statementCliente.setBoolean(12, clienteTB.isSistema());
+            statementCliente.addBatch();
+
             statementEmpresa.executeBatch();
             statementMoneda.executeBatch();
             statementEmpleado.executeBatch();
+            statementImpuesto.executeBatch();
+            statementTipoDocumento.executeBatch();
+            statementCliente.executeBatch();
             DBUtil.getConnection().commit();
             result = "inserted";
-        } catch (SQLException |ParseException ex) {
+        } catch (SQLException | ParseException ex) {
             try {
                 DBUtil.getConnection().rollback();
             } catch (SQLException e) {
@@ -305,8 +349,20 @@ public class GlobalADO {
                 if (statementEmpleado != null) {
                     statementEmpleado.close();
                 }
+                if (statementImpuesto != null) {
+                    statementImpuesto.close();
+                }
+                if (statementTipoDocumento != null) {
+                    statementTipoDocumento.close();
+                }
                 if (codigoEmpleado != null) {
                     codigoEmpleado.close();
+                }
+                if (statementCliente != null) {
+                    statementCliente.close();
+                }
+                if(codigoCliente != null){
+                    codigoCliente.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {

@@ -48,7 +48,7 @@
                         <content>
                           <AnchorPane style="-fx-background-color: #e7e6e6;">
                                  <children>
-                                    <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
                                              <VBox.margin>
@@ -77,9 +77,6 @@
                                                    </children>
                                                 </VBox>
                                              </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
                                              <children>
@@ -95,9 +92,6 @@
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
                                              </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
                                              <children>
@@ -112,9 +106,20 @@
                                                    </children>
                                                 </VBox>
                                              </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
+                                             <children>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
                                           </HBox>
                                        </children>
                                        <padding>
@@ -132,7 +137,7 @@
                            <content>
                               <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
                                  <children>
-                                    <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
                                              <children>
@@ -158,9 +163,6 @@
                                                    </children>
                                                 </VBox>
                                              </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
                                              <children>
@@ -175,9 +177,6 @@
                                                    </children>
                                                 </VBox>
                                              </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
                                              <children>
@@ -192,34 +191,6 @@
                                                    </children>
                                                 </VBox>
                                              </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label fx:id="lblDirectory" styleClass="labelRoboto14" text="Directorio" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Button fx:id="btnDirectory" mnemonicParsing="false" onAction="#onActionToDirectory" onKeyPressed="#onKeyPressedToDirectory" styleClass="buttonLightSuccess" text="Agregar o Ver">
-                                                         <graphic>
-                                                            <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../../image/directory.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Button>
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
                                           </HBox>
                                        </children>
                                        <padding>
@@ -233,97 +204,6 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                      <Tab disable="true" text="Otros">
-                           <content>
-                              <AnchorPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #e7e6e6;">
-                                 <children>
-                                    <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="País" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbPais" maxWidth="1.7976931348623157E308" onAction="#onActionPais" prefWidth="280.0" />
-                                                   </children>
-                                                </VBox>
-                                                <Separator orientation="VERTICAL" />
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Departamento" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbDepartamento" maxWidth="1.7976931348623157E308" onAction="#onActionDepartamento" prefWidth="280.0" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Provincia" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbProvincia" maxWidth="1.7976931348623157E308" onAction="#onActionProvincia" prefWidth="280.0" />
-                                                   </children>
-                                                </VBox>
-                                                <Separator orientation="VERTICAL" />
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Distrito" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbDistrito" maxWidth="1.7976931348623157E308" prefWidth="280.0" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </HBox>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                       </padding>
-                                    </VBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </AnchorPane>
-                           </content>
-                      </Tab>
                     </tabs>
                   </TabPane>
                </children>

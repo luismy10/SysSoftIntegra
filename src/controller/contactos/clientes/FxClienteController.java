@@ -12,7 +12,6 @@ import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -98,15 +97,15 @@ public class FxClienteController implements Initializable {
             }
         };
 
-        task.setOnSucceeded((WorkerStateEvent e) -> {
+        task.setOnSucceeded(e-> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
         });
-        task.setOnFailed((WorkerStateEvent event) -> {
+        task.setOnFailed(e -> {
             lblLoad.setVisible(false);
         });
 
-        task.setOnScheduled((WorkerStateEvent event) -> {
+        task.setOnScheduled(e -> {
             lblLoad.setVisible(true);
         });
         exec.execute(task);
@@ -161,6 +160,20 @@ public class FxClienteController implements Initializable {
         }
     }
 
+    private void openWindowRemoveCliente() {
+        short value = Tools.AlertMessageConfirmation(window, "Eliminar cliente", "¿Está seguro de eliminar al cliente?");
+        if(value == 1){
+            String result = ClienteADO.RemoveCliente(tvList.getSelectionModel().getSelectedItem().getIdCliente());
+            if(result.equalsIgnoreCase("deleted")){
+                Tools.AlertMessageInformation(window, "Eliminar cliente", "Se elimino correctamente el cliente.");
+            }else if(result.equalsIgnoreCase("sistema")){
+                Tools.AlertMessageWarning(window, "Eliminar cliente", "No se puede eliminar el cliente porque es propio del sistema.");
+            }else{
+                Tools.AlertMessageError(window, "Eliminar cliente", result);
+            }
+        }
+    }
+
     @FXML
     private void onActionSearch(ActionEvent event) {
         if (!lblLoad.isVisible()) {
@@ -203,6 +216,28 @@ public class FxClienteController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedRemove(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                openWindowRemoveCliente();
+            } else {
+                Tools.AlertMessageWarning(window, "Clientes", "Seleccione un cliente para actualizar.");
+                tvList.requestFocus();
+            }
+        }
+    }
+
+    @FXML
+    private void onActionRemove(ActionEvent event) {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            openWindowRemoveCliente();
+        } else {
+            Tools.AlertMessageWarning(window, "Clientes", "Seleccione un cliente para actualizar.");
+            tvList.requestFocus();
+        }
+    }
+
+    @FXML
     private void onMouseClickedList(MouseEvent event) {
         if (event.getClickCount() == 2) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
@@ -225,6 +260,18 @@ public class FxClienteController implements Initializable {
         if (!lblLoad.isVisible()) {
             fillCustomersTable("");
         }
+    }
+    
+        @FXML
+    private void onKeyPressedPredeterminado(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionPredeterminado(ActionEvent event) {
+        
     }
 
     public TableView<ClienteTB> getTvList() {

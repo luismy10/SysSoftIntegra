@@ -10,6 +10,7 @@ public class TipoDocumentoTB {
     private String serie;
     private boolean predeterminado;
     private String nombreDocumento;
+    private boolean sistema;
     private ImageView imagePredeterminado;
 
     public TipoDocumentoTB() {
@@ -95,6 +96,14 @@ public class TipoDocumentoTB {
 
     public void setNombreDocumento(String nombreDocumento) {
         this.nombreDocumento = nombreDocumento;
+    }
+
+    public boolean isSistema() {
+        return sistema;
+    }
+
+    public void setSistema(boolean sistema) {
+        this.sistema = sistema;
     }
 
     public ImageView getImagePredeterminado() {

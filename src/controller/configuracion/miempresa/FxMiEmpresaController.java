@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -173,25 +172,25 @@ public class FxMiEmpresaController implements Initializable {
 
     private void aValidityProcess() {
         if (cbGiroComercial.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Seleccione el giro comercial, por favor.", false);
+            Tools.AlertMessageWarning(window, "Mi Empresa", "Seleccione el giro comercial, por favor.");
             cbGiroComercial.requestFocus();
         } else if (txtRepresentante.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el nombre del representante, por favor.", false);
+            Tools.AlertMessageWarning(window, "Mi Empresa", "Ingrese el nombre del representante, por favor.");
             txtRepresentante.requestFocus();
         } else if (txtDomicilio.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese la dirección fiscal de la empresa, por favor.", false);
+            Tools.AlertMessageWarning(window, "Mi Empresa", "Ingrese la dirección fiscal de la empresa, por favor.");
             txtDomicilio.requestFocus();
         } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Seleccione el tipo de documento, por favor.", false);
+            Tools.AlertMessageWarning(window, "Mi Empresa", "Seleccione el tipo de documento, por favor.");
             cbTipoDocumento.requestFocus();
         } else if (txtNumeroDocumento.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese el número del documento, por favor.", false);
+            Tools.AlertMessageWarning(window, "Mi Empresa", "Ingrese el número del documento, por favor.");
             txtNumeroDocumento.requestFocus();
         } else if (txtRazonSocial.getText().isEmpty()) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "Ingrese la razón social, por favor.", false);
+            Tools.AlertMessageWarning(window, "Mi Empresa", "Ingrese la razón social, por favor.");
             txtRazonSocial.requestFocus();
         } else {
-            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mi Empresa", "¿Esta seguro de continuar?", true);
+            short confirmation = Tools.AlertMessageConfirmation(window, "Mi Empresa", "¿Esta seguro de continuar?");
             if (confirmation == 1) {
                 EmpresaTB empresaTB = new EmpresaTB();
                 empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
@@ -221,7 +220,7 @@ public class FxMiEmpresaController implements Initializable {
                 String result = EmpresaADO.CrudEntity(empresaTB);
                 switch (result) {
                     case "registered":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Registrado correctamente.", false);
+                        Tools.AlertMessageInformation(window, "Mi Empresa", "Registrado correctamente.");
                         Session.COMPANY_REPRESENTANTE = txtRepresentante.getText();
                         Session.COMPANY_RAZON_SOCIAL = txtRazonSocial.getText();
                         Session.COMPANY_NOMBRE_COMERCIAL = txtNombreComercial.getText();
@@ -233,7 +232,7 @@ public class FxMiEmpresaController implements Initializable {
                         Session.COMPANY_DOMICILIO = txtDomicilio.getText();
                         break;
                     case "updated":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Mi Empresa", "Actualizado correctamente.", false);
+                        Tools.AlertMessageInformation(window, "Mi Empresa", "Actualizado correctamente.");
                         Session.COMPANY_REPRESENTANTE = txtRepresentante.getText();
                         Session.COMPANY_RAZON_SOCIAL = txtRazonSocial.getText();
                         Session.COMPANY_NOMBRE_COMERCIAL = txtNombreComercial.getText();
@@ -243,12 +242,9 @@ public class FxMiEmpresaController implements Initializable {
                         Session.COMPANY_PAGINAWEB = txtPaginasWeb.getText();
                         Session.COMPANY_EMAIL = txtEmail.getText();
                         Session.COMPANY_DOMICILIO = txtDomicilio.getText();
-                        break;
-                    case "error":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Mi Empresa", "No se puedo completar la ejecución.", false);
-                        break;
+                        break;              
                     default:
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Mi Empresa", result, false);
+                        Tools.AlertMessageError(window, "Mi Empresa", result);
                         break;
                 }
             }

@@ -108,7 +108,7 @@ public class TipoDocumentoADO {
                 tipoDocumentoTB.setSerie(resultSet.getString("Serie"));
                 tipoDocumentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                 tipoDocumentoTB.setNombreDocumento(resultSet.getString("NombreImpresion"));
-                ImageView imageView=new ImageView(new Image(tipoDocumentoTB.isPredeterminado() ? "/view/image/checked.png" : "/view/image/unchecked.png"));
+                ImageView imageView = new ImageView(new Image(tipoDocumentoTB.isPredeterminado() ? "/view/image/checked.png" : "/view/image/unchecked.png"));
                 imageView.setFitWidth(22);
                 imageView.setFitHeight(22);
                 tipoDocumentoTB.setImagePredeterminado(imageView);
@@ -231,5 +231,56 @@ public class TipoDocumentoADO {
         }
         return list;
     }//para que sirve esto
+
+    public static String EliminarTipoDocumento(int idTipoDocumento) {
+        PreparedStatement statementValidate = null;
+        PreparedStatement statementTipoDocumento = null;
+        String result = "";
+        try {
+            DBUtil.dbConnect();
+            DBUtil.getConnection().setAutoCommit(false);
+            
+            statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoDocumentoTB WHERE IdTipoDocumento = ? AND Sistema = 1");
+            statementValidate.setInt(1, idTipoDocumento);
+            if (statementValidate.executeQuery().next()) {
+                 DBUtil.getConnection().rollback();
+                 result = "sistema";
+            } else {
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM VentaTB WHERE Comprobante = ?");
+                statementValidate.setInt(1, idTipoDocumento);
+                if (statementValidate.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    result = "venta";
+                } else {
+                    statementTipoDocumento = DBUtil.getConnection().prepareStatement("DELETE FROM TipoDocumentoTB WHERE IdTipoDocumento = ?");
+                    statementTipoDocumento.setInt(1, idTipoDocumento);
+                    statementTipoDocumento.addBatch();
+                    statementTipoDocumento.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "removed";
+                }
+            }
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException e) {
+
+            }
+            result = ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementValidate != null) {
+                    statementValidate.close();
+                }
+                if (statementTipoDocumento != null) {
+                    statementTipoDocumento.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return result;
+    }
 
 }

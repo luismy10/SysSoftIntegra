@@ -1,4 +1,4 @@
-package controller.preloader;
+ package controller.preloader;
 
 import controller.tools.FilesRouters;
 import controller.tools.Json;
@@ -154,35 +154,36 @@ public class SplashScreen extends Preloader {
 
                         MonedaADO.GetMonedaPredetermined();
 
-                        ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
-                        if (clienteTB != null) {
-                            Session.IDCLIENTE = clienteTB.getIdCliente();
-                            Session.DATOSCLIENTE = clienteTB.getInformacion();
-                            Session.N_DOCUMENTO_CLIENTE = clienteTB.getNumeroDocumento();
-                            Session.DIRECCION_CLIENTE = clienteTB.getDireccion();
-                        } else {
-                            ClienteTB clienteInsert = new ClienteTB();
-                            clienteInsert.setTipoDocumento(1);
-                            clienteInsert.setNumeroDocumento("00000000");
-                            clienteInsert.setInformacion("PUBLICO GENERAL");
-                            clienteInsert.setTelefono("");
-                            clienteInsert.setCelular("");
-                            clienteInsert.setEmail("");
-                            clienteInsert.setDireccion("");
-                            clienteInsert.setEstado(1);
+//                        ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
+//                        if (clienteTB != null) {
+//                            Session.IDCLIENTE = clienteTB.getIdCliente();
+//                            Session.DATOSCLIENTE = clienteTB.getInformacion();
+//                            Session.N_DOCUMENTO_CLIENTE = clienteTB.getNumeroDocumento();
+//                            Session.DIRECCION_CLIENTE = clienteTB.getDireccion();
+//                        } else {
+//                            ClienteTB clienteInsert = new ClienteTB();
+//                            clienteInsert.setTipoDocumento(1)   
 
-                            String result = ClienteADO.CrudCliente(clienteInsert);
-                            if (result.equalsIgnoreCase("registered")) {
-                                ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");
-                                if (clienteTB != null) {
-                                    Session.IDCLIENTE = clienteSelect.getIdCliente();
-                                    Session.DATOSCLIENTE = clienteSelect.getInformacion();
-                                    Session.N_DOCUMENTO_CLIENTE = clienteSelect.getNumeroDocumento();
-                                    Session.DIRECCION_CLIENTE = clienteSelect.getDireccion();
-                                }
-
-                            }
-                        }
+//                            clienteInsert.setNumeroDocumento("00000000");
+//                            clienteInsert.setInformacion("PUBLICO GENERAL");
+//                            clienteInsert.setTelefono("");
+//                            clienteInsert.setCelular("");
+//                            clienteInsert.setEmail("");
+//                            clienteInsert.setDireccion("");
+//                            clienteInsert.setEstado(1);
+//
+//                            String result = ClienteADO.CrudCliente(clienteInsert);
+//                            if (result.equalsIgnoreCase("registered")) {
+//                                ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");
+//                                if (clienteTB != null) {
+//                                    Session.IDCLIENTE = clienteSelect.getIdCliente();
+//                                    Session.DATOSCLIENTE = clienteSelect.getInformacion();
+//                                    Session.N_DOCUMENTO_CLIENTE = clienteSelect.getNumeroDocumento();
+//                                    Session.DIRECCION_CLIENTE = clienteSelect.getDireccion();
+//                                }
+//
+//                            }
+//                        }
                     }
 
                 } else {

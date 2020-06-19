@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.Date;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class ClienteTB {
@@ -18,6 +17,8 @@ public class ClienteTB {
     private int estado;
     private String estadoName;
     private String representante;
+    private boolean predeterminado;
+    private boolean sistema;
 
     public ClienteTB() {
 
@@ -125,6 +126,22 @@ public class ClienteTB {
 
     public void setRepresentante(String representante) {
         this.representante = representante == null ? "" : representante;
+    }
+
+    public boolean isPredeterminado() {
+        return predeterminado;
+    }
+
+    public void setPredeterminado(boolean predeterminado) {
+        this.predeterminado = predeterminado;
+    }
+
+    public boolean isSistema() {
+        return sistema;
+    }
+
+    public void setSistema(boolean sistema) {
+        this.sistema = sistema;
     }
 
 }

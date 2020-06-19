@@ -6,8 +6,6 @@ import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,24 +16,15 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.CiudadADO;
-import model.CiudadTB;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.DistritoADO;
-import model.DistritoTB;
-import model.PaisADO;
-import model.PaisTB;
-import model.ProvinciaADO;
-import model.ProvinciaTB;
 
 public class FxClienteProcesoController implements Initializable {
 
@@ -48,21 +37,9 @@ public class FxClienteProcesoController implements Initializable {
     @FXML
     private TextField txtInformacion;
     @FXML
-    private Button btnDirectory;
-    @FXML
     private Button btnRegister;
     @FXML
-    private Label lblDirectory;
-    @FXML
     private ComboBox<DetalleTB> cbEstado;
-    @FXML
-    private ComboBox<PaisTB> cbPais;
-    @FXML
-    private ComboBox<CiudadTB> cbDepartamento;
-    @FXML
-    private ComboBox<ProvinciaTB> cbProvincia;
-    @FXML
-    private ComboBox<DistritoTB> cbDistrito;
     @FXML
     private TextField txtTelefono;
     @FXML
@@ -89,15 +66,10 @@ public class FxClienteProcesoController implements Initializable {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         cbEstado.getSelectionModel().select(0);
-        PaisADO.ListPais().forEach(e -> {
-            cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
-        });
 
     }
 
     public void setValueAdd() {
-        lblDirectory.setVisible(false);
-        btnDirectory.setVisible(false);
         cbDocumentType.requestFocus();
     }
 
@@ -210,14 +182,12 @@ public class FxClienteProcesoController implements Initializable {
         controller.setLoadView(idCliente, information);
     }
 
-    @FXML
     private void onKeyPressedToDirectory(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             onViewPerfil();
         }
     }
 
-    @FXML
     private void onActionToDirectory(ActionEvent event) throws IOException {
         onViewPerfil();
     }
@@ -254,9 +224,10 @@ public class FxClienteProcesoController implements Initializable {
                 clienteTB.setDireccion(txtDireccion.getText().trim().toUpperCase());
                 clienteTB.setRepresentante(txtRepresentante.getText().trim().toUpperCase());
                 clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setPredeterminado(false);
+                clienteTB.setSistema(false);
 
                 String result = ClienteADO.CrudCliente(clienteTB);
-
                 switch (result) {
                     case "registered":
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
@@ -270,13 +241,8 @@ public class FxClienteProcesoController implements Initializable {
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.", false);
                         txtDocumentNumber.requestFocus();
                         break;
-                    case "error":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puedo completar la ejecución.", false);
-
-                        break;
                     default:
                         Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", result, false);
-
                         break;
                 }
 
@@ -306,36 +272,6 @@ public class FxClienteProcesoController implements Initializable {
     @FXML
     private void onActionToCancel(ActionEvent event) {
         Tools.Dispose(window);
-    }
-
-    @FXML
-    private void onActionPais(ActionEvent event) {
-        if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
-            cbDepartamento.getItems().clear();
-            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                cbDepartamento.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionDepartamento(ActionEvent event) {
-        if (cbDepartamento.getSelectionModel().getSelectedIndex() >= 0) {
-            cbProvincia.getItems().clear();
-            ProvinciaADO.ListProvincia(cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionProvincia(ActionEvent event) {
-        if (cbProvincia.getSelectionModel().getSelectedIndex() >= 0) {
-            cbDistrito.getItems().clear();
-            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-            });
-        }
     }
 
 }

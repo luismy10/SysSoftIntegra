@@ -234,7 +234,6 @@ public class EmpleadoADO {
         EmpleadoTB empleadoTB = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
-            System.out.println("model.EmpleadoADO.GetValidateUser()");
             try {
                 preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
                 preparedStatement.setString(1, user);

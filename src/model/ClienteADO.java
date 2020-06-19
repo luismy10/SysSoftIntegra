@@ -28,7 +28,7 @@ public class ClienteADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        preparedCliente = DBUtil.getConnection().prepareStatement("update ClienteTB set TipoDocumento=?,NumeroDocumento=?,Informacion=UPPER(?),Telefono=?,Celular=?,Email=?,Direccion=?,Representante=?,Estado=? where IdCliente = ?");
+                        preparedCliente = DBUtil.getConnection().prepareStatement("update ClienteTB set TipoDocumento=?,NumeroDocumento=?,Informacion=UPPER(?),Telefono=?,Celular=?,Email=?,Direccion=?,Representante=?,Estado=?,Predeterminado=? where IdCliente = ?");
 
                         preparedCliente.setInt(1, clienteTB.getTipoDocumento());
                         preparedCliente.setString(2, clienteTB.getNumeroDocumento());
@@ -39,7 +39,8 @@ public class ClienteADO {
                         preparedCliente.setString(7, clienteTB.getDireccion());
                         preparedCliente.setString(8, clienteTB.getRepresentante());
                         preparedCliente.setInt(9, clienteTB.getEstado());
-                        preparedCliente.setString(10, clienteTB.getIdCliente());
+                        preparedCliente.setBoolean(10, clienteTB.isPredeterminado());
+                        preparedCliente.setString(11, clienteTB.getIdCliente());
 
                         preparedCliente.addBatch();
                         preparedCliente.executeBatch();
@@ -60,7 +61,7 @@ public class ClienteADO {
                         codigoCliente.execute();
                         String idSuministro = codigoCliente.getString(1);
 
-                        preparedCliente = DBUtil.getConnection().prepareStatement("insert into ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado)values(?,?,?,?,?,?,?,?,?,?)");
+                        preparedCliente = DBUtil.getConnection().prepareStatement("INSERT INTO ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
                         preparedCliente.setString(1, idSuministro);
                         preparedCliente.setInt(2, clienteTB.getTipoDocumento());
                         preparedCliente.setString(3, clienteTB.getNumeroDocumento());
@@ -71,7 +72,9 @@ public class ClienteADO {
                         preparedCliente.setString(8, clienteTB.getDireccion());
                         preparedCliente.setString(9, clienteTB.getRepresentante());
                         preparedCliente.setInt(10, clienteTB.getEstado());
-
+                        preparedCliente.setBoolean(11, clienteTB.isPredeterminado());
+                        preparedCliente.setBoolean(12, clienteTB.isSistema());
+                        
                         preparedCliente.addBatch();
                         preparedCliente.executeBatch();
 
@@ -265,6 +268,57 @@ public class ClienteADO {
             }
         }
         return clienteTB;
+    }
+
+    public static String RemoveCliente(String idCliente) {
+        PreparedStatement statementValidate = null;
+        PreparedStatement statementCliente = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() == null) {
+            return "No se pudo realizar tu petición por problemas de conexión, intente nuevamente";
+        }
+        try {
+            statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM Venta WHERE IdCliente = ?");
+            statementValidate.setString(1, idCliente);
+            if (statementValidate.executeQuery().next()) {
+                DBUtil.getConnection().rollback();
+                return "venta";
+            } else {
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM ClienteTB WHERE IdCliente = ? AND Sistema = 1");
+                statementValidate.setString(1, idCliente);
+                if (statementValidate.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    return "sistema";
+                } else {
+                    statementCliente = DBUtil.getConnection().prepareStatement("DELETE FROM ClienteTB WHERE IdCliente = ?");
+                    statementCliente.setString(1, idCliente);
+                    statementCliente.addBatch();
+
+                    statementCliente.executeBatch();
+                    DBUtil.getConnection().commit();
+                    return "deleted";
+                }
+            }
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException e) {
+
+            }
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementValidate != null) {
+                    statementValidate.close();
+                }
+                if (statementCliente != null) {
+                    statementCliente.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
     }
 
 }

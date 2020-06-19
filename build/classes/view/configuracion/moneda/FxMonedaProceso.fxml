@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.moneda.FxMonedaProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.moneda.FxMonedaProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,7 +27,7 @@
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Nombre" textFill="#1a2226" />
-                        <TextField fx:id="txtNombre" onAction="#onActionGuardar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtNombre" onAction="#onActionGuardar" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
@@ -37,7 +37,7 @@
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Abreviatura" textFill="#1a2226" />
-                        <TextField fx:id="txtAbreviatura" onAction="#onActionGuardar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtAbreviatura" onAction="#onActionGuardar" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
@@ -47,7 +47,7 @@
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Simbolo" textFill="#1a2226" />
-                        <TextField fx:id="txtSimbolo" onAction="#onActionGuardar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtSimbolo" onAction="#onActionGuardar" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
@@ -57,7 +57,7 @@
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Tipo de cambio" textFill="#1a2226" />
-                        <TextField fx:id="txtTipoCambio" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedTipoCambio" styleClass="text-field-normal" />
+                        <TextField fx:id="txtTipoCambio" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedTipoCambio" prefWidth="240.0" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

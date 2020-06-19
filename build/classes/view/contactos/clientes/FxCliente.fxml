@@ -57,7 +57,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Eliminar">
+                        <Button mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -71,6 +71,15 @@
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/reload.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onActionPredeterminado" onKeyPressed="#onKeyPressedPredeterminado" styleClass="buttonLight" text="Predeterminado">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/accept.png" />
                                  </image>
                               </ImageView>
                            </graphic>
