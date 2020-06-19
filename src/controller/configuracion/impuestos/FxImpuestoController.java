@@ -65,6 +65,13 @@ public class FxImpuestoController implements Initializable {
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigoAlterno()));
         stateUpdate = false;
+        
+        
+        tcOperacion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcNombre.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcValor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.18));
+        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
     }
 
     public void fillTabletTax() {
@@ -168,8 +175,8 @@ public class FxImpuestoController implements Initializable {
                     fillTabletTax();
                 } else if (result.equalsIgnoreCase("sistema")) {
                     Tools.AlertMessageWarning(window, "Impuesto", "No se puede eliminar el impuesto, ya que es del sistema.");
-                } else if (result.equalsIgnoreCase("articulo")) {
-                    Tools.AlertMessageWarning(window, "Impuesto", "No se puede eliminar el impuesto, está ligado a un artículo.");
+                } else if (result.equalsIgnoreCase("suministro")) {
+                    Tools.AlertMessageWarning(window, "Impuesto", "No se puede eliminar el impuesto, está ligado a un producto.");
                 } else {
                     Tools.AlertMessageError(window, "Impuesto", result);
                 }

@@ -308,7 +308,7 @@ public class ClienteADO {
         return clienteTB;
     }
 
-    public static String RemoveCliente(String idCliente) {
+     public static String RemoveCliente(String idCliente) {
         PreparedStatement statementValidate = null;
         PreparedStatement statementCliente = null;
         DBUtil.dbConnect();
@@ -316,7 +316,8 @@ public class ClienteADO {
             return "No se pudo realizar tu petición por problemas de conexión, intente nuevamente";
         }
         try {
-            statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM Venta WHERE IdCliente = ?");
+            DBUtil.getConnection().setAutoCommit(false);
+            statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM VentaTB WHERE Cliente = ?");
             statementValidate.setString(1, idCliente);
             if (statementValidate.executeQuery().next()) {
                 DBUtil.getConnection().rollback();

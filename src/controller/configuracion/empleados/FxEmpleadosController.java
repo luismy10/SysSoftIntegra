@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -57,7 +58,6 @@ public class FxEmpleadosController implements Initializable {
     private TableColumn<EmpleadoTB, String> tcState;
 
     private AnchorPane vbPrincipal;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -83,41 +83,39 @@ public class FxEmpleadosController implements Initializable {
 
     public void fillEmpleadosTable(String value) {
 
-            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-            Task<List<EmpleadoTB>> task = new Task<List<EmpleadoTB>>() {
-                @Override
-                public ObservableList<EmpleadoTB> call() {
-                    return EmpleadoADO.ListEmpleados(value);
-                }
-            };
-
-            task.setOnSucceeded((WorkerStateEvent e) -> {
-                tvList.setItems((ObservableList<EmpleadoTB>) task.getValue());
-
-                lblLoad.setVisible(false);
-            });
-            task.setOnFailed((WorkerStateEvent event) -> {
-
-                lblLoad.setVisible(false);
-            });
-
-            task.setOnScheduled((WorkerStateEvent event) -> {
-                lblLoad.setVisible(true);
-            });
-            exec.execute(task);
-
-            if (!exec.isShutdown()) {
-                exec.shutdown();
+        Task<List<EmpleadoTB>> task = new Task<List<EmpleadoTB>>() {
+            @Override
+            public ObservableList<EmpleadoTB> call() {
+                return EmpleadoADO.ListEmpleados(value);
             }
-        
+        };
+
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvList.setItems((ObservableList<EmpleadoTB>) task.getValue());
+
+            lblLoad.setVisible(false);
+        });
+        task.setOnFailed((WorkerStateEvent event) -> {
+
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled((WorkerStateEvent event) -> {
+            lblLoad.setVisible(true);
+        });
+        exec.execute(task);
+
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
 
     }
-
 
     private void openWindowEmpleadosAdd() throws IOException {
         ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -152,6 +150,29 @@ public class FxEmpleadosController implements Initializable {
         });
         stage.show();
         controller.setEditEmpleado(value);
+    }
+
+    private void onEventExecuteDelete() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Empleado", "¿Está seguro de eliminar al empleado?", true);
+            if (confirmation == 1) {
+                String resultado = EmpleadoADO.DeleteEmpleadoById(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
+                if (resultado.equalsIgnoreCase("deleted")) {
+                    Tools.AlertMessageInformation(window, "Empleado", "Se eliminó el empleado correctamente.");
+                } else if (resultado.equalsIgnoreCase("caja")) {
+                    Tools.AlertMessageWarning(window, "Empleado", "No se puede eliminar el empleado, porque tiene historial de cajas..");
+                } else if (resultado.equalsIgnoreCase("compra")) {
+                    Tools.AlertMessageWarning(window, "Empleado", "No se puede eliminar el empleado, porque tiene un historial de compras.");
+                } else if (resultado.equalsIgnoreCase("sistema")) {
+                    Tools.AlertMessageWarning(window, "Empleado", "El empleado no puede ser eliminado porque es parte del sistema.");
+                } else {
+                    Tools.AlertMessageError(window, "Empleado", resultado);
+                }
+
+            }
+        } else {
+            Tools.AlertMessageWarning(window, "Empleado", "Seleccione un elemento de la lista.");
+        }
     }
 
     @FXML
@@ -199,6 +220,18 @@ public class FxEmpleadosController implements Initializable {
             if (event.getClickCount() == 2) {
                 openWindowEmpleadosEdit(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
             }
+        }
+    }
+
+    @FXML
+    private void onActionDelete(ActionEvent event) {
+        onEventExecuteDelete();
+    }
+
+    @FXML
+    private void onKeyPressedDelete(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventExecuteDelete();
         }
     }
 

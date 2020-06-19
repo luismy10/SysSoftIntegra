@@ -386,8 +386,8 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addImpuesto) {
-                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto() , Pos.CENTER_LEFT), 0, 2 + (k + 1));
-                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, 2 + (k + 1));
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto() , Pos.CENTER_LEFT), 0, k + 1);
+                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     totalImpuestos += sumaImpuesto;
                     addImpuesto = false;
                     sumaImpuesto = 0;

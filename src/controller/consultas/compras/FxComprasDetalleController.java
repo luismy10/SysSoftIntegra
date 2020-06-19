@@ -290,8 +290,9 @@ public class FxComprasDetalleController implements Initializable {
                 }
             }
             if (addElement) {
-                gpImpuestos.add(addLabelTitle( arrayArticulos.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, 2 + (k + 1));
-                gpImpuestos.add(addLabelTotal(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, 2 + (k + 1));
+                System.out.println(2 + (k + 1));
+                gpImpuestos.add(addLabelTitle( arrayArticulos.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, k + 1);
+                gpImpuestos.add(addLabelTotal(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
                 addElement = false;
                 sumaElement = 0;
             }
@@ -326,7 +327,7 @@ public class FxComprasDetalleController implements Initializable {
 
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill:#000000;");
+        label.setStyle("-fx-text-fill:#0771d3;");
         label.getStyleClass().add("labelRobotoMedium16");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);

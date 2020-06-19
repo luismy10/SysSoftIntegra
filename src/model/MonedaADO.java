@@ -105,7 +105,7 @@ public class MonedaADO {
                     monedaTB.setTipoCambio(resultSet.getDouble("TipoCambio"));
                     monedaTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                     monedaTB.setImagePredeterminado(resultSet.getBoolean("Predeterminado")
-                            ? new ImageView(new Image("/view/image/checked.png", 22, 22, false, false))
+                            ? new ImageView(new Image("/view/image/bandera.png", 22, 22, false, false))
                             : new ImageView(new Image("/view/image/unchecked.png", 22, 22, false, false)));
                     observableList.add(monedaTB);
                 }
@@ -209,7 +209,7 @@ public class MonedaADO {
                         DBUtil.getConnection().rollback();
                         result = "venta";
                     } else {
-                        statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE TipoMoneda ?");
+                        statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE TipoMoneda = ?");
                         statementValidate.setInt(1, idMoneda);
                         if (statementValidate.executeQuery().next()) {
                             DBUtil.getConnection().rollback();
