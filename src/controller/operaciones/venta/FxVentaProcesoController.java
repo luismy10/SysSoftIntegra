@@ -28,9 +28,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.BancoADO;
 import model.BancoHistorialTB;
 import model.ClienteADO;
 import model.ClienteTB;
@@ -82,12 +84,12 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private Label lblMonedaLetras;
     @FXML
-    private VBox vbViewCredito1;
-    @FXML
     private TextField txtTarjeta;
     @FXML
     private Label lblVueltoNombre;
-
+     @FXML
+    private HBox hbContenido;
+     
     private FxVentaEstructuraController ventaEstructuraController;
 
     private TableView<SuministroTB> tvList;
@@ -107,6 +109,7 @@ public class FxVentaProcesoController implements Initializable {
     private boolean state_view_pago;
 
     private String idCliente;
+   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -140,8 +143,13 @@ public class FxVentaProcesoController implements Initializable {
         lblTotal.setText(moneda_simbolo + " " + Tools.roundingValue(total, 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));        
         lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ventaEstructuraController.getMonedaNombre()));
-        setClienteProcesoVenta(Session.IDCLIENTE, Session.DATOSCLIENTE, Session.N_DOCUMENTO_CLIENTE, Session.DIRECCION_CLIENTE);
+        setClienteProcesoVenta(Session.CLIENTE_ID, Session.CLIENTE_DATOS, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DIRECCION);
         txtEfectivo.requestFocus();
+         boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
+         if(!validate){
+             Tools.AlertMessageWarning(window, "Configuración de caja/banco", "Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
+             hbContenido.setDisable(true);
+         }
     }
 
     private void openWindowAddPlazoVenta() throws IOException {
@@ -159,17 +167,17 @@ public class FxVentaProcesoController implements Initializable {
     }
 
     public void setClienteProcesoVenta(String id, String datos, String numeroDocumento, String direccion) {
-        idCliente = !id.equalsIgnoreCase("") ? id : Session.IDCLIENTE;
+        idCliente = !id.equalsIgnoreCase("") ? id : Session.CLIENTE_ID;
         txtNumeroDocumento.setText(numeroDocumento.equalsIgnoreCase("")
-                ? Session.N_DOCUMENTO_CLIENTE
+                ? Session.CLIENTE_NUMERO_DOCUMENTO
                 : numeroDocumento);
 
         txtDatos.setText(datos.equalsIgnoreCase("")
-                ? Session.DATOSCLIENTE
+                ? Session.CLIENTE_DATOS
                 : datos);
 
         txtDireccion.setText(direccion.equalsIgnoreCase("")
-                ? Session.DIRECCION_CLIENTE
+                ? Session.CLIENTE_DIRECCION
                 : direccion);
 
         ventaTB.setCliente(idCliente);
@@ -527,10 +535,10 @@ public class FxVentaProcesoController implements Initializable {
             txtDatos.setText(clienteTB.getInformacion());
             txtDireccion.setText(clienteTB.getDireccion());
         } else {
-            idCliente = Session.IDCLIENTE;
-            txtNumeroDocumento.setText(Session.N_DOCUMENTO_CLIENTE);
-            txtDatos.setText(Session.DATOSCLIENTE);
-            txtDireccion.setText(Session.DIRECCION_CLIENTE);
+            idCliente = Session.CLIENTE_ID;
+            txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+            txtDatos.setText(Session.CLIENTE_DATOS);
+            txtDireccion.setText(Session.CLIENTE_DIRECCION);
         }
     }
 

@@ -101,8 +101,7 @@ public class FxVentaController implements Initializable {
                         openWindowFondoInicial();
                         break;
                     case 2:
-//                        Session.CAJA_ID = cajaTB.getIdCaja();
-                        aperturaCaja = true;
+                         aperturaCaja = true;
                         hbContenedorVentas.setDisable(false);
                         break;
                     case 3:
@@ -112,7 +111,7 @@ public class FxVentaController implements Initializable {
                         break;
                 }
             } else {
-                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
+                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja.");
             }
         }
 

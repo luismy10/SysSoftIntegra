@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -182,34 +181,24 @@ public class FxClienteProcesoController implements Initializable {
         controller.setLoadView(idCliente, information);
     }
 
-    private void onKeyPressedToDirectory(KeyEvent event) throws IOException {
-        if (event.getCode() == KeyCode.ENTER) {
-            onViewPerfil();
-        }
-    }
-
-    private void onActionToDirectory(ActionEvent event) throws IOException {
-        onViewPerfil();
-    }
-
     void aValidityProcess() throws ParseException {
         if (cbDocumentType.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Seleccione el tipo de documento, por favor.", false);
+            Tools.AlertMessageInformation(window, "Persona", "Seleccione el tipo de documento, por favor.");
 
             cbDocumentType.requestFocus();
         } else if (txtDocumentNumber.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese el documento de identificación, por favor.", false);
+            Tools.AlertMessageWarning(window, "Persona", "Ingrese el documento de identificación, por favor.");
 
             txtDocumentNumber.requestFocus();
         } else if (txtInformacion.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Ingrese la información del cliente, por favor.", false);
+            Tools.AlertMessageWarning(window, "Persona", "Ingrese la información del cliente, por favor.");
             txtInformacion.requestFocus();
         } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "Seleccione el estado, por favor.", false);
+            Tools.AlertMessageWarning(window, "Persona", "Seleccione el estado, por favor.");
             cbEstado.requestFocus();
         } else {
 
-            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
+            short confirmation = Tools.AlertMessageConfirmation(window, "Mantenimiento", "¿Esta seguro de continuar?");
             if (confirmation == 1) {
 
                 ClienteTB clienteTB = new ClienteTB();
@@ -230,19 +219,19 @@ public class FxClienteProcesoController implements Initializable {
                 String result = ClienteADO.CrudCliente(clienteTB);
                 switch (result) {
                     case "registered":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Registrado correctamente.", false);
+                        Tools.AlertMessageInformation(window, "Persona", "Registrado correctamente.");
                         Tools.Dispose(window);
                         break;
                     case "updated":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Persona", "Actualizado correctamente.", false);
+                        Tools.AlertMessageInformation(window, "Persona", "Actualizado correctamente.");
                         Tools.Dispose(window);
                         break;
                     case "duplicate":
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.", false);
+                        Tools.AlertMessageWarning(window, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.");
                         txtDocumentNumber.requestFocus();
                         break;
                     default:
-                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Persona", result, false);
+                        Tools.AlertMessageError(window, "Persona", result);
                         break;
                 }
 

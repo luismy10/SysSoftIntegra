@@ -1,6 +1,7 @@
 package model;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.ImageView;
 
 public class ClienteTB {
 
@@ -19,6 +20,7 @@ public class ClienteTB {
     private String representante;
     private boolean predeterminado;
     private boolean sistema;
+     private ImageView imagePredeterminado;
 
     public ClienteTB() {
 
@@ -142,6 +144,14 @@ public class ClienteTB {
 
     public void setSistema(boolean sistema) {
         this.sistema = sistema;
+    }
+
+    public ImageView getImagePredeterminado() {
+        return imagePredeterminado;
+    }
+
+    public void setImagePredeterminado(ImageView imagePredeterminado) {
+        this.imagePredeterminado = imagePredeterminado;
     }
 
 }

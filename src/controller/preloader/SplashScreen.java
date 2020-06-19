@@ -1,23 +1,19 @@
- package controller.preloader;
+package controller.preloader;
 
 import controller.tools.FilesRouters;
 import controller.tools.Json;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -81,6 +77,10 @@ public class SplashScreen extends Preloader {
                         ObjectGlobal.PASSWORD = String.valueOf(object.get("password"));
                     }
                 } else {
+                    Tools.AlertMessageError(preloaderStage.getScene().getRoot(), "Preloader", "No se puedo cargar el archivo conexión, intente de nuevo o comuníquese con su proveedor.");
+                    preloaderStage.hide();
+                    Platform.exit();
+                    return;
                 }
 
                 DBUtil.dbConnect();
@@ -154,40 +154,23 @@ public class SplashScreen extends Preloader {
 
                         MonedaADO.GetMonedaPredetermined();
 
-//                        ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta("00000000");
-//                        if (clienteTB != null) {
-//                            Session.IDCLIENTE = clienteTB.getIdCliente();
-//                            Session.DATOSCLIENTE = clienteTB.getInformacion();
-//                            Session.N_DOCUMENTO_CLIENTE = clienteTB.getNumeroDocumento();
-//                            Session.DIRECCION_CLIENTE = clienteTB.getDireccion();
-//                        } else {
-//                            ClienteTB clienteInsert = new ClienteTB();
-//                            clienteInsert.setTipoDocumento(1)   
+                        ClienteTB clienteTB = ClienteADO.GetClientePredetermined();
+                        if (clienteTB != null) {
+                            Session.CLIENTE_ID = clienteTB.getIdCliente();
+                            Session.CLIENTE_DATOS = clienteTB.getInformacion();
+                            Session.CLIENTE_NUMERO_DOCUMENTO = clienteTB.getNumeroDocumento();
+                            Session.CLIENTE_DIRECCION = clienteTB.getDireccion();
+                        } else {
+                            Session.CLIENTE_ID = "";
+                            Session.CLIENTE_DATOS = "";
+                            Session.CLIENTE_NUMERO_DOCUMENTO = "";
+                            Session.CLIENTE_DIRECCION = "";
+                        }
 
-//                            clienteInsert.setNumeroDocumento("00000000");
-//                            clienteInsert.setInformacion("PUBLICO GENERAL");
-//                            clienteInsert.setTelefono("");
-//                            clienteInsert.setCelular("");
-//                            clienteInsert.setEmail("");
-//                            clienteInsert.setDireccion("");
-//                            clienteInsert.setEstado(1);
-//
-//                            String result = ClienteADO.CrudCliente(clienteInsert);
-//                            if (result.equalsIgnoreCase("registered")) {
-//                                ClienteTB clienteSelect = ClienteADO.GetByIdClienteVenta("00000000");
-//                                if (clienteTB != null) {
-//                                    Session.IDCLIENTE = clienteSelect.getIdCliente();
-//                                    Session.DATOSCLIENTE = clienteSelect.getInformacion();
-//                                    Session.N_DOCUMENTO_CLIENTE = clienteSelect.getNumeroDocumento();
-//                                    Session.DIRECCION_CLIENTE = clienteSelect.getDireccion();
-//                                }
-//
-//                            }
-//                        }
                     }
 
                 } else {
-                    Tools.AlertMessage(preloaderStage.getScene().getWindow(), Alert.AlertType.ERROR, "Preloader", "No se pudo conectar al servidor, revise su conexión e intente nuevamente.", false);
+                    Tools.AlertMessageError(preloaderStage.getScene().getRoot(), "Preloader", "No se pudo conectar al servidor, revise su conexión e intente nuevamente.");
                     preloaderStage.hide();
                     Platform.exit();
                 }
