@@ -1,6 +1,7 @@
 package controller.preloader;
 
 import controller.tools.Tools;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -12,16 +13,22 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import model.ClienteTB;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.EmpleadoTB;
 import model.EmpresaTB;
 import model.GlobalADO;
+import model.ImpuestoTB;
 import model.MonedaTB;
+import model.TipoDocumentoTB;
 
 public class FxBienvenidaController implements Initializable {
 
@@ -66,19 +73,17 @@ public class FxBienvenidaController implements Initializable {
     @FXML
     private TextField txtNombreMoneda;
     @FXML
-    private TextField txtAbreviaturaMoneda;
-    @FXML
     private TextField txtSimboloMoneda;
     @FXML
     private TextField txtTipoCambioMoneda;
     @FXML
-    private TextField txtApellidos;
-    @FXML
     private TextField txtUsuario;
     @FXML
-    private TextField txtNombres;
-    @FXML
     private TextField txtClave;
+    @FXML
+    private ImageView lnPrincipal;
+
+    private File selectFile;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -89,7 +94,30 @@ public class FxBienvenidaController implements Initializable {
         DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
             cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
+    }
 
+    private void openWindowFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importar una imagen");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        selectFile = fileChooser.showOpenDialog(apWindow.getScene().getWindow());
+        if (selectFile != null) {
+            selectFile = new File(selectFile.getAbsolutePath());
+            if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
+                Image image = new Image(selectFile.toURI().toString(), 200, 200, false, false);
+                lnPrincipal.setSmooth(true);
+                lnPrincipal.setPreserveRatio(true);
+                lnPrincipal.setImage(image);
+
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Producto", "No seleccionó un formato correcto de imagen.");
+            }
+        }
+    }
+
+    private void clearImage() {
+        lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+        selectFile = null;
     }
 
     private void openWindowNextVisible() {
@@ -200,22 +228,6 @@ public class FxBienvenidaController implements Initializable {
                 vbTercero.setVisible(true);
             }
             txtTipoCambioMoneda.requestFocus();
-        } else if (txtApellidos.getText().trim().isEmpty()) {
-            if (!vbTercero.isVisible()) {
-                vbPrimero.setVisible(false);
-                vbCuarto.setVisible(false);
-                vbSegundo.setVisible(false);
-                vbTercero.setVisible(true);
-            }
-            txtApellidos.requestFocus();
-        } else if (txtNombres.getText().trim().isEmpty()) {
-            if (!vbTercero.isVisible()) {
-                vbPrimero.setVisible(false);
-                vbCuarto.setVisible(false);
-                vbSegundo.setVisible(false);
-                vbTercero.setVisible(true);
-            }
-            txtNombres.requestFocus();
         } else if (txtUsuario.getText().trim().isEmpty()) {
             if (!vbTercero.isVisible()) {
                 vbPrimero.setVisible(false);
@@ -250,7 +262,7 @@ public class FxBienvenidaController implements Initializable {
             MonedaTB monedaTB = new MonedaTB();
             monedaTB.setNombre(txtNombreMoneda.getText());
             monedaTB.setSimbolo(txtSimboloMoneda.getText());
-            monedaTB.setAbreviado(txtAbreviaturaMoneda.getText());
+            monedaTB.setAbreviado("");
             monedaTB.setTipoCambio(Double.parseDouble(txtTipoCambioMoneda.getText()));
             monedaTB.setPredeterminado(true);
             monedaTB.setSistema(true);
@@ -258,11 +270,38 @@ public class FxBienvenidaController implements Initializable {
             EmpleadoTB empleadoTB = new EmpleadoTB();
             empleadoTB.setTipoDocumento(0);
             empleadoTB.setNumeroDocumento("");
-            empleadoTB.setApellidos(txtApellidos.getText());
-            empleadoTB.setNombres(txtNombres.getText());
+            empleadoTB.setApellidos("ADMINISTRADOR");
+            empleadoTB.setNombres("GENERAL");
             empleadoTB.setUsuario(txtUsuario.getText());
             empleadoTB.setClave(txtClave.getText());
 
+            ImpuestoTB impuestoTB = new ImpuestoTB();
+            impuestoTB.setOperacion(2);
+            impuestoTB.setNombreImpuesto("NINGUNO(%)");
+            impuestoTB.setValor(0);
+            impuestoTB.setPredeterminado(true);
+            impuestoTB.setCodigoAlterno("0");
+            impuestoTB.setSistema(true);
+
+            TipoDocumentoTB tipoDocumentoTB = new TipoDocumentoTB();
+            tipoDocumentoTB.setNombre("TICKET");
+            tipoDocumentoTB.setSerie("T001");
+            tipoDocumentoTB.setPredeterminado(true);
+            tipoDocumentoTB.setNombreDocumento("TICKET DE VENTA");
+            tipoDocumentoTB.setSistema(true);
+
+            ClienteTB clienteTB = new ClienteTB();
+            clienteTB.setTipoDocumento(1);
+            clienteTB.setNumeroDocumento("");
+            clienteTB.setInformacion("PUBLICO GENERAL");
+            clienteTB.setTelefono("");
+            clienteTB.setCelular("");
+            clienteTB.setEmail("");
+            clienteTB.setDireccion("");
+            clienteTB.setEstado(1);
+            clienteTB.setPredeterminado(true);
+            clienteTB.setSistema(true);
+            
             ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
@@ -271,14 +310,14 @@ public class FxBienvenidaController implements Initializable {
             Task<String> task = new Task<String>() {
                 @Override
                 public String call() {
-                    return GlobalADO.RegistrarInicioPrograma(empresaTB, monedaTB, empleadoTB);
+                    return GlobalADO.RegistrarInicioPrograma(empresaTB, monedaTB, empleadoTB, impuestoTB, tipoDocumentoTB, clienteTB);
                 }
             };
             task.setOnSucceeded(w -> {
                 String result = task.getValue();
                 if (result.equalsIgnoreCase("inserted")) {
                     Tools.AlertMessageInformation(apWindow, "SysSoftIntegra", "Se guardo los cambios correctamente, habra nuevamente la aplicación son su usuario y clave creada.");
-                    System.exit(0);
+                    Tools.Dispose(apWindow);
                 } else {
                     Tools.AlertMessageError(apWindow, "SysSoftIntegra", result);
                     btnAnterior.setDisable(false);
@@ -402,6 +441,42 @@ public class FxBienvenidaController implements Initializable {
         short value = Tools.AlertMessageConfirmation(apWindow, "SysSoftIntegra", "¿Está seguro se cancelar el proceso?");
         if (value == 1) {
             Tools.Dispose(apWindow);
+        }
+    }
+
+    @FXML
+    private void onKeyPressedPhoto(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowFile();
+        }
+    }
+
+    @FXML
+    private void onActionPhoto(ActionEvent event) {
+        openWindowFile();
+    }
+
+    @FXML
+    private void onKeyPressedRemovePhoto(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            clearImage();
+        }
+    }
+
+    @FXML
+    private void onActionRemovePhoto(ActionEvent event) {
+        clearImage();
+    }
+
+    
+    @FXML
+    private void onKeyTypedTipoCambio(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+        if (c == '.' && txtTipoCambioMoneda.getText().contains(".")) {
+            event.consume();
         }
     }
 

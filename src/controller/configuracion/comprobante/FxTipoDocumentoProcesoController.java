@@ -27,9 +27,10 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     private TextField txtSerie;
     @FXML
     private Button btnGuardar;
-   
-    private int idTipoDocumento;
     
+    private FxTipoDocumentoController tipoDocumentoController;
+    
+    private int idTipoDocumento;    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -67,12 +68,14 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de documento", "Se actualizado correctamente", false);
                 Tools.Dispose(window);
+                tipoDocumentoController.fillTabletTipoDocumento();
             } else if (result.equalsIgnoreCase("duplicate")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de documento", "Ya existe comprobante con el mismo nombre", false);
                 txtNombre.requestFocus();
             } else if(result.equalsIgnoreCase("inserted")){
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de documento", "Se ha insertado correctamente", false);
                 Tools.Dispose(window);
+                tipoDocumentoController.fillTabletTipoDocumento();
             }else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Tipo de documento", result, false);
             }
@@ -102,5 +105,9 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
     }
-
+    
+    public void setTipoDocumentoController(FxTipoDocumentoController tipoDocumentoController){
+        this.tipoDocumentoController = tipoDocumentoController;
+    }
+    
 }

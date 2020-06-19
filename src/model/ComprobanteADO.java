@@ -55,7 +55,7 @@ public class ComprobanteADO {
             return callableStatement.getString(1);
 
         } catch (SQLException ex) {
-            System.out.println("ComprobanteADO:" + ex.getLocalizedMessage());
+            System.out.println("ComprobanteADO GetSerieNumeracionEspecifico:" + ex.getLocalizedMessage());
         } finally {
             try {
                 if (callableStatement != null) {

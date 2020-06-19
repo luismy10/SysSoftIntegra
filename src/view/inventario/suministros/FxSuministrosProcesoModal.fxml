@@ -347,7 +347,7 @@
                                                             </HBox>
                                                             <HBox fx:id="hbPrecioNormal" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em;">
                                                                <children>
-                                                                  <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
+                                                                  <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                                                      <columnConstraints>
                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -356,10 +356,10 @@
                                                                      </columnConstraints>
                                                                      <rowConstraints>
                                                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                      </rowConstraints>
                                                                      <children>
                                                                         <Label styleClass="labelRoboto14" text="Precio Venta Neto(con desc e %)" textFill="#23283a" GridPane.rowIndex="1" />
@@ -370,15 +370,15 @@
                                                                         <Label styleClass="labelRoboto14" text="Precio de Venta 1" GridPane.columnIndex="1" />
                                                                         <Label styleClass="labelRoboto14" text="Precio de Venta 2" textFill="#23283a" GridPane.columnIndex="2" />
                                                                         <Label styleClass="labelRoboto14" text="Precio de Venta 3" textFill="#23283a" GridPane.columnIndex="3" />
-                                                                        <TextField fx:id="txtPrecioVentaNeto1" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNeto1" onKeyTyped="#onKeyTypedPrecioNeto1" promptText="Precio de Venta Neto 1 " styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <TextField fx:id="txtPrecioVentaNeto1" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNeto1" onKeyTyped="#onKeyTypedPrecioNeto1" prefHeight="30.0" promptText="Precio de Venta Neto 1 " styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                         <TextField fx:id="txtMargen1" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMargen1" onKeyTyped="#onKeyTypedMargen" promptText="Margen 1" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                         <TextField fx:id="txtUtilidad1" disable="true" promptText="Utilidad 1" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                         <TextField fx:id="txtPrecio2" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecio2" onKeyTyped="#onKeyTypedPrecio2" prefHeight="30.0" promptText="Precio de Venta Bruto 2" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                                        <TextField fx:id="txtPrecioVentaNeto2" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNeto2" onKeyTyped="#onKeyTypedPrecioNeto2" promptText="Precio de Venta Neto 2" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                                        <TextField fx:id="txtPrecioVentaNeto2" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNeto2" onKeyTyped="#onKeyTypedPrecioNeto2" prefHeight="30.0" promptText="Precio de Venta Neto 2" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                         <TextField fx:id="txtMargen2" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMargen2" onKeyTyped="#onKeyTypedMargen" promptText="Margen 2" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                                         <TextField fx:id="txtUtilidad2" disable="true" promptText="Utilidad 2" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                                         <TextField fx:id="txtPrecio3" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecio3" onKeyTyped="#onKeyTypedPrecio3" prefHeight="30.0" promptText="Precio de Venta Bruto 3" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                                                        <TextField fx:id="txtPrecioVentaNeto3" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNeto3" onKeyTyped="#onKeyTypedPrecioNeto3" promptText="Precio de Venta Neto 3" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                                        <TextField fx:id="txtPrecioVentaNeto3" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNeto3" onKeyTyped="#onKeyTypedPrecioNeto3" prefHeight="30.0" promptText="Precio de Venta Neto 3" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                                                         <TextField fx:id="txtMargen3" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMargen3" onKeyTyped="#onKeyTypedMargen" promptText="Margen 3" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                                                                         <TextField fx:id="txtUtilidad3" disable="true" promptText="Utilidad 3" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                                                      </children>
