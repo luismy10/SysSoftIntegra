@@ -291,7 +291,9 @@ public class FxComprasDetalleController implements Initializable {
             }
             if (addElement) {
                 System.out.println(2 + (k + 1));
-                gpImpuestos.add(addLabelTitle( arrayArticulos.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, k + 1);
+                gpImpuestos.add(addLabelTitle( arrayArticulos.get(k).getNombreImpuesto().substring(0, 1).toUpperCase()+""+
+                        arrayArticulos.get(k).getNombreImpuesto().substring(1, arrayArticulos.get(k).getNombreImpuesto().length()).toLowerCase(),
+                        Pos.CENTER_LEFT), 0, k + 1);
                 gpImpuestos.add(addLabelTotal(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
                 addElement = false;
                 sumaElement = 0;

@@ -98,7 +98,7 @@ public class FxVentaController implements Initializable {
         } else {
             boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
             if (validate) {
-                lblNombreCaja.setText(Session.NOMBRE_CUENTA_EFECTIVO);
+                lblNombreCaja.setText("Caja Actual: "+Session.NOMBRE_CUENTA_EFECTIVO);
                 CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
                 switch (cajaTB.getId()) {
                     case 1:

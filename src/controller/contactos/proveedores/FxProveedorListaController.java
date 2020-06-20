@@ -89,9 +89,9 @@ public class FxProveedorListaController implements Initializable {
         tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRazonSocial()
         ));
         tcMovil.setCellValueFactory(cellData -> Bindings.concat(
-                (cellData.getValue().getTelefono().equals("") ? "Sin N° de Teléfono" : cellData.getValue().getTelefono())
+                (cellData.getValue().getTelefono().equals("") ? "Sin N° de Teléfono" : cellData.getValue().getTelefono()).toUpperCase()
                 + "\n"
-                + (cellData.getValue().getCelular().equals("") ? "Sin N° de Celular" : cellData.getValue().getCelular())
+                + (cellData.getValue().getCelular().equals("") ? "Sin N° de Celular" : cellData.getValue().getCelular()).toUpperCase()
         ));
     }
 
@@ -138,6 +138,9 @@ public class FxProveedorListaController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Proveedor", apWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
+            stage.setOnHiding(w -> {
+                comprasController.loadComponents();
+            });
             stage.show();
             controller.setValueAdd();
         } catch (IOException ex) {
@@ -148,8 +151,7 @@ public class FxProveedorListaController implements Initializable {
     private void executeEvent() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (comprasController != null) {
-                comprasController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
-                        tvList.getSelectionModel().getSelectedItem().getRazonSocial());
+                comprasController.setLoadProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor());
                 Tools.Dispose(apWindow);
             } else if (movimientosProcesoController != null) {
                 movimientosProcesoController.setInitProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
@@ -159,7 +161,7 @@ public class FxProveedorListaController implements Initializable {
                 comprasEditarController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
-            }else if(compraReporteController != null){
+            } else if (compraReporteController != null) {
                 compraReporteController.setInitCompraReporteValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);

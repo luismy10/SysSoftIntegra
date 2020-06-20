@@ -320,13 +320,7 @@ public class FxVentaDetalleController implements Initializable {
             }
 
             for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                System.out.println((HBox) hbPie.getChildren().get(i));
                 object.add((HBox) hbPie.getChildren().get(i));
-//                if(){
-//                    
-//                }else{
-//                    
-//                }
                 HBox box = ((HBox) hbPie.getChildren().get(i));
                 rows++;
                 lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
@@ -371,8 +365,10 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addOperacion) {
-                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() , Pos.CENTER_LEFT), 0, 2 + (k + 1));
-                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, 2 + (k + 1));
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase()
+                            +""+ arrayArticulos.get(k).getNombreOperacion().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase(),
+                             Pos.CENTER_LEFT), 0, k + 1);
+                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     addOperacion = false;
                     sumaOperacion = 0;
                 }
@@ -386,7 +382,7 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addImpuesto) {
-                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto() , Pos.CENTER_LEFT), 0, k + 1);
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, k + 1);
                     gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     totalImpuestos += sumaImpuesto;
                     addImpuesto = false;

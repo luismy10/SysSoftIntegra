@@ -236,7 +236,7 @@ public class FxSuministrosCompraController implements Initializable {
                 if (loteSuministro) {
                     openWindowLote(suministrosTB);
                 } else {
-                    comprasController.getTvList().getItems().set(indexcompra, detalleCompraTB);
+                    comprasController.editSuministroToTable(indexcompra, detalleCompraTB);
                     comprasController.calculateTotals();
                     Tools.Dispose(apWindow);
                 }

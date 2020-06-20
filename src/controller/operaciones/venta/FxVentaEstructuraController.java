@@ -930,7 +930,9 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                 }
                 if (addElement) {
-                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, k + 1);
+                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(0, 1).toUpperCase()
+                            + "" + arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(1, arrayArticulosImpuesto.get(k).getNombreImpuesto().length()).toLowerCase(),
+                            Pos.CENTER_LEFT), 0, k + 1);
                     gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     totalImpuestos += sumaElement;
 

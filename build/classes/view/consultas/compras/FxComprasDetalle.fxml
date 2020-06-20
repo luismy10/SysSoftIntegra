@@ -181,7 +181,7 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <children>
                                           <GridPane style="-fx-hgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <columnConstraints>
@@ -194,17 +194,17 @@
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
-                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Total Bruto:" />
+                                                <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Total Bruto:" />
                                                 <Label fx:id="lblTotalBruto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
-                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Descuento:" GridPane.rowIndex="1" />
+                                                <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Descuento:" GridPane.rowIndex="1" />
                                                 <Label fx:id="lblDescuento" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Sub Total:" GridPane.rowIndex="2" />
+                                                <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Sub Total:" GridPane.rowIndex="2" />
                                                 <Label fx:id="lblSubTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                              </children>
                                           </GridPane>
                                        </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox VBox.vgrow="ALWAYS">
                                        <children>
                                           <GridPane fx:id="gpImpuestos" style="-fx-hgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <columnConstraints>
@@ -215,9 +215,9 @@
                                        </children>
                                     </HBox>
                                     <Separator />
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <GridPane style="-fx-hgap: 0.8333333333333334em;">
+                                          <GridPane style="-fx-hgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
@@ -226,7 +226,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
-                                                <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Total Neto:" />
+                                                <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto14" text="Total Neto:" />
                                                 <Label fx:id="lblTotalNeto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium16" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
                                              </children>
                                           </GridPane>

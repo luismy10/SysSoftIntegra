@@ -15,8 +15,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import model.ProveedorTB;
-import model.SuministroTB;
 
 public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
 
