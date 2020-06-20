@@ -64,11 +64,11 @@ public class FxVentaDevolucionController implements Initializable {
             Tools.AlertMessageWarning(window, "Detalle de venta", "Ingrese un comentario.");
             txtObservacion.requestFocus();
         } else {
-            short validate = Tools.AlertMessageConfirmation(window, "Detalle de ventas", "¿Está seguro de cancelar la venta?");
+            short validate = Tools.AlertMessageConfirmation(window, "Detalle de ventas", "¿Está seguro de anular la venta?");
             if (validate == 1) {
-
+                                
                 BancoHistorialTB bancoHistorialBancaria = new BancoHistorialTB();
-                bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
+                bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_EFECTIVO);
                 bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
                 bancoHistorialBancaria.setDescripcion(txtObservacion.getText());
                 bancoHistorialBancaria.setFecha(Tools.getDate());

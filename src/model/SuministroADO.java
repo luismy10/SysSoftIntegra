@@ -1002,8 +1002,8 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static ObservableList<SuministroTB> ListInventario(String producto, short tipoExistencia) {
-        String selectStmt = "{call Sp_Listar_Inventario_Suministros(?,?)}";
+    public static ObservableList<SuministroTB> ListInventario(String producto, short tipoExistencia, String nameProduct,short opcion, int categoria, int marca) {
+        String selectStmt = "{call Sp_Listar_Inventario_Suministros(?,?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
@@ -1012,6 +1012,10 @@ public class SuministroADO {
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, producto);
             preparedStatement.setShort(2, tipoExistencia);
+            preparedStatement.setString(3, nameProduct);
+            preparedStatement.setShort(4, opcion);
+            preparedStatement.setInt(5, categoria);
+            preparedStatement.setInt(6, marca);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 SuministroTB suministroTB = new SuministroTB();
@@ -1027,6 +1031,8 @@ public class SuministroADO {
                 suministroTB.setTotalImporte(rsEmps.getDouble("Total"));
                 suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
                 suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
+                suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
+                suministroTB.setMarcaName(rsEmps.getString("Marca"));
 
                 Label lblCantidad = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2) + " " + suministroTB.getUnidadCompraName());
                 lblCantidad.getStyleClass().add("label-existencia");

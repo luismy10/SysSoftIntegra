@@ -1,11 +1,14 @@
 package model;
 
+import controller.tools.Session;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ClienteADO {
 
@@ -74,7 +77,7 @@ public class ClienteADO {
                         preparedCliente.setInt(10, clienteTB.getEstado());
                         preparedCliente.setBoolean(11, clienteTB.isPredeterminado());
                         preparedCliente.setBoolean(12, clienteTB.isSistema());
-                        
+
                         preparedCliente.addBatch();
                         preparedCliente.executeBatch();
 
@@ -124,6 +127,7 @@ public class ClienteADO {
             while (rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setId(rsEmps.getRow());
+                clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
@@ -131,6 +135,11 @@ public class ClienteADO {
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 clienteTB.setRepresentante(rsEmps.getString("Representante"));
                 clienteTB.setEstadoName(rsEmps.getString("Estado"));
+                clienteTB.setPredeterminado(rsEmps.getBoolean("Predeterminado"));
+                clienteTB.setImagePredeterminado(rsEmps.getBoolean("Predeterminado")
+                        ? new ImageView(new Image("/view/image/checked.png", 22, 22, false, false))
+                        : new ImageView(new Image("/view/image/unchecked.png", 22, 22, false, false)));
+
                 empList.add(clienteTB);
             }
         } catch (SQLException e) {
@@ -270,7 +279,36 @@ public class ClienteADO {
         return clienteTB;
     }
 
-    public static String RemoveCliente(String idCliente) {
+    public static ClienteTB GetClientePredetermined() {
+        PreparedStatement statement = null;
+        ClienteTB clienteTB = null;
+        try {
+            DBUtil.dbConnect();
+            statement = DBUtil.getConnection().prepareStatement("SELECT ci.IdCliente,ci.Informacion, ci.NumeroDocumento, ci.Direccion FROM ClienteTB AS ci WHERE Predeterminado = 1");
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                clienteTB = new ClienteTB();
+                clienteTB.setIdCliente(resultSet.getString("IdCliente"));
+                clienteTB.setInformacion(resultSet.getString("Informacion"));
+                clienteTB.setNumeroDocumento(resultSet.getString("NumeroDocumento"));
+                clienteTB.setDireccion(resultSet.getString("Direccion"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error Moneda: " + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException e) {
+                System.out.println("Error Moneda: " + e.getLocalizedMessage());
+            }
+        }
+        return clienteTB;
+    }
+
+     public static String RemoveCliente(String idCliente) {
         PreparedStatement statementValidate = null;
         PreparedStatement statementCliente = null;
         DBUtil.dbConnect();
@@ -278,7 +316,8 @@ public class ClienteADO {
             return "No se pudo realizar tu petición por problemas de conexión, intente nuevamente";
         }
         try {
-            statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM Venta WHERE IdCliente = ?");
+            DBUtil.getConnection().setAutoCommit(false);
+            statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM VentaTB WHERE Cliente = ?");
             statementValidate.setString(1, idCliente);
             if (statementValidate.executeQuery().next()) {
                 DBUtil.getConnection().rollback();
@@ -319,6 +358,82 @@ public class ClienteADO {
 
             }
         }
+    }
+
+    public static String ChangeDefaultState(boolean state, String idCliente) {
+        String result = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementSelect = null;
+            PreparedStatement statementUpdate = null;
+            PreparedStatement statementState = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementSelect = DBUtil.getConnection().prepareStatement("SELECT Predeterminado FROM ClienteTB WHERE Predeterminado = 1");
+                if (statementSelect.executeQuery().next()) {
+                    statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE ClienteTB SET Predeterminado = 0 WHERE Predeterminado = 1");
+                    statementUpdate.addBatch();
+
+                    statementState = DBUtil.getConnection().prepareStatement("UPDATE ClienteTB SET Predeterminado = ? WHERE IdCliente = ?");
+                    statementState.setBoolean(1, state);
+                    statementState.setString(2, idCliente);
+                    statementState.addBatch();
+
+                    statementUpdate.executeBatch();
+                    statementState.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "updated";
+                } else {
+                    statementState = DBUtil.getConnection().prepareStatement("UPDATE ClienteTB SET Predeterminado = ? WHERE IdCliente = ?");
+                    statementState.setBoolean(1, state);
+                    statementState.setString(2, idCliente);
+                    statementState.addBatch();
+                    statementState.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "updated";
+                }
+
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                    result = ex.getLocalizedMessage();
+                } catch (SQLException e) {
+                    result = e.getLocalizedMessage();
+                }
+
+            } finally {
+                try {
+                    if (statementSelect != null) {
+                        statementSelect.close();
+                    }
+                    if (statementUpdate != null) {
+                        statementUpdate.close();
+                    }
+                    if (statementState != null) {
+                        statementState.close();
+                    }
+                    DBUtil.dbDisconnect();
+                    ClienteTB clienteTB = ClienteADO.GetClientePredetermined();
+                    if (clienteTB != null) {
+                        Session.CLIENTE_ID = clienteTB.getIdCliente();
+                        Session.CLIENTE_DATOS = clienteTB.getInformacion();
+                        Session.CLIENTE_NUMERO_DOCUMENTO = clienteTB.getNumeroDocumento();
+                        Session.CLIENTE_DIRECCION = clienteTB.getDireccion();
+                    } else {
+                        Session.CLIENTE_ID = "";
+                        Session.CLIENTE_DATOS = "";
+                        Session.CLIENTE_NUMERO_DOCUMENTO = "";
+                        Session.CLIENTE_DIRECCION = "";
+                    }
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            result = "No se puedo establecer conexión con el servidor, revice y vuelva a intentarlo.";
+        }
+        return result;
+
     }
 
 }

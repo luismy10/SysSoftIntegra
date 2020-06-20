@@ -152,7 +152,7 @@ public class EmpleadoADO {
                 empleadoTB.setTelefono(rsEmps.getString("Telefono"));
                 empleadoTB.setCelular(rsEmps.getString("Celular"));
                 empleadoTB.setPuestoName(rsEmps.getString("Puesto"));
-                empleadoTB.setRolName(rsEmps.getString("Rol")); 
+                empleadoTB.setRolName(rsEmps.getString("Rol"));
                 empleadoTB.setEstadoName(rsEmps.getString("Estado"));
                 empList.add(empleadoTB);
             }
@@ -240,7 +240,7 @@ public class EmpleadoADO {
                 preparedStatement.setString(2, clave);
                 rsEmps = preparedStatement.executeQuery();
                 empleadoTB = new EmpleadoTB();
-                if (rsEmps.next()) {                    
+                if (rsEmps.next()) {
                     empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
                     empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
                     empleadoTB.setNombres(rsEmps.getString("Nombres"));
@@ -268,7 +268,7 @@ public class EmpleadoADO {
             return empleadoTB;
         }
     }
-    
+
     public static ObservableList<EmpleadoTB> ListEmployeeInProProduction(String value) {
         String selectStmt = "{call Sp_Listar_Empleados(?)}";
         //String selectStmt = "select * from EmpleadoTB";
@@ -293,12 +293,12 @@ public class EmpleadoADO {
                 empleadoTB.setCelular(rsEmps.getString("Celular"));
                 empleadoTB.setPuestoName(rsEmps.getString("Puesto"));
                 empleadoTB.setEstadoName(rsEmps.getString("Estado"));
-                
+
                 CheckBox checkBox = new CheckBox();
                 checkBox.getStyleClass().add("check-box-contenido");
                 checkBox.setText("");
                 empleadoTB.setValidarEm(checkBox);
-                
+
                 empList.add(empleadoTB);
             }
         } catch (SQLException e) {
@@ -319,76 +319,81 @@ public class EmpleadoADO {
         }
         return empList;
     }
-    
-      public static List<EmpleadoTB> Lista_Empleado_For_Compras(){
+
+    public static List<EmpleadoTB> Lista_Empleado_For_Compras() {
         List<EmpleadoTB> empleadoTBs = new ArrayList<>();
         DBUtil.dbConnect();
-        if(DBUtil.getConnection() != null){
+        if (DBUtil.getConnection() != null) {
             PreparedStatement statementEmpleados = null;
-            try{
+            try {
                 statementEmpleados = DBUtil.getConnection().prepareStatement("SELECT IdEmpleado,Apellidos,Nombres FROM EmpleadoTB ORDER BY Apellidos ASC");
                 ResultSet resultSet = statementEmpleados.executeQuery();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     EmpleadoTB empleadoTB = new EmpleadoTB();
                     empleadoTB.setIdEmpleado(resultSet.getString("IdEmpleado"));
                     empleadoTB.setNombres(resultSet.getString("Apellidos").toUpperCase());
                     empleadoTB.setApellidos(resultSet.getString("Nombres").toUpperCase());
                     empleadoTBs.add(empleadoTB);
                 }
-            }catch(SQLException ex){
-                
-            }finally{
-                try{
-                    if(statementEmpleados != null){
+            } catch (SQLException ex) {
+
+            } finally {
+                try {
+                    if (statementEmpleados != null) {
                         statementEmpleados.close();
                     }
                     DBUtil.dbDisconnect();
-                }catch(SQLException ex){
-                    
+                } catch (SQLException ex) {
+
                 }
             }
         }
         return empleadoTBs;
     }
-      
-    public static String DeleteEmpleadoById(String idEmpleado){
+
+    public static String DeleteEmpleadoById(String idEmpleado) {
         String result = "";
         DBUtil.dbConnect();
-        if (DBUtil.getConnection() != null){
+        if (DBUtil.getConnection() != null) {
             PreparedStatement statementValidation = null;
             PreparedStatement statementEmpleado = null;
-            try{
+            try {
                 DBUtil.getConnection().setAutoCommit(false);
-                statementValidation = DBUtil.getConnection().prepareCall("SELECT * FROM CajaTB WHERE IdUsuario = ?");
-                statementValidation.setString(1, idEmpleado);
+                statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM EmpleadoTB WHERE IdEmpleado = ? AND Sistema = 1");
+                statementValidation.setString(1, result);
                 if (statementValidation.executeQuery().next()) {
                     DBUtil.getConnection().rollback();
-                    result = "caja";
+                    result = "sistema";
                 } else {
-                    statementValidation = DBUtil.getConnection().prepareCall("SELECT * FROM CompraTB WHERE Usuario = ?");
+                    statementValidation = DBUtil.getConnection().prepareCall("SELECT * FROM CajaTB WHERE IdUsuario = ?");
                     statementValidation.setString(1, idEmpleado);
                     if (statementValidation.executeQuery().next()) {
                         DBUtil.getConnection().rollback();
-                        result = "compra";
+                        result = "caja";
                     } else {
-                        statementEmpleado = DBUtil.getConnection().prepareStatement("DELETE FROM EmpleadoTB WHERE IdEmpleado = ?");
-                        statementEmpleado.setString(1, idEmpleado);
-                        statementEmpleado.addBatch();
-                        statementEmpleado.executeBatch();
-                        DBUtil.getConnection().commit();
-                        result = "deleted";
+                        statementValidation = DBUtil.getConnection().prepareCall("SELECT * FROM CompraTB WHERE Usuario = ?");
+                        statementValidation.setString(1, idEmpleado);
+                        if (statementValidation.executeQuery().next()) {
+                            DBUtil.getConnection().rollback();
+                            result = "compra";
+                        } else {
+                            statementEmpleado = DBUtil.getConnection().prepareStatement("DELETE FROM EmpleadoTB WHERE IdEmpleado = ?");
+                            statementEmpleado.setString(1, idEmpleado);
+                            statementEmpleado.addBatch();
+                            statementEmpleado.executeBatch();
+                            DBUtil.getConnection().commit();
+                            result = "deleted";
+                        }
                     }
                 }
-            }
-            catch(SQLException ex){
+            } catch (SQLException ex) {
                 try {
                     result = ex.getLocalizedMessage();
                     DBUtil.getConnection().rollback();
                 } catch (SQLException e) {
                     result = e.getLocalizedMessage();
                 }
-            }
-            finally{ 
+            } finally {
                 try {
                     if (statementValidation != null) {
                         statementValidation.close();
@@ -401,7 +406,7 @@ public class EmpleadoADO {
                     result = ex.getLocalizedMessage();
                 }
             }
-        } else{
+        } else {
             result = "No se puedo conectar el servidor, revise su conexión.";
         }
         return result;

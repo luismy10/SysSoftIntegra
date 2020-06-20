@@ -21,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
+import model.MonedaADO;
 
 public class FxClienteController implements Initializable {
 
@@ -51,7 +54,7 @@ public class FxClienteController implements Initializable {
     @FXML
     private TableColumn<ClienteTB, String> tcRepresentante;
     @FXML
-    private TableColumn<ClienteTB, String> tcEstado;
+    private TableColumn<ClienteTB, ImageView> tcPredeterminado;
     @FXML
     private Label lblLoad;
 
@@ -70,15 +73,15 @@ public class FxClienteController implements Initializable {
         );
         tcDirección.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDireccion()));
         tcRepresentante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRepresentante()));
-        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
+        tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcDocumento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
+        tcDocumento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
         tcPersona.prefWidthProperty().bind(tvList.widthProperty().multiply(0.26));
         tcContacto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
         tcDirección.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
         tcRepresentante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
 
     }
 
@@ -97,7 +100,7 @@ public class FxClienteController implements Initializable {
             }
         };
 
-        task.setOnSucceeded(e-> {
+        task.setOnSucceeded(e -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
         });
@@ -160,15 +163,32 @@ public class FxClienteController implements Initializable {
         }
     }
 
+    private void onEventProdeteminado() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (!lblLoad.isVisible()) {
+                String result = ClienteADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdCliente());
+                if (result.equalsIgnoreCase("updated")) {
+                    Tools.AlertMessageInformation(window, "Cliente", "Se cambio el cliente predeterminado.");
+                    fillCustomersTable("");
+                } else {
+                    Tools.AlertMessageError(window, "Cliente", "Error: " + result);
+                }
+            }
+        } else {
+            Tools.AlertMessageWarning(window, "Cliente", "Seleccione un elemento de la lista.");
+        }
+    }
+
     private void openWindowRemoveCliente() {
         short value = Tools.AlertMessageConfirmation(window, "Eliminar cliente", "¿Está seguro de eliminar al cliente?");
-        if(value == 1){
+        if (value == 1) {
             String result = ClienteADO.RemoveCliente(tvList.getSelectionModel().getSelectedItem().getIdCliente());
-            if(result.equalsIgnoreCase("deleted")){
+            if (result.equalsIgnoreCase("deleted")) {
                 Tools.AlertMessageInformation(window, "Eliminar cliente", "Se elimino correctamente el cliente.");
-            }else if(result.equalsIgnoreCase("sistema")){
+                fillCustomersTable("");
+            } else if (result.equalsIgnoreCase("sistema")) {
                 Tools.AlertMessageWarning(window, "Eliminar cliente", "No se puede eliminar el cliente porque es propio del sistema.");
-            }else{
+            } else {
                 Tools.AlertMessageError(window, "Eliminar cliente", result);
             }
         }
@@ -261,17 +281,17 @@ public class FxClienteController implements Initializable {
             fillCustomersTable("");
         }
     }
-    
-        @FXML
+
+    @FXML
     private void onKeyPressedPredeterminado(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
-            
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventProdeteminado();
         }
     }
 
     @FXML
     private void onActionPredeterminado(ActionEvent event) {
-        
+        onEventProdeteminado();
     }
 
     public TableView<ClienteTB> getTvList() {

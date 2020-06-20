@@ -717,6 +717,12 @@ public class VentaADO {
                 if (statementKardex != null) {
                     statementKardex.close();
                 }
+                if(statementBanco != null){
+                    statementBanco.close();
+                }
+                if(statementBancoHistorial != null){
+                    statementBancoHistorial.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
 

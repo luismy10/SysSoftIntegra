@@ -124,13 +124,13 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField fx:id="txtRepresentante" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtRepresentante" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label styleClass="labelRoboto14" text="Teléfono:" textFill="#23283a" GridPane.rowIndex="2">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtTelefono" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtTelefono" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Celular:" textFill="#23283a" GridPane.rowIndex="3">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
@@ -143,19 +143,19 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField fx:id="txtCelular" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextField fx:id="txtCelular" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Label styleClass="labelRoboto14" text="Página web:" textFill="#23283a" GridPane.rowIndex="4">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtPaginasWeb" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField fx:id="txtPaginasWeb" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                     <Label styleClass="labelRoboto14" text="Email:" textFill="#23283a" GridPane.rowIndex="5">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtEmail" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextField fx:id="txtEmail" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Domicilio:" textFill="#23283a" GridPane.rowIndex="6">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
@@ -168,7 +168,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField fx:id="txtDomicilio" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <TextField fx:id="txtDomicilio" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                  </children>
                               </GridPane>
                            </children>
@@ -270,7 +270,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtNumeroDocumento" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="3" />
+                              <TextField fx:id="txtNumeroDocumento" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="3" />
                               <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Razón social:" textFill="#23283a" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="Roboto" size="14.0" />
@@ -283,13 +283,13 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtRazonSocial" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="txtRazonSocial" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label styleClass="labelRoboto14" text="Nombre comercial:" textFill="#23283a" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="Roboto" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtNombreComercial" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <TextField fx:id="txtNombreComercial" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -356,7 +356,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtNombreMoneda" prefHeight="30.0" prefWidth="240.0" promptText="Dolar, euro otros" styleClass="text-field-normal" GridPane.columnIndex="1" />
+                              <TextField fx:id="txtNombreMoneda" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" promptText="Dolar, euro otros" styleClass="text-field-normal" GridPane.columnIndex="1" />
                               <Label contentDisplay="RIGHT" styleClass="labelOpenSansRegular14" text="Simbolo:" GridPane.columnIndex="2">
                                  <graphic>
                                     <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
@@ -366,7 +366,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtSimboloMoneda" prefHeight="30.0" prefWidth="240.0" promptText="\$, S/." styleClass="text-field-normal" GridPane.columnIndex="3" />
+                              <TextField fx:id="txtSimboloMoneda" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" promptText="\$, S/." styleClass="text-field-normal" GridPane.columnIndex="3" />
                               <Label contentDisplay="RIGHT" styleClass="labelOpenSansRegular14" text="Tipo de cambio:" GridPane.rowIndex="1">
                                  <graphic>
                                     <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
@@ -376,7 +376,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtTipoCambioMoneda" onKeyTyped="#onKeyTypedTipoCambio" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="txtTipoCambioMoneda" onAction="#onActionTerminar" onKeyTyped="#onKeyTypedTipoCambio" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -408,7 +408,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtUsuario" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="admin" GridPane.columnIndex="1" />
+                              <TextField fx:id="txtUsuario" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="admin" GridPane.columnIndex="1" />
                               <Label contentDisplay="RIGHT" styleClass="labelOpenSansRegular14" text="Contraseña:" GridPane.columnIndex="2">
                                  <graphic>
                                     <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
@@ -418,7 +418,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtClave" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="admin" GridPane.columnIndex="3" />
+                              <TextField fx:id="txtClave" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="admin" GridPane.columnIndex="3" />
                            </children>
                         </GridPane>
                      </children>

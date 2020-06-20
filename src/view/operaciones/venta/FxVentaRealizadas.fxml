@@ -65,125 +65,133 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                              <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Fecha inicial" textFill="#020203">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/calendar.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="200.0" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Fecha final" textFill="#020203">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/calendar.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Documento" textFill="#020203">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/recibo.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <ComboBox fx:id="cbComprobante" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="200.0" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Estado" textFill="#020203">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/options.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <ComboBox fx:id="cbEstado" onAction="#onActionEstado" prefHeight="30.0" prefWidth="200.0" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Vendedor" textFill="#020203">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/seller.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <HBox fx:id="hbVendedor">
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <TextField fx:id="txtVendedor" disable="true" prefWidth="200.0" styleClass="text-field-normal" />
-                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionVendedor" onKeyPressed="#onKeyPressedVendedor" styleClass="buttonBorder">
+                                          <Label styleClass="labelOpenSansRegular14" text="Fecha inicial" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
                                              <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/calendar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su fecha" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Fecha final" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/calendar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su fecha" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Documento" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/recibo.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <ComboBox fx:id="cbComprobante" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Estado" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/options.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <ComboBox fx:id="cbEstado" onAction="#onActionEstado" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <VBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Buscar por Cliente o Serie/Numeración" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../image/search.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
-                                          </Button>
+                                          </Label>
+                                          <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyRelasedSearch" prefHeight="30.0" promptText="Ingrese su cliente o serie y numeración" styleClass="text-field-normal" />
                                        </children>
-                                    </HBox>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Vendedor" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/seller.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <HBox fx:id="hbVendedor">
+                                             <children>
+                                                <TextField fx:id="txtVendedor" disable="true" prefWidth="240.0" styleClass="text-field-normal" />
+                                                <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionVendedor" onKeyPressed="#onKeyPressedVendedor" styleClass="buttonBorder">
+                                                   <graphic>
+                                                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/search.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
-                           <children>
-                              <VBox style="-fx-spacing: 0.5em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Buscar por Cliente o Serie/Numeración" textFill="#020203">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/search.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyRelasedSearch" prefHeight="30.0" styleClass="text-field-normal" />
-                                 </children>
-                              </VBox>
+                              </HBox>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
                                     <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">

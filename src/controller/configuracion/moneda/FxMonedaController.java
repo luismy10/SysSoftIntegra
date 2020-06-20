@@ -39,7 +39,7 @@ public class FxMonedaController implements Initializable {
     private VBox window;
     @FXML
     private TableView<MonedaTB> tvList;
-        @FXML
+    @FXML
     private TableColumn<MonedaTB, String> tcNumero;
     @FXML
     private TableColumn<MonedaTB, String> tcMoneda;
@@ -65,13 +65,13 @@ public class FxMonedaController implements Initializable {
         tcTipoCambio.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoCambio()));
         tcAbreviatura.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getAbreviado()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
-        
+
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcMoneda.prefWidthProperty().bind(tvList.widthProperty().multiply(0.24));
         tcTipoCambio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.24));
         tcAbreviatura.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
         tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        
+
         stateRequest = false;
     }
 
@@ -177,18 +177,21 @@ public class FxMonedaController implements Initializable {
 
     private void onEventRemover() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            String result = MonedaADO.RemoveElement(tvList.getSelectionModel().getSelectedItem().getIdMoneda());
-            if (result.equalsIgnoreCase("predetermined")) {
-                Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está predeterminado.");
-            } else if (result.equalsIgnoreCase("venta")) {
-                Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está ligado a una venta");
-            } else if (result.equalsIgnoreCase("compra")) {
-                Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está ligado a un compra.");
-            } else if (result.equalsIgnoreCase("removed")) {
-                Tools.AlertMessageWarning(window, "Moneda", "Se eliminó correctamente la moneda.");
-                fillTableMonedas();
-            } else {
-                Tools.AlertMessageError(window, "Moneda", "Error: " + result);
+            short value = Tools.AlertMessageConfirmation(window, "Moneda", "¿Está seguro de eliminar la moneda?");
+            if (value == 1) {
+                String result = MonedaADO.RemoveElement(tvList.getSelectionModel().getSelectedItem().getIdMoneda());
+                if (result.equalsIgnoreCase("predetermined")) {
+                    Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está predeterminado.");
+                } else if (result.equalsIgnoreCase("venta")) {
+                    Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está ligado a una venta");
+                } else if (result.equalsIgnoreCase("compra")) {
+                    Tools.AlertMessageWarning(window, "Moneda", "No se puedo eliminar ya que está ligado a un compra.");
+                } else if (result.equalsIgnoreCase("removed")) {
+                    Tools.AlertMessageWarning(window, "Moneda", "Se eliminó correctamente la moneda.");
+                    fillTableMonedas();
+                } else {
+                    Tools.AlertMessageError(window, "Moneda", "Error: " + result);
+                }
             }
         } else {
             Tools.AlertMessageWarning(window, "Moneda", "Seleccione un elemento de la lista.");

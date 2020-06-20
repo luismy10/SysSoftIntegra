@@ -269,7 +269,7 @@ public class FxBienvenidaController implements Initializable {
 
             EmpleadoTB empleadoTB = new EmpleadoTB();
             empleadoTB.setTipoDocumento(0);
-            empleadoTB.setNumeroDocumento("");
+            empleadoTB.setNumeroDocumento("00000000");
             empleadoTB.setApellidos("ADMINISTRADOR");
             empleadoTB.setNombres("GENERAL");
             empleadoTB.setUsuario(txtUsuario.getText());
@@ -292,7 +292,7 @@ public class FxBienvenidaController implements Initializable {
 
             ClienteTB clienteTB = new ClienteTB();
             clienteTB.setTipoDocumento(1);
-            clienteTB.setNumeroDocumento("");
+            clienteTB.setNumeroDocumento("00000000");
             clienteTB.setInformacion("PUBLICO GENERAL");
             clienteTB.setTelefono("");
             clienteTB.setCelular("");
@@ -317,7 +317,7 @@ public class FxBienvenidaController implements Initializable {
                 String result = task.getValue();
                 if (result.equalsIgnoreCase("inserted")) {
                     Tools.AlertMessageInformation(apWindow, "SysSoftIntegra", "Se guardo los cambios correctamente, habra nuevamente la aplicación son su usuario y clave creada.");
-                    Tools.Dispose(apWindow);
+                    System.exit(0);                   
                 } else {
                     Tools.AlertMessageError(apWindow, "SysSoftIntegra", result);
                     btnAnterior.setDisable(false);

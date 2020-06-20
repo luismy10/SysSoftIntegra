@@ -65,6 +65,13 @@ public class FxImpuestoController implements Initializable {
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigoAlterno()));
         stateUpdate = false;
+        
+        
+        tcOperacion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcNombre.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcValor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.18));
+        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
     }
 
     public void fillTabletTax() {

@@ -64,13 +64,11 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Text lblComprobante;
     @FXML
-    private Text lblTotal;
+    private Label lblTotal;
     @FXML
     private Text lblCliente;
     @FXML
     private Text lblTipo;
-    @FXML
-    private Text lblEstado;
     @FXML
     private Text lblObservaciones;
     @FXML
@@ -80,13 +78,11 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private GridPane gpList;
     @FXML
-    private Text lblValorVenta;
+    private Label lblValorVenta;
     @FXML
-    private Text lblDescuento;
+    private Label lblDescuento;
     @FXML
-    private Text lblSubTotal;
-    @FXML
-    private VBox hbAgregarImpuesto;
+    private Label lblSubTotal;
     @FXML
     private Text lblTotalVenta;
     @FXML
@@ -97,6 +93,8 @@ public class FxVentaDetalleController implements Initializable {
     private VBox vbMetodoPago;
     @FXML
     private VBox vbValor;
+    @FXML
+    private GridPane gpImpuestos;
 
     private AnchorPane windowinit;
 
@@ -135,7 +133,7 @@ public class FxVentaDetalleController implements Initializable {
     private double totalVenta;
 
     private double efectivo, vuelto;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         arrayArticulos = new ArrayList<>();
@@ -194,8 +192,7 @@ public class FxVentaDetalleController implements Initializable {
                         nombreTicketImpresion = ventaTB.getComproabanteNameImpresion();
                         lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                         lblObservaciones.setText(ventaTB.getObservaciones());
-                        lblTipo.setText(ventaTB.getTipoName());
-                        lblEstado.setText(ventaTB.getEstadoName());
+                        lblTipo.setText(ventaTB.getTipoName() + " " + ventaTB.getEstadoName());
                         btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
                         lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
                         efectivo = ventaTB.getEfectivo();
@@ -210,10 +207,10 @@ public class FxVentaDetalleController implements Initializable {
                         lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
                     }
                     fillVentasDetalleTable(empList);
-                    formaPagoTBs.forEach(em -> {                        
+                    formaPagoTBs.forEach(em -> {
                         addElementMetodoPago(em.getNombre());
                         addElementValor(Tools.roundingValue(em.getMonto(), 2));
-                       
+
                     });
                 }
 
@@ -357,7 +354,8 @@ public class FxVentaDetalleController implements Initializable {
             arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
             lblSubTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subTotalImporte, 2));
 
-            hbAgregarImpuesto.getChildren().clear();
+            gpImpuestos.getChildren().clear();
+
             boolean addOperacion = false;
             double sumaOperacion = 0;
 
@@ -373,9 +371,8 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addOperacion) {
-                    addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "",
-                            arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":",
-                            ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2));
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() , Pos.CENTER_LEFT), 0, 2 + (k + 1));
+                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, 2 + (k + 1));
                     addOperacion = false;
                     sumaOperacion = 0;
                 }
@@ -389,7 +386,8 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addImpuesto) {
-                    addElementImpuesto(arrayArticulos.get(k).getIdImpuesto() + "", arrayArticulos.get(k).getNombreImpuesto() + ":", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2));
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto() , Pos.CENTER_LEFT), 0, k + 1);
+                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     totalImpuestos += sumaImpuesto;
                     addImpuesto = false;
                     sumaImpuesto = 0;
@@ -431,21 +429,28 @@ public class FxVentaDetalleController implements Initializable {
         vbValor.getChildren().add(text);
     }
 
-    private void addElementImpuesto(String id, String titulo, String total) {
-        Text text = new Text(titulo);
-        text.setStyle("-fx-fill:#020203;");
-        text.getStyleClass().add("labelOpenSansRegular14");
+    private Label addLabelTitle(String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setStyle("-fx-text-fill:#000000;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
+        label.getStyleClass().add("labelRoboto14");
+        label.setAlignment(pos);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Control.USE_COMPUTED_SIZE);
+        label.setMaxHeight(Control.USE_COMPUTED_SIZE);
+        return label;
+    }
 
-        Text text1 = new Text(total);
-        text1.setStyle("-fx-fill:#055bd3;");
-        text1.getStyleClass().add("labelOpenSansRegular14");
-
-        HBox hBox = new HBox(text, text1);
-        hBox.setStyle("-fx-padding: 0.5em 0  0.5em 0;-fx-spacing:1em");
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.setId(id);
-
-        hbAgregarImpuesto.getChildren().add(hBox);
+    private Label addLabelTotal(String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setStyle("-fx-text-fill:#0771d3;");
+        label.getStyleClass().add("labelRobotoMedium16");
+        label.setAlignment(pos);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
     }
 
     private void openWindowReporte() {
@@ -514,7 +519,7 @@ public class FxVentaDetalleController implements Initializable {
             }
             InputStream imgInputStream
                     = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-            
+
             InputStream dir = getClass().getResourceAsStream("/report/VentaRealizada.jasper");
 
             Map map = new HashMap();

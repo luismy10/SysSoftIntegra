@@ -62,14 +62,17 @@ public class Session {
     public static boolean CORTAPAPEL_IMPRESORA;
 
     public static boolean ESTADO_IMPRESORA;
+    
+    /*
+    variable de cliente
+    */
+    public static String CLIENTE_ID;
 
-    public static String IDCLIENTE;
+    public static String CLIENTE_DATOS;
 
-    public static String DATOSCLIENTE;
+    public static String CLIENTE_NUMERO_DOCUMENTO;
 
-    public static String N_DOCUMENTO_CLIENTE;
-
-    public static String DIRECCION_CLIENTE;
+    public static String CLIENTE_DIRECCION;
 
     /*
     varialble de moneda

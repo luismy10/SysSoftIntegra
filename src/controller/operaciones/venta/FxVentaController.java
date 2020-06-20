@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
@@ -38,7 +39,9 @@ public class FxVentaController implements Initializable {
     private Tab tbVentaUno;
     @FXML
     private Button btnAgregarVenta;
-
+    @FXML
+    private Label lblNombreCaja;
+   
     private AnchorPane vbPrincipal;
 
     private FxVentaEstructuraController ventaEstructuraController;
@@ -46,7 +49,7 @@ public class FxVentaController implements Initializable {
     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private boolean aperturaCaja;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
@@ -95,14 +98,14 @@ public class FxVentaController implements Initializable {
         } else {
             boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
             if (validate) {
+                lblNombreCaja.setText(Session.NOMBRE_CUENTA_EFECTIVO);
                 CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
                 switch (cajaTB.getId()) {
                     case 1:
                         openWindowFondoInicial();
                         break;
                     case 2:
-//                        Session.CAJA_ID = cajaTB.getIdCaja();
-                        aperturaCaja = true;
+                         aperturaCaja = true;
                         hbContenedorVentas.setDisable(false);
                         break;
                     case 3:
@@ -112,7 +115,7 @@ public class FxVentaController implements Initializable {
                         break;
                 }
             } else {
-                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
+                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja.");
             }
         }
 
