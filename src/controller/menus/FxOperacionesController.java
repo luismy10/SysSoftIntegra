@@ -142,7 +142,11 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeCompra, 0d);
         AnchorPane.setBottomAnchor(nodeCompra, 0d);
         vbContent.getChildren().add(nodeCompra);
-        controllerCompras.loadComponents();
+        if (!controllerCompras.isLoadData()) {
+            controllerCompras.loadAllComponents();
+        } else {
+            controllerCompras.loadSearchProveedores();
+        }
     }
 
     private void openWindowCorteCaja() {

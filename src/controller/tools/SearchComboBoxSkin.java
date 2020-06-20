@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.ProveedorTB;
 
 public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
 
@@ -32,8 +33,8 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         searchBox.textProperty().addListener((ObservableValue<? extends String> p, String o, String text) -> {
             searchComboBox.setPredicateFilter(item
                     -> text.isEmpty()
-                            ? true
-                            : searchComboBox.getFilter().test(item, text)
+                    ? true
+                    : searchComboBox.getFilter().test(item, text)
             );
 //                if(!itemView.getItems().isEmpty()){
 //                   itemView.getSelectionModel().select(0);
@@ -47,6 +48,10 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         itemView.getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
             if (item != null) {
                 searchComboBox.getComboBox().getSelectionModel().select(item);
+                if (itemView.getSelectionModel().getSelectedItem() instanceof ProveedorTB) {
+                    Session.PROVEEDOR_ID = ((ProveedorTB) itemView.getSelectionModel().getSelectedItem()).getIdProveedor();
+                }
+
                 // ocultar popup cuando el item fue seleccionado mediante un click
                 if (clickSelection) {
                     searchComboBox.getComboBox().hide();
@@ -72,10 +77,14 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
                     case ESCAPE:
                         searchComboBox.getComboBox().hide();
                         break;
-                    case UP: break;
-                    case DOWN: break;
-                    case LEFT: break;
-                    case RIGHT: break;
+                    case UP:
+                        break;
+                    case DOWN:
+                        break;
+                    case LEFT:
+                        break;
+                    case RIGHT:
+                        break;
                     default:
                         searchBox.requestFocus();
                         searchBox.selectAll();

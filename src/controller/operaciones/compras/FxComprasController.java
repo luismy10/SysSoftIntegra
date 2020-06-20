@@ -110,6 +110,8 @@ public class FxComprasController implements Initializable {
     private Button btnProveedor;
     @FXML
     private TextField cbSerie;
+    @FXML
+    private GridPane gpImpuestos;
 
     private AnchorPane vbPrincipal;
 
@@ -128,8 +130,8 @@ public class FxComprasController implements Initializable {
     private double subTotal;
 
     private double totalNeto;
-    @FXML
-    private GridPane gpImpuestos;
+
+    private boolean loadData;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -167,17 +169,15 @@ public class FxComprasController implements Initializable {
                 }
             }
         });
+        loadData = false;
         stateSearchProducto = false;
         loteTBs = FXCollections.observableArrayList();
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
 
         arrayArticulosImpuesto = new ArrayList<>();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-        });
 
         searchComboBox = new SearchComboBox<>(cbProveedor);
-        searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()));
+        searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
 
 //        List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros();
 //        SearchComboBox<SuministroTB> scSuministros = new SearchComboBox<>(cbProducto);
@@ -190,10 +190,69 @@ public class FxComprasController implements Initializable {
 
     }
 
-    public void loadComponents() {
-        searchComboBox.getComboBox().getItems().clear();
-        List<ProveedorTB> proveedorTBs = ProveedorADO.getSearchComboBoxProveedores();
-        searchComboBox.getComboBox().getItems().addAll(proveedorTBs);
+    public void loadAllComponents() {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
+            @Override
+            public List<ProveedorTB> call() {
+                ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+                    arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+                });
+                return ProveedorADO.getSearchComboBoxProveedores();
+            }
+        };
+
+        task.setOnSucceeded((e) -> {
+            List<ProveedorTB> proveedorTBs = task.getValue();
+            searchComboBox.getComboBox().getItems().addAll(proveedorTBs);
+            loadData = true;
+        });
+
+        task.setOnFailed((e) -> {
+            loadData = false;
+        });
+
+        task.setOnScheduled((e) -> {
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
+    }
+
+    public void loadSearchProveedores() {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
+            @Override
+            public List<ProveedorTB> call() {
+                return ProveedorADO.getSearchComboBoxProveedores();
+            }
+        };
+
+        task.setOnSucceeded((e) -> {
+            searchComboBox.getComboBox().getItems().clear();
+            List<ProveedorTB> proveedorTBs = task.getValue();
+            searchComboBox.getComboBox().getItems().addAll(proveedorTBs);
+            setLoadProveedor(Session.PROVEEDOR_ID);
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -262,7 +321,10 @@ public class FxComprasController implements Initializable {
         for (ProveedorTB p : cbProveedor.getItems()) {
             if (p.getIdProveedor().equalsIgnoreCase(idProveedor)) {
                 cbProveedor.getSelectionModel().select(p);
+                Session.PROVEEDOR_ID = p.getIdProveedor();
                 break;
+            } else {
+                Session.PROVEEDOR_ID = "";
             }
         }
     }
@@ -279,9 +341,9 @@ public class FxComprasController implements Initializable {
         lblDescuento.setText(Session.MONEDA_SIMBOLO + " " + "0.00");
         lblTotalNeto.setText(Session.MONEDA_SIMBOLO + " " + "0.00");
         txtObservaciones.clear();
-        txtNotas.clear();        
+        txtNotas.clear();
         gpImpuestos.getChildren().clear();
-        loadComponents();
+        loadSearchProveedores();
     }
 
     private void filterProducto(String search) {
@@ -355,9 +417,9 @@ public class FxComprasController implements Initializable {
                 compraTB.setTipoMoneda(Session.MONEDA_ID);
                 compraTB.setFechaCompra(Tools.getDatePicker(tpFechaCompra));
                 compraTB.setHoraCompra(Tools.getHour());
-                compraTB.setSubTotal(Double.parseDouble(lblSubTotal.getText()));
-                compraTB.setDescuento(Double.parseDouble(lblDescuento.getText()));
-                compraTB.setTotal(Double.parseDouble(lblTotalNeto.getText()));
+                compraTB.setSubTotal(subTotal);
+                compraTB.setDescuento(descuento);
+                compraTB.setTotal(totalNeto);
                 compraTB.setObservaciones(txtObservaciones.getText().trim().isEmpty() ? "" : txtObservaciones.getText().trim());
                 compraTB.setNotas(txtNotas.getText().trim().isEmpty() ? "" : txtNotas.getText().trim());
                 compraTB.setUsuario(Session.USER_ID);
@@ -464,8 +526,8 @@ public class FxComprasController implements Initializable {
         });
         tvList.getItems().add(detalleCompraTB);
     }
-    
-    public void editSuministroToTable(int index,DetalleCompraTB detalleCompraTB){
+
+    public void editSuministroToTable(int index, DetalleCompraTB detalleCompraTB) {
         detalleCompraTB.getRemove().setOnAction(e -> {
             tvList.getItems().remove(detalleCompraTB);
             tvList.refresh();
@@ -505,24 +567,25 @@ public class FxComprasController implements Initializable {
     }
 
     public void calculateTotals() {
-
+        
+        totalBruto = 0;
         tvList.getItems().forEach(e -> {
             totalBruto += (e.getCantidad() * e.getPrecioCompra());
         });
         lblTotalBruto.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalBruto, 4));
-        totalBruto = 0;
-
+        
+        descuento = 0;
         tvList.getItems().forEach(e -> {
             descuento += e.getCantidad() * (e.getPrecioCompra() * (e.getDescuento() / 100.00));
         });
         lblDescuento.setText(Session.MONEDA_SIMBOLO + " " + (Tools.roundingValue(descuento * (-1), 4)));
-        descuento = 0;
-
+        
+        subTotal = 0;
         tvList.getItems().forEach(e -> {
             subTotal += (e.getCantidad() * e.getPrecioCompra()) - (e.getCantidad() * (e.getPrecioCompra() * (e.getDescuento() / 100.00)));
         });
         lblSubTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(subTotal, 4));
-        subTotal = 0;
+        
 
         gpImpuestos.getChildren().clear();
         boolean addElement = false;
@@ -539,18 +602,19 @@ public class FxComprasController implements Initializable {
                 gpImpuestos.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(0, 1).toUpperCase() + ""
                         + arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(1, arrayArticulosImpuesto.get(k).getNombreImpuesto().length()).toLowerCase(),
                         Pos.CENTER_LEFT), 0, k + 1);
-                gpImpuestos.add(addLabelTotal(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
+                gpImpuestos.add(addLabelTotal(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(sumaElement, 4), Pos.CENTER_RIGHT), 1, k + 1);
                 addElement = false;
                 sumaElement = 0;
             }
 
         }
-
+        
+        totalNeto = 0;        
         tvList.getItems().forEach(e -> {
             totalNeto += e.getImporte();
         });
-        lblTotalNeto.setText(Tools.roundingValue((totalNeto), 4));
-        totalNeto = 0;
+        lblTotalNeto.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue((totalNeto), 4));
+        
     }
 
     private Label addLabelTitle(String nombre, Pos pos) {
@@ -710,6 +774,14 @@ public class FxComprasController implements Initializable {
                 filterProducto(txtProducto.getText().trim());
             }
         }
+    }
+
+    public boolean isLoadData() {
+        return loadData;
+    }
+
+    public void setLoadData(boolean loadData) {
+        this.loadData = loadData;
     }
 
     public TableView<DetalleCompraTB> getTvList() {

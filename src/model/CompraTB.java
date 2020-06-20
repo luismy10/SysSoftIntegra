@@ -75,7 +75,7 @@ public class CompraTB {
     }
 
     public void setSerie(String serie) {
-        this.serie = serie;
+        this.serie = serie == null ? "" : serie;
     }
 
     public String getNumeracion() {

@@ -139,7 +139,7 @@ public class FxProveedorListaController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {
-                comprasController.loadComponents();
+                comprasController.loadSearchProveedores();
             });
             stage.show();
             controller.setValueAdd();

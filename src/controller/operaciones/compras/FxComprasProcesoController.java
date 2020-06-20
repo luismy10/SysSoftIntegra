@@ -126,6 +126,7 @@ public class FxComprasProcesoController implements Initializable {
                 Tools.AlertMessageWarning(apWindow, "Compra", "Ingrese el valor recibido.");
                 txtEfectivo.requestFocus();
             } else {
+                compraTB.setTipoDocumento(0);
                 compraTB.setTipo(1);
                 compraTB.setEstado(1);
                 compraTB.setFechaVencimiento(compraTB.getFechaCompra());

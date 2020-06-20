@@ -68,7 +68,7 @@ public class ProveedorTB {
     }
 
     public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
+        this.numeroDocumento = numeroDocumento == null ? "" : numeroDocumento;
     }
 
     public String getRazonSocial() {
@@ -201,9 +201,7 @@ public class ProveedorTB {
 
     @Override
     public String toString() {
-        return  razonSocial ;
+        return razonSocial;
     }
-    
-    
 
 }

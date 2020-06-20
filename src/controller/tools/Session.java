@@ -91,5 +91,10 @@ public class Session {
     public static String ID_CUENTA_BANCARIA;
 
     public static String NOMBRE_CUENTA_BANCARIA;
-
+    
+    /*
+    variable de proveedor
+    */
+    
+    public static String PROVEEDOR_ID;
 }

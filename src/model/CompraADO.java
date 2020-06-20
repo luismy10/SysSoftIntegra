@@ -48,6 +48,7 @@ public class CompraADO extends DBUtil {
                         + "CompraTB("
                         + "IdCompra,"
                         + "Proveedor,"
+                        + "Comprobante,"
                         + "Serie,"
                         + "Numeracion,"
                         + "TipoMoneda,"
@@ -63,7 +64,7 @@ public class CompraADO extends DBUtil {
                         + "TipoCompra,"
                         + "EstadoCompra,"
                         + "Usuario) "
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                 detalle_compra = getConnection().prepareStatement("INSERT INTO "
                         + "DetalleCompraTB("
@@ -122,21 +123,22 @@ public class CompraADO extends DBUtil {
 
                 compra.setString(1, id_compra);
                 compra.setString(2, compraTB.getProveedor());
-                compra.setString(3, compraTB.getSerie());
-                compra.setString(4, compraTB.getNumeracion());
-                compra.setInt(5, compraTB.getTipoMoneda());
-                compra.setString(6, compraTB.getFechaCompra());
-                compra.setString(7, compraTB.getHoraCompra());
-                compra.setString(8, compraTB.getFechaVencimiento());
-                compra.setString(9, compraTB.getHoraVencimiento());
-                compra.setDouble(10, compraTB.getSubTotal());
-                compra.setDouble(11, compraTB.getDescuento());
-                compra.setDouble(12, compraTB.getTotal());
-                compra.setString(13, compraTB.getObservaciones());
-                compra.setString(14, compraTB.getNotas());
-                compra.setInt(15, compraTB.getTipo());
-                compra.setInt(16, compraTB.getEstado());
-                compra.setString(17, compraTB.getUsuario());
+                compra.setInt(3, compraTB.getTipoDocumento());
+                compra.setString(4, compraTB.getSerie());
+                compra.setString(5, compraTB.getNumeracion());
+                compra.setInt(6, compraTB.getTipoMoneda());
+                compra.setString(7, compraTB.getFechaCompra());
+                compra.setString(8, compraTB.getHoraCompra());
+                compra.setString(9, compraTB.getFechaVencimiento());
+                compra.setString(10, compraTB.getHoraVencimiento());
+                compra.setDouble(11, compraTB.getSubTotal());
+                compra.setDouble(12, compraTB.getDescuento());
+                compra.setDouble(13, compraTB.getTotal());
+                compra.setString(14, compraTB.getObservaciones());
+                compra.setString(15, compraTB.getNotas());
+                compra.setInt(16, compraTB.getTipo());
+                compra.setInt(17, compraTB.getEstado());
+                compra.setString(18, compraTB.getUsuario());
                 compra.addBatch();
 
                 for (int i = 0; i < tableView.getItems().size(); i++) {

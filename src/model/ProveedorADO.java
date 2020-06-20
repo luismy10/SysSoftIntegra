@@ -296,7 +296,7 @@ public class ProveedorADO {
     }
 
     public static List<ProveedorTB> getSearchComboBoxProveedores() {
-         String selectStmt = "SELECT IdProveedor,RazonSocial FROM ProveedorTB";
+         String selectStmt = "SELECT IdProveedor,NumeroDocumento,RazonSocial FROM ProveedorTB";
         PreparedStatement preparedStatement = null;
         List<ProveedorTB> proveedorTBs = new ArrayList<>();
           try {
@@ -306,11 +306,12 @@ public class ProveedorADO {
                  while (rsEmps.next()) {
                      ProveedorTB proveedorTB = new ProveedorTB();
                      proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
+                     proveedorTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                      proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
                      proveedorTBs.add(proveedorTB);
                  }}
           }catch(SQLException e){
-              
+              System.out.println("Error en getSearchComboBoxProveedores(): "+e.getLocalizedMessage());
           }finally{
               try{
                   if(preparedStatement != null){
