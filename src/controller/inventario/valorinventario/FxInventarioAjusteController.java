@@ -34,7 +34,7 @@ public class FxInventarioAjusteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
     }
-
+      
     public void setLoadComponents(String idSuministro, String clave, String producto) {
         this.idSuministro = idSuministro;
         lblClave.setText(clave);
@@ -55,7 +55,7 @@ public class FxInventarioAjusteController implements Initializable {
             if (option == 1) {
                 String value = SuministroADO.UpdatedInventarioStockMM(idSuministro, txtStockMinimo.getText().trim(), stockMaximo.getText().trim());
                 if (value.equalsIgnoreCase("updated")) {
-                    valorInventarioController.fillInventarioTable("", (short) valorInventarioController.getCbExistencia().getSelectionModel().getSelectedIndex());
+                    valorInventarioController.fillInventarioTable("", (short) 0, "",(short) 0,0,0);
                     Tools.Dispose(apWindow);
                     Tools.AlertMessageInformation(apWindow, "Ajuste de inventario", "Se realizo los cambios correctamenten.");
                 } else {

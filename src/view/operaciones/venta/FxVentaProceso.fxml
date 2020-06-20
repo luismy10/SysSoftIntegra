@@ -60,10 +60,9 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionNumeroDocumentoSearch" onKeyTyped="#onKeyTypedDocumento" prefHeight="30.0" prefWidth="150.0" promptText="N° documento" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                                          <HBox>
+                                          <HBox HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="txtDatos" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Datos del cliente " styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="cbCliente" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Busque su cliente" HBox.hgrow="ALWAYS" />
                                                 <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonBorder">
                                                    <graphic>
                                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -88,7 +87,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtDireccion" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtDireccion" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>

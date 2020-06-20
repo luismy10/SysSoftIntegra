@@ -140,10 +140,7 @@ public class FxClienteListaController implements Initializable {
                         tvList.getSelectionModel().getSelectedItem().getInformacion());
                 Tools.Dispose(apWindow);
             } else if (ventaProcesoController != null) {
-                ventaProcesoController.setClienteProcesoVenta(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
-                        tvList.getSelectionModel().getSelectedItem().getInformacion(),
-                        tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
-                        tvList.getSelectionModel().getSelectedItem().getDireccion());
+                ventaProcesoController.setLoadCliente(tvList.getSelectionModel().getSelectedItem().getIdCliente());
                 Tools.Dispose(apWindow);
             }
         }

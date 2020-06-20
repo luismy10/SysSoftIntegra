@@ -4,6 +4,7 @@ import controller.contactos.clientes.FxClienteListaController;
 import controller.operaciones.compras.FxPlazosController;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
+import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -13,7 +14,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -76,9 +81,7 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private VBox vbCliente;
     @FXML
-    private TextField txtNumeroDocumento;
-    @FXML
-    private TextField txtDatos;
+    private ComboBox<ClienteTB> cbCliente;
     @FXML
     private TextField txtDireccion;
     @FXML
@@ -87,9 +90,9 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtTarjeta;
     @FXML
     private Label lblVueltoNombre;
-     @FXML
+    @FXML
     private HBox hbContenido;
-     
+
     private FxVentaEstructuraController ventaEstructuraController;
 
     private TableView<SuministroTB> tvList;
@@ -100,6 +103,8 @@ public class FxVentaProcesoController implements Initializable {
 
     private String moneda_simbolo;
 
+    private SearchComboBox<ClienteTB> searchComboBox;
+
     private double vuelto;
 
     private boolean estado = false;
@@ -108,9 +113,6 @@ public class FxVentaProcesoController implements Initializable {
 
     private boolean state_view_pago;
 
-    private String idCliente;
-   
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
@@ -118,8 +120,10 @@ public class FxVentaProcesoController implements Initializable {
         tota_venta = 0;
         vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
-        setInitializePlazosVentas();
         lblVueltoNombre.setText("Su cambio: ");
+        searchComboBox = new SearchComboBox<>(cbCliente);
+        searchComboBox.setFilter((item, text) -> item.getInformacion().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
+
     }
 
     public void setInitializePlazosVentas() {
@@ -141,15 +145,43 @@ public class FxVentaProcesoController implements Initializable {
         lblComprobante.setText(ventaTB.getComprobanteName());
         tota_venta = total;
         lblTotal.setText(moneda_simbolo + " " + Tools.roundingValue(total, 2));
-        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));        
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
         lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ventaEstructuraController.getMonedaNombre()));
-        setClienteProcesoVenta(Session.CLIENTE_ID, Session.CLIENTE_DATOS, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DIRECCION);
-        txtEfectivo.requestFocus();
-         boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
-         if(!validate){
-             Tools.AlertMessageWarning(window, "Configuración de caja/banco", "Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
-             hbContenido.setDisable(true);
-         }
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                setInitializePlazosVentas();
+                List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente();
+                searchComboBox.getComboBox().getItems().addAll(clienteTBs);
+                setLoadCliente(Session.CLIENTE_ID);               
+                boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
+                if (!validate) {
+                    hbContenido.setDisable(true);                    
+                    Tools.AlertMessageWarning(window, "Venta", "Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva su caja.");                 
+                }
+                return null;
+            }
+        };
+        task.setOnSucceeded(e -> {
+             txtEfectivo.requestFocus();
+        });
+        task.setOnFailed(e->{
+            hbContenido.setDisable(true);
+            Tools.AlertMessageError(window, "Venta", "Habrá nuevamente la ventana, se produjo un problema de conexión al traer los datos.");
+            
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
     }
 
     private void openWindowAddPlazoVenta() throws IOException {
@@ -166,21 +198,14 @@ public class FxVentaProcesoController implements Initializable {
         stage.show();
     }
 
-    public void setClienteProcesoVenta(String id, String datos, String numeroDocumento, String direccion) {
-        idCliente = !id.equalsIgnoreCase("") ? id : Session.CLIENTE_ID;
-        txtNumeroDocumento.setText(numeroDocumento.equalsIgnoreCase("")
-                ? Session.CLIENTE_NUMERO_DOCUMENTO
-                : numeroDocumento);
-
-        txtDatos.setText(datos.equalsIgnoreCase("")
-                ? Session.CLIENTE_DATOS
-                : datos);
-
-        txtDireccion.setText(direccion.equalsIgnoreCase("")
-                ? Session.CLIENTE_DIRECCION
-                : direccion);
-
-        ventaTB.setCliente(idCliente);
+    public void setLoadCliente(String idCliente) {
+        for (ClienteTB c : cbCliente.getItems()) {
+            if (c.getIdCliente().equalsIgnoreCase(idCliente)) {
+                cbCliente.getSelectionModel().select(c);
+                txtDireccion.setText(c.getDireccion());
+                break;
+            }
+        }
     }
 
     private void openWindowCliente() {
@@ -208,12 +233,9 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private void onActionAceptar(ActionEvent event) {
         if (state_view_pago) {
-            if (txtNumeroDocumento.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
-                txtNumeroDocumento.requestFocus();
-            } else if (txtDatos.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cliente.");
-                txtDatos.requestFocus();
+            if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Venta", "Seleccione su cliente.");
+                cbCliente.requestFocus();
             } else if (cbPlazos.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Venta", "Seleccionar el plazo.");
                 cbPlazos.requestFocus();
@@ -225,7 +247,7 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setEstado(2);
                 ventaTB.setEfectivo(0);
                 ventaTB.setVuelto(0);
-                ventaTB.setCliente(idCliente);
+                ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
 
                 CuentasClienteTB cuentasCliente = new CuentasClienteTB();
                 cuentasCliente.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getIdPlazos());
@@ -248,12 +270,9 @@ public class FxVentaProcesoController implements Initializable {
             }
 
         } else {
-            if (txtNumeroDocumento.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese el número de documento del cliente.");
-                txtNumeroDocumento.requestFocus();
-            } else if (txtDatos.getText().trim().isEmpty()) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese los datos del cliente.");
-                txtDatos.requestFocus();
+            if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Venta", "Seleccione su cliente.");
+                cbCliente.requestFocus();
             } else if (estado == false) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
             } else {
@@ -262,7 +281,7 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setEstado(1);
                 ventaTB.setEfectivo(Tools.isNumeric(txtEfectivo.getText()) ? Double.parseDouble(txtEfectivo.getText()) : 0);
                 ventaTB.setVuelto(vuelto);
-                ventaTB.setCliente(idCliente);
+                ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
 
                 ArrayList<FormaPagoTB> formaPagoTBs = new ArrayList();
 
@@ -347,8 +366,8 @@ public class FxVentaProcesoController implements Initializable {
                                         vuelto,
                                         result[1],
                                         result[2],
-                                        txtNumeroDocumento.getText().trim(),
-                                        txtDatos.getText().trim());
+                                        cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento(),
+                                        cbCliente.getSelectionModel().getSelectedItem().getInformacion());
                                 ventaEstructuraController.resetVenta();
                                 Tools.Dispose(window);
                             } else {
@@ -525,29 +544,6 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private void onActionCliente(ActionEvent event) {
         openWindowCliente();
-    }
-
-    @FXML
-    private void onActionNumeroDocumentoSearch(ActionEvent event) {
-        ClienteTB clienteTB = ClienteADO.GetByIdClienteVenta(txtNumeroDocumento.getText().trim());
-        if (clienteTB != null) {
-            idCliente = clienteTB.getIdCliente();
-            txtDatos.setText(clienteTB.getInformacion());
-            txtDireccion.setText(clienteTB.getDireccion());
-        } else {
-            idCliente = Session.CLIENTE_ID;
-            txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
-            txtDatos.setText(Session.CLIENTE_DATOS);
-            txtDireccion.setText(Session.CLIENTE_DIRECCION);
-        }
-    }
-
-    @FXML
-    private void onKeyTypedDocumento(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b')) {
-            event.consume();
-        }
     }
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {

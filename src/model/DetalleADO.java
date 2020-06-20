@@ -51,28 +51,42 @@ public class DetalleADO {
 
     public static String CrudEntity(DetalleTB detalleTB) {
         String result = null;
+        PreparedStatement statementValidate = null;
+        PreparedStatement statementDetalle = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
-            String selectStmt = "{call Sp_Crud_Detalle(?,?,?,?,?,?,?,?)}";
-            CallableStatement callableStatement = null;
+//            String selectStmt = "{call Sp_Crud_Detalle(?,?,?,?,?,?,?,?)}";
+//            CallableStatement callableStatement = null;
             try {
-                callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-                callableStatement.setInt("IdDetalle", detalleTB.getIdDetalle().get());
-                callableStatement.setString("IdMantenimiento", detalleTB.getIdMantenimiento().get());
-                callableStatement.setString("IdAuxiliar", detalleTB.getIdAuxiliar().get());
-                callableStatement.setString("Nombre", detalleTB.getNombre().get());
-                callableStatement.setString("Descripcion", detalleTB.getDescripcion().get());
-                callableStatement.setString("Estado", detalleTB.getEstado().get());
-                callableStatement.setString("UsuarioRegistro", detalleTB.getUsuarioRegistro().get());
-                callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
-                callableStatement.execute();
-                result = callableStatement.getString("Message");
+                DBUtil.getConnection().setAutoCommit(false);
+                statementValidate = DBUtil.getConnection().prepareStatement("select IdDetalle,IdMantenimiento from DetalleTB where IdDetalle=? and IdMantenimiento=?");
+                statementValidate.setInt(1, detalleTB.getIdDetalle().get());
+                statementValidate.setString(2, detalleTB.getIdMantenimiento().get());
+                if(statementValidate.executeQuery().next()){
+                    //update
+                }else{
+                    //insert
+                }
+//                callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
+//                callableStatement.setInt("IdDetalle", detalleTB.getIdDetalle().get());
+//                callableStatement.setString("IdMantenimiento", detalleTB.getIdMantenimiento().get());
+//                callableStatement.setString("IdAuxiliar", detalleTB.getIdAuxiliar().get());
+//                callableStatement.setString("Nombre", detalleTB.getNombre().get());
+//                callableStatement.setString("Descripcion", detalleTB.getDescripcion().get());
+//                callableStatement.setString("Estado", detalleTB.getEstado().get());
+//                callableStatement.setString("UsuarioRegistro", detalleTB.getUsuarioRegistro().get());
+//                callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
+//                callableStatement.execute();
+//                result = callableStatement.getString("Message");
             } catch (SQLException ex) {
                 result = ex.getLocalizedMessage();
             } finally {
                 try {
-                    if (callableStatement != null) {
-                        callableStatement.close();
+                    if (statementValidate != null) {
+                        statementValidate.close();
+                    }
+                    if (statementDetalle != null) {
+                        statementDetalle.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {

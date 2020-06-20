@@ -227,7 +227,7 @@ public class FxInventarioController implements Initializable {
         AnchorPane.setRightAnchor(nodeValorInventario, 0d);
         AnchorPane.setBottomAnchor(nodeValorInventario, 0d);
         vbContent.getChildren().add(nodeValorInventario);
-        controllerValorInventario.fillInventarioTable("",(short)0);
+        controllerValorInventario.fillInventarioTable("",(short)0,"",(short)0,0,0);
     }
 
     private void openWindowSuministros() {

@@ -88,7 +88,7 @@
                            <children>
                               <VBox style="-fx-spacing: 0.3333333333333333em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Producto">
+                                    <Label styleClass="labelOpenSansRegular14" text="Codigo">
                                        <graphic>
                                           <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -98,6 +98,20 @@
                                        </graphic>
                                     </Label>
                                     <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefWidth="240.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Producto">
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/lote-box.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <TextField fx:id="txtNameProduct" onKeyReleased="#onKeyReleasedNameProduct" prefWidth="240.0" promptText="Nombre de articulo" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.3333333333333333em;">
@@ -114,6 +128,34 @@
                                     <ComboBox fx:id="cbExistencia" onAction="#onActionExistencia" prefWidth="240.0" promptText="Seleccione" />
                                  </children>
                               </VBox>
+                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Categoria">
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/options.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <ComboBox fx:id="cbCategoria" onAction="#onActionCategoria" prefWidth="240.0" promptText="Seleccione" />
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                 <children>
+                                    <Label styleClass="labelOpenSansRegular14" text="Marca">
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/bullets.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <ComboBox fx:id="cbMarca" onAction="#onActionMarca" prefWidth="240.0" promptText="Seleccione" />
+                                 </children>
+                              </VBox>
                            </children>
                         </HBox>
                      </children>
@@ -124,11 +166,12 @@
                            <columns>
                               <TableColumn fx:id="tcNumero" prefWidth="75.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcDescripcion" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                              <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo Promedio" />
+                              <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo General" />
                               <TableColumn fx:id="tcPrecio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio Venta" />
                               <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Existencia" />
-                              <TableColumn fx:id="tcInventarioMinimo" prefWidth="143.199951171875" style="-fx-alignment: CENTER-RIGHT;" text="Inv. Mínimo" />
-                              <TableColumn fx:id="tcInventarioMaximo" prefWidth="131.2000732421875" style="-fx-alignment: CENTER-RIGHT;" text="Inv. Máximo" />
+                              <TableColumn fx:id="tcInventario" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Inv. Min/Max" />
+                              <TableColumn fx:id="tcCategoria" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
+                              <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
                            </columns>
                         </TableView>
                      </children>

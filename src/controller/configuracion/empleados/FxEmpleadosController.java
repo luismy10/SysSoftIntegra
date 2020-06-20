@@ -78,7 +78,13 @@ public class FxEmpleadosController implements Initializable {
         );
         tcMarketStall.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPuestoName()));
         tcState.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
-
+           
+         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
+        tcDocument.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcCompleteData.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
+        tcContact.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
+        tcMarketStall.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcState.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
     }
 
     public void fillEmpleadosTable(String value) {

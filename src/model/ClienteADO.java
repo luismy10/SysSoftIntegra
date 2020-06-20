@@ -5,6 +5,8 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -243,26 +245,25 @@ public class ClienteADO {
         return clienteTB;
     }
 
-    public static ClienteTB GetByIdClienteVenta(String documento) {
-        String selectStmt = "select ci.IdCliente,ci.Informacion, ci.NumeroDocumento, ci.Direccion from ClienteTB as ci where ci.NumeroDocumento = ?";
+    public static List<ClienteTB> GetSearchComboBoxCliente() {
+        String selectStmt = "SELECT ci.IdCliente,ci.Informacion, ci.NumeroDocumento,ci.Direccion FROM ClienteTB AS ci ";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        ClienteTB clienteTB = null;
+         List<ClienteTB> clienteTBs = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, documento);
             rsEmps = preparedStatement.executeQuery();
-
-            if (rsEmps.next()) {
-                clienteTB = new ClienteTB();
+            while(rsEmps.next()) {
+                ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
+                clienteTBs.add(clienteTB);
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado en GetByIdClienteVenta(): " + e);
+            System.out.println("La operación de selección de SQL ha fallado en GetSearchComboBoxCliente(): " + e);
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -276,7 +277,7 @@ public class ClienteADO {
 
             }
         }
-        return clienteTB;
+        return clienteTBs;
     }
 
     public static ClienteTB GetClientePredetermined() {

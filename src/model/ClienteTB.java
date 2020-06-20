@@ -154,4 +154,11 @@ public class ClienteTB {
         this.imagePredeterminado = imagePredeterminado;
     }
 
+    @Override
+    public String toString() {
+        return informacion ;
+    }
+
+    
+    
 }

@@ -93,6 +93,8 @@ public class FxVentaDetalleController implements Initializable {
     private VBox vbMetodoPago;
     @FXML
     private VBox vbValor;
+        @FXML
+    private GridPane gpOperaciones;
     @FXML
     private GridPane gpImpuestos;
 
@@ -347,7 +349,8 @@ public class FxVentaDetalleController implements Initializable {
             subTotalImporte = 0;
             arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
             lblSubTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subTotalImporte, 2));
-
+            
+            gpOperaciones.getChildren().clear();
             gpImpuestos.getChildren().clear();
 
             boolean addOperacion = false;
@@ -365,10 +368,10 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addOperacion) {
-                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase()
+                    gpOperaciones.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase()
                             +""+ arrayArticulos.get(k).getNombreOperacion().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase(),
                              Pos.CENTER_LEFT), 0, k + 1);
-                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, k + 1);
+                    gpOperaciones.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     addOperacion = false;
                     sumaOperacion = 0;
                 }
@@ -432,7 +435,7 @@ public class FxVentaDetalleController implements Initializable {
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
-        label.setMaxWidth(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Control.USE_COMPUTED_SIZE);
         return label;
     }
@@ -445,7 +448,7 @@ public class FxVentaDetalleController implements Initializable {
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
         label.setMaxWidth(Double.MAX_VALUE);
-        label.setMaxHeight(Double.MAX_VALUE);
+        label.setMaxHeight(Control.USE_COMPUTED_SIZE);
         return label;
     }
 

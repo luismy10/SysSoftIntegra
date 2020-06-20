@@ -219,6 +219,7 @@ public class FxComprasController implements Initializable {
         });
 
         task.setOnScheduled((e) -> {
+            loadData = false;
         });
 
         exec.execute(task);

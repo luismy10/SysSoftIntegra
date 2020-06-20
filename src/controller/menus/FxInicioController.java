@@ -83,14 +83,11 @@ public class FxInicioController implements Initializable {
         clock.play();
 
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            
-            count--;
-            
+        scheduledExecutorService.scheduleAtFixedRate(() -> {            
+            count--;            
             Platform.runLater(() -> {
                 lblActualización.setText("El dashboard  se va actualizar en " + count + " segundos");
             });
-
             if (count == 0) {
                 Platform.runLater(() -> {
                     ArrayList<String> arrayList = GlobalADO.ReporteInicio(Tools.getDate());
@@ -103,8 +100,7 @@ public class FxInicioController implements Initializable {
                     loadGraphics();
                 });
                 count = 59;
-            }
-            
+            }            
         }, 0, 1, TimeUnit.SECONDS);
     }
 
