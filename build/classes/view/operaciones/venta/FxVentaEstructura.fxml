@@ -91,54 +91,53 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-border-width: 1; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-spacing: 0.5em; -fx-padding: 0.5em; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                  <children>
-                                    <Label prefHeight="30.0" styleClass="labelRoboto14" text="CTRL+D" textFill="#1a2226">
-                                       <graphic>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/barcode.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label prefHeight="30.0" styleClass="labelRoboto14" text="CTRL+D" textFill="#1a2226">
+                                             <graphic>
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/barcode.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;">
+                                       <children>
+                                          <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                             <graphic>
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/moneda.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <ComboBox fx:id="cbMoneda" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="210.0" promptText="Moneda" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </HBox>
-                              <VBox style="-fx-spacing: 0.5em;" VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular16" text="Datos del producto(Para apuntar a la tabla puedes presionar (CTRL+W))" />
-                                    <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" onKeyReleased="#onKeyReleasedList" prefHeight="300.0" prefWidth="850.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
-                                       <columns>
-                                          <TableColumn fx:id="tcOpcion" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Opción" />
-                                          <TableColumn fx:id="tcCantidad" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Cantidad" />
-                                          <TableColumn fx:id="tcArticulo" prefWidth="176.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                                          <TableColumn fx:id="tcImpuesto" prefWidth="118.0" style="-fx-alignment: CENTER;" text="Impuesto" />
-                                          <TableColumn fx:id="tcPrecio" prefWidth="121.0" style="-fx-alignment: CENTER;" text="Precio" />
-                                          <TableColumn fx:id="tcDescuento" prefWidth="113.0" style="-fx-alignment: CENTER;" text="Descuento" />
-                                          <TableColumn fx:id="tcImporte" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
-                                       </columns>
-                                    </TableView>
-                                 </children>
-                              </VBox>
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular16" text="Observación:" textFill="#1a2226">
-                                       <graphic>
-                                          <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/generar.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtObservacion" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
+                              <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" onKeyReleased="#onKeyReleasedList" prefHeight="300.0" prefWidth="850.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="tcOpcion" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Opción" />
+                                    <TableColumn fx:id="tcCantidad" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Cantidad" />
+                                    <TableColumn fx:id="tcArticulo" prefWidth="176.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                                    <TableColumn fx:id="tcImpuesto" prefWidth="118.0" style="-fx-alignment: CENTER;" text="Impuesto" />
+                                    <TableColumn fx:id="tcPrecio" prefWidth="121.0" style="-fx-alignment: CENTER;" text="Precio" />
+                                    <TableColumn fx:id="tcDescuento" prefWidth="113.0" style="-fx-alignment: CENTER;" text="Descuento" />
+                                    <TableColumn fx:id="tcImporte" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
+                                 </columns>
+                              </TableView>
                            </children>
                         </VBox>
                      </children>
@@ -173,11 +172,11 @@
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-border-color: #cccccc; -fx-spacing: 0.8333333333333334em; -fx-border-width: 1px 0 0 0;">
                                  <children>
-                                    <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em 0em 0.8333333333333334em 0em;">
+                                    <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0em 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT">
                                              <children>
-                                                <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0.3333333333333333em;" styleClass="labelRoboto14" textFill="#1a2226">
                                                    <graphic>
                                                       <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -186,21 +185,62 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="210.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0em 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT">
                                              <children>
-                                                <Label styleClass="labelRoboto14" textFill="#1a2226">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0.3333333333333333em;" styleClass="labelRoboto14" textFill="#1a2226">
                                                    <graphic>
                                                       <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../image/moneda.png" />
+                                                            <Image url="@../../image/search.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <ComboBox fx:id="cbMoneda" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="210.0" promptText="Moneda" HBox.hgrow="ALWAYS" />
+                                                <HBox>
+                                                   <children>
+                                                      <TextField fx:id="txtNumeroDocumento" onAction="#onActionCliente" prefHeight="30.0" prefWidth="240.0" promptText="N° de documento" styleClass="text-field-normal" />
+                                                      <Button fx:id="btnBuscarCliente" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonLightDefault">
+                                                         <graphic>
+                                                            <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../image/search_caja.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0.3333333333333333em;" styleClass="labelRoboto14" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/client.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <TextField fx:id="txtDatosCliente" prefHeight="30.0" prefWidth="240.0" promptText="Cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0.3333333333333333em;" styleClass="labelRoboto14" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/home.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <TextField fx:id="txtDireccionCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -211,9 +251,9 @@
                                  <children>
                                     <ScrollPane fitToWidth="true" styleClass="scroll-pane-primary" HBox.hgrow="ALWAYS">
                                        <content>
-                                          <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: white;">
+                                          <VBox style="-fx-background-color: white;">
                                              <children>
-                                                <HBox>
+                                                <HBox style="-fx-padding: 0.8333333333333334em;">
                                                    <children>
                                                       <GridPane HBox.hgrow="ALWAYS">
                                                         <columnConstraints>
@@ -236,7 +276,7 @@
                                                       </GridPane>
                                                    </children>
                                                 </HBox>
-                                                <HBox>
+                                                <HBox style="-fx-padding: 0.8333333333333334em;">
                                                    <children>
                                                       <GridPane fx:id="gpTotales" HBox.hgrow="ALWAYS">
                                                         <columnConstraints>
@@ -246,8 +286,8 @@
                                                       </GridPane>
                                                    </children>
                                                 </HBox>
-                                                <Separator minHeight="1.0" prefHeight="1.0" />
-                                                <HBox>
+                                                <Separator minHeight="1.0" prefHeight="1.0" VBox.vgrow="ALWAYS" />
+                                                <HBox style="-fx-padding: 0.8333333333333334em;">
                                                    <children>
                                                       <GridPane HBox.hgrow="ALWAYS">
                                                         <columnConstraints>

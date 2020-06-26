@@ -47,7 +47,7 @@ public class FxClienteListaController implements Initializable {
     @FXML
     private TableColumn<ClienteTB, String> tcDireccion;
 
-    private FxVentaProcesoController ventaProcesoController;
+//    private FxVentaProcesoController ventaProcesoController;
 
     private FxVentaReporteController ventaReporteController;
 
@@ -139,10 +139,11 @@ public class FxClienteListaController implements Initializable {
                 ventaReporteController.setClienteVentaReporte(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
                         tvList.getSelectionModel().getSelectedItem().getInformacion());
                 Tools.Dispose(apWindow);
-            } else if (ventaProcesoController != null) {
-                ventaProcesoController.setLoadCliente(tvList.getSelectionModel().getSelectedItem().getIdCliente());
-                Tools.Dispose(apWindow);
-            }
+            } 
+//            else if (ventaProcesoController != null) {
+//                ventaProcesoController.setLoadCliente(tvList.getSelectionModel().getSelectedItem().getIdCliente());
+//                Tools.Dispose(apWindow);
+//            }
         }
     }
 
@@ -253,9 +254,9 @@ public class FxClienteListaController implements Initializable {
         openWindowAddCliente();
     }
 
-    public void setInitVentaProcesoController(FxVentaProcesoController ventaProcesoController) {
-        this.ventaProcesoController = ventaProcesoController;
-    }
+//    public void setInitVentaProcesoController(FxVentaProcesoController ventaProcesoController) {
+//        this.ventaProcesoController = ventaProcesoController;
+//    }
 
     public void setInitVentaReporteController(FxVentaReporteController ventaReporteController) {
         this.ventaReporteController = ventaReporteController;

@@ -203,7 +203,7 @@ public class ClienteADO {
         return empList;
     }
 
-    public static ClienteTB GetByIdCliente(String documento) {
+    public static ClienteTB GetByIdCliente(String idCliente) {
         String selectStmt = "{call Sp_Get_Cliente_By_Id(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -211,7 +211,7 @@ public class ClienteADO {
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, documento);
+            preparedStatement.setString(1, idCliente);
             rsEmps = preparedStatement.executeQuery();
 
             if (rsEmps.next()) {
@@ -246,19 +246,21 @@ public class ClienteADO {
     }
 
     public static List<ClienteTB> GetSearchComboBoxCliente() {
-        String selectStmt = "SELECT ci.IdCliente,ci.Informacion, ci.NumeroDocumento,ci.Direccion FROM ClienteTB AS ci ";
+        String selectStmt = "{call Sp_Obtener_Cliente_Informacion_NumeroDocumento(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
          List<ClienteTB> clienteTBs = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setShort(1, (short)1);
+            preparedStatement.setString(2, "");
             rsEmps = preparedStatement.executeQuery();
             while(rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
-                clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 clienteTBs.add(clienteTB);
             }
@@ -278,6 +280,43 @@ public class ClienteADO {
             }
         }
         return clienteTBs;
+    }
+    
+    
+    public static ClienteTB GetSearchClienteNumeroDocumento(short opcion,String search) {
+        String selectStmt = "{call Sp_Obtener_Cliente_Informacion_NumeroDocumento(?,?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ClienteTB clienteTB = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, search);
+            rsEmps = preparedStatement.executeQuery();
+            if(rsEmps.next()) {
+                clienteTB = new ClienteTB();
+                clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                clienteTB.setInformacion(rsEmps.getString("Informacion"));
+                clienteTB.setDireccion(rsEmps.getString("Direccion"));
+            }
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado en GetSearchComboBoxCliente(): " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return clienteTB;
     }
 
     public static ClienteTB GetClientePredetermined() {

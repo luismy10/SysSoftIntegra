@@ -1,25 +1,19 @@
 package controller.contactos.clientes;
 
-import controller.tools.FilesRouters;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.DetalleADO;
@@ -49,10 +43,8 @@ public class FxClienteProcesoController implements Initializable {
     private TextField txtDireccion;
     @FXML
     private TextField txtRepresentante;
-
+        
     private String idCliente;
-
-    private String information;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -72,13 +64,13 @@ public class FxClienteProcesoController implements Initializable {
         cbDocumentType.requestFocus();
     }
 
-    public void setValueUpdate(String value) {
+    public void setValueUpdate(String idCliente) {
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonLightWarning");
         cbDocumentType.requestFocus();
-        ClienteTB clienteTB = ClienteADO.GetByIdCliente(value);
+        ClienteTB clienteTB = ClienteADO.GetByIdCliente(idCliente);
         if (clienteTB != null) {
-            idCliente = clienteTB.getIdCliente();
+            this.idCliente = clienteTB.getIdCliente();
             ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
             for (int i = 0; i < lstype.size(); i++) {
                 if (clienteTB.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
@@ -90,8 +82,6 @@ public class FxClienteProcesoController implements Initializable {
             txtDocumentNumber.setText(clienteTB.getNumeroDocumento());
             txtDocumentNumber.setDisable(clienteTB.getNumeroDocumento().equals("00000000"));
             txtInformacion.setText(clienteTB.getInformacion());
-
-            information = clienteTB.getInformacion();
 
             ObservableList<DetalleTB> lsest = cbEstado.getItems();
             for (int i = 0; i < lsest.size(); i++) {
@@ -167,21 +157,8 @@ public class FxClienteProcesoController implements Initializable {
 
     }
 
-    private void onViewPerfil() throws IOException {
-        URL url = getClass().getResource(FilesRouters.FX_PERFIL);
-        FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxPerfilController controller = fXMLLoader.getController();
-        //
-        Stage stage = WindowStage.StageLoaderModal(parent, "Perfil", window.getScene().getWindow());
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.show();
-        controller.setLoadView(idCliente, information);
-    }
 
-    void aValidityProcess() throws ParseException {
+    public void aValidityProcess() throws ParseException {
         if (cbDocumentType.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageInformation(window, "Persona", "Seleccione el tipo de documento, por favor.");
 
@@ -262,5 +239,6 @@ public class FxClienteProcesoController implements Initializable {
     private void onActionToCancel(ActionEvent event) {
         Tools.Dispose(window);
     }
+
 
 }

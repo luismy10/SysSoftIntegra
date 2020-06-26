@@ -41,6 +41,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.ClienteADO;
+import model.ClienteTB;
 import model.ComprobanteADO;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
@@ -98,9 +100,15 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private Text lblNumeracion;
     @FXML
+    private ComboBox<MonedaTB> cbMoneda;
+    @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
-    private ComboBox<MonedaTB> cbMoneda;
+    private TextField txtNumeroDocumento;
+    @FXML
+    private TextField txtDatosCliente;
+    @FXML
+    private TextField txtDireccionCliente;
     @FXML
     private Label lblValorVenta;
     @FXML
@@ -124,23 +132,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private Button btnVentasPorDia;
     @FXML
-    private TextField txtObservacion;
-    @FXML
     private GridPane gpTotales;
     //-----------------------------------------------
     private AnchorPane vbPrincipal;
 
-    private double subTotal;
-
-    private double descuento;
-
-    private double subTotalImporte;
-
-    private double totalImporte;
-
-    private double total;
-
     private String monedaSimbolo;
+
+    private String idCliente;
 
     private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
 
@@ -171,6 +169,18 @@ public class FxVentaEstructuraController implements Initializable {
     private boolean medida_cambio_decuento;
 
     private boolean stateSearch;
+
+    private double subTotal;
+
+    private double descuento;
+
+    private double subTotalImporte;
+
+    private double totalImporte;
+
+    private double total;
+    @FXML
+    private Button btnBuscarCliente;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -230,6 +240,7 @@ public class FxVentaEstructuraController implements Initializable {
         });
         billPrintable = new BillPrintable();
         monedaSimbolo = "M";
+        idCliente = "";
         stateSearch = false;
         initTable();
         loadWindow();
@@ -271,6 +282,11 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         Session.TICKET_SIMBOLOMONEDA = monedaSimbolo;
+
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
@@ -584,12 +600,11 @@ public class FxVentaEstructuraController implements Initializable {
                 });
                 stage.show();
                 VentaTB ventaTB = new VentaTB();
-                //ventaTB.setCliente(idCliente);
+                // ventaTB.setCliente(idCliente);
                 ventaTB.setVendedor(Session.USER_ID);
                 ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
                         ? cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()
-                        : 0
-                );
+                        : 0);
                 ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
                         ? cbComprobante.getSelectionModel().getSelectedItem().getNombre()
                         : "");
@@ -603,7 +618,6 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setDescuento(descuento);
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setTotal(totalImporte);
-                ventaTB.setObservaciones(txtObservacion.getText().trim());
                 //ire a comprar algo para levantarme vale ok
                 controller.setInitComponents(ventaTB, tvList, total);
             }
@@ -1116,6 +1130,50 @@ public class FxVentaEstructuraController implements Initializable {
         return valor;
     }
 
+    public void onExecuteCliente(short opcion, String search) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ClienteTB> task = new Task<ClienteTB>() {
+            @Override
+            public ClienteTB call() {
+                return ClienteADO.GetSearchClienteNumeroDocumento(opcion, search);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            ClienteTB clienteTB = task.getValue();
+            if (clienteTB != null) {
+                idCliente = clienteTB.getIdCliente();
+                txtDatosCliente.setText(clienteTB.getInformacion());
+                txtDireccionCliente.setText(clienteTB.getDireccion());
+            } else {
+                idCliente = "";
+                txtDatosCliente.setText("");
+                txtDireccionCliente.setText("");
+            }
+            btnBuscarCliente.setDisable(false);
+        });
+        
+        task.setOnFailed(e->{
+            btnBuscarCliente.setDisable(false);
+        });
+        
+        task.setOnScheduled(e->{
+            btnBuscarCliente.setDisable(true);
+        });        
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
+    }
+
     @FXML
     private void onKeyPressedRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -1372,6 +1430,18 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onActionVentasPorDia(ActionEvent event) {
         openWindowMostrarVentas();
+    }
+
+    @FXML
+    private void onKeyPressedCliente(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+        }
+    }
+
+    @FXML
+    private void onActionCliente(ActionEvent event) {
+        onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
     }
 
     public String obtenerTipoComprobante() {

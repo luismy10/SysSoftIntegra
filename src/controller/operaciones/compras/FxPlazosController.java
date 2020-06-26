@@ -69,7 +69,7 @@ public class FxPlazosController implements Initializable {
 //                        compraProcesoController.setInitializePlazos();
                     }
                     if(ventaProcesoController != null){
-                        ventaProcesoController.setInitializePlazosVentas();
+                        //ventaProcesoController.setInitializePlazosVentas();
                     }
                     
                 } else {

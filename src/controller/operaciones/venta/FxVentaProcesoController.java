@@ -1,18 +1,10 @@
 package controller.operaciones.venta;
 
-import controller.contactos.clientes.FxClienteListaController;
-import controller.operaciones.compras.FxPlazosController;
 import controller.tools.ConvertMonedaCadena;
-import controller.tools.FilesRouters;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
-import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,11 +13,7 @@ import java.util.concurrent.Executors;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,15 +24,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import model.BancoADO;
 import model.BancoHistorialTB;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.CuentasClienteTB;
 import model.FormaPagoTB;
-import model.PlazosADO;
-import model.PlazosTB;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaTB;
@@ -53,6 +38,8 @@ public class FxVentaProcesoController implements Initializable {
 
     @FXML
     private AnchorPane window;
+    @FXML
+    private HBox hbContenido;
     @FXML
     private Label lblTotal;
     @FXML
@@ -74,24 +61,13 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private Label lblCredito;
     @FXML
-    private ComboBox<PlazosTB> cbPlazos;
-    @FXML
-    private DatePicker dtVencimiento;
-    // Cliente
-    @FXML
-    private VBox vbCliente;
-    @FXML
-    private ComboBox<ClienteTB> cbCliente;
-    @FXML
-    private TextField txtDireccion;
-    @FXML
     private Label lblMonedaLetras;
     @FXML
     private TextField txtTarjeta;
     @FXML
     private Label lblVueltoNombre;
     @FXML
-    private HBox hbContenido;
+    private TextField txtObservacion;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -121,20 +97,9 @@ public class FxVentaProcesoController implements Initializable {
         vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         lblVueltoNombre.setText("Su cambio: ");
-        searchComboBox = new SearchComboBox<>(cbCliente);
-        searchComboBox.setFilter((item, text) -> item.getInformacion().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
+//        searchComboBox = new SearchComboBox<>(cbCliente);
+//        searchComboBox.setFilter((item, text) -> item.getInformacion().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
 
-    }
-
-    public void setInitializePlazosVentas() {
-        cbPlazos.getItems().clear();
-        PlazosADO.GetTipoPlazoCombBox().forEach(e -> {
-            this.cbPlazos.getItems().add(new PlazosTB(e.getIdPlazos(), e.getNombre(), e.getDias(), e.getEstado(), e.getPredeterminado()));
-        });
-        cbPlazos.getSelectionModel().select(0);
-        if (cbPlazos.getSelectionModel().getSelectedIndex() >= 0) {
-            dtVencimiento.setValue(LocalDate.now().plusDays(cbPlazos.getSelectionModel().getSelectedItem().getDias()));
-        }
     }
 
     public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList, double total) {
@@ -154,28 +119,35 @@ public class FxVentaProcesoController implements Initializable {
             return t;
         });
 
-        Task<Void> task = new Task<Void>() {
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            public Void call() {
-                setInitializePlazosVentas();
-                List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente();
-                searchComboBox.getComboBox().getItems().addAll(clienteTBs);
-                setLoadCliente(Session.CLIENTE_ID);               
-                boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
-                if (!validate) {
-                    hbContenido.setDisable(true);                    
-                    Tools.AlertMessageWarning(window, "Venta", "Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva su caja.");                 
-                }
-                return null;
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList<>();
+                objects.add(ClienteADO.GetSearchComboBoxCliente());
+                objects.add(BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO));
+                return objects;
             }
         };
         task.setOnSucceeded(e -> {
-             txtEfectivo.requestFocus();
+            ArrayList<Object> objects = task.getValue();
+            if (objects.get(0) == null && objects.get(1) == null) {
+                hbContenido.setDisable(true);
+                Tools.AlertMessageError(window, "Venta", "Habrá nuevamente la ventana, se produjo un problema de conexión al traer los datos.");
+                return;
+            }
+            List<ClienteTB> clienteTBset = (List<ClienteTB>) objects.get(0);
+            searchComboBox.getComboBox().getItems().addAll(clienteTBset);
+            boolean validate = (boolean) objects.get(1);
+            if (!validate) {
+                hbContenido.setDisable(true);
+                Tools.AlertMessageWarning(window, "Venta", "Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva su caja.");
+            }
+            txtEfectivo.requestFocus();
         });
-        task.setOnFailed(e->{
+        task.setOnFailed(e -> {
             hbContenido.setDisable(true);
             Tools.AlertMessageError(window, "Venta", "Habrá nuevamente la ventana, se produjo un problema de conexión al traer los datos.");
-            
+
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -184,76 +156,49 @@ public class FxVentaProcesoController implements Initializable {
 
     }
 
-    private void openWindowAddPlazoVenta() throws IOException {
-        URL url = getClass().getResource(FilesRouters.FX_PLAZOS);
-        FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxPlazosController controller = fXMLLoader.getController();
-        controller.setInitCompraVentaProcesoController(null, this);
-        //
-        Stage stage = WindowStage.StageLoaderModal(parent, "Agegar nuevo plazo", window.getScene().getWindow());
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.show();
-    }
-
-    public void setLoadCliente(String idCliente) {
-        for (ClienteTB c : cbCliente.getItems()) {
-            if (c.getIdCliente().equalsIgnoreCase(idCliente)) {
-                cbCliente.getSelectionModel().select(c);
-                txtDireccion.setText(c.getDireccion());
-                break;
-            }
-        }
-    }
-
-    private void openWindowCliente() {
-        try {
-            URL url = getClass().getResource(FilesRouters.FX_CLIENTE_LISTA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxClienteListaController controller = fXMLLoader.getController();
-
-            controller.setInitVentaProcesoController(this);
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.show();
-//            stage.setOnHiding(w -> {
-//                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-//            });
-            controller.fillCustomersTable("");
-        } catch (IOException ex) {
-            System.out.println("Error en suministro lista:" + ex.getLocalizedMessage());
-        }
-    }
+//    public void loadSearchProveedores() {
+//        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+//            Thread t = new Thread(runnable);
+//            t.setDaemon(true);
+//            return t;
+//        });
+//
+//        Task<List<ClienteTB>> task = new Task<List<ClienteTB>>() {
+//            @Override
+//            public List<ClienteTB> call() {
+//                return ClienteADO.GetSearchComboBoxCliente();
+//            }
+//        };
+//
+//        task.setOnSucceeded((e) -> {
+//            searchComboBox.getComboBox().getItems().clear();
+//            List<ClienteTB> clienteTBs = task.getValue();
+//            searchComboBox.getComboBox().getItems().addAll(clienteTBs);
+////            cbCliente.requestFocus();
+//        });
+//
+//        exec.execute(task);
+//        if (!exec.isShutdown()) {
+//            exec.shutdown();
+//        }
+//    }
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
         if (state_view_pago) {
-            if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(window, "Venta", "Seleccione su cliente.");
-                cbCliente.requestFocus();
-            } else if (cbPlazos.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(window, "Venta", "Seleccionar el plazo.");
-                cbPlazos.requestFocus();
-            } else if (dtVencimiento.getValue() == null) {
-                Tools.AlertMessageWarning(window, "Venta", "El formato de la fecha no es correcto.");
-                dtVencimiento.requestFocus();
-            } else {
-                ventaTB.setTipo(2);
-                ventaTB.setEstado(2);
-                ventaTB.setEfectivo(0);
-                ventaTB.setVuelto(0);
-                ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
 
-                CuentasClienteTB cuentasCliente = new CuentasClienteTB();
-                cuentasCliente.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getIdPlazos());
-                cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
-                if (confirmation == 1) {
+            ventaTB.setTipo(2);
+            ventaTB.setEstado(2);
+            ventaTB.setEfectivo(0);
+            ventaTB.setVuelto(0);
+            ventaTB.setObservaciones(txtObservacion.getText().trim());
+
+            //  ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
+            CuentasClienteTB cuentasCliente = new CuentasClienteTB();
+//                cuentasCliente.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getIdPlazos());
+//                cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
+            short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
+            if (confirmation == 1) {
 
 //                    String[] result = VentaADO.CrudVenta(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), cuentasCliente).split("/");
 //                    switch (result[0]) {
@@ -266,14 +211,14 @@ public class FxVentaProcesoController implements Initializable {
 //                            Tools.AlertMessageError(window, "Venta", result[0]);
 //                            break;
 //                    }
-                }
             }
 
         } else {
-            if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(window, "Venta", "Seleccione su cliente.");
-                cbCliente.requestFocus();
-            } else if (estado == false) {
+//            if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
+//                Tools.AlertMessageWarning(window, "Venta", "Seleccione su cliente.");
+//                cbCliente.requestFocus();
+//            } else 
+            if (estado == false) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
             } else {
 
@@ -281,8 +226,8 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setEstado(1);
                 ventaTB.setEfectivo(Tools.isNumeric(txtEfectivo.getText()) ? Double.parseDouble(txtEfectivo.getText()) : 0);
                 ventaTB.setVuelto(vuelto);
-                ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
-
+                ventaTB.setObservaciones(txtObservacion.getText().trim());
+//                ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
                 ArrayList<FormaPagoTB> formaPagoTBs = new ArrayList();
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
@@ -366,8 +311,10 @@ public class FxVentaProcesoController implements Initializable {
                                         vuelto,
                                         result[1],
                                         result[2],
-                                        cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento(),
-                                        cbCliente.getSelectionModel().getSelectedItem().getInformacion());
+                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento(),
+                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getInformacion());
+                                        "",
+                                        "");
                                 ventaEstructuraController.resetVenta();
                                 Tools.Dispose(window);
                             } else {
@@ -508,42 +455,10 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
-    private void onMouseClickedTarjeta(MouseEvent event) {
-        if (!state_view_pago) {
-            vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
-            vbCredito.setStyle("-fx-background-color: #265B7C;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
-
-            lblEfectivo.setStyle("-fx-text-fill:#1a2226;");
-            lblCredito.setStyle("-fx-text-fill:white;");
-
-            vbViewEfectivo.setVisible(false);
-            vbViewCredito.setVisible(true);
-            state_view_pago = true;
-        }
-    }
-
-    @FXML
-    private void onActionPlazos(ActionEvent event) {
-        if (cbPlazos.getSelectionModel().getSelectedIndex() >= 0) {
-            dtVencimiento.setValue(LocalDate.now().plusDays(cbPlazos.getSelectionModel().getSelectedItem().getDias()));
-        }
-    }
-
-    @FXML
-    private void OnMouseClickedPlazos(MouseEvent event) throws IOException {
-        openWindowAddPlazoVenta();
-    }
-
-    @FXML
-    private void onKeyPressedCliente(KeyEvent event) {
+    private void onKeyPressedSearch(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCliente();
-        }
-    }
 
-    @FXML
-    private void onActionCliente(ActionEvent event) {
-        openWindowCliente();
+        }
     }
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {

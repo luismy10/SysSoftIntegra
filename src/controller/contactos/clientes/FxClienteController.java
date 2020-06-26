@@ -31,7 +31,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
-import model.MonedaADO;
 
 public class FxClienteController implements Initializable {
 
@@ -157,7 +156,7 @@ public class FxClienteController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
+            controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getIdCliente());
         } catch (IOException ex) {
             System.out.println("Cliente controller en openWindowEditCliente()" + ex.getLocalizedMessage());
         }
@@ -188,6 +187,8 @@ public class FxClienteController implements Initializable {
                 fillCustomersTable("");
             } else if (result.equalsIgnoreCase("sistema")) {
                 Tools.AlertMessageWarning(window, "Eliminar cliente", "No se puede eliminar el cliente porque es propio del sistema.");
+            } else if (result.equalsIgnoreCase("venta")) {
+                Tools.AlertMessageWarning(window, "Eliminar cliente", "No se puede eliminar al cliente porque tiene asignado compras.");
             } else {
                 Tools.AlertMessageError(window, "Eliminar cliente", result);
             }

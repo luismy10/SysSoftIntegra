@@ -1490,16 +1490,16 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-background-color: white;
 }
 .combo-box.combo-box-base > .arrow-button {    
-    -fx-background-color: #007bff;
+    -fx-background-color: white;
     -fx-background-radius: 0;
-    -fx-padding: 1.0416666666666667em 0.75em 1.0416666666666667em 0.75em; /*12.5px 9px 12.5px 9px*/
-    -fx-border-width:1;
+    -fx-padding:  1.125em 0.75em  1.125em 0.75em; /*12.5px 9px 12.5px 9px*/
+    -fx-border-width:0px;
     -fx-border-color: #007bff;
 }
 .combo-box.combo-box-base > .arrow-button > .arrow {
-    -fx-background-color: white;
-    -fx-background-insets: 0 0 0 0;
+    -fx-background-color: #cccccc;
     -fx-shape: "M 0 0 H 7 L 3.5 4 z";
+    -fx-scale-shape: true;
 }
 .combo-box:disabled{
     -fx-opacity: 1;

@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 
 public class VentaADO {
 
-    public static String registrarVentaContado(VentaTB ventaTB, BancoHistorialTB bancoHistorialEfectivo, BancoHistorialTB bancoHistorialBancaria, ArrayList<FormaPagoTB> formaPagoTBs, TableView<SuministroTB> tvList, int idTipoDocumento, CuentasClienteTB cuentasClienteTB) {
+     public static String registrarVentaContado(VentaTB ventaTB, BancoHistorialTB bancoHistorialEfectivo, BancoHistorialTB bancoHistorialBancaria, ArrayList<FormaPagoTB> formaPagoTBs, TableView<SuministroTB> tvList, int idTipoDocumento, CuentasClienteTB cuentasClienteTB) {
 
         CallableStatement serie_numeracion = null;
         PreparedStatement venta = null;
