@@ -112,7 +112,12 @@ public class FxPrincipalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
 
+//        spWindow.setOnKeyReleased(e->{
+//         System.out.println(e);
+//        });
+        
         lblEstado.setText(Session.CONNECTION_SESSION == true ? "Conectado" : "Desconectado");
         imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/image/connected.png") : new Image("/view/image/disconnected.png"));
         hbReferent = btnInicio;

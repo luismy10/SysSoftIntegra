@@ -157,11 +157,13 @@ public class SplashScreen extends Preloader {
                         ClienteTB clienteTB = ClienteADO.GetClientePredetermined();
                         if (clienteTB != null) {
                             Session.CLIENTE_ID = clienteTB.getIdCliente();
+                            Session.CLIENTE_TIPO_DOCUMENTO = clienteTB.getTipoDocumento();
                             Session.CLIENTE_DATOS = clienteTB.getInformacion();
                             Session.CLIENTE_NUMERO_DOCUMENTO = clienteTB.getNumeroDocumento();
                             Session.CLIENTE_DIRECCION = clienteTB.getDireccion();
                         } else {
                             Session.CLIENTE_ID = "";
+                            Session.CLIENTE_TIPO_DOCUMENTO = 0;
                             Session.CLIENTE_DATOS = "";
                             Session.CLIENTE_NUMERO_DOCUMENTO = "";
                             Session.CLIENTE_DIRECCION = "";

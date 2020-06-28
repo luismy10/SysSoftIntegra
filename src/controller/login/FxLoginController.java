@@ -119,7 +119,7 @@ public class FxLoginController implements Initializable {
                                 stage.setScene(scene);
                                 stage.setTitle(FilesRouters.TITLE_APP);
                                 stage.centerOnScreen();
-                                stage.setMaximized(true);                               
+                                stage.setMaximized(true);      
                                 stage.show();
                                 stage.requestFocus();
                                 controller.initLoadMenus();

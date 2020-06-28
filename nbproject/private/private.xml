@@ -4,8 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaProcesoController.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/contactos/clientes/FxClienteListaController.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/tickets/FxTicketController.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/VentaADO.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/tools/BillPrintable.java</file>
             <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaEstructuraController.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/impresoras/FxImprimirController.java</file>
         </group>
     </open-files>
 </project-private>

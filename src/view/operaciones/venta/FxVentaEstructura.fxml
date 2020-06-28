@@ -154,7 +154,21 @@
                                     <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="M 0.00" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
+                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0.3333333333333333em;" styleClass="labelRoboto14" textFill="#1a2226">
+                                       <graphic>
+                                          <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/recibo.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" style="-fx-padding: 0em  0.4166666666666667em  0.4166666666666667em  0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <VBox alignment="CENTER" style="-fx-spacing: 0.1666665em;">
                                        <children>
@@ -180,12 +194,12 @@
                                                    <graphic>
                                                       <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../image/recibo.png" />
+                                                            <Image url="@../../image/options.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="cbTipoDocumento" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de documento" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT">
@@ -240,7 +254,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtDireccionCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtDireccionCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                        </children>

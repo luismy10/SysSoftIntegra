@@ -306,10 +306,10 @@ public class GlobalADO {
             codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
             codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
             codigoCliente.execute();
-            String idSuministro = codigoCliente.getString(1);
+            String idCliente = codigoCliente.getString(1);
 
             statementCliente = DBUtil.getConnection().prepareStatement("INSERT INTO ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-            statementCliente.setString(1, idSuministro);
+            statementCliente.setString(1, idCliente);
             statementCliente.setInt(2, clienteTB.getTipoDocumento());
             statementCliente.setString(3, clienteTB.getNumeroDocumento());
             statementCliente.setString(4, clienteTB.getInformacion());

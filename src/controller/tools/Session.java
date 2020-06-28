@@ -67,6 +67,8 @@ public class Session {
     variable de cliente
     */
     public static String CLIENTE_ID;
+    
+    public static int CLIENTE_TIPO_DOCUMENTO;
 
     public static String CLIENTE_DATOS;
 

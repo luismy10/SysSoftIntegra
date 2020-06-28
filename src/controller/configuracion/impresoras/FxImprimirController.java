@@ -46,35 +46,36 @@ public class FxImprimirController implements Initializable {
         if (cbImpresoras.getSelectionModel().getSelectedIndex() >= 0) {
             if (ticketController != null) {
                 billPrintable.setSheetWidth(ticketController.getSheetWidth());
-                ArrayList<HBox> object = new ArrayList<>();
-                int rows = 0;
-                int lines = 0;
-                for (int i = 0; i < ticketController.getHbEncabezado().getChildren().size(); i++) {
-                    object.add((HBox) ticketController.getHbEncabezado().getChildren().get(i));
-                    HBox box = ((HBox) ticketController.getHbEncabezado().getChildren().get(i));
-                    rows++;
-                    for (int j = 0; j < box.getChildren().size(); j++) {
-                        lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
-                    }
-                }
-                for (int i = 0; i < ticketController.getHbDetalleCabecera().getChildren().size(); i++) {
-                    object.add((HBox) ticketController.getHbDetalleCabecera().getChildren().get(i));
-                    HBox box = ((HBox) ticketController.getHbDetalleCabecera().getChildren().get(i));
-                    rows++;
-                    for (int j = 0; j < box.getChildren().size(); j++) {
-                        lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
-                    }
-                }
-
-                for (int i = 0; i < ticketController.getHbPie().getChildren().size(); i++) {
-                    object.add((HBox) ticketController.getHbPie().getChildren().get(i));
-                    HBox box = ((HBox) ticketController.getHbPie().getChildren().get(i));
-                    rows++;
-                    for (int j = 0; j < box.getChildren().size(); j++) {
-                        lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
-                    }
-                }
-                billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Imprimir", "Error al imprimir el ticket.",cbImpresoras.getSelectionModel().getSelectedItem(),cbCortarPapel.isSelected());
+//                ArrayList<HBox> object = new ArrayList<>();
+//                int rows = 0;
+//                int lines = 0;
+//                for (int i = 0; i < ticketController.getHbEncabezado().getChildren().size(); i++) {
+//                    object.add((HBox) ticketController.getHbEncabezado().getChildren().get(i));
+//                    HBox box = ((HBox) ticketController.getHbEncabezado().getChildren().get(i));
+//                    rows++;
+//                    for (int j = 0; j < box.getChildren().size(); j++) {
+//                        lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+//                    }
+//                }
+//                for (int i = 0; i < ticketController.getHbDetalleCabecera().getChildren().size(); i++) {
+//                    object.add((HBox) ticketController.getHbDetalleCabecera().getChildren().get(i));
+//                    HBox box = ((HBox) ticketController.getHbDetalleCabecera().getChildren().get(i));
+//                    rows++;
+//                    for (int j = 0; j < box.getChildren().size(); j++) {
+//                        lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+//                    }
+//                }
+//
+//                for (int i = 0; i < ticketController.getHbPie().getChildren().size(); i++) {
+//                    object.add((HBox) ticketController.getHbPie().getChildren().get(i));
+//                    HBox box = ((HBox) ticketController.getHbPie().getChildren().get(i));
+//                    rows++;
+//                    for (int j = 0; j < box.getChildren().size(); j++) {
+//                        lines += ((TextFieldTicket) box.getChildren().get(j)).getLines();
+//                    }
+//                }
+                //billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Imprimir", "Error al imprimir el ticket.",cbImpresoras.getSelectionModel().getSelectedItem(),cbCortarPapel.isSelected());
+                billPrintable.generatePDFPrint(ticketController.getHbEncabezado(),ticketController.getHbDetalleCabecera(),ticketController.getHbPie());
             }
         } else {
             Tools.AlertMessageWarning(apWindow, "Imprimir", "Seleccione un impresora para continuar.");

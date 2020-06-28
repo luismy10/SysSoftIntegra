@@ -2,13 +2,13 @@ package controller.configuracion.etiquetas;
 
 import controller.inventario.suministros.FxSuministrosController;
 import controller.tools.FilesRouters;
+import controller.tools.SelectecElement;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -27,7 +26,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.EtiquetaADO;
@@ -165,7 +163,6 @@ public class FxEtiquetasBusquedaController implements Initializable {
         this.etiquetasController = etiquetasController;
     }
 
-
     public void setInitSuministroController(FxSuministrosController suministrosController) {
         this.suministrosController = suministrosController;
     }
@@ -197,45 +194,4 @@ public class FxEtiquetasBusquedaController implements Initializable {
         }
 
     }
-
-    class SelectecElement {
-
-        private final List<Node> selection = new ArrayList<>();
-
-        public SelectecElement() {
-
-        }
-
-        public void clear() {
-            for (int i = 0; i < selection.size(); i++) {
-                Group group = (Group) selection.get(i);
-                for (int j = 0; j < group.getChildren().size(); j++) {
-                    if (group.getChildren().get(j) instanceof Region) {
-                        Region region = (Region) group.getChildren().get(j);
-                        if (region.getId().equalsIgnoreCase("rcon")) {
-                            group.getChildren().remove(region);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void add(Node node, double width, double height) {
-            Group group = (Group) node;
-            Region region = new Region();
-            region.setId("rcon");
-            region.setPrefSize(width, height);
-            region.setStyle("-fx-border-color:green;-fx-border-width:2;");
-
-            if (selection.contains(node)) {
-                group.getChildren().add(region);
-            } else {
-                group.getChildren().add(region);
-                selection.add(group);
-            }
-
-        }
-
-    }
-
 }

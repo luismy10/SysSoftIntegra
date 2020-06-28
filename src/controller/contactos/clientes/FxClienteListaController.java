@@ -1,6 +1,5 @@
 package controller.contactos.clientes;
 
-import controller.operaciones.venta.FxVentaProcesoController;
 import controller.reporte.FxVentaReporteController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;

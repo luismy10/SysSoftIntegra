@@ -324,11 +324,12 @@ public class ClienteADO {
         ClienteTB clienteTB = null;
         try {
             DBUtil.dbConnect();
-            statement = DBUtil.getConnection().prepareStatement("SELECT ci.IdCliente,ci.Informacion, ci.NumeroDocumento, ci.Direccion FROM ClienteTB AS ci WHERE Predeterminado = 1");
+            statement = DBUtil.getConnection().prepareStatement("SELECT ci.IdCliente,ci.TipoDocumento,ci.Informacion, ci.NumeroDocumento, ci.Direccion FROM ClienteTB AS ci WHERE Predeterminado = 1");
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(resultSet.getString("IdCliente"));
+                clienteTB.setTipoDocumento(resultSet.getInt("TipoDocumento"));
                 clienteTB.setInformacion(resultSet.getString("Informacion"));
                 clienteTB.setNumeroDocumento(resultSet.getString("NumeroDocumento"));
                 clienteTB.setDireccion(resultSet.getString("Direccion"));

@@ -22,7 +22,7 @@
                   <Text fx:id="lblComprobante" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold24" text="Comprobante: Factura" />
                </children>
             </HBox>
-            <HBox fx:id="hbContenido">
+            <HBox fx:id="hbContenido" disable="true">
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>

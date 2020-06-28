@@ -79,8 +79,6 @@ public class FxVentaProcesoController implements Initializable {
 
     private String moneda_simbolo;
 
-    private SearchComboBox<ClienteTB> searchComboBox;
-
     private double vuelto;
 
     private boolean estado = false;
@@ -123,24 +121,23 @@ public class FxVentaProcesoController implements Initializable {
             @Override
             public ArrayList<Object> call() {
                 ArrayList<Object> objects = new ArrayList<>();
-                objects.add(ClienteADO.GetSearchComboBoxCliente());
                 objects.add(BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO));
                 return objects;
             }
         };
         task.setOnSucceeded(e -> {
             ArrayList<Object> objects = task.getValue();
-            if (objects.get(0) == null && objects.get(1) == null) {
+            if (objects.get(0) == null ) {
                 hbContenido.setDisable(true);
                 Tools.AlertMessageError(window, "Venta", "Habrá nuevamente la ventana, se produjo un problema de conexión al traer los datos.");
                 return;
             }
-            List<ClienteTB> clienteTBset = (List<ClienteTB>) objects.get(0);
-            searchComboBox.getComboBox().getItems().addAll(clienteTBset);
-            boolean validate = (boolean) objects.get(1);
+            boolean validate = (boolean) objects.get(0);
             if (!validate) {
                 hbContenido.setDisable(true);
                 Tools.AlertMessageWarning(window, "Venta", "Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva su caja.");
+            }else{
+                hbContenido.setDisable(false);
             }
             txtEfectivo.requestFocus();
         });
@@ -192,8 +189,6 @@ public class FxVentaProcesoController implements Initializable {
             ventaTB.setEfectivo(0);
             ventaTB.setVuelto(0);
             ventaTB.setObservaciones(txtObservacion.getText().trim());
-
-            //  ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
             CuentasClienteTB cuentasCliente = new CuentasClienteTB();
 //                cuentasCliente.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getIdPlazos());
 //                cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
@@ -221,13 +216,11 @@ public class FxVentaProcesoController implements Initializable {
             if (estado == false) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
             } else {
-
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
                 ventaTB.setEfectivo(Tools.isNumeric(txtEfectivo.getText()) ? Double.parseDouble(txtEfectivo.getText()) : 0);
                 ventaTB.setVuelto(vuelto);
                 ventaTB.setObservaciones(txtObservacion.getText().trim());
-//                ventaTB.setCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
                 ArrayList<FormaPagoTB> formaPagoTBs = new ArrayList();
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
@@ -293,28 +286,37 @@ public class FxVentaProcesoController implements Initializable {
                     }
                 }
 
+    
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    String[] result = VentaADO.registrarVentaContado(ventaTB, bancoHistorialEfectivo, bancoHistorialBancaria, formaPagoTBs, tvList, ventaEstructuraController.getIdTipoComprobante(), new CuentasClienteTB()).split("/");
-                    switch (result[0]) {
+                    String result = VentaADO.registrarVentaContado(
+                            ventaTB,
+                            bancoHistorialEfectivo, 
+                            bancoHistorialBancaria, 
+                            formaPagoTBs,
+                            tvList, 
+                            ventaEstructuraController.getIdTipoComprobante());
+                    switch (result) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizo la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                ventaEstructuraController.imprimirVenta(
-                                        ventaEstructuraController.obtenerTipoComprobante(),
-                                        tvList,
-                                        Tools.roundingValue(ventaTB.getSubTotal(), 2),
-                                        Tools.roundingValue(ventaTB.getDescuento(), 2),
-                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
-                                        Tools.roundingValue(tota_venta, 2),
-                                        Double.parseDouble(txtEfectivo.getText()),
-                                        vuelto,
-                                        result[1],
-                                        result[2],
-                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento(),
-                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getInformacion());
-                                        "",
-                                        "");
+                                ventaEstructuraController.imprimirVenta();
+                                
+//                                ventaEstructuraController.imprimirVenta(
+//                                        ventaEstructuraController.obtenerTipoComprobante(),
+//                                        tvList,
+//                                        Tools.roundingValue(ventaTB.getSubTotal(), 2),
+//                                        Tools.roundingValue(ventaTB.getDescuento(), 2),
+//                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
+//                                        Tools.roundingValue(tota_venta, 2),
+//                                        Double.parseDouble(txtEfectivo.getText()),
+//                                        vuelto,
+//                                        result[1],
+//                                        result[2],
+//                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento(),
+//                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getInformacion());
+//                                        "",
+//                                        "");
                                 ventaEstructuraController.resetVenta();
                                 Tools.Dispose(window);
                             } else {
@@ -323,7 +325,7 @@ public class FxVentaProcesoController implements Initializable {
                             }
                             break;
                         default:
-                            Tools.AlertMessageError(window, "Venta", result[0]);
+                            Tools.AlertMessageError(window, "Venta", result);
                             break;
                     }
                 }

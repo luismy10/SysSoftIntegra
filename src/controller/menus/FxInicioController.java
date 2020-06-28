@@ -148,5 +148,8 @@ public class FxInicioController implements Initializable {
         productosSeries.getData().set(2, new XYChart.Data("Gaseosa", new Random().nextInt(101)));
         productosSeries.getData().set(3, new XYChart.Data("Pan", new Random().nextInt(101)));
     }
+    
+    
+    
 
 }

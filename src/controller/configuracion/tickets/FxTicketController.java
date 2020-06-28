@@ -2,6 +2,7 @@ package controller.configuracion.tickets;
 
 import controller.configuracion.impresoras.FxImprimirController;
 import controller.tools.FilesRouters;
+import controller.tools.ImageViewTicket;
 import controller.tools.Json;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
@@ -16,7 +17,6 @@ import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -76,11 +76,15 @@ public class FxTicketController implements Initializable {
 
     private TextFieldTicket reference;
 
-    private HBox HboxReference;
+    private HBox hboxAnterior;
+
+    private HBox hboxReference;
 
     private short sheetWidth;
 
     private double pointWidth;
+
+    private double layoutY;
 
     private int idTicket;
 
@@ -91,6 +95,7 @@ public class FxTicketController implements Initializable {
         cbAlignment.getItems().add(Pos.CENTER_LEFT);
         cbAlignment.getItems().add(Pos.CENTER);
         cbAlignment.getItems().add(Pos.CENTER_RIGHT);
+
     }
 
     public void loadTicket(int idTicket, String nombre, String ruta) {
@@ -362,7 +367,7 @@ public class FxTicketController implements Initializable {
     }
 
     private HBox addElement(AnchorPane contenedor, String id, boolean useLayout) {
-        double layoutY = 0;
+        layoutY = 0;
         if (useLayout) {
             for (int i = 0; i < contenedor.getChildren().size(); i++) {
                 layoutY += ((HBox) contenedor.getChildren().get(i)).getPrefHeight();
@@ -401,26 +406,43 @@ public class FxTicketController implements Initializable {
         imgDobleLinea.setFitWidth(20);
         imgDobleLinea.setFitHeight(20);
 
+        ImageView imgImage = new ImageView(new Image("/view/image/photo.png"));
+        imgImage.setFitWidth(20);
+        imgImage.setFitHeight(20);
+
         HBox hBox = new HBox();
         hBox.setId(id);
         hBox.setLayoutX(0);
         hBox.setLayoutY(layoutY);
         hBox.setPrefWidth(sheetWidth * pointWidth);
         hBox.setPrefHeight(30);
-        hBox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;");
-        hBox.addEventHandler(MouseEvent.MOUSE_PRESSED, (Event event) -> {
-            hBox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
-            HboxReference = hBox;
-        });
-        hBox.addEventHandler(MouseEvent.MOUSE_EXITED, (Event event) -> {
-            hBox.setStyle("-fx-padding:0 10 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: white;");
-        });
+        hBox.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;");
+        hBox.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            hboxAnterior = hboxReference;
+            if (hboxAnterior != null) {
+                hboxAnterior.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: white;");
+            }
 
+            hBox.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
+            hboxReference = hBox;
+        });
         ContextMenu contextMenu = new ContextMenu();
         MenuItem remove = new MenuItem("Remover Renglón");
         remove.setGraphic(imgRemove);
         remove.setOnAction(e -> {
-            contenedor.getChildren().remove(hBox);
+            for (int b = 0; b < contenedor.getChildren().size(); b++) {
+                if (contenedor.getChildren().get(b).getId().equalsIgnoreCase(hBox.getId())) {
+                    contenedor.getChildren().remove(b);
+                    for (int p = 0; p < contenedor.getChildren().size(); p++) {
+                        HBox hb = (HBox) contenedor.getChildren().get(p);
+                        double heightNow = hb.getPrefHeight();
+                        System.out.println(heightNow);
+                        hb.setLayoutY(p * heightNow);
+                    }
+                    contenedor.layout();
+                    break;
+                }
+            }
         });
 
         MenuItem text = new MenuItem("Agregar Texto");
@@ -476,13 +498,31 @@ public class FxTicketController implements Initializable {
             moveDownHBox(contenedor);
         });
 
-        contextMenu.getItems().addAll(text, textVariable, textMultilinea, textUnaLinea, textDosLineas, remove, moveUp, moveDown);
+        MenuItem addImage = new MenuItem("Agregar imagen");
+        addImage.setGraphic(imgImage);
+        addImage.setOnAction(e -> {
+            if (hBox.getChildren().isEmpty()) {
+                ImageViewTicket imageView = new ImageViewTicket(new Image("/view/image/logo.png"));
+                imageView.setColumnWidth(sheetWidth);
+                imageView.setFitWidth(60);
+                imageView.setFitHeight(60);
+                imageView.setSmooth(true);
+                hBox.setPrefHeight(imageView.getFitHeight());
+                hBox.getChildren().add(imageView);
+            }
+        });
+
+        contextMenu.getItems().addAll(text, textVariable, textMultilinea, textUnaLinea, textDosLineas, remove, moveUp, moveDown, addImage);
 
         hBox.setOnContextMenuRequested((ContextMenuEvent event) -> {
             contextMenu.show(hBox, event.getSceneX(), event.getSceneY());
             short widthContent = 0;
             for (int i = 0; i < hBox.getChildren().size(); i++) {
-                widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
+                if (hBox.getChildren().get(i) instanceof TextFieldTicket) {
+                    widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
+                } else if (hBox.getChildren().get(i) instanceof ImageViewTicket) {
+                    widthContent += ((ImageViewTicket) hBox.getChildren().get(i)).getColumnWidth();
+                }
             }
 
             text.setDisable((widthContent + 13) > sheetWidth);
@@ -490,6 +530,12 @@ public class FxTicketController implements Initializable {
             textUnaLinea.setDisable((widthContent + 13) > sheetWidth);
 
             textDosLineas.setDisable((widthContent + 13) > sheetWidth);
+            
+            textVariable.setDisable(!hBox.getChildren().isEmpty());
+            
+            textMultilinea.setDisable(!hBox.getChildren().isEmpty());
+
+            addImage.setDisable(!hBox.getChildren().isEmpty());
 
         });
         if (useLayout) {
@@ -511,8 +557,8 @@ public class FxTicketController implements Initializable {
         field.setAlignment(align);
         field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {
             if (newPropertyValue) {
-                field.setStyle("-fx-background-color: #cecece;"+"-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
-            
+                field.setStyle("-fx-background-color: #cecece;" + "-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
+
                 txtAnchoColumna.setText(field.getColumnWidth() + "");
                 reference = field;
                 cbAlignment.getItems().forEach(e -> {
@@ -528,8 +574,8 @@ public class FxTicketController implements Initializable {
 
                 txtVariable.setText(field.getVariable());
             } else {
-                field.setStyle("-fx-background-color: white;"+"-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
-               
+                field.setStyle("-fx-background-color: white;" + "-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
+
             }
         });
 
@@ -1001,6 +1047,69 @@ public class FxTicketController implements Initializable {
 
     }
 
+    private void moveUpHBox(AnchorPane anchorPane) {
+        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+
+            if (((HBox) anchorPane.getChildren().get(i)).equals(hboxReference)) {
+                if (i == 0) {
+                    break;
+                }
+                HBox previous = (HBox) anchorPane.getChildren().get(i - 1);
+
+                HBox oldHbox = addElement(anchorPane, previous.getId(), false);
+                oldHbox.setLayoutY(previous.getLayoutY());
+                for (int r = 0; r < hboxReference.getChildren().size(); r++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) hboxReference.getChildren().get(r);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    oldHbox.getChildren().add(fieldTicket);
+                }
+
+                HBox newHbox = addElement(anchorPane, hboxReference.getId(), false);
+                newHbox.setLayoutY(hboxReference.getLayoutY());
+                for (int a = 0; a < previous.getChildren().size(); a++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) previous.getChildren().get(a);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    newHbox.getChildren().add(fieldTicket);
+                }
+
+                anchorPane.getChildren().set(i - 1, oldHbox);
+                anchorPane.getChildren().set(i, newHbox);
+
+            }
+        }
+    }
+
+    private void moveDownHBox(AnchorPane anchorPane) {
+        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+            if (((HBox) anchorPane.getChildren().get(i)).equals(hboxReference)) {
+                if (anchorPane.getChildren().size() == (i + 1)) {
+                    break;
+                }
+
+                HBox later = (HBox) anchorPane.getChildren().get(i + 1);
+
+                HBox oldHbox = addElement(anchorPane, later.getId(), false);
+                oldHbox.setLayoutY(later.getLayoutY());
+                for (int r = 0; r < hboxReference.getChildren().size(); r++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) hboxReference.getChildren().get(r);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    oldHbox.getChildren().add(fieldTicket);
+                }
+
+                HBox newHbox = addElement(anchorPane, hboxReference.getId(), false);
+                newHbox.setLayoutY(hboxReference.getLayoutY());
+                for (int a = 0; a < later.getChildren().size(); a++) {
+                    TextFieldTicket tftAnterior = (TextFieldTicket) later.getChildren().get(a);
+                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                    newHbox.getChildren().add(fieldTicket);
+                }
+
+                anchorPane.getChildren().set(i, newHbox);
+                anchorPane.getChildren().set(i + 1, oldHbox);
+            }
+        }
+    }
+
     public AnchorPane getHbEncabezado() {
         return apEncabezado;
     }
@@ -1019,69 +1128,6 @@ public class FxTicketController implements Initializable {
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
-    }
-
-    private void moveUpHBox(AnchorPane anchorPane) {
-        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
-
-            if (((HBox) anchorPane.getChildren().get(i)).equals(HboxReference)) {
-                if (i == 0) {
-                    break;
-                }
-                HBox previous = (HBox) anchorPane.getChildren().get(i - 1);
-
-                HBox oldHbox = addElement(anchorPane, previous.getId(), false);
-                oldHbox.setLayoutY(previous.getLayoutY());
-                for (int r = 0; r < HboxReference.getChildren().size(); r++) {
-                    TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
-                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
-                    oldHbox.getChildren().add(fieldTicket);
-                }
-
-                HBox newHbox = addElement(anchorPane, HboxReference.getId(), false);
-                newHbox.setLayoutY(HboxReference.getLayoutY());
-                for (int a = 0; a < previous.getChildren().size(); a++) {
-                    TextFieldTicket tftAnterior = (TextFieldTicket) previous.getChildren().get(a);
-                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
-                    newHbox.getChildren().add(fieldTicket);
-                }
-
-                anchorPane.getChildren().set(i - 1, oldHbox);
-                anchorPane.getChildren().set(i, newHbox);
-
-            }
-        }
-    }
-
-    private void moveDownHBox(AnchorPane anchorPane) {
-        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
-            if (((HBox) anchorPane.getChildren().get(i)).equals(HboxReference)) {
-                if (anchorPane.getChildren().size() == (i + 1)) {
-                    break;
-                }
-
-                HBox later = (HBox) anchorPane.getChildren().get(i + 1);
-
-                HBox oldHbox = addElement(anchorPane, later.getId(), false);
-                oldHbox.setLayoutY(later.getLayoutY());
-                for (int r = 0; r < HboxReference.getChildren().size(); r++) {
-                    TextFieldTicket tftAnterior = (TextFieldTicket) HboxReference.getChildren().get(r);
-                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
-                    oldHbox.getChildren().add(fieldTicket);
-                }
-
-                HBox newHbox = addElement(anchorPane, HboxReference.getId(), false);
-                newHbox.setLayoutY(HboxReference.getLayoutY());
-                for (int a = 0; a < later.getChildren().size(); a++) {
-                    TextFieldTicket tftAnterior = (TextFieldTicket) later.getChildren().get(a);
-                    TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
-                    newHbox.getChildren().add(fieldTicket);
-                }
-
-                anchorPane.getChildren().set(i, newHbox);
-                anchorPane.getChildren().set(i + 1, oldHbox);
-            }
-        }
     }
 
 }

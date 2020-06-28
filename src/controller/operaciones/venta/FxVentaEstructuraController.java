@@ -44,6 +44,8 @@ import javafx.stage.Stage;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.ComprobanteADO;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.MonedaADO;
@@ -133,6 +135,10 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnVentasPorDia;
     @FXML
     private GridPane gpTotales;
+    @FXML
+    private Button btnBuscarCliente;
+    @FXML
+    private ComboBox<DetalleTB> cbTipoDocumento;
     //-----------------------------------------------
     private AnchorPane vbPrincipal;
 
@@ -144,11 +150,11 @@ public class FxVentaEstructuraController implements Initializable {
 
     private BillPrintable billPrintable;
 
-    private VBox hbEncabezado;
+    private AnchorPane hbEncabezado;
 
-    private VBox hbDetalleCabecera;
+    private AnchorPane hbDetalleCabecera;
 
-    private VBox hbPie;
+    private AnchorPane hbPie;
 
     private boolean unidades_cambio_cantidades;
 
@@ -179,15 +185,13 @@ public class FxVentaEstructuraController implements Initializable {
     private double totalImporte;
 
     private double total;
-    @FXML
-    private Button btnBuscarCliente;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        hbEncabezado = new VBox();
-        hbDetalleCabecera = new VBox();
-        hbPie = new VBox();
+        hbEncabezado = new AnchorPane();
+        hbDetalleCabecera = new AnchorPane();
+        hbPie = new AnchorPane();
 
         window.setOnKeyReleased((KeyEvent event) -> {
             if (null != event.getCode()) {
@@ -276,6 +280,19 @@ public class FxVentaEstructuraController implements Initializable {
                 if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
                     cbMoneda.getSelectionModel().select(i);
                     monedaSimbolo = cbMoneda.getItems().get(i).getSimbolo();
+                    break;
+                }
+            }
+        }
+
+        DetalleADO.GetDetailId("0003").forEach(e -> {
+            cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+
+        if (!cbTipoDocumento.getItems().isEmpty()) {
+            for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
+                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                    cbTipoDocumento.getSelectionModel().select(detalleTB);
                     break;
                 }
             }
@@ -599,8 +616,15 @@ public class FxVentaEstructuraController implements Initializable {
                     vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
                 });
                 stage.show();
+
+                ClienteTB clienteTB = new ClienteTB();
+                clienteTB.setIdCliente(idCliente);
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim());
+                clienteTB.setInformacion(txtDatosCliente.getText().trim());
+                clienteTB.setDireccion(txtDireccionCliente.getText().trim());
+
                 VentaTB ventaTB = new VentaTB();
-                // ventaTB.setCliente(idCliente);
                 ventaTB.setVendedor(Session.USER_ID);
                 ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
                         ? cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()
@@ -618,6 +642,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setDescuento(descuento);
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setTotal(totalImporte);
+                ventaTB.setClienteTB(clienteTB);
                 //ire a comprar algo para levantarme vale ok
                 controller.setInitComponents(ventaTB, tvList, total);
             }
@@ -993,11 +1018,11 @@ public class FxVentaEstructuraController implements Initializable {
     public void resetVenta() {
         tvList.getItems().clear();
 
-        lblTotal.setText("M 0.00");
-        lblValorVenta.setText("M 0.00");
-        lblDescuento.setText("M 0.00");
-        lblImporteTotal.setText("M 0.00");
-        lblTotalPagar.setText("M 0.00");
+        lblTotal.setText(monedaSimbolo + " " + "0.00");
+        lblValorVenta.setText(monedaSimbolo + " " + "0.00");
+        lblDescuento.setText(monedaSimbolo + " " + "0.00");
+        lblImporteTotal.setText(monedaSimbolo + " " + "0.00");
+        lblTotalPagar.setText(monedaSimbolo + " " + "0.00");
 
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
@@ -1039,58 +1064,14 @@ public class FxVentaEstructuraController implements Initializable {
             arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
         });
 
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+
         txtSearch.requestFocus();
 
         calculateTotales();
-    }
-
-    private void loadTicket() {
-        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
-    }
-
-    public void imprimirVenta(String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
-        if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
-            loadEstructura(Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta, numCliente, infoCliente);
-        } else {
-            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la impresora :D");
-        }
-    }
-
-    public void imprimirPrueba(String nombre_impresora, boolean costar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
-        loadEstructura(nombre_impresora, costar, documento, tvList, subTotal, descuento, importeTotal, total, efec, vuel, ticket, codigoVenta, numCliente, infoCliente);
-    }
-
-    private void loadEstructura(String nombre_impresora, boolean cortar, String documento, TableView<SuministroTB> tvList, String subTotal, String descuento, String importeTotal, String total, double efec, double vuel, String ticket, String codigoVenta, String numCliente, String infoCliente) {
-        loadTicket();
-        ArrayList<HBox> object = new ArrayList<>();
-        int rows = 0;
-        int lines = 0;
-        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-            object.add((HBox) hbEncabezado.getChildren().get(i));
-            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-            rows++;
-            lines += billPrintable.hbEncebezado(box, documento, ticket, numCliente, infoCliente);
-        }
-
-        for (int m = 0; m < tvList.getItems().size(); m++) {
-            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                HBox hBox = new HBox();
-                hBox.setId("dc_" + m + "" + i);
-                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                rows++;
-                lines += billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
-                object.add(hBox);
-            }
-        }
-        Session.TICKET_CODIGOVENTA = codigoVenta;
-        for (int i = 0; i < hbPie.getChildren().size(); i++) {
-            object.add((HBox) hbPie.getChildren().get(i));
-            HBox box = ((HBox) hbPie.getChildren().get(i));
-            rows++;
-            lines += billPrintable.hbPie(box, subTotal, descuento, importeTotal, total, efec, vuel, numCliente, infoCliente);
-        }
-        billPrintable.modelTicket(window, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", nombre_impresora, cortar);
-
     }
 
     private void removeArticulo() {
@@ -1158,20 +1139,51 @@ public class FxVentaEstructuraController implements Initializable {
             }
             btnBuscarCliente.setDisable(false);
         });
-        
-        task.setOnFailed(e->{
+
+        task.setOnFailed(e -> {
             btnBuscarCliente.setDisable(false);
         });
-        
-        task.setOnScheduled(e->{
+
+        task.setOnScheduled(e -> {
             btnBuscarCliente.setDisable(true);
-        });        
+        });
 
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
         }
 
+    }
+
+    public void imprimirPrueba(String nombre_impresora, boolean costar) {
+        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
+        billPrintable.generatePDFPrint(hbEncabezado, hbDetalleCabecera, hbPie);
+    }
+
+    public void imprimirVenta() {
+        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            billPrintable.hbEncebezado(box, "IMPRESION DE PRUEBA", "T0001-324234234", "00000000", "PUBLICO GENERAL");
+        }
+
+        AnchorPane hbDetalle = new AnchorPane();
+        for (int m = 0; m < tvList.getItems().size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);   
+                hbDetalle.getChildren().add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            billPrintable.hbPie(box, "100.00", "-10.00", "90.00", "90.00", 0, 0, "", "");
+        }
+
+        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
     }
 
     @FXML

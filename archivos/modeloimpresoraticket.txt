@@ -1,26 +1,24 @@
                                         
-                 BOLETA                 
-             B001-00000002              
-AV. PARRAGA DEL DIGO NRM 10 ATE VITARTE 
-LIMA - PERU - HUANCAYO                  
+          FERRETERIA DIAMANTE           
+                 TIKET                  
+             T001-00000329              
+JR BOLIVAR 664 CONCEPCION JUNTOS AL PALO
+RUC: 10419565577    Cel: 985801492      
 ----------------------------------------
-00000000        PUBLICO GENERAL         
+                                        
+27/06/2020          06:39:16 PM         
 ----------------------------------------
 DESCRIPCION.                            
 CANT.     P.UNIT.     DESCT.     IMPORTE
 ========================================
-COCA COLA 1L                            
-1.00      0.00          0%          0.00
-ARROZ SUELTO                            
-1.00      3.50          0%          3.50
-PERNOS 1/2                              
-7.00      1.50          0%         10.50
+FRAGUA BLANCO CELIMA KG                 
+1.00      5.50          0%          5.50
 ----------------------------------------
-VALOR VENTA                     S/ 14.00
+VALOR VENTA                      S/ 5.50
 DESCUENTO                        S/ 0.00
-SUB IMPORTE                     S/ 14.00
+SUB IMPORTE                      S/ 5.50
 ----------------------------------------
-TOTAL                           S/ 14.00
+TOTAL                            S/ 5.50
 ----------------------------------------
 
                                        

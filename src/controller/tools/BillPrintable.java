@@ -1,6 +1,19 @@
 package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfWriter;
+import controller.menus.FxInicioController;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -14,16 +27,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
@@ -38,8 +55,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class BillPrintable implements Printable {
-
-    private String tickt;
 
     private int sheetWidth;
 
@@ -149,8 +164,8 @@ public class BillPrintable implements Printable {
         return Tools.roundingValue(value, 2);
     }
 
-    public int hbEncebezado(HBox box, String nombreTicketImpresion, String ticket, String numCliente, String infoCliente) {
-        int lines = 0;
+    public void hbEncebezado(HBox box, String nombreTicketImpresion, String ticket, String numCliente, String infoCliente) {
+        //int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
             if (fieldTicket.getVariable().equalsIgnoreCase("repeempresa")) {
@@ -186,9 +201,9 @@ public class BillPrintable implements Printable {
             } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
                 fieldTicket.setText(infoCliente);
             }
-            lines = fieldTicket.getLines();
+            //  lines = fieldTicket.getLines();
         }
-        return lines;
+        //return lines;
     }
 
     public int hbDetalle(HBox hBox, HBox box, ObservableList<SuministroTB> arrList, int m) {
@@ -247,6 +262,7 @@ public class BillPrintable implements Printable {
     }
 
     public void modelTicket(Node window, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent, String nombreimpresora, boolean cortar) {
+
         int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
@@ -360,6 +376,241 @@ public class BillPrintable implements Printable {
         }
     }
 
+    public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie) {
+        try {
+            Document document = new Document();
+
+            FontFactory.register(getClass().getResource("/view/style/Monospace.ttf").toString(), "Monospace");
+            com.itextpdf.text.Font f = FontFactory.getFont("Monospace", 11, BaseColor.BLACK);
+
+            PdfWriter.getInstance(document, new FileOutputStream("TicketVenta.pdf"));
+            document.setPageSize(new Rectangle((float) (sheetWidth * 6.825), 1000));
+            document.setMargins(4, 4, 4, 4);
+
+            document.open();
+
+            document.addTitle("Formato de ticket");
+            document.addSubject("Usando IText PDF");
+            document.addKeywords("Java, PDF, iText");
+            document.addAuthor("SysSoft Integra");
+            document.addCreator("Sistemas y más");
+
+            createRowPDF(apEncabezado, document, f);
+            createRowPDF(apDetalle, document, f);
+            createRowPDF(apPie, document, f);
+
+            document.close();
+        } catch (FileNotFoundException | DocumentException ex) {
+            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+        }
+    }
+
+    private void createRowPDF(AnchorPane anchorPane, Document document, com.itextpdf.text.Font f) throws DocumentException, BadElementException, IOException {
+        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+            HBox box = ((HBox) anchorPane.getChildren().get(i));
+            StringBuilder result = new StringBuilder();
+
+            if (box.getChildren().size() > 1) {
+
+                int columnI;
+                int columnF;
+                int columnA = 0;
+
+                for (int j = 0; j < box.getChildren().size(); j++) {
+                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(j);
+
+                    columnI = columnA;
+                    columnF = columnI + field.getColumnWidth();
+                    columnA = columnF;
+
+                    int totalWidth;
+                    int length;
+
+                    if (null != field.getAlignment()) {
+                        switch (field.getAlignment()) {
+                            case CENTER_LEFT:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int posl = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= 0 && ca <= (length - 1)) {
+                                        char c = field.getText().charAt(posl);
+                                        result.append(c);
+                                        posl++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+                                break;
+                            case CENTER:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int centro = (totalWidth - length) / 2;
+                                int posc = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= centro && ca <= (centro + (length - 1))) {
+                                        char c = field.getText().charAt(posc);
+                                        result.append(c);
+                                        posc++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+
+                                break;
+                            case CENTER_RIGHT:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int right = totalWidth - length;
+                                int posr = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= right && ca <= (right + (length - 1))) {
+                                        char c = field.getText().charAt(posr);
+                                        result.append(c);
+                                        posr++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+                                break;
+                            default:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int posd = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= 0 && ca <= (length - 1)) {
+                                        char c = field.getText().charAt(posd);
+                                        result.append(c);
+                                        posd++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+
+                Paragraph t1 = new Paragraph(result.toString(), f);
+                t1.setAlignment(Element.ALIGN_LEFT);
+                document.add(t1);
+            } else {
+
+                if (box.getChildren().get(0) instanceof TextFieldTicket) {
+
+                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
+
+                    int columnI;
+                    int columnF;
+
+                    columnI = 0;
+                    columnF = columnI + field.getColumnWidth();
+
+                    int totalWidth;
+                    int length;
+
+                    if (null != field.getAlignment()) {
+                        switch (field.getAlignment()) {
+                            case CENTER_LEFT:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int posl = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= 0 && ca <= (length - 1)) {
+                                        char c = field.getText().charAt(posl);
+                                        result.append(c);
+                                        posl++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+                                break;
+                            case CENTER:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int centro = (totalWidth - length) / 2;
+                                int posc = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= centro && ca <= (centro + (length - 1))) {
+                                        char c = field.getText().charAt(posc);
+                                        result.append(c);
+                                        posc++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+
+                                break;
+                            case CENTER_RIGHT:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int right = totalWidth - length;
+                                int posr = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= right && ca <= (right + (length - 1))) {
+                                        char c = field.getText().charAt(posr);
+                                        result.append(c);
+                                        posr++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+                                break;
+                            default:
+                                totalWidth = columnF - columnI;
+                                length = field.getText().length();
+                                int posd = 0;
+                                for (int ca = 0; ca < totalWidth; ca++) {
+                                    if (ca >= 0 && ca <= (length - 1)) {
+                                        char c = field.getText().charAt(posd);
+                                        result.append(c);
+                                        posd++;
+
+                                    } else {
+                                        result.append(" ");
+                                    }
+                                }
+                                break;
+                        }
+                    }
+
+                    Paragraph t1 = new Paragraph(result.toString(), f);
+                    t1.setAlignment(Element.ALIGN_LEFT);
+                    document.add(t1);
+                } else if (box.getChildren().get(0) instanceof ImageView) {
+                    ImageView imageView = (ImageView) box.getChildren().get(0);                    
+                    Image image = Image.getInstance(getClass().getResource("/view/image/logo.png"));
+                    image.setAlignment(Element.ALIGN_CENTER);
+                    image.scaleAbsolute((float)imageView.getFitWidth(), (float)imageView.getFitHeight());
+                    document.add(image);
+                }
+            }
+        }
+    }
+
+    private PdfPCell pdfCellItext(String text, com.itextpdf.text.Font f, int colspan, int element) {
+        PdfPCell cell = new PdfPCell(new Phrase(text, f));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setPaddingLeft(0);
+        cell.setPaddingRight(0);
+        cell.setPaddingTop(4);
+        cell.setPaddingBottom(4);
+        cell.setColspan(colspan);
+        cell.setHorizontalAlignment(element);
+        return cell;
+    }
+
     private void printDoc(String ruta, String nombreimpresora, boolean cortar) {
         File file = new File(ruta);
         FileInputStream inputStream = null;
@@ -430,7 +681,7 @@ public class BillPrintable implements Printable {
         return field;
     }
 
-    public void loadEstructuraTicket(String file, VBox hbEncabezado, VBox hbDetalleCabecera, VBox hbPie) {
+    public void loadEstructuraTicket(String file, AnchorPane hbEncabezado, AnchorPane hbDetalleCabecera, AnchorPane hbPie) {
         JSONObject jSONObject = Json.obtenerObjetoJSON(file);
         hbEncabezado.getChildren().clear();
         hbDetalleCabecera.getChildren().clear();
@@ -504,7 +755,7 @@ public class BillPrintable implements Printable {
 
     }
 
-    private HBox generateElement(VBox contenedor, String id) {
+    private HBox generateElement(AnchorPane contenedor, String id) {
         if (contenedor.getChildren().isEmpty()) {
             return addElement(contenedor, id + "1");
         } else {
@@ -517,7 +768,7 @@ public class BillPrintable implements Printable {
         }
     }
 
-    private HBox addElement(VBox contenedor, String id) {
+    private HBox addElement(AnchorPane contenedor, String id) {
         HBox hBox = new HBox();
         hBox.setId(id);
         hBox.setPrefHeight(30);

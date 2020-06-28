@@ -293,7 +293,7 @@ public class FxVentaDetalleController implements Initializable {
     }
 
     private void loadTicket() {
-        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
+//        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
     }
 
     public void imprimirVenta(String ticket) {
@@ -307,7 +307,7 @@ public class FxVentaDetalleController implements Initializable {
                 object.add((HBox) hbEncabezado.getChildren().get(i));
                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
+               // lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
             }
 
             for (int m = 0; m < arrList.size(); m++) {

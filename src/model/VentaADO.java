@@ -16,12 +16,14 @@ import javafx.scene.control.TableView;
 
 public class VentaADO {
 
-     public static String registrarVentaContado(VentaTB ventaTB, BancoHistorialTB bancoHistorialEfectivo, BancoHistorialTB bancoHistorialBancaria, ArrayList<FormaPagoTB> formaPagoTBs, TableView<SuministroTB> tvList, int idTipoDocumento, CuentasClienteTB cuentasClienteTB) {
+    public static String registrarVentaContado(VentaTB ventaTB, BancoHistorialTB bancoHistorialEfectivo, BancoHistorialTB bancoHistorialBancaria, ArrayList<FormaPagoTB> formaPagoTBs, TableView<SuministroTB> tvList, int idTipoDocumento) {
 
         CallableStatement serie_numeracion = null;
-        PreparedStatement venta = null;
-        PreparedStatement comprobante = null;
+        CallableStatement codigoCliente = null;
         CallableStatement codigo_venta = null;
+        PreparedStatement venta = null;
+        PreparedStatement cliente = null;
+        PreparedStatement comprobante = null;
         PreparedStatement detalle_venta = null;
         PreparedStatement suministro_update_unidad = null;
         PreparedStatement suministro_update_granel = null;
@@ -113,6 +115,33 @@ public class VentaADO {
 
             forma_pago = DBUtil.getConnection().prepareStatement("INSERT INTO dbo.FormaPagoTB (IdVenta,Nombre,Monto) VALUES(?,?,?)");
 
+            cliente = DBUtil.getConnection().prepareStatement("INSERT INTO ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+
+            if (ventaTB.getClienteTB().getIdCliente().equalsIgnoreCase("")) {
+                codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
+                codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigoCliente.execute();
+                String idCliente = codigoCliente.getString(1);
+
+                cliente.setString(1, idCliente);
+                cliente.setInt(2, ventaTB.getClienteTB().getTipoDocumento());
+                cliente.setString(3, ventaTB.getClienteTB().getNumeroDocumento());
+                cliente.setString(4, ventaTB.getClienteTB().getInformacion());
+                cliente.setString(5, "");
+                cliente.setString(6, "");
+                cliente.setString(7, "");
+                cliente.setString(8, ventaTB.getClienteTB().getDireccion());
+                cliente.setString(9, "");
+                cliente.setInt(10, 1);
+                cliente.setBoolean(11, false);
+                cliente.setBoolean(12, false);
+                cliente.addBatch();
+
+                ventaTB.setCliente(idCliente);
+            } else {
+                ventaTB.setCliente(ventaTB.getClienteTB().getIdCliente());
+            }
+
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
             venta.setString(3, ventaTB.getVendedor());
@@ -161,7 +190,7 @@ public class VentaADO {
                 preparedBanco.addBatch();
 
                 preparedBancoHistorial.setString(1, bancoHistorialBancaria.getIdBanco());
-                preparedBancoHistorial.setString(2, bancoHistorialEfectivo.getIdEmpleado());
+                preparedBancoHistorial.setString(2, bancoHistorialBancaria.getIdEmpleado());
                 preparedBancoHistorial.setString(3, "");
                 preparedBancoHistorial.setString(4, bancoHistorialBancaria.getDescripcion());
                 preparedBancoHistorial.setString(5, bancoHistorialBancaria.getFecha());
@@ -257,6 +286,7 @@ public class VentaADO {
 
             }
 
+            cliente.executeBatch();
             venta.executeBatch();
             preparedBanco.executeBatch();
             preparedBancoHistorial.executeBatch();
@@ -269,21 +299,28 @@ public class VentaADO {
             suministro_kardex.executeBatch();
 //            movimiento_caja.executeBatch();
             DBUtil.getConnection().commit();
-            return "register/" + id_comprabante[0] + "-" + id_comprabante[1] + "/" + (Integer.toString(dig5) + id_comprabante[1]);
+            //return "register/" + id_comprabante[0] + "-" + id_comprabante[1] + "/" + (Integer.toString(dig5) + id_comprabante[1]);
+            return "register";
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
-                return ex.getLocalizedMessage() + "/";
+                return ex.getLocalizedMessage();
             } catch (SQLException ex1) {
-                return ex1.getLocalizedMessage() + "/";
+                return ex1.getLocalizedMessage();
             }
         } finally {
             try {
                 if (serie_numeracion != null) {
                     serie_numeracion.close();
                 }
+                if (codigoCliente != null) {
+                    codigoCliente.close();
+                }
                 if (venta != null) {
                     venta.close();
+                }
+                if (cliente != null) {
+                    cliente.close();
                 }
                 if (comprobante != null) {
                     comprobante.close();
@@ -717,10 +754,10 @@ public class VentaADO {
                 if (statementKardex != null) {
                     statementKardex.close();
                 }
-                if(statementBanco != null){
+                if (statementBanco != null) {
                     statementBanco.close();
                 }
-                if(statementBancoHistorial != null){
+                if (statementBancoHistorial != null) {
                     statementBancoHistorial.close();
                 }
                 DBUtil.dbDisconnect();
