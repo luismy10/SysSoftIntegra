@@ -1,15 +1,14 @@
-
 package controller.tools;
 
 import javafx.scene.image.ImageView;
 
-public class ImageViewTicket extends ImageView{
+public class ImageViewTicket extends ImageView {
 
     private short columnWidth;
 
     private String variable;
-    
-    private String url;
+
+    private byte[] url;
     
     public ImageViewTicket() {
         super();
@@ -31,14 +30,13 @@ public class ImageViewTicket extends ImageView{
         this.variable = variable;
     }
 
-    public String getUrl() {
+    public byte[] getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(byte[] url) {
         this.url = url;
     }
-    
     
 
 }

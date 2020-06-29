@@ -93,7 +93,7 @@
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0 0;">
                                  <children>
-                                    <Button mnemonicParsing="false" styleClass="buttonLight">
+                                    <Button mnemonicParsing="false" onAction="#onActionImage" onKeyPressed="#onKeyPressedImage" styleClass="buttonLight">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -147,6 +147,11 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
+                                    <ImageView fx:id="ivSelected" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/no-image.png" />
+                                       </image>
+                                    </ImageView>
                                  </children>
                               </VBox>
                            </children>

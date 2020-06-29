@@ -38,7 +38,7 @@ public class EmpresaADO {
                 statementEmpresa.setInt(13, empresaTB.getCiudad());
                 statementEmpresa.setInt(14, empresaTB.getProvincia());
                 statementEmpresa.setInt(15, empresaTB.getDistrito());
-                statementEmpresa.setString(16, empresaTB.getImage());
+                statementEmpresa.setBytes(16, empresaTB.getImage());
                 statementEmpresa.setInt(17, empresaTB.getIdEmpresa());
                 statementEmpresa.addBatch();
                 
@@ -144,7 +144,7 @@ public class EmpresaADO {
                 empresaTB.setCiudad(rsEmps.getInt("Ciudad"));
                 empresaTB.setProvincia(rsEmps.getInt("Provincia"));
                 empresaTB.setDistrito(rsEmps.getInt("Distrito"));
-                empresaTB.setImage(rsEmps.getString("Image"));
+                empresaTB.setImage(rsEmps.getBytes("Image"));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

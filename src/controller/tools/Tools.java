@@ -1,7 +1,10 @@
 package controller.tools;
 
 import java.awt.Desktop;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,6 +18,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -31,6 +35,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javax.imageio.ImageIO;
 
 public class Tools {
 
@@ -316,13 +321,39 @@ public class Tools {
         String ext = i > 0 ? name.substring(i + 1) : "";
         return ext;
     }
-    
-    public static void println(Object object){
+
+    public static void println(Object object) {
         System.out.println(object);
     }
-    
-    public static void print(Object object){
+
+    public static void print(Object object) {
         System.out.print(object);
+    }
+
+    public static byte[] getImageBytes(File file) {
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] bs = new byte[1024];
+            for (int readNum; (readNum = inputStream.read(bs)) != -1;) {
+                outputStream.write(bs, 0, readNum);
+            }
+            return outputStream.toByteArray();
+        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
+        }
+        return null;
+    }
+
+    public static byte[] getImageBytes(Image image, String extension) {
+        try {
+            ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, byteOutput);
+            return byteOutput.toByteArray();
+        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
+        }
+        return null;
     }
 
 }

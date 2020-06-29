@@ -3,10 +3,8 @@ package controller.configuracion.impresoras;
 import controller.configuracion.tickets.FxTicketController;
 import controller.tools.BillPrintable;
 import controller.tools.PrinterService;
-import controller.tools.TextFieldTicket;
 import controller.tools.Tools;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +14,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 
 public class FxImprimirController implements Initializable {
 

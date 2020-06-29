@@ -590,7 +590,7 @@ public class BillPrintable implements Printable {
                     document.add(t1);
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
-                    Image image = Image.getInstance(getClass().getResource(imageView.getUrl()));
+                    Image image = Image.getInstance(imageView.getUrl());
                     image.setAlignment(
                             box.getAlignment() == Pos.CENTER_LEFT ? Element.ALIGN_LEFT
                             : box.getAlignment() == Pos.CENTER ? Element.ALIGN_CENTER

@@ -6,7 +6,7 @@ public class Session {
     connection status
      */
     public static boolean CONNECTION_SESSION;
-    
+
     public static boolean CONFIGURATION_STATE;
     /*
     user session data 
@@ -37,6 +37,7 @@ public class Session {
     public static String COMPANY_DEPARTAMENTO;
     public static String COMPANY_PROVINCIA;
     public static String COMPANY_DISTRITO;
+    public static byte[] COMPANY_IMAGE;
 
     /*
     varibles tickets
@@ -62,12 +63,12 @@ public class Session {
     public static boolean CORTAPAPEL_IMPRESORA;
 
     public static boolean ESTADO_IMPRESORA;
-    
+
     /*
     variable de cliente
-    */
+     */
     public static String CLIENTE_ID;
-    
+
     public static int CLIENTE_TIPO_DOCUMENTO;
 
     public static String CLIENTE_DATOS;
@@ -80,7 +81,7 @@ public class Session {
     varialble de moneda
      */
     public static int MONEDA_ID;
-    
+
     public static String MONEDA_SIMBOLO;
 
     /*
@@ -93,10 +94,9 @@ public class Session {
     public static String ID_CUENTA_BANCARIA;
 
     public static String NOMBRE_CUENTA_BANCARIA;
-    
+
     /*
     variable de proveedor
-    */
-    
+     */
     public static String PROVEEDOR_ID;
 }

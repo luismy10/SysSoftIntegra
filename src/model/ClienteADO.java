@@ -297,12 +297,13 @@ public class ClienteADO {
             if(rsEmps.next()) {
                 clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado en GetSearchComboBoxCliente(): " + e);
+            System.out.println("La operación de selección de SQL ha fallado en GetSearchClienteNumeroDocumento(): " + e);
         } finally {
             try {
                 if (preparedStatement != null) {

@@ -1,12 +1,10 @@
 package controller.operaciones.venta;
 
 import controller.tools.ConvertMonedaCadena;
-import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,8 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.BancoADO;
 import model.BancoHistorialTB;
-import model.ClienteADO;
-import model.ClienteTB;
 import model.CuentasClienteTB;
 import model.FormaPagoTB;
 import model.SuministroTB;

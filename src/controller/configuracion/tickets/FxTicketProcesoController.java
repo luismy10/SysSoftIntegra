@@ -51,7 +51,7 @@ public class FxTicketProcesoController implements Initializable {
             Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna es menor que 0");
             txtColumnas.requestFocus();
         } else {
-            ticketController.editarTcket(txtNombre.getText().trim(), Short.parseShort(txtColumnas.getText()));
+            ticketController.editarTicket(cbTpo.getSelectionModel().getSelectedItem().getId(),txtNombre.getText().trim(), Short.parseShort(txtColumnas.getText()));
             Tools.Dispose(window);
         }
     }

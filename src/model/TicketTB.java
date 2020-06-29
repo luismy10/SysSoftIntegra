@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.layout.AnchorPane;
+
 public class TicketTB {
 
     private int id;
@@ -10,6 +12,9 @@ public class TicketTB {
     private String ruta;
     private boolean predeterminado;
     private short lista;
+    private AnchorPane apCabecera;
+    private AnchorPane apDetalle;
+    private AnchorPane apPie;
     
     public TicketTB() {
         
@@ -89,6 +94,30 @@ public class TicketTB {
 
     public void setLista(short lista) {
         this.lista = lista;
+    }
+
+    public AnchorPane getApCabecera() {
+        return apCabecera;
+    }
+
+    public void setApCabecera(AnchorPane apCabecera) {
+        this.apCabecera = apCabecera;
+    }
+
+    public AnchorPane getApDetalle() {
+        return apDetalle;
+    }
+
+    public void setApDetalle(AnchorPane apDetalle) {
+        this.apDetalle = apDetalle;
+    }
+
+    public AnchorPane getApPie() {
+        return apPie;
+    }
+
+    public void setApPie(AnchorPane apPie) {
+        this.apPie = apPie;
     }
 
     @Override

@@ -150,6 +150,7 @@ public class SplashScreen extends Preloader {
                             Session.COMPANY_PAGINAWEB = list.getPaginaWeb();
                             Session.COMPANY_EMAIL = list.getEmail();
                             Session.COMPANY_DOMICILIO = list.getDomicilio();
+                            Session.COMPANY_IMAGE = list.getImage();
                         }
 
                         MonedaADO.GetMonedaPredetermined();

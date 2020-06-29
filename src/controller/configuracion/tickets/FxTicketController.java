@@ -9,6 +9,8 @@ import controller.tools.Session;
 import controller.tools.TextFieldTicket;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -39,6 +41,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.TicketADO;
 import model.TicketTB;
@@ -71,10 +74,14 @@ public class FxTicketController implements Initializable {
     private Label lblNombre;
     @FXML
     private Label lblColumnas;
+    @FXML
+    private ImageView ivSelected;
 
     private AnchorPane vbPrincipal;
 
     private TextFieldTicket tfReference;
+
+    private File selectFile;
 
     private HBox hboxAnterior;
 
@@ -83,6 +90,8 @@ public class FxTicketController implements Initializable {
     private short sheetWidth;
 
     private double pointWidth;
+
+    private int tipoTicket;
 
     private int idTicket;
 
@@ -129,7 +138,9 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView(String.valueOf(object.get("value").toString()), Short.parseShort(object.get("width").toString()), 60, 60);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                        imageView.setUrl(object.get("value").toString().getBytes());
+                        imageView.setImage(new Image(new ByteArrayInputStream(object.get("value").toString().getBytes())));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());
                         box.setAlignment(getAlignment(object.get("align").toString()));
@@ -156,7 +167,9 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView(String.valueOf(object.get("value").toString()), Short.parseShort(object.get("width").toString()), 60, 60);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                        imageView.setUrl(String.valueOf(object.get("value")).getBytes());
+                        imageView.setImage(new Image(new ByteArrayInputStream(imageView.getUrl())));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());
                         box.setAlignment(getAlignment(object.get("align").toString()));
@@ -184,7 +197,9 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView(String.valueOf(object.get("value").toString()), Short.parseShort(object.get("width").toString()), 60, 60);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                        imageView.setUrl(String.valueOf(object.get("value")).getBytes());
+                        imageView.setImage(new Image(new ByteArrayInputStream(imageView.getUrl())));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());
                         box.setAlignment(getAlignment(object.get("align").toString()));
@@ -265,11 +280,8 @@ public class FxTicketController implements Initializable {
                             } else if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
                                 ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
-                                cbkid.put("value", viewTicket.getUrl());
+                                cbkid.put("value", viewTicket.getId());
                                 cbkid.put("width", viewTicket.getColumnWidth());
-                                cbkid.put("height", hBox.getPrefHeight());
-                                cbkid.put("widthImage", viewTicket.getFitWidth());
-                                cbkid.put("heightImage", viewTicket.getFitHeight());
                                 cbkid.put("align", hBox.getAlignment().toString());
                                 cbkid.put("variable", "");
                                 cb.put("image", cbkid);
@@ -313,7 +325,7 @@ public class FxTicketController implements Initializable {
                             } else if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
                                 ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
-                                cbkid.put("value", viewTicket.getUrl());
+                                cbkid.put("value", viewTicket.getId());
                                 cbkid.put("width", viewTicket.getColumnWidth());
                                 cbkid.put("align", hBox.getAlignment().toString());
                                 cbkid.put("variable", "");
@@ -357,7 +369,7 @@ public class FxTicketController implements Initializable {
                             } else if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
                                 ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
-                                cbkid.put("value", viewTicket.getUrl());
+                                cbkid.put("value", viewTicket.getId());
                                 cbkid.put("width", viewTicket.getColumnWidth());
                                 cbkid.put("align", hBox.getAlignment().toString());
                                 cbkid.put("variable", "");
@@ -376,6 +388,11 @@ public class FxTicketController implements Initializable {
                     ticketTB.setId(idTicket);
                     ticketTB.setNombreTicket(lblNombre.getText());
                     ticketTB.setRuta(sampleObject.toJSONString());
+                    ticketTB.setTipo(tipoTicket);
+                    ticketTB.setApCabecera(apEncabezado);
+                    ticketTB.setApDetalle(apDetalleCabecera);
+                    ticketTB.setApPie(apPie);
+
                     String result = TicketADO.CrudTicket(ticketTB);
                     if (result.equalsIgnoreCase("duplicate")) {
                         Tools.AlertMessageWarning(vbWindow, "Ticket", "El nombre del formato ya existe, intente con otro.");
@@ -496,11 +513,27 @@ public class FxTicketController implements Initializable {
                             hb.setLayoutY(yPosBefero);
                             yPosBefero = hb.getLayoutY() + hb.getPrefHeight();
                         }
+
                     }
                     contenedor.layout();
                     break;
                 }
             }
+
+            int valor = 0;
+            for (int n = 0; n < contenedor.getChildren().size(); n++) {
+                HBox boxn = (HBox) contenedor.getChildren().get(n);
+                if (boxn.getChildren().size() == 1) {
+                    if (boxn.getChildren().get(0) instanceof ImageViewTicket) {
+                        valor++;
+                        ImageViewTicket imageViewTicket = (ImageViewTicket) boxn.getChildren().get(0);
+                        imageViewTicket.setId(boxn.getParent().equals(apEncabezado) ? "imc" + valor
+                                : boxn.getParent().equals(apDetalleCabecera) ? "imd" + valor : boxn.getParent().equals(apPie) ? "imp" + valor : "");
+                        Tools.println(imageViewTicket.getId());
+                    }
+                }
+            }
+
         });
 
         MenuItem text = new MenuItem("Agregar Texto");
@@ -560,7 +593,33 @@ public class FxTicketController implements Initializable {
         addImage.setGraphic(imgImage);
         addImage.setOnAction(e -> {
             if (hBox.getChildren().isEmpty()) {
-                ImageViewTicket imageView = addElementImageView("/view/image/logo.png", sheetWidth, 60, 60);
+
+                int currentTotal = 0;
+
+                for (int n = 0; n < contenedor.getChildren().size(); n++) {
+                    HBox boxn = (HBox) contenedor.getChildren().get(n);
+                    if (boxn.getChildren().size() == 1) {
+                        if (boxn.getChildren().get(0) instanceof ImageViewTicket) {
+                            currentTotal++;
+                        }
+                    }
+                }
+
+                String newCodigo = "";
+
+                if (contenedor.equals(apEncabezado)) {
+                    int valor = currentTotal + 1;
+                    newCodigo = "imc" + valor;
+                } else if (contenedor.equals(apDetalleCabecera)) {
+                    int valor = currentTotal + 1;
+                    newCodigo = "imd" + valor;
+                } else if (contenedor.equals(apPie)) {
+                    int valor = currentTotal + 1;
+                    newCodigo = "imp" + valor;
+                }
+
+                ImageViewTicket imageView = addElementImageView("/view/image/no-image.png", sheetWidth, 60, 60, true);
+                imageView.setId(newCodigo);
                 hBox.setAlignment(Pos.CENTER_LEFT);
                 hBox.setPrefHeight(imageView.getFitHeight());
                 hBox.getChildren().add(imageView);
@@ -728,14 +787,17 @@ public class FxTicketController implements Initializable {
         return field;
     }
 
-    private ImageViewTicket addElementImageView(String url, short widthColumn, double width, double height) {
+    private ImageViewTicket addElementImageView(String path, short widthColumn, double width, double height, boolean newImage) {
         ImageViewTicket imageView = new ImageViewTicket();
-        imageView.setUrl(url);
-        imageView.setImage(new Image(url));
+        imageView.setId(path);
         imageView.setColumnWidth(widthColumn);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
         imageView.setSmooth(true);
+        if (newImage) {
+            imageView.setImage(new Image(path));
+            imageView.setUrl(Tools.getImageBytes(imageView.getImage(), Tools.getFileExtension(new File(path))));
+        }
         return imageView;
     }
 
@@ -975,7 +1037,8 @@ public class FxTicketController implements Initializable {
         }
     }
 
-    public void editarTcket(String nombre, short widthPage) {
+    public void editarTicket(int tipoTicket, String nombre, short widthPage) {
+        this.tipoTicket = tipoTicket;
         lblNombre.setText(nombre);
         sheetWidth = widthPage;
         lblColumnas.setText("" + sheetWidth);
@@ -1036,7 +1099,9 @@ public class FxTicketController implements Initializable {
                         oldHbox.getChildren().add(fieldTicket);
                     } else if (hboxReference.getChildren().get(r) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) hboxReference.getChildren().get(r);
-                        ImageViewTicket imageTicket = addElementImageView(ivAnterior.getUrl(), ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight());
+                        ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
+                        imageTicket.setImage(new Image(new ByteArrayInputStream(ivAnterior.getUrl())));
+                        imageTicket.setUrl(ivAnterior.getUrl());
                         oldHbox.setAlignment(hboxReference.getAlignment());
                         oldHbox.getChildren().add(imageTicket);
                     }
@@ -1053,7 +1118,9 @@ public class FxTicketController implements Initializable {
                         newHbox.getChildren().add(fieldTicket);
                     } else if (previous.getChildren().get(a) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) previous.getChildren().get(a);
-                        ImageViewTicket imageTicket = addElementImageView(ivAnterior.getUrl(), ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight());
+                        ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
+                        imageTicket.setImage(new Image(new ByteArrayInputStream(ivAnterior.getUrl())));
+                        imageTicket.setUrl(ivAnterior.getUrl());
                         newHbox.setAlignment(hboxReference.getAlignment());
                         newHbox.getChildren().add(imageTicket);
                     }
@@ -1094,7 +1161,9 @@ public class FxTicketController implements Initializable {
                         newHbox.getChildren().add(fieldTicket);
                     } else if (later.getChildren().get(a) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) later.getChildren().get(a);
-                        ImageViewTicket imageTicket = addElementImageView(ivAnterior.getUrl(), ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight());
+                        ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
+                        imageTicket.setImage(new Image(new ByteArrayInputStream(ivAnterior.getUrl())));
+                        imageTicket.setUrl(ivAnterior.getUrl());
                         newHbox.setAlignment(hboxReference.getAlignment());
                         newHbox.getChildren().add(imageTicket);
                     }
@@ -1111,7 +1180,9 @@ public class FxTicketController implements Initializable {
                         oldHbox.getChildren().add(fieldTicket);
                     } else if (hboxReference.getChildren().get(r) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) hboxReference.getChildren().get(r);
-                        ImageViewTicket imageTicket = addElementImageView(ivAnterior.getUrl(), ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight());
+                        ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
+                        imageTicket.setImage(new Image(new ByteArrayInputStream(ivAnterior.getUrl())));
+                        imageTicket.setUrl(ivAnterior.getUrl());
                         oldHbox.setAlignment(hboxReference.getAlignment());
                         oldHbox.getChildren().add(imageTicket);
                     }
@@ -1143,6 +1214,33 @@ public class FxTicketController implements Initializable {
     private void rightElementHBox() {
         if (hboxReference != null) {
             hboxReference.setAlignment(Pos.CENTER_RIGHT);
+        }
+    }
+
+    private void loadSelectImage() {
+        if (hboxReference != null) {
+            if (hboxReference.getChildren().size() == 1) {
+                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
+                    ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Importar una imagen");
+                    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+                    selectFile = fileChooser.showOpenDialog(vbWindow.getScene().getWindow());
+                    if (selectFile != null) {
+                        selectFile = new File(selectFile.getAbsolutePath());
+                        if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
+                            Image image = new Image(selectFile.toURI().toString(), 60, 60, false, true);
+                            viewTicket.setSmooth(true);
+                            viewTicket.setPreserveRatio(false);
+                            viewTicket.setImage(image);
+                            viewTicket.setUrl(Tools.getImageBytes(viewTicket.getImage(), Tools.getFileExtension(selectFile)));
+                            //imageBytes = null;
+                        } else {
+                            Tools.AlertMessageWarning(vbWindow, "Mi Empresa", "No seleccionó un formato correcto de imagen.");
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1258,6 +1356,18 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onActionClear(ActionEvent event) {
         clearPane();
+    }
+
+    @FXML
+    private void onKeyPressedImage(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            loadSelectImage();
+        }
+    }
+
+    @FXML
+    private void onActionImage(ActionEvent event) {
+        loadSelectImage();
     }
 
     @FXML

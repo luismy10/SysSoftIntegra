@@ -18,7 +18,7 @@ public class EmpresaTB {
     private int ciudad;
     private int distrito;
     private int provincia;
-    private String image;
+    private byte[] image;
 
     public EmpresaTB() {
     }
@@ -167,11 +167,11 @@ public class EmpresaTB {
         this.provincia = provincia;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

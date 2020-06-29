@@ -2,21 +2,11 @@ package controller.configuracion.miempresa;
 
 import controller.tools.Session;
 import controller.tools.Tools;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +19,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javax.imageio.ImageIO;
 import model.CiudadADO;
 import model.CiudadTB;
 import model.DetalleADO;
@@ -83,6 +72,8 @@ public class FxMiEmpresaController implements Initializable {
     private AnchorPane vbPrincipal;
 
     private boolean validate;
+
+    private byte[] imageBytes;
 
     private int idEmpresa;
 
@@ -184,7 +175,13 @@ public class FxMiEmpresaController implements Initializable {
                 }
             }
 
-            lnPrincipal.setImage(decodeToImage(empresaTb.getImage()));
+            if (empresaTb.getImage() != null) {
+                imageBytes = empresaTb.getImage();
+                lnPrincipal.setImage(new Image(new ByteArrayInputStream(empresaTb.getImage())));
+            } else {
+                imageBytes = null;
+                lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+            }
 
         } else {
             validate = false;
@@ -204,7 +201,7 @@ public class FxMiEmpresaController implements Initializable {
                 lnPrincipal.setSmooth(true);
                 lnPrincipal.setPreserveRatio(false);
                 lnPrincipal.setImage(image);
-
+                imageBytes = null;
             } else {
                 Tools.AlertMessageWarning(window, "Mi Empresa", "No seleccionó un formato correcto de imagen.");
             }
@@ -214,6 +211,7 @@ public class FxMiEmpresaController implements Initializable {
     private void clearImage() {
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
         selectFile = null;
+        imageBytes = null;
     }
 
     private void aValidityProcess() {
@@ -264,7 +262,13 @@ public class FxMiEmpresaController implements Initializable {
                 empresaTB.setDistrito(cbCiudadDistrito.getSelectionModel().getSelectedIndex() >= 0
                         ? cbCiudadDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
 
-                empresaTB.setImage(selectFile == null ? "" : encoderImage(selectFile.getPath()));
+                empresaTB.setImage(
+                        imageBytes != null ? imageBytes
+                                : selectFile == null
+                                        ? null
+                                        : Tools.getImageBytes(selectFile)
+                );
+
                 String result = EmpresaADO.CrudEntity(empresaTB);
                 switch (result) {
                     case "registered":
@@ -297,37 +301,6 @@ public class FxMiEmpresaController implements Initializable {
                 }
             }
 
-        }
-    }
-
-    private String encoderImage(String imagePath) {
-        String base64Image;
-        File file = new File(imagePath);
-        try (FileInputStream imageInFile = new FileInputStream(file)) {
-            // Reading a Image file from file system
-            byte imageData[] = new byte[(int) file.length()];
-            imageInFile.read(imageData);
-            base64Image = Base64.getEncoder().encodeToString(imageData);
-        } catch (FileNotFoundException e) {
-            base64Image = "";
-        } catch (IOException ioe) {
-            base64Image = "";
-        }
-        return base64Image;
-    }
-
-    public static Image decodeToImage(String imageString) {
-        try {
-            byte[] imageByte;
-            BufferedImage image;
-            imageByte = Base64.getDecoder().decode(imageString);
-            try (ByteArrayInputStream bis = new ByteArrayInputStream(imageByte)) {
-                image = ImageIO.read(bis);
-            }
-            return SwingFXUtils.toFXImage(image, null);
-        } catch (IOException e) {
-            Tools.println(e.getLocalizedMessage());
-            return new Image("/view/image/no-image.png");
         }
     }
 

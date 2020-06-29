@@ -1,9 +1,12 @@
 package model;
 
+import controller.tools.ImageViewTicket;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javafx.scene.layout.HBox;
 
 public class TicketADO {
 
@@ -11,8 +14,11 @@ public class TicketADO {
         String result = "";
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
-            PreparedStatement statementTicket = null;
+            CallableStatement callableTicket = null;
             PreparedStatement statementValidar = null;
+            PreparedStatement statementTicket = null;
+            PreparedStatement statementImagen = null;
+
             try {
                 DBUtil.getConnection().setAutoCommit(false);
                 statementValidar = DBUtil.getConnection().prepareStatement("SELECT idTicket FROM TicketTB WHERE idTicket = ?");
@@ -42,14 +48,63 @@ public class TicketADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementTicket = DBUtil.getConnection().prepareStatement("INSERT INTO TicketTB(nombre,tipo,predeterminado,ruta)VALUES(?,?,?,?)");
-                        statementTicket.setString(1, ticketTB.getNombreTicket());
-                        statementTicket.setInt(2, ticketTB.getTipo());
-                        statementTicket.setBoolean(3, ticketTB.isPredeterminado());
-                        statementTicket.setString(4, ticketTB.getRuta());
+
+                        callableTicket = DBUtil.getConnection().prepareCall("{? = call Fc_Ticket_Codigo_Numerico()}");
+                        callableTicket.registerOutParameter(1, java.sql.Types.VARCHAR);
+                        callableTicket.execute();
+                        int idTicket = callableTicket.getInt(1);
+
+                        statementTicket = DBUtil.getConnection().prepareStatement("INSERT INTO TicketTB(idTicket,nombre,tipo,predeterminado,ruta)VALUES(?,?,?,?,?)");
+                        statementTicket.setInt(1, idTicket);
+                        statementTicket.setString(2, ticketTB.getNombreTicket());
+                        statementTicket.setInt(3, ticketTB.getTipo());
+                        statementTicket.setBoolean(4, ticketTB.isPredeterminado());
+                        statementTicket.setString(5, ticketTB.getRuta());
                         statementTicket.addBatch();
 
+                        statementImagen = DBUtil.getConnection().prepareStatement("INSERT INTO ImagenTB(Imagen,IdRelacionado,IdSubRelacion)VALUES(?,?,?)");
+
+                        for (int c = 0; c < ticketTB.getApCabecera().getChildren().size(); c++) {
+                            HBox hBox = (HBox) ticketTB.getApCabecera().getChildren().get(c);
+                            if (hBox.getChildren().size() == 1) {
+                                if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                                    ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
+                                    statementImagen.setBytes(1, imageViewTicket.getUrl());
+                                    statementImagen.setString(2, idTicket + "");
+                                    statementImagen.setString(3, imageViewTicket.getId());
+                                    statementImagen.addBatch();
+                                }
+                            }
+                        }
+
+                        for (int c = 0; c < ticketTB.getApDetalle().getChildren().size(); c++) {
+                            HBox hBox = (HBox) ticketTB.getApDetalle().getChildren().get(c);
+                            if (hBox.getChildren().size() == 1) {
+                                if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                                    ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
+                                    statementImagen.setBytes(1, imageViewTicket.getUrl());
+                                    statementImagen.setString(2, idTicket + "");
+                                    statementImagen.setString(3, imageViewTicket.getId());
+                                    statementImagen.addBatch();
+                                }
+                            }
+                        }
+
+                        for (int c = 0; c < ticketTB.getApPie().getChildren().size(); c++) {
+                            HBox hBox = (HBox) ticketTB.getApPie().getChildren().get(c);
+                            if (hBox.getChildren().size() == 1) {
+                                if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                                    ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
+                                    statementImagen.setBytes(1, imageViewTicket.getUrl());
+                                    statementImagen.setString(2, idTicket + "");
+                                    statementImagen.setString(3, imageViewTicket.getId());
+                                    statementImagen.addBatch();
+                                }
+                            }
+                        }
+
                         statementTicket.executeBatch();
+                        statementImagen.executeBatch();
                         DBUtil.getConnection().commit();
                         result = "registered";
                     }
@@ -59,16 +114,21 @@ public class TicketADO {
                 try {
                     DBUtil.getConnection().rollback();
                 } catch (SQLException exr) {
-                    result = exr.getLocalizedMessage();
                 }
                 result = ex.getLocalizedMessage();
             } finally {
                 try {
+                    if (callableTicket != null) {
+                        callableTicket.close();
+                    }
                     if (statementTicket != null) {
                         statementTicket.close();
                     }
                     if (statementValidar != null) {
                         statementValidar.close();
+                    }
+                    if (statementImagen != null) {
+                        statementImagen.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
