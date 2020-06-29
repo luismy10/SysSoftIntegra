@@ -316,5 +316,13 @@ public class Tools {
         String ext = i > 0 ? name.substring(i + 1) : "";
         return ext;
     }
+    
+    public static void println(Object object){
+        System.out.println(object);
+    }
+    
+    public static void print(Object object){
+        System.out.print(object);
+    }
 
 }

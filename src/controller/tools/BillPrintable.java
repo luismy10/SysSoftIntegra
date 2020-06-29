@@ -588,11 +588,14 @@ public class BillPrintable implements Printable {
                     Paragraph t1 = new Paragraph(result.toString(), f);
                     t1.setAlignment(Element.ALIGN_LEFT);
                     document.add(t1);
-                } else if (box.getChildren().get(0) instanceof ImageView) {
-                    ImageView imageView = (ImageView) box.getChildren().get(0);                    
-                    Image image = Image.getInstance(getClass().getResource("/view/image/logo.png"));
-                    image.setAlignment(Element.ALIGN_CENTER);
-                    image.scaleAbsolute((float)imageView.getFitWidth(), (float)imageView.getFitHeight());
+                } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
+                    ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
+                    Image image = Image.getInstance(getClass().getResource(imageView.getUrl()));
+                    image.setAlignment(
+                            box.getAlignment() == Pos.CENTER_LEFT ? Element.ALIGN_LEFT
+                            : box.getAlignment() == Pos.CENTER ? Element.ALIGN_CENTER
+                            : box.getAlignment() == Pos.CENTER_RIGHT ? Element.ALIGN_RIGHT : Element.ALIGN_LEFT);
+                    image.scaleAbsolute((float) imageView.getFitWidth(), (float) imageView.getFitHeight());
                     document.add(image);
                 }
             }

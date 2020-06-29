@@ -18,6 +18,7 @@ public class EmpresaTB {
     private int ciudad;
     private int distrito;
     private int provincia;
+    private String image;
 
     public EmpresaTB() {
     }
@@ -164,6 +165,14 @@ public class EmpresaTB {
 
     public void setProvincia(int provincia) {
         this.provincia = provincia;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

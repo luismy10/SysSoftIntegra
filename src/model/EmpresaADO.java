@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +21,7 @@ public class EmpresaADO {
                 statementEmpresa = DBUtil.getConnection().prepareStatement("UPDATE EmpresaTB\n"
                         + "SET GiroComercial=?,Nombre = ?,Telefono=?,Celular=?,PaginaWeb=?,Email=?,Domicilio=?,\n"
                         + "TipoDocumento=?,NumeroDocumento=?,\n"
-                        + "RazonSocial=?,NombreComercial=?,Pais=?,Ciudad=?,Provincia=?,Distrito=?\n"
+                        + "RazonSocial=?,NombreComercial=?,Pais=?,Ciudad=?,Provincia=?,Distrito=?,Image=?\n"
                         + "WHERE IdEmpresa=?");
                 statementEmpresa.setInt(1, empresaTB.getGiroComerial());
                 statementEmpresa.setString(2, empresaTB.getNombre());
@@ -39,8 +38,10 @@ public class EmpresaADO {
                 statementEmpresa.setInt(13, empresaTB.getCiudad());
                 statementEmpresa.setInt(14, empresaTB.getProvincia());
                 statementEmpresa.setInt(15, empresaTB.getDistrito());
-                statementEmpresa.setInt(16, empresaTB.getIdEmpresa());
+                statementEmpresa.setString(16, empresaTB.getImage());
+                statementEmpresa.setInt(17, empresaTB.getIdEmpresa());
                 statementEmpresa.addBatch();
+                
 
                 statementEmpresa.executeBatch();
                 DBUtil.getConnection().commit();
@@ -143,6 +144,7 @@ public class EmpresaADO {
                 empresaTB.setCiudad(rsEmps.getInt("Ciudad"));
                 empresaTB.setProvincia(rsEmps.getInt("Provincia"));
                 empresaTB.setDistrito(rsEmps.getInt("Distrito"));
+                empresaTB.setImage(rsEmps.getString("Image"));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

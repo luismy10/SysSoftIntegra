@@ -2,18 +2,34 @@ package controller.configuracion.miempresa;
 
 import controller.tools.Session;
 import controller.tools.Tools;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
 import model.CiudadADO;
 import model.CiudadTB;
 import model.DetalleADO;
@@ -61,12 +77,16 @@ public class FxMiEmpresaController implements Initializable {
     private ComboBox<ProvinciaTB> cbProvincia;
     @FXML
     private ComboBox<DistritoTB> cbCiudadDistrito;
+    @FXML
+    private ImageView lnPrincipal;
 
     private AnchorPane vbPrincipal;
 
     private boolean validate;
 
     private int idEmpresa;
+
+    private File selectFile;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -79,46 +99,46 @@ public class FxMiEmpresaController implements Initializable {
         DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
             cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        EmpresaTB list = EmpresaADO.GetEmpresa();
-        if (list != null) {
+        EmpresaTB empresaTb = EmpresaADO.GetEmpresa();
+        if (empresaTb != null) {
             validate = true;
-            idEmpresa = list.getIdEmpresa();
+            idEmpresa = empresaTb.getIdEmpresa();
 
             ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
-            if (list.getGiroComerial() != 0) {
+            if (empresaTb.getGiroComerial() != 0) {
                 for (int i = 0; i < lsgiro.size(); i++) {
-                    if (list.getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
+                    if (empresaTb.getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
                         cbGiroComercial.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
-            txtRepresentante.setText(list.getNombre());
-            txtTelefono.setText(list.getTelefono());
-            txtCelular.setText(list.getCelular());
-            txtPaginasWeb.setText(list.getPaginaWeb());
-            txtEmail.setText(list.getEmail());
-            txtDomicilio.setText(list.getDomicilio());
+            txtRepresentante.setText(empresaTb.getNombre());
+            txtTelefono.setText(empresaTb.getTelefono());
+            txtCelular.setText(empresaTb.getCelular());
+            txtPaginasWeb.setText(empresaTb.getPaginaWeb());
+            txtEmail.setText(empresaTb.getEmail());
+            txtDomicilio.setText(empresaTb.getDomicilio());
 
             ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
-            if (list.getTipoDocumento() != 0) {
+            if (empresaTb.getTipoDocumento() != 0) {
                 for (int i = 0; i < lsdoc.size(); i++) {
-                    if (list.getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
+                    if (empresaTb.getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
-            txtNumeroDocumento.setText(list.getNumeroDocumento());
-            txtRazonSocial.setText(list.getRazonSocial());
-            txtNombreComercial.setText(list.getNombreComercial());
+            txtNumeroDocumento.setText(empresaTb.getNumeroDocumento());
+            txtRazonSocial.setText(empresaTb.getRazonSocial());
+            txtNombreComercial.setText(empresaTb.getNombreComercial());
 
             ObservableList<PaisTB> lspais = cbPais.getItems();
-            if (list.getPais() != null || !list.getPais().equals("")) {
+            if (empresaTb.getPais() != null || !empresaTb.getPais().equals("")) {
                 for (int i = 0; i < lspais.size(); i++) {
-                    if (list.getPais().equals(lspais.get(i).getPaisCodigo())) {
+                    if (empresaTb.getPais().equals(lspais.get(i).getPaisCodigo())) {
                         cbPais.getSelectionModel().select(i);
                         CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
                             cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
@@ -129,9 +149,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
-            if (list.getCiudad() != 0) {
+            if (empresaTb.getCiudad() != 0) {
                 for (int i = 0; i < lsciudad.size(); i++) {
-                    if (list.getCiudad() == lsciudad.get(i).getIdCiudad()) {
+                    if (empresaTb.getCiudad() == lsciudad.get(i).getIdCiudad()) {
                         cbCiudad.getSelectionModel().select(i);
                         ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
                             cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
@@ -142,9 +162,9 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-            if (list.getProvincia() != 0) {
+            if (empresaTb.getProvincia() != 0) {
                 for (int i = 0; i < lsprovin.size(); i++) {
-                    if (list.getProvincia() == lsprovin.get(i).getIdProvincia()) {
+                    if (empresaTb.getProvincia() == lsprovin.get(i).getIdProvincia()) {
                         cbProvincia.getSelectionModel().select(i);
                         DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
                             cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
@@ -155,19 +175,45 @@ public class FxMiEmpresaController implements Initializable {
             }
 
             ObservableList<DistritoTB> lsdistrito = cbCiudadDistrito.getItems();
-            if (list.getDistrito() != 0) {
+            if (empresaTb.getDistrito() != 0) {
                 for (int i = 0; i < lsdistrito.size(); i++) {
-                    if (list.getDistrito() == lsdistrito.get(i).getIdDistrito()) {
+                    if (empresaTb.getDistrito() == lsdistrito.get(i).getIdDistrito()) {
                         cbCiudadDistrito.getSelectionModel().select(i);
                         break;
                     }
                 }
             }
 
+            lnPrincipal.setImage(decodeToImage(empresaTb.getImage()));
+
         } else {
             validate = false;
         }
 
+    }
+
+    private void openWindowFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importar una imagen");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        selectFile = fileChooser.showOpenDialog(window.getScene().getWindow());
+        if (selectFile != null) {
+            selectFile = new File(selectFile.getAbsolutePath());
+            if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
+                Image image = new Image(selectFile.toURI().toString(), 200, 200, false, true);
+                lnPrincipal.setSmooth(true);
+                lnPrincipal.setPreserveRatio(false);
+                lnPrincipal.setImage(image);
+
+            } else {
+                Tools.AlertMessageWarning(window, "Mi Empresa", "No seleccionó un formato correcto de imagen.");
+            }
+        }
+    }
+
+    private void clearImage() {
+        lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+        selectFile = null;
     }
 
     private void aValidityProcess() {
@@ -217,6 +263,8 @@ public class FxMiEmpresaController implements Initializable {
                         ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
                 empresaTB.setDistrito(cbCiudadDistrito.getSelectionModel().getSelectedIndex() >= 0
                         ? cbCiudadDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
+
+                empresaTB.setImage(selectFile == null ? "" : encoderImage(selectFile.getPath()));
                 String result = EmpresaADO.CrudEntity(empresaTB);
                 switch (result) {
                     case "registered":
@@ -242,13 +290,44 @@ public class FxMiEmpresaController implements Initializable {
                         Session.COMPANY_PAGINAWEB = txtPaginasWeb.getText();
                         Session.COMPANY_EMAIL = txtEmail.getText();
                         Session.COMPANY_DOMICILIO = txtDomicilio.getText();
-                        break;              
+                        break;
                     default:
                         Tools.AlertMessageError(window, "Mi Empresa", result);
                         break;
                 }
             }
 
+        }
+    }
+
+    private String encoderImage(String imagePath) {
+        String base64Image;
+        File file = new File(imagePath);
+        try (FileInputStream imageInFile = new FileInputStream(file)) {
+            // Reading a Image file from file system
+            byte imageData[] = new byte[(int) file.length()];
+            imageInFile.read(imageData);
+            base64Image = Base64.getEncoder().encodeToString(imageData);
+        } catch (FileNotFoundException e) {
+            base64Image = "";
+        } catch (IOException ioe) {
+            base64Image = "";
+        }
+        return base64Image;
+    }
+
+    public static Image decodeToImage(String imageString) {
+        try {
+            byte[] imageByte;
+            BufferedImage image;
+            imageByte = Base64.getDecoder().decode(imageString);
+            try (ByteArrayInputStream bis = new ByteArrayInputStream(imageByte)) {
+                image = ImageIO.read(bis);
+            }
+            return SwingFXUtils.toFXImage(image, null);
+        } catch (IOException e) {
+            Tools.println(e.getLocalizedMessage());
+            return new Image("/view/image/no-image.png");
         }
     }
 
@@ -296,6 +375,31 @@ public class FxMiEmpresaController implements Initializable {
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
+    }
+
+    @FXML
+    private void onKeyPressedPhoto(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowFile();
+        }
+    }
+
+    @FXML
+    private void onActionPhoto(ActionEvent event) {
+        openWindowFile();
+
+    }
+
+    @FXML
+    private void onKeyPressedRemovePhoto(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            clearImage();
+        }
+    }
+
+    @FXML
+    private void onActionRemovePhoto(ActionEvent event) {
+        clearImage();
     }
 
 }

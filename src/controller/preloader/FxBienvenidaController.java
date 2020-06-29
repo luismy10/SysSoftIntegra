@@ -104,13 +104,13 @@ public class FxBienvenidaController implements Initializable {
         if (selectFile != null) {
             selectFile = new File(selectFile.getAbsolutePath());
             if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
-                Image image = new Image(selectFile.toURI().toString(), 200, 200, false, false);
+                Image image = new Image(selectFile.toURI().toString(), 200, 200, false, true);
                 lnPrincipal.setSmooth(true);
-                lnPrincipal.setPreserveRatio(true);
+                lnPrincipal.setPreserveRatio(false);
                 lnPrincipal.setImage(image);
 
             } else {
-                Tools.AlertMessageWarning(apWindow, "Producto", "No seleccionó un formato correcto de imagen.");
+                Tools.AlertMessageWarning(apWindow, "SysSoft Integra", "No seleccionó un formato correcto de imagen.");
             }
         }
     }

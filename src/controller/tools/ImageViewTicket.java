@@ -1,7 +1,6 @@
 
 package controller.tools;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class ImageViewTicket extends ImageView{
@@ -9,11 +8,13 @@ public class ImageViewTicket extends ImageView{
     private short columnWidth;
 
     private String variable;
-
-    public ImageViewTicket(Image image) {
-        super(image);
-    }
     
+    private String url;
+    
+    public ImageViewTicket() {
+        super();
+    }
+
     public short getColumnWidth() {
         return columnWidth;
     }
@@ -28,6 +29,14 @@ public class ImageViewTicket extends ImageView{
 
     public void setVariable(String variable) {
         this.variable = variable;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
     
     
