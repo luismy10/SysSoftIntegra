@@ -1,40 +1,29 @@
 package model;
 
-import java.io.InputStream;
-import javafx.scene.image.Image;
-
 public class ImagenTB {
 
-    private long idImage;
-    private Image imagen;
-    private InputStream file;
+    private int idImage;
+    private byte[] imagen;
     private String idRelacionado;
+    private String idSubRelacion;
 
     public ImagenTB() {
 
     }
 
-    public ImagenTB(Image imagen) {
-        this.imagen = imagen;
-    }
-
-    public ImagenTB(InputStream file) {
-        this.file = file;
-    }
-
-    public long getIdImage() {
+    public int getIdImage() {
         return idImage;
     }
 
-    public void setIdImage(long idImage) {
+    public void setIdImage(int idImage) {
         this.idImage = idImage;
     }
 
-    public Image getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(Image imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
@@ -46,12 +35,12 @@ public class ImagenTB {
         this.idRelacionado = idRelacionado;
     }
 
-    public InputStream getFile() {
-        return file;
+    public String getIdSubRelacion() {
+        return idSubRelacion;
     }
 
-    public void setFile(InputStream file) {
-        this.file = file;
+    public void setIdSubRelacion(String idSubRelacion) {
+        this.idSubRelacion = idSubRelacion;
     }
 
 }

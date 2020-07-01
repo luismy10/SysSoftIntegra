@@ -7,7 +7,10 @@ import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +25,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.BancoADO;
 import model.CajaADO;
 import model.CajaTB;
 import model.PrivilegioTB;
@@ -41,7 +43,7 @@ public class FxVentaController implements Initializable {
     private Button btnAgregarVenta;
     @FXML
     private Label lblNombreCaja;
-   
+
     private AnchorPane vbPrincipal;
 
     private FxVentaEstructuraController ventaEstructuraController;
@@ -49,7 +51,7 @@ public class FxVentaController implements Initializable {
     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private boolean aperturaCaja;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
@@ -93,32 +95,52 @@ public class FxVentaController implements Initializable {
 
     public void loadValidarCaja() {
 
-        if ("".equals(Session.ID_CUENTA_EFECTIVO) && "".equals(Session.NOMBRE_CUENTA_EFECTIVO)) {
-            openWindowCajaNoRegistrada("Su caja no esta configurada para este punto de venta, dirijase al modulo CAJA/BANCO para configurar una nueva caja");
-        } else {
-            boolean validate = BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO);
-            if (validate) {
-                lblNombreCaja.setText("Caja Actual: "+Session.NOMBRE_CUENTA_EFECTIVO);
-                CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-                switch (cajaTB.getId()) {
-                    case 1:
-                        openWindowFondoInicial();
-                        break;
-                    case 2:
-                         aperturaCaja = true;
-                        hbContenedorVentas.setDisable(false);
-                        break;
-                    case 3:
-                        openWindowValidarCaja(cajaTB.getIdCaja(), cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                openWindowCajaNoRegistrada("Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva caja.");
-            }
-        }
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
 
+            Task<CajaTB> task = new Task<CajaTB>() {
+                @Override
+                public CajaTB call() {
+                    return CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                CajaTB cajaTB = task.getValue();                
+                if (cajaTB != null) {
+                    lblNombreCaja.setText("CAJA ACTUAL: PRINCIPAL");                    
+                    switch (cajaTB.getId()) {
+                        case 1:
+                            openWindowFondoInicial();
+                            break;
+                        case 2:
+                            aperturaCaja = true;
+                            hbContenedorVentas.setDisable(false);
+                            Session.CAJA_ID = cajaTB.getIdCaja();
+                            break;
+                        case 3:
+                            openWindowValidarCaja(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    openWindowCajaNoRegistrada("No se pudo verificar el estado de su caja por problemas de red, intente nuevamente.");
+                }
+            });
+
+            task.setOnFailed(e -> {
+                
+            });
+
+            exec.execute(task);
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
+ 
     }
 
     public void openWindowCajaNoRegistrada(String mensaje) {
@@ -136,7 +158,7 @@ public class FxVentaController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                 if (aperturaCaja) {
+                if (aperturaCaja) {
                     aperturaCaja = false;
                     hbContenedorVentas.setDisable(true);
                 }
@@ -173,7 +195,7 @@ public class FxVentaController implements Initializable {
         }
     }
 
-    private void openWindowValidarCaja(String idCaja, String dateTime) {
+    private void openWindowValidarCaja( String dateTime) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_VENTA_VALIDAR_CAJA);
@@ -194,7 +216,7 @@ public class FxVentaController implements Initializable {
                 }
             });
             stage.show();
-            controller.loadData(idCaja, dateTime);
+            controller.loadData( dateTime);
         } catch (IOException ex) {
 
         }

@@ -12,12 +12,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.CajaADO;
@@ -28,29 +29,39 @@ public class FxCajaCerrarCajaController implements Initializable {
     private AnchorPane window;
     @FXML
     private TextField txtEfectivo;
+    @FXML
+    private Text lblFechaCierre;
+    @FXML
+    private Label lblValorTarjeta;
 
     private String idActual;
 
-    private AnchorPane content;
-    
     private double calculado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        lblFechaCierre.setText(Tools.getDate() + " " + Tools.getHour("hh:mm a"));
     }
 
-    private void eventAceptar() throws IOException {
+    public void loadDataInit(String idActual, double calculado,double valorTarjeta) {
+        this.idActual = idActual;
+        this.calculado = calculado;
+        lblValorTarjeta.setText(Tools.roundingValue(valorTarjeta, 2));
+    }
+
+    private void onEventAceptar() throws IOException {
         if (!Tools.isNumeric(txtEfectivo.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Corte de caja", "Ingrese el monto actual de caja.", false);
+            Tools.AlertMessageWarning(window, "Corte de caja", "Ingrese el monto actual de caja.");
             txtEfectivo.requestFocus();
         } else {
-            short option = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Corte de caja", "¿Está seguro de cerrar su turno?", true);
+            short option = Tools.AlertMessageConfirmation(window, "Corte de caja", "¿Está seguro de cerrar su turno?");
             if (option == 1) {
-                String result = CajaADO.CerrarAperturaCaja(idActual, Tools.getDate(),Tools.getHour("HH:mm:ss"), false, Double.parseDouble(txtEfectivo.getText()), calculado);
+                String result = CajaADO.CerrarAperturaCaja(idActual, Tools.getDate(), Tools.getHour("HH:mm:ss"), false, Double.parseDouble(txtEfectivo.getText()), calculado);
                 if (result.equalsIgnoreCase("completed")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Corte de caja", "Se cerro correctamente la caja.", false);
-                    Tools.Dispose(content);
+                    Tools.AlertMessageInformation(window ,"Corte de caja", "Se cerro correctamente la caja.");
+                    Tools.Dispose(window);
+                    
                     URL urllogin = getClass().getResource(FilesRouters.FX_LOGIN);
                     FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
                     Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
@@ -64,8 +75,9 @@ public class FxCajaCerrarCajaController implements Initializable {
                     primaryStage.setMaximized(true);
                     primaryStage.show();
                     primaryStage.requestFocus();
+                    
                 } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Corte de caja", result, false);
+                    Tools.AlertMessageWarning(window, "Corte de caja", result);
                 }
             }
         }
@@ -74,13 +86,13 @@ public class FxCajaCerrarCajaController implements Initializable {
 
     @FXML
     private void onActionAceptar(ActionEvent event) throws IOException {
-        eventAceptar();
+        onEventAceptar();
     }
 
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            eventAceptar(); 
+            onEventAceptar();
         }
     }
 
@@ -93,12 +105,6 @@ public class FxCajaCerrarCajaController implements Initializable {
         if (c == '.' && txtEfectivo.getText().contains(".")) {
             event.consume();
         }
-    }
-
-    public void setInitCajaController(String idActual, double calculado,AnchorPane content) {
-        this.idActual = idActual;
-        this.calculado=calculado;
-        this.content = content;
     }
 
 }

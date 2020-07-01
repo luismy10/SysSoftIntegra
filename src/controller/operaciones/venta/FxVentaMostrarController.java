@@ -243,8 +243,8 @@ public class FxVentaMostrarController implements Initializable {
                         lblPago.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getEfectivo(), 2));
                         efectivo = ventaTB.getEfectivo();
                         vuelto = ventaTB.getVuelto();
-                        Session.TICKET_CODIGOVENTA = ventaTB.getCodigo();
-                        Session.TICKET_SIMBOLOMONEDA = ventaTB.getMonedaTB().getSimbolo();
+//                        Session.TICKET_CODIGOVENTA = ventaTB.getCodigo();
+//                        Session.TICKET_SIMBOLOMONEDA = ventaTB.getMonedaTB().getSimbolo();
                     }
 
                     if (empleadoTB != null) {
@@ -301,7 +301,7 @@ public class FxVentaMostrarController implements Initializable {
                     hBox.setId("dc_" + m + "" + i);
                     HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                     rows++;
-                    lines += billPrintable.hbDetalle(hBox, box, arrList, m);
+                    //lines += billPrintable.hbDetalle(hBox, box, arrList, m);
                     object.add(hBox);
                 }
             }
@@ -310,9 +310,9 @@ public class FxVentaMostrarController implements Initializable {
                 object.add((HBox) hbPie.getChildren().get(i));
                 HBox box = ((HBox) hbPie.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getNumeroDocumento());
+//                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getNumeroDocumento());
             }
-            billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
+//            billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 
         } else {
             Tools.AlertMessageWarning(apWindow, "Detalle de venta", "No esta configurado la impresora :D");

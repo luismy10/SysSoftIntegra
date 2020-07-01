@@ -6,7 +6,6 @@ public class Session {
     connection status
      */
     public static boolean CONNECTION_SESSION;
-
     public static boolean CONFIGURATION_STATE;
     /*
     user session data 
@@ -40,63 +39,42 @@ public class Session {
     public static byte[] COMPANY_IMAGE;
 
     /*
-    varibles tickets
-     */
-    public static String TICKET_CODIGOVENTA;
-
-    public static String TICKET_SIMBOLOMONEDA;
-    /*
-    comprobante session
-     */
-    public static int DEFAULT_COMPROBANTE;
-    /*
-    impuesto session
-     */
-    public static int DEFAULT_IMPUESTO;
-    /*
     impresora session
      */
     public static String NOMBRE_IMPRESORA;
-
-    public static String RUTA_TICKET_VENTA;
-
+    public static int TICKET_VENTA_ID;
+    public static String TICKET_VENTA_RUTA;
     public static boolean CORTAPAPEL_IMPRESORA;
-
     public static boolean ESTADO_IMPRESORA;
 
     /*
     variable de cliente
      */
     public static String CLIENTE_ID;
-
     public static int CLIENTE_TIPO_DOCUMENTO;
-
     public static String CLIENTE_DATOS;
-
     public static String CLIENTE_NUMERO_DOCUMENTO;
-
     public static String CLIENTE_DIRECCION;
 
     /*
     varialble de moneda
      */
     public static int MONEDA_ID;
-
     public static String MONEDA_SIMBOLO;
-
-    /*
-    variables para la caja
-     */
-    public static String ID_CUENTA_EFECTIVO;
-
-    public static String NOMBRE_CUENTA_EFECTIVO;
-
-    public static String ID_CUENTA_BANCARIA;
-
-    public static String NOMBRE_CUENTA_BANCARIA;
 
     /*
     variable de proveedor
      */
     public static String PROVEEDOR_ID;
+
+    /*
+    variables de caja/banco
+     */
+    public static String CAJA_ID;
+
+    public static String BANCO_EFECTIVO_ID;
+    public static String BANCO_EFECTIVO_NOMBRE;
+
+    public static String BANCO_TARJETA_ID;
+    public static String BANCO_TARJETA_NOMBRE;
 }

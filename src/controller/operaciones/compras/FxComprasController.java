@@ -568,25 +568,24 @@ public class FxComprasController implements Initializable {
     }
 
     public void calculateTotals() {
-        
+
         totalBruto = 0;
         tvList.getItems().forEach(e -> {
             totalBruto += (e.getCantidad() * e.getPrecioCompra());
         });
         lblTotalBruto.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalBruto, 4));
-        
+
         descuento = 0;
         tvList.getItems().forEach(e -> {
             descuento += e.getCantidad() * (e.getPrecioCompra() * (e.getDescuento() / 100.00));
         });
         lblDescuento.setText(Session.MONEDA_SIMBOLO + " " + (Tools.roundingValue(descuento * (-1), 4)));
-        
+
         subTotal = 0;
         tvList.getItems().forEach(e -> {
             subTotal += (e.getCantidad() * e.getPrecioCompra()) - (e.getCantidad() * (e.getPrecioCompra() * (e.getDescuento() / 100.00)));
         });
         lblSubTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(subTotal, 4));
-        
 
         gpImpuestos.getChildren().clear();
         boolean addElement = false;
@@ -609,13 +608,13 @@ public class FxComprasController implements Initializable {
             }
 
         }
-        
-        totalNeto = 0;        
+
+        totalNeto = 0;
         tvList.getItems().forEach(e -> {
             totalNeto += e.getImporte();
         });
         lblTotalNeto.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue((totalNeto), 4));
-        
+
     }
 
     private Label addLabelTitle(String nombre, Pos pos) {
@@ -731,7 +730,9 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onMouseClickedList(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            openWindowSuministroEdit();
+            if (!tvList.getItems().isEmpty()) {
+                openWindowSuministroEdit();
+            }
         }
     }
 

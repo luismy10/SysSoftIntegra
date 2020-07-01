@@ -145,34 +145,34 @@ public class FxPerfilController implements Initializable {
     @FXML
     private void onMouseClickedImage(MouseEvent event) throws FileNotFoundException {
         if (event.getClickCount() == 2) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Importar una imagen");
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg"));
-            File file = fileChooser.showOpenDialog(window.getScene().getWindow());
-            if (file != null) {
-                file = new File(file.getAbsolutePath());
-                if (file.getName().endsWith("png") || file.getName().endsWith("jpg") || file.getName().endsWith("jpeg")) {
-                    ivPerfil.setImage(new Image(file.toURI().toString()));
-                    try (InputStream inputStream = new FileInputStream(file)) {
-                        ImagenTB imagenTB = new ImagenTB();
-                        imagenTB.setIdImage(idImagen);
-                        imagenTB.setFile(inputStream);
-                        imagenTB.setIdRelacionado(idPersona);
-                        String result = ImageADO.CrudImage(imagenTB);
-                        if (result.equalsIgnoreCase("insert")) {
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Perfil", "Registrado correctamente.", false);
-                        } else if (result.equalsIgnoreCase("update")) {
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Perfil", "Actualizado correctamente.", false);
-                        } else if (result.equalsIgnoreCase("error")) {
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Perfil", "No se puedo completar la ejecución.", false);
-                        } else {
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Perfil", result, false);
-                        }
-                    } catch (Exception ex) {
-
-                    }
-                }
-            }
+//            FileChooser fileChooser = new FileChooser();
+//            fileChooser.setTitle("Importar una imagen");
+//            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Elija una imagen", "*.png", "*.jpg", "*.jpeg"));
+//            File file = fileChooser.showOpenDialog(window.getScene().getWindow());
+//            if (file != null) {
+//                file = new File(file.getAbsolutePath());
+//                if (file.getName().endsWith("png") || file.getName().endsWith("jpg") || file.getName().endsWith("jpeg")) {
+//                    ivPerfil.setImage(new Image(file.toURI().toString()));
+//                    try (InputStream inputStream = new FileInputStream(file)) {
+//                        ImagenTB imagenTB = new ImagenTB();
+//                        imagenTB.setIdImage(idImagen);
+//                        imagenTB.setFile(inputStream);
+//                        imagenTB.setIdRelacionado(idPersona);
+//                        String result = ImageADO.CrudImage(imagenTB);
+//                        if (result.equalsIgnoreCase("insert")) {
+//                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Perfil", "Registrado correctamente.", false);
+//                        } else if (result.equalsIgnoreCase("update")) {
+//                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Perfil", "Actualizado correctamente.", false);
+//                        } else if (result.equalsIgnoreCase("error")) {
+//                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Perfil", "No se puedo completar la ejecución.", false);
+//                        } else {
+//                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Perfil", result, false);
+//                        }
+//                    } catch (Exception ex) {
+//
+//                    }
+//                }
+//            }
         }
     }
 

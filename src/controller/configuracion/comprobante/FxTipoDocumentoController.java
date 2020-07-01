@@ -2,12 +2,10 @@ package controller.configuracion.comprobante;
 
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,8 +51,6 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
 
-    private boolean stateUpdate;
-
     private AnchorPane vbPrincipal;
 
     @Override
@@ -70,7 +66,6 @@ public class FxTipoDocumentoController implements Initializable {
         tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
         tcNombreImpresion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
         tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-        stateUpdate = false;
     }
 
     public void fillTabletTipoDocumento() {
@@ -89,16 +84,6 @@ public class FxTipoDocumentoController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
-            if (stateUpdate) {
-                List<TipoDocumentoTB> list = TipoDocumentoADO.GetDocumentoCombBox();
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).isPredeterminado() == true) {
-                        Session.DEFAULT_COMPROBANTE = i;
-                        break;
-                    }
-                }
-                stateUpdate = false;
-            }
 
         });
         task.setOnFailed((WorkerStateEvent event) -> {
@@ -165,7 +150,6 @@ public class FxTipoDocumentoController implements Initializable {
             String result = TipoDocumentoADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento());
             if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessageInformation(window, "Tipo de comprobante", "Se cambio el estado correctamente.");
-                stateUpdate = true;
                 fillTabletTipoDocumento();
             } else {
                 Tools.AlertMessageError(window, "Tipo de comprobante", "Error: " + result);

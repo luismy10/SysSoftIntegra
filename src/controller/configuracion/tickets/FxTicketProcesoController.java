@@ -30,29 +30,56 @@ public class FxTicketProcesoController implements Initializable {
 
     private FxTicketController ticketController;
 
+    private boolean editar;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         cbTpo.getItems().addAll(TicketADO.ListTipoTicket());
+        editar = false;
     }
 
-    public void editarTicket(String name, short column) {
+    public void editarTicket(int tipoTicket, String name, short column) {
+        editar = true;
         btnSave.setText("Editar");
         btnSave.getStyleClass().add("buttonLightWarning");
         txtNombre.setText(name);
         txtColumnas.setText(column + "");
+        for (int i = 0; i < cbTpo.getItems().size(); i++) {
+            if (cbTpo.getItems().get(i).getId() == tipoTicket) {
+                cbTpo.getSelectionModel().select(i);
+                break;
+            }
+        }
+        cbTpo.setDisable(true);
     }
 
     private void addTicket() {
-        if (!Tools.isNumericInteger(txtColumnas.getText().trim())) {
-            Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna no es un número");
-            txtColumnas.requestFocus();
-        } else if (Short.parseShort(txtColumnas.getText()) <= 0) {
-            Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna es menor que 0");
-            txtColumnas.requestFocus();
+        if (editar) {
+            if (!Tools.isNumericInteger(txtColumnas.getText().trim())) {
+                Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna no es un número");
+                txtColumnas.requestFocus();
+            } else if (Short.parseShort(txtColumnas.getText()) <= 0) {
+                Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna es menor que 0");
+                txtColumnas.requestFocus();
+            } else {
+                ticketController.editarTicket(editar, cbTpo.getSelectionModel().getSelectedItem().getId(), txtNombre.getText().trim(), Short.parseShort(txtColumnas.getText()));
+                Tools.Dispose(window);
+            }
         } else {
-            ticketController.editarTicket(cbTpo.getSelectionModel().getSelectedItem().getId(),txtNombre.getText().trim(), Short.parseShort(txtColumnas.getText()));
-            Tools.Dispose(window);
+            if (!Tools.isNumericInteger(txtColumnas.getText().trim())) {
+                Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna no es un número");
+                txtColumnas.requestFocus();
+            } else if (Short.parseShort(txtColumnas.getText()) <= 0) {
+                Tools.AlertMessageWarning(window, "Ticket", "El valor en el campo columna es menor que 0");
+                txtColumnas.requestFocus();
+            } else if (cbTpo.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Ticket", "Seleccione el tipo de ticket");
+                cbTpo.requestFocus();
+            } else {
+                ticketController.editarTicket(editar, cbTpo.getSelectionModel().getSelectedItem().getId(), txtNombre.getText().trim(), Short.parseShort(txtColumnas.getText()));
+                Tools.Dispose(window);
+            }
         }
     }
 

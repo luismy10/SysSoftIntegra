@@ -72,7 +72,7 @@ public class FxImprimirController implements Initializable {
 //                    }
 //                }
                 //billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Imprimir", "Error al imprimir el ticket.",cbImpresoras.getSelectionModel().getSelectedItem(),cbCortarPapel.isSelected());
-                billPrintable.generatePDFPrint(ticketController.getHbEncabezado(),ticketController.getHbDetalleCabecera(),ticketController.getHbPie());
+                billPrintable.generatePDFPrint(ticketController.getHbEncabezado(),ticketController.getHbDetalleCabecera(),ticketController.getHbPie(),cbImpresoras.getSelectionModel().getSelectedItem(),cbCortarPapel.isSelected());
             }
         } else {
             Tools.AlertMessageWarning(apWindow, "Imprimir", "Seleccione un impresora para continuar.");

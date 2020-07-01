@@ -18,6 +18,7 @@ public class TicketADO {
             PreparedStatement statementValidar = null;
             PreparedStatement statementTicket = null;
             PreparedStatement statementImagen = null;
+            PreparedStatement statementImagenBorrar = null;
 
             try {
                 DBUtil.getConnection().setAutoCommit(false);
@@ -31,12 +32,60 @@ public class TicketADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
+
                         statementTicket = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET ruta = ? WHERE idTicket = ?");
                         statementTicket.setString(1, ticketTB.getRuta());
                         statementTicket.setInt(2, ticketTB.getId());
                         statementTicket.addBatch();
 
+                        statementImagenBorrar = DBUtil.getConnection().prepareStatement("DELETE FROM ImagenTB WHERE IdRelacionado = ?");
+                        statementImagenBorrar.setString(1, ticketTB.getId() + "");
+                        statementImagenBorrar.addBatch();
+
+                        statementImagen = DBUtil.getConnection().prepareStatement("INSERT INTO ImagenTB(Imagen,IdRelacionado,IdSubRelacion)VALUES(?,?,?)");
+
+                        for (int c = 0; c < ticketTB.getApCabecera().getChildren().size(); c++) {
+                            HBox hBox = (HBox) ticketTB.getApCabecera().getChildren().get(c);
+                            if (hBox.getChildren().size() == 1) {
+                                if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                                    ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
+                                    statementImagen.setBytes(1, imageViewTicket.getUrl());
+                                    statementImagen.setString(2, ticketTB.getId() + "");
+                                    statementImagen.setString(3, imageViewTicket.getId());
+                                    statementImagen.addBatch();
+                                }
+                            }
+                        }
+
+                        for (int c = 0; c < ticketTB.getApDetalle().getChildren().size(); c++) {
+                            HBox hBox = (HBox) ticketTB.getApDetalle().getChildren().get(c);
+                            if (hBox.getChildren().size() == 1) {
+                                if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                                    ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
+                                    statementImagen.setBytes(1, imageViewTicket.getUrl());
+                                    statementImagen.setString(2, ticketTB.getId() + "");
+                                    statementImagen.setString(3, imageViewTicket.getId());
+                                    statementImagen.addBatch();
+                                }
+                            }
+                        }
+
+                        for (int c = 0; c < ticketTB.getApPie().getChildren().size(); c++) {
+                            HBox hBox = (HBox) ticketTB.getApPie().getChildren().get(c);
+                            if (hBox.getChildren().size() == 1) {
+                                if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                                    ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
+                                    statementImagen.setBytes(1, imageViewTicket.getUrl());
+                                    statementImagen.setString(2, ticketTB.getId() + "");
+                                    statementImagen.setString(3, imageViewTicket.getId());
+                                    statementImagen.addBatch();
+                                }
+                            }
+                        }
+
                         statementTicket.executeBatch();
+                        statementImagenBorrar.executeBatch();
+                        statementImagen.executeBatch();
                         DBUtil.getConnection().commit();
                         result = "updated";
                     }
@@ -58,7 +107,7 @@ public class TicketADO {
                         statementTicket.setInt(1, idTicket);
                         statementTicket.setString(2, ticketTB.getNombreTicket());
                         statementTicket.setInt(3, ticketTB.getTipo());
-                        statementTicket.setBoolean(4, ticketTB.isPredeterminado());
+                        statementTicket.setBoolean(4, false);
                         statementTicket.setString(5, ticketTB.getRuta());
                         statementTicket.addBatch();
 
@@ -129,6 +178,9 @@ public class TicketADO {
                     }
                     if (statementImagen != null) {
                         statementImagen.close();
+                    }
+                    if (statementImagenBorrar != null) {
+                        statementImagenBorrar.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
@@ -215,18 +267,18 @@ public class TicketADO {
         return list;
     }
 
-    public static TicketTB GetTicketRuta(int id) {
+    public static TicketTB GetTicketRuta() {
         TicketTB ticketTB = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statementLista = null;
             ResultSet resultSet = null;
             try {
-                statementLista = DBUtil.getConnection().prepareStatement("SELECT ruta FROM TicketTB WHERE idTicket = ?");
-                statementLista.setInt(1, id);
+                statementLista = DBUtil.getConnection().prepareStatement("SELECT idTicket,ruta FROM TicketTB WHERE predeterminado = 1");
                 resultSet = statementLista.executeQuery();
                 if (resultSet.next()) {
                     ticketTB = new TicketTB();
+                    ticketTB.setId(resultSet.getInt("idTicket"));
                     ticketTB.setRuta(resultSet.getString("ruta"));
                 }
             } catch (SQLException ex) {
@@ -248,4 +300,67 @@ public class TicketADO {
         }
         return ticketTB;
     }
+    
+      public static String ChangeDefaultState( int idTicket) {
+        String result = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementSelect = null;
+            PreparedStatement statementUpdate = null;
+            PreparedStatement statementState = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementSelect = DBUtil.getConnection().prepareStatement("SELECT predeterminado FROM TicketTB WHERE predeterminado = 1");
+                if (statementSelect.executeQuery().next()) {
+                    statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET predeterminado = 0 WHERE predeterminado = 1");
+                    statementUpdate.addBatch();
+
+                    statementState = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET predeterminado = 1 WHERE idTicket = ?");
+                    statementState.setInt(1, idTicket);
+                    statementState.addBatch();
+
+                    statementUpdate.executeBatch();
+                    statementState.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "updated";
+                } else {
+                    statementState = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET predeterminado = 1 WHERE idTicket = ?");
+                    statementState.setInt(1, idTicket);
+                    statementState.addBatch();
+                    statementState.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "updated";
+                }
+
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                    result = ex.getLocalizedMessage();
+                } catch (SQLException e) {
+                    result = e.getLocalizedMessage();
+                }
+
+            } finally {
+                try {
+                    if (statementSelect != null) {
+                        statementSelect.close();
+                    }
+                    if (statementUpdate != null) {
+                        statementUpdate.close();
+                    }
+                    if (statementState != null) {
+                        statementState.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    result = ex.getLocalizedMessage();
+                }
+            }
+        } else {
+            result = "No se puedo establecer conexión con el servidor, revice y vuelva a intentarlo.";
+        }
+        return result;
+    }
+
+    
 }

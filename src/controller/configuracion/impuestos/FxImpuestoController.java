@@ -2,7 +2,6 @@ package controller.configuracion.impuestos;
 
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -55,8 +53,6 @@ public class FxImpuestoController implements Initializable {
 
     private AnchorPane vbPrincipal;
 
-    private boolean stateUpdate;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcOperacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreOperacion()));
@@ -64,8 +60,6 @@ public class FxImpuestoController implements Initializable {
         tcValor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getValor()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigoAlterno()));
-        stateUpdate = false;
-        
         
         tcOperacion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
         tcNombre.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
@@ -155,7 +149,6 @@ public class FxImpuestoController implements Initializable {
             if (result.equalsIgnoreCase("updated")) {
                 System.out.println("Entre acaaaaa");
                 Tools.AlertMessageInformation(window, "Impuesto", "Se cambio el estado correctamente.");
-                stateUpdate = true;
                 this.fillTableImpuesto();
             } else {
                 Tools.AlertMessageError(window, "Impuesto", "Error: " + result);
@@ -203,16 +196,6 @@ public class FxImpuestoController implements Initializable {
         task.setOnSucceeded(e -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
-            if (stateUpdate) {
-                List<ImpuestoTB> list = ImpuestoADO.GetTipoImpuestoCombBox();
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getPredeterminado() == true) {
-                        Session.DEFAULT_IMPUESTO = i;
-                        break;
-                    }
-                }
-                stateUpdate = false;
-            }
         });
         task.setOnFailed(e -> {
             lblLoad.setVisible(false);

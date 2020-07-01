@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaMovimientoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaMovimientoController">
    <children>
       <VBox>
          <children>
@@ -45,7 +44,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <ComboBox fx:id="cbMovimiento" prefWidth="210.0" />
+                                          <ComboBox fx:id="cbMovimiento" prefWidth="210.0" promptText="Seleccione" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
@@ -59,7 +58,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtMonto" onKeyTyped="#onKeyTypedMonto" prefWidth="210.0" styleClass="text-field-normal" />
+                                          <TextField fx:id="txtMonto" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedMonto" prefWidth="210.0" promptText="0.00" styleClass="text-field-normal" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -75,14 +74,14 @@
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelOpenSansRegular14" text="Comentario" />
-                        <TextArea fx:id="txtComentario" onKeyPressed="#onKeyPressedComentario" prefHeight="200.0" prefWidth="200.0" />
+                        <TextField fx:id="txtComentario" onAction="#onActionAceptar" promptText="Ingrese su comentario" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightSuccess" text="Registrar">
+                  <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightSuccess" text="Ejecutar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

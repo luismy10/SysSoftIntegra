@@ -14,8 +14,8 @@ public class CajaTB {
     private double calculado;
     private double diferencia;
     private String idUsuario;
-    private String idBanco;
     private EmpleadoTB empleadoTB;
+    private MovimientoCajaTB movimientoCajaTB;
     
     public CajaTB() {
         
@@ -109,15 +109,6 @@ public class CajaTB {
         this.idUsuario = idUsuario;
     }
 
-    public String getIdBanco() {
-        return idBanco;
-    }
-
-    public void setIdBanco(String idBanco) {
-        this.idBanco = idBanco;
-    }
-    
-
     public EmpleadoTB getEmpleadoTB() {
         return empleadoTB;
     }
@@ -126,6 +117,13 @@ public class CajaTB {
         this.empleadoTB = empleadoTB;
     }
 
-   
+    public MovimientoCajaTB getMovimientoCajaTB() {
+        return movimientoCajaTB;
+    }
+
+    public void setMovimientoCajaTB(MovimientoCajaTB movimientoCajaTB) {
+        this.movimientoCajaTB = movimientoCajaTB;
+    }
+
     
 }

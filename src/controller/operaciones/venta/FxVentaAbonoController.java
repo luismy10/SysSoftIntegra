@@ -30,7 +30,6 @@ import model.CuentasClienteADO;
 import model.CuentasClienteTB;
 import model.CuentasHistorialClienteADO;
 import model.CuentasHistorialClienteTB;
-import model.MovimientoCajaTB;
 
 public class FxVentaAbonoController implements Initializable {
 
@@ -109,7 +108,7 @@ public class FxVentaAbonoController implements Initializable {
     }
 
     public void loadTableAbono() {
-        tvList.setItems(CuentasHistorialClienteADO.ListarAbonos(idCuentasCliente));
+       // tvList.setItems(CuentasHistorialClienteADO.ListarAbonos(idCuentasCliente));
     }
 
     private void openWindowAbono() {

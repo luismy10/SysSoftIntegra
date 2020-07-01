@@ -72,11 +72,20 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onActionClear" onKeyPressed="#onKeyPressedClear" styleClass="buttonLight" text="Borrar">
+            <Button mnemonicParsing="false" onAction="#onActionClear" onKeyPressed="#onKeyPressedClear" styleClass="buttonLight" text="Limpiar">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../image/error.png" />
+                        <Image url="@../../image/cancel.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionPredeterminado" onKeyPressed="#onKeyPressedPredeterminado" styleClass="buttonLight" text="Predeterminado">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/accept.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -147,11 +156,6 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <ImageView fx:id="ivSelected" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/no-image.png" />
-                                       </image>
-                                    </ImageView>
                                  </children>
                               </VBox>
                            </children>
@@ -273,7 +277,7 @@
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
                               <Label styleClass="labelRoboto14" text="Formato de ticket" />
-                              <Label styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
+                              <Label fx:id="formatoTicket" styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
@@ -285,7 +289,7 @@
                         <VBox alignment="CENTER_LEFT" style="-fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
                               <Label styleClass="labelRoboto14" text="Predeterminado" />
-                              <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-ticket" text="Si" />
+                              <CheckBox fx:id="cbPredeterminado" disable="true" mnemonicParsing="false" styleClass="check-box-ticket" text="No" />
                            </children>
                         </VBox>
                      </children>

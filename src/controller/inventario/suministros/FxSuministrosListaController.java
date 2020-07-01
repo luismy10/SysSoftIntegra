@@ -400,7 +400,7 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setValorInventario(tvList.getSelectionModel().getSelectedItem().getValorInventario());
 
             Button button = new Button();
-            button.getStyleClass().add("buttonBorder");
+            button.getStyleClass().add("buttonLightError");
             ImageView view = new ImageView(new Image("/view/image/remove.png"));
             view.setFitWidth(24);
             view.setFitHeight(24);

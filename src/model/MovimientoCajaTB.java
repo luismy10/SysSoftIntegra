@@ -1,19 +1,19 @@
+
 package model;
 
-public class MovimientoCajaTB {
 
+public class MovimientoCajaTB {
+    
     private int idMovimientoCaja;
     private String idCaja;
-    private String idUsuario;
     private String fechaMovimiento;
     private String horaMovimiento;
     private String comentario;
-    private String movimiento;
-    private double entrada;
-    private double salidas;
-    private double saldo;
-
-    public MovimientoCajaTB() {
+    private short tipoMovimiento;
+    private double monto;
+    
+    public MovimientoCajaTB(){
+        
     }
 
     public int getIdMovimientoCaja() {
@@ -30,14 +30,6 @@ public class MovimientoCajaTB {
 
     public void setIdCaja(String idCaja) {
         this.idCaja = idCaja;
-    }
-
-    public String getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public String getFechaMovimiento() {
@@ -64,38 +56,20 @@ public class MovimientoCajaTB {
         this.comentario = comentario;
     }
 
-    public String getMovimiento() {
-        return movimiento;
+    public short getTipoMovimiento() {
+        return tipoMovimiento;
     }
 
-    public void setMovimiento(String movimiento) {
-        this.movimiento = movimiento;
+    public void setTipoMovimiento(short tipoMovimiento) {
+        this.tipoMovimiento = tipoMovimiento;
     }
 
-    public double getEntrada() {
-        return entrada;
+    public double getMonto() {
+        return monto;
     }
 
-    public void setEntrada(double entrada) {
-        this.entrada = entrada;
+    public void setMonto(double monto) {
+        this.monto = monto;
     }
-
-    public double getSalidas() {
-        return salidas;
-    }
-
-    public void setSalidas(double salidas) {
-        this.salidas = salidas;
-    }
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
     
-
 }

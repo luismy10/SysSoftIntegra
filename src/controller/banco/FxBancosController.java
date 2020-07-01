@@ -2,16 +2,10 @@ package controller.banco;
 
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -207,82 +201,12 @@ public class FxBancosController implements Initializable {
         }
     }
 
-    private void eventReloadBanco() {
+    private void onEventReloadBanco() {
         if (!lblLoad.isVisible()) {
             loadTableViewBanco("");
         }
     }
 
-    private void eventAsignarBanco() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            short formaPago = tvList.getSelectionModel().getSelectedItem().getFormaPago();
-            String idBanco = tvList.getSelectionModel().getSelectedItem().getIdBanco();
-            String nombreBanco = tvList.getSelectionModel().getSelectedItem().getNombreCuenta();
-            try {
-                if (formaPago == 1) {
-                    String ruta = "./archivos/cajaSetting.properties";
-                    File file = new File(ruta);
-                    if (file.exists()) {
-                        file.delete();
-                        try (OutputStream output = new FileOutputStream(ruta)) {
-                            Properties prop = new Properties();
-
-                            prop.setProperty("id", idBanco);
-                            prop.setProperty("nombreBanco", nombreBanco);
-                            prop.store(output, "Ruta de configuración de la caja");
-                            Session.ID_CUENTA_EFECTIVO = idBanco;
-                            Session.NOMBRE_CUENTA_EFECTIVO = nombreBanco;
-                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
-                        }
-                    } else {
-                        try (OutputStream output = new FileOutputStream(ruta)) {
-                            Properties prop = new Properties();
-
-                            prop.setProperty("id", idBanco);
-                            prop.setProperty("nombreBanco", nombreBanco);
-                            prop.store(output, "Ruta de configuración de la caja");
-                            Session.ID_CUENTA_EFECTIVO = idBanco;
-                            Session.NOMBRE_CUENTA_EFECTIVO = nombreBanco;
-                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
-                        }
-                    }
-                } else if (formaPago == 2) {
-                    String ruta = "./archivos/bancoSetting.properties";
-                    File file = new File(ruta);
-                    if (file.exists()) {
-                        file.delete();
-                        try (OutputStream output = new FileOutputStream(ruta)) {
-                            Properties prop = new Properties();
-
-                            prop.setProperty("id", idBanco);
-                            prop.setProperty("nombreBanco", nombreBanco);
-                            prop.store(output, "Ruta de configuración de la banco");
-                            Session.ID_CUENTA_BANCARIA = idBanco;
-                            Session.NOMBRE_CUENTA_BANCARIA = nombreBanco;
-                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
-                        }
-                    } else {
-                        try (OutputStream output = new FileOutputStream(ruta)) {
-                            Properties prop = new Properties();
-
-                            prop.setProperty("id", idBanco);
-                            prop.setProperty("nombreBanco", nombreBanco);
-                            prop.store(output, "Ruta de configuración de la banco");
-                            Session.ID_CUENTA_BANCARIA = idBanco;
-                            Session.NOMBRE_CUENTA_BANCARIA = nombreBanco;
-                            Tools.AlertMessageInformation(hbWindow, "Banco", "Se creo correctamente el archivo de configuración.");
-                        }
-                    }
-                }
-            } catch (FileNotFoundException ex) {
-                Tools.AlertMessageError(hbWindow, "Banco", "No se pudo crear el archivo por: " + ex.getLocalizedMessage());
-            } catch (IOException ex) {
-                Tools.AlertMessageError(hbWindow, "Banco", "No se pudo crear el archivo por: " + ex.getLocalizedMessage());
-            }
-
-        }
-
-    }
 
     @FXML
     private void onMouseClickedList(MouseEvent event
@@ -299,7 +223,7 @@ public class FxBancosController implements Initializable {
     ) {
         if (event.getCode() == KeyCode.ENTER) {
             if (tvList.getSelectionModel().getSelectedIndex() < 0) {
-                tvList.requestFocus();
+                tvList.requestFocus();  
                 if (!tvList.getItems().isEmpty()) {
                     tvList.getSelectionModel().select(0);
                 }
@@ -368,28 +292,14 @@ public class FxBancosController implements Initializable {
     private void onKeyPressedReload(KeyEvent event
     ) {
         if (event.getCode() == KeyCode.ENTER) {
-            eventReloadBanco();
+            onEventReloadBanco();
         }
     }
 
     @FXML
     private void onActionReload(ActionEvent event
     ) {
-        eventReloadBanco();
-    }
-
-    @FXML
-    private void onKeyPressedAsignar(KeyEvent event
-    ) {
-        if (event.getCode() == KeyCode.ENTER) {
-            eventAsignarBanco();
-        }
-    }
-
-    @FXML
-    private void onActionAsignar(ActionEvent event
-    ) {
-        eventAsignarBanco();
+        onEventReloadBanco();
     }
 
     @FXML

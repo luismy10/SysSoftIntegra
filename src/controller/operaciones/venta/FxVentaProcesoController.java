@@ -1,14 +1,10 @@
 package controller.operaciones.venta;
 
 import controller.tools.ConvertMonedaCadena;
-import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,8 +18,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import model.BancoADO;
-import model.BancoHistorialTB;
 import model.CuentasClienteTB;
 import model.FormaPagoTB;
 import model.SuministroTB;
@@ -91,90 +85,20 @@ public class FxVentaProcesoController implements Initializable {
         vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         lblVueltoNombre.setText("Su cambio: ");
-//        searchComboBox = new SearchComboBox<>(cbCliente);
-//        searchComboBox.setFilter((item, text) -> item.getInformacion().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
 
     }
 
-    public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList, double total) {
+    public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
-        Session.TICKET_SIMBOLOMONEDA = moneda_simbolo;
         lblComprobante.setText(ventaTB.getComprobanteName());
-        tota_venta = total;
-        lblTotal.setText(moneda_simbolo + " " + Tools.roundingValue(total, 2));
+        tota_venta = ventaTB.getTotal();
+        lblTotal.setText(moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ventaEstructuraController.getMonedaNombre()));
-
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
-            @Override
-            public ArrayList<Object> call() {
-                ArrayList<Object> objects = new ArrayList<>();
-                objects.add(BancoADO.ValidarBanco(Session.ID_CUENTA_EFECTIVO, Session.NOMBRE_CUENTA_EFECTIVO));
-                return objects;
-            }
-        };
-        task.setOnSucceeded(e -> {
-            ArrayList<Object> objects = task.getValue();
-            if (objects.get(0) == null ) {
-                hbContenido.setDisable(true);
-                Tools.AlertMessageError(window, "Venta", "Habrá nuevamente la ventana, se produjo un problema de conexión al traer los datos.");
-                return;
-            }
-            boolean validate = (boolean) objects.get(0);
-            if (!validate) {
-                hbContenido.setDisable(true);
-                Tools.AlertMessageWarning(window, "Venta", "Su caja no esta registrada en la base de datos o se modifico, dirijase al modulo CAJA/BANCO para configurar una nueva su caja.");
-            }else{
-                hbContenido.setDisable(false);
-            }
-            txtEfectivo.requestFocus();
-        });
-        task.setOnFailed(e -> {
-            hbContenido.setDisable(true);
-            Tools.AlertMessageError(window, "Venta", "Habrá nuevamente la ventana, se produjo un problema de conexión al traer los datos.");
-
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTipo(), 2), true, ventaEstructuraController.getMonedaNombre()));
+        hbContenido.setDisable(false);
     }
-
-//    public void loadSearchProveedores() {
-//        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-//            Thread t = new Thread(runnable);
-//            t.setDaemon(true);
-//            return t;
-//        });
-//
-//        Task<List<ClienteTB>> task = new Task<List<ClienteTB>>() {
-//            @Override
-//            public List<ClienteTB> call() {
-//                return ClienteADO.GetSearchComboBoxCliente();
-//            }
-//        };
-//
-//        task.setOnSucceeded((e) -> {
-//            searchComboBox.getComboBox().getItems().clear();
-//            List<ClienteTB> clienteTBs = task.getValue();
-//            searchComboBox.getComboBox().getItems().addAll(clienteTBs);
-////            cbCliente.requestFocus();
-//        });
-//
-//        exec.execute(task);
-//        if (!exec.isShutdown()) {
-//            exec.shutdown();
-//        }
-//    }
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
@@ -186,29 +110,11 @@ public class FxVentaProcesoController implements Initializable {
             ventaTB.setVuelto(0);
             ventaTB.setObservaciones(txtObservacion.getText().trim());
             CuentasClienteTB cuentasCliente = new CuentasClienteTB();
-//                cuentasCliente.setPlazos(cbPlazos.getSelectionModel().getSelectedItem().getIdPlazos());
-//                cuentasCliente.setFechaVencimiento(LocalDateTime.of(dtVencimiento.getValue(), LocalTime.now()));
             short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
             if (confirmation == 1) {
-
-//                    String[] result = VentaADO.CrudVenta(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), cuentasCliente).split("/");
-//                    switch (result[0]) {
-//                        case "register":
-//                            Tools.AlertMessageInformation(window, "Venta", "Se guardo correctamente la venta al crédito.");
-//                            ventaEstructuraController.resetVenta();
-//                            Tools.Dispose(window);
-//                            break;
-//                        default:
-//                            Tools.AlertMessageError(window, "Venta", result[0]);
-//                            break;
-//                    }
             }
 
         } else {
-//            if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
-//                Tools.AlertMessageWarning(window, "Venta", "Seleccione su cliente.");
-//                cbCliente.requestFocus();
-//            } else 
             if (estado == false) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
             } else {
@@ -233,35 +139,7 @@ public class FxVentaProcesoController implements Initializable {
                     formaPagoTBs.add(formaPagoTB);
                 }
 
-                BancoHistorialTB bancoHistorialEfectivo = null;
-                if (Tools.isNumeric(txtEfectivo.getText())) {
-                    if (Session.ID_CUENTA_EFECTIVO == null || Session.ID_CUENTA_EFECTIVO.equalsIgnoreCase("")) {
-                        Tools.AlertMessageWarning(window, "Venta", "No tiene un cuenta en efectivo aperturada!!");
-                        return;
-                    }
-                    bancoHistorialEfectivo = new BancoHistorialTB();
-                    bancoHistorialEfectivo.setIdBanco(Session.ID_CUENTA_EFECTIVO);
-                    bancoHistorialEfectivo.setIdEmpleado(Session.USER_ID);
-                    bancoHistorialEfectivo.setDescripcion("Venta Efectivo");
-                    bancoHistorialEfectivo.setFecha(Tools.getDate());
-                    bancoHistorialEfectivo.setHora(Tools.getHour());
-                    bancoHistorialEfectivo.setEntrada((Double.parseDouble(txtEfectivo.getText())) > tota_venta ? tota_venta : (Double.parseDouble(txtEfectivo.getText())));
-                }
 
-                BancoHistorialTB bancoHistorialBancaria = null;
-                if (Tools.isNumeric(txtTarjeta.getText())) {
-                    if (Session.ID_CUENTA_BANCARIA == null || Session.ID_CUENTA_BANCARIA.equalsIgnoreCase("")) {
-                        Tools.AlertMessageWarning(window, "Venta", "No tiene un cuenta bancaria aperturada!!");
-                        return;
-                    }
-                    bancoHistorialBancaria = new BancoHistorialTB();
-                    bancoHistorialBancaria.setIdBanco(Session.ID_CUENTA_BANCARIA);
-                    bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
-                    bancoHistorialBancaria.setDescripcion("Venta con Tarjeta");
-                    bancoHistorialBancaria.setFecha(Tools.getDate());
-                    bancoHistorialBancaria.setHora(Tools.getHour());
-                    bancoHistorialBancaria.setEntrada(Double.parseDouble(txtTarjeta.getText()));
-                }
                 if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
                     if ((Double.parseDouble(txtEfectivo.getText())) >= tota_venta) {
                         Tools.AlertMessageWarning(window, "Venta", "Los valores ingresados no son correctos!!");
@@ -285,35 +163,16 @@ public class FxVentaProcesoController implements Initializable {
     
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    String result = VentaADO.registrarVentaContado(
+                    String result[] = VentaADO.registrarVentaContado(
                             ventaTB,
-                            bancoHistorialEfectivo, 
-                            bancoHistorialBancaria, 
                             formaPagoTBs,
                             tvList, 
-                            ventaEstructuraController.getIdTipoComprobante());
-                    switch (result) {
+                            ventaEstructuraController.getIdTipoComprobante()).split("/");
+                    switch (result[0]) {
                         case "register":
-                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizo la venta con éxito, ¿Desea imprimir el comprobante?");
+                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                ventaEstructuraController.imprimirVenta();
-                                
-//                                ventaEstructuraController.imprimirVenta(
-//                                        ventaEstructuraController.obtenerTipoComprobante(),
-//                                        tvList,
-//                                        Tools.roundingValue(ventaTB.getSubTotal(), 2),
-//                                        Tools.roundingValue(ventaTB.getDescuento(), 2),
-//                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
-//                                        Tools.roundingValue(tota_venta, 2),
-//                                        Double.parseDouble(txtEfectivo.getText()),
-//                                        vuelto,
-//                                        result[1],
-//                                        result[2],
-//                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento(),
-//                                        //                                        cbCliente.getSelectionModel().getSelectedItem().getInformacion());
-//                                        "",
-//                                        "");
-                                ventaEstructuraController.resetVenta();
+                                ventaEstructuraController.imprimirVenta(result[1],result[2],txtEfectivo.getText(),Tools.roundingValue(vuelto, 2));                              
                                 Tools.Dispose(window);
                             } else {
                                 ventaEstructuraController.resetVenta();
@@ -321,7 +180,7 @@ public class FxVentaProcesoController implements Initializable {
                             }
                             break;
                         default:
-                            Tools.AlertMessageError(window, "Venta", result);
+                            Tools.AlertMessageError(window, "Venta", result[0]);
                             break;
                     }
                 }

@@ -150,7 +150,7 @@ public class FxOperacionesController implements Initializable {
     }
 
     private void openWindowCorteCaja() {
-        controllerCorteCaja.setContent(vbPrincipal, vbContent);
+        controllerCorteCaja.setContent(vbPrincipal);
         vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCorteCaja, 0d);
         AnchorPane.setTopAnchor(nodeCorteCaja, 0d);

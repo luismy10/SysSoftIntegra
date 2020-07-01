@@ -185,7 +185,6 @@ public class FxPrincipalController implements Initializable {
                 @Override
                 protected ObservableList<MenuTB> call() throws Exception {
                     Thread.sleep(1000);
-
                     btnInicio.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxInicio, btnInicio));
                     btnOperaciones.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxOperaciones, btnOperaciones));
                     btnConsultas.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxConsultas, btnConsultas));

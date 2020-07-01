@@ -20,15 +20,12 @@ public class FxVentaValidarCajaController implements Initializable {
 
     private FxVentaController ventaController;
 
-    private String idCaja;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
     }
 
-    public void loadData(String idCaja, String dateTime) {
-        this.idCaja = idCaja;
+    public void loadData(String dateTime) {
         txtFecha.setText(dateTime);
     }
 

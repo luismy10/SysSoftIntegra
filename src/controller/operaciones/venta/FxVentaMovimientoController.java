@@ -1,22 +1,22 @@
 package controller.operaciones.venta;
 
-import com.sun.javafx.scene.control.skin.TextAreaSkin;
-import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.MovimientoCajaADO;
 import model.MovimientoCajaTB;
+import model.VentaADO;
 
 public class FxVentaMovimientoController implements Initializable {
 
@@ -27,9 +27,10 @@ public class FxVentaMovimientoController implements Initializable {
     @FXML
     private TextField txtMonto;
     @FXML
-    private TextArea txtComentario;
-
-    private FxVentaEstructuraController ventaEstructuraController;
+    private TextField txtComentario;
+    @FXML
+    private Button btnEjecutar;
+        
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -48,51 +49,70 @@ public class FxVentaMovimientoController implements Initializable {
             Tools.AlertMessageWarning(window, "Ventas", "Ingrese un comentario.");
             txtComentario.requestFocus();
         } else {
-//            MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
-//            movimientoCaja.setIdCaja(Session.CAJA_ID);
-//            movimientoCaja.setIdUsuario(Session.USER_ID);
-//            movimientoCaja.setFechaMovimiento(Tools.getDate());
-//            movimientoCaja.setComentario(txtComentario.getText().trim());
-//            movimientoCaja.setMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex() == 0 ? "ENTR" : "SALI");
-//            movimientoCaja.setEntrada(cbMovimiento.getSelectionModel().getSelectedIndex() == 0
-//                    ? Double.parseDouble(txtMonto.getText()) : 0);
-//            movimientoCaja.setSalidas(cbMovimiento.getSelectionModel().getSelectedIndex() == 0
-//                    ? 0 : Double.parseDouble(txtMonto.getText()));
-//            movimientoCaja.setSaldo(Double.parseDouble(txtMonto.getText()));
-//
-//            String result = MovimientoCajaADO.Registrar_Movimiento(movimientoCaja);
-//            if (result.equalsIgnoreCase("registrado")) {
-//                Tools.AlertMessageInformation(window, "Ventas", "Se registro correctamente el movimiento de caja.");
-//                Tools.Dispose(window);
-//                ventaEstructuraController.getTxtSearch().requestFocus();
-//                ventaEstructuraController.getTxtSearch().selectAll();
-//            } else {
-//                Tools.AlertMessageWarning(window, "Ventas", result);
-//            }
-        }
-    }
+             ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                    Thread t = new Thread(runnable);
+                    t.setDaemon(true);
+                    return t;
+                });
 
-    @FXML
-    private void onKeyPressedComentario(KeyEvent event) {
-        if (event.getCode() == KeyCode.TAB) {
-            Node node = (Node) event.getSource();
-            if (node instanceof TextArea) {
-                TextAreaSkin skin = (TextAreaSkin) ((TextArea) node).getSkin();
-                if (!event.isControlDown()) {
-                    if (event.isShiftDown()) {
-                        skin.getBehavior().traversePrevious();
-                    } else {
-                        skin.getBehavior().traverseNext();
+                Task<String> task = new Task<String>() {
+                    @Override
+                    public String call() {
+                        MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
+                        movimientoCajaTB.setFechaMovimiento(Tools.getDate());
+                        movimientoCajaTB.setHoraMovimiento(Tools.getHour());
+                        movimientoCajaTB.setComentario(txtComentario.getText().toUpperCase().trim());
+                        movimientoCajaTB.setTipoMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex()==0 ? (short) 4:(short) 5);
+                        movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));                        
+                        return VentaADO.movimientoCaja( movimientoCajaTB);
                     }
-                } else {
-                    TextArea textA = (TextArea) node;
-                    textA.replaceSelection("\t");
+                };
+
+                task.setOnSucceeded(e -> {
+                    String result = task.getValue();
+                    if (result.equalsIgnoreCase("updated")) {
+                        Tools.AlertMessageInformation(window, "Ventas", "Se proceso correctamente su movimiento de caja.");
+                        Tools.Dispose(window);
+                    } else {
+                        Tools.AlertMessageError(window, "Ventas", result);
+                    }
+                    btnEjecutar.setDisable(false);
+                });
+
+                task.setOnFailed(e -> {
+                    btnEjecutar.setDisable(false);
+                });
+
+                task.setOnScheduled(e -> {
+                    btnEjecutar.setDisable(true);
+                });
+
+                exec.execute(task);
+                if (!exec.isShutdown()) {
+                    exec.shutdown();
                 }
-                event.consume();
-            }
         }
     }
 
+//    private void onKeyPressedComentario(KeyEvent event) {
+//        if (event.getCode() == KeyCode.TAB) {
+//            Node node = (Node) event.getSource();
+//            if (node instanceof TextArea) {
+//                TextAreaSkin skin = (TextAreaSkin) ((TextArea) node).getSkin();
+//                if (!event.isControlDown()) {
+//                    if (event.isShiftDown()) {
+//                        skin.getBehavior().traversePrevious();
+//                    } else {
+//                        skin.getBehavior().traverseNext();
+//                    }
+//                } else {
+//                    TextArea textA = (TextArea) node;
+//                    textA.replaceSelection("\t");
+//                }
+//                event.consume();
+//            }
+//        }
+//    }
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -128,8 +148,5 @@ public class FxVentaMovimientoController implements Initializable {
         Tools.Dispose(window);
     }
 
-    public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
-        this.ventaEstructuraController = ventaEstructuraController;
-    }
 
 }

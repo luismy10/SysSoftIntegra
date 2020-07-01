@@ -11,9 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.BancoHistorialTB;
 import model.CajaADO;
 import model.CajaTB;
+import model.MovimientoCajaTB;
 
 public class FxVentaFondoInicialController implements Initializable {
 
@@ -29,7 +29,7 @@ public class FxVentaFondoInicialController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    private void eventAceptar() {
+    private void onEventAceptar() {
         if (Tools.isNumeric(txtImporte.getText().trim())) {
             CajaTB cajaTB = new CajaTB();
             cajaTB.setFechaApertura(Tools.getDate());
@@ -39,17 +39,15 @@ public class FxVentaFondoInicialController implements Initializable {
             cajaTB.setContado(0);
             cajaTB.setCalculado(0);
             cajaTB.setDiferencia(0);
-            cajaTB.setIdBanco(Session.ID_CUENTA_EFECTIVO);
             
-            BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
-            bancoHistorialTB.setIdBanco(Session.ID_CUENTA_EFECTIVO);
-            bancoHistorialTB.setIdEmpleado(Session.USER_ID); 
-            bancoHistorialTB.setDescripcion("Apertura de Caja");
-            bancoHistorialTB.setFecha(Tools.getDate());
-            bancoHistorialTB.setHora(Tools.getHour());
-            bancoHistorialTB.setEntrada(Double.parseDouble(txtImporte.getText()));
+            MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
+            movimientoCajaTB.setFechaMovimiento(Tools.getDate());
+            movimientoCajaTB.setHoraMovimiento(Tools.getHour("HH:mm:ss"));
+            movimientoCajaTB.setComentario("APERTURA DE CAJA");
+            movimientoCajaTB.setTipoMovimiento((short)1);
+            movimientoCajaTB.setMonto(Double.parseDouble(txtImporte.getText()));
             
-            String result = CajaADO.AperturarCaja(cajaTB,bancoHistorialTB);
+            String result = CajaADO.AperturarCaja(cajaTB,movimientoCajaTB);
             if (result.equalsIgnoreCase("registrado")) {
                 Tools.AlertMessageInformation(window, "Ventas", "Se aperturo correctamento la caja.");
                 ventaController.setAperturaCaja(true);
@@ -63,13 +61,13 @@ public class FxVentaFondoInicialController implements Initializable {
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
-        eventAceptar();
+        onEventAceptar();
     }
 
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            eventAceptar();
+            onEventAceptar();
         }
     }
 

@@ -58,7 +58,7 @@
                                     </HBox>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Salida en:" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Salida de:" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0px 1.25em 0px 1.25em;">
@@ -91,9 +91,10 @@
                                     <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" />
                                  </children>
                               </HBox>
+                              <Separator prefWidth="200.0" />
                               <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Salida">
+                                    <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Ejecutar">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>

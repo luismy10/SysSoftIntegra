@@ -18,7 +18,6 @@ import model.CajaADO;
 import model.CajaTB;
 import model.CuentasHistorialClienteADO;
 import model.CuentasHistorialClienteTB;
-import model.MovimientoCajaTB;
 
 public class FxVentaAbonoProcesoController implements Initializable {
 

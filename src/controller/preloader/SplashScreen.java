@@ -106,37 +106,11 @@ public class SplashScreen extends Preloader {
                             Session.ESTADO_IMPRESORA = false;
                         }
 
-                        String ruta2 = "./archivos/cajaSetting.properties";
-                        try (InputStream input = new FileInputStream(ruta2)) {
 
-                            Properties prop = new Properties();
-                            prop.load(input);
-
-                            Session.ID_CUENTA_EFECTIVO = prop.getProperty("id");
-                            Session.NOMBRE_CUENTA_EFECTIVO = prop.getProperty("nombreBanco");
-
-                        } catch (IOException ex) {
-                            Session.ID_CUENTA_EFECTIVO = "";
-                            Session.NOMBRE_CUENTA_EFECTIVO = "";
-                        }
-
-                        String ruta3 = "./archivos/bancoSetting.properties";
-                        try (InputStream input = new FileInputStream(ruta3)) {
-
-                            Properties prop = new Properties();
-                            prop.load(input);
-
-                            Session.ID_CUENTA_BANCARIA = prop.getProperty("id");
-                            Session.NOMBRE_CUENTA_BANCARIA = prop.getProperty("nombreBanco");
-
-                        } catch (IOException ex) {
-                            Session.ID_CUENTA_BANCARIA = "";
-                            Session.NOMBRE_CUENTA_BANCARIA = "";
-                        }
-
-                        TicketTB ticketTB = TicketADO.GetTicketRuta(1);
+                        TicketTB ticketTB = TicketADO.GetTicketRuta();
                         if (ticketTB != null) {
-                            Session.RUTA_TICKET_VENTA = ticketTB.getRuta();
+                            Session.TICKET_VENTA_ID = ticketTB.getId();
+                            Session.TICKET_VENTA_RUTA = ticketTB.getRuta();
                         }
 
                         EmpresaTB list = EmpresaADO.GetEmpresa();
