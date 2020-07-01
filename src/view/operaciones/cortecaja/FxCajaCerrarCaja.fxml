@@ -87,8 +87,8 @@
                                  <children>
                                     <Label styleClass="labelOpenSansRegular14" text="Cuenta efectivo:" />
                                     <Label styleClass="labelOpenSansRegular14" text="Cuenta bancaria:" GridPane.rowIndex="1" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <ComboBox fx:id="cbCuentasEfectivo" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                                    <ComboBox fx:id="cbCuentasTarjeta" maxWidth="1.7976931348623157E308" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children>

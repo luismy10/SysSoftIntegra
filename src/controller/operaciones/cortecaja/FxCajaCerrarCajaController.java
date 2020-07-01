@@ -1,6 +1,7 @@
 package controller.operaciones.cortecaja;
 
 import controller.tools.FilesRouters;
+import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -21,6 +23,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.BancoADO;
+import model.BancoHistorialTB;
+import model.BancoTB;
 import model.CajaADO;
 
 public class FxCajaCerrarCajaController implements Initializable {
@@ -33,10 +38,16 @@ public class FxCajaCerrarCajaController implements Initializable {
     private Text lblFechaCierre;
     @FXML
     private Label lblValorTarjeta;
+    @FXML
+    private ComboBox<BancoTB> cbCuentasEfectivo;
+    @FXML
+    private ComboBox<BancoTB> cbCuentasTarjeta;
 
     private String idActual;
 
     private double calculado;
+
+    private double valorTarjeta;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -44,24 +55,58 @@ public class FxCajaCerrarCajaController implements Initializable {
         lblFechaCierre.setText(Tools.getDate() + " " + Tools.getHour("hh:mm a"));
     }
 
-    public void loadDataInit(String idActual, double calculado,double valorTarjeta) {
+    public void loadDataInit(String idActual, double calculado, double valorTarjeta) {
         this.idActual = idActual;
         this.calculado = calculado;
+        this.valorTarjeta = valorTarjeta;
         lblValorTarjeta.setText(Tools.roundingValue(valorTarjeta, 2));
+        cbCuentasEfectivo.getItems().addAll(BancoADO.GetBancoComboBoxForma((short) 1));
+        cbCuentasTarjeta.getItems().addAll(BancoADO.GetBancoComboBoxForma((short) 2));
     }
 
     private void onEventAceptar() throws IOException {
         if (!Tools.isNumeric(txtEfectivo.getText())) {
             Tools.AlertMessageWarning(window, "Corte de caja", "Ingrese el monto actual de caja.");
             txtEfectivo.requestFocus();
+        } else if (cbCuentasEfectivo.getSelectionModel().getSelectedIndex() < 0 && calculado >= 0) {
+            Tools.AlertMessageWarning(window, "Corte de caja", "Seleccione una cuenta de efectivo.");
+            cbCuentasEfectivo.requestFocus();
+        } else if (cbCuentasTarjeta.getSelectionModel().getSelectedIndex() < 0 && valorTarjeta > 0) {
+            Tools.AlertMessageWarning(window, "Corte de caja", "Seleccione una cuenta de banco.");
+            cbCuentasTarjeta.requestFocus();
         } else {
             short option = Tools.AlertMessageConfirmation(window, "Corte de caja", "¿Está seguro de cerrar su turno?");
             if (option == 1) {
-                String result = CajaADO.CerrarAperturaCaja(idActual, Tools.getDate(), Tools.getHour("HH:mm:ss"), false, Double.parseDouble(txtEfectivo.getText()), calculado);
+
+                BancoHistorialTB bancoHistorialEfectivo = null;
+                if (calculado >=0) {
+                    bancoHistorialEfectivo = new BancoHistorialTB();
+                    bancoHistorialEfectivo.setIdBanco(cbCuentasEfectivo.getSelectionModel().getSelectedItem().getIdBanco());
+                    bancoHistorialEfectivo.setIdEmpleado(Session.USER_ID);
+                    bancoHistorialEfectivo.setDescripcion("INGRESO DE DINERO POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME);
+                    bancoHistorialEfectivo.setFecha(Tools.getDate());
+                    bancoHistorialEfectivo.setHora(Tools.getHour());
+                    bancoHistorialEfectivo.setEntrada(calculado);
+                    bancoHistorialEfectivo.setSalida(0);
+                }
+
+                BancoHistorialTB bancoHistorialTarjeta = null;
+                if (valorTarjeta > 0) {
+                    bancoHistorialTarjeta = new BancoHistorialTB();
+                    bancoHistorialTarjeta.setIdBanco(cbCuentasTarjeta.getSelectionModel().getSelectedItem().getIdBanco());
+                    bancoHistorialTarjeta.setDescripcion("INGRESO DE SALDO EN TARJETA POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME);
+                    bancoHistorialTarjeta.setDescripcion("Salida de dinero por compra");
+                    bancoHistorialTarjeta.setFecha(Tools.getDate());
+                    bancoHistorialTarjeta.setHora(Tools.getHour());
+                    bancoHistorialTarjeta.setEntrada(0);
+                    bancoHistorialTarjeta.setSalida(valorTarjeta);
+                }
+
+                String result = CajaADO.CerrarAperturaCaja(idActual, bancoHistorialEfectivo, bancoHistorialTarjeta, Double.parseDouble(txtEfectivo.getText()), calculado);
                 if (result.equalsIgnoreCase("completed")) {
-                    Tools.AlertMessageInformation(window ,"Corte de caja", "Se cerro correctamente la caja.");
+                    Tools.AlertMessageInformation(window, "Corte de caja", "Se cerro correctamente la caja.");
                     Tools.Dispose(window);
-                    
+
                     URL urllogin = getClass().getResource(FilesRouters.FX_LOGIN);
                     FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
                     Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
@@ -75,7 +120,7 @@ public class FxCajaCerrarCajaController implements Initializable {
                     primaryStage.setMaximized(true);
                     primaryStage.show();
                     primaryStage.requestFocus();
-                    
+
                 } else {
                     Tools.AlertMessageWarning(window, "Corte de caja", result);
                 }

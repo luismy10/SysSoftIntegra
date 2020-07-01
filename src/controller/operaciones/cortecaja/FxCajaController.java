@@ -62,6 +62,8 @@ public class FxCajaController implements Initializable {
 
     private double totalDineroCaja;
 
+    private double totalTarjeta;
+
     private String idActual;
 
     @Override
@@ -114,8 +116,9 @@ public class FxCajaController implements Initializable {
                         lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
                         lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
                         lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
-                        double totalDineroUno = (cajaTB.getContado() + arrayList.get(0) + arrayList.get(2)) - arrayList.get(3);
-                        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroUno, 2));
+                        totalDineroCaja = (cajaTB.getContado() + arrayList.get(0) + arrayList.get(2)) - arrayList.get(3);
+                        totalTarjeta = arrayList.get(1);
+                        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroCaja, 2));
 
                         btnTerminarTurno.setDisable(false);
                         idActual = cajaTB.getIdCaja();
@@ -130,8 +133,9 @@ public class FxCajaController implements Initializable {
                         lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
                         lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
                         lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
-                        double totalDineroDos = (cajaTB.getContado() + arrayList.get(0) + arrayList.get(2)) - arrayList.get(3);
-                        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroDos, 2));
+                        totalDineroCaja = (cajaTB.getContado() + arrayList.get(0) + arrayList.get(2)) - arrayList.get(3);
+                        totalTarjeta = arrayList.get(1);
+                        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroCaja, 2));
 
                         btnTerminarTurno.setDisable(false);
                         idActual = cajaTB.getIdCaja();
@@ -142,6 +146,9 @@ public class FxCajaController implements Initializable {
             } else {
                 Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
                 btnTerminarTurno.setDisable(true);
+                idActual = "";
+                totalDineroCaja = 0;
+                totalTarjeta = 0;
             }
             btnRealizarCorte.setDisable(false);
             lblLoad.setVisible(false);
@@ -149,11 +156,17 @@ public class FxCajaController implements Initializable {
 
         task.setOnFailed(e -> {
             Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+            idActual = "";
+            totalDineroCaja = 0;
+            totalTarjeta = 0;
             btnRealizarCorte.setDisable(false);
             lblLoad.setVisible(false);
         });
 
         task.setOnScheduled(e -> {
+            idActual = "";
+            totalDineroCaja = 0;
+            totalTarjeta = 0;
             btnRealizarCorte.setDisable(true);
             lblLoad.setVisible(true);
         });
@@ -165,58 +178,9 @@ public class FxCajaController implements Initializable {
 
     }
 
-    private void loadCaja() {
-
-//
-//        MovimientoCajaTB fondoCaja = MovimientoCajaADO.FondoCaja(idActual);
-//        if (fondoCaja != null) {
-//            lblFondoCaja.setText(Tools.roundingValue(fondoCaja.getSaldo(), 2));
-//            totalDineroCaja = fondoCaja.getSaldo();
-//        }
-//
-//        MovimientoCajaTB ventasEfectivo = MovimientoCajaADO.VentasEfectivo(idActual);
-//        if (ventasEfectivo != null) {
-//            lblEfectivo.setText(Tools.roundingValue(ventasEfectivo.getSaldo(), 2));
-//            lblVentasEfectivo.setText(Tools.roundingValue(ventasEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja + ventasEfectivo.getSaldo();
-//        }
-//
-//        MovimientoCajaTB ventasCredito = MovimientoCajaADO.VentasCredito(idActual);
-//        if (ventasCredito != null) {
-//            lblVentasCredito.setText(Tools.roundingValue(ventasCredito.getSaldo(), 2));
-//        }
-//
-//        MovimientoCajaTB ingresosEfectivo = MovimientoCajaADO.IngresosEfectivo(idActual);
-//        if (ingresosEfectivo != null) {
-//            lblEntradas.setText(Tools.roundingValue(ingresosEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja + ingresosEfectivo.getSaldo();
-//        }
-//
-//        MovimientoCajaTB egresosEfectivoCompra = MovimientoCajaADO.EgresosEfectivoCompra(idActual);
-//        if (egresosEfectivoCompra != null) {
-//            lblSalidas.setText("-" + Tools.roundingValue(egresosEfectivoCompra.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja - egresosEfectivoCompra.getSaldo();
-//        }
-//
-//        MovimientoCajaTB egresosEfectivo = MovimientoCajaADO.EgresosEfectivo(idActual);
-//        if (egresosEfectivo != null) {
-//            lblSalidas.setText("-" + Tools.roundingValue(egresosEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja - egresosEfectivo.getSaldo();
-//        }
-//
-//        MovimientoCajaTB devolucionesEfectivo = MovimientoCajaADO.DevolucionesEfectivo(idActual);
-//        if (devolucionesEfectivo != null) {
-//            lblDevoluciones.setText("-" + Tools.roundingValue(devolucionesEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja - devolucionesEfectivo.getSaldo();
-//        }
-//
-//        lblTotalDineroCaja.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(Math.abs(totalDineroCaja), 2));
-//        btnTerminarTurno.setDisable(false);
-    }
-
     private void onEventTerminarTurno() {
         try {
-            if(idActual.equalsIgnoreCase("")){
+            if (idActual.equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(window, "Realizar corte de caja", "No se pudo completar la carga de información, realzar corte de caja de nuevo.");
                 return;
             }
@@ -226,7 +190,7 @@ public class FxCajaController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
 
             FxCajaCerrarCajaController controller = fXMLLoader.getController();
-            controller.loadDataInit(idActual, totalDineroCaja, 0);
+            controller.loadDataInit(idActual, totalDineroCaja, totalTarjeta);
 
             Stage stage = WindowStage.StageLoaderModal(parent, "Realizar corte de caja", window.getScene().getWindow());
             stage.setResizable(false);

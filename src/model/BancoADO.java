@@ -304,6 +304,39 @@ public class BancoADO {
         }
         return list;
     }
+    
+        public static List<BancoTB> GetBancoComboBoxForma(short forma) {
+        List<BancoTB> list = new ArrayList<>();
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+            try {
+                statement = DBUtil.getConnection().prepareStatement("select IdBanco,NombreCuenta from Banco where FormaPago = ? order by HoraCreacion ASC");
+                resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    list.add(new BancoTB(resultSet.getString("IdBanco"), resultSet.getString("NombreCuenta").toUpperCase()));
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error¨Plazos: " + ex.getLocalizedMessage());
+            } finally {
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    System.out.println("Error Plazos: " + ex.getLocalizedMessage());
+                }
+            }
+        }
+        return list;
+    }
+
+    
 
     public static ArrayList<Object> Listar_Bancos_Historial(String idBanco) {
         PreparedStatement preparedStatementBanco = null;

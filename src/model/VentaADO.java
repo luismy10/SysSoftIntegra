@@ -144,8 +144,6 @@ public class VentaADO {
                     + "Cantidad) "
                     + "VALUES(?,?,?,?,?,?,?)");
 
-            forma_pago = DBUtil.getConnection().prepareStatement("INSERT INTO dbo.FormaPagoTB (IdVenta,Nombre,Monto) VALUES(?,?,?)");
-
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
             venta.setString(3, ventaTB.getVendedor());
@@ -167,13 +165,6 @@ public class VentaADO {
             venta.setDouble(19, ventaTB.getVuelto());
             venta.setString(20, Integer.toString(dig5) + id_comprabante[1]);
             venta.addBatch();
-
-            for (FormaPagoTB formaPagoTB : formaPagoTBs) {
-                forma_pago.setString(1, id_venta);
-                forma_pago.setString(2, formaPagoTB.getNombre());
-                forma_pago.setDouble(3, formaPagoTB.getMonto());
-                forma_pago.addBatch();
-            }
 
             comprobante.setInt(1, idTipoDocumento);
             comprobante.setString(2, id_comprabante[0]);
@@ -232,15 +223,35 @@ public class VentaADO {
 
             }
 
+            forma_pago = DBUtil.getConnection().prepareStatement("INSERT INTO dbo.FormaPagoTB (IdVenta,Nombre,Monto) VALUES(?,?,?)");
             movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto)VALUES(?,?,?,?,?,?)");
-            movimiento_caja.setString(1, Session.CAJA_ID);
-            movimiento_caja.setString(2, ventaTB.getFechaVenta());
-            movimiento_caja.setString(3, ventaTB.getHoraVenta());
-            movimiento_caja.setString(4, "VENTA AL CONTADO CON SERIE Y NUMERACIÓN " + id_comprabante[0] + "-" + id_comprabante[1]);
-            movimiento_caja.setShort(5, (short) 2);
-            movimiento_caja.setDouble(6, ventaTB.getTotal());
-            movimiento_caja.addBatch();
 
+            for (FormaPagoTB formaPagoTB : formaPagoTBs) {
+                forma_pago.setString(1, id_venta);
+                forma_pago.setString(2, formaPagoTB.getNombre());
+                forma_pago.setDouble(3, formaPagoTB.getMonto());
+                forma_pago.addBatch();
+
+                if (formaPagoTB.getNombre().equalsIgnoreCase("EFECTIVO")) {
+                    movimiento_caja.setString(1, Session.CAJA_ID);
+                    movimiento_caja.setString(2, ventaTB.getFechaVenta());
+                    movimiento_caja.setString(3, ventaTB.getHoraVenta());
+                    movimiento_caja.setString(4, "VENTA AL CONTADO CON SERIE Y NUMERACIÓN " + id_comprabante[0] + "-" + id_comprabante[1]);
+                    movimiento_caja.setShort(5, (short) 2);
+                    movimiento_caja.setDouble(6, ventaTB.getTotal());
+                    movimiento_caja.addBatch();
+                } else if (formaPagoTB.getNombre().equalsIgnoreCase("TARJETA")) {
+                    movimiento_caja.setString(1, Session.CAJA_ID);
+                    movimiento_caja.setString(2, ventaTB.getFechaVenta());
+                    movimiento_caja.setString(3, ventaTB.getHoraVenta());
+                    movimiento_caja.setString(4, "VENTA CON TAJETA CON SERIE Y NUMERACIÓN " + id_comprabante[0] + "-" + id_comprabante[1]);
+                    movimiento_caja.setShort(5, (short) 3);
+                    movimiento_caja.setDouble(6, ventaTB.getTotal());
+                    movimiento_caja.addBatch();
+                }
+                
+            }
+            
             cliente.executeBatch();
             venta.executeBatch();
             movimiento_caja.executeBatch();

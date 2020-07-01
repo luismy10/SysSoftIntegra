@@ -1,6 +1,7 @@
 package model;
 
 import controller.tools.Session;
+import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -322,23 +323,70 @@ public class CajaADO {
         return objects;
     }
 
-    public static String CerrarAperturaCaja(String idCaja, String date, String time, boolean state, double contado, double calculado) {
+    public static String CerrarAperturaCaja(String idCaja, BancoHistorialTB bancoHistorialEfectivo, BancoHistorialTB bancoHistorialTarjeta, double contado, double calculado) {
         String cajaTB = "";
         PreparedStatement statementCaja = null;
+
+        PreparedStatement statementBancoEfectivo = null;
+        PreparedStatement statementHistorialBancoEfectivo = null;
+
+        PreparedStatement statementBancoTarjeta = null;
+        PreparedStatement statementHistorialBancoTarjeta = null;
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
             statementCaja = DBUtil.getConnection().prepareStatement("UPDATE CajaTB SET FechaCierre = ?,HoraCierre = ?,Contado = ?,Calculado = ?,Diferencia = ?,Estado=? WHERE IdCaja = ?");
-            statementCaja.setString(1, date);
-            statementCaja.setString(2, time);
+            statementCaja.setString(1, Tools.getDate());
+            statementCaja.setString(2, Tools.getHour("HH:mm:ss"));
             statementCaja.setDouble(3, contado);
             statementCaja.setDouble(4, calculado);
             statementCaja.setDouble(5, contado - calculado);
-            statementCaja.setBoolean(6, state);
+            statementCaja.setBoolean(6, false);
             statementCaja.setString(7, idCaja);
             statementCaja.addBatch();
 
+            statementBancoEfectivo = DBUtil.getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial + ? WHERE IdBanco = ?");
+            statementHistorialBancoEfectivo = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdEmpleado,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
+
+            if (bancoHistorialEfectivo != null) {
+                statementBancoEfectivo.setDouble(1, bancoHistorialEfectivo.getSalida());
+                statementBancoEfectivo.setString(2, bancoHistorialEfectivo.getIdBanco());
+                statementBancoEfectivo.addBatch();
+
+                statementHistorialBancoEfectivo.setString(1, bancoHistorialEfectivo.getIdBanco());
+                statementHistorialBancoEfectivo.setString(2, bancoHistorialEfectivo.getIdEmpleado());
+                statementHistorialBancoEfectivo.setString(3, "");
+                statementHistorialBancoEfectivo.setString(4, bancoHistorialEfectivo.getDescripcion());
+                statementHistorialBancoEfectivo.setString(5, bancoHistorialEfectivo.getFecha());
+                statementHistorialBancoEfectivo.setString(6, bancoHistorialEfectivo.getHora());
+                statementHistorialBancoEfectivo.setDouble(7, bancoHistorialEfectivo.getEntrada());
+                statementHistorialBancoEfectivo.setDouble(8, bancoHistorialEfectivo.getSalida());
+                statementHistorialBancoEfectivo.addBatch();
+            }
+
+            statementBancoTarjeta = DBUtil.getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial + ? WHERE IdBanco = ?");
+            statementHistorialBancoTarjeta = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdEmpleado,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
+
+            if (bancoHistorialTarjeta != null) {
+                statementBancoTarjeta.setDouble(1, bancoHistorialTarjeta.getSalida());
+                statementBancoTarjeta.setString(2, bancoHistorialTarjeta.getIdBanco());
+                statementBancoTarjeta.addBatch();
+
+                statementHistorialBancoTarjeta.setString(1, bancoHistorialTarjeta.getIdBanco());
+                statementHistorialBancoTarjeta.setString(2, bancoHistorialTarjeta.getIdEmpleado());
+                statementHistorialBancoTarjeta.setString(3, "");
+                statementHistorialBancoTarjeta.setString(4, bancoHistorialTarjeta.getDescripcion());
+                statementHistorialBancoTarjeta.setString(5, bancoHistorialTarjeta.getFecha());
+                statementHistorialBancoTarjeta.setString(6, bancoHistorialTarjeta.getHora());
+                statementHistorialBancoTarjeta.setDouble(7, bancoHistorialTarjeta.getEntrada());
+                statementHistorialBancoTarjeta.setDouble(8, bancoHistorialTarjeta.getSalida());
+                statementHistorialBancoTarjeta.addBatch();
+            }
             statementCaja.executeBatch();
+            statementBancoEfectivo.executeBatch();
+            statementHistorialBancoEfectivo.executeBatch();
+            statementBancoTarjeta.executeBatch();
+            statementHistorialBancoTarjeta.executeBatch();
             DBUtil.getConnection().commit();
             cajaTB = "completed";
         } catch (SQLException ex) {
@@ -352,6 +400,18 @@ public class CajaADO {
             try {
                 if (statementCaja != null) {
                     statementCaja.close();
+                }
+                if (statementBancoEfectivo != null) {
+                    statementBancoEfectivo.close();
+                }
+                if (statementHistorialBancoEfectivo != null) {
+                    statementHistorialBancoEfectivo.close();
+                }
+                if (statementBancoTarjeta != null) {
+                    statementBancoTarjeta.close();
+                }
+                if (statementHistorialBancoTarjeta != null) {
+                    statementHistorialBancoTarjeta.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
