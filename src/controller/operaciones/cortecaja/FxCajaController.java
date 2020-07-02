@@ -81,6 +81,18 @@ public class FxCajaController implements Initializable {
         }
     }
 
+    private void clearElements() {
+        lblTurno.setText("00/00/0000 0:00");
+        lblMontoBase.setText("M 00.00");
+        lblTotalVentas.setText("M 00.00");
+        lblBase.setText("M 0.00");
+        lblVentaEfectivo.setText("M 0.00");
+        lblVentaTarjeta.setText("M 0.00");
+        lblIngresosEfectivo.setText("M 0.00");
+        lblRetirosEfectivo.setText("M 0.00");
+        lblTotal.setText("M 0.00");
+    }
+
     private void onEventCorteCaja() {
 
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
@@ -104,7 +116,10 @@ public class FxCajaController implements Initializable {
                 switch (cajaTB.getId()) {
                     case 1:
                         Tools.AlertMessageWarning(window, "Corte de caja", "No tiene ninguna caja aperturada.");
+                        btnRealizarCorte.setDisable(false);
                         btnTerminarTurno.setDisable(true);
+                        idActual = "";
+                        clearElements();
                         break;
                     case 2:
                         lblTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
@@ -120,6 +135,7 @@ public class FxCajaController implements Initializable {
                         totalTarjeta = arrayList.get(1);
                         lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroCaja, 2));
 
+                        btnRealizarCorte.setDisable(false);
                         btnTerminarTurno.setDisable(false);
                         idActual = cajaTB.getIdCaja();
                         break;
@@ -137,20 +153,25 @@ public class FxCajaController implements Initializable {
                         totalTarjeta = arrayList.get(1);
                         lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroCaja, 2));
 
+                        btnRealizarCorte.setDisable(false);
                         btnTerminarTurno.setDisable(false);
                         idActual = cajaTB.getIdCaja();
                         break;
                     default:
+                        btnRealizarCorte.setDisable(false);
+                        btnTerminarTurno.setDisable(true);
+                        clearElements();
                         break;
                 }
             } else {
                 Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+                btnRealizarCorte.setDisable(false);
                 btnTerminarTurno.setDisable(true);
                 idActual = "";
                 totalDineroCaja = 0;
                 totalTarjeta = 0;
+                clearElements();
             }
-            btnRealizarCorte.setDisable(false);
             lblLoad.setVisible(false);
         });
 
@@ -160,6 +181,7 @@ public class FxCajaController implements Initializable {
             totalDineroCaja = 0;
             totalTarjeta = 0;
             btnRealizarCorte.setDisable(false);
+            btnTerminarTurno.setDisable(true);
             lblLoad.setVisible(false);
         });
 
@@ -168,6 +190,7 @@ public class FxCajaController implements Initializable {
             totalDineroCaja = 0;
             totalTarjeta = 0;
             btnRealizarCorte.setDisable(true);
+            btnTerminarTurno.setDisable(true);
             lblLoad.setVisible(true);
         });
 
@@ -179,11 +202,119 @@ public class FxCajaController implements Initializable {
     }
 
     private void onEventTerminarTurno() {
-        try {
-            if (idActual.equalsIgnoreCase("")) {
-                Tools.AlertMessageWarning(window, "Realizar corte de caja", "No se pudo completar la carga de información, realzar corte de caja de nuevo.");
-                return;
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task< ArrayList<Object>> task = new Task< ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                return CajaADO.ValidarAperturaCajaParaCerrar(Session.USER_ID);
             }
+        };
+
+        task.setOnSucceeded(e -> {
+            ArrayList<Object> objects = task.getValue();
+            if (objects.get(0) != null && objects.get(1) != null) {
+
+                CajaTB cajaTB = (CajaTB) objects.get(0);
+                ArrayList<Double> arrayList = (ArrayList<Double>) objects.get(1);
+                switch (cajaTB.getId()) {
+                    case 1:
+                        Tools.AlertMessageWarning(window, "Corte de caja", "No tiene ninguna caja aperturada.");
+                        btnRealizarCorte.setDisable(false);
+                        btnTerminarTurno.setDisable(true);
+                        idActual = "";
+                        clearElements();
+                        break;
+                    case 2:
+                        lblTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
+                        lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+                        lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+
+                        lblTotalVentas.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+                        lblVentaEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+                        lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
+                        lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
+                        lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
+                        totalDineroCaja = (cajaTB.getContado() + arrayList.get(0) + arrayList.get(2)) - arrayList.get(3);
+                        totalTarjeta = arrayList.get(1);
+                        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroCaja, 2));
+
+                        btnRealizarCorte.setDisable(false);
+                        btnTerminarTurno.setDisable(false);
+                        idActual = cajaTB.getIdCaja();
+                        openWindowRealizarCorte();
+                        break;
+                    case 3:
+                        lblTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
+                        lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+                        lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+
+                        lblTotalVentas.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+                        lblVentaEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+                        lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
+                        lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
+                        lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
+                        totalDineroCaja = (cajaTB.getContado() + arrayList.get(0) + arrayList.get(2)) - arrayList.get(3);
+                        totalTarjeta = arrayList.get(1);
+                        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalDineroCaja, 2));
+
+                        btnRealizarCorte.setDisable(false);
+                        btnTerminarTurno.setDisable(false);
+                        idActual = cajaTB.getIdCaja();
+                        openWindowRealizarCorte();
+                        break;
+                    default:
+                        btnRealizarCorte.setDisable(false);
+                        btnTerminarTurno.setDisable(true);
+                        clearElements();
+                        break;
+                }
+
+            } else {
+                Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+                btnRealizarCorte.setDisable(false);
+                btnTerminarTurno.setDisable(true);
+                idActual = "";
+                totalDineroCaja = 0;
+                totalTarjeta = 0;
+                clearElements();
+            }
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+            idActual = "";
+            totalDineroCaja = 0;
+            totalTarjeta = 0;
+            btnRealizarCorte.setDisable(false);
+            btnTerminarTurno.setDisable(true);
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled(e -> {
+            idActual = "";
+            totalDineroCaja = 0;
+            totalTarjeta = 0;
+            btnRealizarCorte.setDisable(true);
+            btnTerminarTurno.setDisable(true);
+            lblLoad.setVisible(true);
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
+    }
+
+    private void openWindowRealizarCorte() {
+        try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_CAJA_CERRAR_CAJA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -201,7 +332,6 @@ public class FxCajaController implements Initializable {
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
-
     }
 
     @FXML

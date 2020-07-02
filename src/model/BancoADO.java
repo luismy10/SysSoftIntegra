@@ -313,6 +313,7 @@ public class BancoADO {
             ResultSet resultSet = null;
             try {
                 statement = DBUtil.getConnection().prepareStatement("select IdBanco,NombreCuenta from Banco where FormaPago = ? order by HoraCreacion ASC");
+                statement.setShort(1, forma);
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     list.add(new BancoTB(resultSet.getString("IdBanco"), resultSet.getString("NombreCuenta").toUpperCase()));

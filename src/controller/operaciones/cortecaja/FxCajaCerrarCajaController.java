@@ -79,14 +79,14 @@ public class FxCajaCerrarCajaController implements Initializable {
             if (option == 1) {
 
                 BancoHistorialTB bancoHistorialEfectivo = null;
-                if (calculado >=0) {
+                if (calculado >= 0) {
                     bancoHistorialEfectivo = new BancoHistorialTB();
                     bancoHistorialEfectivo.setIdBanco(cbCuentasEfectivo.getSelectionModel().getSelectedItem().getIdBanco());
                     bancoHistorialEfectivo.setIdEmpleado(Session.USER_ID);
-                    bancoHistorialEfectivo.setDescripcion("INGRESO DE DINERO POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME);
+                    bancoHistorialEfectivo.setDescripcion("INGRESO DE DINERO POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME.toUpperCase());
                     bancoHistorialEfectivo.setFecha(Tools.getDate());
                     bancoHistorialEfectivo.setHora(Tools.getHour());
-                    bancoHistorialEfectivo.setEntrada(calculado);
+                    bancoHistorialEfectivo.setEntrada(Double.parseDouble(txtEfectivo.getText()));
                     bancoHistorialEfectivo.setSalida(0);
                 }
 
@@ -94,12 +94,12 @@ public class FxCajaCerrarCajaController implements Initializable {
                 if (valorTarjeta > 0) {
                     bancoHistorialTarjeta = new BancoHistorialTB();
                     bancoHistorialTarjeta.setIdBanco(cbCuentasTarjeta.getSelectionModel().getSelectedItem().getIdBanco());
-                    bancoHistorialTarjeta.setDescripcion("INGRESO DE SALDO EN TARJETA POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME);
-                    bancoHistorialTarjeta.setDescripcion("Salida de dinero por compra");
+                    bancoHistorialTarjeta.setIdEmpleado(Session.USER_ID);
+                    bancoHistorialTarjeta.setDescripcion("INGRESO DE SALDO EN TARJETA POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME.toUpperCase());
                     bancoHistorialTarjeta.setFecha(Tools.getDate());
                     bancoHistorialTarjeta.setHora(Tools.getHour());
-                    bancoHistorialTarjeta.setEntrada(0);
-                    bancoHistorialTarjeta.setSalida(valorTarjeta);
+                    bancoHistorialTarjeta.setEntrada(valorTarjeta);
+                    bancoHistorialTarjeta.setSalida(0);
                 }
 
                 String result = CajaADO.CerrarAperturaCaja(idActual, bancoHistorialEfectivo, bancoHistorialTarjeta, Double.parseDouble(txtEfectivo.getText()), calculado);

@@ -349,7 +349,7 @@ public class CajaADO {
             statementHistorialBancoEfectivo = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdEmpleado,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
 
             if (bancoHistorialEfectivo != null) {
-                statementBancoEfectivo.setDouble(1, bancoHistorialEfectivo.getSalida());
+                statementBancoEfectivo.setDouble(1, bancoHistorialEfectivo.getEntrada());
                 statementBancoEfectivo.setString(2, bancoHistorialEfectivo.getIdBanco());
                 statementBancoEfectivo.addBatch();
 
@@ -368,7 +368,7 @@ public class CajaADO {
             statementHistorialBancoTarjeta = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdEmpleado,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
 
             if (bancoHistorialTarjeta != null) {
-                statementBancoTarjeta.setDouble(1, bancoHistorialTarjeta.getSalida());
+                statementBancoTarjeta.setDouble(1, bancoHistorialTarjeta.getEntrada());
                 statementBancoTarjeta.setString(2, bancoHistorialTarjeta.getIdBanco());
                 statementBancoTarjeta.addBatch();
 

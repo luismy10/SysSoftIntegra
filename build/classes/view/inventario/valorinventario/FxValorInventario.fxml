@@ -168,7 +168,7 @@
                               <TableColumn fx:id="tcDescripcion" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
                               <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo General" />
                               <TableColumn fx:id="tcPrecio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio Venta" />
-                              <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Existencia" />
+                              <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
                               <TableColumn fx:id="tcInventario" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Inv. Min/Max" />
                               <TableColumn fx:id="tcCategoria" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
                               <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />

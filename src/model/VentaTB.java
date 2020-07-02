@@ -33,10 +33,10 @@ public class VentaTB {
     private String observaciones;
     private double efectivo;
     private double vuelto;
+    private double tarjeta;
     private String codigo;
     private ClienteTB clienteTB;
     private MonedaTB monedaTB;
-    private FormaPagoTB formaPagoTB;
     private boolean tipopago;
     
     public VentaTB() {
@@ -257,6 +257,14 @@ public class VentaTB {
         this.vuelto = vuelto;
     }
 
+    public double getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(double tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -279,14 +287,6 @@ public class VentaTB {
 
     public void setMonedaTB(MonedaTB monedaTB) {
         this.monedaTB = monedaTB;
-    }
-    
-    public FormaPagoTB getFormaPagoTB(){
-        return formaPagoTB;
-    }
-    
-    public void setFormaPagoTB(FormaPagoTB formaPagoTB){
-        this.formaPagoTB = formaPagoTB;
     }
 
     public boolean isTipopago() {

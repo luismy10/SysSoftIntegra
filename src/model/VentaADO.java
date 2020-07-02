@@ -17,7 +17,7 @@ import javafx.scene.control.TableView;
 
 public class VentaADO {
 
-    public static String registrarVentaContado(VentaTB ventaTB, ArrayList<FormaPagoTB> formaPagoTBs, TableView<SuministroTB> tvList, int idTipoDocumento) {
+    public static String registrarVentaContado(VentaTB ventaTB, TableView<SuministroTB> tvList, int idTipoDocumento) {
 
         CallableStatement serie_numeracion = null;
         CallableStatement codigoCliente = null;
@@ -30,7 +30,6 @@ public class VentaADO {
         PreparedStatement suministro_update_unidad = null;
         PreparedStatement suministro_update_granel = null;
         PreparedStatement suministro_kardex = null;
-        PreparedStatement forma_pago = null;
         PreparedStatement movimiento_caja = null;
         try {
 
@@ -107,9 +106,10 @@ public class VentaADO {
                     + "           ,Observaciones"
                     + "           ,Efectivo"
                     + "           ,Vuelto"
+                    + "           ,Tarjeta"
                     + "           ,Codigo)\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(IdTipoDocumento,Serie,Numeracion,FechaRegistro)VALUES(?,?,?,?)");
 
@@ -163,7 +163,8 @@ public class VentaADO {
             venta.setString(17, ventaTB.getObservaciones());
             venta.setDouble(18, ventaTB.getEfectivo());
             venta.setDouble(19, ventaTB.getVuelto());
-            venta.setString(20, Integer.toString(dig5) + id_comprabante[1]);
+            venta.setDouble(20, ventaTB.getTarjeta());
+            venta.setString(21, Integer.toString(dig5) + id_comprabante[1]);
             venta.addBatch();
 
             comprobante.setInt(1, idTipoDocumento);
@@ -211,7 +212,7 @@ public class VentaADO {
                 suministro_kardex.setString(3, Tools.getHour());
                 suministro_kardex.setShort(4, (short) 2);
                 suministro_kardex.setInt(5, 1);
-                suministro_kardex.setString(6, "Venta");
+                suministro_kardex.setString(6, "SALIDA POR VENTA");
                 suministro_kardex.setDouble(7,
                         tvList.getItems().get(i).getValorInventario() == 1
                         ? tvList.getItems().get(i).getCantidad()
@@ -223,39 +224,31 @@ public class VentaADO {
 
             }
 
-            forma_pago = DBUtil.getConnection().prepareStatement("INSERT INTO dbo.FormaPagoTB (IdVenta,Nombre,Monto) VALUES(?,?,?)");
             movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto)VALUES(?,?,?,?,?,?)");
 
-            for (FormaPagoTB formaPagoTB : formaPagoTBs) {
-                forma_pago.setString(1, id_venta);
-                forma_pago.setString(2, formaPagoTB.getNombre());
-                forma_pago.setDouble(3, formaPagoTB.getMonto());
-                forma_pago.addBatch();
-
-                if (formaPagoTB.getNombre().equalsIgnoreCase("EFECTIVO")) {
-                    movimiento_caja.setString(1, Session.CAJA_ID);
-                    movimiento_caja.setString(2, ventaTB.getFechaVenta());
-                    movimiento_caja.setString(3, ventaTB.getHoraVenta());
-                    movimiento_caja.setString(4, "VENTA AL CONTADO CON SERIE Y NUMERACIÓN " + id_comprabante[0] + "-" + id_comprabante[1]);
-                    movimiento_caja.setShort(5, (short) 2);
-                    movimiento_caja.setDouble(6, ventaTB.getTotal());
-                    movimiento_caja.addBatch();
-                } else if (formaPagoTB.getNombre().equalsIgnoreCase("TARJETA")) {
-                    movimiento_caja.setString(1, Session.CAJA_ID);
-                    movimiento_caja.setString(2, ventaTB.getFechaVenta());
-                    movimiento_caja.setString(3, ventaTB.getHoraVenta());
-                    movimiento_caja.setString(4, "VENTA CON TAJETA CON SERIE Y NUMERACIÓN " + id_comprabante[0] + "-" + id_comprabante[1]);
-                    movimiento_caja.setShort(5, (short) 3);
-                    movimiento_caja.setDouble(6, ventaTB.getTotal());
-                    movimiento_caja.addBatch();
-                }
-                
+            if (ventaTB.getEfectivo() > 0) {
+                movimiento_caja.setString(1, Session.CAJA_ID);
+                movimiento_caja.setString(2, ventaTB.getFechaVenta());
+                movimiento_caja.setString(3, ventaTB.getHoraVenta());
+                movimiento_caja.setString(4, "VENTA CON EFECTIVO DE SERIE Y NUMERACIÓN DEL COMPROBANTE " + id_comprabante[0] + "-" + id_comprabante[1]);
+                movimiento_caja.setShort(5, (short) 2);
+                movimiento_caja.setDouble(6,ventaTB.getTarjeta() > 0 ? ventaTB.getEfectivo() : ventaTB.getTotal() );
+                movimiento_caja.addBatch();
             }
-            
+
+            if (ventaTB.getTarjeta() > 0) {
+                movimiento_caja.setString(1, Session.CAJA_ID);
+                movimiento_caja.setString(2, ventaTB.getFechaVenta());
+                movimiento_caja.setString(3, ventaTB.getHoraVenta());
+                movimiento_caja.setString(4, "VENTA CON TAJETA DE SERIE Y NUMERACIÓN DEL COMPROBANTE  " + id_comprabante[0] + "-" + id_comprabante[1]);
+                movimiento_caja.setShort(5, (short) 3);
+                movimiento_caja.setDouble(6, ventaTB.getTarjeta());
+                movimiento_caja.addBatch();
+            }
+
             cliente.executeBatch();
             venta.executeBatch();
             movimiento_caja.executeBatch();
-            forma_pago.executeBatch();
             comprobante.executeBatch();
             detalle_venta.executeBatch();
             suministro_update_unidad.executeBatch();
@@ -307,10 +300,6 @@ public class VentaADO {
                 }
                 if (codigo_venta != null) {
                     codigo_venta.close();
-                }
-
-                if (forma_pago != null) {
-                    forma_pago.close();
                 }
                 if (movimiento_caja != null) {
                     movimiento_caja.close();
@@ -426,7 +415,6 @@ public class VentaADO {
         PreparedStatement statementVenta = null;
         PreparedStatement statementCliente = null;
         PreparedStatement statementVentaDetalle = null;
-        PreparedStatement statementFormasPago = null;
 
         ArrayList<Object> objects = new ArrayList<>();
         DBUtil.dbConnect();
@@ -459,6 +447,7 @@ public class VentaADO {
                     ventaTB.setEstadoName(resultSetVenta.getString("Estado"));
                     ventaTB.setEfectivo(resultSetVenta.getDouble("Efectivo"));
                     ventaTB.setVuelto(resultSetVenta.getDouble("Vuelto"));
+                    ventaTB.setTarjeta(resultSetVenta.getDouble("Tarjeta"));
                     ventaTB.setTotal(resultSetVenta.getDouble("Total"));
                     ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
                     //moneda start
@@ -531,18 +520,6 @@ public class VentaADO {
                 }
                 objects.add(empList);
 
-                statementFormasPago = DBUtil.getConnection().prepareStatement("SELECT Nombre, Monto FROM FormaPagotB WHERE IdVenta = ?");
-                statementFormasPago.setString(1, idVenta);
-                ResultSet resulSetFormaPago = statementFormasPago.executeQuery();
-                ArrayList<FormaPagoTB> formaPagoTBs = new ArrayList<>();
-                while (resulSetFormaPago.next()) {
-                    FormaPagoTB formaPagoTB = new FormaPagoTB();
-                    formaPagoTB.setNombre(resulSetFormaPago.getString("Nombre"));
-                    formaPagoTB.setMonto(resulSetFormaPago.getDouble("Monto"));
-                    formaPagoTBs.add(formaPagoTB);
-                }
-                objects.add(formaPagoTBs);
-
             } catch (SQLException e) {
                 System.out.println("ListCompletaVentasDetalle() La operación de selección de SQL ha fallado: " + e.getLocalizedMessage());
             } finally {
@@ -555,9 +532,6 @@ public class VentaADO {
                     }
                     if (statementVentaDetalle != null) {
                         statementVentaDetalle.close();
-                    }
-                    if (statementFormasPago != null) {
-                        statementFormasPago.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {

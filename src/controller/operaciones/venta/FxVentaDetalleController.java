@@ -37,12 +37,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EmpleadoTB;
-import model.FormaPagoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.SuministroTB;
@@ -90,10 +87,6 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Text lblValorVentaLetra;
     @FXML
-    private VBox vbMetodoPago;
-    @FXML
-    private VBox vbValor;
-    @FXML
     private GridPane gpOperaciones;
     @FXML
     private GridPane gpImpuestos;
@@ -103,6 +96,14 @@ public class FxVentaDetalleController implements Initializable {
     private Button btnImprimir;
     @FXML
     private Button btnAbonos;
+    @FXML
+    private Label lblEfectivo;
+    @FXML
+    private Label lblTarjeta;
+    @FXML
+    private Label lblVuelto;
+    @FXML
+    private Label lblValor;
 
     private AnchorPane windowinit;
 
@@ -140,7 +141,7 @@ public class FxVentaDetalleController implements Initializable {
 
     private double totalVenta;
 
-    private double efectivo, vuelto;
+    private double efectivo, tarjeta, vuelto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -192,7 +193,6 @@ public class FxVentaDetalleController implements Initializable {
                     ventaTB = (VentaTB) objects.get(0);
                     EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
-                    ArrayList<FormaPagoTB> formaPagoTBs = (ArrayList<FormaPagoTB>) objects.get(3);
                     if (ventaTB != null) {
                         lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
                         lblCliente.setText(ventaTB.getClienteTB().getInformacion());
@@ -203,20 +203,22 @@ public class FxVentaDetalleController implements Initializable {
                         btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
                         lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
                         efectivo = ventaTB.getEfectivo();
+                        tarjeta = ventaTB.getTarjeta();
                         vuelto = ventaTB.getVuelto();
                         totalVenta = ventaTB.getTotal();
                         lblValorVentaLetra.setText(monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
+
+                        lblEfectivo.setText(Tools.roundingValue(efectivo, 2));
+                        lblTarjeta.setText(Tools.roundingValue(tarjeta, 2));
+                        lblValor.setText(Tools.roundingValue(totalVenta, 2));
+                        lblVuelto.setText(Tools.roundingValue(vuelto, 2));
                     }
 
                     if (empleadoTB != null) {
                         lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
                     }
                     fillVentasDetalleTable(empList);
-                    formaPagoTBs.forEach(em -> {
-                        addElementMetodoPago(em.getNombre());
-                        addElementValor(Tools.roundingValue(em.getMonto(), 2));
 
-                    });
                 } else {
                     btnReporte.setDisable(true);
                     btnCancelarVenta.setDisable(true);
@@ -385,20 +387,6 @@ public class FxVentaDetalleController implements Initializable {
         return label;
     }
 
-    private void addElementMetodoPago(String nombre) {
-        Text text = new Text(nombre);
-        text.setFill(Color.web("#1a2226"));
-        text.getStyleClass().add("labelOpenSansRegular16");
-        vbMetodoPago.getChildren().add(text);
-    }
-
-    private void addElementValor(String monto) {
-        Text text = new Text(monto);
-        text.setFill(Color.web("#1a2226"));
-        text.getStyleClass().add("labelOpenSansRegular16");
-        vbValor.getChildren().add(text);
-    }
-
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#000000;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
@@ -539,14 +527,15 @@ public class FxVentaDetalleController implements Initializable {
     }
 
     private void onEventimprimirVenta() {
-//        if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
-//            Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
-//            return;
-//        }
-//        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA == null) {
-//            Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
-//            return;
-//        }
+        if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
+            Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+            return;
+        }
+        
+        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA == null) {
+            Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
+            return;
+        }
 
         billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 

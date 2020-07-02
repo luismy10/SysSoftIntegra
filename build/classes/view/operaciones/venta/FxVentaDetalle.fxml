@@ -178,26 +178,33 @@
                                  <children>
                                     <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <VBox>
+                                          <GridPane style="-fx-vgap: 0.8333333333333334em; -fx-hgap: 0.8333333333333334em;">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="36.0" minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
                                              <children>
-                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago">
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </Text>
-                                                <VBox fx:id="vbMetodoPago" />
+                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago" />
+                                                <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold14" text="Valor" textFill="#020203" GridPane.columnIndex="1" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Efectivo" textFill="#1a2226" GridPane.rowIndex="1" />
+                                                <Label fx:id="lblEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Tarjeta" textFill="#1a2226" GridPane.rowIndex="2" />
+                                                <Label fx:id="lblTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Vuelto" textFill="#0673b1" GridPane.rowIndex="5" />
+                                                <Label fx:id="lblVuelto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#0673b1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Total" textFill="#1a2226" GridPane.rowIndex="3" />
+                                                <Label fx:id="lblValor" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Separator GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                              </children>
-                                          </VBox>
-                                          <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0">
-                                             <children>
-                                                <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Valor">
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </Text>
-                                                <VBox fx:id="vbValor" />
-                                             </children>
-                                          </VBox>
+                                          </GridPane>
                                        </children>
                                     </HBox>
                                  </children>

@@ -30,7 +30,6 @@ public class FxVentaMovimientoController implements Initializable {
     private TextField txtComentario;
     @FXML
     private Button btnEjecutar;
-        
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,7 +48,12 @@ public class FxVentaMovimientoController implements Initializable {
             Tools.AlertMessageWarning(window, "Ventas", "Ingrese un comentario.");
             txtComentario.requestFocus();
         } else {
-             ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            
+            short opcion = Tools.AlertMessageConfirmation(window, "Ventas", "¿Está seguto de continuar?");
+            
+            if (opcion == 1) {
+
+                ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
                     Thread t = new Thread(runnable);
                     t.setDaemon(true);
                     return t;
@@ -62,9 +66,9 @@ public class FxVentaMovimientoController implements Initializable {
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
                         movimientoCajaTB.setHoraMovimiento(Tools.getHour());
                         movimientoCajaTB.setComentario(txtComentario.getText().toUpperCase().trim());
-                        movimientoCajaTB.setTipoMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex()==0 ? (short) 4:(short) 5);
-                        movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));                        
-                        return VentaADO.movimientoCaja( movimientoCajaTB);
+                        movimientoCajaTB.setTipoMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex() == 0 ? (short) 4 : (short) 5);
+                        movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));
+                        return VentaADO.movimientoCaja(movimientoCajaTB);
                     }
                 };
 
@@ -91,6 +95,7 @@ public class FxVentaMovimientoController implements Initializable {
                 if (!exec.isShutdown()) {
                     exec.shutdown();
                 }
+            }
         }
     }
 
@@ -147,6 +152,5 @@ public class FxVentaMovimientoController implements Initializable {
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
     }
-
 
 }

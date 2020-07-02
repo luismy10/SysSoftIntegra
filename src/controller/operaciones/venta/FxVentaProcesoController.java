@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.CuentasClienteTB;
-import model.FormaPagoTB;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaTB;
@@ -120,25 +119,19 @@ public class FxVentaProcesoController implements Initializable {
             } else {
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
-                ventaTB.setEfectivo(Tools.isNumeric(txtEfectivo.getText()) ? Double.parseDouble(txtEfectivo.getText()) : 0);
                 ventaTB.setVuelto(vuelto);
-                ventaTB.setObservaciones(txtObservacion.getText().trim());
-                ArrayList<FormaPagoTB> formaPagoTBs = new ArrayList();
-
+                ventaTB.setObservaciones(txtObservacion.getText().trim());                
+                
+                ventaTB.setEfectivo(0);
+                ventaTB.setTarjeta(0);
+                
                 if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
-                    FormaPagoTB formaPagoTB = new FormaPagoTB();
-                    formaPagoTB.setNombre("EFECTIVO");
-                    formaPagoTB.setMonto(Double.parseDouble(txtEfectivo.getText()));
-                    formaPagoTBs.add(formaPagoTB);
+                    ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
                 }
 
                 if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
-                    FormaPagoTB formaPagoTB = new FormaPagoTB();
-                    formaPagoTB.setNombre("TARJETA");
-                    formaPagoTB.setMonto(Double.parseDouble(txtTarjeta.getText()));
-                    formaPagoTBs.add(formaPagoTB);
+                    ventaTB.setTarjeta(Double.parseDouble(txtTarjeta.getText()));
                 }
-
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
                     if ((Double.parseDouble(txtEfectivo.getText())) >= tota_venta) {
@@ -160,19 +153,17 @@ public class FxVentaProcesoController implements Initializable {
                     }
                 }
 
-    
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
                     String result[] = VentaADO.registrarVentaContado(
                             ventaTB,
-                            formaPagoTBs,
-                            tvList, 
+                            tvList,
                             ventaEstructuraController.getIdTipoComprobante()).split("/");
                     switch (result[0]) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                ventaEstructuraController.imprimirVenta(result[1],result[2],txtEfectivo.getText(),Tools.roundingValue(vuelto, 2));                              
+                                ventaEstructuraController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2));
                                 Tools.Dispose(window);
                             } else {
                                 ventaEstructuraController.resetVenta();
