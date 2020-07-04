@@ -1,28 +1,16 @@
 package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfWriter;
-import controller.menus.FxInicioController;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -36,10 +24,29 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.HashPrintServiceAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.PrintServiceAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.PrinterName;
 import model.ImageADO;
 import model.ImagenTB;
 import model.SuministroTB;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignBand;
+import net.sf.jasperreports.engine.design.JRDesignExpression;
+import net.sf.jasperreports.engine.design.JRDesignImage;
+import net.sf.jasperreports.engine.design.JRDesignStaticText;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import net.sf.jasperreports.engine.type.ScaleImageEnum;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -51,7 +58,7 @@ public class BillPrintable {
 
     public BillPrintable() {
         sheetWidth = 0;
-        pointWidth = 7.825;
+        pointWidth = 5.20;
     }
 
     public void hbEncebezado(HBox box, String nombreTicketImpresion, String ticket, String numCliente, String infoCliente, String codigoVenta) {
@@ -265,40 +272,119 @@ public class BillPrintable {
     }
 
     public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie, String nombreImpresora, boolean cortar) {
+
         try {
-            Document document = new Document();
-
-            FontFactory.register(getClass().getResource("/view/style/Monospace.ttf").toString(), "Monospace");
-            com.itextpdf.text.Font f = FontFactory.getFont("Monospace", 11, BaseColor.BLACK);
-
-            PdfWriter.getInstance(document, new FileOutputStream("./archivos/TicketVenta.pdf"));
-            document.setPageSize(new Rectangle((float) (sheetWidth * 6.825), 2000));
-            document.setMargins(4, 4, 4, 4);
-
-            document.open();
-
-            document.addTitle("Formato de ticket");
-            document.addSubject("Usando IText PDF");
-            document.addKeywords("Java, PDF, iText");
-            document.addAuthor("SysSoft Integra");
-            document.addCreator("Sistemas y más");
-
-            createRowPDF(apEncabezado, document, f);
-            createRowPDF(apDetalle, document, f);
-            createRowPDF(apPie, document, f);
-
-            document.close();
-        } catch (FileNotFoundException | DocumentException ex) {
-            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            //printDocPDF("./archivos/TicketVenta.pdf",nombreImpresora, cortar);
+            int width = (int) Math.ceil(sheetWidth * pointWidth);
+            Map param = new HashMap();
+            JasperDesign jasperDesign = getJasperDesign(width, apEncabezado, apDetalle, apPie);
+            JasperReport report = JasperCompileManager.compileReport(jasperDesign);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
+//            JasperExportManager.exportReportToPdfFile(jasperPrint, destFileNamePdf);
+            PrintReportToPrinter(jasperPrint, nombreImpresora,cortar);
+        } catch (JRException er) {
+            System.out.println(er.getMessage());
+        } catch (PrintException | IOException ex) {
+            Tools.AlertMessageError(null, "Ticket", "Error en imprimir: "+ex.getLocalizedMessage());
         }
+//        try {
+//            Document document = new Document();
+//
+//            FontFactory.register(getClass().getResource("/view/style/Monospace.ttf").toString(), "Monospace");
+//            com.itextpdf.text.Font f = FontFactory.getFont("Monospace", 11, BaseColor.BLACK);
+//
+//            PdfWriter.getInstance(document, new FileOutputStream("./archivos/TicketVenta.pdf"));
+//            document.setPageSize(new Rectangle((float) (sheetWidth * 6.825), 2000));
+//            document.setMargins(4, 4, 4, 4);
+//
+//            document.open();
+//
+//            document.addTitle("Formato de ticket");
+//            document.addSubject("Usando IText PDF");
+//            document.addKeywords("Java, PDF, iText");
+//            document.addAuthor("SysSoft Integra");
+//            document.addCreator("Sistemas y más");
+//
+//            createRowPDF(apEncabezado, document, f);
+//            createRowPDF(apDetalle, document, f);
+//            createRowPDF(apPie, document, f);
+//
+//            document.close();
+//        } catch (FileNotFoundException | DocumentException ex) {
+//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            //printDocPDF("./archivos/TicketVenta.pdf",nombreImpresora, cortar);
+//        }
+        
+
+//        try {
+//            Document document = new Document();
+//
+//            FontFactory.register(getClass().getResource("/view/style/Monospace.ttf").toString(), "Monospace");
+//            com.itextpdf.text.Font f = FontFactory.getFont("Monospace", 11, BaseColor.BLACK);
+//
+//            PdfWriter.getInstance(document, new FileOutputStream("./archivos/TicketVenta.pdf"));
+//            document.setPageSize(new Rectangle((float) (sheetWidth * 6.825), 2000));
+//            document.setMargins(4, 4, 4, 4);
+//
+//            document.open();
+//
+//            document.addTitle("Formato de ticket");
+//            document.addSubject("Usando IText PDF");
+//            document.addKeywords("Java, PDF, iText");
+//            document.addAuthor("SysSoft Integra");
+//            document.addCreator("Sistemas y más");
+//
+//            createRowPDF(apEncabezado, document, f);
+//            createRowPDF(apDetalle, document, f);
+//            createRowPDF(apPie, document, f);
+//
+//            document.close();
+//        } catch (FileNotFoundException | DocumentException ex) {
+//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            //printDocPDF("./archivos/TicketVenta.pdf",nombreImpresora, cortar);
+//        }
     }
 
-    private void createRowPDF(AnchorPane anchorPane, Document document, com.itextpdf.text.Font f) throws DocumentException, BadElementException, IOException {
+    private JasperDesign getJasperDesign(int width, AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
+        JasperDesign jasperDesign = new JasperDesign();
+        jasperDesign.setName("Formato de ticket");
+        jasperDesign.setPageWidth(width);
+        jasperDesign.setPageHeight(2000);
+        jasperDesign.setColumnWidth(width);
+        jasperDesign.setColumnSpacing(0);
+        jasperDesign.setLeftMargin(0);
+        jasperDesign.setRightMargin(0);
+        jasperDesign.setTopMargin(0);
+        jasperDesign.setBottomMargin(0);
+
+//        JRDesignStyle normalStyle = new JRDesignStyle();
+//        normalStyle.setName("Consolas");
+//        normalStyle.setDefault(true);
+//        // normalStyle.setFontName("Monospace");
+//        normalStyle.setPdfFontName("src/view/style/Consolas.ttf");
+//        normalStyle.setPdfEncoding("Identity-H");
+//        normalStyle.setPdfEmbedded(true);
+//        jasperDesign.addStyle(normalStyle);
+        JRDesignBand band = new JRDesignBand();
+        band.setHeight(2000);
+
+        int rows = 0;
+        rows += createRow(apEncabezado, jasperDesign, band, width, rows);
+        rows = createRow(apDetalle, jasperDesign, band, width, rows);
+        createRow(pPie, jasperDesign, band, width, rows);
+
+        jasperDesign.setTitle(band);
+        return jasperDesign;
+    }
+
+    private int createRow(AnchorPane anchorPane, JasperDesign jasperDesign, JRDesignBand band, int width, int rows) {
         for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+
             HBox box = ((HBox) anchorPane.getChildren().get(i));
             StringBuilder result = new StringBuilder();
 
@@ -387,9 +473,16 @@ public class BillPrintable {
                     }
                 }
 
-                Paragraph t1 = new Paragraph(result.toString(), f);
-                t1.setAlignment(Element.ALIGN_LEFT);
-                document.add(t1);
+                JRDesignStaticText staticText = new JRDesignStaticText();
+                staticText.setX(0);
+                staticText.setY(rows);
+                staticText.setWidth(width);
+                staticText.setHeight(15);
+                staticText.setFontSize(9f);
+                staticText.setFontName("Consola");
+                staticText.setText(result.toString());
+                band.addElement(staticText);
+                rows += 15;
             } else {
 
                 if (box.getChildren().get(0) instanceof TextFieldTicket) {
@@ -473,21 +566,77 @@ public class BillPrintable {
                         }
                     }
 
-                    Paragraph t1 = new Paragraph(result.toString(), f);
-                    t1.setAlignment(Element.ALIGN_LEFT);
-                    document.add(t1);
+                    JRDesignStaticText staticText = new JRDesignStaticText();
+                    staticText.setX(0);
+                    staticText.setY(rows);
+                    staticText.setWidth(width);
+                    staticText.setHeight(15);
+                    staticText.setFontSize(9f);
+                    staticText.setFontName("Consola");
+                    staticText.setText(result.toString());
+                    band.addElement(staticText);
+                    rows += 15;
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
-                    Image image = Image.getInstance(imageView.getUrl());
-                    image.setAlignment(
-                            box.getAlignment() == Pos.CENTER_LEFT ? Element.ALIGN_LEFT
-                            : box.getAlignment() == Pos.CENTER ? Element.ALIGN_CENTER
-                            : box.getAlignment() == Pos.CENTER_RIGHT ? Element.ALIGN_RIGHT : Element.ALIGN_LEFT);
-                    image.scaleAbsolute((float) imageView.getFitWidth(), (float) imageView.getFitHeight());
-                    document.add(image);
+
+                    JRDesignImage image = new JRDesignImage(jasperDesign);
+                    image.setX(
+                            box.getAlignment() == Pos.CENTER_LEFT ? 0
+                            : box.getAlignment() == Pos.CENTER
+                            ? (int) (width - imageView.getFitWidth()) / 2
+                            : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0
+                    );
+                    image.setY(rows);
+                    image.setWidth((int) imageView.getFitWidth());
+                    image.setHeight((int) imageView.getFitHeight());
+                    image.setScaleImage(ScaleImageEnum.FILL_FRAME);
+                    JRDesignExpression expr = new JRDesignExpression();
+                    expr.setText("\"" + "./archivos/logo.jpg" + "\"");
+                    image.setExpression(expr);
+                    band.addElement(image);
+                    rows += imageView.getFitHeight();
                 }
             }
         }
+        return rows;
+    }
+
+    private void PrintReportToPrinter(JasperPrint jp, String printName,boolean cortar) throws JRException, PrintException, IOException {
+        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+        printRequestAttributeSet.add(new Copies(1));
+
+        PrinterName printerName = new PrinterName(printName, null); //gets printer 
+
+        PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
+        printServiceAttributeSet.add(printerName);
+
+        JRPrintServiceExporter exporter = new JRPrintServiceExporter();
+
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
+        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
+        exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+        exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+        exporter.exportReport();
+        printString(printName,cortar);
+    }
+
+    public void printString(String printerName, boolean cortar) throws PrintException, IOException {
+        DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+        PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+        PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
+        PrintService service = findPrintService(printerName, printService);
+        DocPrintJob job = service.createPrintJob();
+        byte[] bytes = "\n\n\n".getBytes("CP437");
+        byte[] cutP = new byte[]{0x1d, 'V', 1};
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        outputStream.write(bytes);
+        if (cortar) {
+            outputStream.write(cutP);
+        }
+        byte c[] = outputStream.toByteArray();
+        Doc doc = new SimpleDoc(c, flavor, null);
+        job.print(doc, null);
     }
 
     private void printDoc(String ruta, String nombreimpresora, boolean cortar) {
@@ -502,44 +651,6 @@ public class BillPrintable {
                 return;
             }
             DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-            PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-            PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
-            PrintService service = findPrintService(nombreimpresora, printService);
-            DocPrintJob job = service.createPrintJob();
-
-            byte[] bytes = readFileToByteArray(file);
-            byte[] cutP = new byte[]{0x1d, 'V', 1};
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            outputStream.write(bytes);
-            if (cortar) {
-                outputStream.write(cutP);
-            }
-            byte c[] = outputStream.toByteArray();
-            Doc doc = new SimpleDoc(c, flavor, null);
-            job.print(doc, null);
-        } catch (IOException | PrintException e) {
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException ex) {
-                }
-            }
-        }
-    }
-
-    private void printDocPDF(String ruta, String nombreimpresora, boolean cortar) {
-        File file = new File(ruta);
-        FileInputStream inputStream = null;
-        try {
-            try {
-                inputStream = new FileInputStream(file);
-            } catch (FileNotFoundException ex) {
-            }
-            if (inputStream == null) {
-                return;
-            }
-            DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
             PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
             PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
             PrintService service = findPrintService(nombreimpresora, printService);

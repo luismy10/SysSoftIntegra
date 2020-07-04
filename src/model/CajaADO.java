@@ -11,6 +11,8 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 public class CajaADO {
 
@@ -122,7 +124,7 @@ public class CajaADO {
                         cajaTB = new CajaTB();
                         cajaTB.setId(2);
                         cajaTB.setIdCaja(resultSet.getString("IdCaja"));
-                        cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                        cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                         cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
                     }
                 } else {
@@ -133,7 +135,7 @@ public class CajaADO {
                         cajaTB = new CajaTB();
                         cajaTB.setId(3);
                         cajaTB.setIdCaja(resultSet.getString("IdCaja"));
-                        cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                        cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                         cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
                     }
                 }
@@ -177,7 +179,7 @@ public class CajaADO {
                             cajaTB = new CajaTB();
                             cajaTB.setId(2);
                             cajaTB.setIdCaja(resultSet.getString("IdCaja"));
-                            cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                            cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                             cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
 
                             statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
@@ -240,7 +242,7 @@ public class CajaADO {
                             cajaTB = new CajaTB();
                             cajaTB.setId(3);
                             cajaTB.setIdCaja(resultSet.getString("IdCaja"));
-                            cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                            cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                             cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
 
                             statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
@@ -318,6 +320,115 @@ public class CajaADO {
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
                 System.out.println("Error en caja:" + ex.getLocalizedMessage());
+            }
+        }
+        return objects;
+    }
+
+    public static ArrayList<Object> ListarMovimientoPorById(String idCaja) {
+        PreparedStatement statementValidar = null;
+        PreparedStatement statementMovimiento = null;
+        PreparedStatement statementMovimientoBase = null;
+
+        CajaTB cajaTB = null;
+        ArrayList<Double> arrayTotales = null;
+        ArrayList<MovimientoCajaTB> arratyLista = null;
+        ArrayList<Object> objects = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja,FechaApertura,HoraApertura FROM CajaTB WHERE IdCaja = ?");
+            statementValidar.setString(1, idCaja);
+            try (ResultSet resultSet = statementValidar.executeQuery()) {
+                if (resultSet.next()) {
+                    cajaTB = new CajaTB();
+                    cajaTB.setIdCaja(resultSet.getString("IdCaja"));
+                    cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
+
+                    statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
+                    statementMovimientoBase.setString(1, cajaTB.getIdCaja());
+                    try (ResultSet setMovimientoBase = statementMovimientoBase.executeQuery()) {
+                        if (setMovimientoBase.next()) {
+                            cajaTB.setContado(setMovimientoBase.getDouble("Monto"));
+                        }
+                    }
+
+                    arrayTotales = new ArrayList();
+
+                    statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT SUM(Monto) AS VentaEfectivo FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 2");
+                    statementMovimientoBase.setString(1, cajaTB.getIdCaja());
+                    try (ResultSet setMovimientoBase = statementMovimientoBase.executeQuery()) {
+                        if (setMovimientoBase.next()) {
+                            arrayTotales.add(setMovimientoBase.getDouble("VentaEfectivo"));
+                        } else {
+                            arrayTotales.add(0.00);
+                        }
+                    }
+
+                    statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT SUM(Monto) AS VentaTarjeta FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 3");
+                    statementMovimientoBase.setString(1, cajaTB.getIdCaja());
+                    try (ResultSet setMovimientoBase = statementMovimientoBase.executeQuery()) {
+                        if (setMovimientoBase.next()) {
+                            arrayTotales.add(setMovimientoBase.getDouble("VentaTarjeta"));
+                        } else {
+                            arrayTotales.add(0.00);
+                        }
+                    }
+
+                    statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT SUM(Monto) AS Ingresos  FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 4");
+                    statementMovimientoBase.setString(1, cajaTB.getIdCaja());
+                    try (ResultSet setMovimientoBase = statementMovimientoBase.executeQuery()) {
+                        if (setMovimientoBase.next()) {
+                            arrayTotales.add(setMovimientoBase.getDouble("Ingresos"));
+                        } else {
+                            arrayTotales.add(0.00);
+                        }
+                    }
+
+                    statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT SUM(Monto) AS Salidas  FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 5");
+                    statementMovimientoBase.setString(1, cajaTB.getIdCaja());
+                    try (ResultSet setMovimientoBase = statementMovimientoBase.executeQuery()) {
+                        if (setMovimientoBase.next()) {
+                            arrayTotales.add(setMovimientoBase.getDouble("Salidas"));
+                        } else {
+                            arrayTotales.add(0.00);
+                        }
+                    }
+
+                }
+
+                arratyLista = new ArrayList<>();
+
+                statementMovimiento = DBUtil.getConnection().prepareStatement("select * from MovimientoCajaTB where IdCaja = ?");
+                statementMovimiento.setString(1, idCaja);
+                try (ResultSet resultSetMovimiento = statementMovimiento.executeQuery()) {
+                    while (resultSetMovimiento.next()) {
+                        MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
+                        movimientoCajaTB.setId(resultSetMovimiento.getRow());
+                        movimientoCajaTB.setFechaMovimiento(resultSetMovimiento.getDate("FechaMovimiento").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                        movimientoCajaTB.setHoraMovimiento(resultSetMovimiento.getTime("HoraMovimiento").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
+                        movimientoCajaTB.setComentario(resultSetMovimiento.getString("Comentario"));
+                        movimientoCajaTB.setTipoMovimiento(resultSetMovimiento.getShort("TipoMovimiento"));
+                        movimientoCajaTB.setMonto(resultSetMovimiento.getDouble("Monto"));
+                        arratyLista.add(movimientoCajaTB);
+                    }
+                }
+
+            }
+            objects.add(cajaTB);
+            objects.add(arrayTotales);
+            objects.add(arratyLista);
+
+        } catch (SQLException ex) {
+            System.out.println("Error en cajaADO: " + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (statementMovimiento != null) {
+                    statementMovimiento.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
             }
         }
         return objects;
@@ -443,6 +554,10 @@ public class CajaADO {
                 cajaTB.setCalculado(result.getDouble("Calculado"));
                 cajaTB.setDiferencia(result.getDouble("Diferencia"));
                 cajaTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
+                Label label = new Label(cajaTB.isEstado()? "APERTURADO":"CERRADO");
+                label.getStyleClass().add("labelRoboto14");
+                label.setTextFill(Color.web(cajaTB.isEstado()?"#016e29":"#1a2226"));
+                cajaTB.setLabelEstado(label);
                 empList.add(cajaTB);
             }
         } catch (SQLException ex) {

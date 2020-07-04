@@ -105,19 +105,68 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label styleClass="labelRobotoBold16" text="Dinero recibido:" textFill="#1a2226" />
-                                    <Label styleClass="labelOpenSansRegular16" text="Ventas en efectivo" textFill="#1a2226" GridPane.rowIndex="2" />
-                                    <Label styleClass="labelOpenSansRegular16" text="Ventas con tarjera" textFill="#1a2226" GridPane.rowIndex="3" />
-                                    <Label styleClass="labelOpenSansRegular16" text="Ingresos de efectivo" textFill="#016e29" GridPane.rowIndex="4" />
-                                    <Label styleClass="labelOpenSansRegular16" text="Retiros de efectivo" textFill="#e42c0f" GridPane.rowIndex="5" />
-                                    <Label styleClass="labelRobotoBold16" text="Total" textFill="#1a2226" GridPane.rowIndex="7" />
+                                    <Label styleClass="labelRobotoBold16" text="Dinero recibido:" textFill="#1a2226">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/vieja_caja_registradora_.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
+                                    <Label styleClass="labelOpenSansRegular16" text="Ventas en efectivo" textFill="#1a2226" GridPane.rowIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
+                                    <Label styleClass="labelOpenSansRegular16" text="Ventas con tarjera" textFill="#1a2226" GridPane.rowIndex="3">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
+                                    <Label styleClass="labelOpenSansRegular16" text="Ingresos de efectivo" textFill="#016e29" GridPane.rowIndex="4">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
+                                    <Label styleClass="labelOpenSansRegular16" text="Salidas de efectivo" textFill="#e42c0f" GridPane.rowIndex="5">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
+                                    <Label styleClass="labelRobotoBold16" text="Total" textFill="#1a2226" GridPane.rowIndex="7">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/moneda.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
                                     <Label fx:id="lblTotal" alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                     <Label fx:id="lblBase" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#025a9d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label fx:id="lblVentaEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label fx:id="lblVentaTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Label fx:id="lblIngresosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#016e29" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                     <Label fx:id="lblRetirosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#e42c0f" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label styleClass="labelOpenSansRegular16" text="Base" textFill="#025a9d" GridPane.rowIndex="1" />
+                                    <Label styleClass="labelOpenSansRegular16" text="Base" textFill="#025a9d" GridPane.rowIndex="1">
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
                                     <Separator GridPane.rowIndex="6" />
                                     <Separator GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                  </children>

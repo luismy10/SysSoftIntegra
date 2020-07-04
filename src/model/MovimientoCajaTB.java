@@ -4,6 +4,7 @@ package model;
 
 public class MovimientoCajaTB {
     
+    private int id;
     private int idMovimientoCaja;
     private String idCaja;
     private String fechaMovimiento;
@@ -14,6 +15,14 @@ public class MovimientoCajaTB {
     
     public MovimientoCajaTB(){
         
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdMovimientoCaja() {

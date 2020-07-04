@@ -48,6 +48,8 @@ public class FxCajaCerrarCajaController implements Initializable {
     private double calculado;
 
     private double valorTarjeta;
+    
+    private AnchorPane vbPrincipal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -105,7 +107,7 @@ public class FxCajaCerrarCajaController implements Initializable {
                 String result = CajaADO.CerrarAperturaCaja(idActual, bancoHistorialEfectivo, bancoHistorialTarjeta, Double.parseDouble(txtEfectivo.getText()), calculado);
                 if (result.equalsIgnoreCase("completed")) {
                     Tools.AlertMessageInformation(window, "Corte de caja", "Se cerro correctamente la caja.");
-                    Tools.Dispose(window);
+                    Tools.Dispose(vbPrincipal);
 
                     URL urllogin = getClass().getResource(FilesRouters.FX_LOGIN);
                     FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
@@ -150,6 +152,10 @@ public class FxCajaCerrarCajaController implements Initializable {
         if (c == '.' && txtEfectivo.getText().contains(".")) {
             event.consume();
         }
+    }
+
+    void setInitCerrarCajaController(AnchorPane vbPrincipal) {
+        this.vbPrincipal=vbPrincipal;
     }
 
 }

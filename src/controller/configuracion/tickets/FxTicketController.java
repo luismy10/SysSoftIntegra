@@ -104,7 +104,7 @@ public class FxTicketController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        pointWidth = 7.825;
+        pointWidth = 8.20;
         sheetWidth = 0;
         cbAlignment.getItems().add(Pos.CENTER_LEFT);
         cbAlignment.getItems().add(Pos.CENTER);
