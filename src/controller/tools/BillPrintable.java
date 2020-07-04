@@ -36,6 +36,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -157,7 +158,6 @@ public class BillPrintable {
 
     @Deprecated
     private void modelTicket(Node window, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent, String nombreimpresora, boolean cortar) {
-
         int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
@@ -270,84 +270,19 @@ public class BillPrintable {
             Tools.AlertMessageError(window, messageClassTitle, messageClassContent + " " + e.getLocalizedMessage());
         }
     }
-
+              
     public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie, String nombreImpresora, boolean cortar) {
-
         try {
             int width = (int) Math.ceil(sheetWidth * pointWidth);
             Map param = new HashMap();
             JasperDesign jasperDesign = getJasperDesign(width, apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-//            JasperExportManager.exportReportToPdfFile(jasperPrint, destFileNamePdf);
-            PrintReportToPrinter(jasperPrint, nombreImpresora,cortar);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/Ticket.pdf");
+//            PrintReportToPrinter(jasperPrint, nombreImpresora,cortar);
         } catch (JRException er) {
-            System.out.println(er.getMessage());
-        } catch (PrintException | IOException ex) {
-            Tools.AlertMessageError(null, "Ticket", "Error en imprimir: "+ex.getLocalizedMessage());
+            Tools.AlertMessageError(null, "Ticket", "Error en imprimir: "+er.getLocalizedMessage());
         }
-//        try {
-//            Document document = new Document();
-//
-//            FontFactory.register(getClass().getResource("/view/style/Monospace.ttf").toString(), "Monospace");
-//            com.itextpdf.text.Font f = FontFactory.getFont("Monospace", 11, BaseColor.BLACK);
-//
-//            PdfWriter.getInstance(document, new FileOutputStream("./archivos/TicketVenta.pdf"));
-//            document.setPageSize(new Rectangle((float) (sheetWidth * 6.825), 2000));
-//            document.setMargins(4, 4, 4, 4);
-//
-//            document.open();
-//
-//            document.addTitle("Formato de ticket");
-//            document.addSubject("Usando IText PDF");
-//            document.addKeywords("Java, PDF, iText");
-//            document.addAuthor("SysSoft Integra");
-//            document.addCreator("Sistemas y más");
-//
-//            createRowPDF(apEncabezado, document, f);
-//            createRowPDF(apDetalle, document, f);
-//            createRowPDF(apPie, document, f);
-//
-//            document.close();
-//        } catch (FileNotFoundException | DocumentException ex) {
-//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            //printDocPDF("./archivos/TicketVenta.pdf",nombreImpresora, cortar);
-//        }
-        
-
-//        try {
-//            Document document = new Document();
-//
-//            FontFactory.register(getClass().getResource("/view/style/Monospace.ttf").toString(), "Monospace");
-//            com.itextpdf.text.Font f = FontFactory.getFont("Monospace", 11, BaseColor.BLACK);
-//
-//            PdfWriter.getInstance(document, new FileOutputStream("./archivos/TicketVenta.pdf"));
-//            document.setPageSize(new Rectangle((float) (sheetWidth * 6.825), 2000));
-//            document.setMargins(4, 4, 4, 4);
-//
-//            document.open();
-//
-//            document.addTitle("Formato de ticket");
-//            document.addSubject("Usando IText PDF");
-//            document.addKeywords("Java, PDF, iText");
-//            document.addAuthor("SysSoft Integra");
-//            document.addCreator("Sistemas y más");
-//
-//            createRowPDF(apEncabezado, document, f);
-//            createRowPDF(apDetalle, document, f);
-//            createRowPDF(apPie, document, f);
-//
-//            document.close();
-//        } catch (FileNotFoundException | DocumentException ex) {
-//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(FxInicioController.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            //printDocPDF("./archivos/TicketVenta.pdf",nombreImpresora, cortar);
-//        }
     }
 
     private JasperDesign getJasperDesign(int width, AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
@@ -509,7 +444,6 @@ public class BillPrintable {
                                         char c = field.getText().charAt(posl);
                                         result.append(c);
                                         posl++;
-
                                     } else {
                                         result.append(" ");
                                     }
@@ -525,7 +459,6 @@ public class BillPrintable {
                                         char c = field.getText().charAt(posc);
                                         result.append(c);
                                         posc++;
-
                                     } else {
                                         result.append(" ");
                                     }
@@ -542,7 +475,6 @@ public class BillPrintable {
                                         char c = field.getText().charAt(posr);
                                         result.append(c);
                                         posr++;
-
                                     } else {
                                         result.append(" ");
                                     }
@@ -557,7 +489,6 @@ public class BillPrintable {
                                         char c = field.getText().charAt(posd);
                                         result.append(c);
                                         posd++;
-
                                     } else {
                                         result.append(" ");
                                     }
@@ -578,7 +509,7 @@ public class BillPrintable {
                     rows += 15;
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
-
+                    System.out.println(imageView.getUrl());
                     JRDesignImage image = new JRDesignImage(jasperDesign);
                     image.setX(
                             box.getAlignment() == Pos.CENTER_LEFT ? 0
@@ -595,6 +526,7 @@ public class BillPrintable {
                     image.setExpression(expr);
                     band.addElement(image);
                     rows += imageView.getFitHeight();
+                    
                 }
             }
         }
@@ -639,6 +571,7 @@ public class BillPrintable {
         job.print(doc, null);
     }
 
+    @Deprecated
     private void printDoc(String ruta, String nombreimpresora, boolean cortar) {
         File file = new File(ruta);
         FileInputStream inputStream = null;
@@ -702,11 +635,8 @@ public class BillPrintable {
         apDetalleCabecera.getChildren().clear();
         apPie.getChildren().clear();
         JSONObject jSONObject = Json.obtenerObjetoJSON(ruta);
-
         ArrayList<ImagenTB> imagenTBs = ImageADO.ListaImagePorIdRelacionado(idTicket);
-
         sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
-
         if (jSONObject.get("cabecera") != null) {
             JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
             for (int i = 0; i < cabeceraObjects.size(); i++) {
@@ -763,7 +693,6 @@ public class BillPrintable {
                 }
             }
         }
-
         if (jSONObject.get("pie") != null) {
             JSONObject pieObjects = Json.obtenerObjetoJSON(jSONObject.get("pie").toString());
             for (int i = 0; i < pieObjects.size(); i++) {
@@ -792,7 +721,6 @@ public class BillPrintable {
                 }
             }
         }
-
         for (int i = 0; i < imagenTBs.size(); i++) {
             for (int m = 0; m < apEncabezado.getChildren().size(); m++) {
                 HBox hBox = (HBox) apEncabezado.getChildren().get(m);
@@ -807,7 +735,6 @@ public class BillPrintable {
                 }
             }
         }
-
         for (int i = 0; i < imagenTBs.size(); i++) {
             for (int m = 0; m < apDetalleCabecera.getChildren().size(); m++) {
                 HBox hBox = (HBox) apDetalleCabecera.getChildren().get(m);
@@ -822,7 +749,6 @@ public class BillPrintable {
                 }
             }
         }
-
         for (int i = 0; i < imagenTBs.size(); i++) {
             for (int m = 0; m < apPie.getChildren().size(); m++) {
                 HBox hBox = (HBox) apPie.getChildren().get(m);
@@ -837,7 +763,6 @@ public class BillPrintable {
                 }
             }
         }
-
     }
 
     private HBox generateElement(AnchorPane contenedor, String id) {
@@ -860,7 +785,6 @@ public class BillPrintable {
                 layoutY += ((HBox) contenedor.getChildren().get(i)).getPrefHeight();
             }
         }
-
         HBox hBox = new HBox();
         hBox.setId(id);
         hBox.setLayoutX(0);

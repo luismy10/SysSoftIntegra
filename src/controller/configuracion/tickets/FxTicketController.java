@@ -109,7 +109,6 @@ public class FxTicketController implements Initializable {
         cbAlignment.getItems().add(Pos.CENTER_LEFT);
         cbAlignment.getItems().add(Pos.CENTER);
         cbAlignment.getItems().add(Pos.CENTER_RIGHT);
-
     }
 
     public void loadTicket(int idTicket, int tipoTicket, String nombre, String ruta, boolean predeterminado) {
@@ -125,14 +124,10 @@ public class FxTicketController implements Initializable {
             formatoTicket.setText(tipoTicket + "");
             cbPredeterminado.setSelected(predeterminado);
             cbPredeterminado.setText(predeterminado ? "SI" : "NO");
-
             ArrayList<ImagenTB> imagenTBs = ImageADO.ListaImagePorIdRelacionado(idTicket);
-
             sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
             lblColumnas.setText("" + sheetWidth);
-
             vbContenedor.setPrefWidth(sheetWidth * pointWidth);
-
             if (jSONObject.get("cabecera") != null) {
                 JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
                 for (int i = 0; i < cabeceraObjects.size(); i++) {
@@ -189,7 +184,6 @@ public class FxTicketController implements Initializable {
                     }
                 }
             }
-
             if (jSONObject.get("pie") != null) {
                 JSONObject pieObjects = Json.obtenerObjetoJSON(jSONObject.get("pie").toString());
                 for (int i = 0; i < pieObjects.size(); i++) {
@@ -218,7 +212,6 @@ public class FxTicketController implements Initializable {
                     }
                 }
             }
-
             for (int i = 0; i < imagenTBs.size(); i++) {
                 for (int m = 0; m < apEncabezado.getChildren().size(); m++) {
                     HBox hBox = (HBox) apEncabezado.getChildren().get(m);
@@ -233,7 +226,6 @@ public class FxTicketController implements Initializable {
                     }
                 }
             }
-
             for (int i = 0; i < imagenTBs.size(); i++) {
                 for (int m = 0; m < apDetalleCabecera.getChildren().size(); m++) {
                     HBox hBox = (HBox) apDetalleCabecera.getChildren().get(m);
@@ -248,7 +240,6 @@ public class FxTicketController implements Initializable {
                     }
                 }
             }
-
             for (int i = 0; i < imagenTBs.size(); i++) {
                 for (int m = 0; m < apPie.getChildren().size(); m++) {
                     HBox hBox = (HBox) apPie.getChildren().get(m);
@@ -263,7 +254,6 @@ public class FxTicketController implements Initializable {
                     }
                 }
             }
-
         }
     }
 
