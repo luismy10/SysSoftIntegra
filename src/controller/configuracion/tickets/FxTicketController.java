@@ -104,7 +104,7 @@ public class FxTicketController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        pointWidth = 8.20;
+        pointWidth = 8.10;
         sheetWidth = 0;
         cbAlignment.getItems().add(Pos.CENTER_LEFT);
         cbAlignment.getItems().add(Pos.CENTER);
@@ -536,6 +536,7 @@ public class FxTicketController implements Initializable {
         hBox.setLayoutX(0);
         hBox.setLayoutY(layoutY);
         hBox.setPrefWidth(sheetWidth * pointWidth);
+        //font size 12.5px
         hBox.setPrefHeight(30);
         hBox.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;;-fx-background-color: white;");
         hBox.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
@@ -799,7 +800,7 @@ public class FxTicketController implements Initializable {
         textAdaptWidth.setGraphic(imgAdaptParentWidth);
         textAdaptWidth.setOnAction(e -> {
             field.setColumnWidth(sheetWidth);
-            field.setPrefWidth(((double) field.getColumnWidth() * pointWidth));
+            field.setPreferredSize(((double) field.getColumnWidth() * pointWidth),field.getPrefHeight());
         });
 
         MenuItem textLeft = new MenuItem("Alineación Izquierda");
@@ -867,19 +868,19 @@ public class FxTicketController implements Initializable {
                     if (!tfReference.isMultilineas() && tfReference.isEditable()) {
                         if (tfReference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPrefWidth(((double) tfReference.getColumnWidth() * pointWidth));
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
                         } else {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPrefWidth(((double) tfReference.getColumnWidth() * pointWidth));
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
                             tfReference.setText(tfReference.getText().substring(0, tfReference.getColumnWidth()));
                         }
                     } else {
                         if (tfReference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPrefWidth(((double) tfReference.getColumnWidth() * pointWidth));
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
                         } else {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPrefWidth(((double) tfReference.getColumnWidth() * pointWidth));
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
                         }
                     }
                 }
@@ -1113,7 +1114,7 @@ public class FxTicketController implements Initializable {
                     if (hBox.getChildren().get(j) instanceof TextFieldTicket) {
                         TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
-                        fieldTicket.setPrefWidth(newwidth * pointWidth);
+                        fieldTicket.setPreferredSize(newwidth * pointWidth,fieldTicket.getPrefHeight());
                     } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
                         ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
@@ -1131,7 +1132,7 @@ public class FxTicketController implements Initializable {
 
                         TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
-                        fieldTicket.setPrefWidth(newwidth * pointWidth);
+                        fieldTicket.setPreferredSize(newwidth * pointWidth,fieldTicket.getPrefHeight());
                     } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
                         ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
@@ -1149,7 +1150,7 @@ public class FxTicketController implements Initializable {
 
                         TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
-                        fieldTicket.setPrefWidth(newwidth * pointWidth);
+                        fieldTicket.setPreferredSize(newwidth * pointWidth,fieldTicket.getPrefHeight());
                     } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
                         ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);

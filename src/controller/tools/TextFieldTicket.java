@@ -18,6 +18,7 @@ public class TextFieldTicket extends TextField {
     }
 
     public void setPreferredSize(double width, double height) {
+        //setMinWidth(width);
         setPrefWidth(width);
         setPrefHeight(height);
     }

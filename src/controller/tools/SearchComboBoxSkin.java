@@ -15,7 +15,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import model.ProveedorTB;
 
 public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
 
@@ -36,62 +35,27 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
                     ? true
                     : searchComboBox.getFilter().test(item, text)
             );
-//                if(!itemView.getItems().isEmpty()){
-//                   itemView.getSelectionModel().select(0);
-//                }
         });
 
         itemView = new ListView<>();
         itemView.setItems(searchComboBox.getFilterList());
 
         // administrar la seleccion de un nuevo item
-        itemView.getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-            if (item != null) {
-                searchComboBox.getComboBox().getSelectionModel().select(item);
-                if (itemView.getSelectionModel().getSelectedItem() instanceof ProveedorTB) {
-                    Session.PROVEEDOR_ID = ((ProveedorTB) itemView.getSelectionModel().getSelectedItem()).getIdProveedor();
-                }
+//        itemView.getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+//            if (item != null) {
+//                searchComboBox.getComboBox().getSelectionModel().select(item);
+//                // ocultar popup cuando el item fue seleccionado mediante un click
+//                if (clickSelection) {
+//                    if (itemView.getSelectionModel().getSelectedItem() instanceof ProveedorTB) {
+//                        Session.PROVEEDOR_ID = ((ProveedorTB) itemView.getSelectionModel().getSelectedItem()).getIdProveedor();
+//                    } else if (itemView.getSelectionModel().getSelectedItem() instanceof DetalleTB) {
+//                        Tools.println("dentroo click");
+//                    }
+//                    searchComboBox.getComboBox().hide();
+//                }
+//            }
+//        });
 
-                // ocultar popup cuando el item fue seleccionado mediante un click
-                if (clickSelection) {
-                    searchComboBox.getComboBox().hide();
-                }
-            }
-        });
-
-        // ocultar popup al usar las teclas determindas ENTER, ESC, SPACE
-        itemView.setOnKeyPressed(t -> {
-            if (null != t.getCode()) {
-                switch (t.getCode()) {
-                    case ENTER:
-                        searchComboBox.getComboBox().hide();
-//                        if (itemView.getSelectionModel().getSelectedItem() instanceof ProveedorTB) {
-//                            ProveedorTB proveedorTB = (ProveedorTB) itemView.getSelectionModel().getSelectedItem();
-//                        } else if (itemView.getSelectionModel().getSelectedItem() instanceof SuministroTB) {
-//                            SuministroTB suministroTB = (SuministroTB) itemView.getSelectionModel().getSelectedItem();
-//                        }
-                        break;
-                    case SPACE:
-                        searchComboBox.getComboBox().hide();
-                        break;
-                    case ESCAPE:
-                        searchComboBox.getComboBox().hide();
-                        break;
-                    case UP:
-                        break;
-                    case DOWN:
-                        break;
-                    case LEFT:
-                        break;
-                    case RIGHT:
-                        break;
-                    default:
-                        searchBox.requestFocus();
-                        searchBox.selectAll();
-                        break;
-                }
-            }
-        });
 
         // cambia el foco del TextField al ListView usando las teclas ENTER y ESC
         searchBox.setOnKeyPressed(t -> {
@@ -167,4 +131,14 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         return itemView;
     }
 
+    public TextField getSearchBox() {
+        return searchBox;
+    }
+
+    public boolean isClickSelection() {
+        return clickSelection;
+    }
+
+    
+    
 }

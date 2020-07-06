@@ -24,7 +24,7 @@ public class FxInventarioAjusteController implements Initializable {
     @FXML
     private TextField txtStockMinimo;
     @FXML
-    private TextField stockMaximo;
+    private TextField txtstockMaximo;
 
     private FxValorInventarioController valorInventarioController;
 
@@ -35,25 +35,25 @@ public class FxInventarioAjusteController implements Initializable {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
     }
       
-    public void setLoadComponents(String idSuministro, String clave, String producto) {
+    public void setLoadComponents(String idSuministro, String clave, String producto,double stockMinimo,double stockMaximo) {
         this.idSuministro = idSuministro;
         lblClave.setText(clave);
         lblProducto.setText(producto);
-        txtStockMinimo.setText("0");
-        stockMaximo.setText("0");
+        txtStockMinimo.setText(Tools.roundingValue(stockMinimo, 2));
+        txtstockMaximo.setText(Tools.roundingValue(stockMaximo, 2));
     }
 
     private void onExecuteGuardar() {
         if (!Tools.isNumeric(txtStockMinimo.getText().trim())) {
             Tools.AlertMessageWarning(apWindow, "Ajuste de inventario", "El valor ingresado debe ser numerico.");
             txtStockMinimo.requestFocus();
-        } else if (!Tools.isNumeric(stockMaximo.getText().trim())) {
+        } else if (!Tools.isNumeric(txtstockMaximo.getText().trim())) {
             Tools.AlertMessageWarning(apWindow, "Ajuste de inventario", "El valor ingresado debe ser numerico.");
-            stockMaximo.requestFocus();
+            txtstockMaximo.requestFocus();
         } else {
             short option = Tools.AlertMessageConfirmation(apWindow, "Ajuste de inventario", "¿Esta seguro de continuar?");
             if (option == 1) {
-                String value = SuministroADO.UpdatedInventarioStockMM(idSuministro, txtStockMinimo.getText().trim(), stockMaximo.getText().trim());
+                String value = SuministroADO.UpdatedInventarioStockMM(idSuministro, txtStockMinimo.getText().trim(), txtstockMaximo.getText().trim());
                 if (value.equalsIgnoreCase("updated")) {
                     valorInventarioController.fillInventarioTable("", (short) 0, "",(short) 0,0,0);
                     Tools.Dispose(apWindow);
@@ -106,7 +106,7 @@ public class FxInventarioAjusteController implements Initializable {
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
             event.consume();
         }
-        if (c == '.' && stockMaximo.getText().contains(".") || c == '-' && stockMaximo.getText().contains("-")) {
+        if (c == '.' && txtstockMaximo.getText().contains(".") || c == '-' && txtstockMaximo.getText().contains("-")) {
             event.consume();
         }
     }

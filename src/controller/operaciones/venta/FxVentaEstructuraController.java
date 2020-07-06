@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -185,6 +186,8 @@ public class FxVentaEstructuraController implements Initializable {
 
     private double total;
 
+    private Alert alert = null;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -212,14 +215,21 @@ public class FxVentaEstructuraController implements Initializable {
                 } else if (event.getCode() == KeyCode.F3) {
                     openWindowListaPrecios("Lista de precios");
                     event.consume();
+                } else if (event.getCode() == KeyCode.F8) {
+                    openWindowCashMovement();
+                    event.consume();
                 } else if (event.getCode() == KeyCode.F9) {
+                    imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
+                    event.consume();
+                } else if (event.getCode() == KeyCode.F10) {
                     short value = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de limpiar la venta?");
                     if (value == 1) {
                         resetVenta();
                         event.consume();
+                    } else {
+                        event.consume();
                     }
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F10) {
+                } else if (event.getCode() == KeyCode.F11) {
                     openWindowMostrarVentas();
                     event.consume();
                 } else if (event.getCode() == KeyCode.DELETE) {
@@ -483,91 +493,64 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     private void filterSuministro(String search) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
 
-        Task<SuministroTB> task = new Task<SuministroTB>() {
-            @Override
-            public SuministroTB call() {
-                return SuministroADO.Get_Suministro_By_Search(search);
-            }
-        };
+        SuministroTB a = SuministroADO.Get_Suministro_By_Search(search);
+        if (a != null) {
+            SuministroTB suministroTB = new SuministroTB();
+            suministroTB.setIdSuministro(a.getIdSuministro());
+            suministroTB.setClave(a.getClave());
+            suministroTB.setNombreMarca(a.getNombreMarca());
+            suministroTB.setCantidad(1);
+            suministroTB.setCostoCompra(a.getCostoCompra());
 
-        task.setOnSucceeded((e) -> {
-            SuministroTB a = task.getValue();
-            if (a != null) {
-                SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setIdSuministro(a.getIdSuministro());
-                suministroTB.setClave(a.getClave());
-                suministroTB.setNombreMarca(a.getNombreMarca());
-                suministroTB.setCantidad(1);
-                suministroTB.setCostoCompra(a.getCostoCompra());
+            suministroTB.setDescuento(0);
+            suministroTB.setDescuentoCalculado(0);
+            suministroTB.setDescuentoSumado(0);
 
-                suministroTB.setDescuento(0);
-                suministroTB.setDescuentoCalculado(0);
-                suministroTB.setDescuentoSumado(0);
+            suministroTB.setPrecioVentaGeneralUnico(a.getPrecioVentaGeneral());
+            suministroTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
+            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
 
-                suministroTB.setPrecioVentaGeneralUnico(a.getPrecioVentaGeneral());
-                suministroTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
-                suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
+            suministroTB.setImpuestoArticulo(a.getImpuestoArticulo());
+            suministroTB.setImpuestoArticuloName(getTaxName(a.getImpuestoArticulo()));
+            suministroTB.setImpuestoValor(getTaxValue(a.getImpuestoArticulo()));
+            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
 
-                suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
-                suministroTB.setImpuestoArticulo(a.getImpuestoArticulo());
-                suministroTB.setImpuestoArticuloName(getTaxName(a.getImpuestoArticulo()));
-                suministroTB.setImpuestoValor(getTaxValue(a.getImpuestoArticulo()));
-                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
+            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
 
-                suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
+            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
-                suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setInventario(a.isInventario());
+            suministroTB.setUnidadVenta(a.getUnidadVenta());
+            suministroTB.setValorInventario(a.getValorInventario());
 
-                suministroTB.setInventario(a.isInventario());
-                suministroTB.setUnidadVenta(a.getUnidadVenta());
-                suministroTB.setValorInventario(a.getValorInventario());
-
-                Button button = new Button();
-                button.getStyleClass().add("buttonLightError");
-                ImageView view = new ImageView(new Image("/view/image/remove.png"));
-                view.setFitWidth(24);
-                view.setFitHeight(24);
-                button.setGraphic(view);
-                button.setOnAction(buttonEvent -> {
+            Button button = new Button();
+            button.getStyleClass().add("buttonLightError");
+            ImageView view = new ImageView(new Image("/view/image/remove.png"));
+            view.setFitWidth(24);
+            view.setFitHeight(24);
+            button.setGraphic(view);
+            button.setOnAction(buttonEvent -> {
+                tvList.getItems().remove(suministroTB);
+                calculateTotales();
+            });
+            button.setOnKeyPressed(buttonEvent -> {
+                if (buttonEvent.getCode() == KeyCode.ENTER) {
                     tvList.getItems().remove(suministroTB);
                     calculateTotales();
-                });
-                button.setOnKeyPressed(buttonEvent -> {
-                    if (buttonEvent.getCode() == KeyCode.ENTER) {
-                        tvList.getItems().remove(suministroTB);
-                        calculateTotales();
-                    }
-                });
-                suministroTB.setRemover(button);
+                }
+            });
+            suministroTB.setRemover(button);
 
-                getAddArticulo(suministroTB);
-                txtSearch.clear();
-                txtSearch.requestFocus();
+            getAddArticulo(suministroTB);
+            txtSearch.clear();
+            txtSearch.requestFocus();
 
-            }
-            stateSearch = false;
-        });
-
-        task.setOnFailed((e) -> {
-            stateSearch = false;
-        });
-
-        task.setOnScheduled((e) -> {
-            stateSearch = true;
-        });
-
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
         }
+
     }
 
     private void openWindowArticulos() {
@@ -1126,55 +1109,117 @@ public class FxVentaEstructuraController implements Initializable {
         billPrintable.generatePDFPrint(hbEncabezado, hbDetalleCabecera, hbPie, nombre_impresora, cortar);
     }
 
-    public void imprimirVenta(String serieNumeracion, String codigoVenta, String efectivo, String vuelto) {
+    public void imprimirVenta(String serieNumeracion, String codigoVenta, String efectivo, String vuelto, boolean ticket) {
         if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
             Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
-            resetVenta();
+            if (ticket) {
+                resetVenta();
+            }
             return;
         }
         if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA == null) {
             Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
-            resetVenta();
+            if (ticket) {
+                resetVenta();
+            }
             return;
         }
 
-        billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-            billPrintable.hbEncebezado(box,
-                    cbComprobante.getSelectionModel().getSelectedItem().getNombreDocumento(),
-                    serieNumeracion,
-                    txtNumeroDocumento.getText(),
-                    txtDatosCliente.getText(), codigoVenta);
+        try {
+            Task<String> task = new Task<String>() {
+                @Override
+                public String call() {
+
+                    billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+
+                    for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                        HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                        billPrintable.hbEncebezado(box,
+                                cbComprobante.getSelectionModel().getSelectedItem().getNombreDocumento(),
+                                serieNumeracion,
+                                txtNumeroDocumento.getText().trim(),
+                                txtDatosCliente.getText().trim(), 
+                                txtDireccionCliente.getText().trim(),
+                                codigoVenta);
+                    }
+
+                    AnchorPane hbDetalle = new AnchorPane();
+                    for (int m = 0; m < tvList.getItems().size(); m++) {
+                        for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                            HBox hBox = new HBox();
+                            hBox.setId("dc_" + m + "" + i);
+                            HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                            billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
+                            hbDetalle.getChildren().add(hBox);
+                        }
+                    }
+
+                    for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                        HBox box = ((HBox) hbPie.getChildren().get(i));
+                        billPrintable.hbPie(box, monedaSimbolo,
+                                Tools.roundingValue(subTotal, 2),
+                                "-" + Tools.roundingValue(descuento, 2),
+                                Tools.roundingValue(subTotalImporte, 2),
+                                Tools.roundingValue(total, 2),
+                                efectivo,
+                                vuelto,
+                                txtNumeroDocumento.getText(),
+                                txtDatosCliente.getText(), codigoVenta);
+                    }
+
+                    return billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
+                }
+            };
+
+            task.setOnSucceeded(w -> {
+                if (!task.isRunning()) {
+                    if (alert != null) {
+                        ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+                    }
+                }
+                String result = task.getValue();
+                if (result.equalsIgnoreCase("completed")) {
+                    Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
+                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    if (ticket) {
+                        resetVenta();
+                    }
+                } else {
+                    Tools.AlertMessageError(window, "Ventas", result);
+                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    if (ticket) {
+                        resetVenta();
+                    }
+                }
+            });
+            task.setOnFailed(w -> {
+                if (alert != null) {
+                    ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+                }
+                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema en el proceso de envío, intente nuevamente.");
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                if (ticket) {
+                    resetVenta();
+                }
+            });
+
+            task.setOnScheduled(w -> {
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
+            });
+            exec.execute(task);
+
+        } catch (Exception ex) {
+        } finally {
+            exec.shutdown();
         }
 
-        AnchorPane hbDetalle = new AnchorPane();
-        for (int m = 0; m < tvList.getItems().size(); m++) {
-            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                HBox hBox = new HBox();
-                hBox.setId("dc_" + m + "" + i);
-                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
-                hbDetalle.getChildren().add(hBox);
-            }
-        }
-
-        for (int i = 0; i < hbPie.getChildren().size(); i++) {
-            HBox box = ((HBox) hbPie.getChildren().get(i));
-            billPrintable.hbPie(box, monedaSimbolo,
-                    Tools.roundingValue(subTotal, 2),
-                    "-" + Tools.roundingValue(descuento, 2),
-                    Tools.roundingValue(subTotalImporte, 2),
-                    Tools.roundingValue(total, 2),
-                    efectivo,
-                    vuelto,
-                    txtNumeroDocumento.getText(),
-                    txtDatosCliente.getText(), codigoVenta);
-        }
-
-        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
-        resetVenta();
     }
 
     @FXML
@@ -1433,6 +1478,26 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onActionCliente(ActionEvent event) {
         onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+    }
+
+    @FXML
+    private void onKeyPressedTicket(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
+        }
+    }
+
+    @FXML
+    private void onActionTicket(ActionEvent event) {
+        imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
+    }
+
+    @FXML
+    private void onKeyTypedNumeroDocumento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            event.consume();
+        }
     }
 
     public String obtenerTipoComprobante() {

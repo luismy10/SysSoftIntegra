@@ -105,7 +105,7 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Label lblValor;
 
-    private AnchorPane windowinit;
+    private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
 
@@ -143,6 +143,8 @@ public class FxVentaDetalleController implements Initializable {
 
     private double efectivo, tarjeta, vuelto;
 
+    private Alert alert = null;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         arrayArticulos = new ArrayList<>();
@@ -151,7 +153,6 @@ public class FxVentaDetalleController implements Initializable {
         hbDetalleCabecera = new AnchorPane();
         hbPie = new AnchorPane();
         monedaCadena = new ConvertMonedaCadena();
-
     }
 
     public void setInitComponents(String idVenta) {
@@ -254,9 +255,15 @@ public class FxVentaDetalleController implements Initializable {
         calcularTotales();
     }
 
+    private void openAlertMessageWarning(String message) {
+        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", message, false);
+        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+    }
+
     private void onEventCancelar() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(windowinit);
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_VENTA_DEVOLUCION);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -269,7 +276,7 @@ public class FxVentaDetalleController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {
-                windowinit.getChildren().remove(ObjectGlobal.PANE);
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
         } catch (IOException ex) {
@@ -280,7 +287,7 @@ public class FxVentaDetalleController implements Initializable {
     private void openWindowAbonos() {
         if (lblTipo.getText().equalsIgnoreCase("credito")) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(windowinit);
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 URL url = getClass().getResource(FilesRouters.FX_VENTA_ABONO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -292,7 +299,7 @@ public class FxVentaDetalleController implements Initializable {
                 stage.setResizable(false);
                 stage.sizeToScene();
                 stage.setOnHiding(w -> {
-                    windowinit.getChildren().remove(ObjectGlobal.PANE);
+                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
                 });
                 stage.show();
                 controller.loadInitData(idVenta, ventaTB.getMonedaTB().getSimbolo());
@@ -531,48 +538,98 @@ public class FxVentaDetalleController implements Initializable {
             Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
             return;
         }
-        
+
         if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA == null) {
             Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
             return;
         }
 
-        billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-            billPrintable.hbEncebezado(box,
-                    ventaTB.getComproabanteNameImpresion(),
-                    lblSerie.getText(),
-                    ventaTB.getClienteTB().getNumeroDocumento(),
-                    ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo());
+        try {
+
+            Task<String> task = new Task<String>() {
+                @Override
+                public String call() {
+
+                    billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+
+                    for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                        HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                        billPrintable.hbEncebezado(box,
+                                ventaTB.getComproabanteNameImpresion(),
+                                lblSerie.getText(),
+                                ventaTB.getClienteTB().getNumeroDocumento(),
+                                ventaTB.getClienteTB().getInformacion(), 
+                                ventaTB.getClienteTB().getDireccion(),
+                                ventaTB.getCodigo());
+                    }
+
+                    AnchorPane hbDetalle = new AnchorPane();
+                    for (int m = 0; m < arrList.size(); m++) {
+                        for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                            HBox hBox = new HBox();
+                            hBox.setId("dc_" + m + "" + i);
+                            HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                            billPrintable.hbDetalle(hBox, box, arrList, m);
+                            hbDetalle.getChildren().add(hBox);
+                        }
+                    }
+
+                    for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                        HBox box = ((HBox) hbPie.getChildren().get(i));
+                        billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
+                                Tools.roundingValue(subImporte, 2),
+                                "-" + Tools.roundingValue(descuento, 2),
+                                Tools.roundingValue(subTotalImporte, 2),
+                                Tools.roundingValue(total, 2),
+                                Tools.roundingValue(efectivo, 2),
+                                Tools.roundingValue(vuelto, 2),
+                                ventaTB.getClienteTB().getNumeroDocumento(),
+                                ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo());
+                    }
+
+                    return billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
+                }
+            };
+
+            task.setOnSucceeded(w -> {
+                if (!task.isRunning()) {
+                    if (alert != null) {
+                        ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+                    }
+                }
+                String result = task.getValue();
+                if (result.equalsIgnoreCase("completed")) {
+                    Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
+                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                } else {
+                    Tools.AlertMessageError(window, "Ventas", result);
+                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                }
+            });
+            task.setOnFailed(w -> {
+                if (alert != null) {
+                    ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+                }
+                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema en el proceso de envío, intente nuevamente.");
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            });
+
+            task.setOnScheduled(w -> {
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
+            });
+            exec.execute(task);
+
+        } catch (Exception ex) {
+        } finally {
+            exec.shutdown();
         }
-
-        AnchorPane hbDetalle = new AnchorPane();
-        for (int m = 0; m < arrList.size(); m++) {
-            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                HBox hBox = new HBox();
-                hBox.setId("dc_" + m + "" + i);
-                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                billPrintable.hbDetalle(hBox, box, arrList, m);
-                hbDetalle.getChildren().add(hBox);
-            }
-        }
-
-        for (int i = 0; i < hbPie.getChildren().size(); i++) {
-            HBox box = ((HBox) hbPie.getChildren().get(i));
-            billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
-                    Tools.roundingValue(subImporte, 2),
-                    "-" + Tools.roundingValue(descuento, 2),
-                    Tools.roundingValue(subTotalImporte, 2),
-                    Tools.roundingValue(total, 2),
-                    Tools.roundingValue(efectivo, 2),
-                    Tools.roundingValue(vuelto, 2),
-                    ventaTB.getClienteTB().getNumeroDocumento(),
-                    ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo());
-        }
-
-        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 
     }
 
@@ -636,9 +693,9 @@ public class FxVentaDetalleController implements Initializable {
         openWindowReporte();
     }
 
-    public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, AnchorPane windowinit, AnchorPane vbContent) {
+    public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.ventaRealizadasController = ventaRealizadasController;
-        this.windowinit = windowinit;
+        this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
     }
 

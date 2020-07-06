@@ -50,7 +50,7 @@
                   <VBox style="-fx-spacing: 0.6666666666666666em;">
                      <children>
                         <Label styleClass="labelOpenSansRegular14" text="Stockmáximo" />
-                        <TextField fx:id="stockMaximo" onKeyTyped="#onKeyTypedMaxino" promptText="0.00" styleClass="text-field-normal" />
+                        <TextField fx:id="txtstockMaximo" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMaxino" promptText="0.00" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

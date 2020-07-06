@@ -51,8 +51,7 @@ public class FxSuministrosKardexController implements Initializable {
     private TableColumn<KardexTB, String> tcFecha;
     @FXML
     private TableColumn<KardexTB, String> tcDetalle;
-    @FXML
-    private TableColumn<KardexTB, Label> tcInicial;
+    //private TableColumn<KardexTB, Label> tcInicial;
     @FXML
     private TableColumn<KardexTB, Label> tcEntrada;
     @FXML
@@ -71,7 +70,7 @@ public class FxSuministrosKardexController implements Initializable {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + "\n" + cellData.getValue().getHora()));
         tcDetalle.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMovimientoName() + "\n" + cellData.getValue().getDetalle().toUpperCase()));
-        tcInicial.setCellValueFactory(new PropertyValueFactory<>("lblInicial"));
+        //tcInicial.setCellValueFactory(new PropertyValueFactory<>("lblInicial"));
         tcEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntrada"));
         tcSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
         tcSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
@@ -83,7 +82,7 @@ public class FxSuministrosKardexController implements Initializable {
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
         tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
         tcDetalle.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
-        tcInicial.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        //tcInicial.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));

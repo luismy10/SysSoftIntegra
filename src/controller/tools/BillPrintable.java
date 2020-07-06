@@ -1,6 +1,7 @@
 package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -11,11 +12,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javax.imageio.ImageIO;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
@@ -36,7 +39,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -54,15 +56,21 @@ import org.json.simple.JSONObject;
 public class BillPrintable {
 
     private int sheetWidth;
+    
+    private final double pointWidthSizeView;
 
-    private final double pointWidth;
+    private final double pointWidthSizePaper;
+
+    private final ArrayList<String> fileImages;
 
     public BillPrintable() {
         sheetWidth = 0;
-        pointWidth = 5.20;
+        pointWidthSizeView = 8.10;
+        pointWidthSizePaper = 5.20;
+        fileImages = new ArrayList();
     }
 
-    public void hbEncebezado(HBox box, String nombreTicketImpresion, String ticket, String numCliente, String infoCliente, String codigoVenta) {
+    public void hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String direccion_cliente,String codigoVenta) {
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -89,15 +97,17 @@ public class BillPrintable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
                     fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("docventa")) {
-                    fieldTicket.setText(nombreTicketImpresion);
+                    fieldTicket.setText(nombre_impresion_comprobante);
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numventa")) {
-                    fieldTicket.setText(ticket);
+                    fieldTicket.setText(numeracion_serie_comprobante);
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
                     fieldTicket.setText(codigoVenta);
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numcliente")) {
-                    fieldTicket.setText(numCliente);
+                    fieldTicket.setText(nummero_documento_cliente);
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
-                    fieldTicket.setText(infoCliente);
+                    fieldTicket.setText(informacion_cliente);
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("direccliente")) {
+                    fieldTicket.setText(direccion_cliente);
                 }
             }
         }
@@ -270,18 +280,22 @@ public class BillPrintable {
             Tools.AlertMessageError(window, messageClassTitle, messageClassContent + " " + e.getLocalizedMessage());
         }
     }
-              
-    public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie, String nombreImpresora, boolean cortar) {
+
+    public String generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie, String nombreImpresora, boolean cortar) {
         try {
-            int width = (int) Math.ceil(sheetWidth * pointWidth);
+            int width = (int) Math.ceil(sheetWidth * pointWidthSizePaper);
             Map param = new HashMap();
             JasperDesign jasperDesign = getJasperDesign(width, apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/Ticket.pdf");
-//            PrintReportToPrinter(jasperPrint, nombreImpresora,cortar);
-        } catch (JRException er) {
-            Tools.AlertMessageError(null, "Ticket", "Error en imprimir: "+er.getLocalizedMessage());
+            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
+            return "completed";
+        } catch (JRException | PrintException | IOException er) {
+            return "Error en imprimir: " + er.getLocalizedMessage();
+        } finally {
+            fileImages.stream().map((fileImage) -> new File(fileImage)).filter((removed) -> (removed != new File("./archivos/no-image"))).forEachOrdered((removed) -> {
+                removed.delete();
+            });
         }
     }
 
@@ -308,6 +322,8 @@ public class BillPrintable {
         JRDesignBand band = new JRDesignBand();
         band.setHeight(2000);
 
+        //font size 9f x 15 height
+        
         int rows = 0;
         rows += createRow(apEncabezado, jasperDesign, band, width, rows);
         rows = createRow(apDetalle, jasperDesign, band, width, rows);
@@ -509,7 +525,25 @@ public class BillPrintable {
                     rows += 15;
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
-                    System.out.println(imageView.getUrl());
+                    String idImage = "./archivos/no-image.png";
+                    try {
+                        ByteArrayInputStream bais = new ByteArrayInputStream(imageView.getUrl());
+                        BufferedImage bufferedImage = ImageIO.read(bais);
+                        String idGenerated = getIdGenerateImage();
+                        boolean validateImage = true;
+                        while (validateImage) {
+                            File file = new File("./archivos/" + idGenerated + ".png");
+                            if (file.exists()) {
+                                idGenerated = getIdGenerateImage();
+                            } else {
+                                validateImage = false;
+                                idGenerated = "./archivos/" + idGenerated + ".png";
+                                idImage = idGenerated;
+                            }
+                        }
+                        ImageIO.write(bufferedImage, "png", new File(idGenerated));
+                    } catch (IOException ex1) {
+                    }
                     JRDesignImage image = new JRDesignImage(jasperDesign);
                     image.setX(
                             box.getAlignment() == Pos.CENTER_LEFT ? 0
@@ -522,18 +556,18 @@ public class BillPrintable {
                     image.setHeight((int) imageView.getFitHeight());
                     image.setScaleImage(ScaleImageEnum.FILL_FRAME);
                     JRDesignExpression expr = new JRDesignExpression();
-                    expr.setText("\"" + "./archivos/logo.jpg" + "\"");
+                    expr.setText("\"" + idImage + "\"");
                     image.setExpression(expr);
                     band.addElement(image);
                     rows += imageView.getFitHeight();
-                    
+                    fileImages.add(idImage);
                 }
             }
         }
         return rows;
     }
 
-    private void PrintReportToPrinter(JasperPrint jp, String printName,boolean cortar) throws JRException, PrintException, IOException {
+    private void PrintReportToPrinter(JasperPrint jp, String printName, boolean cortar) throws JRException, PrintException, IOException {
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
         printRequestAttributeSet.add(new Copies(1));
 
@@ -550,7 +584,7 @@ public class BillPrintable {
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
         exporter.exportReport();
-        printString(printName,cortar);
+        printString(printName, cortar);
     }
 
     public void printString(String printerName, boolean cortar) throws PrintException, IOException {
@@ -569,6 +603,13 @@ public class BillPrintable {
         byte c[] = outputStream.toByteArray();
         Doc doc = new SimpleDoc(c, flavor, null);
         job.print(doc, null);
+    }
+
+    private String getIdGenerateImage() {
+        Random rd = new Random();
+        int dig5 = rd.nextInt(90000) + 10000;
+        return "image_" + dig5;
+
     }
 
     @Deprecated
@@ -635,8 +676,11 @@ public class BillPrintable {
         apDetalleCabecera.getChildren().clear();
         apPie.getChildren().clear();
         JSONObject jSONObject = Json.obtenerObjetoJSON(ruta);
+
         ArrayList<ImagenTB> imagenTBs = ImageADO.ListaImagePorIdRelacionado(idTicket);
+
         sheetWidth = jSONObject.get("column") != null ? Short.parseShort(jSONObject.get("column").toString()) : (short) 40;
+
         if (jSONObject.get("cabecera") != null) {
             JSONObject cabeceraObjects = Json.obtenerObjetoJSON(jSONObject.get("cabecera").toString());
             for (int i = 0; i < cabeceraObjects.size(); i++) {
@@ -658,7 +702,7 @@ public class BillPrintable {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
                     ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
-                    box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
+                    box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
                     box.setAlignment(getAlignment(object.get("align").toString()));
                     box.getChildren().add(imageView);
@@ -686,13 +730,14 @@ public class BillPrintable {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
                     ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
-                    box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
+                    box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
                     box.setAlignment(getAlignment(object.get("align").toString()));
                     box.getChildren().add(imageView);
                 }
             }
         }
+
         if (jSONObject.get("pie") != null) {
             JSONObject pieObjects = Json.obtenerObjetoJSON(jSONObject.get("pie").toString());
             for (int i = 0; i < pieObjects.size(); i++) {
@@ -714,13 +759,14 @@ public class BillPrintable {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
                     ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
-                    box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
+                    box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
                     box.setAlignment(getAlignment(object.get("align").toString()));
                     box.getChildren().add(imageView);
                 }
             }
         }
+
         for (int i = 0; i < imagenTBs.size(); i++) {
             for (int m = 0; m < apEncabezado.getChildren().size(); m++) {
                 HBox hBox = (HBox) apEncabezado.getChildren().get(m);
@@ -735,6 +781,7 @@ public class BillPrintable {
                 }
             }
         }
+
         for (int i = 0; i < imagenTBs.size(); i++) {
             for (int m = 0; m < apDetalleCabecera.getChildren().size(); m++) {
                 HBox hBox = (HBox) apDetalleCabecera.getChildren().get(m);
@@ -749,6 +796,7 @@ public class BillPrintable {
                 }
             }
         }
+
         for (int i = 0; i < imagenTBs.size(); i++) {
             for (int m = 0; m < apPie.getChildren().size(); m++) {
                 HBox hBox = (HBox) apPie.getChildren().get(m);
@@ -763,6 +811,7 @@ public class BillPrintable {
                 }
             }
         }
+
     }
 
     private HBox generateElement(AnchorPane contenedor, String id) {
@@ -785,11 +834,12 @@ public class BillPrintable {
                 layoutY += ((HBox) contenedor.getChildren().get(i)).getPrefHeight();
             }
         }
+
         HBox hBox = new HBox();
         hBox.setId(id);
         hBox.setLayoutX(0);
         hBox.setLayoutY(layoutY);
-        hBox.setPrefWidth(sheetWidth * pointWidth);
+        hBox.setPrefWidth(sheetWidth * pointWidthSizeView);
         hBox.setPrefHeight(30);
         if (useLayout) {
             contenedor.getChildren().add(hBox);

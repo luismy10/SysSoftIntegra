@@ -247,7 +247,7 @@ public class FxComprasController implements Initializable {
             searchComboBox.getComboBox().getItems().clear();
             List<ProveedorTB> proveedorTBs = task.getValue();
             searchComboBox.getComboBox().getItems().addAll(proveedorTBs);
-            setLoadProveedor(Session.PROVEEDOR_ID);
+            setLoadProveedor(((ProveedorTB)searchComboBox.getComboBox().getSelectionModel().getSelectedItem()).getIdProveedor());
         });
 
         exec.execute(task);
@@ -322,11 +322,8 @@ public class FxComprasController implements Initializable {
         for (ProveedorTB p : cbProveedor.getItems()) {
             if (p.getIdProveedor().equalsIgnoreCase(idProveedor)) {
                 cbProveedor.getSelectionModel().select(p);
-                Session.PROVEEDOR_ID = p.getIdProveedor();
                 break;
-            } else {
-                Session.PROVEEDOR_ID = "";
-            }
+            } 
         }
     }
 

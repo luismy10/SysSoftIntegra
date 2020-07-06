@@ -2137,6 +2137,12 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-text-fill: white;
 }
 
+.label-existencia-Excedentes{
+    -fx-background-color: #02539a;
+    -fx-text-fill: white;
+}
+
+
 .label-asignacion{
     -fx-max-width: Infinity;
     -fx-background-color: #c6e2cc; 
