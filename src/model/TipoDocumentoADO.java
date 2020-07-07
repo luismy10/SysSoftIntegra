@@ -31,12 +31,11 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Predeterminado=?,NombreImpresion=? WHERE IdTipoDocumento = ?");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Predeterminado=? WHERE IdTipoDocumento = ?");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
                         statementUpdate.setBoolean(3, documentoTB.isPredeterminado());
-                        statementUpdate.setString(4, documentoTB.getNombreDocumento());
-                        statementUpdate.setInt(5, documentoTB.getIdTipoDocumento());
+                        statementUpdate.setInt(4, documentoTB.getIdTipoDocumento());
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -51,11 +50,11 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Predeterminado,NombreImpresion) VALUES(?,?,?,?)");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Predeterminado,Sistema) VALUES(?,?,?,?)");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
                         statementUpdate.setBoolean(3, documentoTB.isPredeterminado());
-                        statementUpdate.setString(4, documentoTB.getNombreDocumento());
+                        statementUpdate.setBoolean(4, false);
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -107,7 +106,6 @@ public class TipoDocumentoADO {
                 tipoDocumentoTB.setNombre(resultSet.getString("Nombre"));
                 tipoDocumentoTB.setSerie(resultSet.getString("Serie"));
                 tipoDocumentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
-                tipoDocumentoTB.setNombreDocumento(resultSet.getString("NombreImpresion"));
                 ImageView imageView = new ImageView(new Image(tipoDocumentoTB.isPredeterminado() ? "/view/image/checked.png" : "/view/image/unchecked.png"));
                 imageView.setFitWidth(22);
                 imageView.setFitHeight(22);
@@ -202,7 +200,7 @@ public class TipoDocumentoADO {
             PreparedStatement statement = null;
             ResultSet resultSet = null;
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Serie, Predeterminado,NombreImpresion FROM TipoDocumentoTB");
+                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Serie, Predeterminado FROM TipoDocumentoTB");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     TipoDocumentoTB documentoTB = new TipoDocumentoTB();
@@ -210,7 +208,6 @@ public class TipoDocumentoADO {
                     documentoTB.setNombre(resultSet.getString("Nombre"));
                     documentoTB.setSerie(resultSet.getString("Serie"));
                     documentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
-                    documentoTB.setNombreDocumento(resultSet.getString("NombreImpresion"));
                     list.add(documentoTB);
                 }
             } catch (SQLException ex) {

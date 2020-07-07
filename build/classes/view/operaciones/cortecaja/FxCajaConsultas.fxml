@@ -74,14 +74,24 @@
                      <children>
                         <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: white; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
                            <children>
-                              <HBox>
+                              <HBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRobotoBold16" text="Inico de turno:" textFill="#1a2226" />
-                                          <Label fx:id="lblTurno" styleClass="labelRoboto16" text="00/00/0000 0:00" textFill="#1a2226" />
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label styleClass="labelRobotoBold16" text="Inico de turno:" textFill="#1a2226" />
+                                                <Label fx:id="lblInicoTurno" styleClass="labelRoboto16" text="00/00/0000 0:00" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Label styleClass="labelRobotoBold16" text="Fin de turno:" textFill="#1a2226" />
+                                                <Label fx:id="lblFinTurno" styleClass="labelRoboto16" text="00/00/0000 0:00" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                     <Separator orientation="VERTICAL" />
                                     <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
@@ -90,12 +100,40 @@
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" />
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                    <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRobotoBold16" text="Total:" textFill="#1a2226" />
-                                          <Label fx:id="lblTotal" alignment="TOP_RIGHT" contentDisplay="BOTTOM" styleClass="labelRoboto16" text="M 0.00" textFill="#1a2226" />
+                                          <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label styleClass="labelRobotoBold16" text="Contado" textFill="#1a2226" />
+                                                <Label fx:id="lblContado" alignment="TOP_RIGHT" contentDisplay="BOTTOM" styleClass="labelRoboto16" text="M 0.00" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Label styleClass="labelRobotoBold16" textFill="#1a2226" />
+                                                <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" styleClass="labelRoboto16" text="-" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Label styleClass="labelRobotoBold16" text="Calculado" textFill="#1a2226" />
+                                                <Label fx:id="lblCanculado" alignment="TOP_RIGHT" contentDisplay="BOTTOM" styleClass="labelRoboto16" text="M 0.00" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Label styleClass="labelRobotoBold16" textFill="#1a2226" />
+                                                <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" styleClass="labelRoboto16" text="=" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Label styleClass="labelRobotoBold16" text="Diferencia" textFill="#1a2226" />
+                                                <Label fx:id="lblDiferencia" alignment="TOP_RIGHT" contentDisplay="BOTTOM" styleClass="labelRoboto16" text="M 0.00" textFill="#1a2226" />
+                                             </children>
+                                          </VBox>
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                  </children>
                               </HBox>
                               <Separator />
@@ -107,6 +145,7 @@
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                        </columnConstraints>
                                        <rowConstraints>
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -177,6 +216,16 @@
                                           </Label>
                                           <Separator GridPane.rowIndex="6" />
                                           <Separator GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <Label styleClass="labelRobotoBold16" text="Total" textFill="#1a2226" GridPane.rowIndex="7">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/moneda.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <Label fx:id="lblTotal" alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                        </children>
                                     </GridPane>
                                  </children>

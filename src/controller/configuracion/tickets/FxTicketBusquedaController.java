@@ -1,5 +1,6 @@
 package controller.configuracion.tickets;
 
+import controller.inventario.valorinventario.FxValorInventarioController;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,23 +24,37 @@ public class FxTicketBusquedaController implements Initializable {
 
     private FxTicketController ticketController;
 
+    private FxValorInventarioController valorInventarioController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        lvLista.getItems().addAll(TicketADO.ListTicket());
+    }
+
+    public void loadComponents(int tipo, boolean todos) {
+        lvLista.getItems().addAll(TicketADO.ListTicket(tipo, todos));
     }
 
     private void selectTicket() {
-        if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
-            ticketController.loadTicket(
-                    lvLista.getSelectionModel().getSelectedItem().getId(),
-                    lvLista.getSelectionModel().getSelectedItem().getTipo(),
-                    lvLista.getSelectionModel().getSelectedItem().getNombreTicket(),
-                    lvLista.getSelectionModel().getSelectedItem().getRuta(),
-                    lvLista.getSelectionModel().getSelectedItem().isPredeterminado()
-            );
-            Tools.Dispose(window);
+        if (ticketController != null) {
+            if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
+                ticketController.loadTicket(
+                        lvLista.getSelectionModel().getSelectedItem().getId(),
+                        lvLista.getSelectionModel().getSelectedItem().getTipo(),
+                        lvLista.getSelectionModel().getSelectedItem().getNombreTicket(),
+                        lvLista.getSelectionModel().getSelectedItem().getRuta(),
+                        lvLista.getSelectionModel().getSelectedItem().isPredeterminado()
+                );
+                Tools.Dispose(window);
+            }
+        } else if (valorInventarioController != null) {
+            if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
+                valorInventarioController.setGenerarTicket(lvLista.getSelectionModel().getSelectedItem().getId(),
+                        lvLista.getSelectionModel().getSelectedItem().getRuta());
+                Tools.Dispose(window);
+            }
         }
+
     }
 
     @FXML
@@ -76,4 +91,9 @@ public class FxTicketBusquedaController implements Initializable {
     public void setInitTicketController(FxTicketController ticketController) {
         this.ticketController = ticketController;
     }
+
+    public void setInitValorInventarioController(FxValorInventarioController valorInventarioController) {
+        this.valorInventarioController = valorInventarioController;
+    }
+
 }

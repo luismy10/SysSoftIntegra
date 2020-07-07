@@ -255,12 +255,6 @@ public class FxVentaDetalleController implements Initializable {
         calcularTotales();
     }
 
-    private void openAlertMessageWarning(String message) {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventas", message, false);
-        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-    }
-
     private void onEventCancelar() {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);

@@ -295,12 +295,11 @@ public class GlobalADO {
             statementImpuesto.setBoolean(6, impuestoTB.isSistema());
             statementImpuesto.addBatch();
 
-            statementTipoDocumento = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Predeterminado,NombreImpresion,Sistema)VALUES(?,?,?,?,?)");
+            statementTipoDocumento = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Predeterminado,Sistema)VALUES(?,?,?,?)");
             statementTipoDocumento.setString(1, tipoDocumentoTB.getNombre());
             statementTipoDocumento.setString(2, tipoDocumentoTB.getSerie());
             statementTipoDocumento.setBoolean(3, tipoDocumentoTB.isPredeterminado());
-            statementTipoDocumento.setString(4, tipoDocumentoTB.getNombreDocumento());
-            statementTipoDocumento.setBoolean(5, tipoDocumentoTB.isSistema());
+            statementTipoDocumento.setBoolean(4, tipoDocumentoTB.isSistema());
             statementTipoDocumento.addBatch();
 
             codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");

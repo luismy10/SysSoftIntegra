@@ -336,7 +336,7 @@ public class CajaADO {
         ArrayList<Object> objects = new ArrayList<>();
         try {
             DBUtil.dbConnect();
-            statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja,FechaApertura,HoraApertura FROM CajaTB WHERE IdCaja = ?");
+            statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja,FechaApertura,FechaCierre,HoraApertura,HoraCierre,Contado,Calculado,Diferencia FROM CajaTB WHERE IdCaja = ?");
             statementValidar.setString(1, idCaja);
             try (ResultSet resultSet = statementValidar.executeQuery()) {
                 if (resultSet.next()) {
@@ -344,16 +344,23 @@ public class CajaADO {
                     cajaTB.setIdCaja(resultSet.getString("IdCaja"));
                     cajaTB.setFechaApertura(resultSet.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                     cajaTB.setHoraApertura(resultSet.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
+                    cajaTB.setFechaCierre(resultSet.getDate("FechaCierre").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    cajaTB.setHoraCierre(resultSet.getTime("HoraCierre").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
+                    cajaTB.setContado(resultSet.getDouble("Contado"));
+                    cajaTB.setCalculado(resultSet.getDouble("Calculado"));
+                    cajaTB.setDiferencia(resultSet.getDouble("Diferencia"));
 
-                    statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
+                    arrayTotales = new ArrayList();
+                    
+                    statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto as MontoBase FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
                     statementMovimientoBase.setString(1, cajaTB.getIdCaja());
                     try (ResultSet setMovimientoBase = statementMovimientoBase.executeQuery()) {
                         if (setMovimientoBase.next()) {
-                            cajaTB.setContado(setMovimientoBase.getDouble("Monto"));
+                            arrayTotales.add(setMovimientoBase.getDouble("MontoBase"));
+                        } else {
+                            arrayTotales.add(0.00);
                         }
-                    }
-
-                    arrayTotales = new ArrayList();
+                    }                   
 
                     statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT SUM(Monto) AS VentaEfectivo FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 2");
                     statementMovimientoBase.setString(1, cajaTB.getIdCaja());
@@ -423,8 +430,14 @@ public class CajaADO {
             System.out.println("Error en cajaADO: " + ex.getLocalizedMessage());
         } finally {
             try {
+                if (statementValidar != null) {
+                    statementValidar.close();
+                }
                 if (statementMovimiento != null) {
                     statementMovimiento.close();
+                }
+                if (statementMovimientoBase != null) {
+                    statementMovimientoBase.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
@@ -554,9 +567,9 @@ public class CajaADO {
                 cajaTB.setCalculado(result.getDouble("Calculado"));
                 cajaTB.setDiferencia(result.getDouble("Diferencia"));
                 cajaTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
-                Label label = new Label(cajaTB.isEstado()? "APERTURADO":"CERRADO");
+                Label label = new Label(cajaTB.isEstado() ? "APERTURADO" : "CERRADO");
                 label.getStyleClass().add("labelRoboto14");
-                label.setTextFill(Color.web(cajaTB.isEstado()?"#016e29":"#1a2226"));
+                label.setTextFill(Color.web(cajaTB.isEstado() ? "#016e29" : "#1a2226"));
                 cajaTB.setLabelEstado(label);
                 empList.add(cajaTB);
             }

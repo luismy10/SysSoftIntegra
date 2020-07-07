@@ -43,7 +43,7 @@ public class FxImprimirController implements Initializable {
         if (cbImpresoras.getSelectionModel().getSelectedIndex() >= 0) {
             if (ticketController != null) {
                 billPrintable.setSheetWidth(ticketController.getSheetWidth());
-                billPrintable.generatePDFPrint(ticketController.getHbEncabezado(),ticketController.getHbDetalleCabecera(),ticketController.getHbPie(),cbImpresoras.getSelectionModel().getSelectedItem(),cbCortarPapel.isSelected());
+                billPrintable.generatePDFPrint(ticketController.getHbEncabezado(), ticketController.getHbDetalleCabecera(), ticketController.getHbPie(), cbImpresoras.getSelectionModel().getSelectedItem(), cbCortarPapel.isSelected());
             }
         } else {
             Tools.AlertMessageWarning(apWindow, "Imprimir", "Seleccione un impresora para continuar.");
@@ -66,4 +66,5 @@ public class FxImprimirController implements Initializable {
     public void setInitTicketController(FxTicketController ticketController) {
         this.ticketController = ticketController;
     }
+
 }

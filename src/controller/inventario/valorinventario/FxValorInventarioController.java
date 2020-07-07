@@ -1,19 +1,16 @@
 package controller.inventario.valorinventario;
 
-import controller.reporte.FxReportViewController;
+import controller.configuracion.tickets.FxTicketBusquedaController;
+import controller.tools.BillPrintable;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
-import java.awt.HeadlessException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,18 +32,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.SuministroADO;
 import model.SuministroTB;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 public class FxValorInventarioController implements Initializable {
 
@@ -91,11 +83,19 @@ public class FxValorInventarioController implements Initializable {
 
     private AnchorPane vbPrincipal;
 
+    private AnchorPane apEncabezado;
+
+    private AnchorPane apDetalleCabecera;
+
+    private AnchorPane apPie;
+
     private SearchComboBox<String> searchComboBoxExistencias;
 
     private SearchComboBox<DetalleTB> searchComboBoxCategoria;
 
     private SearchComboBox<DetalleTB> searchComboBoxMarca;
+
+    private BillPrintable billPrintable;
 
     private int paginacion;
 
@@ -122,6 +122,11 @@ public class FxValorInventarioController implements Initializable {
         tcInventario.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcMarca.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+
+        billPrintable = new BillPrintable();
+        apEncabezado = new AnchorPane();
+        apDetalleCabecera = new AnchorPane();
+        apPie = new AnchorPane();
 
         paginacion = 1;
         filtercbCategoria();
@@ -323,7 +328,7 @@ public class FxValorInventarioController implements Initializable {
                         tvList.getSelectionModel().getSelectedItem().getStockMinimo(),
                         tvList.getSelectionModel().getSelectedItem().getStockMaximo());
                 //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Ajuste de inventario", vbWindow.getScene().getWindow());
+                Stage stage = WindowStage.StageLoaderModal(parent, "Inventario general", vbWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
                 stage.setOnHiding((w) -> {
@@ -337,33 +342,24 @@ public class FxValorInventarioController implements Initializable {
     }
 
     private void generarReporte() {
-        if (tvList.getItems().isEmpty()) {
-            Tools.AlertMessageWarning(vbWindow, "Reporte Inventario", "No hay datos en la lista para mostrar en el reporte");
-            return;
-        }
         try {
-            InputStream dir = getClass().getResourceAsStream("/report/InventarioActual.jasper");
-
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
-            Map map = new HashMap();
-            map.put("OPCIONES_EXISTENCIA", searchComboBoxExistencias.getComboBox().getSelectionModel().getSelectedItem());
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(tvList.getItems()));
-
-            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_REPORTE_OPCIONES_INVENTARIO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-            FxReportViewController controller = fXMLLoader.getController();
-            controller.setJasperPrint(jasperPrint);
-            controller.show();
-            Stage stage = WindowStage.StageLoader(parent, "Inventario General");
-            stage.setResizable(true);
+            FxReporteOpcionesInventarioController controller = fXMLLoader.getController();
+            controller.setInitValorInventarioController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Inventario general", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((w) -> {
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            });
             stage.show();
-            stage.requestFocus();
-
-        } catch (HeadlessException | JRException | IOException ex) {
-            Tools.AlertMessageError(vbWindow, "Reporte de Inventario", "Error al generar el reporte : " + ex.getLocalizedMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
         }
     }
 
@@ -388,6 +384,76 @@ public class FxValorInventarioController implements Initializable {
                 fillInventarioTable("", (short) 0, "", (short) 5, 0, ((DetalleTB) searchComboBoxMarca.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle().get());
                 break;
         }
+    }
+
+    private void onEventTicketBusqueda() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_TICKET_BUSQUEDA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxTicketBusquedaController controller = fXMLLoader.getController();
+            controller.setInitValorInventarioController(this);
+            controller.loadComponents(3, false);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    public void setGenerarTicket(int idTicket, String rutaTicket) {
+
+        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA == null) {
+            Tools.AlertMessageWarning(vbWindow, "Inventario general", "No hay ruta de impresión, no se ha configurado la ruta de impresión");
+            return;
+        }
+
+        billPrintable.loadEstructuraTicket(idTicket, rutaTicket, apEncabezado, apDetalleCabecera, apPie);
+
+        for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
+            HBox box = ((HBox) apEncabezado.getChildren().get(i));
+            billPrintable.hbEncebezado(box,
+                    "TICKET",
+                    "00000000",
+                    "SIN DOCUMENTO",
+                    "PUBLICO GENERAL",
+                    "SIN DIRECCION",
+                    "SIN CODIGO");
+        }
+
+        AnchorPane hbDetalle = new AnchorPane();
+        for (int m = 0; m < tvList.getItems().size(); m++) {
+            for (int i = 0; i < apDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) apDetalleCabecera.getChildren().get(i));
+                billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
+                hbDetalle.getChildren().add(hBox);
+            }
+        }
+
+        for (int i = 0; i < apPie.getChildren().size(); i++) {
+            HBox box = ((HBox) apPie.getChildren().get(i));
+            billPrintable.hbPie(box, "",
+                    Tools.roundingValue(0, 2),
+                    "-" + Tools.roundingValue(0, 2),
+                    Tools.roundingValue(0, 2),
+                    Tools.roundingValue(0, 2),
+                    Tools.roundingValue(0, 2),
+                    Tools.roundingValue(0, 2),
+                    "SIN DOCUMENTO",
+                    "PUBLICO GENERAL", "SIN CODIGO");
+        }
+        
+        billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
+
     }
 
     @FXML
@@ -525,13 +591,13 @@ public class FxValorInventarioController implements Initializable {
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            onEventTicketBusqueda();
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-
+        onEventTicketBusqueda();
     }
 
     @FXML
@@ -578,8 +644,28 @@ public class FxValorInventarioController implements Initializable {
         }
     }
 
-    public ComboBox<String> getCbExistencia() {
-        return cbExistencia;
+    public TableView<SuministroTB> getTvList() {
+        return tvList;
+    }
+
+    public TableColumn<SuministroTB, Label> getTcExistencia() {
+        return tcExistencia;
+    }
+
+    public SearchComboBox<String> getSearchComboBoxExistencias() {
+        return searchComboBoxExistencias;
+    }
+
+    public AnchorPane getApEncabezado() {
+        return apEncabezado;
+    }
+
+    public AnchorPane getApDetalleCabecera() {
+        return apDetalleCabecera;
+    }
+
+    public AnchorPane getApPie() {
+        return apPie;
     }
 
     public void setContent(AnchorPane vbPrincipal) {

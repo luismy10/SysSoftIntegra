@@ -42,16 +42,6 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em;">
-               <children>
-                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="labelRoboto14" text="Nombre de la impresión" textFill="#1a2226" />
-                        <TextField fx:id="txtValor" onAction="#onActionGuardar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
                <children>
                   <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar">

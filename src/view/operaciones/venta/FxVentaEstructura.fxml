@@ -199,7 +199,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <ComboBox fx:id="cbTipoDocumento" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de documento" HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="cbTipoDocumento" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de documento" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT">
@@ -215,7 +215,7 @@
                                                 </Label>
                                                 <HBox>
                                                    <children>
-                                                      <TextField fx:id="txtNumeroDocumento" onAction="#onActionCliente" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="240.0" promptText="N° de documento" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionCliente" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="240.0" promptText="N° de documento" styleClass="text-field-normal" />
                                                       <Button fx:id="btnBuscarCliente" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonLightDefault">
                                                          <graphic>
                                                             <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -240,7 +240,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtDatosCliente" prefHeight="30.0" prefWidth="240.0" promptText="Cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtDatosCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT">

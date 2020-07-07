@@ -287,7 +287,6 @@ public class FxBienvenidaController implements Initializable {
             tipoDocumentoTB.setNombre("TICKET");
             tipoDocumentoTB.setSerie("T001");
             tipoDocumentoTB.setPredeterminado(true);
-            tipoDocumentoTB.setNombreDocumento("TICKET DE VENTA");
             tipoDocumentoTB.setSistema(true);
 
             ClienteTB clienteTB = new ClienteTB();

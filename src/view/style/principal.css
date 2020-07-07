@@ -14,7 +14,10 @@
     font-family: 'Monospace'; 
     src: url('Monospace.ttf'); 
 } 
-
+@font-face {
+    font-family: 'Consolas'; 
+    src: url('Consolas.ttf'); 
+} 
 
 .labelForm{
     -fx-font-family:"Roboto";  
@@ -2207,9 +2210,9 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-color: #999999;
     -fx-padding:0.16666666666666666em 0 0.16666666666666666em 0;
 
-    -fx-font-size:12.5px; 
+/*    -fx-font-size:12.5px; 
     -fx-font-family:"Monospace"; 
-    -fx-font-weight:bold;
+    -fx-font-weight:bold;*/
 }
 .text-field-ticket:hover{
     -fx-background-color: transparent, white;

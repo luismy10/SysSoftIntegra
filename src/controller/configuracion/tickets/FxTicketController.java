@@ -42,6 +42,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.ImageADO;
@@ -81,8 +82,12 @@ public class FxTicketController implements Initializable {
     private Label formatoTicket;
     @FXML
     private CheckBox cbPredeterminado;
+    @FXML
+    private ComboBox<String> cbFuente;
 
     private AnchorPane vbPrincipal;
+    
+    private TextFieldTicket tfAnterior;
 
     private TextFieldTicket tfReference;
 
@@ -109,6 +114,7 @@ public class FxTicketController implements Initializable {
         cbAlignment.getItems().add(Pos.CENTER_LEFT);
         cbAlignment.getItems().add(Pos.CENTER);
         cbAlignment.getItems().add(Pos.CENTER_RIGHT);
+        cbFuente.getItems().addAll("Consola", "Roboto Regular", "Roboto Medium");
     }
 
     public void loadTicket(int idTicket, int tipoTicket, String nombre, String ruta, boolean predeterminado) {
@@ -732,32 +738,42 @@ public class FxTicketController implements Initializable {
         field.setVariable(variable);
         field.setEditable(editable);
         field.setPreferredSize((double) widthColumn * pointWidth, 30);
+                field.setAlignment(align);
+
+        field.setFontName("Consola");
         field.getStyleClass().add("text-field-ticket");
-        field.setStyle("-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
-        field.setAlignment(align);
-        field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {
-            if (newPropertyValue) {
-                field.setStyle("-fx-background-color: #cecece;" + "-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
-
-                txtAnchoColumna.setText(field.getColumnWidth() + "");
-                tfReference = field;
-                cbAlignment.getItems().forEach(e -> {
-                    if (e.equals(field.getAlignment())) {
-                        cbAlignment.getSelectionModel().select(e);
-                    }
-                });
-                cbMultilinea.setSelected(field.isMultilineas());
-                cbMultilinea.setText(field.isMultilineas() ? "Si" : "No");
-
-                cbEditable.setSelected(field.isEditable());
-                cbEditable.setText(field.isEditable() ? "Si" : "No");
-
-                txtVariable.setText(field.getVariable());
-            } else {
-                field.setStyle("-fx-background-color: white;" + "-fx-text-fill:" + (editable ? "black" : "#d62c0a"));
-
+        field.setStyle("-fx-text-fill:" + (editable ? "black;" : "#d62c0a;") + "-fx-font-family:Monospace;-fx-font-size:12.5px;");
+        field.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+        tfAnterior = tfReference;
+        if (tfAnterior != null) {
+                tfAnterior.setStyle("-fx-background-color: white;" + "-fx-text-fill:" + (editable ? "black;" : "#d62c0a;") + "-fx-font-family:Monospace;-fx-font-size:12.5px;");
             }
+            field.setStyle("-fx-background-color: #cecece;" + "-fx-text-fill:" + (editable ? "black;" : "#d62c0a;") + "-fx-font-family:Monospace;-fx-font-size:12.5px;");
+
+         tfReference = field;
         });
+//        field.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) -> {
+//            if (newPropertyValue) {
+//                field.setStyle("-fx-background-color: #cecece;" + "-fx-text-fill:" + (editable ? "black;" : "#d62c0a;") + "-fx-font-family:Monospace;-fx-font-size:12.5px;");
+//                txtAnchoColumna.setText(field.getColumnWidth() + "");
+//                tfReference = field;
+//                cbAlignment.getItems().forEach(e -> {
+//                    if (e.equals(field.getAlignment())) {
+//                        cbAlignment.getSelectionModel().select(e);
+//                    }
+//                });
+//                cbFuente.getSelectionModel().select("Consola");
+//                cbMultilinea.setSelected(field.isMultilineas());
+//                cbMultilinea.setText(field.isMultilineas() ? "Si" : "No");
+//
+//                cbEditable.setSelected(field.isEditable());
+//                cbEditable.setText(field.isEditable() ? "Si" : "No");
+//
+//                txtVariable.setText(field.getVariable());
+//            } else {
+//                field.setStyle("-fx-background-color: white;" + "-fx-text-fill:" + (editable ? "black;" : "#d62c0a;") + "-fx-font-family:Monospace;-fx-font-size:12.5px;");
+//            }
+//        });
 
         field.lengthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if (!field.isMultilineas()) {
@@ -800,7 +816,7 @@ public class FxTicketController implements Initializable {
         textAdaptWidth.setGraphic(imgAdaptParentWidth);
         textAdaptWidth.setOnAction(e -> {
             field.setColumnWidth(sheetWidth);
-            field.setPreferredSize(((double) field.getColumnWidth() * pointWidth),field.getPrefHeight());
+            field.setPreferredSize(((double) field.getColumnWidth() * pointWidth), field.getPrefHeight());
         });
 
         MenuItem textLeft = new MenuItem("Alineación Izquierda");
@@ -868,19 +884,19 @@ public class FxTicketController implements Initializable {
                     if (!tfReference.isMultilineas() && tfReference.isEditable()) {
                         if (tfReference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth), tfReference.getPrefHeight());
                         } else {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth), tfReference.getPrefHeight());
                             tfReference.setText(tfReference.getText().substring(0, tfReference.getColumnWidth()));
                         }
                     } else {
                         if (tfReference.getText().length() < Integer.parseInt(txtAnchoColumna.getText())) {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth), tfReference.getPrefHeight());
                         } else {
                             tfReference.setColumnWidth(Short.parseShort(txtAnchoColumna.getText()));
-                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth),tfReference.getPrefHeight());
+                            tfReference.setPreferredSize(((double) tfReference.getColumnWidth() * pointWidth), tfReference.getPrefHeight());
                         }
                     }
                 }
@@ -932,6 +948,7 @@ public class FxTicketController implements Initializable {
             //Controlller here
             FxTicketBusquedaController controller = fXMLLoader.getController();
             controller.setInitTicketController(this);
+            controller.loadComponents(0, true);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
             stage.setResizable(false);
@@ -1114,7 +1131,7 @@ public class FxTicketController implements Initializable {
                     if (hBox.getChildren().get(j) instanceof TextFieldTicket) {
                         TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
-                        fieldTicket.setPreferredSize(newwidth * pointWidth,fieldTicket.getPrefHeight());
+                        fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
                     } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
                         ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
@@ -1132,7 +1149,7 @@ public class FxTicketController implements Initializable {
 
                         TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
-                        fieldTicket.setPreferredSize(newwidth * pointWidth,fieldTicket.getPrefHeight());
+                        fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
                     } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
                         ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
@@ -1150,7 +1167,7 @@ public class FxTicketController implements Initializable {
 
                         TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
-                        fieldTicket.setPreferredSize(newwidth * pointWidth,fieldTicket.getPrefHeight());
+                        fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
                     } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
                         ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
@@ -1442,7 +1459,7 @@ public class FxTicketController implements Initializable {
     private void onKeyPressedSearch(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             searchTicket();
-        }
+        } 
     }
 
     @FXML
@@ -1566,6 +1583,13 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onActionPredeterminado(ActionEvent event) {
         onEventPredeterminado();
+    }
+
+    @FXML
+    private void onActionFuente(ActionEvent event) {
+        if (tfReference != null) {
+//           tfReference
+        }
     }
 
     public AnchorPane getHbEncabezado() {

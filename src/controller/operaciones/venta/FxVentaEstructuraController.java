@@ -264,7 +264,7 @@ public class FxVentaEstructuraController implements Initializable {
     private void loadDataComponent() {
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
-            cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado(), e.getNombreDocumento()));
+            cbComprobante.getItems().add(e);
         });
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
@@ -1141,7 +1141,7 @@ public class FxVentaEstructuraController implements Initializable {
                     for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                         HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                         billPrintable.hbEncebezado(box,
-                                cbComprobante.getSelectionModel().getSelectedItem().getNombreDocumento(),
+                                ticket?cbComprobante.getSelectionModel().getSelectedItem().getNombre():"PRE VENTA",
                                 serieNumeracion,
                                 txtNumeroDocumento.getText().trim(),
                                 txtDatosCliente.getText().trim(), 

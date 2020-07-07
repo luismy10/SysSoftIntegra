@@ -11,6 +11,8 @@ public class TextFieldTicket extends TextField {
     private short lines;
     
     private String variable;
+    
+    private String fontName;
 
     public TextFieldTicket(String title, String id) {
         super(title);
@@ -55,5 +57,12 @@ public class TextFieldTicket extends TextField {
         this.variable = variable;
     }
 
+    public String getFontName() {
+        return fontName;
+    }
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+    }
 
 }

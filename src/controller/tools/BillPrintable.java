@@ -1,6 +1,7 @@
 package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +40,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -49,14 +51,16 @@ import net.sf.jasperreports.engine.design.JRDesignStaticText;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
 import net.sf.jasperreports.engine.type.ScaleImageEnum;
+import net.sf.jasperreports.engine.type.VerticalTextAlignEnum;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class BillPrintable {
 
     private int sheetWidth;
-    
+
     private final double pointWidthSizeView;
 
     private final double pointWidthSizePaper;
@@ -70,7 +74,7 @@ public class BillPrintable {
         fileImages = new ArrayList();
     }
 
-    public void hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String direccion_cliente,String codigoVenta) {
+    public void hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String direccion_cliente, String codigoVenta) {
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -117,7 +121,9 @@ public class BillPrintable {
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
-                if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText("" + (m + 1));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
                     fieldTicket.setText(arrList.get(m).getClave());
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
                     fieldTicket.setText(arrList.get(m).getNombreMarca());
@@ -288,9 +294,10 @@ public class BillPrintable {
             JasperDesign jasperDesign = getJasperDesign(width, apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
+//            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
             return "completed";
-        } catch (JRException | PrintException | IOException er) {
+        } catch (JRException /*| PrintException | IOException*/ er) {
             return "Error en imprimir: " + er.getLocalizedMessage();
         } finally {
             fileImages.stream().map((fileImage) -> new File(fileImage)).filter((removed) -> (removed != new File("./archivos/no-image"))).forEachOrdered((removed) -> {
@@ -323,7 +330,6 @@ public class BillPrintable {
         band.setHeight(2000);
 
         //font size 9f x 15 height
-        
         int rows = 0;
         rows += createRow(apEncabezado, jasperDesign, band, width, rows);
         rows = createRow(apDetalle, jasperDesign, band, width, rows);
@@ -430,7 +436,9 @@ public class BillPrintable {
                 staticText.setWidth(width);
                 staticText.setHeight(15);
                 staticText.setFontSize(9f);
+                //staticText.setFontName(field.getFontName());
                 staticText.setFontName("Consola");
+                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
                 staticText.setText(result.toString());
                 band.addElement(staticText);
                 rows += 15;
@@ -512,7 +520,6 @@ public class BillPrintable {
                                 break;
                         }
                     }
-
                     JRDesignStaticText staticText = new JRDesignStaticText();
                     staticText.setX(0);
                     staticText.setY(rows);
@@ -520,6 +527,15 @@ public class BillPrintable {
                     staticText.setHeight(15);
                     staticText.setFontSize(9f);
                     staticText.setFontName("Consola");
+//                    staticText.setHorizontalTextAlign(HorizontalTextAlignEnum.CENTER);
+//                    staticText.setHorizontalTextAlign(field.getAlignment() == Pos.CENTER_LEFT
+//                            ? HorizontalTextAlignEnum.LEFT
+//                            : field.getAlignment() == Pos.CENTER
+//                            ? HorizontalTextAlignEnum.CENTER
+//                            : field.getAlignment() == Pos.CENTER_RIGHT
+//                            ? HorizontalTextAlignEnum.RIGHT
+//                            : HorizontalTextAlignEnum.LEFT);
+                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
                     staticText.setText(result.toString());
                     band.addElement(staticText);
                     rows += 15;

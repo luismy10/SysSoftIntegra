@@ -40,11 +40,11 @@ public class FxCajaConsultasController implements Initializable {
     @FXML
     private GridPane gpList;
     @FXML
-    private Label lblTurno;
+    private Label lblInicoTurno;
+    @FXML
+    private Label lblFinTurno;
     @FXML
     private Label lblMontoBase;
-    @FXML
-    private Label lblTotal;
     @FXML
     private Label lblBase;
     @FXML
@@ -55,8 +55,17 @@ public class FxCajaConsultasController implements Initializable {
     private Label lblIngresosEfectivo;
     @FXML
     private Label lblRetirosEfectivo;
-
+    @FXML
+    private Label lblContado;
+    @FXML
+    private Label lblCanculado;
+    @FXML
+    private Label lblDiferencia;
+    @FXML
+    private Label lblTotal;
+    
     private AnchorPane windowinit;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,15 +94,20 @@ public class FxCajaConsultasController implements Initializable {
                     CajaTB cajaTB = (CajaTB) objects.get(0);
                     ArrayList<Double> arrayList = (ArrayList<Double>) objects.get(1);
 
-                    lblTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
-                    lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
-                    lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+                    lblInicoTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
+                    lblFinTurno.setText(cajaTB.getFechaCierre()+ " " + cajaTB.getHoraCierre());
+                    lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+                    lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
 
-                    lblVentaEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
-                    lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
-                    lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
-                    lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
-                    lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue((cajaTB.getContado() + arrayList.get(0) + arrayList.get(2)) - arrayList.get(3), 2));
+                    lblContado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+                    lblCanculado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getCalculado(), 2));
+                    lblDiferencia.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getDiferencia(), 2));
+                    
+                    lblVentaEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
+                    lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
+                    lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
+                    lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(4), 2));
+                    lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue((arrayList.get(0) + arrayList.get(1) + arrayList.get(3)) - arrayList.get(4), 2));
 
                     fillVentasDetalleTable((ArrayList<MovimientoCajaTB>) objects.get(2));
                 } else {
@@ -163,17 +177,6 @@ public class FxCajaConsultasController implements Initializable {
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
         return label;
-    }
-
-    private void clearListas() {
-        lblTurno.setText("00/00/0000 0:00");
-        lblMontoBase.setText("M 0.00");
-        lblTotal.setText("M 0.00");
-        lblBase.setText("M 0.00");
-        lblVentaEfectivo.setText("M 0.00");
-        lblVentaTarjeta.setText("M 0.00");
-        lblIngresosEfectivo.setText("M 0.00");
-        lblRetirosEfectivo.setText("M 0.00");
     }
 
     private void openWindowCaja() {

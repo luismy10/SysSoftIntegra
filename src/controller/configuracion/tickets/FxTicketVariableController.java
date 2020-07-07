@@ -72,6 +72,7 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Dirección del cliente", "DIRECCION DEL CLIENTE", "direcliente"));
             lvLista.getItems().addAll(listCabecera);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
+            listDetalleCuerpo.add(new TicketTB("Numeración de las filas", "1", "numfilas"));
             listDetalleCuerpo.add(new TicketTB("Código de barras", "789456123789", "codbarrasarticulo"));
             listDetalleCuerpo.add(new TicketTB("Descripción del árticulo", "Descripcion del articulo para la venta", "nombretarticulo"));
             listDetalleCuerpo.add(new TicketTB("Cantidad por árticulo", "1000", "cantarticulo"));
@@ -151,7 +152,7 @@ public class FxTicketVariableController implements Initializable {
             addTextVariable();
         } else if (event.getClickCount() == 1) {
             if (!lvLista.getItems().isEmpty()) {
-                txtContenido.setText(String.valueOf(lvLista.getSelectionModel().getSelectedItem().getVariable()));
+                txtContenido.setText(lvLista.getSelectionModel().getSelectedItem().getVariable().toString());
             }
         }
     }
