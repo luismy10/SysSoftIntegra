@@ -15,8 +15,6 @@
     src: url('Monospace.ttf'); 
 } 
 
-/*OPEN SANS FONT*/
-
 .labelForm{
     -fx-font-family:"Roboto";  
     -fx-font-size:1.1666666666666667em;/*14px*/
@@ -27,7 +25,6 @@
     -fx-font-family:"Roboto Bold";  
     -fx-font-size:1.1666666666666667em; /*14px*/
 }
-
 
 /*******************************************************************************
  *                                                                             *
@@ -2139,6 +2136,12 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-text-fill: white;
 }
 
+.label-existencia-Excedentes{
+    -fx-background-color: #02539a;
+    -fx-text-fill: white;
+}
+
+
 .label-asignacion{
     -fx-max-width: Infinity;
     -fx-background-color: #c6e2cc; 
@@ -2203,8 +2206,9 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-color: #999999;
     -fx-padding:0.16666666666666666em 0 0.16666666666666666em 0;
 
-    -fx-font-size:12.5px; 
+/*    -fx-font-size:12.5px; 
     -fx-font-family:"Monospace"; 
+    -fx-font-weight:bold;*/
 }
 .text-field-ticket:hover{
     -fx-background-color: transparent, white;

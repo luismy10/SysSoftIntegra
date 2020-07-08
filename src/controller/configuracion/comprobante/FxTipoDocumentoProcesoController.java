@@ -22,8 +22,6 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     @FXML
     private TextField txtNombre;
     @FXML
-    private TextField txtValor;
-    @FXML
     private TextField txtSerie;
     @FXML
     private Button btnGuardar;
@@ -37,11 +35,10 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo,String nombre,String serie, String valor) {
+    public void initUpdate(int codigo,String nombre,String serie) {
         idTipoDocumento = codigo;
         txtNombre.setText(nombre);
         txtSerie.setText(serie);
-        txtValor.setText(valor);
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
     }
@@ -53,16 +50,12 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         }else if(txtSerie.getText().trim().isEmpty()){
             Tools.AlertMessageWarning(window,"Tipo de documento","Ingrese serie del comprobante.");
             txtSerie.requestFocus();
-        }else if (txtValor.getText().trim().isEmpty()) {
-            Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese un nombre para la impresión");
-            txtValor.requestFocus();
-        } else {
+        }else {
             TipoDocumentoTB documentoTB = new TipoDocumentoTB();
             documentoTB.setIdTipoDocumento(idTipoDocumento);
             documentoTB.setNombre(txtNombre.getText().toUpperCase().trim());
             documentoTB.setSerie(txtSerie.getText().trim());
             documentoTB.setPredeterminado(false);
-            documentoTB.setNombreDocumento(txtValor.getText().toUpperCase().trim());
             
             String result = TipoDocumentoADO.CrudTipoDocumento(documentoTB);
             if (result.equalsIgnoreCase("updated")) {

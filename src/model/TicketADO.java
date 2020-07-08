@@ -194,14 +194,16 @@ public class TicketADO {
         return result;
     }
 
-    public static ArrayList<TicketTB> ListTicket() {
+    public static ArrayList<TicketTB> ListTicket(int tipoTicket, boolean todos) {
         ArrayList<TicketTB> list = new ArrayList<>();
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statementLista = null;
             ResultSet resultSet = null;
             try {
-                statementLista = DBUtil.getConnection().prepareStatement("SELECT * FROM TicketTB");
+                statementLista = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ticket_By_Tipo_Opcion(?,?)}");
+                statementLista.setInt(1, tipoTicket);
+                statementLista.setBoolean(2, todos);
                 resultSet = statementLista.executeQuery();
                 while (resultSet.next()) {
                     TicketTB ticketTB = new TicketTB();
@@ -300,8 +302,8 @@ public class TicketADO {
         }
         return ticketTB;
     }
-    
-      public static String ChangeDefaultState( int idTicket) {
+
+    public static String ChangeDefaultState(int idTicket) {
         String result = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
@@ -362,5 +364,4 @@ public class TicketADO {
         return result;
     }
 
-    
 }

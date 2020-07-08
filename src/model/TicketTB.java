@@ -11,7 +11,6 @@ public class TicketTB {
     private int tipo;
     private String ruta;
     private boolean predeterminado;
-    private short lista;
     private AnchorPane apCabecera;
     private AnchorPane apDetalle;
     private AnchorPane apPie;
@@ -25,11 +24,10 @@ public class TicketTB {
         this.variable = variable;
     }
 
-    public TicketTB(String nombreTicket, Object variable, String idVariable,short lista) {
+    public TicketTB(String nombreTicket, Object variable, String idVariable) {
         this.nombreTicket = nombreTicket;
         this.variable = variable;
         this.idVariable = idVariable;
-        this.lista=lista;
     }    
     
     public int getId() {
@@ -87,15 +85,7 @@ public class TicketTB {
     public void setPredeterminado(boolean predeterminado) {
         this.predeterminado = predeterminado;
     }
-
-    public short getLista() {
-        return lista;
-    }
-
-    public void setLista(short lista) {
-        this.lista = lista;
-    }
-
+    
     public AnchorPane getApCabecera() {
         return apCabecera;
     }

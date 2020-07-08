@@ -7,8 +7,11 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,114 +27,148 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import model.CajaADO;
+import model.CajaTB;
+import model.MovimientoCajaTB;
 
 public class FxCajaConsultasController implements Initializable {
 
     @FXML
     private ScrollPane window;
     @FXML
-    private Label lblTrabajador;
-    @FXML
-    private Label lblFechaCorte;
-    @FXML
-    private Label lblFondoCaja;
-    @FXML
-    private Label lblVentasEfectivo;
-    @FXML
-    private Label lblEntradas;
-    @FXML
-    private Label lblSalidas;
-    @FXML
-    private Label lblDevoluciones;
-    @FXML
-    private Label lblTotalDineroCaja;
-    @FXML
-    private Label lblEfectivo;
-    @FXML
-    private Label lblVentasCredito;
+    private Label lblLoad;
     @FXML
     private GridPane gpList;
-
+    @FXML
+    private Label lblInicoTurno;
+    @FXML
+    private Label lblFinTurno;
+    @FXML
+    private Label lblMontoBase;
+    @FXML
+    private Label lblBase;
+    @FXML
+    private Label lblVentaEfectivo;
+    @FXML
+    private Label lblVentaTarjeta;
+    @FXML
+    private Label lblIngresosEfectivo;
+    @FXML
+    private Label lblRetirosEfectivo;
+    @FXML
+    private Label lblContado;
+    @FXML
+    private Label lblCanculado;
+    @FXML
+    private Label lblDiferencia;
+    @FXML
+    private Label lblTotal;
+    
     private AnchorPane windowinit;
-
-    private double totalDineroCaja;
-
-//    private ObservableList<MovimientoCajaTB> arrList = null;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }
 
-    public void loadDataCorteCaja(String fecha, String usuario, String idCaja) {
-        clearListas();
-//        lblFechaCorte.setText(fecha);
-//        lblTrabajador.setText(usuario);
-//        MovimientoCajaTB fondoCaja = MovimientoCajaADO.FondoCaja(idCaja);
-//        if (fondoCaja != null) {
-//            lblFondoCaja.setText(Tools.roundingValue(fondoCaja.getSaldo(), 2));
-//            totalDineroCaja = fondoCaja.getSaldo();
-//        }
-//
-//        MovimientoCajaTB ventasEfectivo = MovimientoCajaADO.VentasEfectivo(idCaja);
-//        if (ventasEfectivo != null) {
-//            lblEfectivo.setText(Tools.roundingValue(ventasEfectivo.getSaldo(), 2));
-//            lblVentasEfectivo.setText(Tools.roundingValue(ventasEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja + ventasEfectivo.getSaldo();
-//        }
-//
-//        MovimientoCajaTB ventasCredito = MovimientoCajaADO.VentasCredito(idCaja);
-//        if (ventasCredito != null) {
-//            lblVentasCredito.setText(Tools.roundingValue(ventasCredito.getSaldo(), 2));
-//        }
-//
-//        MovimientoCajaTB ingresosEfectivo = MovimientoCajaADO.IngresosEfectivo(idCaja);
-//        if (ingresosEfectivo != null) {
-//            lblEntradas.setText(Tools.roundingValue(ingresosEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja + ingresosEfectivo.getSaldo();
-//        }
-//
-//        MovimientoCajaTB egresosEfectivoCompra = MovimientoCajaADO.EgresosEfectivoCompra(idCaja);
-//        if (egresosEfectivoCompra != null) {
-//            lblSalidas.setText("-" + Tools.roundingValue(egresosEfectivoCompra.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja - egresosEfectivoCompra.getSaldo();
-//        }
-//
-//        MovimientoCajaTB egresosEfectivo = MovimientoCajaADO.EgresosEfectivo(idCaja);
-//        if (egresosEfectivo != null) {
-//            lblSalidas.setText("-" + Tools.roundingValue(egresosEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja - egresosEfectivo.getSaldo();
-//        }
-//
-//        MovimientoCajaTB devolucionesEfectivo = MovimientoCajaADO.DevolucionesEfectivo(idCaja);
-//        if (devolucionesEfectivo != null) {
-//            lblDevoluciones.setText("-" + Tools.roundingValue(devolucionesEfectivo.getSaldo(), 2));
-//            totalDineroCaja = totalDineroCaja - devolucionesEfectivo.getSaldo();
-//        }
-//
-//        lblTotalDineroCaja.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(Math.abs(totalDineroCaja), 2));
-//
-//        fillVentasDetalleTable(MovimientoCajaADO.ListarCajasAperturadas(idCaja));
+    public void loadDataCorteCaja(String idCaja) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task< ArrayList<Object>> task = new Task< ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                return CajaADO.ListarMovimientoPorById(idCaja);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                if (objects.get(0) != null && objects.get(1) != null && objects.get(2) != null) {
+                    CajaTB cajaTB = (CajaTB) objects.get(0);
+                    ArrayList<Double> arrayList = (ArrayList<Double>) objects.get(1);
+
+                    lblInicoTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
+                    lblFinTurno.setText(cajaTB.getFechaCierre()+ " " + cajaTB.getHoraCierre());
+                    lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+                    lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+
+                    lblContado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+                    lblCanculado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getCalculado(), 2));
+                    lblDiferencia.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getDiferencia(), 2));
+                    
+                    lblVentaEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
+                    lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
+                    lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
+                    lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(4), 2));
+                    lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue((arrayList.get(0) + arrayList.get(1) + arrayList.get(3)) - arrayList.get(4), 2));
+
+                    fillVentasDetalleTable((ArrayList<MovimientoCajaTB>) objects.get(2));
+                } else {
+                    Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+                }
+            } else {
+                Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+            }
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled(e -> {
+            lblLoad.setVisible(true);
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
     }
 
-    private void fillVentasDetalleTable() {
-//        arrList = empList;
-//        for (int i = 0; i < arrList.size(); i++) {
-//            gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getFechaMovimiento() + "\n" + arrList.get(i).getHoraMovimiento() + "", Pos.CENTER_LEFT, "#020203"), 0, (i + 1));
-//            gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getComentario(), Pos.CENTER_LEFT, "#020203"), 1, (i + 1));
-//            gpList.add(addElementGridPane("l3" + (i + 1), arrList.get(i).getMovimiento(), Pos.CENTER_LEFT, "#020203"), 2, (i + 1));
-//            gpList.add(addElementGridPane("l4" + (i + 1), Tools.roundingValue(arrList.get(i).getEntrada(), 2), Pos.CENTER_RIGHT, "#020203"), 3, (i + 1));
-//            gpList.add(addElementGridPane("l5" + (i + 1), (arrList.get(i).getSalidas() <= 0 ? "" : "-") + Tools.roundingValue(arrList.get(i).getSalidas(), 2), Pos.CENTER_RIGHT, "#ff0000"), 4, (i + 1));
-//            gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getSaldo(), 2), Pos.CENTER_RIGHT, "#0d4e9e"), 5, (i + 1));
-//        }
+    private void fillVentasDetalleTable(ArrayList<MovimientoCajaTB> arrList) {
+        for (int i = 0; i < arrList.size(); i++) {
+            gpList.add(addElementGridPane("l1" + (i + 1), "" + arrList.get(i).getId(), Pos.CENTER_LEFT, "#020203"), 0, (i + 1));
+            gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getFechaMovimiento() + "\n" + arrList.get(i).getHoraMovimiento(), Pos.CENTER_LEFT, "#020203"), 1, (i + 1));
+            gpList.add(addElementGridPane("l3" + (i + 1), arrList.get(i).getComentario(), Pos.CENTER_LEFT, "#020203"), 2, (i + 1));
+            gpList.add(addElementGridPane("l4" + (i + 1),
+                    arrList.get(i).getTipoMovimiento() == 1 ? "MONTO INICIAL" : arrList.get(i).getTipoMovimiento() == 2 ? "VENTA CON EFECTIVO"
+                    : arrList.get(i).getTipoMovimiento() == 3 ? "VENTA CON TARJETA"
+                    : arrList.get(i).getTipoMovimiento() == 4 ? "INGRESO DE DINERO" : "SALIDAS DE DINERO",
+                    Pos.CENTER_LEFT, "#020203"), 3, (i + 1));
+            gpList.add(addElementGridPane("l5" + (i + 1),
+                    arrList.get(i).getTipoMovimiento() == 1
+                    || arrList.get(i).getTipoMovimiento() == 2
+                    || arrList.get(i).getTipoMovimiento() == 3
+                    || arrList.get(i).getTipoMovimiento() == 4
+                    ? Tools.roundingValue(arrList.get(i).getMonto(), 2)
+                    : "",
+                    Pos.CENTER_RIGHT, "#0d4e9e"), 4, (i + 1));
+            gpList.add(addElementGridPane("l6" + (i + 1),
+                    arrList.get(i).getTipoMovimiento() == 1
+                    || arrList.get(i).getTipoMovimiento() == 2
+                    || arrList.get(i).getTipoMovimiento() == 3
+                    || arrList.get(i).getTipoMovimiento() == 4
+                    ? ""
+                    : Tools.roundingValue(arrList.get(i).getMonto(), 2),
+                    Pos.CENTER_RIGHT, "#ff0000"), 5, (i + 1));
+        }
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos, String textFill) {
         Label label = new Label(nombre);
         label.setId(id);
         label.setTextFill(Color.web(textFill));
-        label.setStyle("-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
+        label.setStyle("-fx-background-color: #eaeaea;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
         label.getStyleClass().add("labelRoboto14");
         label.setAlignment(pos);
         label.setWrapText(true);
@@ -140,16 +177,6 @@ public class FxCajaConsultasController implements Initializable {
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
         return label;
-    }
-
-    private void clearListas() {
-        lblFondoCaja.setText("00.00");
-        lblVentasEfectivo.setText("00.00");
-        lblEntradas.setText("00.00");
-        lblSalidas.setText("00.00");
-        lblDevoluciones.setText("00.00");
-        lblEfectivo.setText("00.00");
-        lblTotalDineroCaja.setText("00.00");
     }
 
     private void openWindowCaja() {
@@ -165,9 +192,7 @@ public class FxCajaConsultasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar corte de caja", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                windowinit.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> windowinit.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
 
         } catch (IOException ex) {
@@ -187,36 +212,6 @@ public class FxCajaConsultasController implements Initializable {
     @FXML
     private void onActionSearch(ActionEvent event) {
         openWindowCaja();
-    }
-
-    @FXML
-    private void onKeyPressedReport(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-
-        }
-    }
-
-    @FXML
-    private void onActionReport(ActionEvent event) {
-
-    }
-
-    @FXML
-    private void onKeyPressedTicket(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-
-        }
-    }
-
-    @FXML
-    private void onActionTicket(ActionEvent event) {
-
-    }
-
-    private void onKeyPressedDetalleMovimiento(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-
-        }
     }
 
     public void setContent(AnchorPane windowinit) {

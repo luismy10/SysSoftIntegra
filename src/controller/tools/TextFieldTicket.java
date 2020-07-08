@@ -11,6 +11,14 @@ public class TextFieldTicket extends TextField {
     private short lines;
     
     private String variable;
+    
+    private String fontName;
+    
+    private String fontColor;
+    
+    private String fontBackground;
+    
+    private float fontSize;
 
     public TextFieldTicket(String title, String id) {
         super(title);
@@ -18,6 +26,7 @@ public class TextFieldTicket extends TextField {
     }
 
     public void setPreferredSize(double width, double height) {
+//        setMinWidth(width);
         setPrefWidth(width);
         setPrefHeight(height);
     }
@@ -54,5 +63,36 @@ public class TextFieldTicket extends TextField {
         this.variable = variable;
     }
 
+    public String getFontName() {
+        return fontName;
+    }
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+    }
+
+    public String getFontColor() {
+        return fontColor;
+    }
+
+    public void setFontColor(String fontColor) {
+        this.fontColor = fontColor;
+    }
+
+    public String getFontBackground() {
+        return fontBackground;
+    }
+
+    public void setFontBackground(String fontBackground) {
+        this.fontBackground = fontBackground;
+    } 
+
+    public float getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(float fontSize) {
+        this.fontSize = fontSize;
+    }
 
 }

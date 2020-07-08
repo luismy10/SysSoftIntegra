@@ -100,7 +100,6 @@
                                     <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcTipoComprobante" prefWidth="168.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de comprobante" />
                                     <TableColumn fx:id="tcSerie" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Serie" />
-                                    <TableColumn fx:id="tcNombreImpresion" prefWidth="201.0" style="-fx-alignment: CENTER-LEFT;" text="Nombre de Impresión" />
                                     <TableColumn fx:id="tcPredeterminado" prefWidth="119.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
                                  </columns>
                               </TableView>

@@ -63,11 +63,6 @@ public class Session {
     public static String MONEDA_SIMBOLO;
 
     /*
-    variable de proveedor
-     */
-    public static String PROVEEDOR_ID;
-
-    /*
     variables de caja/banco
      */
     public static String CAJA_ID;

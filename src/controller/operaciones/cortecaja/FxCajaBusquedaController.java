@@ -16,6 +16,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +29,8 @@ public class FxCajaBusquedaController implements Initializable {
     @FXML
     private AnchorPane window;
     @FXML
+    private Label lblLoad;
+    @FXML
     private DatePicker dtFechaInicial;
     @FXML
     private DatePicker dcFechaFinal;
@@ -38,7 +41,7 @@ public class FxCajaBusquedaController implements Initializable {
     @FXML
     private TableColumn<CajaTB, String> tcFechaCierre;
     @FXML
-    private TableColumn<CajaTB, String> tcEstado;
+    private TableColumn<CajaTB, Label> tcEstado;
     @FXML
     private TableColumn<CajaTB, String> tcContado;
     @FXML
@@ -47,10 +50,6 @@ public class FxCajaBusquedaController implements Initializable {
     private TableColumn<CajaTB, String> tcDiferencia;
     @FXML
     private TableColumn<CajaTB, String> tcUsuario;
-    @FXML
-    private Label lblLoad;
-
-    private boolean stateRequest;
 
     private FxCajaConsultasController cajaConsultasController;
 
@@ -67,23 +66,19 @@ public class FxCajaBusquedaController implements Initializable {
                 cellData.getValue().getFechaCierre() + "\n"
                 + cellData.getValue().getHoraCierre()
         ));
-        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().isEstado() ? "Aperturado" : "Cerrado"));
+        tcEstado.setCellValueFactory(new PropertyValueFactory<>("labelEstado"));
         tcContado.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getContado(), 2)));
         tcCalculado.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCalculado(), 2)));
         tcDiferencia.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDiferencia(), 2)));
         tcUsuario.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEmpleadoTB().getApellidos() + "\n" + cellData.getValue().getEmpleadoTB().getNombres()));
-        stateRequest = false;
         if (dtFechaInicial.getValue() != null && dcFechaFinal.getValue() != null) {
             fillTableCajas(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dcFechaFinal));
         }
     }
 
     private void acceptBusqueda() {
-        if (tvLista.getSelectionModel().getSelectedIndex() >= 0) {           
-            cajaConsultasController.loadDataCorteCaja(tvLista.getSelectionModel().getSelectedItem().getFechaCierre()
-                    + " " + tvLista.getSelectionModel().getSelectedItem().getHoraCierre(),
-                    tvLista.getSelectionModel().getSelectedItem().getEmpleadoTB().getApellidos() + " " + tvLista.getSelectionModel().getSelectedItem().getEmpleadoTB().getNombres(),
-                    tvLista.getSelectionModel().getSelectedItem().getIdCaja());
+        if (tvLista.getSelectionModel().getSelectedIndex() >= 0) {
+            cajaConsultasController.loadDataCorteCaja(tvLista.getSelectionModel().getSelectedItem().getIdCaja());
             Tools.Dispose(window);
         }
     }
@@ -103,15 +98,12 @@ public class FxCajaBusquedaController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             tvLista.setItems(task.getValue());
             lblLoad.setVisible(false);
-            stateRequest = false;
         });
         task.setOnFailed((WorkerStateEvent e) -> {
             lblLoad.setVisible(false);
-            stateRequest = false;
         });
         task.setOnScheduled((WorkerStateEvent e) -> {
             lblLoad.setVisible(true);
-            stateRequest = true;
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -120,7 +112,7 @@ public class FxCajaBusquedaController implements Initializable {
     }
 
     private void reloadBusqueda() {
-        if (!stateRequest) {
+        if (!lblLoad.isVisible()) {
             Tools.actualDate(Tools.getDate(), dtFechaInicial);
             Tools.actualDate(Tools.getDate(), dcFechaFinal);
             if (dtFechaInicial.getValue() != null && dcFechaFinal.getValue() != null) {
@@ -167,7 +159,7 @@ public class FxCajaBusquedaController implements Initializable {
 
     @FXML
     private void onActionFechaInicial(ActionEvent event) {
-        if (!stateRequest) {
+        if (!lblLoad.isVisible()) {
             if (dtFechaInicial.getValue() != null && dcFechaFinal.getValue() != null) {
                 fillTableCajas(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dcFechaFinal));
             }
@@ -176,7 +168,7 @@ public class FxCajaBusquedaController implements Initializable {
 
     @FXML
     private void onActionFechaFinal(ActionEvent event) {
-        if (!stateRequest) {
+        if (!lblLoad.isVisible()) {
             if (dtFechaInicial.getValue() != null && dcFechaFinal.getValue() != null) {
                 fillTableCajas(Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dcFechaFinal));
             }

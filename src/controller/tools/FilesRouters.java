@@ -35,7 +35,7 @@ public final class FilesRouters {
     public static final String TITLE_APP = "SysSoftIntegra";
 
     public static final String FX_LOGIN = "/view/login/FxLogin.fxml";
-    
+
     public static final String FX_BIENVENIDA = "/view/preloader/FxBienvenida.fxml";
 
     public static final String FX_VALIDAR_ACCESO = "/view/login/FxValidarAcceso.fxml";
@@ -203,7 +203,7 @@ public final class FilesRouters {
     public static final String FX_VENTA_FONDO_INICIAL = "/view/operaciones/venta/FxVentaFondoInicial.fxml";
 
     public static final String FX_VENTA_VALIDAR_CAJA = "/view/operaciones/venta/FxVentaValidarCaja.fxml";
-    
+
     public static final String FX_CAJA_NO_REGISTRADA = "/view/operaciones/venta/FxCajaNoRegistrada.fxml";
 
     public static final String FX_VENTA_GRANEL = "/view/operaciones/venta/FxVentaGranel.fxml";
@@ -244,8 +244,10 @@ public final class FilesRouters {
     public static final String FX_LOTE_PROCESO = "/view/inventario/lote/FxLoteProceso.fxml";
 
     public static final String FX_VALOR_INVENTARIO = "/view/inventario/valorinventario/FxValorInventario.fxml";
-    
+
     public static final String FX_INVENTARIO_AJUSTE = "/view/inventario/valorinventario/FxInventarioAjuste.fxml";
+
+    public static final String FX_REPORTE_OPCIONES_INVENTARIO = "/view/inventario/valorinventario/FxReporteOpcionesInventario.fxml";
 
     public static final String FX_EQUIPOS = "/view/produccion/equipos/FxEquipos.fxml";
 
@@ -283,15 +285,15 @@ public final class FilesRouters {
     public static final String FX_ASIGNACION_PROCESO = "/view/produccion/asignacion/FxAsignacionProceso.fxml";
 
     public static final String FX_REPORTE_VIEW = "/view/reporte/FxReportView.fxml";
-    
+
     public static final String FX_GLOBAL_REPORTE = "/view/reporte/FxGlobalReporte.fxml";
-    
+
     public static final String FX_VENTA_REPORTE = "/view/reporte/FxVentaReporte.fxml";
 
     public static final String FX_VENTA_UTILIDADES = "/view/reporte/FxVentaUtilidades.fxml";
-    
-    public static final String FX_COMPRA_REPORTE= "/view/reporte/FxCompraReporte.fxml";
-    
+
+    public static final String FX_COMPRA_REPORTE = "/view/reporte/FxCompraReporte.fxml";
+
     public static final String FX_PRODUCTO_REPORTE = "/view/reporte/FxProductoReporte.fxml";
 
     //--------------------------------------------------------------------------------------------------

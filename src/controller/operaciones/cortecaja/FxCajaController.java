@@ -322,6 +322,7 @@ public class FxCajaController implements Initializable {
 
             FxCajaCerrarCajaController controller = fXMLLoader.getController();
             controller.loadDataInit(idActual, totalDineroCaja, totalTarjeta);
+            controller.setInitCerrarCajaController(vbPrincipal);
 
             Stage stage = WindowStage.StageLoaderModal(parent, "Realizar corte de caja", window.getScene().getWindow());
             stage.setResizable(false);

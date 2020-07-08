@@ -76,7 +76,7 @@
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../image/cancel.png" />
+                        <Image url="@../../image/escoba.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -225,13 +225,19 @@
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" />
-                                          <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" />
+                                          <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Fuente" />
+                                          <ComboBox fx:id="cbFuente" maxWidth="1.7976931348623157E308" onAction="#onActionFuente" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Alineación" />
-                                          <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
+                                          <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
@@ -257,7 +263,7 @@
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Variable" />
-                                          <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" />
+                                          <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
                                  </children>

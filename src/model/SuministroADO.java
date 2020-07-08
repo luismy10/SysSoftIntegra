@@ -1002,24 +1002,27 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static ObservableList<SuministroTB> ListInventario(String producto, short tipoExistencia, String nameProduct,short opcion, int categoria, int marca) {
-        String selectStmt = "{call Sp_Listar_Inventario_Suministros(?,?,?,?,?,?)}";
-        PreparedStatement preparedStatement = null;
+    public static ArrayList<Object> ListInventario(String producto, short tipoExistencia, String nameProduct, short opcion, int categoria, int marca,int paginacion,int filasPorPagina) {
+        PreparedStatement preparedStatementSuministros = null;
+        PreparedStatement preparedStatementTotales = null;
         ResultSet rsEmps = null;
+        ArrayList<Object> objects = new ArrayList<>();
         ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, producto);
-            preparedStatement.setShort(2, tipoExistencia);
-            preparedStatement.setString(3, nameProduct);
-            preparedStatement.setShort(4, opcion);
-            preparedStatement.setInt(5, categoria);
-            preparedStatement.setInt(6, marca);
-            rsEmps = preparedStatement.executeQuery();
+            preparedStatementSuministros = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Inventario_Suministros(?,?,?,?,?,?,?,?)}");
+            preparedStatementSuministros.setString(1, producto);
+            preparedStatementSuministros.setShort(2, tipoExistencia);
+            preparedStatementSuministros.setString(3, nameProduct);
+            preparedStatementSuministros.setShort(4, opcion);
+            preparedStatementSuministros.setInt(5, categoria);
+            preparedStatementSuministros.setInt(6, marca);
+            preparedStatementSuministros.setInt(7, paginacion);
+            preparedStatementSuministros.setInt(8, filasPorPagina);
+            rsEmps = preparedStatementSuministros.executeQuery();
             while (rsEmps.next()) {
                 SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow());
+                suministroTB.setId(rsEmps.getRow()+paginacion);
                 suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
@@ -1036,21 +1039,42 @@ public class SuministroADO {
 
                 Label lblCantidad = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2) + " " + suministroTB.getUnidadCompraName());
                 lblCantidad.getStyleClass().add("label-existencia");
-                lblCantidad.getStyleClass().add(suministroTB.getCantidad() <= 0
+                lblCantidad.getStyleClass().add(
+                        suministroTB.getCantidad() <= 0
                         ? "label-existencia-negativa"
-                        : suministroTB.getCantidad() > 0 && suministroTB.getCantidad() <= suministroTB.getStockMinimo()
+                        : suministroTB.getCantidad() > 0 && suministroTB.getCantidad() < suministroTB.getStockMinimo()
                         ? "label-existencia-intermedia"
-                        : "label-existencia-normal");
+                        : suministroTB.getCantidad()>=suministroTB.getStockMinimo() && suministroTB.getCantidad() < suministroTB.getStockMaximo()
+                        ? "label-existencia-normal"
+                        : "label-existencia-Excedentes");
                 suministroTB.setLblCantidad(lblCantidad);
 
                 empList.add(suministroTB);
             }
+            objects.add(empList);
+            
+            preparedStatementTotales = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Inventario_Suministros_Count(?,?,?,?,?,?)}");
+            preparedStatementTotales.setString(1, producto);
+            preparedStatementTotales.setShort(2, tipoExistencia);
+            preparedStatementTotales.setString(3, nameProduct);
+            preparedStatementTotales.setShort(4, opcion);
+            preparedStatementTotales.setInt(5, categoria);
+            preparedStatementTotales.setInt(6, marca);
+            rsEmps = preparedStatementTotales.executeQuery();
+            Integer integer = 0;
+            if(rsEmps.next()){
+                integer = rsEmps.getInt("Total");
+            }
+            objects.add(integer);
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
         } finally {
             try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
+                if (preparedStatementSuministros != null) {
+                    preparedStatementSuministros.close();
+                }
+                if (preparedStatementTotales != null) {
+                    preparedStatementTotales.close();
                 }
                 if (rsEmps != null) {
                     rsEmps.close();
@@ -1060,7 +1084,7 @@ public class SuministroADO {
 
             }
         }
-        return empList;
+        return objects;
     }
 
     public static ObservableList<SuministroTB> List_Suministros_In_Produccion(short opcion, String clave, String nombre) {

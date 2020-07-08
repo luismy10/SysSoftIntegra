@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -12,18 +13,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox fx:id="vbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.valorinventario.FxValorInventarioController">
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../image/almacen.png" />
-               </image>
-            </ImageView>
-            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Inventario" />
+            <Label styleClass="labelRobotoMedium18" text="Inventario" textFill="#1a2226">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/almacen.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
             <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
                <font>
                   <Font name="Roboto" size="14.0" />
@@ -65,6 +68,15 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionTicket" onKeyPressed="#onKeyPressedTicket" styleClass="buttonLight" text="Ticket">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/ticket.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children></HBox>
             <HBox>
                <children>
@@ -84,96 +96,174 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Codigo">
-                                       <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/barcode.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefWidth="240.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Producto">
-                                       <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/lote-box.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtNameProduct" onKeyReleased="#onKeyReleasedNameProduct" prefWidth="240.0" promptText="Nombre de articulo" styleClass="text-field-normal" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Opciones de Existencia">
-                                       <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/plazos.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <ComboBox fx:id="cbExistencia" onAction="#onActionExistencia" prefWidth="240.0" promptText="Seleccione" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Categoria">
-                                       <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/options.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <ComboBox fx:id="cbCategoria" onAction="#onActionCategoria" prefWidth="240.0" promptText="Seleccione" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Marca">
-                                       <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/bullets.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <ComboBox fx:id="cbMarca" onAction="#onActionMarca" prefWidth="240.0" promptText="Seleccione" />
-                                 </children>
-                              </VBox>
+                              <Label styleClass="labelOpenSansRegular14" text="Codigo" textFill="#1a2226">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/barcode.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefWidth="260.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
                            </children>
-                        </HBox>
+                        </VBox>
+                        <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Producto" textFill="#1a2226">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/lote-box.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <TextField fx:id="txtNameProduct" onKeyReleased="#onKeyReleasedNameProduct" prefWidth="260.0" promptText="Nombre de articulo" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-spacing: 0.3333333333333333em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Opciones de cantidades" textFill="#1a2226">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/plazos.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <ComboBox fx:id="cbExistencia" prefWidth="260.0" promptText="Seleccione" />
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-spacing: 0.3333333333333333em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Categoria" textFill="#1a2226">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/options.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <ComboBox fx:id="cbCategoria" prefWidth="260.0" promptText="Seleccione" />
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-spacing: 0.3333333333333333em;">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Marca" textFill="#1a2226">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/bullets.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <ComboBox fx:id="cbMarca" prefWidth="260.0" promptText="Seleccione" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Separator />
+                  <HBox style="-fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="labelOpenSansRegular14" text="Negativas: son cantidades menores que cero" textFill="RED">
+                                 <graphic>
+                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/note.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelOpenSansRegular14" text="Intermedias: son cantidades mayores que cero y menores que el stock mínimo" textFill="ORANGE">
+                                 <graphic>
+                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/note.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label prefHeight="28.0" styleClass="labelOpenSansRegular14" text="Necesarias: son cantidades mayores que el stock mínimo y menores que el stock máximo" textFill="GREEN">
+                                 <graphic>
+                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/note.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <Label styleClass="labelOpenSansRegular14" text="Excedentes: son cantidades mayores que el stock máximo" textFill="#02539a">
+                                 <graphic>
+                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/note.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tvList" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
-                           <columns>
-                              <TableColumn fx:id="tcNumero" prefWidth="75.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcDescripcion" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                              <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo General" />
-                              <TableColumn fx:id="tcPrecio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio Venta" />
-                              <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                              <TableColumn fx:id="tcInventario" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Inv. Min/Max" />
-                              <TableColumn fx:id="tcCategoria" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
-                              <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
-                           </columns>
-                        </TableView>
+                        <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TableView fx:id="tvList" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="tcNumero" prefWidth="75.0" style="-fx-alignment: CENTER;" text="N°" />
+                                    <TableColumn fx:id="tcDescripcion" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                                    <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo General" />
+                                    <TableColumn fx:id="tcPrecio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio Venta" />
+                                    <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                    <TableColumn fx:id="tcInventario" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Inv.Min / Inv.Max" />
+                                    <TableColumn fx:id="tcCategoria" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
+                                    <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
+                                 </columns>
+                              </TableView>
+                              <HBox alignment="CENTER" style="-fx-background-color: cccccc;">
+                                 <children>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/left.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" />
+                                          <Label styleClass="labelForm" text="de" />
+                                          <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" />
+                                          <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/right.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                </children>

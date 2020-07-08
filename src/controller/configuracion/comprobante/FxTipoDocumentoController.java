@@ -47,8 +47,6 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableColumn<TipoDocumentoTB, String> tcSerie;
     @FXML
-    private TableColumn<TipoDocumentoTB, String> tcNombreImpresion;
-    @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
 
     private AnchorPane vbPrincipal;
@@ -58,14 +56,12 @@ public class FxTipoDocumentoController implements Initializable {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcTipoComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie()));
-        tcNombreImpresion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreDocumento()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
 
-        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcTipoComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
-        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
-        tcNombreImpresion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
-        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
+        tcTipoComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.35));
+        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
     }
 
     public void fillTabletTipoDocumento() {
@@ -129,9 +125,7 @@ public class FxTipoDocumentoController implements Initializable {
             controller.setTipoDocumentoController(this);
             controller.initUpdate(tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     tvList.getSelectionModel().getSelectedItem().getNombre(),
-                    tvList.getSelectionModel().getSelectedItem().getSerie(),
-                    tvList.getSelectionModel().getSelectedItem().getNombreDocumento()
-            );
+                    tvList.getSelectionModel().getSelectedItem().getSerie());
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());
             stage.setResizable(false);

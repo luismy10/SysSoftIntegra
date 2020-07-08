@@ -9,7 +9,6 @@ public class TipoDocumentoTB {
     private String nombre;
     private String serie;
     private boolean predeterminado;
-    private String nombreDocumento;
     private boolean sistema;
     private ImageView imagePredeterminado;
 
@@ -35,20 +34,6 @@ public class TipoDocumentoTB {
         this.imagePredeterminado = imagePredeterminado;
     }
 
-    public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado, String nombreDocumento, ImageView imagePredeterminado) {
-        this.idTipoDocumento = idTipoDocumento;
-        this.nombre = nombre;
-        this.predeterminado = predeterminado;
-        this.nombreDocumento = nombreDocumento;
-        this.imagePredeterminado = imagePredeterminado;
-    }
-
-    public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado, String nombreDocumento) {
-        this.idTipoDocumento = idTipoDocumento;
-        this.nombre = nombre;
-        this.predeterminado = predeterminado;
-        this.nombreDocumento = nombreDocumento;
-    }
 
     public int getId() {
         return id;
@@ -88,14 +73,6 @@ public class TipoDocumentoTB {
 
     public void setPredeterminado(boolean predeterminado) {
         this.predeterminado = predeterminado;
-    }
-
-    public String getNombreDocumento() {
-        return nombreDocumento;
-    }
-
-    public void setNombreDocumento(String nombreDocumento) {
-        this.nombreDocumento = nombreDocumento;
     }
 
     public boolean isSistema() {

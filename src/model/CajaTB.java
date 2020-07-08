@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.control.Label;
+
 
 public class CajaTB {
 
@@ -16,7 +18,7 @@ public class CajaTB {
     private String idUsuario;
     private EmpleadoTB empleadoTB;
     private MovimientoCajaTB movimientoCajaTB;
-    
+    private Label labelEstado;
     public CajaTB() {
         
     }
@@ -123,6 +125,14 @@ public class CajaTB {
 
     public void setMovimientoCajaTB(MovimientoCajaTB movimientoCajaTB) {
         this.movimientoCajaTB = movimientoCajaTB;
+    }
+
+    public Label getLabelEstado() {
+        return labelEstado;
+    }
+
+    public void setLabelEstado(Label labelEstado) {
+        this.labelEstado = labelEstado;
     }
 
     

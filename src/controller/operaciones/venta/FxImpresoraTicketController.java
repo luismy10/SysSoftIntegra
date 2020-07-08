@@ -105,7 +105,7 @@ public class FxImpresoraTicketController implements Initializable {
                         + "\nCorta papel"
                         + "\n\n\n\n\n\n\n\n\n\n";
                 printerService.printString(cbImpresoras.getSelectionModel().getSelectedItem(), text, cbCortarPapel.isSelected());
-                ventaEstructuraController.imprimirPrueba(cbImpresoras.getSelectionModel().getSelectedItem(), cbCortarPapel.isSelected());
+               // ventaEstructuraController.imprimirPrueba(cbImpresoras.getSelectionModel().getSelectedItem(), cbCortarPapel.isSelected());
             }
         } else {
             Tools.AlertMessageWarning(window, "Impresora de ticket", "Seleccione una impresora");
