@@ -23,10 +23,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.GlobalADO;
+import model.SuministroTB;
 
 public class FxInicioController implements Initializable {
 
@@ -50,14 +54,21 @@ public class FxInicioController implements Initializable {
     private Text lblComprasTotales;
     @FXML
     private BarChart<String, Number> bcVentasMes;
-    @FXML
     private BarChart<String, Number> bcProductos;
     @FXML
     private PieChart pcCompras;
+    @FXML
+    private Text lblCantidadNegativa;
+    @FXML
+    private Text lblCantidadIntermedia;
+    @FXML
+    private Text lblCantidadNecesaria;
+    @FXML
+    private Text lblCantidadExcedente;
+    @FXML
+    private HBox hbListaProductosVendidos;
 
-    private final XYChart.Series ventasSeries = new XYChart.Series<>();
-
-    private final XYChart.Series productosSeries = new XYChart.Series<>();
+    private XYChart.Series ventasSeries = new XYChart.Series<>();
 
     private ObservableList<PieChart.Data> datas = FXCollections.observableArrayList(
             new PieChart.Data("Compras al contado", 0),
@@ -66,7 +77,7 @@ public class FxInicioController implements Initializable {
             new PieChart.Data("Compras guardadas", 0)
     );
 
-    private short count = 59;
+    private short count = 10;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -83,30 +94,37 @@ public class FxInicioController implements Initializable {
         clock.play();
 
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(() -> {            
-            count--;            
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            count--;
             Platform.runLater(() -> {
                 lblActualización.setText("El dashboard  se va actualizar en " + count + " segundos");
             });
             if (count == 0) {
                 Platform.runLater(() -> {
-                    ArrayList<String> arrayList = GlobalADO.ReporteInicio(Tools.getDate());
+                    ArrayList<Object> arrayList = GlobalADO.ReporteInicio(Tools.getDate());
                     lblVentasTotales.setText(Session.MONEDA_SIMBOLO + " " + arrayList.get(0));
                     lblComprasTotales.setText(Session.MONEDA_SIMBOLO + " " + arrayList.get(1));
-                    lblArticulo.setText(arrayList.get(2));
-                    lblCliente.setText(arrayList.get(3));
-                    lblProveedor.setText(arrayList.get(4));
-                    lblTrabajador.setText(arrayList.get(5));
-                    loadGraphics();
+                    lblArticulo.setText((String) arrayList.get(2));
+                    lblCliente.setText((String) arrayList.get(3));
+                    lblProveedor.setText((String) arrayList.get(4));
+                    lblTrabajador.setText((String) arrayList.get(5));
+                    lblCantidadNegativa.setText("Cantidades Negativas: " + arrayList.get(6));
+                    lblCantidadIntermedia.setText("Cantidades Intermedias: " + arrayList.get(7));
+                    lblCantidadNecesaria.setText("Cantidades Necesarias: " + arrayList.get(8));
+                    lblCantidadExcedente.setText("Cantidades Excedentes: " + arrayList.get(9));
+
+                    ArrayList<SuministroTB> listaProductos = (ArrayList<SuministroTB>) arrayList.get(10);
+
+                    loadGraphics(listaProductos);
                 });
-                count = 59;
-            }            
+                count = 10;
+            }
         }, 0, 1, TimeUnit.SECONDS);
     }
 
     public void initGraphics() {
 
-        ventasSeries.setName("Mayo 2020");
+        ventasSeries.setName(Tools.getDate());
         ventasSeries.getData().add(new XYChart.Data("Semana 1", 0));
         ventasSeries.getData().add(new XYChart.Data("Semana 2", 0));
         ventasSeries.getData().add(new XYChart.Data("Semana 3", 0));
@@ -120,16 +138,23 @@ public class FxInicioController implements Initializable {
                 new PieChart.Data("Compras guardadas", 0)
         );
         pcCompras.setData(datas);
+        
+       
+        
+        VBox vBox = new VBox();
+        vBox.getChildren().add(new Label("asdasdt6"));
+        vBox.getChildren().add(new Label("asdasdy7"));
+        vBox.getChildren().add(new Label("asdasd5"));
+        vBox.getChildren().add(new Label("asdasd4"));
+        vBox.getChildren().add(new Label("asdasd2"));
+        vBox.getChildren().add(new Label("asdasd3"));
+        vBox.getChildren().add(new Label("asdasd1"));
+        hbListaProductosVendidos.getChildren().add(vBox);
+         
 
-        productosSeries.setName("Pollo");
-        productosSeries.getData().add(new XYChart.Data("Arroz", 0));
-        productosSeries.getData().add(new XYChart.Data("Pollo", 0));
-        productosSeries.getData().add(new XYChart.Data("Gaseosa", 0));
-        productosSeries.getData().add(new XYChart.Data("Pan", 0));
-        bcProductos.getData().add(productosSeries);
     }
 
-    private void loadGraphics() {
+    private void loadGraphics(ArrayList<SuministroTB> listaProductos) {
         ventasSeries.getData().set(0, new XYChart.Data("Semana 1", new Random().nextInt(101)));
         ventasSeries.getData().set(1, new XYChart.Data("Semana 2", new Random().nextInt(101)));
         ventasSeries.getData().set(2, new XYChart.Data("Semana 3", new Random().nextInt(101)));
@@ -143,13 +168,6 @@ public class FxInicioController implements Initializable {
         );
         pcCompras.setData(datas);
 
-        productosSeries.getData().set(0, new XYChart.Data("Arroz", new Random().nextInt(101)));
-        productosSeries.getData().set(1, new XYChart.Data("Pollo", new Random().nextInt(101)));
-        productosSeries.getData().set(2, new XYChart.Data("Gaseosa", new Random().nextInt(101)));
-        productosSeries.getData().set(3, new XYChart.Data("Pan", new Random().nextInt(101)));
     }
-    
-    
-    
 
 }

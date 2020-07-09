@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 public class GlobalADO {
 
@@ -75,7 +76,7 @@ public class GlobalADO {
                     if (resultSet != null) {
                         resultSet.close();
                     }
-                    if(preparedGlobal != null){
+                    if (preparedGlobal != null) {
                         preparedGlobal.close();
                     }
                     DBUtil.dbDisconnect();
@@ -87,16 +88,29 @@ public class GlobalADO {
         return list;
     }
 
-    public static ArrayList<String> ReporteInicio(String fechaActual) {
+    public static Object TopProducts() {
+
+        return "";
+    }
+
+    public static ArrayList<Object> ReporteInicio(String fechaActual) {
         PreparedStatement preparedLista = null;
         ResultSet resultLista = null;
-        ArrayList<String> arrayList = new ArrayList<>();
+        ArrayList<Object> arrayList = new ArrayList<>();
         double ventasTotales = 0;
         double comprasTotales = 0;
         double articulos = 0;
         double clientes = 0;
         double proveedores = 0;
         double trabajadores = 0;
+
+        double cantidad_negativas = 0;
+        double cantidad_intermedias = 0;
+        double cantidad_necesarias = 0;
+        double cantidad_excedentes = 0;
+
+        ArrayList<SuministroTB> listaProductos = new ArrayList<>();
+
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             try {
@@ -138,6 +152,45 @@ public class GlobalADO {
                     trabajadores = resultLista.getDouble("Total");
                 }
 
+                // CANTIDADES
+                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Negativos' from SuministroTB where Cantidad <= 0");
+                resultLista = preparedLista.executeQuery();
+                if (resultLista.next()) {
+                    cantidad_negativas = resultLista.getDouble("Productos Negativos");
+                }
+
+                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Intermedios' from SuministroTB where Cantidad > 0 and Cantidad < StockMinimo");
+                resultLista = preparedLista.executeQuery();
+                if (resultLista.next()) {
+                    cantidad_intermedias = resultLista.getDouble("Productos Intermedios");
+                }
+
+                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Necesarios' from SuministroTB where Cantidad >= StockMinimo and Cantidad < StockMaximo");
+                resultLista = preparedLista.executeQuery();
+                if (resultLista.next()) {
+                    cantidad_necesarias = resultLista.getDouble("Productos Necesarios");
+                }
+
+                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Execedentes' from SuministroTB where Cantidad >= StockMaximo");
+                resultLista = preparedLista.executeQuery();
+                if (resultLista.next()) {
+                    cantidad_excedentes = resultLista.getDouble("Productos Execedentes");
+                }
+
+                preparedLista = DBUtil.getConnection().prepareStatement("select Top 10 dt.IdArticulo, s.NombreMarca, count(dt.Cantidad) as Cantidad from DetalleVentaTB as dt \n" 
+                        +"inner join SuministroTB as s on dt.IdArticulo=s.IdSuministro \n" 
+                        +"inner join VentaTB as v on v.IdVenta=dt.IdVenta\n"
+                        +"where v.FechaVenta = ?\n"
+                        +"group by dt.IdArticulo, s.NombreMarca  order by count(1) desc");
+                preparedLista.setString(1, Tools.getDate());
+                resultLista = preparedLista.executeQuery();
+                while(resultLista.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setNombreMarca(resultLista.getString("NombreMarca"));
+                    suministroTB.setCantidad(resultLista.getDouble("Cantidad"));
+                    listaProductos.add(suministroTB);
+                }
+
                 arrayList.add(Tools.roundingValue(ventasTotales, 2));
                 arrayList.add(Tools.roundingValue(comprasTotales, 2));
                 arrayList.add(Tools.roundingValue(articulos, 0));
@@ -145,6 +198,12 @@ public class GlobalADO {
                 arrayList.add(Tools.roundingValue(proveedores, 0));
                 arrayList.add(Tools.roundingValue(trabajadores, 0));
 
+                //CANTIDAD
+                arrayList.add(Tools.roundingValue(cantidad_negativas, 0));
+                arrayList.add(Tools.roundingValue(cantidad_intermedias, 0));
+                arrayList.add(Tools.roundingValue(cantidad_necesarias, 0));
+                arrayList.add(Tools.roundingValue(cantidad_excedentes, 0));
+                arrayList.add(listaProductos);
             } catch (SQLException ex) {
                 arrayList.add(Tools.roundingValue(ventasTotales, 2));
                 arrayList.add(Tools.roundingValue(comprasTotales, 2));
@@ -152,6 +211,13 @@ public class GlobalADO {
                 arrayList.add(Tools.roundingValue(clientes, 0));
                 arrayList.add(Tools.roundingValue(proveedores, 0));
                 arrayList.add(Tools.roundingValue(trabajadores, 0));
+
+                //CANTIDAD
+                arrayList.add(Tools.roundingValue(cantidad_negativas, 0));
+                arrayList.add(Tools.roundingValue(cantidad_intermedias, 0));
+                arrayList.add(Tools.roundingValue(cantidad_necesarias, 0));
+                arrayList.add(Tools.roundingValue(cantidad_excedentes, 0));
+                arrayList.add(listaProductos);
             } finally {
                 try {
                     if (preparedLista != null) {
@@ -360,7 +426,7 @@ public class GlobalADO {
                 if (statementCliente != null) {
                     statementCliente.close();
                 }
-                if(codigoCliente != null){
+                if (codigoCliente != null) {
                     codigoCliente.close();
                 }
                 DBUtil.dbDisconnect();

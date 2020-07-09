@@ -46,31 +46,58 @@ public class DirectorioADO {
     }
 
     public static String CrudEntity(DirectorioTB directorioTB) {
-        String selectStmt = "{call Sp_Crud_Directorio(?,?,?,?,?)}";
-        CallableStatement callableStatement = null;
-        try {
-            DBUtil.dbConnect();
-            callableStatement = DBUtil.getConnection().prepareCall(selectStmt);
-            callableStatement.setLong("IdDirectorio", directorioTB.getIdDirectorio());
-            callableStatement.setInt("Atributo", directorioTB.getAtributo());
-            callableStatement.setString("Valor", directorioTB.getValor());
-            callableStatement.setString("IdPersona", directorioTB.getIdPersona());
-
-            callableStatement.registerOutParameter("Message", java.sql.Types.VARCHAR, 20);
-            callableStatement.execute();
-            return callableStatement.getString("Message");
-        } catch (SQLException e) {
-            return e.getLocalizedMessage();
-        } finally {
-            try {
-                if (callableStatement != null) {
-                    callableStatement.close();
+        String result = null;
+        PreparedStatement statementValidate = null;
+        PreparedStatement statementDirectorio = null;
+        DBUtil.dbConnect();
+        if(DBUtil.getConnection() != null){
+            try{
+                DBUtil.getConnection().setAutoCommit(false);
+                statementValidate = DBUtil.getConnection().prepareCall("select * from DirectorioTB where IdDirectorio = ?");
+                statementValidate.setLong(1, directorioTB.getIdDirectorio());
+                if(statementValidate.executeQuery().next()){
+                    statementDirectorio = DBUtil.getConnection().prepareStatement("update DirectorioTB set Atributo = ?, Valor= ? where IdDirectorio = ?");
+                    statementDirectorio.setInt(1, directorioTB.getAtributo());
+                    statementDirectorio.setString(2, directorioTB.getValor());
+                    statementDirectorio.setLong(3, directorioTB.getIdDirectorio());
+                    statementDirectorio.addBatch();
+                        
+                    statementDirectorio.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "updated";
+                }else{
+                    statementDirectorio = DBUtil.getConnection().prepareStatement("insert into DirectorioTB(Atributo,Valor,IdPersona) values(?,?,?)");
+                    statementDirectorio.setInt(1, directorioTB.getAtributo());
+                    statementDirectorio.setString(2, directorioTB.getValor());
+                    statementDirectorio.setString(3, directorioTB.getIdPersona());
+                    statementDirectorio.addBatch();
+                    
+                    statementDirectorio.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "registered";
                 }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-                return ex.getLocalizedMessage();
+                
+            }catch(SQLException e){
+                result = e.getLocalizedMessage();
+            }finally{
+                try{
+                    if(statementValidate != null){
+                        statementValidate.close();
+                    }
+                    if (statementDirectorio != null) {
+                        statementDirectorio.close();
+                    }
+                    DBUtil.dbDisconnect();
+                }catch(SQLException ex){
+                    result = ex.getLocalizedMessage();
+                }
             }
+        }else{
+            result = "No se puedo establecer conexión con el servidor, revice y vuelva a intentarlo.";
         }
+        
+        return result;
+        
     }
 
     public static ArrayList<DirectorioTB> GetIdDirectorio(String documento) {
