@@ -84,6 +84,8 @@ public class FxTicketController implements Initializable {
     private CheckBox cbPredeterminado;
     @FXML
     private ComboBox<String> cbFuente;
+    @FXML
+    private ComboBox<Float> cbSize;
 
     private AnchorPane vbPrincipal;
 
@@ -115,6 +117,7 @@ public class FxTicketController implements Initializable {
         cbAlignment.getItems().add(Pos.CENTER);
         cbAlignment.getItems().add(Pos.CENTER_RIGHT);
         cbFuente.getItems().addAll("Consola", "Roboto Regular", "Roboto Bold");
+        cbSize.getItems().addAll(12.5f, 14.5f, 16.5f, 18.5f, 20.5f, 22.5f, 24.5f);
     }
 
     public void loadTicket(int idTicket, int tipoTicket, String nombre, String ruta, boolean predeterminado) {
@@ -141,14 +144,14 @@ public class FxTicketController implements Initializable {
                     JSONObject objectObtener = Json.obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                         box.getChildren().add(field);
                     } else if (objectObtener.get("list") != null) {
                         JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                         Iterator it = array.iterator();
                         while (it.hasNext()) {
                             JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                             box.getChildren().add(field);
                         }
                     } else if (objectObtener.get("image") != null) {
@@ -169,14 +172,14 @@ public class FxTicketController implements Initializable {
                     JSONObject objectObtener = Json.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                         box.getChildren().add(field);
                     } else if (objectObtener.get("list") != null) {
                         JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                         Iterator it = array.iterator();
                         while (it.hasNext()) {
                             JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                             box.getChildren().add(field);
                         }
                     } else if (objectObtener.get("image") != null) {
@@ -197,14 +200,14 @@ public class FxTicketController implements Initializable {
                     JSONObject objectObtener = Json.obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
                     if (objectObtener.get("text") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                         box.getChildren().add(field);
                     } else if (objectObtener.get("list") != null) {
                         JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                         Iterator it = array.iterator();
                         while (it.hasNext()) {
                             JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                            TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                             box.getChildren().add(field);
                         }
                     } else if (objectObtener.get("image") != null) {
@@ -556,13 +559,13 @@ public class FxTicketController implements Initializable {
         hBox.setPrefWidth(sheetWidth * pointWidth);
         //font size 12.5px
         hBox.setPrefHeight(30);
-        hBox.setStyle("-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;;-fx-background-color: white;");
+        hBox.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;;-fx-background-color: white;");
         hBox.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
             hboxAnterior = hboxReference;
             if (hboxAnterior != null) {
-                hboxAnterior.setStyle("-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: white;");
+                hboxAnterior.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: white;");
             }
-            hBox.setStyle("-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
+            hBox.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
 
             hboxReference = hBox;
         });
@@ -609,7 +612,7 @@ public class FxTicketController implements Initializable {
         MenuItem text = new MenuItem("Agregar Texto");
         text.setGraphic(imgText);
         text.setOnAction(e -> {
-            TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, (short) 0, (short) 13, Pos.CENTER_LEFT, true, "");
+            TextFieldTicket field = addElementTextField("iu", "Escriba aqui.", false, (short) 0, (short) 13, Pos.CENTER_LEFT, true, "", "Consola", 12.5f);
             hBox.getChildren().add(field);
         });
 
@@ -632,7 +635,7 @@ public class FxTicketController implements Initializable {
             for (int i = 0; i < sheetWidth; i++) {
                 value += "-";
             }
-            TextFieldTicket field = addElementTextField("iu", value, false, (short) 0, sheetWidth, Pos.CENTER_LEFT, false, "");
+            TextFieldTicket field = addElementTextField("iu", value, false, (short) 0, sheetWidth, Pos.CENTER_LEFT, false, "", "Consola", 12.5f);
             hBox.getChildren().add(field);
         });
 
@@ -643,7 +646,7 @@ public class FxTicketController implements Initializable {
             for (int i = 0; i < sheetWidth; i++) {
                 value += "=";
             }
-            TextFieldTicket field = addElementTextField("iu", value, false, (short) 0, sheetWidth, Pos.CENTER_LEFT, false, "");
+            TextFieldTicket field = addElementTextField("iu", value, false, (short) 0, sheetWidth, Pos.CENTER_LEFT, false, "", "Consola", 12.5f);
             hBox.getChildren().add(field);
         });
 
@@ -689,7 +692,7 @@ public class FxTicketController implements Initializable {
                     Tools.println(valor);
                 }
 
-                ImageViewTicket imageView = addElementImageView("/view/image/no-image.png", sheetWidth, 60, 60, true);
+                ImageViewTicket imageView = addElementImageView("/view/image/no-image.png", sheetWidth, 100, 86, true);
                 imageView.setId(newCodigo);
                 hBox.setAlignment(Pos.CENTER_LEFT);
                 hBox.setPrefHeight(imageView.getFitHeight());
@@ -742,7 +745,7 @@ public class FxTicketController implements Initializable {
         return hBox;
     }
 
-    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable) {
+    public TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable, String font, float size) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
@@ -752,21 +755,21 @@ public class FxTicketController implements Initializable {
         field.setPreferredSize((double) widthColumn * pointWidth, 30);
         field.setAlignment(align);
         field.setFontColor(editable ? "black" : "#d62c0a");
-        field.setFontName("Consola");
-        field.setFontSize(12.5f);
+        field.setFontName(font);
+        field.setFontSize(size);
         field.setFontBackground("white");
         field.getStyleClass().add("text-field-ticket");
-        field.setStyle("-fx-background-color:" + field.getFontBackground() + " ;-fx-text-fill:" + field.getFontColor() + ";-fx-font-family:" + (field.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : field.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:12.5px;");
+        field.setStyle("-fx-background-color:" + field.getFontBackground() + " ;-fx-text-fill:" + field.getFontColor() + ";-fx-font-family:" + (field.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : field.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + field.getFontSize() + ";");
         field.addEventHandler(MouseEvent.MOUSE_PRESSED, m -> {
             tfAnterior = tfReference;
             if (tfAnterior != null) {
-                tfAnterior.setStyle("-fx-background-color: white;-fx-text-fill:" + tfAnterior.getFontColor() + ";-fx-font-family:" + (tfAnterior.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfAnterior.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:12.5px;");
+                tfAnterior.setStyle("-fx-background-color: white;-fx-text-fill:" + tfAnterior.getFontColor() + ";-fx-font-family:" + (tfAnterior.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfAnterior.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + tfAnterior.getFontSize() + ";");
             }
-            
+
             tfReference = field;
-            
+
             tfReference.setFontBackground("#cecece");
-            tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:12.5px;");
+            tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + field.getFontSize() + ";");
 
             txtAnchoColumna.setText(tfReference.getColumnWidth() + "");
             cbAlignment.getItems().forEach(c -> {
@@ -774,14 +777,17 @@ public class FxTicketController implements Initializable {
                     cbAlignment.getSelectionModel().select(c);
                 }
             });
+            HBox hBox = (HBox) tfReference.getParent();
+            cbFuente.setDisable(hBox.getChildren().size()>1);
             cbFuente.getSelectionModel().select(tfReference.getFontName());
+            cbSize.setDisable(hBox.getChildren().size()>1);
+            cbSize.getSelectionModel().select(tfReference.getFontSize());
             cbMultilinea.setSelected(tfReference.isMultilineas());
             cbMultilinea.setText(tfReference.isMultilineas() ? "Si" : "No");
             cbEditable.setSelected(tfReference.isEditable());
             cbEditable.setText(tfReference.isEditable() ? "Si" : "No");
             txtVariable.setText(tfReference.getVariable());
 
-            
         });
 
         field.lengthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
@@ -922,6 +928,8 @@ public class FxTicketController implements Initializable {
         apPie.getChildren().clear();
         txtAnchoColumna.setText("");
         cbAlignment.getSelectionModel().select(null);
+        cbFuente.getSelectionModel().select(null);
+        cbSize.getSelectionModel().select(null);
         cbMultilinea.setSelected(false);
         cbEditable.setSelected(false);
         txtVariable.setText("");
@@ -1216,7 +1224,7 @@ public class FxTicketController implements Initializable {
                 for (int r = 0; r < hboxReference.getChildren().size(); r++) {
                     if (hboxReference.getChildren().get(r) instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) hboxReference.getChildren().get(r);
-                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         oldHbox.getChildren().add(fieldTicket);
                     } else if (hboxReference.getChildren().get(r) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) hboxReference.getChildren().get(r);
@@ -1236,7 +1244,7 @@ public class FxTicketController implements Initializable {
                 for (int a = 0; a < previous.getChildren().size(); a++) {
                     if (previous.getChildren().get(a) instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) previous.getChildren().get(a);
-                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         newHbox.getChildren().add(fieldTicket);
                     } else if (previous.getChildren().get(a) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) previous.getChildren().get(a);
@@ -1280,7 +1288,7 @@ public class FxTicketController implements Initializable {
                 for (int a = 0; a < later.getChildren().size(); a++) {
                     if (later.getChildren().get(a) instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) later.getChildren().get(a);
-                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         newHbox.getChildren().add(fieldTicket);
                     } else if (later.getChildren().get(a) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) later.getChildren().get(a);
@@ -1299,7 +1307,7 @@ public class FxTicketController implements Initializable {
                 for (int r = 0; r < hboxReference.getChildren().size(); r++) {
                     if (hboxReference.getChildren().get(r) instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) hboxReference.getChildren().get(r);
-                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable());
+                        TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         oldHbox.getChildren().add(fieldTicket);
                     } else if (hboxReference.getChildren().get(r) instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) hboxReference.getChildren().get(r);
@@ -1597,17 +1605,31 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onActionFuente(ActionEvent event) {
         if (tfReference != null) {
-            if (cbFuente.getSelectionModel().getSelectedIndex() == 0) {
-                tfReference.setFontName("Consola");
-                tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:12.5px;");
-            } else if (cbFuente.getSelectionModel().getSelectedIndex() == 1) {
-                tfReference.setFontName("Roboto Regular");
-                tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:12.5px;");
-            } else {
-                tfReference.setFontName("Roboto Bold");
-                tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:12.5px;");
+            switch (cbFuente.getSelectionModel().getSelectedIndex()) {
+                case 0:
+                    tfReference.setFontName("Consola");
+                    tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + tfReference.getFontSize() + ";");
+                    break;
+                case 1:
+                    tfReference.setFontName("Roboto Regular");
+                    tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + tfReference.getFontSize() + ";");
+                    break;
+                default:
+                    tfReference.setFontName("Roboto Bold");
+                    tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + tfReference.getFontSize() + ";");
+                    break;
             }
 
+        }
+    }
+
+    @FXML
+    private void onSize(ActionEvent event) {
+        if (tfReference != null) {
+            if (cbFuente.getSelectionModel().getSelectedIndex() >= 0) {
+                tfReference.setFontSize(cbSize.getSelectionModel().getSelectedItem());
+                tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + tfReference.getFontSize() + ";");
+            }
         }
     }
 

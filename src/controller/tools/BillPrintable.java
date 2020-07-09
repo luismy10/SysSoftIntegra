@@ -1,7 +1,6 @@
 package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,7 +39,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -136,7 +134,7 @@ public class BillPrintable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
                     fieldTicket.setText(Tools.roundingValue(arrList.get(m).getTotalImporte(), 2));
                 }
-                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable()));
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(),fieldTicket.getFontName(),fieldTicket.getFontSize()));
             }
         }
     }
@@ -294,10 +292,10 @@ public class BillPrintable {
             JasperDesign jasperDesign = getJasperDesign(width, apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
-//            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
+//            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
+            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
             return "completed";
-        } catch (JRException /*| PrintException | IOException*/ er) {
+        } catch (JRException | PrintException | IOException er) {
             return "Error en imprimir: " + er.getLocalizedMessage();
         } finally {
             fileImages.stream().map((fileImage) -> new File(fileImage)).filter((removed) -> (removed != new File("./archivos/no-image"))).forEachOrdered((removed) -> {
@@ -519,33 +517,30 @@ public class BillPrintable {
 //                                break;
 //                        }
 //                    }
-                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);                    
+                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
                     JRDesignStaticText staticText = new JRDesignStaticText();
                     staticText.setX(0);
                     staticText.setY(rows);
                     staticText.setWidth(width);
-                    staticText.setHeight(15);
-                    staticText.setFontSize(9f);
+                    staticText.setHeight((int) (field.getFontSize()+2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
+                    staticText.setFontSize(field.getFontSize()-3.5f);
                     staticText.setFontName(
                             field.getFontName().equalsIgnoreCase("Consola")
                             ? "Consola"
                             : field.getFontName().equalsIgnoreCase("Roboto Regular")
                             ? "RobotoRegular"
                             : "RobotoBold");
-                    
-//                    staticText.setFontName("Consola");
-//                    staticText.setHorizontalTextAlign(HorizontalTextAlignEnum.CENTER);
-//                    staticText.setHorizontalTextAlign(field.getAlignment() == Pos.CENTER_LEFT
-//                            ? HorizontalTextAlignEnum.LEFT
-//                            : field.getAlignment() == Pos.CENTER
-//                            ? HorizontalTextAlignEnum.CENTER
-//                            : field.getAlignment() == Pos.CENTER_RIGHT
-//                            ? HorizontalTextAlignEnum.RIGHT
-//                            : HorizontalTextAlignEnum.LEFT);
+                    staticText.setHorizontalTextAlign(
+                            field.getAlignment() == Pos.CENTER_LEFT
+                            ? HorizontalTextAlignEnum.LEFT
+                            : field.getAlignment() == Pos.CENTER
+                            ? HorizontalTextAlignEnum.CENTER
+                            : HorizontalTextAlignEnum.RIGHT);
                     staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-                    staticText.setText(result.toString());
+                    staticText.setText(field.getText());
+//                    staticText.setText(result.toString());
                     band.addElement(staticText);
-                    rows += 15;
+                    rows += staticText.getHeight();
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
                     String idImage = "./archivos/no-image.png";
@@ -711,14 +706,14 @@ public class BillPrintable {
                 JSONObject objectObtener = Json.obtenerObjetoJSON(cabeceraObjects.get("cb_" + (i + 1)).toString());
                 if (objectObtener.get("text") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                     box.getChildren().add(field);
                 } else if (objectObtener.get("list") != null) {
                     JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                     Iterator it = array.iterator();
                     while (it.hasNext()) {
                         JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                         box.getChildren().add(field);
                     }
                 } else if (objectObtener.get("image") != null) {
@@ -739,14 +734,14 @@ public class BillPrintable {
                 JSONObject objectObtener = Json.obtenerObjetoJSON(detalleObjects.get("dr_" + (i + 1)).toString());
                 if (objectObtener.get("text") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                     box.getChildren().add(field);
                 } else if (objectObtener.get("list") != null) {
                     JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                     Iterator it = array.iterator();
                     while (it.hasNext()) {
                         JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                         box.getChildren().add(field);
                     }
                 } else if (objectObtener.get("image") != null) {
@@ -768,14 +763,14 @@ public class BillPrintable {
                 JSONObject objectObtener = Json.obtenerObjetoJSON(pieObjects.get("cp_" + (i + 1)).toString());
                 if (objectObtener.get("text") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("text").toString());
-                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                    TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                     box.getChildren().add(field);
                 } else if (objectObtener.get("list") != null) {
                     JSONArray array = Json.obtenerArrayJSON(objectObtener.get("list").toString());
                     Iterator it = array.iterator();
                     while (it.hasNext()) {
                         JSONObject object = Json.obtenerObjetoJSON(it.next().toString());
-                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()));
+                        TextFieldTicket field = addElementTextField("iu", object.get("value").toString(), Boolean.valueOf(object.get("multiline").toString()), Short.parseShort(object.get("lines").toString()), Short.parseShort(object.get("width").toString()), getAlignment(object.get("align").toString()), Boolean.parseBoolean(object.get("editable").toString()), String.valueOf(object.get("variable").toString()), String.valueOf(object.get("font").toString()), Float.valueOf(object.get("size").toString()));
                         box.getChildren().add(field);
                     }
                 } else if (objectObtener.get("image") != null) {
@@ -870,7 +865,7 @@ public class BillPrintable {
         return hBox;
     }
 
-    private TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable) {
+    private TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable,String font,float size) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
@@ -879,6 +874,8 @@ public class BillPrintable {
         field.setEditable(editable);
         field.getStyleClass().add("text-field-ticket");
         field.setAlignment(align);
+         field.setFontName(font);
+        field.setFontSize(size);
         return field;
     }
 

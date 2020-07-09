@@ -20,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.movimientos.FxMovimientosProcesoController">
+<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.movimientos.FxMovimientosProcesoController">
    <children>
       <VBox HBox.hgrow="ALWAYS">
          <children>
@@ -140,14 +140,14 @@
                                           </RadioButton>
                                        </children>
                                     </HBox>
-                                    <ComboBox fx:id="cbAjuste" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="txtObservacion" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <ComboBox fx:id="cbAjuste" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtObservacion" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Envío directo para venta:" visible="false" GridPane.columnIndex="2" />
                                     <CheckBox fx:id="cbConfirmar" mnemonicParsing="false" onAction="#onActionConfirmar" prefHeight="30.0" styleClass="check-box-contenido" text="Confirmar" visible="false" GridPane.columnIndex="3" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor involucrado:" textFill="#1a2226" GridPane.columnIndex="2" />
-                                    <HBox style="-fx-spacing: 0.6666666666666666em;" GridPane.columnIndex="3">
+                                    <HBox GridPane.columnIndex="3">
                                        <children>
-                                          <TextField fx:id="txtProveedor" disable="true" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtProveedor" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                           <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionProveedor" onKeyPressed="#onKeyPressedProveedor" prefHeight="30.0" styleClass="buttonBorder">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
@@ -166,6 +166,8 @@
                                           <RadioButton fx:id="rbProceso" mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="En Proceso" textFill="#1a2226" />
                                        </children>
                                     </HBox>
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Utilizar movimiento de caja:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <CheckBox fx:id="cbCaja" mnemonicParsing="false" onAction="#onActionCaja" styleClass="check-box-contenido" text="No" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children>

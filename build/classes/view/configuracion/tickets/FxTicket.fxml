@@ -236,6 +236,12 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Tamaño" />
+                                          <ComboBox fx:id="cbSize" maxWidth="1.7976931348623157E308" onAction="#onSize" prefHeight="30.0" prefWidth="240.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Alineación" />
                                           <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" />
                                        </children>

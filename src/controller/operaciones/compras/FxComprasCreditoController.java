@@ -178,16 +178,19 @@ public class FxComprasCreditoController implements Initializable {
             map.put("LOGO", imgInputStream);
             map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
-            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
+            map.put("TELEFONOCELULAR", "TEL.: " + Session.COMPANY_TELEFONO + " CEL.: " + Session.COMPANY_CELULAR);
             map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
             map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
+            
+            map.put("NUMEROPAGO", "");
 
             map.put("FECHA_EMISION", Tools.getDate("dd/MM/yyyy"));
             map.put("PROVEEDOR", proveedorTB.getRazonSocial());
             map.put("PROVEEDORNOMDOCUMENTO", proveedorTB.getTipoDocumentoName() + ":");
             map.put("PROVEEDORNUMDOCUMENTO", proveedorTB.getNumeroDocumento());
             map.put("PROVEEDORDIRECCION", proveedorTB.getDireccion());
-            map.put("PROVEEDOROTRODATOS", proveedorTB.getTelefono() + " - " + proveedorTB.getCelular() + " - " + proveedorTB.getEmail());
+            map.put("PROVEEDORTELEFONOS", proveedorTB.getTelefono() + " - " + proveedorTB.getCelular());
+            map.put("PROVEEDOREMAIL", proveedorTB.getEmail());
 
             map.put("TOTAL", Tools.roundingValue(monto, 2));
 

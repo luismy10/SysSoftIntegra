@@ -1,7 +1,6 @@
 package controller.operaciones.compras;
 
 import controller.consultas.compras.FxComprasDetalleController;
-import controller.operaciones.compras.FxComprasCreditoController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;

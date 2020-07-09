@@ -15,7 +15,6 @@ public class VentaTB {
     private int moneda;
     private String monedaName;
     private String comprobanteName;
-    private String comproabanteNameImpresion;
     private String serie;
     private String numeracion;
     private String fechaVenta;
@@ -111,14 +110,6 @@ public class VentaTB {
 
     public void setComprobanteName(String comprobanteName) {
         this.comprobanteName = comprobanteName;
-    }
-
-    public String getComproabanteNameImpresion() {
-        return comproabanteNameImpresion;
-    }
-
-    public void setComproabanteNameImpresion(String comproabanteNameImpresion) {
-        this.comproabanteNameImpresion = comproabanteNameImpresion;
     }
 
     public String getSerie() {

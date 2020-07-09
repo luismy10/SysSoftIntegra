@@ -24,6 +24,7 @@ public class CompraTB {
     
     private int tipo;
     private String tipoName;
+    private Label tipoLabel;
     private int estado;
     private String estadoName;
     private Label estadoLabel;
@@ -213,6 +214,14 @@ public class CompraTB {
 
     public void setTipoName(String tipoName) {
         this.tipoName = tipoName;
+    }
+
+    public Label getTipoLabel() {
+        return tipoLabel;
+    }
+
+    public void setTipoLabel(Label tipoLabel) {
+        this.tipoLabel = tipoLabel;
     }
 
     public int getEstado() {

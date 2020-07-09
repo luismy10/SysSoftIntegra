@@ -155,14 +155,14 @@
 				<textFieldExpression><![CDATA[$P{PROVEEDORTELEFONOS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="281" y="153" width="111" height="20" forecolor="#0D4E9E" uuid="0fe69cf2-f1f6-4646-bcfa-dac52b153419"/>
+				<reportElement x="281" y="153" width="34" height="20" forecolor="#0D4E9E" uuid="0fe69cf2-f1f6-4646-bcfa-dac52b153419"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Email:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="391" y="153" width="164" height="20" uuid="e37bd33d-8890-4481-9f6e-017a6dbf0b9c"/>
+				<reportElement x="315" y="153" width="240" height="20" uuid="e37bd33d-8890-4481-9f6e-017a6dbf0b9c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>

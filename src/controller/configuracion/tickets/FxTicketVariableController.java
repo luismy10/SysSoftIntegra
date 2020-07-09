@@ -112,7 +112,7 @@ public class FxTicketVariableController implements Initializable {
                 if (widthNew <= 0 || widthNew > sheetWidth) {
                     Tools.AlertMessageWarning(window, "Ticket", "No hay espacio suficiente en la fila.");
                 } else {
-                    TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, (short) 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable());
+                    TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, (short) 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable(),"Consola",12.5f);
                     hBox.getChildren().add(field);
                     Tools.Dispose(window);
                 }

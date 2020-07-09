@@ -51,10 +51,10 @@ public class FxTicketMultilineaController implements Initializable {
                 if (widthNew <= 0 || widthNew > sheetWidth) {
                     Tools.AlertMessageWarning(window, "Ticket", "No hay espacio suficiente en la fila.");
                 } else {
-                    TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, (short) 1, widthNew, Pos.CENTER_LEFT, true, "");
+                    TextFieldTicket field = ticketController.addElementTextField("iu", textArea.getText(), true, (short) 1, widthNew, Pos.CENTER_LEFT, true, "","Consola",12.5f);
                     hBox.getChildren().add(field);
                     Tools.Dispose(window);
-                }
+                } 
             }
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ticket", "El área de texto no puede estar vacío.", false);

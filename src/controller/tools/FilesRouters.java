@@ -273,6 +273,8 @@ public final class FilesRouters {
     public static final String FX_SUMINISTROS_KARDEX = "/view/inventario/suministros/FxSuministrosKardex.fxml";
 
     //--------------------------------------------------------------------------------------------------
+    public static final String FX_MOVIMIENTO_CAJA = "/view/inventario/movimientos/FxMovimientoCaja.fxml";
+    
     public static final String FX_MOVIMIENTOS = "/view/inventario/movimientos/FxMovimientos.fxml";
 
     public static final String FX_MOVIMIENTOS_DETALLE = "/view/inventario/movimientos/FxMovimientosDetalle.fxml";

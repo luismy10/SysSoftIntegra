@@ -31,6 +31,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -39,6 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.EmpleadoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
@@ -49,6 +52,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.controlsfx.control.Notifications;
 
 public class FxVentaDetalleController implements Initializable {
 
@@ -142,8 +146,6 @@ public class FxVentaDetalleController implements Initializable {
     private double totalVenta;
 
     private double efectivo, tarjeta, vuelto;
-
-    private Alert alert = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -533,7 +535,7 @@ public class FxVentaDetalleController implements Initializable {
             return;
         }
 
-        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA == null) {
+        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA.equalsIgnoreCase("")) {
             Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
             return;
         }
@@ -549,16 +551,15 @@ public class FxVentaDetalleController implements Initializable {
             Task<String> task = new Task<String>() {
                 @Override
                 public String call() {
-
                     billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
                     for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                         HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                         billPrintable.hbEncebezado(box,
-                                ventaTB.getComproabanteNameImpresion(),
+                                ventaTB.getComprobanteName(),
                                 lblSerie.getText(),
                                 ventaTB.getClienteTB().getNumeroDocumento(),
-                                ventaTB.getClienteTB().getInformacion(), 
+                                ventaTB.getClienteTB().getInformacion(),
                                 ventaTB.getClienteTB().getDireccion(),
                                 ventaTB.getCodigo());
                     }
@@ -592,31 +593,68 @@ public class FxVentaDetalleController implements Initializable {
             };
 
             task.setOnSucceeded(w -> {
-                if (!task.isRunning()) {
-                    if (alert != null) {
-                        ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
-                    }
-                }
+
                 String result = task.getValue();
                 if (result.equalsIgnoreCase("completed")) {
-                    Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    Image image = new Image("/view/image/information_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Se completo el proceso de impresión correctamente.")
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(5))
+                            .position(Pos.BOTTOM_RIGHT)
+                            .onAction(n -> {
+                                Tools.println(n);
+                            });
+                    notifications.darkStyle();
+                    notifications.show();
+                    //Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
                 } else {
-                    Tools.AlertMessageError(window, "Ventas", result);
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+//                    Tools.AlertMessageError(window, "Ventas", result);
+                    Image image = new Image("/view/image/error_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Error en la configuración de su impresora: " + result)
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(10))
+                            .position(Pos.CENTER)
+                            .onAction(n -> {
+                                Tools.println(n);
+                            });
+                    notifications.darkStyle();
+                    notifications.show();
                 }
             });
             task.setOnFailed(w -> {
-                if (alert != null) {
-                    ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
-                }
-                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema en el proceso de envío, intente nuevamente.");
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                Image image = new Image("/view/image/warning_large.png");
+                Notifications notifications = Notifications.create()
+                        .title("Envío de impresión")
+                        .text("Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.")
+                        .graphic(new ImageView(image))
+                        .hideAfter(Duration.seconds(10))
+                        .position(Pos.BOTTOM_RIGHT)
+                        .onAction(n -> {
+                            Tools.println(n);
+                        });
+                notifications.darkStyle();
+                notifications.show();
+//                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema en el proceso de envío, intente nuevamente.");
             });
 
             task.setOnScheduled(w -> {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
+                Image image = new Image("/view/image/print.png");
+                Notifications notifications = Notifications.create()
+                        .title("Envío de impresión")
+                        .text("Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.")
+                        .graphic(new ImageView(image))
+                        .hideAfter(Duration.seconds(5))
+                        .position(Pos.BOTTOM_RIGHT)
+                        .onAction(n -> {
+                            Tools.println(n);
+                        });
+                notifications.darkStyle();
+                notifications.show();
+//                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
             });
             exec.execute(task);
 

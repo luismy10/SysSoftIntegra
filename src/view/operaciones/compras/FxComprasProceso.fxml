@@ -113,11 +113,11 @@
                            <children>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tvListaCredito" prefHeight="200.0" prefWidth="520.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tvListaCredito" prefHeight="240.0" prefWidth="585.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                       <columns>
-                                        <TableColumn fx:id="tcCredito" prefWidth="200.0" style="-fx-alignment: CENTER;" text="Crédito" />
-                                          <TableColumn fx:id="tcFecha" prefWidth="200.0" style="-fx-alignment: CENTER;" text="Fecha" />
-                                          <TableColumn fx:id="tcOpciones" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Acción" />
+                                        <TableColumn fx:id="tcCredito" prefWidth="210.0" style="-fx-alignment: CENTER;" text="Crédito" />
+                                          <TableColumn fx:id="tcFecha" prefWidth="210.0" style="-fx-alignment: CENTER;" text="Fecha" />
+                                          <TableColumn fx:id="tcOpciones" prefWidth="160.0" style="-fx-alignment: CENTER;" text="Acción" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -128,7 +128,7 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
+            <HBox minHeight="0.0" prefHeight="0.0" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;" visible="false">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>

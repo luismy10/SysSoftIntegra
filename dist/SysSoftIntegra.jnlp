@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SysSoftIntegra.jar" size="2848685" download="eager" />
+    <jar href="SysSoftIntegra.jar" size="2855522" download="eager" />
     <jar href="lib\Consola.jar" size="254096" download="eager" />
     <jar href="lib\RobotoBold.jar" size="91740" download="eager" />
     <jar href="lib\RobotoMedium.jar" size="91979" download="eager" />
@@ -28,6 +28,7 @@
     <jar href="lib\commons-digester-2.1.jar" size="196768" download="eager" />
     <jar href="lib\commons-lang-2.6.jar" size="284220" download="eager" />
     <jar href="lib\commons-logging-1.1.1.jar" size="60686" download="eager" />
+    <jar href="lib\controlsfx-8.40.13.jar" size="1213306" download="eager" />
     <jar href="lib\core-3.2.1.jar" size="544403" download="eager" />
     <jar href="lib\derbyclient-10.13.1.1.jar" size="587986" download="eager" />
     <jar href="lib\ecj-4.3.1.jar" size="1830791" download="eager" />

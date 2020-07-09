@@ -104,6 +104,7 @@ public class SplashScreen extends Preloader {
 
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA = false;
+                            Session.NOMBRE_IMPRESORA = "";
                         }
 
 
@@ -111,6 +112,9 @@ public class SplashScreen extends Preloader {
                         if (ticketTB != null) {
                             Session.TICKET_VENTA_ID = ticketTB.getId();
                             Session.TICKET_VENTA_RUTA = ticketTB.getRuta();
+                        }else{
+                             Session.TICKET_VENTA_ID = 0;
+                            Session.TICKET_VENTA_RUTA = "";
                         }
 
                         EmpresaTB list = EmpresaADO.GetEmpresa();

@@ -66,7 +66,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private TableColumn<CompraTB, String> tcProveedor;
     @FXML
-    private TableColumn<CompraTB, String> tcTipo;
+    private TableColumn<Label, String> tcTipo;
     @FXML
     private TableColumn<Label, String> tcEstado;
     @FXML
@@ -90,7 +90,8 @@ public class FxComprasRealizadasController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().toUpperCase()
         ));
-        tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
+//        tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
+        tcTipo.setCellValueFactory(new PropertyValueFactory<>("tipoLabel"));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 

@@ -96,6 +96,8 @@ public class FxMovimientosProcesoController implements Initializable {
     private RadioButton rbProceso;
     @FXML
     private HBox hbBotones;
+    @FXML
+    private CheckBox cbCaja;
 
     private AnchorPane vbPrincipal;
 
@@ -175,23 +177,27 @@ public class FxMovimientosProcesoController implements Initializable {
                 openAlertMessageWarning("Ingrese una observación, por favor.");
                 txtObservacion.requestFocus();
             } else {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                short validate = Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Movimiento", "¿Está seguro de continuar?", true);
-                if (validate == 1) {
-                    MovimientoInventarioTB inventarioTB = new MovimientoInventarioTB();
-                    inventarioTB.setFecha(Tools.getDate());
-                    inventarioTB.setHora(Tools.getHour());
-                    inventarioTB.setTipoAjuste(rbIncremento.isSelected());
-                    inventarioTB.setTipoMovimiento(cbAjuste.getSelectionModel().getSelectedItem().getIdTipoMovimiento());
-                    inventarioTB.setTipoMovimientoName(cbAjuste.getSelectionModel().getSelectedItem().getNombre());
-                    inventarioTB.setObservacion(txtObservacion.getText().trim());
-                    inventarioTB.setSuministro(true);
-                    inventarioTB.setArticulo(cbConfirmar.isSelected());
-                    inventarioTB.setProveedor(idProveedor);
-                    inventarioTB.setEstado(rbCompletado.isSelected() ? (short) 1 : (short) 0);
-                    ejecutarConsulta(inventarioTB);
+                MovimientoInventarioTB inventarioTB = new MovimientoInventarioTB();
+                inventarioTB.setFecha(Tools.getDate());
+                inventarioTB.setHora(Tools.getHour());
+                inventarioTB.setTipoAjuste(rbIncremento.isSelected());
+                inventarioTB.setTipoMovimiento(cbAjuste.getSelectionModel().getSelectedItem().getIdTipoMovimiento());
+                inventarioTB.setTipoMovimientoName(cbAjuste.getSelectionModel().getSelectedItem().getNombre());
+                inventarioTB.setObservacion(txtObservacion.getText().trim());
+                inventarioTB.setSuministro(true);
+                inventarioTB.setArticulo(cbConfirmar.isSelected());
+                inventarioTB.setProveedor(idProveedor);
+                inventarioTB.setEstado(rbCompletado.isSelected() ? (short) 1 : (short) 0);
+                if (cbCaja.isSelected()) {
+                    openWindowMovimientoCaja(inventarioTB, tvList);
                 } else {
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                    short validate = Tools.AlertMessageConfirmation(hbWindow, "Movimiento", "¿Está seguro de continuar?");
+                    if (validate == 1) {
+                        ejecutarConsulta(inventarioTB, tvList);
+                    } else {
+                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    }
                 }
             }
         } else {
@@ -243,7 +249,7 @@ public class FxMovimientosProcesoController implements Initializable {
         }
     }
      */
-    private void ejecutarConsulta(MovimientoInventarioTB inventarioTB) {
+    private void ejecutarConsulta(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -253,11 +259,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Task<String> task = new Task<String>() {
                 @Override
                 public String call() {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                    }
-                    return MovimientoInventarioADO.Crud_Movimiento_Inventario(inventarioTB, tvList);
+                    return MovimientoInventarioADO.Crud_Movimiento_Inventario(inventarioTB, tableView);
                 }
             };
             task.setOnScheduled(t -> {
@@ -277,21 +279,11 @@ public class FxMovimientosProcesoController implements Initializable {
                 }
                 String result = task.getValue();
                 if (result.equalsIgnoreCase("registered")) {
-                    Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.INFORMATION, "Proceso", "Se completo el registro correctamente.", false);
+                    Tools.AlertMessageInformation(hbWindow, "Proceso", "Se completo el registro correctamente.");
                     vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                    rbIncremento.setSelected(false);
-                    rbIncremento.setDisable(false);
-                    rbDecremento.setDisable(false);
-                    cbAjuste.setDisable(false);
-                    cbAjuste.getItems().clear();
-                    TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
-                        cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
-                    });
-                    txtObservacion.clear();
-                    cbConfirmar.setSelected(false);
-                    tvList.getItems().clear();
+                    clearComponents();
                 } else {
-                    Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.ERROR, "Proceso", result, false);
+                    Tools.AlertMessageError(hbWindow, "Proceso", result);
                     vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
                 }
             });
@@ -302,7 +294,21 @@ public class FxMovimientosProcesoController implements Initializable {
         } finally {
             exec.shutdown();
         }
+    }
 
+    public void clearComponents() {
+        rbIncremento.setSelected(false);
+        rbIncremento.setDisable(false);
+        rbDecremento.setDisable(false);
+        cbAjuste.setDisable(false);
+        cbAjuste.getItems().clear();
+        TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
+            cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
+        });
+        txtObservacion.clear();
+        cbConfirmar.setSelected(false);
+        tvList.getItems().clear();
+        cbCaja.setSelected(false);
     }
 
     public void addSuministroLista(String idSuministro) {
@@ -454,6 +460,29 @@ public class FxMovimientosProcesoController implements Initializable {
             });
             stage.show();
             controller.loadListCompras("", "", (short) 0);
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowMovimientoCaja(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_MOVIMIENTO_CAJA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxMovimientoCajaController controller = fXMLLoader.getController();
+            controller.loadData(inventarioTB, tableView);
+            controller.setInitMovimientoProcesoController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento caja", hbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((w) -> {
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            });
+            stage.show();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -683,6 +712,11 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private void onActionBuscarCompras(ActionEvent event) {
         openWindowCompras();
+    }
+
+    @FXML
+    private void onActionCaja(ActionEvent event) {
+        cbCaja.setText(cbCaja.isSelected() ? "Si" : "No");
     }
 
     public TableView<SuministroTB> getTvList() {

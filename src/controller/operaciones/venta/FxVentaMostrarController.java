@@ -226,7 +226,7 @@ public class FxVentaMostrarController implements Initializable {
                         lblFechaHora.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
                         lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + " " + ventaTB.getClienteTB().getInformacion());
                         lblComprobante.setText(ventaTB.getComprobanteName());
-                        nombreTicketImpresion = ventaTB.getComproabanteNameImpresion();
+                        nombreTicketImpresion = ventaTB.getComprobanteName();
                         lblComprobante.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                         lblObservaciones.setText(ventaTB.getObservaciones());
                         lblTipo.setText(ventaTB.getTipoName());

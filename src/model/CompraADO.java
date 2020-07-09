@@ -583,17 +583,23 @@ public class CompraADO extends DBUtil {
 
             while (rsEmps.next()) {
                 CompraTB compraTB = new CompraTB();
-                compraTB.setId(rsEmps.getInt("Filas"));
+                compraTB.setId(rsEmps.getRow());
                 compraTB.setIdCompra(rsEmps.getString("IdCompra"));
                 compraTB.setFechaCompra(rsEmps.getString("FechaCompra"));
                 compraTB.setHoraCompra(rsEmps.getTime("HoraCompra").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 compraTB.setSerie(rsEmps.getString("Serie"));
                 compraTB.setNumeracion(rsEmps.getString("Numeracion"));
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
+
+                compraTB.setTipo(rsEmps.getInt("TipoCompra"));
                 compraTB.setTipoName(rsEmps.getString("Tipo"));
+                Label lblTipo = new Label(compraTB.getTipoName());
+                lblTipo.getStyleClass().add("labelRobotoBold14");
+                lblTipo.setStyle("-fx-text-fill:" + (compraTB.getTipo() == 2 ? "#ff0202" : "#020203"));
+                compraTB.setTipoLabel(lblTipo);
+
                 compraTB.setEstado(rsEmps.getInt("EstadoCompra"));
                 compraTB.setEstadoName(rsEmps.getString("Estado"));
-
                 Label label = new Label(compraTB.getEstadoName());
                 label.getStyleClass().add(compraTB.getEstado() == 1 ? "label-asignacion" : compraTB.getEstado() == 2 ? "label-medio" : compraTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
 
@@ -628,7 +634,7 @@ public class CompraADO extends DBUtil {
         ArrayList<Object> objects = new ArrayList<>();
         dbConnect();
         if (getConnection() != null) {
-            
+
             try {
                 preparedCompra = getConnection().prepareStatement("{call Sp_Obtener_Compra_ById(?)}");
                 preparedCompra.setString(1, idCompra);
@@ -898,7 +904,6 @@ public class CompraADO extends DBUtil {
                     statementSuministroKardex.setDouble(7, detalleCompraTB.getCantidad());
                     statementSuministroKardex.addBatch();
                 }
-                
 
                 statementCompra.executeBatch();
                 statementSuministro.executeBatch();
@@ -975,7 +980,7 @@ public class CompraADO extends DBUtil {
                         + "Detalle,"
                         + "Cantidad) "
                         + "VALUES(?,?,?,?,?,?,?)");
-                
+
                 for (DetalleCompraTB detalleCompraTB : tableView) {
                     statementSuministro.setDouble(1, detalleCompraTB.getCantidad());
                     statementSuministro.setString(2, detalleCompraTB.getIdArticulo());
@@ -990,15 +995,15 @@ public class CompraADO extends DBUtil {
                     statementSuministroKardex.setDouble(7, detalleCompraTB.getCantidad());
                     statementSuministroKardex.addBatch();
                 }
-                
+
                 statementBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco "
                         + "SET SaldoInicial = SaldoInicial + ? "
                         + "WHERE IdBanco = ?");
-                
+
                 statementBanco.setDouble(1, bancoHistorialBancaria.getEntrada());
                 statementBanco.setString(2, bancoHistorialBancaria.getIdBanco());
                 statementBanco.addBatch();
-                
+
                 statementBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB"
                         + "(IdBanco,"
                         + "IdEmpleado,"
@@ -1009,7 +1014,7 @@ public class CompraADO extends DBUtil {
                         + "Entrada,"
                         + "Salida)"
                         + "VALUES(?,?,?,?,?,?,?,?)");
-                
+
                 statementBancoHistorial.setString(1, bancoHistorialBancaria.getIdBanco());
                 statementBancoHistorial.setString(2, bancoHistorialBancaria.getIdEmpleado());
                 statementBancoHistorial.setString(3, "");
@@ -1226,32 +1231,25 @@ public class CompraADO extends DBUtil {
         String result = "";
         dbConnect();
         if (getConnection() != null) {
-            CallableStatement codigoBancoHistorial = null;
             PreparedStatement preparedCompraCredito = null;
             PreparedStatement preparedBanco = null;
             PreparedStatement preparedBancoHistorial = null;
             try {
                 getConnection().setAutoCommit(false);
 
-                codigoBancoHistorial = DBUtil.getConnection().prepareCall("{? = call Fc_Banco_Historial_Codigo_Alfanumerico()}");
-                codigoBancoHistorial.registerOutParameter(1, java.sql.Types.VARCHAR);
-                codigoBancoHistorial.execute();
-                String idBancoHistorial = codigoBancoHistorial.getString(1);
-
                 preparedBanco = getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial - ? WHERE IdBanco = ?");
                 preparedBanco.setDouble(1, bancoHistorialTB.getSalida());
                 preparedBanco.setString(2, bancoHistorialTB.getIdBanco());
                 preparedBanco.addBatch();
 
-                preparedBancoHistorial = getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdBancoHistorial,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?,?)");
+                preparedBancoHistorial = getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
                 preparedBancoHistorial.setString(1, bancoHistorialTB.getIdBanco());
-                preparedBancoHistorial.setString(2, idBancoHistorial);
-                preparedBancoHistorial.setString(3, "");
-                preparedBancoHistorial.setString(4, bancoHistorialTB.getDescripcion());
-                preparedBancoHistorial.setString(5, bancoHistorialTB.getFecha());
-                preparedBancoHistorial.setString(6, bancoHistorialTB.getHora());
-                preparedBancoHistorial.setDouble(7, bancoHistorialTB.getEntrada());
-                preparedBancoHistorial.setDouble(8, bancoHistorialTB.getSalida());
+                preparedBancoHistorial.setString(2, "");
+                preparedBancoHistorial.setString(3, bancoHistorialTB.getDescripcion());
+                preparedBancoHistorial.setString(4, bancoHistorialTB.getFecha());
+                preparedBancoHistorial.setString(5, bancoHistorialTB.getHora());
+                preparedBancoHistorial.setDouble(6, bancoHistorialTB.getEntrada());
+                preparedBancoHistorial.setDouble(7, bancoHistorialTB.getSalida());
                 preparedBancoHistorial.addBatch();
 
                 preparedCompraCredito = DBUtil.getConnection().prepareStatement("UPDATE CompraCreditoTB SET FechaPago = ?,HoraPago = ?,Estado = ?  WHERE IdCompraCredito = ?");
@@ -1279,9 +1277,6 @@ public class CompraADO extends DBUtil {
                 result = e.getLocalizedMessage();
             } finally {
                 try {
-                    if (codigoBancoHistorial != null) {
-                        codigoBancoHistorial.close();
-                    }
                     if (preparedCompraCredito != null) {
                         preparedCompraCredito.close();
                     }

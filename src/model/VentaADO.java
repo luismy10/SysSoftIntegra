@@ -439,7 +439,6 @@ public class VentaADO {
                     ventaTB.setClienteTB(clienteTB);
                     //Cliente end
                     ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
-                    ventaTB.setComproabanteNameImpresion(resultSetVenta.getString("NombreImpresion"));
                     ventaTB.setSerie(resultSetVenta.getString("Serie"));
                     ventaTB.setNumeracion(resultSetVenta.getString("Numeracion"));
                     ventaTB.setObservaciones(resultSetVenta.getString("Observaciones"));
