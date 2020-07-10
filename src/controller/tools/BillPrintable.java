@@ -718,7 +718,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 100, 86, false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -746,7 +746,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 100, 86, false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -775,7 +775,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 100, 86, false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());

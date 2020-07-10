@@ -55,8 +55,7 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtTarjeta;
     @FXML
     private Label lblVueltoNombre;
-    @FXML
-    private TextField txtObservacion;
+//    private TextField txtObservacion;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -93,9 +92,9 @@ public class FxVentaProcesoController implements Initializable {
         moneda_simbolo = ventaTB.getMonedaName();
         lblComprobante.setText(ventaTB.getComprobanteName());
         tota_venta = ventaTB.getTotal();
-        lblTotal.setText(moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+        lblTotal.setText("TOTAL A PAGAR: "+moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTipo(), 2), true, ventaEstructuraController.getMonedaNombre()));
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraController.getMonedaNombre()));
         hbContenido.setDisable(false);
     }
 
@@ -107,7 +106,7 @@ public class FxVentaProcesoController implements Initializable {
             ventaTB.setEstado(2);
             ventaTB.setEfectivo(0);
             ventaTB.setVuelto(0);
-            ventaTB.setObservaciones(txtObservacion.getText().trim());
+            ventaTB.setObservaciones("");
             CuentasClienteTB cuentasCliente = new CuentasClienteTB();
             short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
             if (confirmation == 1) {
@@ -120,7 +119,7 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
                 ventaTB.setVuelto(vuelto);
-                ventaTB.setObservaciones(txtObservacion.getText().trim());                
+                ventaTB.setObservaciones("");                
                 
                 ventaTB.setEfectivo(0);
                 ventaTB.setTarjeta(0);

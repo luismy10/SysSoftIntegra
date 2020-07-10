@@ -396,13 +396,13 @@
                                                       <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                          <children>
                                                             <Label styleClass="labelRoboto14" text="Precio de Venta Neto" textFill="#23283a" />
-                                                            <TextField fx:id="txtPrecioVentaNetoPersonalizado" disable="true" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNetoPerzonalizado" onKeyTyped="#onKeyTypedPrecioNetoPerzonalizado" promptText="0.00" styleClass="text-field-normal" />
+                                                            <TextField fx:id="txtPrecioVentaNetoPersonalizado" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNetoPerzonalizado" onKeyTyped="#onKeyTypedPrecioNetoPerzonalizado" promptText="0.00" styleClass="text-field-normal" />
                                                          </children>
                                                       </VBox>
                                                       <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                          <children>
                                                             <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#23283a" />
-                                                            <TextField fx:id="txtPrecioVentaBrutoPersonalizado" promptText="0.00" styleClass="text-field-normal" />
+                                                            <TextField fx:id="txtPrecioVentaBrutoPersonalizado" disable="true" promptText="0.00" styleClass="text-field-normal" />
                                                          </children>
                                                       </VBox>
                                                       <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">

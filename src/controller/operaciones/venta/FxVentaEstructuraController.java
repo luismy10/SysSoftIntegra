@@ -22,7 +22,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -1199,7 +1198,9 @@ public class FxVentaEstructuraController implements Initializable {
                             });
                     notifications.darkStyle();
                     notifications.show();
-
+                    if (ticket) {
+                        resetVenta();
+                    }
                 } else {
 //                    Tools.AlertMessageError(window, "Ventas", result);
 //                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
@@ -1215,7 +1216,9 @@ public class FxVentaEstructuraController implements Initializable {
                             });
                     notifications.darkStyle();
                     notifications.show();
-
+                    if (ticket) {
+                        resetVenta();
+                    }
                 }
             });
             task.setOnFailed(w -> {
@@ -1236,6 +1239,9 @@ public class FxVentaEstructuraController implements Initializable {
                         });
                 notifications.darkStyle();
                 notifications.show();
+                if (ticket) {
+                    resetVenta();
+                }
 
             });
 
@@ -1252,9 +1258,7 @@ public class FxVentaEstructuraController implements Initializable {
                         });
                 notifications.darkStyle();
                 notifications.show();
-                if (ticket) {
-                    resetVenta();
-                }
+
 //                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
 //                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
             });
