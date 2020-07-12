@@ -1,6 +1,7 @@
 package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +40,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -46,11 +48,21 @@ import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignExpression;
 import net.sf.jasperreports.engine.design.JRDesignImage;
 import net.sf.jasperreports.engine.design.JRDesignStaticText;
+import net.sf.jasperreports.engine.design.JRDesignTextField;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import net.sf.jasperreports.engine.type.EvaluationTimeEnum;
+import net.sf.jasperreports.engine.type.HorizontalAlignEnum;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
+import net.sf.jasperreports.engine.type.HyperlinkTargetEnum;
+import net.sf.jasperreports.engine.type.HyperlinkTypeEnum;
+import net.sf.jasperreports.engine.type.LineStyleEnum;
+import net.sf.jasperreports.engine.type.ModeEnum;
+import net.sf.jasperreports.engine.type.PositionTypeEnum;
 import net.sf.jasperreports.engine.type.ScaleImageEnum;
+import net.sf.jasperreports.engine.type.SplitTypeEnum;
+import net.sf.jasperreports.engine.type.StretchTypeEnum;
 import net.sf.jasperreports.engine.type.VerticalTextAlignEnum;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -134,7 +146,7 @@ public class BillPrintable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
                     fieldTicket.setText(Tools.roundingValue(arrList.get(m).getTotalImporte(), 2));
                 }
-                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(),fieldTicket.getFontName(),fieldTicket.getFontSize()));
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
             }
         }
     }
@@ -289,13 +301,13 @@ public class BillPrintable {
         try {
             int width = (int) Math.ceil(sheetWidth * pointWidthSizePaper);
             Map param = new HashMap();
-            JasperDesign jasperDesign = getJasperDesign(width, apEncabezado, apDetalle, apPie);
+            JasperDesign jasperDesign = getJasperDesign(width, 10000,apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-//            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
-            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
+//            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
             return "completed";
-        } catch (JRException | PrintException | IOException er) {
+        } catch (JRException /*| PrintException | IOException*/ er) {
             return "Error en imprimir: " + er.getLocalizedMessage();
         } finally {
             fileImages.stream().map((fileImage) -> new File(fileImage)).filter((removed) -> (removed != new File("./archivos/no-image"))).forEachOrdered((removed) -> {
@@ -304,11 +316,11 @@ public class BillPrintable {
         }
     }
 
-    private JasperDesign getJasperDesign(int width, AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
+    private JasperDesign getJasperDesign(int width, int height,AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
         JasperDesign jasperDesign = new JasperDesign();
         jasperDesign.setName("Formato de ticket");
         jasperDesign.setPageWidth(width);
-        jasperDesign.setPageHeight(2000);
+        jasperDesign.setPageHeight(height);
         jasperDesign.setColumnWidth(width);
         jasperDesign.setColumnSpacing(0);
         jasperDesign.setLeftMargin(0);
@@ -325,7 +337,8 @@ public class BillPrintable {
 //        normalStyle.setPdfEmbedded(true);
 //        jasperDesign.addStyle(normalStyle);
         JRDesignBand band = new JRDesignBand();
-        band.setHeight(2000);
+        band.setSplitType(SplitTypeEnum.STRETCH);
+        band.setHeight(height);
 
         //font size 9f x 15 height
         int rows = 0;
@@ -348,10 +361,10 @@ public class BillPrintable {
                 int columnI;
                 int columnF;
                 int columnA = 0;
-
+                float fontSize = 0;
                 for (int j = 0; j < box.getChildren().size(); j++) {
                     TextFieldTicket field = (TextFieldTicket) box.getChildren().get(j);
-
+                    fontSize = field.getFontSize();
                     columnI = columnA;
                     columnF = columnI + field.getColumnWidth();
                     columnA = columnF;
@@ -428,18 +441,41 @@ public class BillPrintable {
                     }
                 }
 
-                JRDesignStaticText staticText = new JRDesignStaticText();
+                JRDesignTextField staticText = new JRDesignTextField();
+                staticText.setStretchWithOverflow(true);
+                staticText.setBlankWhenNull(true);
+
                 staticText.setX(0);
                 staticText.setY(rows);
                 staticText.setWidth(width);
-                staticText.setHeight(15);
-                staticText.setFontSize(9f);
-                //staticText.setFontName(field.getFontName());
+                staticText.setHeight((int) (fontSize + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
+                staticText.setFontSize(fontSize - 3.5f);
                 staticText.setFontName("Consola");
-                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-                staticText.setText(result.toString());
+
+                staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
+                staticText.setPositionType(PositionTypeEnum.FLOAT);
+                staticText.setMode(ModeEnum.OPAQUE);
+
+                //TextField expression
+                JRDesignExpression expression = new JRDesignExpression();
+                expression.setValueClass(String.class);
+                expression.setText("\"" + result.toString() + "\"");
+                staticText.setExpression(expression);
                 band.addElement(staticText);
-                rows += 15;
+                rows += staticText.getHeight();
+
+//                JRDesignStaticText staticText = new JRDesignStaticText();
+//                staticText.setX(0);
+//                staticText.setY(rows);
+//                staticText.setWidth(width);
+//                staticText.setHeight(15);
+//                staticText.setFontSize(9f);
+//                //staticText.setFontName(field.getFontName());
+//                staticText.setFontName("Consola");
+//                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
+//                staticText.setText(result.toString());
+//                band.addElement(staticText);
+//                rows += 15;
             } else {
 
                 if (box.getChildren().get(0) instanceof TextFieldTicket) {
@@ -518,12 +554,15 @@ public class BillPrintable {
 //                        }
 //                    }
                     TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
-                    JRDesignStaticText staticText = new JRDesignStaticText();
+                    JRDesignTextField staticText = new JRDesignTextField();
+                    staticText.setStretchWithOverflow(true);
+                    staticText.setBlankWhenNull(true);
+
                     staticText.setX(0);
                     staticText.setY(rows);
                     staticText.setWidth(width);
-                    staticText.setHeight((int) (field.getFontSize()+2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
-                    staticText.setFontSize(field.getFontSize()-3.5f);
+                    staticText.setHeight((int) (field.getFontSize() + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
+                    staticText.setFontSize(field.getFontSize() - 3.5f);
                     staticText.setFontName(
                             field.getFontName().equalsIgnoreCase("Consola")
                             ? "Consola"
@@ -536,11 +575,41 @@ public class BillPrintable {
                             : field.getAlignment() == Pos.CENTER
                             ? HorizontalTextAlignEnum.CENTER
                             : HorizontalTextAlignEnum.RIGHT);
-                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-                    staticText.setText(field.getText());
-//                    staticText.setText(result.toString());
+
+                    staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
+                    staticText.setPositionType(PositionTypeEnum.FLOAT);
+                    staticText.setMode(ModeEnum.OPAQUE);
+
+                    JRDesignExpression expression = new JRDesignExpression();
+                    expression.setValueClass(String.class);
+                    expression.setText("\"" + field.getText() + "\"");
+                    staticText.setExpression(expression);
                     band.addElement(staticText);
                     rows += staticText.getHeight();
+
+//                    JRDesignStaticText staticText = new JRDesignStaticText();
+//                    staticText.setX(0);
+//                    staticText.setY(rows);
+//                    staticText.setWidth(width);
+//                    staticText.setHeight((int) (field.getFontSize()+2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
+//                    staticText.setFontSize(field.getFontSize()-3.5f);
+//                    staticText.setFontName(
+//                            field.getFontName().equalsIgnoreCase("Consola")
+//                            ? "Consola"
+//                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
+//                            ? "RobotoRegular"
+//                            : "RobotoBold");
+//                    staticText.setHorizontalTextAlign(
+//                            field.getAlignment() == Pos.CENTER_LEFT
+//                            ? HorizontalTextAlignEnum.LEFT
+//                            : field.getAlignment() == Pos.CENTER
+//                            ? HorizontalTextAlignEnum.CENTER
+//                            : HorizontalTextAlignEnum.RIGHT);
+//                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
+//                    staticText.setText(field.getText());
+////                    staticText.setText(result.toString());
+//                    band.addElement(staticText);
+//                    rows += staticText.getHeight();
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
                     String idImage = "./archivos/no-image.png";
@@ -865,7 +934,7 @@ public class BillPrintable {
         return hBox;
     }
 
-    private TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable,String font,float size) {
+    private TextFieldTicket addElementTextField(String id, String titulo, boolean multilinea, short lines, short widthColumn, Pos align, boolean editable, String variable, String font, float size) {
         TextFieldTicket field = new TextFieldTicket(titulo, id);
         field.setMultilineas(multilinea);
         field.setLines(lines);
@@ -874,7 +943,7 @@ public class BillPrintable {
         field.setEditable(editable);
         field.getStyleClass().add("text-field-ticket");
         field.setAlignment(align);
-         field.setFontName(font);
+        field.setFontName(font);
         field.setFontSize(size);
         return field;
     }

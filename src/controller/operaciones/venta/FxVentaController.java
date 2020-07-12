@@ -17,7 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
@@ -32,7 +31,7 @@ import model.PrivilegioTB;
 public class FxVentaController implements Initializable {
 
     @FXML
-    private VBox window;
+    private AnchorPane window;
     @FXML
     private VBox hbContenedorVentas;
     @FXML
@@ -41,8 +40,6 @@ public class FxVentaController implements Initializable {
     private Tab tbVentaUno;
     @FXML
     private Button btnAgregarVenta;
-    @FXML
-    private Label lblNombreCaja;
 
     private AnchorPane vbPrincipal;
 
@@ -95,52 +92,57 @@ public class FxVentaController implements Initializable {
 
     public void loadValidarCaja() {
 
-            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-            Task<CajaTB> task = new Task<CajaTB>() {
-                @Override
-                public CajaTB call() {
-                    return CajaADO.ValidarCreacionCaja(Session.USER_ID);
-                }
-            };
-
-            task.setOnSucceeded(e -> {
-                CajaTB cajaTB = task.getValue();                
-                if (cajaTB != null) {
-                    lblNombreCaja.setText("CAJA ACTUAL: PRINCIPAL");                    
-                    switch (cajaTB.getId()) {
-                        case 1:
-                            openWindowFondoInicial();
-                            break;
-                        case 2:
-                            aperturaCaja = true;
-                            hbContenedorVentas.setDisable(false);
-                            Session.CAJA_ID = cajaTB.getIdCaja();
-                            break;
-                        case 3:
-                            openWindowValidarCaja(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    openWindowCajaNoRegistrada("No se pudo verificar el estado de su caja por problemas de red, intente nuevamente.");
-                }
-            });
-
-            task.setOnFailed(e -> {
-                
-            });
-
-            exec.execute(task);
-            if (!exec.isShutdown()) {
-                exec.shutdown();
+        Task<CajaTB> task = new Task<CajaTB>() {
+            @Override
+            public CajaTB call() {
+                return CajaADO.ValidarCreacionCaja(Session.USER_ID);
             }
- 
+        };
+
+        task.setOnSucceeded(e -> {
+//            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            CajaTB cajaTB = task.getValue();
+            if (cajaTB != null) {
+                switch (cajaTB.getId()) {
+                    case 1:
+                        openWindowFondoInicial();
+                        break;
+                    case 2:
+                        aperturaCaja = true;
+                        hbContenedorVentas.setDisable(false);
+                        Session.CAJA_ID = cajaTB.getIdCaja();
+                        break;
+                    case 3:
+                        openWindowValidarCaja(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                openWindowCajaNoRegistrada("No se pudo verificar el estado de su caja por problemas de red, intente nuevamente.");
+            }
+        });
+
+        task.setOnFailed(e -> {
+//            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        });
+
+        task.setOnScheduled(e -> {
+//            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
     }
 
     public void openWindowCajaNoRegistrada(String mensaje) {
@@ -195,7 +197,7 @@ public class FxVentaController implements Initializable {
         }
     }
 
-    private void openWindowValidarCaja( String dateTime) {
+    private void openWindowValidarCaja(String dateTime) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_VENTA_VALIDAR_CAJA);
@@ -216,7 +218,7 @@ public class FxVentaController implements Initializable {
                 }
             });
             stage.show();
-            controller.loadData( dateTime);
+            controller.loadData(dateTime);
         } catch (IOException ex) {
 
         }

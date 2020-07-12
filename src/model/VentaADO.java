@@ -61,7 +61,7 @@ public class VentaADO {
                     cliente.setString(3, ventaTB.getClienteTB().getNumeroDocumento());
                     cliente.setString(4, ventaTB.getClienteTB().getInformacion());
                     cliente.setString(5, "");
-                    cliente.setString(6, "");
+                    cliente.setString(6, ventaTB.getClienteTB().getCelular());
                     cliente.setString(7, "");
                     cliente.setString(8, ventaTB.getClienteTB().getDireccion());
                     cliente.setString(9, "");

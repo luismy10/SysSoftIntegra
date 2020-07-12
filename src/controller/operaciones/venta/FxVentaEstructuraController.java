@@ -114,6 +114,8 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private TextField txtDireccionCliente;
     @FXML
+    private TextField txtCelularCliente;
+    @FXML
     private Label lblValorVenta;
     @FXML
     private Label lblDescuento;
@@ -125,7 +127,6 @@ public class FxVentaEstructuraController implements Initializable {
     private Label lblTotalPagar;
     @FXML
     private HBox hbBotonesInferior;
-    private Button btnQuitar;
     @FXML
     private Button btnMovimiento;
     @FXML
@@ -309,7 +310,8 @@ public class FxVentaEstructuraController implements Initializable {
         txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
         txtDatosCliente.setText(Session.CLIENTE_DATOS);
         txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
-
+        txtCelularCliente.setText("");
+        
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
                 if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
@@ -361,7 +363,7 @@ public class FxVentaEstructuraController implements Initializable {
             hbBotonesSuperior.getChildren().remove(btnSumarPrecio);
         }
         if (privilegioTBs.get(8).getIdPrivilegio() != 0 && !privilegioTBs.get(8).isEstado()) {
-            hbBotonesInferior.getChildren().remove(btnQuitar);
+//            hbBotonesInferior.getChildren().remove(btnQuitar);
         }
         if (privilegioTBs.get(9).getIdPrivilegio() != 0 && !privilegioTBs.get(9).isEstado()) {
             hbBotonesInferior.getChildren().remove(btnMovimiento);
@@ -527,18 +529,14 @@ public class FxVentaEstructuraController implements Initializable {
             suministroTB.setUnidadVenta(a.getUnidadVenta());
             suministroTB.setValorInventario(a.getValorInventario());
 
-            Button button = new Button();
-            button.getStyleClass().add("buttonLightError");
-            ImageView view = new ImageView(new Image("/view/image/remove.png"));
-            view.setFitWidth(24);
-            view.setFitHeight(24);
-            button.setGraphic(view);
-            button.setOnAction(buttonEvent -> {
+            Button button = new Button("X");
+            button.getStyleClass().add("buttonDark");
+            button.setOnAction(b -> {
                 tvList.getItems().remove(suministroTB);
                 calculateTotales();
             });
-            button.setOnKeyPressed(buttonEvent -> {
-                if (buttonEvent.getCode() == KeyCode.ENTER) {
+            button.setOnKeyPressed(b -> {
+                if (b.getCode() == KeyCode.ENTER) {
                     tvList.getItems().remove(suministroTB);
                     calculateTotales();
                 }
@@ -605,7 +603,8 @@ public class FxVentaEstructuraController implements Initializable {
                 clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim());
                 clienteTB.setInformacion(txtDatosCliente.getText().trim());
                 clienteTB.setDireccion(txtDireccionCliente.getText().trim());
-
+                clienteTB.setCelular(txtCelularCliente.getText().trim());
+                
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
                 ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
@@ -815,7 +814,6 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     public void openWindowMostrarVentas() {
-
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_VENTA_MOSTRAR);
@@ -823,7 +821,6 @@ public class FxVentaEstructuraController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxVentaMostrarController controller = fXMLLoader.getController();
-
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar ventas", window.getScene().getWindow());
             stage.setResizable(false);
@@ -832,9 +829,7 @@ public class FxVentaEstructuraController implements Initializable {
             stage.show();
 
         } catch (IOException ex) {
-
         }
-
     }
 
     public void getAddArticulo(SuministroTB suministro) {
@@ -1071,6 +1066,7 @@ public class FxVentaEstructuraController implements Initializable {
                 idCliente = clienteTB.getIdCliente();
                 txtDatosCliente.setText(clienteTB.getInformacion());
                 txtDireccionCliente.setText(clienteTB.getDireccion());
+                txtCelularCliente.setText(clienteTB.getCelular());
                 for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
                     if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(i);
@@ -1081,6 +1077,7 @@ public class FxVentaEstructuraController implements Initializable {
                 idCliente = "";
                 txtDatosCliente.setText("");
                 txtDireccionCliente.setText("");
+                txtCelularCliente.setText("");
             }
             btnBuscarCliente.setDisable(false);
         });

@@ -3,7 +3,7 @@ package model;
 
 
 public class CuentasProveedorTB {
-    
+   
     private String idCompra;
     private int idCuentasProveedor;
     private double montoTotal;

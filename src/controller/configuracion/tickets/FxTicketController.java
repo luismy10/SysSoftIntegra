@@ -344,6 +344,8 @@ public class FxTicketController implements Initializable {
                                 cbkid.put("width", viewTicket.getColumnWidth());
                                 cbkid.put("align", hBox.getAlignment().toString());
                                 cbkid.put("variable", "");
+                                cbkid.put("fitwidth", viewTicket.getFitWidth());
+                                cbkid.put("fitheight", viewTicket.getFitHeight());
                                 cb.put("image", cbkid);
                             }
 
@@ -393,6 +395,8 @@ public class FxTicketController implements Initializable {
                                 cbkid.put("width", viewTicket.getColumnWidth());
                                 cbkid.put("align", hBox.getAlignment().toString());
                                 cbkid.put("variable", "");
+                                cbkid.put("fitwidth", viewTicket.getFitWidth());
+                                cbkid.put("fitheight", viewTicket.getFitHeight());
                                 cb.put("image", cbkid);
                             }
                         }
@@ -441,6 +445,8 @@ public class FxTicketController implements Initializable {
                                 cbkid.put("width", viewTicket.getColumnWidth());
                                 cbkid.put("align", hBox.getAlignment().toString());
                                 cbkid.put("variable", "");
+                                cbkid.put("fitwidth", viewTicket.getFitWidth());
+                                cbkid.put("fitheight", viewTicket.getFitHeight());
                                 cb.put("image", cbkid);
                             }
                         }
@@ -778,9 +784,9 @@ public class FxTicketController implements Initializable {
                 }
             });
             HBox hBox = (HBox) tfReference.getParent();
-            cbFuente.setDisable(hBox.getChildren().size()>1);
+            cbFuente.setDisable(hBox.getChildren().size() > 1);
             cbFuente.getSelectionModel().select(tfReference.getFontName());
-            cbSize.setDisable(hBox.getChildren().size()>1);
+            cbSize.setDisable(hBox.getChildren().size() > 1);
             cbSize.getSelectionModel().select(tfReference.getFontSize());
             cbMultilinea.setSelected(tfReference.isMultilineas());
             cbMultilinea.setText(tfReference.isMultilineas() ? "Si" : "No");

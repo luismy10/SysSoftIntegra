@@ -23,14 +23,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.GlobalADO;
-import model.SuministroTB;
 
 public class FxInicioController implements Initializable {
 
@@ -54,21 +50,14 @@ public class FxInicioController implements Initializable {
     private Text lblComprasTotales;
     @FXML
     private BarChart<String, Number> bcVentasMes;
-    private BarChart<String, Number> bcProductos;
     @FXML
     private PieChart pcCompras;
     @FXML
-    private Text lblCantidadNegativa;
+    private Text lblVentasPagar;
     @FXML
-    private Text lblCantidadIntermedia;
-    @FXML
-    private Text lblCantidadNecesaria;
-    @FXML
-    private Text lblCantidadExcedente;
-    @FXML
-    private HBox hbListaProductosVendidos;
+    private Text lblComprasPagar;
 
-    private XYChart.Series ventasSeries = new XYChart.Series<>();
+    private final XYChart.Series ventasSeries = new XYChart.Series<>();
 
     private ObservableList<PieChart.Data> datas = FXCollections.observableArrayList(
             new PieChart.Data("Compras al contado", 0),
@@ -77,7 +66,7 @@ public class FxInicioController implements Initializable {
             new PieChart.Data("Compras guardadas", 0)
     );
 
-    private short count = 10;
+    private short count = 30;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -108,16 +97,15 @@ public class FxInicioController implements Initializable {
                     lblCliente.setText((String) arrayList.get(3));
                     lblProveedor.setText((String) arrayList.get(4));
                     lblTrabajador.setText((String) arrayList.get(5));
-                    lblCantidadNegativa.setText("Cantidades Negativas: " + arrayList.get(6));
-                    lblCantidadIntermedia.setText("Cantidades Intermedias: " + arrayList.get(7));
-                    lblCantidadNecesaria.setText("Cantidades Necesarias: " + arrayList.get(8));
-                    lblCantidadExcedente.setText("Cantidades Excedentes: " + arrayList.get(9));
 
-                    ArrayList<SuministroTB> listaProductos = (ArrayList<SuministroTB>) arrayList.get(10);
+                    loadGraphics((int) arrayList.get(6), (int) arrayList.get(7), (int) arrayList.get(8), (int) arrayList.get(9));
 
-                    loadGraphics(listaProductos);
+//                     ArrayList<SuministroTB> listaProductos = (ArrayList<SuministroTB>) arrayList.get(10);
+                    lblVentasPagar.setText(Tools.roundingValue((int) arrayList.get(11), 0));
+                    lblComprasPagar.setText(Tools.roundingValue((int) arrayList.get(12), 0));
+
                 });
-                count = 10;
+                count = 30;
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -132,39 +120,26 @@ public class FxInicioController implements Initializable {
         bcVentasMes.getData().add(ventasSeries);
 
         datas = FXCollections.observableArrayList(
-                new PieChart.Data("Compras al contado", 0),
-                new PieChart.Data("Compras al crédito", 0),
-                new PieChart.Data("Compras anuladas", 0),
-                new PieChart.Data("Compras guardadas", 0)
+                new PieChart.Data("Producto con cantidades Negativas", 0),
+                new PieChart.Data("Producto con cantidades Intermedias", 0),
+                new PieChart.Data("Producto con cantidades Necesarias", 0),
+                new PieChart.Data("Producto con cantidades Excedentes", 0)
         );
         pcCompras.setData(datas);
-        
-       
-        
-        VBox vBox = new VBox();
-        vBox.getChildren().add(new Label("asdasdt6"));
-        vBox.getChildren().add(new Label("asdasdy7"));
-        vBox.getChildren().add(new Label("asdasd5"));
-        vBox.getChildren().add(new Label("asdasd4"));
-        vBox.getChildren().add(new Label("asdasd2"));
-        vBox.getChildren().add(new Label("asdasd3"));
-        vBox.getChildren().add(new Label("asdasd1"));
-        hbListaProductosVendidos.getChildren().add(vBox);
-         
 
     }
 
-    private void loadGraphics(ArrayList<SuministroTB> listaProductos) {
+    private void loadGraphics(double negativas, double intermedias, double necesarias, double excedentes) {
         ventasSeries.getData().set(0, new XYChart.Data("Semana 1", new Random().nextInt(101)));
         ventasSeries.getData().set(1, new XYChart.Data("Semana 2", new Random().nextInt(101)));
         ventasSeries.getData().set(2, new XYChart.Data("Semana 3", new Random().nextInt(101)));
         ventasSeries.getData().set(3, new XYChart.Data("Semana 4", new Random().nextInt(101)));
 
         datas = FXCollections.observableArrayList(
-                new PieChart.Data("Compras al contado", new Random().nextInt(101)),
-                new PieChart.Data("Compras al crédito", new Random().nextInt(101)),
-                new PieChart.Data("Compras anuladas", new Random().nextInt(101)),
-                new PieChart.Data("Compras guardadas", new Random().nextInt(101))
+                new PieChart.Data("Producto con cantidades Negativas: "+negativas, negativas),
+                new PieChart.Data("Producto con cantidades Intermedias: "+intermedias, intermedias),
+                new PieChart.Data("Producto con cantidades Necesarias: "+necesarias, necesarias),
+                new PieChart.Data("Producto con cantidades Excedentes: "+excedentes, excedentes)
         );
         pcCompras.setData(datas);
 

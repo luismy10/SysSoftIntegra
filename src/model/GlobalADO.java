@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import javafx.collections.ObservableList;
 
 public class GlobalADO {
 
@@ -104,10 +103,13 @@ public class GlobalADO {
         double proveedores = 0;
         double trabajadores = 0;
 
-        double cantidad_negativas = 0;
-        double cantidad_intermedias = 0;
-        double cantidad_necesarias = 0;
-        double cantidad_excedentes = 0;
+        int cantidad_negativas = 0;
+        int cantidad_intermedias = 0;
+        int cantidad_necesarias = 0;
+        int cantidad_excedentes = 0;
+
+        int ventas_cobrar = 0;
+        int compras_pagar = 0;
 
         ArrayList<SuministroTB> listaProductos = new ArrayList<>();
 
@@ -153,42 +155,54 @@ public class GlobalADO {
                 }
 
                 // CANTIDADES
-                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Negativos' from SuministroTB where Cantidad <= 0");
+                preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Negativos' from SuministroTB where Cantidad <= 0");
                 resultLista = preparedLista.executeQuery();
                 if (resultLista.next()) {
-                    cantidad_negativas = resultLista.getDouble("Productos Negativos");
+                    cantidad_negativas = resultLista.getInt("Productos Negativos");
                 }
 
-                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Intermedios' from SuministroTB where Cantidad > 0 and Cantidad < StockMinimo");
+                preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Intermedios' from SuministroTB where Cantidad > 0 and Cantidad < StockMinimo");
                 resultLista = preparedLista.executeQuery();
                 if (resultLista.next()) {
-                    cantidad_intermedias = resultLista.getDouble("Productos Intermedios");
+                    cantidad_intermedias = resultLista.getInt("Productos Intermedios");
                 }
 
-                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Necesarios' from SuministroTB where Cantidad >= StockMinimo and Cantidad < StockMaximo");
+                preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Necesarios' from SuministroTB where Cantidad >= StockMinimo and Cantidad < StockMaximo");
                 resultLista = preparedLista.executeQuery();
                 if (resultLista.next()) {
-                    cantidad_necesarias = resultLista.getDouble("Productos Necesarios");
+                    cantidad_necesarias = resultLista.getInt("Productos Necesarios");
                 }
 
-                preparedLista = DBUtil.getConnection().prepareStatement("select count(IdSuministro) as 'Productos Execedentes' from SuministroTB where Cantidad >= StockMaximo");
+                preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Execedentes' from SuministroTB where Cantidad >= StockMaximo");
                 resultLista = preparedLista.executeQuery();
                 if (resultLista.next()) {
-                    cantidad_excedentes = resultLista.getDouble("Productos Execedentes");
+                    cantidad_excedentes = resultLista.getInt("Productos Execedentes");
                 }
 
-                preparedLista = DBUtil.getConnection().prepareStatement("select Top 10 dt.IdArticulo, s.NombreMarca, count(dt.Cantidad) as Cantidad from DetalleVentaTB as dt \n" 
-                        +"inner join SuministroTB as s on dt.IdArticulo=s.IdSuministro \n" 
-                        +"inner join VentaTB as v on v.IdVenta=dt.IdVenta\n"
-                        +"where v.FechaVenta = ?\n"
-                        +"group by dt.IdArticulo, s.NombreMarca  order by count(1) desc");
+                preparedLista = DBUtil.getConnection().prepareStatement("select Top 10 dt.IdArticulo, s.NombreMarca, count(dt.Cantidad) as Cantidad from DetalleVentaTB as dt \n"
+                        + "inner join SuministroTB as s on dt.IdArticulo=s.IdSuministro \n"
+                        + "inner join VentaTB as v on v.IdVenta=dt.IdVenta\n"
+                        + "where v.FechaVenta = ?\n"
+                        + "group by dt.IdArticulo, s.NombreMarca  order by count(1) desc");
                 preparedLista.setString(1, Tools.getDate());
                 resultLista = preparedLista.executeQuery();
-                while(resultLista.next()) {
+                while (resultLista.next()) {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setNombreMarca(resultLista.getString("NombreMarca"));
                     suministroTB.setCantidad(resultLista.getDouble("Cantidad"));
                     listaProductos.add(suministroTB);
+                }
+
+                preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as VentasCobrar from VentaTB where Tipo = 2 and Estado = 2");
+                resultLista = preparedLista.executeQuery();
+                if (resultLista.next()) {
+                    ventas_cobrar = resultLista.getInt("VentasCobrar");
+                }
+
+                preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as ComprasPagar from CompraTB where TipoCompra = 2 and EstadoCompra = 2");
+                resultLista = preparedLista.executeQuery();
+                if (resultLista.next()) {
+                    compras_pagar = resultLista.getInt("ComprasPagar");
                 }
 
                 arrayList.add(Tools.roundingValue(ventasTotales, 2));
@@ -199,11 +213,17 @@ public class GlobalADO {
                 arrayList.add(Tools.roundingValue(trabajadores, 0));
 
                 //CANTIDAD
-                arrayList.add(Tools.roundingValue(cantidad_negativas, 0));
-                arrayList.add(Tools.roundingValue(cantidad_intermedias, 0));
-                arrayList.add(Tools.roundingValue(cantidad_necesarias, 0));
-                arrayList.add(Tools.roundingValue(cantidad_excedentes, 0));
+                arrayList.add(cantidad_negativas);
+                arrayList.add(cantidad_intermedias);
+                arrayList.add(cantidad_necesarias);
+                arrayList.add(cantidad_excedentes);
+
+                //PRODUCTOS MAS VENDIDOS
                 arrayList.add(listaProductos);
+
+                //VENTAS Y COMPRAR
+                arrayList.add(ventas_cobrar);
+                arrayList.add(compras_pagar);
             } catch (SQLException ex) {
                 arrayList.add(Tools.roundingValue(ventasTotales, 2));
                 arrayList.add(Tools.roundingValue(comprasTotales, 2));
@@ -213,11 +233,17 @@ public class GlobalADO {
                 arrayList.add(Tools.roundingValue(trabajadores, 0));
 
                 //CANTIDAD
-                arrayList.add(Tools.roundingValue(cantidad_negativas, 0));
-                arrayList.add(Tools.roundingValue(cantidad_intermedias, 0));
-                arrayList.add(Tools.roundingValue(cantidad_necesarias, 0));
-                arrayList.add(Tools.roundingValue(cantidad_excedentes, 0));
+                arrayList.add(cantidad_negativas);
+                arrayList.add(cantidad_intermedias);
+                arrayList.add(cantidad_necesarias);
+                arrayList.add(cantidad_excedentes);
+
+                //PRODUCTOS MAS VENDIDOS
                 arrayList.add(listaProductos);
+
+                //VENTAS Y COMPRAR
+                arrayList.add(ventas_cobrar);
+                arrayList.add(compras_pagar);
             } finally {
                 try {
                     if (preparedLista != null) {

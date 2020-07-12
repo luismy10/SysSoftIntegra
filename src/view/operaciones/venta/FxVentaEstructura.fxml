@@ -257,6 +257,20 @@
                                                 <TextField fx:id="txtDireccionCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0.3333333333333333em;" styleClass="labelRoboto14" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/directory.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <TextField fx:id="txtCelularCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Celular del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>

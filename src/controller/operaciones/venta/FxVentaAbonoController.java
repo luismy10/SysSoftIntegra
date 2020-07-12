@@ -1,7 +1,6 @@
 package controller.operaciones.venta;
 
 import controller.tools.FilesRouters;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -24,12 +23,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.CajaADO;
-import model.CajaTB;
-import model.CuentasClienteADO;
-import model.CuentasClienteTB;
-import model.CuentasHistorialClienteADO;
-import model.CuentasHistorialClienteTB;
 
 public class FxVentaAbonoController implements Initializable {
 
@@ -48,13 +41,13 @@ public class FxVentaAbonoController implements Initializable {
     @FXML
     private Label lblFechaVencimiento;
     @FXML
-    private TableView<CuentasHistorialClienteTB> tvList;
+    private TableView<?> tvList;
     @FXML
-    private TableColumn<CuentasHistorialClienteTB, String> tcFecha;
+    private TableColumn<?, String> tcFecha;
     @FXML
-    private TableColumn<CuentasHistorialClienteTB, String> tcMonto;
+    private TableColumn<?, String> tcMonto;
     @FXML
-    private TableColumn<CuentasHistorialClienteTB, String> tcReferencia;
+    private TableColumn<?, String> tcReferencia;
     @FXML
     private Button btnCancelar;
 
@@ -80,31 +73,31 @@ public class FxVentaAbonoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
         simboloMoneda = "M";
-        tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaAbono().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
-        tcMonto.setCellValueFactory(cellData -> Bindings.concat(simboloMoneda + " " + Tools.roundingValue(cellData.getValue().getAbono(), 2)));
-        tcReferencia.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getReferencia()));
+//        tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaAbono().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
+//        tcMonto.setCellValueFactory(cellData -> Bindings.concat(simboloMoneda + " " + Tools.roundingValue(cellData.getValue().getAbono(), 2)));
+//        tcReferencia.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getReferencia()));
     }
 
     public void loadInitData(String idVenta, String simboloMoneda) {
         this.idVenta = idVenta;
         this.simboloMoneda = simboloMoneda;
-        CuentasClienteTB cuentasClienteTB = CuentasClienteADO.Get_CuentasCliente_ById(idVenta);
-        if (cuentasClienteTB != null) {
-            cobrar = cuentasClienteTB.getMontoInicial();
-            idCuentasCliente = cuentasClienteTB.getIdCuentasCliente();
-            lblPlazos.setText(cuentasClienteTB.getPlazosName());
-            lblFechaVencimiento.setText(cuentasClienteTB.getFechaVencimiento().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
-            lblMontoCobrar.setText(simboloMoneda + " " + Tools.roundingValue(cobrar, 2));
-            loadTableAbono();
-            tvList.getItems().forEach(e -> pagado += e.getAbono());
-            lblPagado.setText(simboloMoneda + " " + Tools.roundingValue(pagado, 2));
-            pendiente = cobrar - pagado;
-            lblPendiente.setText(simboloMoneda + " " + Tools.roundingValue(pendiente, 2));
-            total = pagado + pendiente;
-            lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(total, 2));
-            pagadoTotal = pagado;
-            pagado = 0;
-        }
+//        CuentasClienteTB cuentasClienteTB = CuentasClienteADO.Get_CuentasCliente_ById(idVenta);
+//        if (cuentasClienteTB != null) {
+//            cobrar = cuentasClienteTB.getMontoInicial();
+//            idCuentasCliente = cuentasClienteTB.getIdCuentasCliente();
+//            lblPlazos.setText(cuentasClienteTB.getPlazosName());
+//            lblFechaVencimiento.setText(cuentasClienteTB.getFechaVencimiento().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+//            lblMontoCobrar.setText(simboloMoneda + " " + Tools.roundingValue(cobrar, 2));
+//            loadTableAbono();
+////            tvList.getItems().forEach(e -> pagado += e.getAbono());
+//            lblPagado.setText(simboloMoneda + " " + Tools.roundingValue(pagado, 2));
+//            pendiente = cobrar - pagado;
+//            lblPendiente.setText(simboloMoneda + " " + Tools.roundingValue(pendiente, 2));
+//            total = pagado + pendiente;
+//            lblTotal.setText(simboloMoneda + " " + Tools.roundingValue(total, 2));
+//            pagadoTotal = pagado;
+//            pagado = 0;
+//        }
     }
 
     public void loadTableAbono() {
@@ -135,7 +128,7 @@ public class FxVentaAbonoController implements Initializable {
     }
 
     private void deleteAbono() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+//        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
 //            short option = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Abono", "¿Está segudo de cancelar el abono?", true);
 //            if (option == 1) {
 //
@@ -171,10 +164,10 @@ public class FxVentaAbonoController implements Initializable {
 //                    }
 //                }
 //            }
-        } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Abonar", "Seleccione una abono para cancelarlo.", false);
-            tvList.requestFocus();
-        }
+//        } else {
+//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Abonar", "Seleccione una abono para cancelarlo.", false);
+//            tvList.requestFocus();
+//        }
     }
 
     @FXML

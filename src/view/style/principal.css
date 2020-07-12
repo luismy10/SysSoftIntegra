@@ -372,7 +372,7 @@
 .text-field-normal{
     -fx-padding: 0.5em 0.75em 0.5em 0.75em; /*6px 9px 6px 9px*/
     -fx-background-radius: 0, 0;
-    -fx-background-color: transparent, transparent,transparent,transparent;
+    -fx-background-color: white, white,white,white;
     -fx-border-width:1;
     -fx-border-color: #999999;
     -fx-font-size:1.1666666666666667em; 
@@ -458,7 +458,7 @@
     -fx-font-family:"Roboto";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
-    
+
     -fx-curso: hand;
 }
 .buttonLight:hover{
@@ -859,6 +859,31 @@
  *                                                                             *
  ******************************************************************************/
 
+.buttonDark{
+    -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
+
+    -fx-border-color: #343a40;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: #343a40;
+
+    -fx-font-family:"Roboto bold";
+    -fx-font-size: 1.1666666666666667em;
+    -fx-text-fill: white;
+}
+.buttonDark:hover{
+    -fx-text-fill: #343a40;
+    -fx-background-color: white;
+    -fx-cursor: hand;
+}
+/*******************************************************************************
+ *                                                                             *
+ * Tab Pane                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
 .tab-pane {
     -fx-tab-min-height: 3em;
     /* 24 */
@@ -1206,7 +1231,7 @@
 }
 
 .table-view-principal:row-selection .table-row-cell:filled:selected:hover { 
-    -fx-background-color:  #2796c4;
+    -fx-background-color:   #007bff;
 }
 
 .table-view-principal:row-selection .table-row-cell:filled:selected { 
@@ -1214,7 +1239,7 @@
 }
 
 .table-view-principal:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused {
-    -fx-background-color: #2796c4;
+    -fx-background-color:  #007bff;
 }
 
 .table-view-principal:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused .table-cell {
@@ -1263,9 +1288,9 @@
     -fx-padding:  0.5em;      
 }
 
-.table-view-secundario .column-header:hover{
+/*.table-view-secundario .column-header:hover{
     -fx-background-color: #dadada;
-}
+}*/
 
 .table-view-secundario .column-header:hover .label{
     -fx-text-fill: #111;
@@ -1704,7 +1729,7 @@ totally specific (always using direct child) and cover all cases, which would be
        - The second one is the border of the focus ring
     */
     /*noinspection CssInvalidFunction*/
-    
+
     -fx-border-radius: 1em;
     -fx-border-color: #999999;
     -fx-border-insets: 0px, -2px;
@@ -1781,7 +1806,8 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-width: 1px;
     -fx-border-style: solid;
 
-    -fx-padding: 0.4166666666666667em 0.25em 0.4166666666666667em 0.25em; /*5px*/
+    -fx-padding: 0.5em 0.3333333333333333em 0.5em 0.3333333333333333em; /*5px*/
+      /*-fx-padding: 0.5em 0.75em 0.5em 0.75em; 6px 9px 6px 9px*/
 }
 
 .check-box-contenido > .box > .mark {
@@ -2206,9 +2232,9 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-color: #999999;
     -fx-padding:0.16666666666666666em 0 0.16666666666666666em 0;
 
-/*    -fx-font-size:12.5px; 
-    -fx-font-family:"Monospace"; 
-    -fx-font-weight:bold;*/
+    /*    -fx-font-size:12.5px; 
+        -fx-font-family:"Monospace"; 
+        -fx-font-weight:bold;*/
 }
 .text-field-ticket:hover{
     -fx-background-color: transparent, white;
