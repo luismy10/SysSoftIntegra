@@ -70,8 +70,8 @@ public class KardexADO {
         return empList;
     }
 
-    public static ObservableList<KardexTB> List_Kardex_By_Id_Suministro(String value) {
-        String selectStmt = "{call Sp_Listar_Kardex_Suministro_By_Id(?)}";
+    public static ObservableList<KardexTB> List_Kardex_By_Id_Suministro(String value,String fechaInicial,String fechaFinal) {
+        String selectStmt = "{call Sp_Listar_Kardex_Suministro_By_Id(?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<KardexTB> empList = FXCollections.observableArrayList();
@@ -79,9 +79,10 @@ public class KardexADO {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
+            preparedStatement.setString(2, fechaInicial);
+            preparedStatement.setString(3, fechaFinal);
             rsEmps = preparedStatement.executeQuery();
 
-            double cantidadInicial = 0;
             double cantidadActual;
             double cantidadTotal = 0;
 
@@ -95,30 +96,24 @@ public class KardexADO {
                 kardexTB.setMovimientoName(rsEmps.getString("Nombre"));
                 kardexTB.setDetalle(rsEmps.getString("Detalle"));
                 kardexTB.setCantidad(rsEmps.getDouble("Cantidad"));
-
                
                 cantidadActual = (kardexTB.getTipo() == 1 ? kardexTB.getCantidad() : -kardexTB.getCantidad());
                 cantidadTotal = cantidadTotal + cantidadActual;
                 
-                 cantidadInicial = cantidadTotal - cantidadActual;
-
-                kardexTB.setInicial(cantidadInicial);
                 kardexTB.setCantidadTotal(cantidadTotal);
                 
-                Label lblInicial = new Label(Tools.roundingValue(kardexTB.getInicial(), 4));
-                lblInicial.getStyleClass().add("labelRoboto14");
-                lblInicial.setStyle("-fx-text-fill:#0066ff;-fx-font-weight:bold;");
                 Label lblEntreda = new Label(kardexTB.getTipo() == 1 ? Tools.roundingValue(kardexTB.getCantidad(), 4) : "0.0000");
                 lblEntreda.getStyleClass().add("labelRoboto14");
-                lblEntreda.setStyle("-fx-text-fill:#33cc33;-fx-font-weight:bold;");
+                lblEntreda.setStyle("-fx-text-fill:#4caf50;-fx-font-weight:bold;");
+                
                 Label lblSalida = new Label(kardexTB.getTipo() == 2 ? Tools.roundingValue(kardexTB.getCantidad()== 0 ? kardexTB.getCantidad(): -kardexTB.getCantidad(), 4):"0.0000");
                 lblSalida.getStyleClass().add("labelRoboto14");
-                lblSalida.setStyle("-fx-text-fill:#ff0000;-fx-font-weight:bold;");
+                lblSalida.setStyle("-fx-text-fill:#f44336;-fx-font-weight:bold;");
+                
                 Label lblSaldo = new Label(Tools.roundingValue(kardexTB.getCantidadTotal(), 4));
                 lblSaldo.getStyleClass().add("labelRoboto14");
                 lblSaldo.setStyle("-fx-text-fill:#000000;-fx-font-weight:bold;");
                 
-                kardexTB.setLblInicial(lblInicial);
                 kardexTB.setLblEntrada(lblEntreda);
                 kardexTB.setLblSalida(lblSalida);
                 kardexTB.setLblSaldo(lblSaldo);

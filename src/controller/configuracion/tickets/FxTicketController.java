@@ -156,7 +156,7 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                         imageView.setId(String.valueOf(object.get("value").toString()));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());
@@ -184,7 +184,7 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                         imageView.setId(String.valueOf(object.get("value").toString()));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());
@@ -212,7 +212,7 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 60, 60, false);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                         imageView.setId(String.valueOf(object.get("value").toString()));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());

@@ -43,35 +43,33 @@ public class VentaADO {
 
             ventaTB.setCliente(ventaTB.getClienteTB().getIdCliente());
 
-            if (ventaTB.getClienteTB().getIdCliente().equalsIgnoreCase("")) {
-                clienteVerificar = DBUtil.getConnection().prepareStatement("SELECT IdCliente FROM ClienteTB WHERE NumeroDocumento = ?");
-                clienteVerificar.setString(1, ventaTB.getClienteTB().getNumeroDocumento());
-                if (clienteVerificar.executeQuery().next()) {
-                    ResultSet resultSet = clienteVerificar.executeQuery();
-                    resultSet.next();
-                    ventaTB.setCliente(resultSet.getString("IdCliente"));
-                } else {
-                    codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
-                    codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
-                    codigoCliente.execute();
-                    String idCliente = codigoCliente.getString(1);
+            clienteVerificar = DBUtil.getConnection().prepareStatement("SELECT IdCliente FROM ClienteTB WHERE NumeroDocumento = ?");
+            clienteVerificar.setString(1, ventaTB.getClienteTB().getNumeroDocumento().trim());
+            if (clienteVerificar.executeQuery().next()) {
+                ResultSet resultSet = clienteVerificar.executeQuery();
+                resultSet.next();
+                ventaTB.setCliente(resultSet.getString("IdCliente"));
+            } else {
+                codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
+                codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigoCliente.execute();
+                String idCliente = codigoCliente.getString(1);
 
-                    cliente.setString(1, idCliente);
-                    cliente.setInt(2, ventaTB.getClienteTB().getTipoDocumento());
-                    cliente.setString(3, ventaTB.getClienteTB().getNumeroDocumento());
-                    cliente.setString(4, ventaTB.getClienteTB().getInformacion());
-                    cliente.setString(5, "");
-                    cliente.setString(6, ventaTB.getClienteTB().getCelular());
-                    cliente.setString(7, "");
-                    cliente.setString(8, ventaTB.getClienteTB().getDireccion());
-                    cliente.setString(9, "");
-                    cliente.setInt(10, 1);
-                    cliente.setBoolean(11, false);
-                    cliente.setBoolean(12, false);
-                    cliente.addBatch();
+                cliente.setString(1, idCliente);
+                cliente.setInt(2, ventaTB.getClienteTB().getTipoDocumento());
+                cliente.setString(3, ventaTB.getClienteTB().getNumeroDocumento().trim());
+                cliente.setString(4, ventaTB.getClienteTB().getInformacion().trim().toUpperCase());
+                cliente.setString(5, "");
+                cliente.setString(6, ventaTB.getClienteTB().getCelular().trim());
+                cliente.setString(7, "");
+                cliente.setString(8, ventaTB.getClienteTB().getDireccion().trim().toUpperCase());
+                cliente.setString(9, "");
+                cliente.setInt(10, 1);
+                cliente.setBoolean(11, false);
+                cliente.setBoolean(12, false);
+                cliente.addBatch();
 
-                    ventaTB.setCliente(idCliente);
-                }
+                ventaTB.setCliente(idCliente);
             }
 
             serie_numeracion = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");
@@ -232,7 +230,7 @@ public class VentaADO {
                 movimiento_caja.setString(3, ventaTB.getHoraVenta());
                 movimiento_caja.setString(4, "VENTA CON EFECTIVO DE SERIE Y NUMERACIÓN DEL COMPROBANTE " + id_comprabante[0] + "-" + id_comprabante[1]);
                 movimiento_caja.setShort(5, (short) 2);
-                movimiento_caja.setDouble(6,ventaTB.getTarjeta() > 0 ? ventaTB.getEfectivo() : ventaTB.getTotal() );
+                movimiento_caja.setDouble(6, ventaTB.getTarjeta() > 0 ? ventaTB.getEfectivo() : ventaTB.getTotal());
                 movimiento_caja.addBatch();
             }
 

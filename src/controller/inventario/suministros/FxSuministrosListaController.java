@@ -300,8 +300,8 @@ public class FxSuministrosListaController implements Initializable {
             }
         } else if (suministrosKardexController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-                suministrosKardexController.fillKardexTable(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
+                suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(),tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+                suministrosKardexController.fillKardexTable(tvList.getSelectionModel().getSelectedItem().getIdSuministro(),"","");
                 Tools.Dispose(apWindow);
             }
         } else if (asignacionProcesoController != null) {

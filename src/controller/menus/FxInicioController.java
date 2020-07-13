@@ -56,7 +56,15 @@ public class FxInicioController implements Initializable {
     private Text lblVentasPagar;
     @FXML
     private Text lblComprasPagar;
-
+    @FXML
+    private Text lblNegativos;
+    @FXML
+    private Text lblIntermedios;
+    @FXML
+    private Text lblNecesarias;
+    @FXML
+    private Text lblExcentes;
+    
     private final XYChart.Series ventasSeries = new XYChart.Series<>();
 
     private ObservableList<PieChart.Data> datas = FXCollections.observableArrayList(
@@ -66,7 +74,7 @@ public class FxInicioController implements Initializable {
             new PieChart.Data("Compras guardadas", 0)
     );
 
-    private short count = 30;
+    private short count = 59;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -105,7 +113,7 @@ public class FxInicioController implements Initializable {
                     lblComprasPagar.setText(Tools.roundingValue((int) arrayList.get(12), 0));
 
                 });
-                count = 30;
+                count = 59;
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -120,10 +128,10 @@ public class FxInicioController implements Initializable {
         bcVentasMes.getData().add(ventasSeries);
 
         datas = FXCollections.observableArrayList(
-                new PieChart.Data("Producto con cantidades Negativas", 0),
-                new PieChart.Data("Producto con cantidades Intermedias", 0),
-                new PieChart.Data("Producto con cantidades Necesarias", 0),
-                new PieChart.Data("Producto con cantidades Excedentes", 0)
+                new PieChart.Data("Productos Negativos", 0),
+                new PieChart.Data("Productos Intermedios", 0),
+                new PieChart.Data("Productos Necesarios", 0),
+                new PieChart.Data("Productos Excedentes", 0)
         );
         pcCompras.setData(datas);
 
@@ -134,12 +142,17 @@ public class FxInicioController implements Initializable {
         ventasSeries.getData().set(1, new XYChart.Data("Semana 2", new Random().nextInt(101)));
         ventasSeries.getData().set(2, new XYChart.Data("Semana 3", new Random().nextInt(101)));
         ventasSeries.getData().set(3, new XYChart.Data("Semana 4", new Random().nextInt(101)));
-
+        
+        lblNegativos.setText(""+negativas);
+        lblIntermedios.setText(""+intermedias);
+        lblNecesarias.setText(""+necesarias);
+        lblExcentes.setText(""+excedentes);
+        
         datas = FXCollections.observableArrayList(
-                new PieChart.Data("Producto con cantidades Negativas: "+negativas, negativas),
-                new PieChart.Data("Producto con cantidades Intermedias: "+intermedias, intermedias),
-                new PieChart.Data("Producto con cantidades Necesarias: "+necesarias, necesarias),
-                new PieChart.Data("Producto con cantidades Excedentes: "+excedentes, excedentes)
+                new PieChart.Data("Productos Negativos", negativas),
+                new PieChart.Data("Productos Intermedios", intermedias),
+                new PieChart.Data("Productos Necesarios", necesarias),
+                new PieChart.Data("Productos Excedentes", excedentes)
         );
         pcCompras.setData(datas);
 

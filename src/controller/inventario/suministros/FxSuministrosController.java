@@ -41,6 +41,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -80,11 +81,9 @@ public class FxSuministrosController implements Initializable {
     @FXML
     private TableColumn<SuministroTB, String> tcCategoria;
     @FXML
-    private TableColumn<SuministroTB, String> tcMarca;
+    private TableColumn<SuministroTB, Label> tcCantidad;
     @FXML
     private TableColumn<SuministroTB, String> tcCosto;
-//    private TableColumn<SuministroTB, Label> tcCantidad;
-//    private TableColumn<SuministroTB, String> tcEstado;
     @FXML
     private ComboBox<HideableItem<DetalleTB>> cbCategoria;
     @FXML
@@ -204,22 +203,18 @@ public class FxSuministrosController implements Initializable {
                     cellData.getValue().getClaveAlterna() == null || cellData.getValue().getClaveAlterna().equalsIgnoreCase("")
                     ? cellData.getValue().getClave() : cellData.getValue().getClaveAlterna() + "\n" + cellData.getValue().getClave()
             ));
-            
             tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
-            tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
-            tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
+            tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()+"\n"+cellData.getValue().getMarcaName()));
             tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
-//        tcCantidad.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
+            tcCantidad.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
 //        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(),2)));
-//        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName().get()));
 
             tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));//+1
             tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
             tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.32));//+4       
             tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
-            tcMarca.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
             tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-//        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.00));
+            tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
 //        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
 
             arrayArticulosImpuesto = new ArrayList<>();

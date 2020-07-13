@@ -15,11 +15,9 @@ public class KardexTB {
     private int movimiento;
     private String movimientoName;
     private String detalle;
-    private double inicial;
     private double cantidad;    
     private double cantidadTotal;
     
-    private Label lblInicial;
     private Label lblEntrada;
     private Label lblSalida;
     private Label lblSaldo;
@@ -92,14 +90,6 @@ public class KardexTB {
         this.movimientoName = movimientoName;
     }
 
-    public double getInicial() {
-        return inicial;
-    }
-
-    public void setInicial(double inicial) {
-        this.inicial = inicial;
-    }
-
     public String getDetalle() {
         return detalle;
     }
@@ -122,14 +112,6 @@ public class KardexTB {
 
     public void setCantidadTotal(double cantidadTotal) {
         this.cantidadTotal = cantidadTotal;
-    }
-
-    public Label getLblInicial() {
-        return lblInicial;
-    }
-
-    public void setLblInicial(Label lblInicial) {
-        this.lblInicial = lblInicial;
     }
 
     public Label getLblEntrada() {

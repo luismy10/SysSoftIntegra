@@ -136,7 +136,8 @@ public class BillPrintable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
                     fieldTicket.setText(arrList.get(m).getClave());
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
-                    fieldTicket.setText(arrList.get(m).getNombreMarca());
+                    String nombreMarcaReplace = arrList.get(m).getNombreMarca().replaceAll("\"", "");
+                    fieldTicket.setText(nombreMarcaReplace);
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
                     fieldTicket.setText(Tools.roundingValue(arrList.get(m).getCantidad(), 2));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
@@ -304,10 +305,10 @@ public class BillPrintable {
             JasperDesign jasperDesign = getJasperDesign(width, 10000,apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
-//            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
+//            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
+            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
             return "completed";
-        } catch (JRException /*| PrintException | IOException*/ er) {
+        } catch (JRException | PrintException | IOException er) {
             return "Error en imprimir: " + er.getLocalizedMessage();
         } finally {
             fileImages.stream().map((fileImage) -> new File(fileImage)).filter((removed) -> (removed != new File("./archivos/no-image"))).forEachOrdered((removed) -> {
@@ -451,7 +452,8 @@ public class BillPrintable {
                 staticText.setHeight((int) (fontSize + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
                 staticText.setFontSize(fontSize - 3.5f);
                 staticText.setFontName("Consola");
-
+                
+                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
                 staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
                 staticText.setPositionType(PositionTypeEnum.FLOAT);
                 staticText.setMode(ModeEnum.OPAQUE);
@@ -569,6 +571,7 @@ public class BillPrintable {
                             : field.getFontName().equalsIgnoreCase("Roboto Regular")
                             ? "RobotoRegular"
                             : "RobotoBold");
+                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
                     staticText.setHorizontalTextAlign(
                             field.getAlignment() == Pos.CENTER_LEFT
                             ? HorizontalTextAlignEnum.LEFT
@@ -671,7 +674,7 @@ public class BillPrintable {
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
         exporter.exportReport();
-        printString(printName, cortar);
+//        printString(printName, cortar);
     }
 
     public void printString(String printerName, boolean cortar) throws PrintException, IOException {
@@ -787,7 +790,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 100, 86, false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -815,7 +818,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 100, 86, false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -844,7 +847,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), 100, 86, false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
