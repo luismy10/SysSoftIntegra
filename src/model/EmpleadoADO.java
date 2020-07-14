@@ -360,7 +360,7 @@ public class EmpleadoADO {
             try {
                 DBUtil.getConnection().setAutoCommit(false);
                 statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM EmpleadoTB WHERE IdEmpleado = ? AND Sistema = 1");
-                statementValidation.setString(1, result);
+                statementValidation.setString(1, idEmpleado);
                 if (statementValidation.executeQuery().next()) {
                     DBUtil.getConnection().rollback();
                     result = "sistema";

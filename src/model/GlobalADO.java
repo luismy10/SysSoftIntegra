@@ -328,7 +328,8 @@ public class GlobalADO {
                     + "           ,Provincia"
                     + "           ,Distrito"
                     + "           ,Usuario"
-                    + "           ,Clave)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           ,Clave"
+                    + "           ,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             statementEmpleado.setString(1, idEmpleado);
             statementEmpleado.setInt(2, empleadoTB.getTipoDocumento());
@@ -350,6 +351,7 @@ public class GlobalADO {
             statementEmpleado.setInt(18, 0);
             statementEmpleado.setString(19, empleadoTB.getUsuario());
             statementEmpleado.setString(20, empleadoTB.getClave());
+            statementEmpleado.setBoolean(21, true); 
             statementEmpleado.addBatch();
 
             statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Predeterminado,CodigoAlterno,Sistema)VALUES(?,?,?,?,?,?)");

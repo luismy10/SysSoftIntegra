@@ -318,6 +318,7 @@ public class FxEmpleadosProcesoController implements Initializable {
                     switch (result) {
                         case "update":
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Empleado", "Actualizado correctamente el empleado.", false);
+                            Tools.Dispose(window);
                             break;
                         default:
                             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Empleado", result, false);

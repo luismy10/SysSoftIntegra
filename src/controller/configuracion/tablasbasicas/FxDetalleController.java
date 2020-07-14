@@ -80,14 +80,14 @@ public class FxDetalleController implements Initializable {
 
     private void aValidityProcess() {
         if (txtCode.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "Ingrese el código, por favor.", false);
+            Tools.AlertMessageWarning(window, "Detalle", "Ingrese el código, por favor.");
             txtCode.requestFocus();
         } else if (txtName.getText().equalsIgnoreCase("")) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "Ingrese el nombre, por favor.", false);
+            Tools.AlertMessageWarning(window, "Detalle", "Ingrese el nombre, por favor.");
             txtName.requestFocus();
         } else {
 
-            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
+            short confirmation = Tools.AlertMessageConfirmation(window, "Mantenimiento", "¿Esta seguro de continuar?");
             if (confirmation == 1) {
                 DetalleTB detalleTB = new DetalleTB();
                 detalleTB.setIdDetalle(idDetalle);
@@ -98,20 +98,21 @@ public class FxDetalleController implements Initializable {
                 detalleTB.setEstado(cbEstado.getValue().getId());
                 detalleTB.setUsuarioRegistro(Session.USER_ID);
                 String result = DetalleADO.CrudEntity(detalleTB);
-                if (result.equalsIgnoreCase("registered")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);
+                if (result.equalsIgnoreCase("inserted")) {
+                    Tools.AlertMessageInformation(window, "Detalle", "Registrado correctamente.");
+                    Tools.Dispose(window);
 
                 } else if (result.equalsIgnoreCase("updated")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Actualizado correctamente.", false);
+                    Tools.AlertMessageInformation(window, "Detalle", "Actualizado correctamente.");
                     Tools.Dispose(window);
                     detalleMantenimientoController.initDetail(txtCode.getText(),"");
                 } else if (result.equalsIgnoreCase("duplicate")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
+                    Tools.AlertMessageWarning(window, "Detalle", "No se puede haber 2 detalles con el mismo nombre.");
                     txtName.requestFocus();
                 } else if (result.equalsIgnoreCase("error")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puedo completar la ejecución.", false);
+                    Tools.AlertMessageWarning(window, "Detalle", "No se puedo completar la ejecución.");
                 } else {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", result, false);
+                    Tools.AlertMessageError(window, "Detalle", result);
                 }
 
             } else {
