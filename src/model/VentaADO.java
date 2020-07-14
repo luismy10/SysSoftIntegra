@@ -139,8 +139,10 @@ public class VentaADO {
                     + "Tipo,"
                     + "Movimiento,"
                     + "Detalle,"
-                    + "Cantidad) "
-                    + "VALUES(?,?,?,?,?,?,?)");
+                    + "Cantidad,"
+                    + "Costo, "
+                    + "Total) "
+                    + "VALUES(?,?,?,?,?,?,?,?,?)");
 
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
@@ -205,19 +207,21 @@ public class VentaADO {
                     suministro_update_unidad.addBatch();
                 }
 
+                double cantidadKardex = tvList.getItems().get(i).getValorInventario() == 1
+                        ? tvList.getItems().get(i).getCantidad()
+                        : tvList.getItems().get(i).getValorInventario() == 2
+                        ? cantidadGranel
+                        : tvList.getItems().get(i).getCantidad();
+
                 suministro_kardex.setString(1, tvList.getItems().get(i).getIdSuministro());
                 suministro_kardex.setString(2, Tools.getDate());
                 suministro_kardex.setString(3, Tools.getHour());
                 suministro_kardex.setShort(4, (short) 2);
                 suministro_kardex.setInt(5, 1);
-                suministro_kardex.setString(6, "SALIDA POR VENTA");
-                suministro_kardex.setDouble(7,
-                        tvList.getItems().get(i).getValorInventario() == 1
-                        ? tvList.getItems().get(i).getCantidad()
-                        : tvList.getItems().get(i).getValorInventario() == 2
-                        ? cantidadGranel
-                        : tvList.getItems().get(i).getCantidad()
-                );
+                suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1]);
+                suministro_kardex.setDouble(7, cantidadKardex);
+                suministro_kardex.setDouble(8, tvList.getItems().get(i).getCostoCompra());
+                suministro_kardex.setDouble(9, cantidadKardex * tvList.getItems().get(i).getCostoCompra());
                 suministro_kardex.addBatch();
 
             }
@@ -434,6 +438,7 @@ public class VentaADO {
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
                     clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
+                    clienteTB.setCelular(resultSetVenta.getString("Celular"));
                     ventaTB.setClienteTB(clienteTB);
                     //Cliente end
                     ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
@@ -589,8 +594,10 @@ public class VentaADO {
                             + "Tipo,"
                             + "Movimiento,"
                             + "Detalle,"
-                            + "Cantidad) "
-                            + "VALUES(?,?,?,?,?,?,?)");
+                            + "Cantidad, "
+                            + "Costo, "
+                            + "Total) "
+                            + "VALUES(?,?,?,?,?,?,?,?,?)");
 
                     for (SuministroTB stb : arrList) {
 
@@ -611,19 +618,21 @@ public class VentaADO {
                         double cantidadGranel = stb.getPrecioVentaGeneralAuxiliar() <= 0 ? 0
                                 : stb.getPrecioVentaGeneralReal() / stb.getPrecioVentaGeneralAuxiliar();
 
+                        double cantidadTotal = stb.getValorInventario() == 1
+                                ? stb.getCantidad()
+                                : stb.getValorInventario() == 2
+                                ? cantidadGranel
+                                : stb.getCantidad();
+
                         statementKardex.setString(1, stb.getIdSuministro());
                         statementKardex.setString(2, Tools.getDate());
                         statementKardex.setString(3, Tools.getHour());
                         statementKardex.setShort(4, (short) 1);
                         statementKardex.setInt(5, 2);
-                        statementKardex.setString(6, "DEVOLUCIÓN DE PRODUCTOS");
-                        statementKardex.setDouble(7,
-                                stb.getValorInventario() == 1
-                                ? stb.getCantidad()
-                                : stb.getValorInventario() == 2
-                                ? cantidadGranel
-                                : stb.getCantidad()
-                        );
+                        statementKardex.setString(6, "DEVOLUCIÓN DE PRODUCTO");
+                        statementKardex.setDouble(7, cantidadTotal);
+                        statementKardex.setDouble(8, stb.getCostoCompra());
+                        statementKardex.setDouble(9, cantidadTotal * stb.getCostoCompra());
                         statementKardex.addBatch();
 
                     }

@@ -168,7 +168,7 @@ public class FxLoteProcesoController implements Initializable {
                     suministrosCompraController.getComprasController().getLoteTBs().add(loteTB);
                 });
                 suministrosCompraController.setValidarlote(false);
-                suministrosCompraController.setCantidadInicial(cantidad);
+//                suministrosCompraController.setCantidadInicial(cantidad);
                 Tools.Dispose(window);
                 suministrosCompraController.addSuministrosList();
             }

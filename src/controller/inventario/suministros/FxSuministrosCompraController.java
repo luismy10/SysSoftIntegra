@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -44,8 +43,6 @@ public class FxSuministrosCompraController implements Initializable {
     @FXML
     private Text lblDescripcion;
     @FXML
-    private TextField txtObservacion;
-    @FXML
     private VBox vbImpuestos;
     @FXML
     private TextField txtCantidad;
@@ -72,8 +69,6 @@ public class FxSuministrosCompraController implements Initializable {
 
     private ObservableList<LoteTB> loteTBs;
 
-    private double cantidadinicial;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
@@ -81,12 +76,10 @@ public class FxSuministrosCompraController implements Initializable {
         loteSuministro = false;
         idSuminisitro = "";
         indexcompra = 0;
-        cantidadinicial = 0;
         cargarComboBox();
     }
 
     public void cargarComboBox() {
-
         vbImpuestos.getChildren().clear();
         ToggleGroup toggleGroup = new ToggleGroup();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
@@ -139,12 +132,11 @@ public class FxSuministrosCompraController implements Initializable {
             }
         }
         onActionImpuesto();
-        txtObservacion.setText(detalleCompraTB.getDescripcion());
 
         editarSuministros = true;
         indexcompra = index;
         this.loteTBs = loteTBs;
-        cantidadinicial = detalleCompraTB.getCantidad();
+//        cantidadinicial = detalleCompraTB.getCantidad();
 
     }
 
@@ -172,18 +164,18 @@ public class FxSuministrosCompraController implements Initializable {
         }
 
         if (!Tools.isNumeric(txtCantidad.getText())) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en la cantidad", false);
+            Tools.AlertMessageError(apWindow, "Compra", "Ingrese un valor numerico en la cantidad");
             txtCantidad.requestFocus();
         } else if (Double.parseDouble(txtCantidad.getText()) <= 0) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "La cantidad no puede ser menor o igual a 0", false);
+            Tools.AlertMessageError(apWindow, "Compra", "La cantidad no puede ser menor o igual a 0");
             txtCantidad.requestFocus();
         } else if (validate <= 0) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Seleccione un impuesto.", false);
+            Tools.AlertMessageError(apWindow, "Compra", "Seleccione un impuesto.");
         } else if (!Tools.isNumeric(txtCosto.getText())) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ingrese un valor numerico en el costo", false);
+            Tools.AlertMessageError(apWindow, "Compra", "Ingrese un valor numerico en el costo");
             txtCosto.requestFocus();
         } else if (Double.parseDouble(txtCosto.getText()) <= 0) {
-            Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "El costo no puede ser menor o igual a 0", false);
+            Tools.AlertMessageError(apWindow, "Compra", "El costo no puede ser menor o igual a 0");
             txtCosto.requestFocus();
         } else {
             addSuministros(Integer.parseInt(radioButtonModel.getId()), radioButtonModel.getText(), radioButtonModel.getValor());
@@ -206,7 +198,7 @@ public class FxSuministrosCompraController implements Initializable {
         detalleCompraTB.setIdImpuesto(idImpuesto);
         detalleCompraTB.setNombreImpuesto(nombreImpuesto);
         detalleCompraTB.setValorImpuesto(valorImpuesto);
-        detalleCompraTB.setDescripcion(txtObservacion.getText().isEmpty() ? "" : txtObservacion.getText());
+        detalleCompraTB.setDescripcion("");
         double totalDescuento = detalleCompraTB.getPrecioCompra() * (detalleCompraTB.getDescuento() / 100.00);
         double nuevoPrecioCompra = detalleCompraTB.getPrecioCompra() - totalDescuento;
         double totalImpuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), nuevoPrecioCompra);
@@ -381,9 +373,6 @@ public class FxSuministrosCompraController implements Initializable {
         this.loteSuministro = loteSuministro;
     }
 
-    public void setCantidadInicial(double cantidadinicial) {
-        this.cantidadinicial = cantidadinicial;
-    }
 
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;

@@ -108,7 +108,9 @@ public class FxVentaDetalleController implements Initializable {
     private Label lblVuelto;
     @FXML
     private Label lblValor;
-
+    @FXML
+    private Text lbClienteInformacion;
+    
     private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
@@ -178,16 +180,6 @@ public class FxVentaDetalleController implements Initializable {
                     return objects;
                 }
             };
-
-            task.setOnScheduled(e -> {
-                lblLoad.setVisible(true);
-            });
-            task.setOnRunning(e -> {
-                lblLoad.setVisible(true);
-            });
-            task.setOnFailed(e -> {
-                lblLoad.setVisible(false);
-            });
             task.setOnSucceeded(e -> {
 
                 ArrayList<Object> objects = task.getValue();
@@ -198,7 +190,8 @@ public class FxVentaDetalleController implements Initializable {
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
                         lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getClienteTB().getInformacion());
+                        lblCliente.setText(ventaTB.getClienteTB().getInformacion()+" ");
+                        lbClienteInformacion.setText(ventaTB.getClienteTB().getDireccion()+" - "+ventaTB.getClienteTB().getCelular());
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                         lblObservaciones.setText(ventaTB.getObservaciones());
@@ -231,7 +224,15 @@ public class FxVentaDetalleController implements Initializable {
 
                 lblLoad.setVisible(false);
             });
-
+            task.setOnScheduled(e -> {
+                lblLoad.setVisible(true);
+            });
+            task.setOnRunning(e -> {
+                lblLoad.setVisible(true);
+            });
+            task.setOnFailed(e -> {
+                lblLoad.setVisible(false);
+            });
             executor.execute(task);
             if (!executor.isShutdown()) {
                 executor.shutdown();
@@ -560,6 +561,7 @@ public class FxVentaDetalleController implements Initializable {
                                 lblSerie.getText(),
                                 ventaTB.getClienteTB().getNumeroDocumento(),
                                 ventaTB.getClienteTB().getInformacion(),
+                                ventaTB.getClienteTB().getCelular(),
                                 ventaTB.getClienteTB().getDireccion(),
                                 ventaTB.getCodigo());
                     }
@@ -585,7 +587,8 @@ public class FxVentaDetalleController implements Initializable {
                                 Tools.roundingValue(efectivo, 2),
                                 Tools.roundingValue(vuelto, 2),
                                 ventaTB.getClienteTB().getNumeroDocumento(),
-                                ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo());
+                                ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                                ventaTB.getClienteTB().getCelular());
                     }
 
                     return billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);

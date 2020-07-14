@@ -55,7 +55,7 @@ public class FxTicketVariableController implements Initializable {
         if (hBox.getId().substring(0, 2).equalsIgnoreCase("cb")) {
             listCabecera.add(new TicketTB("Representante de la empresa", Session.COMPANY_REPRESENTANTE, "repeempresa"));
             listCabecera.add(new TicketTB("Telefono de la empresa", Session.COMPANY_TELEFONO.isEmpty() ? "TELEFONO" : Session.COMPANY_TELEFONO, "telempresa"));
-            listCabecera.add(new TicketTB("Celular de la empresa", Session.COMPANY_CELULAR.isEmpty() ? "CELULAR" : Session.COMPANY_CELULAR, "celempresa" ));
+            listCabecera.add(new TicketTB("Celular de la empresa", Session.COMPANY_CELULAR.isEmpty() ? "CELULAR" : Session.COMPANY_CELULAR, "celempresa"));
             listCabecera.add(new TicketTB("Pagina web de la empresa", Session.COMPANY_PAGINAWEB.isEmpty() ? "WWW.COMPANY.COM" : Session.COMPANY_PAGINAWEB, "pagwempresa"));
             listCabecera.add(new TicketTB("Email de la empresa", Session.COMPANY_EMAIL.isEmpty() ? "COMPANY@EMAIL.COM" : Session.COMPANY_EMAIL, "emailempresa"));
             listCabecera.add(new TicketTB("Dirección de la empresa", Session.COMPANY_DOMICILIO.isEmpty() ? "DIRECCION" : Session.COMPANY_DOMICILIO, "direcempresa"));
@@ -66,10 +66,11 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));
             listCabecera.add(new TicketTB("Nombre del documento de venta", "NOMBRE DEL DOCUMENTO DE VENTA", "docventa"));
             listCabecera.add(new TicketTB("Numeración del documento de venta", "V000-00000000", "numventa"));
-            listCabecera.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo" ));
-            listCabecera.add(new TicketTB("Numero del documento del cliente", "NUMERO DOCUMENTO CLIENTE", "numcliente" ));
+            listCabecera.add(new TicketTB("Numero del documento del cliente", "NUMERO DOCUMENTO CLIENTE", "numcliente"));
             listCabecera.add(new TicketTB("Información del cliente", "DATOS DEL CLIENTE", "infocliente"));
+            listCabecera.add(new TicketTB("Celular del cliente", "CELULAR DEL CLIENTE", "celcliente"));
             listCabecera.add(new TicketTB("Dirección del cliente", "DIRECCION DEL CLIENTE", "direcliente"));
+            listCabecera.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo"));
             lvLista.getItems().addAll(listCabecera);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
             listDetalleCuerpo.add(new TicketTB("Numeración de las filas", "1", "numfilas"));
@@ -82,7 +83,7 @@ public class FxTicketVariableController implements Initializable {
             lvLista.getItems().addAll(listDetalleCuerpo);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("cp")) {
             listPie.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual"));
-            listPie.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));            
+            listPie.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));
             listPie.add(new TicketTB("Importe total", "M 00.00", "imptotal"));
             listPie.add(new TicketTB("Sub total", "M 00.00", "subtotal"));
             listPie.add(new TicketTB("Descuento total", "M 00.00", "dscttotal"));
@@ -93,10 +94,11 @@ public class FxTicketVariableController implements Initializable {
             listPie.add(new TicketTB("Total a pagar", "M 00.00", "totalpagar"));
             listPie.add(new TicketTB("Efectivo", "M 00.00", "efectivo"));
             listPie.add(new TicketTB("Vuelto", "M 00.00", "vuelto"));
-            listPie.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo"));
             listPie.add(new TicketTB("Numero del documento del cliente", "NUMERO DOCUMENTO CLIENTE", "numcliente"));
             listPie.add(new TicketTB("Información del cliente", "DATOS DEL CLIENTE", "infocliente"));
+            listPie.add(new TicketTB("Celular del cliente", "CELULAR DEL CLIENTE", "celcliente"));
             listPie.add(new TicketTB("Dirección del cliente", "DIRECCION DEL CLIENTE", "direcliente"));
+            listPie.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo"));
             lvLista.getItems().addAll(listPie);
         }
     }
@@ -112,7 +114,7 @@ public class FxTicketVariableController implements Initializable {
                 if (widthNew <= 0 || widthNew > sheetWidth) {
                     Tools.AlertMessageWarning(window, "Ticket", "No hay espacio suficiente en la fila.");
                 } else {
-                    TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, (short) 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable(),"Consola",12.5f);
+                    TextFieldTicket field = ticketController.addElementTextField("iu", lvLista.getSelectionModel().getSelectedItem().getVariable().toString(), false, (short) 0, widthNew, Pos.CENTER_LEFT, false, lvLista.getSelectionModel().getSelectedItem().getIdVariable(), "Consola", 12.5f);
                     hBox.getChildren().add(field);
                     Tools.Dispose(window);
                 }

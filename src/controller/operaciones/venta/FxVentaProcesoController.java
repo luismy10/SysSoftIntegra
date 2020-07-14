@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -23,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaCreditoTB;
@@ -41,8 +39,6 @@ public class FxVentaProcesoController implements Initializable {
     private TextField txtEfectivo;
     @FXML
     private Label lblVuelto;
-    @FXML
-    private Text lblComprobante;
     @FXML
     private VBox vbEfectivo;
     @FXML
@@ -113,7 +109,6 @@ public class FxVentaProcesoController implements Initializable {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
-        lblComprobante.setText(ventaTB.getComprobanteName());
         tota_venta = ventaTB.getTotal();
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(ventaTB.getTotal(), 2));

@@ -1141,6 +1141,7 @@ public class FxVentaEstructuraController implements Initializable {
                                 serieNumeracion,
                                 txtNumeroDocumento.getText().trim(),
                                 txtDatosCliente.getText().trim(),
+                                txtCelularCliente.getText().trim(),
                                 txtDireccionCliente.getText().trim(),
                                 codigoVenta);
                     }
@@ -1166,7 +1167,7 @@ public class FxVentaEstructuraController implements Initializable {
                                 efectivo,
                                 vuelto,
                                 txtNumeroDocumento.getText(),
-                                txtDatosCliente.getText(), codigoVenta);
+                                txtDatosCliente.getText(), codigoVenta, txtCelularCliente.getText().trim());
                     }
 
                     return billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);

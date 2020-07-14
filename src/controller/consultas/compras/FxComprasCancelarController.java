@@ -71,9 +71,6 @@ public class FxComprasCancelarController implements Initializable {
                     bancoHistorialBancaria.setEntrada(comprasDetalleController.getCompraTB().getTotal());
                     bancoHistorialBancaria.setSalida(0);
                     
-                    if(comprasDetalleController.getListComprasCredito().isEmpty()){
-                        
-                    }
 
                     String result = CompraADO.cancelarCompraTotal(comprasDetalleController.getCompraTB().getIdCompra(), comprasDetalleController.getArrList(), bancoHistorialBancaria);
                     if (result.equalsIgnoreCase("scrambled")) {

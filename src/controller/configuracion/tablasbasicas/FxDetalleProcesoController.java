@@ -61,7 +61,7 @@ public class FxDetalleProcesoController implements Initializable {
                 detalleTB.setEstado("1");
                 detalleTB.setUsuarioRegistro(Session.USER_ID);
                 String result = DetalleADO.CrudEntity(detalleTB);
-                if (result.equalsIgnoreCase("registered")) {
+                if (result.equalsIgnoreCase("inserted")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Detalle", "Registrado correctamente.", false);
                     listaController.initListDetalle(idMantenimiento, "");
                     Tools.Dispose(window);
@@ -73,8 +73,6 @@ public class FxDetalleProcesoController implements Initializable {
                 } else if (result.equalsIgnoreCase("duplicate")) {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puede haber 2 detalles con el mismo nombre.", false);
                     txtDetalle.requestFocus();
-                } else if (result.equalsIgnoreCase("error")) {
-                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "No se puedo completar la ejecución.", false);
                 } else {
                     Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", result, false);
                 }

@@ -91,14 +91,13 @@ public class DetalleADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     }else{
-                        statementDetalle = DBUtil.getConnection().prepareStatement("insert into DetalleTB(IdDetalle,IdMantenimiento,IdAuxiliar,Nombre,Descripcion,Estado,UsuarioRegistro) values(dbo.Fc_Detalle_Generar_Codigo(?),?,UPPER(?),UPPER(?),UPPER(?),?,?)");
-                        statementDetalle.setInt(1, detalleTB.getIdDetalle().get());
-                        statementDetalle.setString(2, detalleTB.getIdMantenimiento().get());
-                        statementDetalle.setString(3, detalleTB.getIdAuxiliar().get());
-                        statementDetalle.setString(4, detalleTB.getNombre().get());
-                        statementDetalle.setString(5, detalleTB.getDescripcion().get());
-                        statementDetalle.setString(6, detalleTB.getEstado().get());
-                        statementDetalle.setString(7, detalleTB.getUsuarioRegistro().get());
+                        statementDetalle = DBUtil.getConnection().prepareStatement("insert into DetalleTB(IdMantenimiento,IdAuxiliar,Nombre,Descripcion,Estado,UsuarioRegistro) values(?,?,?,?,?,?)");
+                        statementDetalle.setString(1, detalleTB.getIdMantenimiento().get());
+                        statementDetalle.setString(2, detalleTB.getIdAuxiliar().get());
+                        statementDetalle.setString(3, detalleTB.getNombre().get().trim().toUpperCase());
+                        statementDetalle.setString(4, detalleTB.getDescripcion().get().trim().toUpperCase());
+                        statementDetalle.setString(5, detalleTB.getEstado().get());
+                        statementDetalle.setString(6, detalleTB.getUsuarioRegistro().get());
                         statementDetalle.addBatch();
                         
                         statementDetalle.executeBatch();

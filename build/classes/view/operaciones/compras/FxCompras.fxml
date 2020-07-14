@@ -173,7 +173,7 @@
                                     <TableColumn fx:id="tcAccion" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Acción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
                                     <TableColumn fx:id="tcArticulo" prefWidth="379.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
-                                    <TableColumn fx:id="tcCosto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Costo Unit." />
+                                    <TableColumn fx:id="tcCosto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Costo Unitario" />
                                     <TableColumn fx:id="tcDescuento" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Descuento %" />
                                     <TableColumn fx:id="tcImpuesto" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Impuesto %" />
                                     <TableColumn fx:id="tcImporte" prefWidth="148.0" style="-fx-alignment: CENTER;" text="Total" />
@@ -209,7 +209,7 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                              <VBox>
                                  <children>
                                     <GridPane style="-fx-hgap: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <columnConstraints>

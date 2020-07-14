@@ -84,7 +84,7 @@ public class BillPrintable {
         fileImages = new ArrayList();
     }
 
-    public void hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String direccion_cliente, String codigoVenta) {
+    public void hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta) {
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -120,7 +120,9 @@ public class BillPrintable {
                     fieldTicket.setText(nummero_documento_cliente);
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
                     fieldTicket.setText(informacion_cliente);
-                } else if (fieldTicket.getVariable().equalsIgnoreCase("direccliente")) {
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("celcliente")) {
+                    fieldTicket.setText(celular_cliente);
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("direcliente")) {
                     fieldTicket.setText(direccion_cliente);
                 }
             }
@@ -152,7 +154,7 @@ public class BillPrintable {
         }
     }
 
-    public void hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta) {
+    public void hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente) {
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -178,6 +180,8 @@ public class BillPrintable {
                     fieldTicket.setText(numCliente);
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
                     fieldTicket.setText(infoCliente);
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("celcliente")) {
+                    fieldTicket.setText(celular_cliente);
                 }
             }
         }
@@ -302,7 +306,7 @@ public class BillPrintable {
         try {
             int width = (int) Math.ceil(sheetWidth * pointWidthSizePaper);
             Map param = new HashMap();
-            JasperDesign jasperDesign = getJasperDesign(width, 10000,apEncabezado, apDetalle, apPie);
+            JasperDesign jasperDesign = getJasperDesign(width, 20000, apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
 //            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
@@ -317,7 +321,7 @@ public class BillPrintable {
         }
     }
 
-    private JasperDesign getJasperDesign(int width, int height,AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
+    private JasperDesign getJasperDesign(int width, int height, AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
         JasperDesign jasperDesign = new JasperDesign();
         jasperDesign.setName("Formato de ticket");
         jasperDesign.setPageWidth(width);
@@ -452,7 +456,7 @@ public class BillPrintable {
                 staticText.setHeight((int) (fontSize + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
                 staticText.setFontSize(fontSize - 3.5f);
                 staticText.setFontName("Consola");
-                
+
                 staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
                 staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
                 staticText.setPositionType(PositionTypeEnum.FLOAT);
@@ -674,7 +678,7 @@ public class BillPrintable {
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
         exporter.exportReport();
-//        printString(printName, cortar);
+        printString(printName, cortar);
     }
 
     public void printString(String printerName, boolean cortar) throws PrintException, IOException {
@@ -790,7 +794,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -818,7 +822,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -847,7 +851,7 @@ public class BillPrintable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());

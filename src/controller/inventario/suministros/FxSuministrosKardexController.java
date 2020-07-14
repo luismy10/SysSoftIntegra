@@ -52,7 +52,6 @@ public class FxSuministrosKardexController implements Initializable {
     private TableColumn<KardexTB, String> tcFecha;
     @FXML
     private TableColumn<KardexTB, String> tcDetalle;
-    //private TableColumn<KardexTB, Label> tcInicial;
     @FXML
     private TableColumn<KardexTB, Label> tcCantidadEntrada;
     @FXML
@@ -88,17 +87,17 @@ public class FxSuministrosKardexController implements Initializable {
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + "\n" + cellData.getValue().getHora()));
         tcDetalle.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMovimientoName() + "\n" + cellData.getValue().getDetalle().toUpperCase()));
 
-        tcCantidadEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntrada"));
-        tcCostoEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntrada"));
-        tcTotalEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntrada"));
+        tcCantidadEntrada.setCellValueFactory(new PropertyValueFactory<>("lblCantidadEntreda"));
+        tcCostoEntrada.setCellValueFactory(new PropertyValueFactory<>("lblCostoEntrada"));
+        tcTotalEntrada.setCellValueFactory(new PropertyValueFactory<>("lblTotalEntrada"));
 
-        tcCantidadSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
-        tcCostoSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
-        tcTotalSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
+        tcCantidadSalida.setCellValueFactory(new PropertyValueFactory<>("lblCantidadSalida"));
+        tcCostoSalida.setCellValueFactory(new PropertyValueFactory<>("lblCostoSalida"));
+        tcTotalSalida.setCellValueFactory(new PropertyValueFactory<>("lblTotalSalida"));
 
-        tcCantidadSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
-        tcCostoSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
-        tcTotalSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
+        tcCantidadSaldo.setCellValueFactory(new PropertyValueFactory<>("lblCantidadSaldo"));
+        tcCostoSaldo.setCellValueFactory(new PropertyValueFactory<>("lblCostoSaldo"));
+        tcTotalSaldo.setCellValueFactory(new PropertyValueFactory<>("lblTotalSaldo"));
         //tcInicial.setCellValueFactory(new PropertyValueFactory<>("lblInicial"));
 //        tcEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntrada"));
 //        tcSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
@@ -148,7 +147,11 @@ public class FxSuministrosKardexController implements Initializable {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
             if (!tvList.getItems().isEmpty()) {
-                lblCantidadTotal.setText(Tools.roundingValue(tvList.getItems().get(tvList.getItems().size() - 1).getCantidadTotal(), 2));
+                double cantidadTotal = 0;
+                for (KardexTB item : tvList.getItems()) {
+                    cantidadTotal = cantidadTotal + (item.getTipo() == 1 ? item.getCantidad() : -item.getCantidad());
+                }
+                lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
             }
         });
         task.setOnFailed((WorkerStateEvent event) -> {
@@ -191,10 +194,10 @@ public class FxSuministrosKardexController implements Initializable {
         if (!lblLoad.isVisible()) {
             SuministroTB suministroTB = SuministroADO.GetSuministroById(txtSearch.getText().trim());
             if (suministroTB != null) {
-                setLoadProducto(suministroTB.getIdSuministro(),suministroTB.getClave() + " " + suministroTB.getNombreMarca());
+                setLoadProducto(suministroTB.getIdSuministro(), suministroTB.getClave() + " " + suministroTB.getNombreMarca());
                 fillKardexTable(idSuministros, "", "");
             } else {
-                setLoadProducto("","");
+                setLoadProducto("", "");
                 fillKardexTable(idSuministros, "", "");
             }
         }
@@ -230,7 +233,7 @@ public class FxSuministrosKardexController implements Initializable {
         openWindowSuministros();
     }
 
-    public void setLoadProducto(String idSuministro,String value) {
+    public void setLoadProducto(String idSuministro, String value) {
         idSuministros = idSuministro;
         lblProducto.setText(value);
     }

@@ -424,6 +424,7 @@ public class FxValorInventarioController implements Initializable {
                     "00000000",
                     "SIN DOCUMENTO",
                     "PUBLICO GENERAL",
+                    "SIN CELULAR",
                     "SIN DIRECCION",
                     "SIN CODIGO");
         }
@@ -449,7 +450,7 @@ public class FxValorInventarioController implements Initializable {
                     Tools.roundingValue(0, 2),
                     Tools.roundingValue(0, 2),
                     "SIN DOCUMENTO",
-                    "PUBLICO GENERAL", "SIN CODIGO");
+                    "PUBLICO GENERAL", "SIN CODIGO","SIN CELULAR");
         }
         
         billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
