@@ -1,7 +1,7 @@
 package controller.operaciones.compras;
 
 import controller.consultas.compras.FxComprasDetalleController;
-import controller.consultas.compras.FxComprasRealizadasController;
+import controller.consultas.pagar.FxCuentasPorPagarController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -68,7 +68,7 @@ public class FxComprasCreditoController implements Initializable {
     @FXML
     private Label lblMontoPagado;
 
-    private FxComprasRealizadasController realizadasController;
+    private FxCuentasPorPagarController cuentasPorPagarController;
 
     private String idCompra;
 
@@ -236,8 +236,8 @@ public class FxComprasCreditoController implements Initializable {
         openWindowReport();
     }
 
-    public void setInitControllerComprasRealizadas(FxComprasRealizadasController realizadasController) {
-        this.realizadasController = realizadasController;
+    public void setInitControllerComprasCredito(FxCuentasPorPagarController cuentasPorPagarController) {
+        this.cuentasPorPagarController = cuentasPorPagarController;
     }
 
 }

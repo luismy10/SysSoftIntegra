@@ -1025,6 +1025,7 @@ public class SuministroADO {
                 suministroTB.setId(rsEmps.getRow() + paginacion);
                 suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
                 suministroTB.setClave(rsEmps.getString("Clave"));
+                suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
                 suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));

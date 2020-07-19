@@ -3,7 +3,7 @@ package controller.operaciones.compras;
 import controller.contactos.proveedores.FxProveedorListaController;
 import controller.inventario.suministros.FxSuministrosCompraController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
+import controller.tools.ObjectGlobal; 
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -434,10 +434,10 @@ public class FxComprasController implements Initializable {
         } else {
             try {
                 CompraTB compraTB = new CompraTB();
-                compraTB.setProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
+                compraTB.setIdProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
                 compraTB.setSerie(cbSerie.getText().trim());
                 compraTB.setNumeracion(cbNumeracion.getText().trim());
-                compraTB.setTipoMoneda(Session.MONEDA_ID);
+                compraTB.setIdMoneda(Session.MONEDA_ID);
                 compraTB.setFechaCompra(Tools.getDatePicker(tpFechaCompra));
                 compraTB.setHoraCompra(Tools.getHour());
                 compraTB.setSubTotal(subTotal);

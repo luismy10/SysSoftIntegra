@@ -280,10 +280,10 @@ public class FxComprasEditarController implements Initializable {
                 btnArticulo.requestFocus();
             } else {
                 CompraTB compraTB = new CompraTB();
-                compraTB.setProveedor(idProveedor);
+                compraTB.setIdProveedor(idProveedor);
 //                compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 compraTB.setNumeracion(cbNumeracion.getText().trim());
-                compraTB.setTipoMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 1
+                compraTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 1
                         ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
                 compraTB.setFechaCompra(Tools.getDatePicker(tpFechaCompra));
                 compraTB.setHoraCompra(Tools.getHour());

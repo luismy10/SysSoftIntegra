@@ -135,6 +135,8 @@ public class BillPrintable {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
                 if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
                     fieldTicket.setText("" + (m + 1));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(arrList.get(m).getClaveAlterna());
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
                     fieldTicket.setText(arrList.get(m).getClave());
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {

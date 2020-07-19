@@ -45,7 +45,7 @@ public class FxComprasCancelarController implements Initializable {
     }
 
     public void loadComponents() {
-        lblTotal.setText(comprasDetalleController.getCompraTB().getTipoMonedaName() + " " + Tools.roundingValue(comprasDetalleController.getCompraTB().getTotal(), 2));
+        lblTotal.setText(comprasDetalleController.getCompraTB().getMonedaNombre() + " " + Tools.roundingValue(comprasDetalleController.getCompraTB().getTotal(), 2));
         txtEfectivo.setText(Tools.roundingValue(comprasDetalleController.getCompraTB().getTotal(), 2));
         cbCuentas.getItems().addAll(BancoADO.GetBancoComboBox());
     }

@@ -1,17 +1,18 @@
 package model;
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 public class CompraTB {
 
     private int id;
     private String idCompra;
-    private String proveedor;
+    private String idProveedor;
     private int tipoDocumento;
     private String serie;
     private String numeracion;
-    private int tipoMoneda;
-    private String tipoMonedaName;
+    private int idMoneda;
+    private String monedaNombre;
     private String fechaCompra;
     private String horaCompra;
     private String fechaVencimiento;
@@ -34,6 +35,8 @@ public class CompraTB {
     private ProveedorTB proveedorTB;
     private SuministroTB suministroTB;
     private MonedaTB monedaTB;
+    
+    private HBox hbOpciones;
 
     public CompraTB() {
 
@@ -55,12 +58,12 @@ public class CompraTB {
         this.idCompra = idCompra;
     }
 
-    public String getProveedor() {
-        return proveedor;
+    public String getIdProveedor() {
+        return idProveedor;
     }
 
-    public void setProveedor(String proveedor) {
-        this.proveedor = proveedor;
+    public void setIdProveedor(String idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
     public int getTipoDocumento() {
@@ -87,20 +90,20 @@ public class CompraTB {
         this.numeracion = numeracion;
     }
 
-    public int getTipoMoneda() {
-        return tipoMoneda;
+    public int getIdMoneda() {
+        return idMoneda;
     }
 
-    public void setTipoMoneda(int tipoMoneda) {
-        this.tipoMoneda = tipoMoneda;
+    public void setIdMoneda(int idMoneda) {
+        this.idMoneda = idMoneda;
     }
 
-    public String getTipoMonedaName() {
-        return tipoMonedaName;
+    public String getMonedaNombre() {
+        return monedaNombre;
     }
 
-    public void setTipoMonedaName(String tipoMonedaName) {
-        this.tipoMonedaName = tipoMonedaName == null ? "" : tipoMonedaName;
+    public void setMonedaNombre(String monedaNombre) {
+        this.monedaNombre = monedaNombre;
     }
 
     public String getFechaCompra() {
@@ -254,6 +257,14 @@ public class CompraTB {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public HBox getHbOpciones() {
+        return hbOpciones;
+    }
+
+    public void setHbOpciones(HBox hbOpciones) {
+        this.hbOpciones = hbOpciones;
     }
     
     

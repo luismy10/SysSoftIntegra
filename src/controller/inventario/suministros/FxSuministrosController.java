@@ -75,11 +75,11 @@ public class FxSuministrosController implements Initializable {
     @FXML
     private TableColumn<SuministroTB, Integer> tcNumeracion;
     @FXML
-    private TableColumn<SuministroTB, String> tcClave;
-    @FXML
     private TableColumn<SuministroTB, String> tcDescripcion;
     @FXML
     private TableColumn<SuministroTB, String> tcCategoria;
+    @FXML
+    private TableColumn<SuministroTB, String> tcMarcar;
     @FXML
     private TableColumn<SuministroTB, Label> tcCantidad;
     @FXML
@@ -199,23 +199,22 @@ public class FxSuministrosController implements Initializable {
             suministrosProcesoController = fXMLSuministrosProceso.getController();
 
             tcNumeracion.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-            tcClave.setCellValueFactory(cellData -> Bindings.concat(
-                    cellData.getValue().getClaveAlterna() == null || cellData.getValue().getClaveAlterna().equalsIgnoreCase("")
-                    ? cellData.getValue().getClave() : cellData.getValue().getClaveAlterna() + "\n" + cellData.getValue().getClave()
-            ));
-            tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
-            tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()+"\n"+cellData.getValue().getMarcaName()));
+            tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(
+                    cellData.getValue().getClave() + (cellData.getValue().getClaveAlterna().isEmpty() ? "" : " - ") + cellData.getValue().getClaveAlterna()
+                    + "\n" + cellData.getValue().getNombreMarca())
+            );
+
+            tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
+            tcMarcar.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
             tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
             tcCantidad.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
-//        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(),2)));
 
-            tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));//+1
-            tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
-            tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.32));//+4       
-            tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
+            tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+            tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.31));     
+            tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+            tcMarcar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-//        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
 
             arrayArticulosImpuesto = new ArrayList<>();
             ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {

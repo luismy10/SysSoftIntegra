@@ -149,9 +149,9 @@
                                     <TableView fx:id="tvList" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="300.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                                       <columns>
                                         <TableColumn fx:id="tcNumeracion" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                                        <TableColumn fx:id="tcClave" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Alterna" />
                                           <TableColumn fx:id="tcDescripcion" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                                          <TableColumn fx:id="tcCategoria" prefWidth="115.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria/Marca" />
+                                          <TableColumn fx:id="tcCategoria" prefWidth="115.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
+                                          <TableColumn fx:id="tcMarcar" prefWidth="115.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
                                           <TableColumn fx:id="tcCosto" prefWidth="115.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
                                           <TableColumn fx:id="tcCantidad" prefWidth="115.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
                                       </columns>
