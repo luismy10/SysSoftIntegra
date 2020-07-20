@@ -20,12 +20,15 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/producto.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Productos" />
+                  <Label styleClass="labelRobotoMedium18" text="Productos" textFill="#1a2226">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/producto.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -36,45 +39,45 @@
                   </Label>
                </children>
             </HBox>
-            <HBox fx:id="hbContenedorBotonos" alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0; -fx-background-color: #cccccc;">
+            <HBox fx:id="hbContenedorBotonos" alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Button fx:id="btnAgregar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar(F1)">
+                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar(F1)">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnEditar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar(F2)">
+                  <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar(F2)">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnClonar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionClone" onKeyPressed="#onKeyPressedClone" styleClass="buttonLight" text="Clonar(F3)">
+                  <Button fx:id="btnClonar" mnemonicParsing="false" onAction="#onActionClone" onKeyPressed="#onKeyPressedClone" styleClass="buttonLight" text="Clonar(F3)">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/clone.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnRecargar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar(F5)">
+                  <Button fx:id="btnRecargar" mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar(F5)">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnEtiqueta" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionEtiquetas" onKeyPressed="#onKeyPressedEtiquetas" styleClass="buttonLight" text="Etiquetas(F6)">
+                  <Button fx:id="btnEtiqueta" mnemonicParsing="false" onAction="#onActionEtiquetas" onKeyPressed="#onKeyPressedEtiquetas" styleClass="buttonLight" text="Etiquetas(F6)">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -83,9 +86,9 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnSuprimir" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar(SUPR)">
+                  <Button fx:id="btnSuprimir" mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar(SUPR)">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/remove.png" />
                            </image>
@@ -127,7 +130,7 @@
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="cbCategoria" onAction="#onActionCategoria" prefHeight="30.0" prefWidth="240.0" promptText="-- Seleccione --" />
+                                    <ComboBox fx:id="cbCategoria" prefHeight="30.0" prefWidth="240.0" promptText="-- Seleccione --" />
                                  </children>
                               </VBox>
                               <VBox spacing="10.0">
@@ -137,7 +140,7 @@
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="cbMarca" onAction="#onActionMarca" prefHeight="30.0" prefWidth="240.0" promptText="-- Seleccione --" />
+                                    <ComboBox fx:id="cbMarca" prefHeight="30.0" prefWidth="240.0" promptText="-- Seleccione --" />
                                  </children>
                               </VBox>
                            </children>
@@ -162,7 +165,7 @@
                                              <children>
                                                 <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
                                                    <graphic>
-                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/left.png" />
                                                          </image>
@@ -174,7 +177,7 @@
                                                 <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" />
                                                 <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                                                    <graphic>
-                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/right.png" />
                                                          </image>

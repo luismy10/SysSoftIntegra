@@ -332,7 +332,7 @@ public class FxComprasEditarController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.fillSuministrosTablePaginacion();
+            controller.fillSuministrosTable((short)0,"");
         } catch (IOException ex) {
             System.out.println("Controller compras" + ex.getLocalizedMessage());
         }

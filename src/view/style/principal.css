@@ -1508,7 +1508,7 @@
 .combo-box.combo-box-base > .arrow-button {    
     -fx-background-color: white;
     -fx-background-radius: 0;
-    -fx-padding:  1.125em 0.75em  1.125em 0.75em; /*12.5px 9px 12.5px 9px*/
+    -fx-padding: 1.0833333333333333em 0.75em 1.0833333333333333em 0.75em; /*12.5px 9px 12.5px 9px*/
     -fx-border-width:0px;
     -fx-border-color: #007bff;
 }

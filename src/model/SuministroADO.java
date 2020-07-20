@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -420,136 +419,19 @@ public class SuministroADO {
         return rutaValidada;
     }
 
-//    private static String CrudSuministro_Articulo(SuministroTB suministroTB) {
-//        String result = "";
-//        DBUtil.dbConnect();
-//        if (DBUtil.getConnection() != null) {
-//            PreparedStatement preparedValidation = null;
-//            PreparedStatement preparedArticulo = null;
-//            CallableStatement codigoArticulo = null;
-//            try {
-//                DBUtil.getConnection().setAutoCommit(false);
-//                preparedValidation = DBUtil.getConnection().prepareStatement("select Clave from ArticuloTB where Clave = ?");
-//                preparedValidation.setString(1, suministroTB.getClave());
-//                if (preparedValidation.executeQuery().next()) {
-//                    DBUtil.getConnection().rollback();
-//                    return "duplicate";
-//                } else {
-//                    preparedValidation = DBUtil.getConnection().prepareStatement("select NombreMarca from ArticuloTB where NombreMarca = ?");
-//                    preparedValidation.setString(1, suministroTB.getNombreMarca());
-//                    if (preparedValidation.executeQuery().next()) {
-//                        DBUtil.getConnection().rollback();
-//                        return "duplicatename";
-//                    } else {
-//                        codigoArticulo = DBUtil.getConnection().prepareCall("{? = call Fc_Articulo_Codigo_Alfanumerico()}");
-//                        codigoArticulo.registerOutParameter(1, java.sql.Types.VARCHAR);
-//                        codigoArticulo.execute();
-//                        String idArticulo = codigoArticulo.getString(1);
-//
-//                        preparedArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO "
-//                                + "ArticuloTB"
-//                                + "(IdArticulo,"
-//                                + "Origen,"
-//                                + "Clave,"
-//                                + "ClaveAlterna,"
-//                                + "NombreMarca,"
-//                                + "NombreGenerico,"
-//                                + "Categoria,"
-//                                + "Marca,"
-//                                + "Presentacion,"
-//                                + "StockMinimo,"
-//                                + "StockMaximo,"
-//                                + "PrecioCompra,"
-//                                + "PrecioVentaGeneral,"
-//                                + "PrecioMargenGeneral,"
-//                                + "PrecioUtilidadGeneral,"
-//                                + "Cantidad,"
-//                                + "UnidadCompra,"
-//                                + "UnidadVenta,"
-//                                + "Estado,"
-//                                + "Lote,"
-//                                + "Inventario,"
-//                                + "Imagen,"
-//                                + "Impuesto,"
-//                                + "ValorInventario,"
-//                                + "ClaveSat,"
-//                                + "IdSuministro,TipoPrecio)"
-//                                + "values(?,?,?,?,UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-//                        preparedArticulo.setString(1, idArticulo);
-//                        preparedArticulo.setInt(2, suministroTB.getOrigen());
-//                        preparedArticulo.setString(3, suministroTB.getClave());
-//                        preparedArticulo.setString(4, suministroTB.getClaveAlterna());
-//                        preparedArticulo.setString(5, suministroTB.getNombreMarca());
-//                        preparedArticulo.setString(6, suministroTB.getNombreGenerico());
-//                        preparedArticulo.setInt(7, suministroTB.getCategoria());
-//                        preparedArticulo.setInt(8, suministroTB.getMarcar());
-//                        preparedArticulo.setInt(9, suministroTB.getPresentacion());
-//                        preparedArticulo.setDouble(10, suministroTB.getStockMinimo());
-//                        preparedArticulo.setDouble(11, suministroTB.getStockMaximo());
-//                        preparedArticulo.setDouble(12, suministroTB.getCostoCompra());
-//
-//                        preparedArticulo.setDouble(13, suministroTB.getPrecioVentaGeneral());
-//                        preparedArticulo.setShort(14, suministroTB.getPrecioMargenGeneral());
-//                        preparedArticulo.setDouble(15, suministroTB.getPrecioUtilidadGeneral());
-//
-//                        preparedArticulo.setDouble(16, 0);
-//                        preparedArticulo.setInt(17, suministroTB.getUnidadCompra());
-//                        preparedArticulo.setInt(18, suministroTB.getUnidadVenta());
-//                        preparedArticulo.setInt(19, suministroTB.getEstado());
-//                        preparedArticulo.setBoolean(20, suministroTB.isLote());
-//                        preparedArticulo.setBoolean(21, suministroTB.isInventario());
-//                        preparedArticulo.setString(22, suministroTB.getImagenTB());
-//                        preparedArticulo.setInt(23, suministroTB.getImpuestoArticulo());
-//                        preparedArticulo.setBoolean(24, suministroTB.isValorInventario());
-//                        preparedArticulo.setString(25, suministroTB.getClaveSat());
-//                        preparedArticulo.setString(26, suministroTB.getIdSuministro());
-//                        preparedArticulo.setBoolean(27, suministroTB.isTipoPrecio());
-//                        preparedArticulo.addBatch();
-//
-//                        preparedArticulo.executeBatch();
-//                        DBUtil.getConnection().commit();
-//                        result = "registered";
-//                    }
-//                }
-//
-//            } catch (SQLException ex) {
-//                try {
-//                    DBUtil.getConnection().rollback();
-//                } catch (SQLException exr) {
-//                }
-//                result = ex.getLocalizedMessage();
-//            } finally {
-//                try {
-//                    if (preparedValidation != null) {
-//                        preparedValidation.close();
-//                    }
-//                    if (preparedArticulo != null) {
-//                        preparedArticulo.close();
-//                    }
-//                    if (codigoArticulo != null) {
-//                        codigoArticulo.close();
-//                    }
-//                    DBUtil.dbDisconnect();
-//                } catch (SQLException ex) {
-//                    result = ex.getLocalizedMessage();
-//                }
-//            }
-//
-//        } else {
-//            result = "No se puedo establecer una conexión, intente nuevamente.";
-//        }
-//        return result;
-//    }
-    public static ObservableList<SuministroTB> ListSuministrosListaView(short tipo, String value) {
-        String selectStmt = "{call Sp_Listar_Suministros_Lista_View(?,?)}";
+    public static ArrayList<Object> ListSuministrosListaView(short tipo, String value, int posicionPagina, int filasPorPagina) {
+        String selectStmt = "{call Sp_Listar_Suministros_Lista_View(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
+        ArrayList<Object> objects = new ArrayList<>();
         ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setShort(1, tipo);
             preparedStatement.setString(2, value);
+            preparedStatement.setInt(3, posicionPagina);
+            preparedStatement.setInt(4, filasPorPagina);
             rsEmps = preparedStatement.executeQuery();
 
             while (rsEmps.next()) {
@@ -581,295 +463,21 @@ public class SuministroADO {
 
                 empList.add(suministroTB);
             }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
+            objects.add(empList);
 
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return empList;
-    }
-
-    public static ObservableList<SuministroTB> ListSuministroPaginacionView(int paginacion) {
-        String selectStmt = "{call Sp_Listar_Suministro_Paginacion_View(?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setInt(1, paginacion);
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Suministros_Lista_View_Count(?,?)}");
+            preparedStatement.setShort(1, tipo);
+            preparedStatement.setString(2, value);
             rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow() + paginacion);
-                suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
-                suministroTB.setClave(rsEmps.getString("Clave"));
-                suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
-                suministroTB.setMarcaName(rsEmps.getString("Marca"));
-                suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
-
-                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                suministroTB.setPrecioMargenGeneral(rsEmps.getShort("PrecioMargenGeneral"));
-                suministroTB.setPrecioUtilidadGeneral(rsEmps.getDouble("PrecioUtilidadGeneral"));
-
-                suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
-                suministroTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
-                suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
-                suministroTB.setLote(rsEmps.getBoolean("Lote"));
-                suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                ImageView image = new ImageView(new Image(suministroTB.getValorInventario() == 1 ? "/view/image/unidad.png" : "/view/image/balanza.png"));
-                image.setFitWidth(32);
-                image.setFitHeight(32);
-                suministroTB.setImageValorInventario(image);
-                suministroTB.setImagenTB(rsEmps.getString("Imagen"));
-                empList.add(suministroTB);
-            }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return empList;
-    }
-
-    public static int GetAllSuministros() {
-        String selectStmt = "SELECT COUNT(*) FROM SuministroTB";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        int total = 0;
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            rsEmps = preparedStatement.executeQuery();
-            total = rsEmps.next() ? rsEmps.getInt(1) : 0;
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return total;
-    }
-
-    public static ObservableList<SuministroTB> List_Suministros(short opcion, String clave, String nombre, int categoria, int marca) {
-        String selectStmt = "{call Sp_Listar_Suministros(?,?,?,?,?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
-
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setShort(1, opcion);
-            preparedStatement.setString(2, clave);
-            preparedStatement.setString(3, nombre);
-            preparedStatement.setInt(4, categoria);
-            preparedStatement.setInt(5, marca);
-            rsEmps = preparedStatement.executeQuery();
-
-            while (rsEmps.next()) {
-                SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow());
-                suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
-                suministroTB.setClave(rsEmps.getString("Clave"));
-                suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
-                suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
-                suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
-                suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
-                suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
-                suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
-                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
-                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
-                suministroTB.setMarcaName(rsEmps.getString("Marca"));
-                suministroTB.setEstadoName(rsEmps.getString("Estado"));
-                suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                suministroTB.setImagenTB(rsEmps.getString("Imagen"));
-
-                Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
-                label.getStyleClass().add("labelRoboto14");
-                label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
-                suministroTB.setLblCantidad(label);
-
-                empList.add(suministroTB);
-            }
-        } catch (SQLException e) {
-            System.out.println("La operacion de selecciona de SQl ha fallado" + e);
-        } finally {
-
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException e) {
-            }
-        }
-        return empList;
-    }
-
-    public static ObservableList<SuministroTB> List_Suministro_Paginacion(int paginacion) {
-        String selectStmt = "{call Sp_Listar_Suministro_Paginacion(?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setInt(1, paginacion);
-            rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow() + paginacion);
-                suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
-                suministroTB.setClave(rsEmps.getString("Clave"));
-                suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
-                suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
-                suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
-                suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
-                suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
-                suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
-                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
-                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
-                suministroTB.setMarcaName(rsEmps.getString("Marca"));
-                suministroTB.setEstadoName(rsEmps.getString("Estado"));
-                suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                suministroTB.setImagenTB(rsEmps.getString("Imagen"));
-
-                Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
-                label.getStyleClass().add("labelRoboto14");
-                label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
-                suministroTB.setLblCantidad(label);
-
-                empList.add(suministroTB);
-            }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException ex) {
-
-            }
-        }
-        return empList;
-    }
-
-    public static SuministroTB List_Suministros_Movimiento(short opcion, String clave, String nombre) {
-        String selectStmt = "{call Sp_Listar_Suministros(?,?,?,?,?)}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        SuministroTB suministroTB = null;
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setShort(1, opcion);
-            preparedStatement.setString(2, clave);
-            preparedStatement.setString(3, nombre);
-            preparedStatement.setInt(4, 0);
-            preparedStatement.setInt(5, 0);
-            rsEmps = preparedStatement.executeQuery();
-
+            Integer integer = 0;
             if (rsEmps.next()) {
-                suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow());
-                suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
-                suministroTB.setClave(rsEmps.getString("Clave"));
-                suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
-                suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
-                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                suministroTB.setDiferencia(rsEmps.getDouble("Cantidad"));
-                suministroTB.setMovimiento(0);
-                TextField tf = new TextField(Tools.roundingValue(0.00, 0));
-                tf.getStyleClass().add("text-field-normal");
-                tf.setOnKeyTyped(event -> {
-                    char c = event.getCharacter().charAt(0);
-                    if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                        event.consume();
-                    }
-                    if (c == '.' && tf.getText().contains(".") || c == '-') {
-                        event.consume();
-                    }
-                });
-
-                suministroTB.setTxtMovimiento(tf);
-
-                CheckBox checkbox = new CheckBox("");
-                checkbox.getStyleClass().add("check-box-contenido");
-                checkbox.setSelected(true);
-                checkbox.setDisable(true);
-
-                Button button = new Button();
-                button.getStyleClass().add("buttonBorder");
-                ImageView view = new ImageView(new Image("/view/image/remove.png"));
-                view.setFitWidth(24);
-                view.setFitHeight(24);
-                button.setGraphic(view);
-                suministroTB.setRemover(button);
-
-                suministroTB.setValidar(checkbox);
-
+                integer = rsEmps.getInt("Total");
             }
-
+            objects.add(integer);
         } catch (SQLException e) {
-            System.out.println("La operacion de selecciona de SQl ha fallado" + e);
-        } finally {
+            System.out.println("Error en SuministroADO->ListSuministrosListaView:" + e);
 
+        } finally {
             try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
@@ -878,10 +486,93 @@ public class SuministroADO {
                     rsEmps.close();
                 }
                 DBUtil.dbDisconnect();
-            } catch (SQLException e) {
+            } catch (SQLException ex) {
+
             }
         }
-        return suministroTB;
+        return objects;
+    }
+
+    public static ArrayList<Object> ListarSuministros(short opcion, String clave, String nombreMarca, int categoria, int marca, int posicionPagina, int filasPorPagina) {
+        String selectStmt = "{call Sp_Listar_Suministros(?,?,?,?,?,?,?)}";
+        PreparedStatement preparedSuministros = null;
+        PreparedStatement preparedTotales = null;
+        ResultSet rsEmps = null;
+        ArrayList<Object> objects = new ArrayList<>();
+        ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedSuministros = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedSuministros.setShort(1, opcion);
+            preparedSuministros.setString(2, clave);
+            preparedSuministros.setString(3, nombreMarca);
+            preparedSuministros.setInt(4, categoria);
+            preparedSuministros.setInt(5, marca);
+            preparedSuministros.setInt(6, posicionPagina);
+            preparedSuministros.setInt(7, filasPorPagina);
+            rsEmps = preparedSuministros.executeQuery();
+            while (rsEmps.next()) {
+                SuministroTB suministroTB = new SuministroTB();
+                suministroTB.setId(rsEmps.getRow() + posicionPagina);
+                suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
+                suministroTB.setClave(rsEmps.getString("Clave"));
+                suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
+                suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                suministroTB.setNombreGenerico(rsEmps.getString("NombreGenerico"));
+                suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
+                suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
+                suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
+                suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
+                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
+                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
+                suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
+                suministroTB.setMarcaName(rsEmps.getString("Marca"));
+                suministroTB.setEstadoName(rsEmps.getString("Estado"));
+                suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
+                suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
+                suministroTB.setImagenTB(rsEmps.getString("Imagen"));
+
+                Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
+                label.getStyleClass().add("labelRoboto14");
+                label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
+                suministroTB.setLblCantidad(label);
+
+                empList.add(suministroTB);
+            }
+            objects.add(empList);
+
+            preparedTotales = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Suministros_Count(?,?,?,?,?)}");
+            preparedTotales.setShort(1, opcion);
+            preparedTotales.setString(2, clave);
+            preparedTotales.setString(3, nombreMarca);
+            preparedTotales.setInt(4, categoria);
+            preparedTotales.setInt(5, marca);
+            rsEmps = preparedTotales.executeQuery();
+            Integer integer = 0;
+            if (rsEmps.next()) {
+                integer = rsEmps.getInt("Total");
+            }
+            objects.add(integer);
+        } catch (SQLException e) {
+            System.out.println("Error en SuministroADO->ListarSuministros: " + e);
+        } finally {
+            try {
+                if (preparedSuministros != null) {
+                    preparedSuministros.close();
+                }
+                if (preparedTotales != null) {
+                    preparedTotales.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return objects;
     }
 
     public static SuministroTB Get_Suministros_For_Asignacion_By_Id(String idSuministro) {
@@ -1002,7 +693,7 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static ArrayList<Object> ListInventario(String producto, short tipoExistencia, String nameProduct, short opcion, int categoria, int marca, int paginacion, int filasPorPagina) {
+    public static ArrayList<Object> ListInventario(String producto, short tipoExistencia, String nameProduct, short opcion, int categoria, int marca, int posicionPaginacion, int filasPorPagina) {
         PreparedStatement preparedStatementSuministros = null;
         PreparedStatement preparedStatementTotales = null;
         ResultSet rsEmps = null;
@@ -1017,12 +708,12 @@ public class SuministroADO {
             preparedStatementSuministros.setShort(4, opcion);
             preparedStatementSuministros.setInt(5, categoria);
             preparedStatementSuministros.setInt(6, marca);
-            preparedStatementSuministros.setInt(7, paginacion);
+            preparedStatementSuministros.setInt(7, posicionPaginacion);
             preparedStatementSuministros.setInt(8, filasPorPagina);
             rsEmps = preparedStatementSuministros.executeQuery();
             while (rsEmps.next()) {
                 SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow() + paginacion);
+                suministroTB.setId(rsEmps.getRow() + posicionPaginacion);
                 suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
@@ -1068,7 +759,7 @@ public class SuministroADO {
             }
             objects.add(integer);
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
+            System.out.println("Error en SuministroADO->ListInventario: " + e);
         } finally {
             try {
                 if (preparedStatementSuministros != null) {

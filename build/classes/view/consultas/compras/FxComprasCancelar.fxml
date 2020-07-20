@@ -4,7 +4,6 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,116 +13,121 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.consultas.compras.FxComprasCancelarController">
    <children>
       <VBox>
          <children>
-            <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/cancel.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="Anular compra" />
+                  <Label styleClass="labelRobotoBold20" text="Anular compra" textFill="#1a2226">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/cancel.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
             <HBox>
                <children>
-                  <HBox>
+                  <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <VBox>
+                              <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                                  <children>
-                                    <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
-                                       <children>
-                                          <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold26" text="M. 00.00" textFill="#1a2226" />
-                                       </children>
-                                    </VBox>
+                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold26" text="M. 00.00" textFill="#1a2226" />
                                  </children>
                               </VBox>
-                              <Separator prefWidth="200.0" />
-                              <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <HBox>
                                  <children>
-                                    <HBox>
-                                       <children>
-                                          <CheckBox disable="true" mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Retirar cantidad de productos ingresados" />
-                                       </children>
-                                    </HBox>
-                                    <HBox>
-                                       <children>
-                                          <CheckBox fx:id="cbIngresoDinero" mnemonicParsing="false" onAction="#onActionIngresoDinero" styleClass="check-box-contenido" text="Realizar ingreso de dinero" />
-                                       </children>
-                                    </HBox>
-                                    <HBox fx:id="hbIngresoDinero" alignment="CENTER_LEFT" disable="true" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0px 1.25em 0px 1.25em;">
-                                       <children>
-                                          <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Efectivo:">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/billetes.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <TextField fx:id="txtEfectivo" disable="true" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular14" text="Cuenta:" GridPane.rowIndex="1">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/bank.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <ComboBox fx:id="cbCuentas" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226" GridPane.rowIndex="2">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/generar.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                             </children>
-                                          </GridPane>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Procesar">
+                                    <Label styleClass="labelRoboto14" text="Retirar cantidad de productos ingresados">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../image/save.png" />
+                                                <Image url="@../../image/accept.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
-                                    </Button>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <CheckBox fx:id="cbIngresoDinero" mnemonicParsing="false" onAction="#onActionIngresoDinero" styleClass="check-box-contenido" text="Realizar ingreso de dinero" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="hbIngresoDinero" alignment="CENTER_LEFT" disable="true" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular14" text="Efectivo:">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/billetes.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <TextField fx:id="txtEfectivo" disable="true" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Cuenta:" GridPane.rowIndex="1">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/bank.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <ComboBox fx:id="cbCuentas" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226" GridPane.rowIndex="2">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/generar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                       </children>
+                                    </GridPane>
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
+                        <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Procesar">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/save.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
             </HBox>
          </children>

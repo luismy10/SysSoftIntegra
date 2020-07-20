@@ -22,7 +22,7 @@
                <children>
                   <HBox>
                      <children>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #3c8dbc;">
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #007bff;">
                            <children>
                               <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -45,7 +45,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #3c8dbc;" styleClass="paddinContainer" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #007bff;" styleClass="paddinContainer" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox alignment="CENTER_LEFT">
                                  <children>

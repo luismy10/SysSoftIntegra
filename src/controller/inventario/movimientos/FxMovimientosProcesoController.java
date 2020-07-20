@@ -322,7 +322,8 @@ public class FxMovimientosProcesoController implements Initializable {
             Task<SuministroTB> task = new Task<SuministroTB>() {
                 @Override
                 public SuministroTB call() {
-                    return SuministroADO.List_Suministros_Movimiento((short) 4, idSuministro, "");
+//                    return SuministroADO.List_Suministros_Movimiento((short) 4, idSuministro, "");
+                      return null;
                 }
             };
 
@@ -413,7 +414,7 @@ public class FxMovimientosProcesoController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.fillSuministrosTablePaginacion();
+            controller.fillSuministrosTable((short)0,"");
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
