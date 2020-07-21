@@ -1363,19 +1363,24 @@ public class CompraADO extends DBUtil {
                 label.getStyleClass().add(compraTB.getEstado() == 1 ? "label-asignacion" : compraTB.getEstado() == 2 ? "label-medio" : compraTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
 
                 compraTB.setEstadoLabel(label);
-                
-                compraTB.setMonedaNombre(rsEmps.getString("Simbolo"));                
+
+                compraTB.setMonedaNombre(rsEmps.getString("Simbolo"));
                 compraTB.setTotal(rsEmps.getDouble("Total"));
-                
+
                 HBox hBox = new HBox();
                 hBox.setAlignment(Pos.CENTER);
                 hBox.setStyle(";-fx-spacing:0.8333333333333334em;");
+
                 Button btnVisualizar = new Button("V");
+                btnVisualizar.getStyleClass().add("buttonLightWarning");
+
                 Button btnAbonar = new Button("A");
+                btnAbonar.getStyleClass().add("buttonLightSuccess");
+
                 hBox.getChildren().add(btnVisualizar);
                 hBox.getChildren().add(btnAbonar);
                 compraTB.setHbOpciones(hBox);
-                
+
                 empList.add(compraTB);
             }
         } catch (SQLException e) {
@@ -1396,5 +1401,4 @@ public class CompraADO extends DBUtil {
         return empList;
     }
 
-    
 }

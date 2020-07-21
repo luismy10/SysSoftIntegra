@@ -18,7 +18,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.movimientos.FxMovimientosProcesoController">
    <children>
@@ -31,12 +30,15 @@
                         <Image url="@../../image/left.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/producto.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Movimiento o ajuste de Productos" />
+                  <Label styleClass="labelRobotoMedium18" text="Movimiento o ajuste de Productos" textFill="#1a2226">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/producto.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -144,8 +146,8 @@
                                     <TextField fx:id="txtObservacion" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Envío directo para venta:" visible="false" GridPane.columnIndex="2" />
                                     <CheckBox fx:id="cbConfirmar" mnemonicParsing="false" onAction="#onActionConfirmar" prefHeight="30.0" styleClass="check-box-contenido" text="Confirmar" visible="false" GridPane.columnIndex="3" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor involucrado:" textFill="#1a2226" GridPane.columnIndex="2" />
-                                    <HBox GridPane.columnIndex="3">
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor involucrado:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <HBox GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <children>
                                           <TextField fx:id="txtProveedor" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                           <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionProveedor" onKeyPressed="#onKeyPressedProveedor" prefHeight="30.0" styleClass="buttonBorder">
@@ -166,8 +168,8 @@
                                           <RadioButton fx:id="rbProceso" mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="En Proceso" textFill="#1a2226" />
                                        </children>
                                     </HBox>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Utilizar movimiento de caja:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <CheckBox fx:id="cbCaja" mnemonicParsing="false" onAction="#onActionCaja" styleClass="check-box-contenido" text="No" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Movimiento de caja:" textFill="#1a2226" GridPane.columnIndex="2" />
+                                    <CheckBox fx:id="cbCaja" mnemonicParsing="false" onAction="#onActionCaja" styleClass="check-box-contenido" text="No" GridPane.columnIndex="3" />
                                  </children>
                               </GridPane>
                            </children>
@@ -198,7 +200,7 @@
                                           </Label>
                                        </children>
                                     </VBox>
-                                    <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" prefHeight="327.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                                    <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" prefHeight="320.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcAccion" prefWidth="105.99996948242188" style="-fx-alignment: CENTER;" text="Acción" />
                                           <TableColumn fx:id="tcClave" prefWidth="229.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Nombre" />

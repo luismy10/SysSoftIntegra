@@ -14,20 +14,22 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.movimientos.FxMovimientosDetalleController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #cccccc; -fx-background-color: white; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+            <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: white; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/ajuste-inventario.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Detalle del movimiento" />
+                  <Label styleClass="labelRobotoMedium18" text="Detalle del movimiento" textFill="#1a2226">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/ajuste-inventario.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -43,29 +45,28 @@
                   <GridPane style="-fx-vgap: 0.16666666666666666em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Tipo de Movimiento:" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha y Hora" GridPane.rowIndex="1" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Observación:" GridPane.rowIndex="2" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor:" GridPane.rowIndex="3" />
-                        <Label fx:id="lblTIpoMovimiento" styleClass="labelRoboto14" text="--" GridPane.columnIndex="1" />
-                        <Label fx:id="lblHoraFecha" styleClass="labelRoboto14" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="lblObservacion" styleClass="labelRoboto14" text="--" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="lblProveedor" styleClass="labelRoboto14" text="--" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Verificación del mivimiento:" GridPane.rowIndex="5" />
-                        <Label fx:id="lblVerificar" styleClass="labelRobotoBold14" text="--" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del mivimiento:" GridPane.rowIndex="4" />
-                        <Label fx:id="lblEstado" styleClass="labelRoboto14" text="--" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Tipo de Movimiento:" textFill="#1a2226" />
+                        <Label fx:id="lblTIpoMovimiento" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="1" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha y Hora" textFill="#1a2226" GridPane.rowIndex="1" />
+                        <Label fx:id="lblHoraFecha" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226" GridPane.rowIndex="2" />
+                        <Label fx:id="lblObservacion" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor:" textFill="#1a2226" GridPane.columnIndex="2" />
+                        <Label fx:id="lblProveedor" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="3" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del mivimiento:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="lblEstado" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Verificación del mivimiento:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label fx:id="lblVerificar" styleClass="labelRobotoBold14" text="--" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>
@@ -105,11 +106,11 @@
                               </Button>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" editable="true" prefHeight="280.0" prefWidth="810.0" styleClass="table-view-principal">
+                        <TableView fx:id="tvList" editable="true" prefHeight="280.0" styleClass="table-view-principal">
                           <columns>
-                            <TableColumn fx:id="tcNumero" style="-fx-alignment: CENTER-LEFT;" text="N°" />
-                            <TableColumn fx:id="tcDescripcion" prefWidth="513.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                            <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: TOP-CENTER;" text="N°" />
+                            <TableColumn fx:id="tcDescripcion" prefWidth="440.0" style="-fx-alignment: TOP-LEFT;" text="Descripción" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="190.0" style="-fx-alignment: TOP-RIGHT;" text="Cantidad" />
                               <TableColumn fx:id="tcVerificar" prefWidth="29.0" style="-fx-alignment: CENTER;" text="Verificar" visible="false" />
                               <TableColumn fx:id="tcPrecio" prefWidth="28.0" style="-fx-alignment: CENTER;" text="Precio" visible="false" />
                           </columns>

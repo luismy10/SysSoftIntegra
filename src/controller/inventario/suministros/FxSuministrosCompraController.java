@@ -214,8 +214,8 @@ public class FxSuministrosCompraController implements Initializable {
         btnRemove.setId(detalleCompraTB.getIdArticulo());
         btnRemove.getStyleClass().add("buttonDark");
         ImageView view = new ImageView(new Image("/view/image/remove.png"));
-        view.setFitWidth(32);
-        view.setFitHeight(32);
+        view.setFitWidth(24);
+        view.setFitHeight(24);
         btnRemove.setGraphic(view);
         detalleCompraTB.setRemove(btnRemove);
 

@@ -19,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -94,7 +95,24 @@ public class FxCuentasPorPagarController implements Initializable {
             }
         };
         task.setOnSucceeded(w -> {
-            tvList.setItems(task.getValue());
+            ObservableList<CompraTB> observableList = task.getValue();
+            observableList.forEach(f -> {
+                Button btnVisualizar = (Button) f.getHbOpciones().getChildren().get(0);
+                btnVisualizar.setOnAction(event -> {
+
+                });
+                btnVisualizar.setOnKeyPressed(event -> {
+
+                });
+                Button btnAbonar = (Button) f.getHbOpciones().getChildren().get(1);
+                btnAbonar.setOnAction(event -> {
+                    openWindowGenerarPago(f.getIdCompra(),f.getProveedorTB().getRazonSocial(),f.getTotal());
+                });
+                btnAbonar.setOnKeyPressed(event -> {
+                    openWindowGenerarPago(f.getIdCompra(),f.getProveedorTB().getRazonSocial(),f.getTotal());
+                });
+            });
+            tvList.setItems(observableList);
             if (!tvList.getItems().isEmpty()) {
                 tvList.getSelectionModel().select(0);
             }
@@ -113,29 +131,25 @@ public class FxCuentasPorPagarController implements Initializable {
         }
     }
 
-    private void openWindowGenerarPago() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CREDITO);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxComprasCreditoController controller = fXMLLoader.getController();
-                controller.loadData(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(), tvList.getSelectionModel().getSelectedItem().getTotal());
-                controller.setInitControllerComprasCredito(this);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Cuenta por pagar", vbWindow.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-                stage.show();
+    private void openWindowGenerarPago(String idCompra,String nombreProveedor,double total) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CREDITO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxComprasCreditoController controller = fXMLLoader.getController();
+            controller.loadData(idCompra, nombreProveedor, total);
+            controller.setInitControllerComprasCredito(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Cuenta por pagar", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
 
-            } catch (IOException ex) {
-                System.out.println("Controller banco" + ex.getLocalizedMessage());
-            }
-        } else {
-            Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
+        } catch (IOException ex) {
+            System.out.println("Controller banco" + ex.getLocalizedMessage());
         }
     }
 
@@ -193,13 +207,21 @@ public class FxCuentasPorPagarController implements Initializable {
     @FXML
     private void onKeyPressedAbonar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowGenerarPago();
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                openWindowGenerarPago(tvList.getSelectionModel().getSelectedItem().getIdCompra(),tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(),tvList.getSelectionModel().getSelectedItem().getTotal());
+            } else {
+                Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
+            }
         }
     }
 
     @FXML
     private void onActionAbonar(ActionEvent event) {
-        openWindowGenerarPago();
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            openWindowGenerarPago(tvList.getSelectionModel().getSelectedItem().getIdCompra(),tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(),tvList.getSelectionModel().getSelectedItem().getTotal());
+        } else {
+            Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
+        }
     }
 
     public void setContent(AnchorPane vbPrincipal) {

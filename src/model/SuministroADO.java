@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -436,7 +437,7 @@ public class SuministroADO {
 
             while (rsEmps.next()) {
                 SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow());
+                suministroTB.setId(rsEmps.getRow() + posicionPagina);
                 suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
@@ -1240,6 +1241,79 @@ public class SuministroADO {
             } catch (SQLException e) {
             }
         }
+    }
+
+    public static SuministroTB List_Suministros_Movimiento(String idSuministro) {
+        String selectStmt = "{call Sp_Get_Suministro_For_Movimiento(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        SuministroTB suministroTB = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, idSuministro);
+            rsEmps = preparedStatement.executeQuery();
+            if (rsEmps.next()) {
+                suministroTB = new SuministroTB();
+                suministroTB.setId(rsEmps.getRow());
+                suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
+                suministroTB.setClave(rsEmps.getString("Clave"));
+                suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
+                suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
+                suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
+                suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
+                suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
+                suministroTB.setDiferencia(suministroTB.getCantidad());
+                suministroTB.setMovimiento(0);
+                TextField tf = new TextField(Tools.roundingValue(0.00, 0));
+                tf.getStyleClass().add("text-field-normal");
+                tf.setOnKeyTyped(event -> {
+                    char c = event.getCharacter().charAt(0);
+                    if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                        event.consume();
+                    }
+                    if (c == '.' && tf.getText().contains(".") || c == '-') {
+                        event.consume();
+                    }
+                });
+
+                suministroTB.setTxtMovimiento(tf);
+
+                CheckBox checkbox = new CheckBox("");
+                checkbox.getStyleClass().add("check-box-contenido");
+                checkbox.setSelected(true);
+                checkbox.setDisable(true);
+
+                Button button = new Button();
+                button.getStyleClass().add("buttonDark");
+                ImageView view = new ImageView(new Image("/view/image/remove.png"));
+                view.setFitWidth(24);
+                view.setFitHeight(24);
+                button.setGraphic(view);
+                suministroTB.setRemover(button);
+
+                suministroTB.setValidar(checkbox);
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("La operacion de selecciona de SQl ha fallado" + e);
+        } finally {
+
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException e) {
+            }
+        }
+        return suministroTB;
     }
 
 }

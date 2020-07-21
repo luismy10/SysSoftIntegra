@@ -197,10 +197,10 @@ public class FxSuministrosListaController implements Initializable {
             }
             status = false;
         });
-        task.setOnFailed((e) -> {
+        task.setOnFailed(e -> {
             status = false;
         });
-        task.setOnScheduled((e) -> {
+        task.setOnScheduled(e -> {
             status = true;
         });
         exec.execute(task);

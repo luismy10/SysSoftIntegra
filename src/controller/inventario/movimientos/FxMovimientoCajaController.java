@@ -7,8 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -27,6 +30,8 @@ public class FxMovimientoCajaController implements Initializable {
     private TextField txtObservacion;
     @FXML
     private Button btnEjecutar;
+    @FXML
+    private Label lblTipoMovimiento;
 
     private FxMovimientosProcesoController movimientosProcesoController;
 
@@ -34,12 +39,20 @@ public class FxMovimientoCajaController implements Initializable {
 
     private TableView<SuministroTB> tableView;
 
+    private boolean tipoMovimiento;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }
 
-    public void loadData(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+    public void loadData(boolean tipoMovimiento, MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+        lblTipoMovimiento.setText(tipoMovimiento ? "Realizar salida de dinero" : "Realizar ingreso de dinero");
+        ImageView imageView = new ImageView(new Image(tipoMovimiento ? "/view/image/remove-item.png" : "/view/image/accept.png"));
+        imageView.setFitWidth(24);
+        imageView.setFitHeight(24);
+        lblTipoMovimiento.setGraphic(imageView);
+        this.tipoMovimiento = tipoMovimiento;
         this.inventarioTB = inventarioTB;
         this.tableView = tableView;
     }
@@ -59,7 +72,7 @@ public class FxMovimientoCajaController implements Initializable {
                 movimientoCajaTB.setFechaMovimiento(Tools.getDate());
                 movimientoCajaTB.setHoraMovimiento(Tools.getHour());
                 movimientoCajaTB.setComentario(txtObservacion.getText().trim());
-                movimientoCajaTB.setTipoMovimiento((short) 5);
+                movimientoCajaTB.setTipoMovimiento(tipoMovimiento ? (short) 5 : (short) 4);
                 movimientoCajaTB.setMonto(Double.parseDouble(txtEfectivo.getText()));
                 String result = MovimientoInventarioADO.Crud_Movimiento_Inventario_Con_Caja(movimientoCajaTB, inventarioTB, tableView);
                 if (result.equalsIgnoreCase("registered")) {

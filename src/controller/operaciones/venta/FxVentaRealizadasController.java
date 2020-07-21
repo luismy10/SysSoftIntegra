@@ -16,7 +16,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -184,15 +183,15 @@ public class FxVentaRealizadasController implements Initializable {
             }
         };
 
-        task.setOnSucceeded((WorkerStateEvent e) -> {
+        task.setOnSucceeded(w -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
         });
-        task.setOnFailed((WorkerStateEvent event) -> {
+        task.setOnFailed(w -> {
             lblLoad.setVisible(false);
         });
 
-        task.setOnScheduled((WorkerStateEvent event) -> {
+        task.setOnScheduled(w-> {
             lblLoad.setVisible(true);
         });
         exec.execute(task);
@@ -437,6 +436,10 @@ public class FxVentaRealizadasController implements Initializable {
         return window;
     }
 
+    public TableView<VentaTB> getTvList() {
+        return tvList;
+    }
+    
     public TextField getTxtVendedor() {
         return txtVendedor;
     }

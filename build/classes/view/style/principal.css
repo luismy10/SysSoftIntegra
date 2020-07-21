@@ -455,7 +455,7 @@
     -fx-background-insets: 0px;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 
@@ -522,7 +522,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -588,7 +588,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -654,7 +654,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -719,7 +719,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -817,7 +817,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -855,7 +855,7 @@
 
 /*******************************************************************************
  *                                                                             *
- * Tab Pane                                                                   *
+ *  Button Dark                                                                    *
  *                                                                             *
  ******************************************************************************/
 
@@ -1312,7 +1312,7 @@
     -fx-background-color: white;   
 }
 
- /*Header Sort Arrows */
+/*Header Sort Arrows */
 .table-view-secundario > .column-header-background .nested-column-header > .column-header > GridPane > .arrow {
     -fx-padding: 0.5em 0.416667em 0.5em 0.416667em; 
     -fx-shape: "M 15 4 L 15 24.0625 L 8.21875 17.28125 L 6.78125 18.71875 L 15.28125 27.21875 L 16 27.90625 L 16.71875 27.21875 L 25.21875 18.71875 L 23.78125 17.28125 L 17 24.0625 L 17 4 Z ";

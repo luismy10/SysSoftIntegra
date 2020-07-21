@@ -189,7 +189,7 @@ public class FxMovimientosProcesoController implements Initializable {
                 inventarioTB.setProveedor(idProveedor);
                 inventarioTB.setEstado(rbCompletado.isSelected() ? (short) 1 : (short) 0);
                 if (cbCaja.isSelected()) {
-                    openWindowMovimientoCaja(inventarioTB, tvList);
+                    openWindowMovimientoCaja(rbIncremento.isSelected(),inventarioTB, tvList);
                 } else {
                     ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                     short validate = Tools.AlertMessageConfirmation(hbWindow, "Movimiento", "¿Está seguro de continuar?");
@@ -322,8 +322,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Task<SuministroTB> task = new Task<SuministroTB>() {
                 @Override
                 public SuministroTB call() {
-//                    return SuministroADO.List_Suministros_Movimiento((short) 4, idSuministro, "");
-                      return null;
+                    return SuministroADO.List_Suministros_Movimiento(idSuministro);
                 }
             };
 
@@ -466,7 +465,7 @@ public class FxMovimientosProcesoController implements Initializable {
         }
     }
 
-    private void openWindowMovimientoCaja(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+    private void openWindowMovimientoCaja(boolean tipoMovimiento,MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_MOVIMIENTO_CAJA);
@@ -474,7 +473,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxMovimientoCajaController controller = fXMLLoader.getController();
-            controller.loadData(inventarioTB, tableView);
+            controller.loadData(tipoMovimiento,inventarioTB, tableView);
             controller.setInitMovimientoProcesoController(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento caja", hbWindow.getScene().getWindow());
