@@ -39,8 +39,7 @@
                   <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                      <children>
                         <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Descripción:" />
-                        <Text fx:id="lblClave" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" />
-                        <Text fx:id="lblDescripcion" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" />
+                        <Text fx:id="lblDescripcion" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" wrappingWidth="708.0" />
                      </children>
                   </HBox>
                </children>

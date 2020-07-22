@@ -61,7 +61,6 @@ public class FxComprasCancelarController implements Initializable {
             } else {
                 short value = Tools.AlertMessageConfirmation(apWindow, "Detalle de la compra", "¿Está seguro de continuar?");
                 if (value == 1) {
-
                     BancoHistorialTB bancoHistorialBancaria = new BancoHistorialTB();
                     bancoHistorialBancaria.setIdBanco(cbCuentas.getSelectionModel().getSelectedItem().getIdBanco());
                     bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
@@ -70,22 +69,22 @@ public class FxComprasCancelarController implements Initializable {
                     bancoHistorialBancaria.setHora(Tools.getHour());
                     bancoHistorialBancaria.setEntrada(comprasDetalleController.getCompraTB().getTotal());
                     bancoHistorialBancaria.setSalida(0);
-                    
-
                     String result = CompraADO.cancelarCompraTotal(comprasDetalleController.getCompraTB().getIdCompra(), comprasDetalleController.getArrList(), bancoHistorialBancaria);
                     if (result.equalsIgnoreCase("scrambled")) {
                         Tools.AlertMessageWarning(apWindow, "Detalle de la compra", "La compra ya se encuentra anulada.");
                         Tools.Dispose(apWindow);
+                    } else if (result.equalsIgnoreCase("historial")) {
+                        Tools.AlertMessageWarning(apWindow, "Detalle de la compra", "La compra tiene un historial de pago, no se puede anular.");
                     } else if (result.equalsIgnoreCase("updated")) {
                         Tools.AlertMessageInformation(apWindow, "Detalle de la compra", "Se completo correctamente los cambios.");
                         Tools.Dispose(apWindow);
                         comprasDetalleController.setLoadDetalle(comprasDetalleController.getCompraTB().getIdCompra());
-
                     } else {
                         Tools.AlertMessageError(apWindow, "Detalle de la compra", result);
                     }
                 }
             }
+
         } else {
 
             short value = Tools.AlertMessageConfirmation(apWindow, "Detalle de la compra", "¿Está seguro de continuar?");
@@ -102,27 +101,25 @@ public class FxComprasCancelarController implements Initializable {
                     Tools.AlertMessageError(apWindow, "Detalle de la compra", result);
                 }
             }
+
         }
 
     }
 
     @FXML
-    private void onActionAceptar(ActionEvent event
-    ) {
+    private void onActionAceptar(ActionEvent event) {
         executeAceptar();
     }
 
     @FXML
-    private void onKeyPressedAceptar(KeyEvent event
-    ) {
+    private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             executeAceptar();
         }
     }
 
     @FXML
-    private void onActionIngresoDinero(ActionEvent event
-    ) {
+    private void onActionIngresoDinero(ActionEvent event) {
         hbIngresoDinero.setDisable(!cbIngresoDinero.isSelected());
     }
 

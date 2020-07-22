@@ -274,6 +274,10 @@ public class FxComprasRealizadasController implements Initializable {
         return vbWindow;
     }
 
+    public TableView<CompraTB> getTvList() {
+        return tvList;
+    }
+
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;

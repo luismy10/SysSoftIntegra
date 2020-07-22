@@ -1,7 +1,6 @@
 package controller.reporte;
 
 import controller.inventario.suministros.FxSuministrosListaController;
-import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -142,7 +141,7 @@ public class FxVentaUtilidadesController implements Initializable {
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
-            controller.fillSuministrosTablePaginacion();
+            controller.fillSuministrosTable((short)0,""); 
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }

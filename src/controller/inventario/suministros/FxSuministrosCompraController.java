@@ -39,8 +39,6 @@ public class FxSuministrosCompraController implements Initializable {
     @FXML
     private AnchorPane apWindow;
     @FXML
-    private Text lblClave;
-    @FXML
     private Text lblDescripcion;
     @FXML
     private VBox vbImpuestos;
@@ -54,6 +52,10 @@ public class FxSuministrosCompraController implements Initializable {
     private TextField txtDescuento;
     @FXML
     private TextField txtCostoCalculado;
+
+    private String clave;
+
+    private String descripcion;
 
     private FxComprasController comprasController;
 
@@ -100,8 +102,9 @@ public class FxSuministrosCompraController implements Initializable {
 
     public void setLoadData(String idSuminostro, String clave, String nombreSuministro, String costo, String medida, boolean lote) {
         this.idSuminisitro = idSuminostro;
-        lblClave.setText(clave);
-        lblDescripcion.setText(nombreSuministro);
+        this.clave = clave;
+        descripcion = nombreSuministro;
+        lblDescripcion.setText(clave + " - " + nombreSuministro);
         txtCosto.setText(costo);
         lblMedida.setText(medida);
         onActionImpuesto();
@@ -110,8 +113,9 @@ public class FxSuministrosCompraController implements Initializable {
 
     public void setLoadEdit(DetalleCompraTB detalleCompraTB, int index, ObservableList<LoteTB> loteTBs) {
         idSuminisitro = detalleCompraTB.getIdArticulo();
-        lblClave.setText(detalleCompraTB.getSuministroTB().getClave());
-        lblDescripcion.setText(detalleCompraTB.getSuministroTB().getNombreMarca());
+        clave = detalleCompraTB.getSuministroTB().getClave();
+        descripcion = detalleCompraTB.getSuministroTB().getNombreMarca();
+        lblDescripcion.setText(detalleCompraTB.getSuministroTB().getClave() + " - " + detalleCompraTB.getSuministroTB().getNombreMarca());
         txtCantidad.setText("" + detalleCompraTB.getCantidad());
         txtDescuento.setText(Tools.roundingValue(detalleCompraTB.getDescuento(), 0));
         txtCosto.setText(Tools.roundingValue(detalleCompraTB.getPrecioCompra(), 8));
@@ -188,8 +192,8 @@ public class FxSuministrosCompraController implements Initializable {
         detalleCompraTB.setIdArticulo(idSuminisitro);
         //
         SuministroTB suministrosTB = new SuministroTB();
-        suministrosTB.setClave(lblClave.getText());
-        suministrosTB.setNombreMarca(lblDescripcion.getText());
+        suministrosTB.setClave(clave);
+        suministrosTB.setNombreMarca(descripcion);
         detalleCompraTB.setSuministroTB(suministrosTB);
         //        
         detalleCompraTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
@@ -208,10 +212,10 @@ public class FxSuministrosCompraController implements Initializable {
         detalleCompraTB.setLote(loteSuministro);
         Button btnRemove = new Button();
         btnRemove.setId(detalleCompraTB.getIdArticulo());
-        btnRemove.getStyleClass().add("buttonLightError");
+        btnRemove.getStyleClass().add("buttonDark");
         ImageView view = new ImageView(new Image("/view/image/remove.png"));
-        view.setFitWidth(32);
-        view.setFitHeight(32);
+        view.setFitWidth(24);
+        view.setFitHeight(24);
         btnRemove.setGraphic(view);
         detalleCompraTB.setRemove(btnRemove);
 
@@ -372,7 +376,6 @@ public class FxSuministrosCompraController implements Initializable {
     public void setValidarlote(boolean loteSuministro) {
         this.loteSuministro = loteSuministro;
     }
-
 
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;

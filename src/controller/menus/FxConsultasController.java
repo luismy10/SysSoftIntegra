@@ -139,7 +139,9 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
         vbContent.getChildren().add(nodeVentaRealizadas);
-        ventaRealizadasController.loadInit();
+        if (ventaRealizadasController.getTvList().getItems().isEmpty()) {
+            ventaRealizadasController.loadInit();
+        }
     }
 
     private void openWindowPurchasesMade() {
@@ -150,7 +152,9 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeComprasRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeComprasRealizadas, 0d);
         vbContent.getChildren().add(nodeComprasRealizadas);
-        controllerComprasRealizadas.fillPurchasesTable((short) 0, "", Tools.getDate(), Tools.getDate(), 0);
+        if (controllerComprasRealizadas.getTvList().getItems().isEmpty()) {
+            controllerComprasRealizadas.fillPurchasesTable((short) 0, "", Tools.getDate(), Tools.getDate(), 0);
+        }
     }
 
     private void openWindowCortesCaja() {

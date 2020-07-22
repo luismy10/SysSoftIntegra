@@ -183,7 +183,7 @@ public class FxSuministrosKardexController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.fillSuministrosTablePaginacion();
+            controller.fillSuministrosTable((short)0,"");
         } catch (IOException ex) {
             System.out.println("Error en la vista suministros lista:" + ex.getLocalizedMessage());
         }

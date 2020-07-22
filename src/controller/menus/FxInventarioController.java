@@ -239,7 +239,7 @@ public class FxInventarioController implements Initializable {
         AnchorPane.setBottomAnchor(nodeSuministros, 0d);
         vbContent.getChildren().add(nodeSuministros);
         if (controllerSuministros.getTvList().getItems().isEmpty()) {
-            controllerSuministros.fillTableSuministrosPaginacion();
+            controllerSuministros.fillTableSuministros((short) 0, "", "", 0, 0);
         }
     }
 

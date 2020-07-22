@@ -902,7 +902,7 @@ public class CompraADO extends DBUtil {
         String result = "";
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
-
+            return "No se pudo completar la petición por problemas de red, intente nuevamente.";
         }
         PreparedStatement statementValidate = null;
         PreparedStatement statementCompra = null;
@@ -912,86 +912,92 @@ public class CompraADO extends DBUtil {
         PreparedStatement statementBancoHistorial = null;
         try {
             DBUtil.getConnection().setAutoCommit(false);
-
             statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE IdCompra = ? and EstadoCompra = ?");
             statementValidate.setString(1, idCompra);
             statementValidate.setInt(2, 3);
             if (statementValidate.executeQuery().next()) {
                 DBUtil.getConnection().rollback();
-                return "scrambled";
+                result = "scrambled";
             } else {
-                statementCompra = DBUtil.getConnection().prepareStatement("UPDATE CompraTB SET EstadoCompra = ? WHERE IdCompra = ?");
-                statementCompra.setInt(1, 3);
-                statementCompra.setString(2, idCompra);
-                statementCompra.addBatch();
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraCreditoTB WHERE IdCompra = ? and Estado = 1");
+                statementValidate.setString(1, result);
+                if (statementValidate.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    result = "historial";
+                } else {
+                    statementCompra = DBUtil.getConnection().prepareStatement("UPDATE CompraTB SET EstadoCompra = ? WHERE IdCompra = ?");
+                    statementCompra.setInt(1, 3);
+                    statementCompra.setString(2, idCompra);
+                    statementCompra.addBatch();
 
-                statementSuministro = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad - ? WHERE IdSuministro = ?");
+                    statementSuministro = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad - ? WHERE IdSuministro = ?");
 
-                statementSuministroKardex = DBUtil.getConnection().prepareStatement("INSERT INTO KardexSuministroTB("
-                        + "IdSuministro,"
-                        + "Fecha,"
-                        + "Hora,"
-                        + "Tipo,"
-                        + "Movimiento,"
-                        + "Detalle,"
-                        + "Cantidad, "
-                        + "Costo, "
-                        + "Total) "
-                        + "VALUES(?,?,?,?,?,?,?,?,?)");
+                    statementSuministroKardex = DBUtil.getConnection().prepareStatement("INSERT INTO KardexSuministroTB("
+                            + "IdSuministro,"
+                            + "Fecha,"
+                            + "Hora,"
+                            + "Tipo,"
+                            + "Movimiento,"
+                            + "Detalle,"
+                            + "Cantidad, "
+                            + "Costo, "
+                            + "Total) "
+                            + "VALUES(?,?,?,?,?,?,?,?,?)");
 
-                for (DetalleCompraTB detalleCompraTB : tableView) {
-                    statementSuministro.setDouble(1, detalleCompraTB.getCantidad());
-                    statementSuministro.setString(2, detalleCompraTB.getIdArticulo());
-                    statementSuministro.addBatch();
+                    for (DetalleCompraTB detalleCompraTB : tableView) {
+                        statementSuministro.setDouble(1, detalleCompraTB.getCantidad());
+                        statementSuministro.setString(2, detalleCompraTB.getIdArticulo());
+                        statementSuministro.addBatch();
 
-                    statementSuministroKardex.setString(1, detalleCompraTB.getIdArticulo());
-                    statementSuministroKardex.setString(2, Tools.getDate());
-                    statementSuministroKardex.setString(3, Tools.getHour());
-                    statementSuministroKardex.setShort(4, (short) 2);
-                    statementSuministroKardex.setInt(5, 1);
-                    statementSuministroKardex.setString(6, "CANCELAR COMPRA");
-                    statementSuministroKardex.setDouble(7, detalleCompraTB.getCantidad());
-                    statementSuministroKardex.setDouble(8, detalleCompraTB.getPrecioCompra());
-                    statementSuministroKardex.setDouble(9, detalleCompraTB.getCantidad() * detalleCompraTB.getPrecioCompra());
-                    statementSuministroKardex.addBatch();
+                        statementSuministroKardex.setString(1, detalleCompraTB.getIdArticulo());
+                        statementSuministroKardex.setString(2, Tools.getDate());
+                        statementSuministroKardex.setString(3, Tools.getHour());
+                        statementSuministroKardex.setShort(4, (short) 2);
+                        statementSuministroKardex.setInt(5, 1);
+                        statementSuministroKardex.setString(6, "CANCELAR COMPRA");
+                        statementSuministroKardex.setDouble(7, detalleCompraTB.getCantidad());
+                        statementSuministroKardex.setDouble(8, detalleCompraTB.getPrecioCompra());
+                        statementSuministroKardex.setDouble(9, detalleCompraTB.getCantidad() * detalleCompraTB.getPrecioCompra());
+                        statementSuministroKardex.addBatch();
+                    }
+
+                    statementBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco "
+                            + "SET SaldoInicial = SaldoInicial + ? "
+                            + "WHERE IdBanco = ?");
+
+                    statementBanco.setDouble(1, bancoHistorialBancaria.getEntrada());
+                    statementBanco.setString(2, bancoHistorialBancaria.getIdBanco());
+                    statementBanco.addBatch();
+
+                    statementBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB"
+                            + "(IdBanco,"
+                            + "IdEmpleado,"
+                            + "IdProcedencia,"
+                            + "Descripcion,"
+                            + "Fecha,"
+                            + "Hora,"
+                            + "Entrada,"
+                            + "Salida)"
+                            + "VALUES(?,?,?,?,?,?,?,?)");
+
+                    statementBancoHistorial.setString(1, bancoHistorialBancaria.getIdBanco());
+                    statementBancoHistorial.setString(2, bancoHistorialBancaria.getIdEmpleado());
+                    statementBancoHistorial.setString(3, "");
+                    statementBancoHistorial.setString(4, bancoHistorialBancaria.getDescripcion());
+                    statementBancoHistorial.setString(5, bancoHistorialBancaria.getFecha());
+                    statementBancoHistorial.setString(6, bancoHistorialBancaria.getHora());
+                    statementBancoHistorial.setDouble(7, bancoHistorialBancaria.getEntrada());
+                    statementBancoHistorial.setDouble(8, bancoHistorialBancaria.getSalida());
+                    statementBancoHistorial.addBatch();
+
+                    statementCompra.executeBatch();
+                    statementSuministro.executeBatch();
+                    statementSuministroKardex.executeBatch();
+                    statementBanco.executeBatch();
+                    statementBancoHistorial.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "updated";
                 }
-
-                statementBanco = DBUtil.getConnection().prepareStatement("UPDATE Banco "
-                        + "SET SaldoInicial = SaldoInicial + ? "
-                        + "WHERE IdBanco = ?");
-
-                statementBanco.setDouble(1, bancoHistorialBancaria.getEntrada());
-                statementBanco.setString(2, bancoHistorialBancaria.getIdBanco());
-                statementBanco.addBatch();
-
-                statementBancoHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO BancoHistorialTB"
-                        + "(IdBanco,"
-                        + "IdEmpleado,"
-                        + "IdProcedencia,"
-                        + "Descripcion,"
-                        + "Fecha,"
-                        + "Hora,"
-                        + "Entrada,"
-                        + "Salida)"
-                        + "VALUES(?,?,?,?,?,?,?,?)");
-
-                statementBancoHistorial.setString(1, bancoHistorialBancaria.getIdBanco());
-                statementBancoHistorial.setString(2, bancoHistorialBancaria.getIdEmpleado());
-                statementBancoHistorial.setString(3, "");
-                statementBancoHistorial.setString(4, bancoHistorialBancaria.getDescripcion());
-                statementBancoHistorial.setString(5, bancoHistorialBancaria.getFecha());
-                statementBancoHistorial.setString(6, bancoHistorialBancaria.getHora());
-                statementBancoHistorial.setDouble(7, bancoHistorialBancaria.getEntrada());
-                statementBancoHistorial.setDouble(8, bancoHistorialBancaria.getSalida());
-                statementBancoHistorial.addBatch();
-
-                statementCompra.executeBatch();
-                statementSuministro.executeBatch();
-                statementSuministroKardex.executeBatch();
-                statementBanco.executeBatch();
-                statementBancoHistorial.executeBatch();
-                DBUtil.getConnection().commit();
-                result = "updated";
             }
         } catch (SQLException ex) {
             try {
@@ -1363,19 +1369,24 @@ public class CompraADO extends DBUtil {
                 label.getStyleClass().add(compraTB.getEstado() == 1 ? "label-asignacion" : compraTB.getEstado() == 2 ? "label-medio" : compraTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
 
                 compraTB.setEstadoLabel(label);
-                
-                compraTB.setMonedaNombre(rsEmps.getString("Simbolo"));                
+
+                compraTB.setMonedaNombre(rsEmps.getString("Simbolo"));
                 compraTB.setTotal(rsEmps.getDouble("Total"));
-                
+
                 HBox hBox = new HBox();
                 hBox.setAlignment(Pos.CENTER);
                 hBox.setStyle(";-fx-spacing:0.8333333333333334em;");
+
                 Button btnVisualizar = new Button("V");
+                btnVisualizar.getStyleClass().add("buttonLightWarning");
+
                 Button btnAbonar = new Button("A");
+                btnAbonar.getStyleClass().add("buttonLightSuccess");
+
                 hBox.getChildren().add(btnVisualizar);
                 hBox.getChildren().add(btnAbonar);
                 compraTB.setHbOpciones(hBox);
-                
+
                 empList.add(compraTB);
             }
         } catch (SQLException e) {
@@ -1396,5 +1407,4 @@ public class CompraADO extends DBUtil {
         return empList;
     }
 
-    
 }

@@ -42,7 +42,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
-import model.ModeloGenerico;
 import model.SuministroADO;
 import model.SuministroTB;
 
@@ -109,6 +108,8 @@ public class FxSuministrosListaController implements Initializable {
 
     private int totalPaginacion;
 
+    private short opcion;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
@@ -142,7 +143,8 @@ public class FxSuministrosListaController implements Initializable {
                     case F7:
                         if (!status) {
                             paginacion = 1;
-                            fillSuministrosTablePaginacion();
+                            fillSuministrosTable((short) 0, "");
+                            opcion = 0;
                         }
                         break;
                 }
@@ -163,31 +165,42 @@ public class FxSuministrosListaController implements Initializable {
         });
 
         paginacion = 1;
+        opcion = 0;
         status = false;
     }
 
-    private void fillSuministrosTable(short tipo, String value) {
+    public void fillSuministrosTable(short tipo, String value) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
 
-        Task<ObservableList<SuministroTB>> task = new Task<ObservableList<SuministroTB>>() {
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            public ObservableList<SuministroTB> call() {
-                return SuministroADO.ListSuministrosListaView(tipo, value);
+            public ArrayList<Object> call() {
+                return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 10, 10);
             }
         };
 
-        task.setOnSucceeded((e) -> {
-            tvList.setItems(task.getValue());
+        task.setOnSucceeded(e -> {
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                tvList.setItems((ObservableList<SuministroTB>) objects.get(0));
+                if (!tvList.getItems().isEmpty()) {
+                    tvList.getSelectionModel().select(0);
+                }
+                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
+                totalPaginacion = integer;
+                lblPaginaActual.setText(paginacion + "");
+                lblPaginaSiguiente.setText(totalPaginacion + "");
+            }
             status = false;
         });
-        task.setOnFailed((e) -> {
+        task.setOnFailed(e -> {
             status = false;
         });
-        task.setOnScheduled((e) -> {
+        task.setOnScheduled(e -> {
             status = true;
         });
         exec.execute(task);
@@ -196,53 +209,33 @@ public class FxSuministrosListaController implements Initializable {
         }
     }
 
-    public void fillSuministrosTablePaginacion() {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<ModeloGenerico> task = new Task<ModeloGenerico>() {
-            @Override
-            public ModeloGenerico call() {
-                int page = paginacion;
-                int total = SuministroADO.GetAllSuministros();
-                ModeloGenerico generico = new ModeloGenerico();
-                generico.setObjectoE(SuministroADO.ListSuministroPaginacionView((page - 1) * 20));
-                generico.setObjectoN(20);
-                generico.setObjectoM(total);
-                generico.setObjectoO((int) (Math.ceil((double) (total / 20.00))));
-                generico.setObjectoP(page);
-                return generico;
-            }
-        };
-
-        task.setOnSucceeded((e) -> {
-            ModeloGenerico generico = task.getValue();
-            tvList.setItems((ObservableList<SuministroTB>) generico.getObjectoE());
-
-            totalPaginacion = (int) generico.getObjectoO();
-            lblPaginaActual.setText(paginacion + "");
-            lblPaginaSiguiente.setText(totalPaginacion + "");
-            status = false;
-        });
-        task.setOnFailed((e) -> {
-            status = false;
-        });
-        task.setOnScheduled((e) -> {
-            status = true;
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
+    public void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillSuministrosTable((short) 0, "");
+                break;
+            case 1:
+                fillSuministrosTable((short) 1, txtSearch.getText().trim());
+                break;
+            case 2:
+                fillSuministrosTable((short) 2, txtCategoria.getText().trim());
+                break;
+            case 3:
+                fillSuministrosTable((short) 3, txtMarca.getText().trim());
+                break;
+            case 4:
+                fillSuministrosTable((short) 4, txtPresentacion.getText().trim());
+                break;
+            default:
+                fillSuministrosTable((short) 5, txtMedida.getText().trim());
+                break;
         }
     }
 
     private void openWindowCompra(short option) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (tvList.getSelectionModel().getSelectedItem().isInventario()) {
-                WindowStage.openWindowSuministroCompra(false,null,comprasController,tvList.getSelectionModel().getSelectedItem(),apWindow.getScene().getWindow());
+                WindowStage.openWindowSuministroCompra(false, null, comprasController, tvList.getSelectionModel().getSelectedItem(), apWindow.getScene().getWindow());
 //                try {
 //                    URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
 //                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -300,8 +293,8 @@ public class FxSuministrosListaController implements Initializable {
             }
         } else if (suministrosKardexController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(),tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-                suministrosKardexController.fillKardexTable(tvList.getSelectionModel().getSelectedItem().getIdSuministro(),"","");
+                suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+                suministrosKardexController.fillKardexTable(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), "", "");
                 Tools.Dispose(apWindow);
             }
         } else if (asignacionProcesoController != null) {
@@ -511,7 +504,8 @@ public class FxSuministrosListaController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             if (!status) {
                 paginacion = 1;
-                fillSuministrosTablePaginacion();
+                fillSuministrosTable((short) 0, "");
+                opcion = 0;
             }
         }
     }
@@ -520,7 +514,8 @@ public class FxSuministrosListaController implements Initializable {
     private void onActionReload(ActionEvent event) {
         if (!status) {
             paginacion = 1;
-            fillSuministrosTablePaginacion();
+            fillSuministrosTable((short) 0, "");
+            opcion = 0;
         }
     }
 
@@ -576,27 +571,37 @@ public class FxSuministrosListaController implements Initializable {
 
     @FXML
     private void onKeyReleasedToSearch(KeyEvent event) {
+        paginacion = 1;
         searchTable(event, (short) 1, txtSearch.getText().trim());
+        opcion = 1;
     }
 
     @FXML
     private void onKeyReleasedToCategoria(KeyEvent event) {
+        paginacion = 1;
         searchTable(event, (short) 2, txtCategoria.getText().trim());
+        opcion = 2;
     }
 
     @FXML
     private void onKeyReleasedToMarca(KeyEvent event) {
+        paginacion = 1;
         searchTable(event, (short) 3, txtMarca.getText().trim());
+        opcion = 3;
     }
 
     @FXML
     private void onKeyReleasedToPresentacion(KeyEvent event) {
+        paginacion = 1;
         searchTable(event, (short) 4, txtPresentacion.getText().trim());
+        opcion = 4;
     }
 
     @FXML
     private void onKeyReleasedToMedida(KeyEvent event) {
+        paginacion = 1;
         searchTable(event, (short) 5, txtMedida.getText().trim());
+        opcion = 5;
     }
 
     @FXML
@@ -630,7 +635,7 @@ public class FxSuministrosListaController implements Initializable {
             if (!status) {
                 if (paginacion > 1) {
                     paginacion--;
-                    fillSuministrosTablePaginacion();
+                    onEventPaginacion();
                 }
             }
         }
@@ -641,7 +646,7 @@ public class FxSuministrosListaController implements Initializable {
         if (!status) {
             if (paginacion > 1) {
                 paginacion--;
-                fillSuministrosTablePaginacion();
+                onEventPaginacion();
             }
         }
     }
@@ -652,7 +657,7 @@ public class FxSuministrosListaController implements Initializable {
             if (!status) {
                 if (paginacion < totalPaginacion) {
                     paginacion++;
-                    fillSuministrosTablePaginacion();
+                    onEventPaginacion();
                 }
             }
         }
@@ -663,7 +668,7 @@ public class FxSuministrosListaController implements Initializable {
         if (!status) {
             if (paginacion < totalPaginacion) {
                 paginacion++;
-                fillSuministrosTablePaginacion();
+                onEventPaginacion();
             }
         }
     }

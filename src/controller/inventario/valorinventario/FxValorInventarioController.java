@@ -157,9 +157,9 @@ public class FxValorInventarioController implements Initializable {
                 int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-                lblLoad.setVisible(false);
+                lblPaginaSiguiente.setText(totalPaginacion + "");                
             }
+            lblLoad.setVisible(false);
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
@@ -365,7 +365,7 @@ public class FxValorInventarioController implements Initializable {
         }
     }
 
-    private void onEventPaginacion() {
+    public void onEventPaginacion() {
         switch (opcion) {
             case 0:
                 fillInventarioTable("", (short) 0, "", (short) 0, 0, 0);

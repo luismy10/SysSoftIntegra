@@ -4,7 +4,7 @@ import controller.inventario.suministros.FxSuministrosListaController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
+import controller.tools.WindowStage;  
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -222,7 +222,7 @@ public class FxAsignacionProcesoController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.fillSuministrosTablePaginacion();
+            controller.fillSuministrosTable((short)0,"");
         } catch (IOException ex) {
             System.out.println("Error en la vista productos lista:" + ex.getLocalizedMessage());
         }
