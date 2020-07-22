@@ -43,35 +43,33 @@ public class VentaADO {
 
             ventaTB.setCliente(ventaTB.getClienteTB().getIdCliente());
 
-            if (ventaTB.getClienteTB().getIdCliente().equalsIgnoreCase("")) {
-                clienteVerificar = DBUtil.getConnection().prepareStatement("SELECT IdCliente FROM ClienteTB WHERE NumeroDocumento = ?");
-                clienteVerificar.setString(1, ventaTB.getClienteTB().getNumeroDocumento());
-                if (clienteVerificar.executeQuery().next()) {
-                    ResultSet resultSet = clienteVerificar.executeQuery();
-                    resultSet.next();
-                    ventaTB.setCliente(resultSet.getString("IdCliente"));
-                } else {
-                    codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
-                    codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
-                    codigoCliente.execute();
-                    String idCliente = codigoCliente.getString(1);
+            clienteVerificar = DBUtil.getConnection().prepareStatement("SELECT IdCliente FROM ClienteTB WHERE NumeroDocumento = ?");
+            clienteVerificar.setString(1, ventaTB.getClienteTB().getNumeroDocumento().trim());
+            if (clienteVerificar.executeQuery().next()) {
+                ResultSet resultSet = clienteVerificar.executeQuery();
+                resultSet.next();
+                ventaTB.setCliente(resultSet.getString("IdCliente"));
+            } else {
+                codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
+                codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigoCliente.execute();
+                String idCliente = codigoCliente.getString(1);
 
-                    cliente.setString(1, idCliente);
-                    cliente.setInt(2, ventaTB.getClienteTB().getTipoDocumento());
-                    cliente.setString(3, ventaTB.getClienteTB().getNumeroDocumento());
-                    cliente.setString(4, ventaTB.getClienteTB().getInformacion());
-                    cliente.setString(5, "");
-                    cliente.setString(6, "");
-                    cliente.setString(7, "");
-                    cliente.setString(8, ventaTB.getClienteTB().getDireccion());
-                    cliente.setString(9, "");
-                    cliente.setInt(10, 1);
-                    cliente.setBoolean(11, false);
-                    cliente.setBoolean(12, false);
-                    cliente.addBatch();
+                cliente.setString(1, idCliente);
+                cliente.setInt(2, ventaTB.getClienteTB().getTipoDocumento());
+                cliente.setString(3, ventaTB.getClienteTB().getNumeroDocumento().trim());
+                cliente.setString(4, ventaTB.getClienteTB().getInformacion().trim().toUpperCase());
+                cliente.setString(5, "");
+                cliente.setString(6, ventaTB.getClienteTB().getCelular().trim());
+                cliente.setString(7, "");
+                cliente.setString(8, ventaTB.getClienteTB().getDireccion().trim().toUpperCase());
+                cliente.setString(9, "");
+                cliente.setInt(10, 1);
+                cliente.setBoolean(11, false);
+                cliente.setBoolean(12, false);
+                cliente.addBatch();
 
-                    ventaTB.setCliente(idCliente);
-                }
+                ventaTB.setCliente(idCliente);
             }
 
             serie_numeracion = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");
@@ -141,8 +139,10 @@ public class VentaADO {
                     + "Tipo,"
                     + "Movimiento,"
                     + "Detalle,"
-                    + "Cantidad) "
-                    + "VALUES(?,?,?,?,?,?,?)");
+                    + "Cantidad,"
+                    + "Costo, "
+                    + "Total) "
+                    + "VALUES(?,?,?,?,?,?,?,?,?)");
 
             venta.setString(1, id_venta);
             venta.setString(2, ventaTB.getCliente());
@@ -207,19 +207,21 @@ public class VentaADO {
                     suministro_update_unidad.addBatch();
                 }
 
+                double cantidadKardex = tvList.getItems().get(i).getValorInventario() == 1
+                        ? tvList.getItems().get(i).getCantidad()
+                        : tvList.getItems().get(i).getValorInventario() == 2
+                        ? cantidadGranel
+                        : tvList.getItems().get(i).getCantidad();
+
                 suministro_kardex.setString(1, tvList.getItems().get(i).getIdSuministro());
                 suministro_kardex.setString(2, Tools.getDate());
                 suministro_kardex.setString(3, Tools.getHour());
                 suministro_kardex.setShort(4, (short) 2);
                 suministro_kardex.setInt(5, 1);
-                suministro_kardex.setString(6, "SALIDA POR VENTA");
-                suministro_kardex.setDouble(7,
-                        tvList.getItems().get(i).getValorInventario() == 1
-                        ? tvList.getItems().get(i).getCantidad()
-                        : tvList.getItems().get(i).getValorInventario() == 2
-                        ? cantidadGranel
-                        : tvList.getItems().get(i).getCantidad()
-                );
+                suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1]);
+                suministro_kardex.setDouble(7, cantidadKardex);
+                suministro_kardex.setDouble(8, tvList.getItems().get(i).getCostoCompra());
+                suministro_kardex.setDouble(9, cantidadKardex * tvList.getItems().get(i).getCostoCompra());
                 suministro_kardex.addBatch();
 
             }
@@ -232,7 +234,7 @@ public class VentaADO {
                 movimiento_caja.setString(3, ventaTB.getHoraVenta());
                 movimiento_caja.setString(4, "VENTA CON EFECTIVO DE SERIE Y NUMERACIÓN DEL COMPROBANTE " + id_comprabante[0] + "-" + id_comprabante[1]);
                 movimiento_caja.setShort(5, (short) 2);
-                movimiento_caja.setDouble(6,ventaTB.getTarjeta() > 0 ? ventaTB.getEfectivo() : ventaTB.getTotal() );
+                movimiento_caja.setDouble(6, ventaTB.getTarjeta() > 0 ? ventaTB.getEfectivo() : ventaTB.getTotal());
                 movimiento_caja.addBatch();
             }
 
@@ -436,6 +438,7 @@ public class VentaADO {
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
                     clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
+                    clienteTB.setCelular(resultSetVenta.getString("Celular"));
                     ventaTB.setClienteTB(clienteTB);
                     //Cliente end
                     ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
@@ -591,8 +594,10 @@ public class VentaADO {
                             + "Tipo,"
                             + "Movimiento,"
                             + "Detalle,"
-                            + "Cantidad) "
-                            + "VALUES(?,?,?,?,?,?,?)");
+                            + "Cantidad, "
+                            + "Costo, "
+                            + "Total) "
+                            + "VALUES(?,?,?,?,?,?,?,?,?)");
 
                     for (SuministroTB stb : arrList) {
 
@@ -613,19 +618,21 @@ public class VentaADO {
                         double cantidadGranel = stb.getPrecioVentaGeneralAuxiliar() <= 0 ? 0
                                 : stb.getPrecioVentaGeneralReal() / stb.getPrecioVentaGeneralAuxiliar();
 
+                        double cantidadTotal = stb.getValorInventario() == 1
+                                ? stb.getCantidad()
+                                : stb.getValorInventario() == 2
+                                ? cantidadGranel
+                                : stb.getCantidad();
+
                         statementKardex.setString(1, stb.getIdSuministro());
                         statementKardex.setString(2, Tools.getDate());
                         statementKardex.setString(3, Tools.getHour());
                         statementKardex.setShort(4, (short) 1);
                         statementKardex.setInt(5, 2);
-                        statementKardex.setString(6, "DEVOLUCIÓN DE PRODUCTOS");
-                        statementKardex.setDouble(7,
-                                stb.getValorInventario() == 1
-                                ? stb.getCantidad()
-                                : stb.getValorInventario() == 2
-                                ? cantidadGranel
-                                : stb.getCantidad()
-                        );
+                        statementKardex.setString(6, "DEVOLUCIÓN DE PRODUCTO");
+                        statementKardex.setDouble(7, cantidadTotal);
+                        statementKardex.setDouble(8, stb.getCostoCompra());
+                        statementKardex.setDouble(9, cantidadTotal * stb.getCostoCompra());
                         statementKardex.addBatch();
 
                     }

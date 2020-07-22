@@ -91,8 +91,10 @@ public class CompraADO extends DBUtil {
                         + "Tipo,"
                         + "Movimiento,"
                         + "Detalle,"
-                        + "Cantidad) "
-                        + "VALUES(?,?,?,?,?,?,?)");
+                        + "Cantidad, "
+                        + "Costo, "
+                        + "Total) "
+                        + "VALUES(?,?,?,?,?,?,?,?,?)");
 
                 /*         lote_compra = getConnection().prepareStatement("INSERT INTO "
                         + "LoteTB("
@@ -166,8 +168,10 @@ public class CompraADO extends DBUtil {
                     suministro_kardex.setString(3, Tools.getHour());
                     suministro_kardex.setShort(4, (short) 1);
                     suministro_kardex.setInt(5, 2);
-                    suministro_kardex.setString(6, "Compra con numeración " + compraTB.getNumeracion().toUpperCase());
+                    suministro_kardex.setString(6, "COMPRA CON SERIE Y NUMERACIÓN: " + compraTB.getSerie().toUpperCase() + "-" + compraTB.getNumeracion().toUpperCase());
                     suministro_kardex.setDouble(7, tableView.getItems().get(i).getCantidad());
+                    suministro_kardex.setDouble(8, tableView.getItems().get(i).getPrecioCompra());
+                    suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.addBatch();
                 }
 
@@ -307,8 +311,10 @@ public class CompraADO extends DBUtil {
                         + "Tipo,"
                         + "Movimiento,"
                         + "Detalle,"
-                        + "Cantidad) "
-                        + "VALUES(?,?,?,?,?,?,?)");
+                        + "Cantidad, "
+                        + "Costo, "
+                        + "Total) "
+                        + "VALUES(?,?,?,?,?,?,?,?,?)");
 
                 lote_compra = getConnection().prepareStatement("INSERT INTO "
                         + "LoteTB("
@@ -375,8 +381,10 @@ public class CompraADO extends DBUtil {
                     suministro_kardex.setString(3, Tools.getHour());
                     suministro_kardex.setShort(4, (short) 1);
                     suministro_kardex.setInt(5, 2);
-                    suministro_kardex.setString(6, "Compra con numeración " + compraTB.getNumeracion().toUpperCase());
+                    suministro_kardex.setString(6, "COMPRA CON SERIE Y NUMERACIÓN: " + compraTB.getSerie().toUpperCase() + "-" + compraTB.getNumeracion().toUpperCase());
                     suministro_kardex.setDouble(7, tableView.getItems().get(i).getCantidad());
+                    suministro_kardex.setDouble(8, tableView.getItems().get(i).getPrecioCompra());
+                    suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.addBatch();
                 }
 
@@ -796,63 +804,6 @@ public class CompraADO extends DBUtil {
         return compraTBs;
     }
 
-    private static ObservableList<SuministroTB> Listar_Detalle_Compra_By_IdCompra(String idCompra) {
-        ObservableList<SuministroTB> list = FXCollections.observableArrayList();
-        dbConnect();
-        if (getConnection() != null) {
-            PreparedStatement statementDetalleComra = null;
-            try {
-                statementDetalleComra = getConnection().prepareStatement("{call Sp_Listar_Detalle_Compra_By_IdCompra(?)}");
-                statementDetalleComra.setString(1, idCompra);
-                ResultSet rsEmps = statementDetalleComra.executeQuery();
-                while (rsEmps.next()) {
-                    SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
-                    suministroTB.setClave(rsEmps.getString("Clave"));
-                    suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                    suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
-                    suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
-                    suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
-                    suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                    suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                    suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                    suministroTB.setMovimiento(suministroTB.getCantidad());
-                    TextField tf = new TextField(Tools.roundingValue(suministroTB.getCantidad(), 4));
-                    tf.getStyleClass().add("text-field-normal");
-                    tf.setOnKeyTyped((KeyEvent event) -> {
-                        char c = event.getCharacter().charAt(0);
-                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-                            event.consume();
-                        }
-                        if (c == '.' && tf.getText().contains(".") || c == '-' && tf.getText().contains("-")) {
-                            event.consume();
-                        }
-                    });
-                    suministroTB.setTxtMovimiento(tf);
-
-                    CheckBox checkbox = new CheckBox("");
-                    checkbox.getStyleClass().add("check-box-contenido");
-                    checkbox.setSelected(true);
-                    suministroTB.setValidar(checkbox);
-
-                    list.add(suministroTB);
-                }
-            } catch (SQLException ex) {
-
-            } finally {
-                try {
-                    if (statementDetalleComra != null) {
-                        statementDetalleComra.close();
-                    }
-                    dbDisconnect();
-                } catch (SQLException ex) {
-
-                }
-            }
-        }
-        return list;
-    }
-
     public static String cancelarCompraProducto(String idCompra, ObservableList<DetalleCompraTB> tableView) {
         String result = "";
         DBUtil.dbConnect();
@@ -887,8 +838,10 @@ public class CompraADO extends DBUtil {
                         + "Tipo,"
                         + "Movimiento,"
                         + "Detalle,"
-                        + "Cantidad) "
-                        + "VALUES(?,?,?,?,?,?,?)");
+                        + "Cantidad, "
+                        + "Costo, "
+                        + "Total) "
+                        + "VALUES(?,?,?,?,?,?,?,?,?)");
 
                 for (DetalleCompraTB detalleCompraTB : tableView) {
                     statementSuministro.setDouble(1, detalleCompraTB.getCantidad());
@@ -900,8 +853,10 @@ public class CompraADO extends DBUtil {
                     statementSuministroKardex.setString(3, Tools.getHour());
                     statementSuministroKardex.setShort(4, (short) 2);
                     statementSuministroKardex.setInt(5, 1);
-                    statementSuministroKardex.setString(6, "Cancelar Compra");
+                    statementSuministroKardex.setString(6, "CANCELAR COMPRA");
                     statementSuministroKardex.setDouble(7, detalleCompraTB.getCantidad());
+                    statementSuministroKardex.setDouble(8, detalleCompraTB.getPrecioCompra());
+                    statementSuministroKardex.setDouble(9, detalleCompraTB.getCantidad() * detalleCompraTB.getPrecioCompra());
                     statementSuministroKardex.addBatch();
                 }
 
@@ -978,8 +933,10 @@ public class CompraADO extends DBUtil {
                         + "Tipo,"
                         + "Movimiento,"
                         + "Detalle,"
-                        + "Cantidad) "
-                        + "VALUES(?,?,?,?,?,?,?)");
+                        + "Cantidad, "
+                        + "Costo, "
+                        + "Total) "
+                        + "VALUES(?,?,?,?,?,?,?,?,?)");
 
                 for (DetalleCompraTB detalleCompraTB : tableView) {
                     statementSuministro.setDouble(1, detalleCompraTB.getCantidad());
@@ -991,8 +948,10 @@ public class CompraADO extends DBUtil {
                     statementSuministroKardex.setString(3, Tools.getHour());
                     statementSuministroKardex.setShort(4, (short) 2);
                     statementSuministroKardex.setInt(5, 1);
-                    statementSuministroKardex.setString(6, "Cancelar Compra");
+                    statementSuministroKardex.setString(6, "CANCELAR COMPRA");
                     statementSuministroKardex.setDouble(7, detalleCompraTB.getCantidad());
+                    statementSuministroKardex.setDouble(8, detalleCompraTB.getPrecioCompra());
+                    statementSuministroKardex.setDouble(9, detalleCompraTB.getCantidad() * detalleCompraTB.getPrecioCompra());
                     statementSuministroKardex.addBatch();
                 }
 

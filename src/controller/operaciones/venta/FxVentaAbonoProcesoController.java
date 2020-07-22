@@ -3,7 +3,6 @@ package controller.operaciones.venta;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,8 +15,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import model.CajaADO;
 import model.CajaTB;
-import model.CuentasHistorialClienteADO;
-import model.CuentasHistorialClienteTB;
 
 public class FxVentaAbonoProcesoController implements Initializable {
 

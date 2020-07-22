@@ -725,7 +725,7 @@ public class SuministroADO {
 
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
                 label.getStyleClass().add("labelRoboto14");
-                label.setStyle(suministroTB.getCantidad() >= suministroTB.getStockMinimo() ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
+                label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
                 suministroTB.setLblCantidad(label);
 
                 empList.add(suministroTB);
@@ -782,7 +782,7 @@ public class SuministroADO {
 
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
                 label.getStyleClass().add("labelRoboto14");
-                label.setStyle(suministroTB.getCantidad() >= suministroTB.getStockMinimo() ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
+                label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
                 suministroTB.setLblCantidad(label);
 
                 empList.add(suministroTB);
@@ -1002,7 +1002,7 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static ArrayList<Object> ListInventario(String producto, short tipoExistencia, String nameProduct, short opcion, int categoria, int marca,int paginacion,int filasPorPagina) {
+    public static ArrayList<Object> ListInventario(String producto, short tipoExistencia, String nameProduct, short opcion, int categoria, int marca, int paginacion, int filasPorPagina) {
         PreparedStatement preparedStatementSuministros = null;
         PreparedStatement preparedStatementTotales = null;
         ResultSet rsEmps = null;
@@ -1022,7 +1022,7 @@ public class SuministroADO {
             rsEmps = preparedStatementSuministros.executeQuery();
             while (rsEmps.next()) {
                 SuministroTB suministroTB = new SuministroTB();
-                suministroTB.setId(rsEmps.getRow()+paginacion);
+                suministroTB.setId(rsEmps.getRow() + paginacion);
                 suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
                 suministroTB.setClave(rsEmps.getString("Clave"));
                 suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
@@ -1044,7 +1044,7 @@ public class SuministroADO {
                         ? "label-existencia-negativa"
                         : suministroTB.getCantidad() > 0 && suministroTB.getCantidad() < suministroTB.getStockMinimo()
                         ? "label-existencia-intermedia"
-                        : suministroTB.getCantidad()>=suministroTB.getStockMinimo() && suministroTB.getCantidad() < suministroTB.getStockMaximo()
+                        : suministroTB.getCantidad() >= suministroTB.getStockMinimo() && suministroTB.getCantidad() < suministroTB.getStockMaximo()
                         ? "label-existencia-normal"
                         : "label-existencia-Excedentes");
                 suministroTB.setLblCantidad(lblCantidad);
@@ -1052,7 +1052,7 @@ public class SuministroADO {
                 empList.add(suministroTB);
             }
             objects.add(empList);
-            
+
             preparedStatementTotales = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Inventario_Suministros_Count(?,?,?,?,?,?)}");
             preparedStatementTotales.setString(1, producto);
             preparedStatementTotales.setShort(2, tipoExistencia);
@@ -1062,7 +1062,7 @@ public class SuministroADO {
             preparedStatementTotales.setInt(6, marca);
             rsEmps = preparedStatementTotales.executeQuery();
             Integer integer = 0;
-            if(rsEmps.next()){
+            if (rsEmps.next()) {
                 integer = rsEmps.getInt("Total");
             }
             objects.add(integer);

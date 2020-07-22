@@ -7,11 +7,13 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.inventario.movimientos.FxMovimientoCajaController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.movimientos.FxMovimientoCajaController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -44,7 +46,7 @@
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../image/accept.png" />
+                                                      <Image url="@../../image/remove-item.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -56,7 +58,15 @@
                                           <Label styleClass="labelOpenSansRegular14" text="Salida de:" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0px 1.25em 0px 1.25em;">
+                                    <GridPane style="-fx-vgap: 0.8333333333333334em; -fx-hgap: 0.8333333333333334em;">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
                                        <children>
                                           <Label styleClass="labelOpenSansRegular14" text="Efectivo:">
                                              <graphic>
@@ -67,25 +77,21 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtEfectivo" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedEfectivo" prefHeight="30.0" promptText="0.00" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtEfectivo" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedEfectivo" prefHeight="30.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226" GridPane.rowIndex="1">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/generar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
-                                    </HBox>
+                                    </GridPane>
                                  </children>
                               </VBox>
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                                 <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/generar.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="300.0" promptText="Observación..." styleClass="text-field-normal" />
-                                 </children>
-                              </HBox>
                               <Separator prefWidth="200.0" />
                               <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>

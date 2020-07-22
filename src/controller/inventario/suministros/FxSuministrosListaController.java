@@ -300,8 +300,8 @@ public class FxSuministrosListaController implements Initializable {
             }
         } else if (suministrosKardexController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-                suministrosKardexController.fillKardexTable(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
+                suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(),tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+                suministrosKardexController.fillKardexTable(tvList.getSelectionModel().getSelectedItem().getIdSuministro(),"","");
                 Tools.Dispose(apWindow);
             }
         } else if (asignacionProcesoController != null) {
@@ -399,28 +399,21 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
             suministroTB.setValorInventario(tvList.getSelectionModel().getSelectedItem().getValorInventario());
 
-            Button button = new Button();
-            button.getStyleClass().add("buttonLightError");
-            ImageView view = new ImageView(new Image("/view/image/remove.png"));
-            view.setFitWidth(24);
-            view.setFitHeight(24);
-            button.setGraphic(view);
-            button.setOnAction(event -> {
+            Button button = new Button("X");
+            button.getStyleClass().add("buttonDark");
+            button.setOnAction(e -> {
                 ventaEstructuraController.getTvList().getItems().remove(suministroTB);
                 ventaEstructuraController.calculateTotales();
             });
-            button.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.ENTER) {
+            button.setOnKeyPressed(e -> {
+                if (e.getCode() == KeyCode.ENTER) {
                     ventaEstructuraController.getTvList().getItems().remove(suministroTB);
                     ventaEstructuraController.calculateTotales();
                 }
             });
             suministroTB.setRemover(button);
-
             Tools.Dispose(apWindow);
-
             ventaEstructuraController.getAddArticulo(suministroTB);
-
         }
     }
 

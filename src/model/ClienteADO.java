@@ -301,6 +301,7 @@ public class ClienteADO {
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
+                clienteTB.setCelular(rsEmps.getString("Celular"));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado en GetSearchClienteNumeroDocumento(): " + e);

@@ -131,7 +131,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker prefHeight="30.0" prefWidth="240.0" />
+                                                <DatePicker fx:id="dtFechaInicial" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
@@ -145,7 +145,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker prefHeight="30.0" prefWidth="240.0" />
+                                                <DatePicker fx:id="dtFechaFinal" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -224,25 +224,25 @@
                                     <TableColumn fx:id="tcNumero" prefWidth="70.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcFecha" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha" />
                                     <TableColumn fx:id="tcDetalle" prefWidth="320.0" style="-fx-alignment: CENTER-LEFT;" text="Detalle" />
-                                    <TableColumn fx:id="tcEntrada" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Entrada">
+                                    <TableColumn prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Entrada">
                                        <columns>
-                                          <TableColumn prefWidth="75.0" text="Cantidad" />
-                                          <TableColumn prefWidth="75.0" text="Costo" />
-                                          <TableColumn prefWidth="75.0" text="Consto Total" />
+                                          <TableColumn fx:id="tcCantidadEntrada" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                          <TableColumn fx:id="tcCostoEntrada" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
+                                          <TableColumn fx:id="tcTotalEntrada" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="tcSalida" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Salida">
+                                    <TableColumn prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Salida">
                                        <columns>
-                                          <TableColumn prefWidth="75.0" text="Cantidad" />
-                                          <TableColumn prefWidth="75.0" text="Costo Unitario" />
-                                          <TableColumn prefWidth="75.0" text="Costo Total" />
+                                          <TableColumn fx:id="tcCantidadSalida" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                          <TableColumn fx:id="tcCostoSalida" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
+                                          <TableColumn fx:id="tcTotalSalida" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="tcSaldo" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Saldo">
+                                    <TableColumn prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Saldo">
                                        <columns>
-                                          <TableColumn prefWidth="75.0" text="Cantidad" />
-                                          <TableColumn prefWidth="75.0" text="Conto Promedio" />
-                                          <TableColumn prefWidth="75.0" text="Costo Total" />
+                                          <TableColumn fx:id="tcCantidadSaldo" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                          <TableColumn fx:id="tcCostoSaldo" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
+                                          <TableColumn fx:id="tcTotalSaldo" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                        </columns>
                                     </TableColumn>
                                  </columns>

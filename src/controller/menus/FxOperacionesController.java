@@ -48,7 +48,7 @@ public class FxOperacionesController implements Initializable {
      */
     private FXMLLoader fXMLVenta;
 
-    private VBox nodeVenta;
+    private AnchorPane nodeVenta;
 
     private FxVentaController controllerVenta;
 

@@ -15,14 +15,21 @@ public class KardexTB {
     private int movimiento;
     private String movimientoName;
     private String detalle;
-    private double inicial;
     private double cantidad;    
-    private double cantidadTotal;
+    private double costo;
+    private double total;
     
-    private Label lblInicial;
-    private Label lblEntrada;
-    private Label lblSalida;
-    private Label lblSaldo;
+    private Label lblCantidadEntreda;
+    private Label lblCostoEntrada;
+    private Label lblTotalEntrada;
+    
+    private Label lblCantidadSalida;
+    private Label lblCostoSalida;
+    private Label lblTotalSalida;
+    
+    private Label lblCantidadSaldo;
+    private Label lblCostoSaldo;
+    private Label lblTotalSaldo;
     
     public KardexTB(){
         
@@ -91,15 +98,7 @@ public class KardexTB {
     public void setMovimientoName(String movimientoName) {
         this.movimientoName = movimientoName;
     }
-
-    public double getInicial() {
-        return inicial;
-    }
-
-    public void setInicial(double inicial) {
-        this.inicial = inicial;
-    }
-
+ 
     public String getDetalle() {
         return detalle;
     }
@@ -116,46 +115,92 @@ public class KardexTB {
         this.cantidad = cantidad;
     }
 
-    public double getCantidadTotal() {
-        return cantidadTotal;
+    public double getCosto() {
+        return costo;
     }
 
-    public void setCantidadTotal(double cantidadTotal) {
-        this.cantidadTotal = cantidadTotal;
+    public void setCosto(double costo) {
+        this.costo = costo;
     }
 
-    public Label getLblInicial() {
-        return lblInicial;
+    public double getTotal() {
+        return total;
     }
 
-    public void setLblInicial(Label lblInicial) {
-        this.lblInicial = lblInicial;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
-    public Label getLblEntrada() {
-        return lblEntrada;
+    public Label getLblCantidadEntreda() {
+        return lblCantidadEntreda;
     }
 
-    public void setLblEntrada(Label lblEntrada) {
-        this.lblEntrada = lblEntrada;
+    public void setLblCantidadEntreda(Label lblCantidadEntreda) {
+        this.lblCantidadEntreda = lblCantidadEntreda;
     }
 
-    public Label getLblSalida() {
-        return lblSalida;
+    public Label getLblCostoEntrada() {
+        return lblCostoEntrada;
     }
 
-    public void setLblSalida(Label lblSalida) {
-        this.lblSalida = lblSalida;
+    public void setLblCostoEntrada(Label lblCostoEntrada) {
+        this.lblCostoEntrada = lblCostoEntrada;
     }
 
-    public Label getLblSaldo() {
-        return lblSaldo;
+    public Label getLblTotalEntrada() {
+        return lblTotalEntrada;
     }
 
-    public void setLblSaldo(Label lblSaldo) {
-        this.lblSaldo = lblSaldo;
+    public void setLblTotalEntrada(Label lblTotalEntrada) {
+        this.lblTotalEntrada = lblTotalEntrada;
     }
-    
-    
+
+    public Label getLblCantidadSalida() {
+        return lblCantidadSalida;
+    }
+
+    public void setLblCantidadSalida(Label lblCantidadSalida) {
+        this.lblCantidadSalida = lblCantidadSalida;
+    }
+
+    public Label getLblCostoSalida() {
+        return lblCostoSalida;
+    }
+
+    public void setLblCostoSalida(Label lblCostoSalida) {
+        this.lblCostoSalida = lblCostoSalida;
+    }
+
+    public Label getLblTotalSalida() {
+        return lblTotalSalida;
+    }
+
+    public void setLblTotalSalida(Label lblTotalSalida) {
+        this.lblTotalSalida = lblTotalSalida;
+    }
+
+    public Label getLblCantidadSaldo() {
+        return lblCantidadSaldo;
+    }
+
+    public void setLblCantidadSaldo(Label lblCantidadSaldo) {
+        this.lblCantidadSaldo = lblCantidadSaldo;
+    }
+
+    public Label getLblCostoSaldo() {
+        return lblCostoSaldo;
+    }
+
+    public void setLblCostoSaldo(Label lblCostoSaldo) {
+        this.lblCostoSaldo = lblCostoSaldo;
+    }
+
+    public Label getLblTotalSaldo() {
+        return lblTotalSaldo;
+    }
+
+    public void setLblTotalSaldo(Label lblTotalSaldo) {
+        this.lblTotalSaldo = lblTotalSaldo;
+    }
   
 }
