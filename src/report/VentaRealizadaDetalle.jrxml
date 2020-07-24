@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="120" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="004c1a4f-7bb5-4a27-9d30-1b3356608805">
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="567"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="VALOR_VENTA" class="java.lang.String"/>
 	<parameter name="DESCUENTO" class="java.lang.String"/>
@@ -13,12 +13,6 @@
 	<field name="impuestoValor" class="java.lang.Double"/>
 	<columnHeader>
 		<band height="58">
-			<line>
-				<reportElement x="318" y="0" width="237" height="1" forecolor="#1A2226" uuid="bdd49340-15bb-4d41-8786-3120804abc1c"/>
-				<graphicElement>
-					<pen lineWidth="0.25" lineColor="#000000"/>
-				</graphicElement>
-			</line>
 			<staticText>
 				<reportElement x="318" y="38" width="123" height="20" forecolor="#1A2226" uuid="4e30bd70-02bd-4b69-9437-a3b1c6e03093"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">

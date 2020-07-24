@@ -44,6 +44,8 @@ public class FxVentaController implements Initializable {
     private AnchorPane vbPrincipal;
 
     private FxVentaEstructuraController ventaEstructuraController;
+    
+    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
 
     private ObservableList<PrivilegioTB> privilegioTBs;
 
@@ -52,21 +54,22 @@ public class FxVentaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
-        ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+       // ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+       ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
-        this.privilegioTBs = privilegioTBs;
-        if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
-            btnAgregarVenta.setDisable(true);
-        }
-        ventaEstructuraController.loadPrivilegios(privilegioTBs);
+//        this.privilegioTBs = privilegioTBs;
+//        if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
+//            btnAgregarVenta.setDisable(true);
+//        }
+//        ventaEstructuraController.loadPrivilegios(privilegioTBs);
     }
 
     private Object addEstructura(Tab tab) {
         Object object = null;
         try {
-            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA));
+            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA_NUEVO));
             VBox seleccionado = fXMLSeleccionado.load();
             object = fXMLSeleccionado.getController();
             tab.setContent(seleccionado);
@@ -77,8 +80,8 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadElements() {
-        ventaEstructuraController.setContent(vbPrincipal);
-        ventaEstructuraController.getTxtSearch().requestFocus();
+        ventaEstructuraNuevoController.setContent(vbPrincipal);
+//        ventaEstructuraController.getTxtSearch().requestFocus();
     }
 
     private void addTabVentaEstructura() {

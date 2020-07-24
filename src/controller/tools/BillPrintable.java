@@ -47,6 +47,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignExpression;
 import net.sf.jasperreports.engine.design.JRDesignImage;
+import net.sf.jasperreports.engine.design.JRDesignSection;
 import net.sf.jasperreports.engine.design.JRDesignStaticText;
 import net.sf.jasperreports.engine.design.JRDesignTextField;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -311,10 +312,10 @@ public class BillPrintable {
             JasperDesign jasperDesign = getJasperDesign(width, 20000, apEncabezado, apDetalle, apPie);
             JasperReport report = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-//            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
-            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
+//            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
             return "completed";
-        } catch (JRException | PrintException | IOException er) {
+        } catch (JRException /*| PrintException | IOException*/ er) {
             return "Error en imprimir: " + er.getLocalizedMessage();
         } finally {
             fileImages.stream().map((fileImage) -> new File(fileImage)).filter((removed) -> (removed != new File("./archivos/no-image"))).forEachOrdered((removed) -> {
@@ -353,7 +354,8 @@ public class BillPrintable {
         rows = createRow(apDetalle, jasperDesign, band, width, rows);
         createRow(pPie, jasperDesign, band, width, rows);
 
-        jasperDesign.setTitle(band);
+//        jasperDesign.setTitle(band);
+        ((JRDesignSection)jasperDesign.getDetailSection()).addBand(band);
         return jasperDesign;
     }
 

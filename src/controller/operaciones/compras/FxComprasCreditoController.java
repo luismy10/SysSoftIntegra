@@ -171,8 +171,7 @@ public class FxComprasCreditoController implements Initializable {
 
             ProveedorTB proveedorTB = CompraADO.Obtener_Proveedor_Por_Id_Compra(idCompra);
 
-            InputStream imgInputStream
-                    = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+            InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
             Map map = new HashMap();
             map.put("LOGO", imgInputStream);
@@ -182,8 +181,6 @@ public class FxComprasCreditoController implements Initializable {
             map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
             map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
             
-            map.put("NUMEROPAGO", "");
-
             map.put("FECHA_EMISION", Tools.getDate("dd/MM/yyyy"));
             map.put("PROVEEDOR", proveedorTB.getRazonSocial());
             map.put("PROVEEDORNOMDOCUMENTO", proveedorTB.getTipoDocumentoName() + ":");
