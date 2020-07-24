@@ -199,6 +199,10 @@ public final class FilesRouters {
     public static final String FX_VENTA_DEVOLUCION = "/view/operaciones/venta/FxVentaDevolucion.fxml";
 
     public static final String FX_VENTA_ESTRUCTURA = "/view/operaciones/venta/FxVentaEstructura.fxml";
+    
+    public static final String FX_VENTA_ESTRUCTURA_NUEVO = "/view/operaciones/venta/FxVentaEstructuraNuevo.fxml";
+    
+    public static final String FX_VENTA_DETALLE_PRODUCTO = "/view/operaciones/venta/FxVentaDetalleProducto.fxml";
 
     public static final String FX_VENTA_FONDO_INICIAL = "/view/operaciones/venta/FxVentaFondoInicial.fxml";
 
