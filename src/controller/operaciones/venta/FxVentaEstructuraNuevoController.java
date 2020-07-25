@@ -504,6 +504,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private void onMouseClickedProductosAgregados(MouseEvent event) {
         if (lvProductoAgregados.getSelectionModel().getSelectedIndex() >= 0) {
             openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedItem().getSuministroTB().getNombreMarca());
+            event.consume();
         }
     }
 
