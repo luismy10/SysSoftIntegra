@@ -172,14 +172,14 @@
                                  <children>
                                     <VBox alignment="CENTER" style="-fx-spacing: 0.1666665em;">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE" />
-                                          <Text fx:id="lblSerie" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="0000" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE" />
+                                          <Text fx:id="lblSerie" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="0000" />
                                        </children>
                                     </VBox>
                                     <VBox alignment="CENTER" style="-fx-spacing: 0.1666665em;">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA" />
-                                          <Text fx:id="lblNumeracion" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="00000000" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA" />
+                                          <Text fx:id="lblNumeracion" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="00000000" />
                                        </children>
                                     </VBox>
                                  </children>

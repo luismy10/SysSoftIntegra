@@ -5,8 +5,9 @@
         <group>
             <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaEstructuraNuevoController.java</file>
             <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaController.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/inventario/suministros/FxSuministrosController.java</file>
             <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/tools/BillPrintable.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/tools/FilesRouters.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaEstructuraController.java</file>
         </group>
     </open-files>
 </project-private>

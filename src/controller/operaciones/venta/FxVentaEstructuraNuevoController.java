@@ -2,12 +2,15 @@ package controller.operaciones.venta;
 
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
+import controller.tools.SearchComboBox;
+import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,9 +24,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,14 +42,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import model.ClienteADO;
+import model.ClienteTB;
+import model.ComprobanteADO;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.MonedaADO;
 import model.MonedaTB;
 import model.SuministroADO;
 import model.SuministroTB;
+import model.TipoDocumentoADO;
+import model.TipoDocumentoTB;
 
 public class FxVentaEstructuraNuevoController implements Initializable {
 
@@ -63,6 +75,14 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private Label lblTotal;
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
+    @FXML
+    private ComboBox<ClienteTB> cbClientes;
+    @FXML
+    private ComboBox<TipoDocumentoTB> cbComprobante;
+    @FXML
+    private Text lblSerie;
+    @FXML
+    private Text lblNumeracion;
 
     private AnchorPane vbPrincipal;
 
@@ -97,6 +117,26 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
+
+        cbComprobante.getItems().clear();
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
+            cbComprobante.getItems().add(e);
+        });
+        if (!cbComprobante.getItems().isEmpty()) {
+            for (int i = 0; i < cbComprobante.getItems().size(); i++) {
+                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                    cbComprobante.getSelectionModel().select(i);
+                    break;
+                }
+            }
+
+            if (cbComprobante.getSelectionModel().getSelectedIndex() >= 0) {
+                String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
+                lblSerie.setText(array[0]);
+                lblNumeracion.setText(array[1]);
+            }
+        }
+
         arrayArticulosImpuesto.clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
             arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
@@ -116,6 +156,64 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 }
             }
         }
+
+        SearchComboBox<ClienteTB> searchComboBoxClientes = new SearchComboBox<>(cbClientes, false);
+//        searchComboBoxClientes.getComboBox().getItems().addAll(ClienteADO.GetSearchComboBoxCliente((short) 1, ""));
+        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBoxClientes.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBoxClientes.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBoxClientes.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBoxClientes.getComboBox().hide();
+            }
+        });
+        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            cbClientes.getItems().clear();
+            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 3, searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().getText().trim());
+            clienteTBs.forEach(e -> cbClientes.getItems().add(e));
+        });
+        searchComboBoxClientes.getSearchComboBoxSkin()
+                .getItemView().setOnKeyPressed(t -> {
+                    if (null == t.getCode()) {
+                        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().selectAll();
+                    } else {
+                        switch (t.getCode()) {
+                            case ENTER:
+                            case SPACE:
+                            case ESCAPE:
+                                //seleción
+                                Tools.println("dentroo key pressed");
+                                searchComboBoxClientes.getComboBox().hide();
+                                break;
+                            case UP:
+                            case DOWN:
+                            case LEFT:
+                            case RIGHT:
+                                break;
+                            default:
+                                searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                                searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().selectAll();
+                                break;
+                        }
+                    }
+                }
+                );
+        searchComboBoxClientes.getSearchComboBoxSkin()
+                .getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+                    if (item != null) {
+                        searchComboBoxClientes.getComboBox().getSelectionModel().select(item);
+                        if (searchComboBoxClientes.getSearchComboBoxSkin().isClickSelection()) {
+                            //seleción
+                            Tools.println("dentroo click");
+                            searchComboBoxClientes.getComboBox().hide();
+                        }
+                    }
+                }
+                );
+
     }
 
     public void onEventPaginacion() {
@@ -144,6 +242,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         };
 
         task.setOnSucceeded(e -> {
+            fpProductos.getChildren().clear();
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
                 fpProductos.setAlignment(Pos.TOP_CENTER);
@@ -213,7 +312,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setMinWidth(Control.USE_PREF_SIZE);
                     vBox.setPrefWidth(300);
                     vBox.maxWidth(Control.USE_PREF_SIZE);
-                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #999999;-fx-cursor:hand;");
+                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color:  #0478b2;-fx-cursor:hand;-fx-border-width:1px;-fx-background-color:#f4f4f4;");
                     vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? new File(tvList1.getImagenTB()).toURI().toString() : "/view/image/no-image.png"));
@@ -238,7 +337,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     lblMarca.setTextFill(Color.web("#1a2226"));
                     vBox.getChildren().add(lblMarca);
 
-                    Label lblTotal = new Label(Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
+                    Label lblTotal = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
                     lblTotal.getStyleClass().add("labelRobotoBold18");
                     lblTotal.setTextFill(Color.web("#0478b2"));
                     lblTotal.maxWidth(Double.MAX_VALUE);
@@ -260,6 +359,16 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         task.setOnScheduled(e -> {
             state = true;
             fpProductos.getChildren().clear();
+            fpProductos.setAlignment(Pos.CENTER);
+            Label lblLoad = new Label("Cargando productos para su venta");
+            lblLoad.getStyleClass().add("labelRoboto16");
+            lblLoad.setTextFill(Color.web("#1a2226"));
+            ProgressIndicator progressIndicator = new ProgressIndicator();
+            progressIndicator.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+            lblLoad.setContentDisplay(ContentDisplay.TOP);
+            lblLoad.setGraphic(progressIndicator);
+            fpProductos.getChildren().add(lblLoad);
+
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -497,7 +606,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @FXML
     private void onActionMoneda(ActionEvent event) {
-
+        if (cbMoneda.getSelectionModel().getSelectedIndex() >= 0) {
+            monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
+            calculateTotales();
+        }
     }
 
     @FXML
@@ -512,7 +624,17 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             if (lvProductoAgregados.getSelectionModel().getSelectedIndex() >= 0) {
                 openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedItem().getSuministroTB().getNombreMarca());
+
             }
+        }
+    }
+
+    @FXML
+    private void onActionComprobante(ActionEvent event) {
+        if (cbComprobante.getSelectionModel().getSelectedIndex() >= 0) {
+            String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
+            lblSerie.setText(array[0]);
+            lblNumeracion.setText(array[1]);
         }
     }
 
@@ -545,7 +667,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             vbLeft.getChildren().add(lblPrecio);
 
             HBox hbCenter = new HBox();
-//            hbCenter.setPrefWidth(150);
             hbCenter.setStyle("-fx-spacing: 0.4166666666666667em;");
             hbCenter.setAlignment(Pos.CENTER);
             HBox.setHgrow(hbCenter, Priority.ALWAYS);
