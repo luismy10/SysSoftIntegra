@@ -51,7 +51,7 @@
                         </HBox>
                         <HBox HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedToSearch" prefHeight="30.0" promptText="Buscar producto" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyReleased="#onKeyReleasedToSearch" prefHeight="30.0" promptText="Buscar producto" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                               <Button contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" styleClass="buttonBorder" text="F3">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -65,9 +65,9 @@
                         </HBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" minWidth="-Infinity" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0px  0.8333333333333334em  0px  0.8333333333333334em;">
+                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0px  0.8333333333333334em  0px  0.8333333333333334em;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
                               <Label maxHeight="1.7976931348623157E308" style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em; -fx-border-width: 1px 0px 1px 1px; -fx-border-color: #999999;">
                                  <graphic>
@@ -78,10 +78,10 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbMoneda" maxWidth="1.7976931348623157E308" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="250.0" promptText="- - Seleccione una Moneda - -" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbMoneda" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="210.0" promptText="- - Moneda - -" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
                               <Label maxHeight="1.7976931348623157E308" style="-fx-border-color: #999999; -fx-border-width: 1px 0px 1px 1px; -fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;">
                                  <graphic>
@@ -92,7 +92,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbClientes" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="250.0" promptText="- - Seleccione un cliente - -" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbClientes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="210.0" promptText="- - Cliente - -" HBox.hgrow="ALWAYS" />
                               <Button contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" styleClass="buttonBorder" text="F4">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -190,7 +190,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbComprobante" maxWidth="1.7976931348623157E308" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
+                              <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER">
