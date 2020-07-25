@@ -41,28 +41,28 @@ public class FxVentaController implements Initializable {
     @FXML
     private Button btnAgregarVenta;
 
-    private AnchorPane vbPrincipal;
-
     private FxVentaEstructuraController ventaEstructuraController;
-    
+
     private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
 
     private ObservableList<PrivilegioTB> privilegioTBs;
+
+    private AnchorPane vbPrincipal;
 
     private boolean aperturaCaja;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
-       // ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
-       ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
+        // ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+        ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
-//        this.privilegioTBs = privilegioTBs;
-//        if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
-//            btnAgregarVenta.setDisable(true);
-//        }
+        this.privilegioTBs = privilegioTBs;
+        if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
+            btnAgregarVenta.setDisable(true);
+        }
 //        ventaEstructuraController.loadPrivilegios(privilegioTBs);
     }
 

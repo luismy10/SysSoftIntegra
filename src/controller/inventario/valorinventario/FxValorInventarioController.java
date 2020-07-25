@@ -175,7 +175,7 @@ public class FxValorInventarioController implements Initializable {
 
     private void filtercbCategoria() {
 
-        searchComboBoxExistencias = new SearchComboBox<>(cbExistencia);
+        searchComboBoxExistencias = new SearchComboBox<>(cbExistencia,true);
         searchComboBoxExistencias.setFilter((item, text) -> item.toLowerCase().contains(text.toLowerCase()));
         searchComboBoxExistencias.getComboBox().getItems().addAll("Todas las Cantidades", "Cantidades negativas", "Cantidades intermedias", "Cantidades necesaria", "Cantidades excedentes");
         searchComboBoxExistencias.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -220,7 +220,7 @@ public class FxValorInventarioController implements Initializable {
             }
         });
 
-        searchComboBoxCategoria = new SearchComboBox<>(cbCategoria);
+        searchComboBoxCategoria = new SearchComboBox<>(cbCategoria,true);
         searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxCategoria.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0006"));
         searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -266,7 +266,7 @@ public class FxValorInventarioController implements Initializable {
             }
         });
 
-        searchComboBoxMarca = new SearchComboBox<>(cbMarca);
+        searchComboBoxMarca = new SearchComboBox<>(cbMarca,true);
         searchComboBoxMarca.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxMarca.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0007"));
         searchComboBoxMarca.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {

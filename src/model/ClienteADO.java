@@ -245,7 +245,7 @@ public class ClienteADO {
         return clienteTB;
     }
 
-    public static List<ClienteTB> GetSearchComboBoxCliente() {
+    public static List<ClienteTB> GetSearchComboBoxCliente(short opcion,String search) {
         String selectStmt = "{call Sp_Obtener_Cliente_Informacion_NumeroDocumento(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -253,8 +253,8 @@ public class ClienteADO {
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setShort(1, (short)1);
-            preparedStatement.setString(2, "");
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, search);
             rsEmps = preparedStatement.executeQuery();
             while(rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
@@ -304,7 +304,7 @@ public class ClienteADO {
                 clienteTB.setCelular(rsEmps.getString("Celular"));
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado en GetSearchClienteNumeroDocumento(): " + e);
+            System.out.println("El clienteADO-> GetSearchClienteNumeroDocumento error: " + e);
         } finally {
             try {
                 if (preparedStatement != null) {
