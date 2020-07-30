@@ -4,6 +4,9 @@ import controller.configuracion.tickets.FxTicketController;
 import controller.tools.BillPrintable;
 import controller.tools.PrinterService;
 import controller.tools.Tools;
+import java.awt.print.Book;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -14,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javax.print.DocPrintJob;
 
 public class FxImprimirController implements Initializable {
 
@@ -32,6 +36,7 @@ public class FxImprimirController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
         printerService = new PrinterService();
         printerService.getPrinters().forEach(e -> {
             cbImpresoras.getItems().add(e);
@@ -44,6 +49,26 @@ public class FxImprimirController implements Initializable {
             if (ticketController != null) {
                 billPrintable.setSheetWidth(ticketController.getSheetWidth());
                 billPrintable.generatePDFPrint(ticketController.getHbEncabezado(), ticketController.getHbDetalleCabecera(), ticketController.getHbPie(), cbImpresoras.getSelectionModel().getSelectedItem(), cbCortarPapel.isSelected());
+                try {
+
+                    DocPrintJob job = billPrintable.findPrintService(cbImpresoras.getSelectionModel().getSelectedItem(), PrinterJob.lookupPrintServices()).createPrintJob();
+
+                    if (job != null) {
+                        PrinterJob pj = PrinterJob.getPrinterJob();
+                        pj.setPrintService(job.getPrintService());
+                        pj.setJobName(cbImpresoras.getSelectionModel().getSelectedItem());
+                        Book book = new Book();
+                        book.append(billPrintable, billPrintable.getPageFormat(pj));
+                        pj.setPageable(book);
+
+                        pj.print();
+                    } else {
+                        Tools.AlertMessageWarning(apWindow, "Imprimir", "No puedo el nombre de la impresora, intente nuevamente.");
+                    }
+
+                } catch (PrinterException ex) {
+                    Tools.AlertMessageError(apWindow, "Imprimir", "Error en imprimit: " + ex.getLocalizedMessage());
+                }
             }
         } else {
             Tools.AlertMessageWarning(apWindow, "Imprimir", "Seleccione un impresora para continuar.");

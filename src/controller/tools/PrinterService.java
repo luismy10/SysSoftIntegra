@@ -57,7 +57,6 @@ public class PrinterService {
         } catch (IOException e) {
             Tools.AlertMessageError(null, "Imprimir ticket", "Error al imprimir, verifique la conexión:" + e.getLocalizedMessage());
         }
-
     }
 
     private PrintService findPrintService(String printerName, PrintService[] services) {

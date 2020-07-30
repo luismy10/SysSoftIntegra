@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -58,8 +59,6 @@ public class FxSuministrosProcesoController implements Initializable {
 
     @FXML
     private ScrollPane spWindow;
-    @FXML
-    private ComboBox<DetalleTB> cbOrigen;
     @FXML
     private TextField txtClave;
     @FXML
@@ -138,7 +137,7 @@ public class FxSuministrosProcesoController implements Initializable {
     private RadioButton rbValorMedida;
 //    private CheckBox cbAceptar;
     @FXML
-    private Text lblTitle;
+    private Label lblTitle;
     @FXML
     private TextField txtClaveSat;
     @FXML
@@ -177,7 +176,7 @@ public class FxSuministrosProcesoController implements Initializable {
     private String idSuministro;
 
     private File selectFile;
-    
+
     private String selectImage;
 
     private int idPresentacion;
@@ -248,6 +247,8 @@ public class FxSuministrosProcesoController implements Initializable {
         selectFile = null;
         selectImage = "";
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+        lnPrincipal.setFitWidth(160);
+        lnPrincipal.setFitHeight(160);
         txtMargen1.setText("30");
         txtMargen2.setText("25");
         txtMargen3.setText("20");
@@ -256,8 +257,6 @@ public class FxSuministrosProcesoController implements Initializable {
         btnRegister.getStyleClass().clear();
         btnRegister.getStyleClass().add("buttonLightDefault");
 
-        cbOrigen.getItems().clear();
-        cbOrigen.setDisable(false);
 //        cbAceptar.setSelected(true);
 //        cbAceptar.setVisible(true);
         txtClave.clear();
@@ -388,12 +387,6 @@ public class FxSuministrosProcesoController implements Initializable {
     }
 
     private void loadEventos(ArrayList<Object> objects) {
-        cbOrigen.getItems().clear();
-        ObservableList<DetalleTB> list = (ObservableList<DetalleTB>) objects.get(0);
-        list.forEach(e -> {
-            cbOrigen.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
-        cbOrigen.getSelectionModel().select(0);
 
         cbImpuesto.getItems().clear();
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
@@ -443,7 +436,6 @@ public class FxSuministrosProcesoController implements Initializable {
         lblTitle.setText("Editar datos del Producto");
         btnRegister.setText("Actualizar");
         btnRegister.getStyleClass().add("buttonLightWarning");
-        cbOrigen.setDisable(true);
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -516,16 +508,6 @@ public class FxSuministrosProcesoController implements Initializable {
                     default:
                         rbValorMedida.setSelected(true);
                         break;
-                }
-
-                ObservableList<DetalleTB> lsori = cbOrigen.getItems();
-                if (suministroTB.getOrigen() != 0) {
-                    for (int i = 0; i < lsori.size(); i++) {
-                        if (suministroTB.getOrigen() == lsori.get(i).getIdDetalle().get()) {
-                            cbOrigen.getSelectionModel().select(i);
-                            break;
-                        }
-                    }
                 }
 
                 ObservableList<DetalleTB> lsest = cbEstado.getItems();
@@ -606,11 +588,15 @@ public class FxSuministrosProcesoController implements Initializable {
 
                 if (suministroTB.getImagenTB().equalsIgnoreCase("")) {
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+                    lnPrincipal.setFitWidth(160);
+                    lnPrincipal.setFitHeight(160);
                 } else {
                     lnPrincipal.setImage(new Image(new File(suministroTB.getImagenTB()).toURI().toString()));
+                    lnPrincipal.setFitWidth(160);
+                    lnPrincipal.setFitHeight(160);
                     selectImage = suministroTB.getImagenTB();
                 }
-               
+
                 txtClaveSat.setText(suministroTB.getClaveSat());
             }
 
@@ -696,16 +682,6 @@ public class FxSuministrosProcesoController implements Initializable {
                         break;
                 }
 
-                ObservableList<DetalleTB> lsori = cbOrigen.getItems();
-                if (suministroTB.getOrigen() != 0) {
-                    for (int i = 0; i < lsori.size(); i++) {
-                        if (suministroTB.getOrigen() == lsori.get(i).getIdDetalle().get()) {
-                            cbOrigen.getSelectionModel().select(i);
-                            break;
-                        }
-                    }
-                }
-
                 ObservableList<DetalleTB> lsest = cbEstado.getItems();
                 if (suministroTB.getEstado() != 0) {
                     for (int i = 0; i < lsest.size(); i++) {
@@ -774,9 +750,13 @@ public class FxSuministrosProcesoController implements Initializable {
 
                 if (suministroTB.getImagenTB().equalsIgnoreCase("")) {
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+                    lnPrincipal.setFitWidth(160);
+                    lnPrincipal.setFitHeight(160);
                 } else {
                     lnPrincipal.setImage(new Image(new File(suministroTB.getImagenTB()).toURI().toString()));
                     selectImage = suministroTB.getImagenTB();
+                    lnPrincipal.setFitWidth(160);
+                    lnPrincipal.setFitHeight(160);
                 }
 
             }
@@ -967,10 +947,7 @@ public class FxSuministrosProcesoController implements Initializable {
 //    }
     private void aValidityProcess() {
         //primera validacion
-        if (cbOrigen.getSelectionModel().getSelectedIndex() < 0) {
-            openAlertMessageWarning("Seleccione el origen, por favor.");
-            cbOrigen.requestFocus();
-        } else if (txtClave.getText().isEmpty()) {
+        if (txtClave.getText().isEmpty()) {
             openAlertMessageWarning("Ingrese la clave del producto, por favor.");
             txtClave.requestFocus();
         } else if (txtNombreMarca.getText().isEmpty()) {
@@ -1040,9 +1017,7 @@ public class FxSuministrosProcesoController implements Initializable {
 
                 SuministroTB suministroTB = new SuministroTB();
                 suministroTB.setIdSuministro(idSuministro);
-                suministroTB.setOrigen(cbOrigen.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbOrigen.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                        : 0);
+                suministroTB.setOrigen(1);
                 suministroTB.setClave(txtClave.getText().trim());
                 suministroTB.setClaveAlterna(txtClaveAlterna.getText().trim());
                 suministroTB.setNombreMarca(txtNombreMarca.getText().trim());
@@ -1250,6 +1225,8 @@ public class FxSuministrosProcesoController implements Initializable {
             selectFile = new File(selectFile.getAbsolutePath());
             if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
                 lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+                lnPrincipal.setFitWidth(160);
+                lnPrincipal.setFitHeight(160);
             } else {
                 Tools.AlertMessageWarning(spWindow, "Producto", "No seleccionó un formato correcto de imagen.");
             }
@@ -1490,6 +1467,8 @@ public class FxSuministrosProcesoController implements Initializable {
     @FXML
     private void onActionRemovePhoto(ActionEvent event) {
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+        lnPrincipal.setFitWidth(160);
+        lnPrincipal.setFitHeight(160);
         selectFile = null;
     }
 
@@ -1798,37 +1777,6 @@ public class FxSuministrosProcesoController implements Initializable {
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
         closeWindow();
-    }
-
-    @FXML
-    private void onActionOrigen(ActionEvent event) {
-        if (cbOrigen.getSelectionModel().getSelectedIndex() == 2) {
-            estadoOrigen = true;
-            rbPrecioNormal.setSelected(true);
-            cbInventario.setSelected(false);
-            vbInventario.setDisable(true);
-            txtPrecioVentaNeto1.clear();
-            txtPrecioVentaNeto2.clear();
-            txtPrecioVentaNeto3.clear();
-            txtPrecio1.clear();
-            txtPrecio2.clear();
-            txtPrecio3.clear();
-            txtCosto.clear();
-            txtMargen1.setText("30");
-            txtUtilidad1.clear();
-            cbImpuesto.getSelectionModel().select(-1);
-            txtPrecioVentaNetoPersonalizado.clear();
-            txtPrecioVentaBrutoPersonalizado.clear();
-            txtMargenPersonalizado.clear();
-            txtUtilidadPersonalizado.clear();
-            tvPrecios.getItems().clear();
-            vbContenedor.getChildren().remove(vbAlmacen);
-        } else {
-            if (estadoOrigen) {
-                estadoOrigen = false;
-                vbContenedor.getChildren().add(1, vbAlmacen);
-            }
-        }
     }
 
     @FXML

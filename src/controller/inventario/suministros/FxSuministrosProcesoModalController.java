@@ -59,8 +59,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private AnchorPane apWindow;
     @FXML
-    private ComboBox<DetalleTB> cbOrigen;
-    @FXML
     private TextField txtClave;
     @FXML
     private TextField txtClaveAlterna;
@@ -233,6 +231,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
         selectFile = null;
         selectImage = "";
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+        lnPrincipal.setFitWidth(160);
+        lnPrincipal.setFitHeight(160);
         txtMargen1.setText("30");
         txtMargen2.setText("25");
         txtMargen3.setText("20");
@@ -241,8 +241,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         btnRegister.getStyleClass().clear();
         btnRegister.getStyleClass().add("buttonLightDefault");
 
-        cbOrigen.getItems().clear();
-        cbOrigen.setDisable(false);
 //        cbAceptar.setSelected(true);
 //        cbAceptar.setVisible(true);
         txtClave.clear();
@@ -367,12 +365,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     }
 
     private void loadEventos(ArrayList<Object> objects) {
-        cbOrigen.getItems().clear();
-        ObservableList<DetalleTB> list = (ObservableList<DetalleTB>) objects.get(0);
-        list.forEach(e -> {
-            cbOrigen.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
-        cbOrigen.getSelectionModel().select(0);
 
         cbImpuesto.getItems().clear();
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
@@ -419,13 +411,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     private void aValidityProcess() {
         //primera validacion
-        if (cbOrigen.getSelectionModel().getSelectedIndex() < 0) {
-            openAlertMessageWarning("Seleccione el origen, por favor.");
-            if (!selectionModel.isSelected(0)) {
-                selectionModel.select(0);
-            }
-            cbOrigen.requestFocus();
-        } else if (txtClave.getText().isEmpty()) {
+        if (txtClave.getText().isEmpty()) {
             openAlertMessageWarning("Ingrese la clave del producto, por favor.");
             if (!selectionModel.isSelected(0)) {
                 selectionModel.select(0);
@@ -543,9 +529,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
         if (confirmation == 1) {
             SuministroTB suministroTB = new SuministroTB();
             suministroTB.setIdSuministro(idSuministro);
-            suministroTB.setOrigen(cbOrigen.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbOrigen.getSelectionModel().getSelectedItem().getIdDetalle().get()
-                    : 0);
+            suministroTB.setOrigen(1);
             suministroTB.setClave(txtClave.getText().trim());
             suministroTB.setClaveAlterna(txtClaveAlterna.getText().trim());
             suministroTB.setNombreMarca(txtNombreMarca.getText().trim());
@@ -749,6 +733,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
             selectFile = new File(selectFile.getAbsolutePath());
             if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
                 lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+                lnPrincipal.setFitWidth(160);
+                lnPrincipal.setFitHeight(160);
             } else {
                 Tools.AlertMessageWarning(apWindow, "Producto", "No seleccionó un formato correcto de imagen.");
             }
@@ -964,6 +950,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private void onActionRemovePhoto(ActionEvent event) {
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+        lnPrincipal.setFitWidth(160);
+        lnPrincipal.setFitHeight(160);
         selectFile = null;
     }
 
@@ -1291,37 +1279,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private void onActionAdd(ActionEvent event) {
         addElementsTablePrecios();
-    }
-
-    @FXML
-    private void onActionOrigen(ActionEvent event) {
-        if (cbOrigen.getSelectionModel().getSelectedIndex() == 2) {
-            estadoOrigen = true;
-            rbPrecioNormal.setSelected(true);
-            cbInventario.setSelected(false);
-            vbInventario.setDisable(true);
-            txtPrecioVentaNeto1.clear();
-            txtPrecioVentaNeto2.clear();
-            txtPrecioVentaNeto3.clear();
-            txtPrecio1.clear();
-            txtPrecio2.clear();
-            txtPrecio3.clear();
-            txtCosto.clear();
-            txtMargen1.setText("30");
-            txtUtilidad1.clear();
-            cbImpuesto.getSelectionModel().select(-1);
-            txtPrecioVentaNetoPersonalizado.clear();
-            txtPrecioVentaBrutoPersonalizado.clear();
-            txtMargenPersonalizado.clear();
-            txtUtilidadPersonalizado.clear();
-            tvPrecios.getItems().clear();
-            tpContenedor.getTabs().get(1).setDisable(true);
-        } else {
-            if (estadoOrigen) {
-                estadoOrigen = false;
-                tpContenedor.getTabs().get(1).setDisable(false);
-            }
-        }
     }
 
     public void setIdPresentacion(int idPresentacion) {

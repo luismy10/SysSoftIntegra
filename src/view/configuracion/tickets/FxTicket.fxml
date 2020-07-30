@@ -22,7 +22,7 @@
                   <Image url="@../../image/ticket.png" />
                </image>
             </ImageView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Tickets" />
+            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Tickets" />
          </children>
       </HBox>
       <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
@@ -100,62 +100,91 @@
                      <children>
                         <HBox>
                            <children>
-                              <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0 0;">
+                              <VBox alignment="TOP_CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0  0.8333333333333334em 0 0;">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#onActionImage" onKeyPressed="#onKeyPressedImage" styleClass="buttonLight">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/photo.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onAction="#onActionMoveUp" onKeyPressed="#onKeyPressedMoveUp" styleClass="buttonLight">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-                                             <image>
-                                                <Image url="@../../image/arrow.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onAction="#onActionMoveDown" onKeyPressed="#onKeyPressedMoveDown" styleClass="buttonLight">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
-                                             <image>
-                                                <Image url="@../../image/arrow.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onAction="#onActionLeft" onKeyPressed="#onKeyPressedLeft" styleClass="buttonLight">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/text-left.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onAction="#onActionCenter" onKeyPressed="#onKeyPressedCenter" styleClass="buttonLight">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/text-center.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onAction="#onActionRight" onKeyPressed="#onKeyPressedRight" styleClass="buttonLight">
-                                       <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/text-right.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
+                                    <HBox alignment="CENTER" style="-fx-border-width: 1 0 1 0; -fx-border-color: #999999; -fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0;">
+                                       <children>
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="Imagen" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#onActionImage" onKeyPressed="#onKeyPressedImage" styleClass="buttonLight">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/photo.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Ancho:" textFill="#1a2226" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtAncho" onAction="#onActionAncho" onKeyTyped="#onKeyTypedAncho" prefHeight="30.0" prefWidth="100.0" promptText="0" styleClass="text-field-normal" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Alto:" textFill="#1a2226" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtAlto" onAction="#onActionAlto" onKeyTyped="#onKeyTypedAlto" prefHeight="30.0" prefWidth="100.0" promptText="0" styleClass="text-field-normal" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#onActionLeft" onKeyPressed="#onKeyPressedLeft" styleClass="buttonLight">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/text-left.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionCenter" onKeyPressed="#onKeyPressedCenter" styleClass="buttonLight">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/text-center.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionRight" onKeyPressed="#onKeyPressedRight" styleClass="buttonLight">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/text-right.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#onActionMoveDown" onKeyPressed="#onKeyPressedMoveDown" styleClass="buttonLight">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                                                   <image>
+                                                      <Image url="@../../image/arrow.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionMoveUp" onKeyPressed="#onKeyPressedMoveUp" styleClass="buttonLight">
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+                                                   <image>
+                                                      <Image url="@../../image/arrow.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
@@ -219,30 +248,30 @@
                                  <children>
                                     <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Caracteristicas" />
+                                          <Label styleClass="labelRoboto14" text="Característica de las letras" textFill="#1a2226" />
                                        </children>
                                     </HBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" textFill="#1a2226" />
                                           <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fuente" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Fuente" textFill="#1a2226" />
                                           <ComboBox fx:id="cbFuente" maxWidth="1.7976931348623157E308" onAction="#onActionFuente" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Tamaño" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Tamaño" textFill="#1a2226" />
                                           <ComboBox fx:id="cbSize" maxWidth="1.7976931348623157E308" onAction="#onSize" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Alineación" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Alineación" textFill="#1a2226" />
                                           <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
@@ -252,13 +281,13 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelOpenSansRegular14" text="Multilinea" />
+                                                      <Label styleClass="labelOpenSansRegular14" text="Multilinea" textFill="#1a2226" />
                                                       <CheckBox fx:id="cbMultilinea" mnemonicParsing="false" onAction="#onActionMultilinea" styleClass="check-box-contenido" text="No" />
                                                    </children>
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelOpenSansRegular14" text="Editable" />
+                                                      <Label styleClass="labelOpenSansRegular14" text="Editable" textFill="#1a2226" />
                                                       <CheckBox fx:id="cbEditable" disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="No" />
                                                    </children>
                                                 </VBox>
@@ -268,7 +297,7 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Variable" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Variable" textFill="#1a2226" />
                                           <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
@@ -282,25 +311,25 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Nombre del ticket" />
+                              <Label styleClass="labelRoboto14" text="Nombre del ticket" textFill="#1a2226" />
                               <Label fx:id="lblNombre" styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Formato de ticket" />
+                              <Label styleClass="labelRoboto14" text="Formato de ticket" textFill="#1a2226" />
                               <Label fx:id="formatoTicket" styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Tamaño" />
+                              <Label styleClass="labelRoboto14" text="Tamaño" textFill="#1a2226" />
                               <Label fx:id="lblColumnas" styleClass="labelRobotoBold16" text="0" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Predeterminado" />
+                              <Label styleClass="labelRoboto14" text="Predeterminado" textFill="#1a2226" />
                               <CheckBox fx:id="cbPredeterminado" disable="true" mnemonicParsing="false" styleClass="check-box-ticket" text="No" />
                            </children>
                         </VBox>

@@ -285,7 +285,7 @@ public class FxSuministrosController implements Initializable {
     }
 
     private void filtercbCategoria() {
-        SearchComboBox<DetalleTB> searchComboBoxCategoria = new SearchComboBox<>(cbCategoria,true);
+        SearchComboBox<DetalleTB> searchComboBoxCategoria = new SearchComboBox<>(cbCategoria, true);
         searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxCategoria.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0006"));
         searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -330,7 +330,7 @@ public class FxSuministrosController implements Initializable {
             }
         });
 
-        SearchComboBox<DetalleTB> searchComboBoxMarca = new SearchComboBox<>(cbMarca,true);
+        SearchComboBox<DetalleTB> searchComboBoxMarca = new SearchComboBox<>(cbMarca, true);
         searchComboBoxMarca.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxMarca.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0007"));
         searchComboBoxMarca.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -575,9 +575,10 @@ public class FxSuministrosController implements Initializable {
     public void onViewDetailSuministro() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             SuministroTB suministroTB = tvList.getSelectionModel().getSelectedItem();
-            ivPrincipal.setImage(new Image(suministroTB.getImagenTB().equalsIgnoreCase("")
-                    ? "/view/image/no-image.png"
-                    : new File(suministroTB.getImagenTB()).toURI().toString()));
+
+            File fileImage = new File(suministroTB.getImagenTB());
+            ivPrincipal.setImage(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
+
             lblName.setText(suministroTB.getNombreMarca());
             lblPrice.setText(
                     Session.MONEDA_SIMBOLO + " "

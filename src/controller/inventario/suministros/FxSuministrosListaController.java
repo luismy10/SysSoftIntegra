@@ -418,7 +418,7 @@ public class FxSuministrosListaController implements Initializable {
             //Controlller here
             FxSuministrosProcesoModalController controller = fXMLLoader.getController();
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", apWindow.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Suministro", apWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.show();
@@ -481,9 +481,8 @@ public class FxSuministrosListaController implements Initializable {
 
     private void selectImage() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            ivPrincipal.setImage(new Image(tvList.getSelectionModel().getSelectedItem().getImagenTB().equalsIgnoreCase("")
-                    ? "/view/image/no-image.png"
-                    : new File(tvList.getSelectionModel().getSelectedItem().getImagenTB()).toURI().toString()));
+            File fileImage = new File(tvList.getSelectionModel().getSelectedItem().getImagenTB());
+            ivPrincipal.setImage(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
         }
     }
 

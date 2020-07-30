@@ -1,5 +1,8 @@
 package controller.operaciones.venta;
 
+import controller.contactos.clientes.FxClienteProcesoController;
+import controller.inventario.suministros.FxSuministrosProcesoModalController;
+import controller.tools.BbItemProducto;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
@@ -22,7 +25,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Control;
@@ -38,8 +40,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -56,6 +56,7 @@ import model.SuministroADO;
 import model.SuministroTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
+import model.VentaTB;
 
 public class FxVentaEstructuraNuevoController implements Initializable {
 
@@ -76,7 +77,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private ComboBox<ClienteTB> cbClientes;
+    private ComboBox<ClienteTB> cbCliente;
     @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
@@ -118,6 +119,59 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         state = false;
         monedaSimbolo = "M";
 
+        loadDataComponent();
+
+        SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
+//        searchComboBoxClientes.getComboBox().getItems().addAll(ClienteADO.GetSearchComboBoxCliente((short) 1, ""));
+        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBoxCliente.getComboBox().hide();
+            }
+        });
+        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            cbCliente.getItems().clear();
+            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 3, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
+            clienteTBs.forEach(e -> cbCliente.getItems().add(e));
+        });
+        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            if (null == t.getCode()) {
+                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
+            } else {
+                switch (t.getCode()) {
+                    case ENTER:
+                    case SPACE:
+                    case ESCAPE:
+                        searchComboBoxCliente.getComboBox().hide();
+                        break;
+                    case UP:
+                    case DOWN:
+                    case LEFT:
+                    case RIGHT:
+                        break;
+                    default:
+                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
+                        break;
+                }
+            }
+        });
+        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxCliente.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBoxCliente.getComboBox().hide();
+                }
+            }
+        });
+    }
+
+    private void loadDataComponent() {
         cbComprobante.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
             cbComprobante.getItems().add(e);
@@ -156,64 +210,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 }
             }
         }
-
-        SearchComboBox<ClienteTB> searchComboBoxClientes = new SearchComboBox<>(cbClientes, false);
-//        searchComboBoxClientes.getComboBox().getItems().addAll(ClienteADO.GetSearchComboBoxCliente((short) 1, ""));
-        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
-                if (!searchComboBoxClientes.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-                    searchComboBoxClientes.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBoxClientes.getSearchComboBoxSkin().getItemView().requestFocus();
-                }
-            } else if (t.getCode() == KeyCode.ESCAPE) {
-                searchComboBoxClientes.getComboBox().hide();
-            }
-        });
-        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-            cbClientes.getItems().clear();
-            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 3, searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().getText().trim());
-            clienteTBs.forEach(e -> cbClientes.getItems().add(e));
-        });
-        searchComboBoxClientes.getSearchComboBoxSkin()
-                .getItemView().setOnKeyPressed(t -> {
-                    if (null == t.getCode()) {
-                        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                        searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().selectAll();
-                    } else {
-                        switch (t.getCode()) {
-                            case ENTER:
-                            case SPACE:
-                            case ESCAPE:
-                                //seleción
-                                Tools.println("dentroo key pressed");
-                                searchComboBoxClientes.getComboBox().hide();
-                                break;
-                            case UP:
-                            case DOWN:
-                            case LEFT:
-                            case RIGHT:
-                                break;
-                            default:
-                                searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                                searchComboBoxClientes.getSearchComboBoxSkin().getSearchBox().selectAll();
-                                break;
-                        }
-                    }
-                }
-                );
-        searchComboBoxClientes.getSearchComboBoxSkin()
-                .getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-                    if (item != null) {
-                        searchComboBoxClientes.getComboBox().getSelectionModel().select(item);
-                        if (searchComboBoxClientes.getSearchComboBoxSkin().isClickSelection()) {
-                            //seleción
-                            Tools.println("dentroo click");
-                            searchComboBoxClientes.getComboBox().hide();
-                        }
-                    }
-                }
-                );
-
     }
 
     public void onEventPaginacion() {
@@ -247,7 +243,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             if (!objects.isEmpty()) {
                 fpProductos.setAlignment(Pos.TOP_CENTER);
                 tvList = (ObservableList<SuministroTB>) objects.get(0);
-                tvList.stream().map((tvList1) -> {
+                tvList.stream().map(tvList1 -> {
                     VBox vBox = new VBox();
                     vBox.setOnMouseClicked(m -> {
 
@@ -303,8 +299,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                 }
                             }
                         } else {
-                            BbItemProducto bbItemProducto = new BbItemProducto(suministroTB);
+                            BbItemProducto bbItemProducto = new BbItemProducto(suministroTB, lvProductoAgregados, this);
                             bbItemProducto.addElementListView();
+
                             lvProductoAgregados.getItems().add(bbItemProducto);
                             calculateTotales();
                         }
@@ -315,7 +312,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color:  #0478b2;-fx-cursor:hand;-fx-border-width:1px;-fx-background-color:#f4f4f4;");
                     vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
-                    ImageView imageView = new ImageView(new Image(fileImage.exists() ? new File(tvList1.getImagenTB()).toURI().toString() : "/view/image/no-image.png"));
+                    ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
                     imageView.setFitWidth(160);
                     imageView.setFitHeight(160);
                     vBox.getChildren().add(imageView);
@@ -337,13 +334,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     lblMarca.setTextFill(Color.web("#1a2226"));
                     vBox.getChildren().add(lblMarca);
 
-                    Label lblTotal = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
-                    lblTotal.getStyleClass().add("labelRobotoBold18");
-                    lblTotal.setTextFill(Color.web("#0478b2"));
-                    lblTotal.maxWidth(Double.MAX_VALUE);
-                    vBox.getChildren().add(lblTotal);
+                    Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
+                    lblTotalProducto.getStyleClass().add("labelRobotoBold18");
+                    lblTotalProducto.setTextFill(Color.web("#0478b2"));
+                    lblTotalProducto.maxWidth(Double.MAX_VALUE);
+                    vBox.getChildren().add(lblTotalProducto);
                     return vBox;
-                }).forEachOrdered((vBox) -> {
+                }).forEachOrdered(vBox -> {
                     fpProductos.getChildren().add(vBox);
                 });
                 int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 15.00)));
@@ -510,7 +507,19 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     }
 
-    private void openWindowDetalleProducto(String producto) {
+    public void resetVenta() {
+        tvList.clear();
+
+        loadDataComponent();
+
+        lblTotal.setText(monedaSimbolo + " 0.00");
+
+        txtSearch.requestFocus();
+
+        calculateTotales();
+    }
+
+    private void openWindowDetalleProducto(int index, BbItemProducto bbItemProducto) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_VENTA_DETALLE_PRODUCTO);
@@ -518,7 +527,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxVentaDetalleProductoController controller = fXMLLoader.getController();
-            controller.loadData(producto);
+            controller.loadData(index, bbItemProducto);
             controller.setInitVentaEstructuraNuevoController(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Detalle producto", vbWindow.getScene().getWindow());
@@ -530,6 +539,111 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             stage.show();
         } catch (IOException ex) {
             System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
+        }
+    }
+
+    public void onEventCobrar() {
+        try {
+            if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione la moneda ha usar.");
+            } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione un cliente.");
+            } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione el tipo de comprobante.");
+            } else if (lvProductoAgregados.getItems().isEmpty()) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "No hay productos en la lista para vender.");
+            } else {
+
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxVentaProcesoController controller = fXMLLoader.getController();
+                controller.setInitVentaEstructuraNuevoController(this);
+                //
+                Stage stage = WindowStage.StageLoaderModal(parent, "Completar la venta", vbWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.show();
+
+                ClienteTB clienteTB = new ClienteTB();
+                clienteTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
+//                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+//                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim());
+//                clienteTB.setInformacion(txtDatosCliente.getText().trim());
+//                clienteTB.setDireccion(txtDireccionCliente.getText().trim());
+//                clienteTB.setCelular(txtCelularCliente.getText().trim());
+                Tools.println(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
+
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setVendedor(Session.USER_ID);
+                ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()
+                        : 0);
+                ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbComprobante.getSelectionModel().getSelectedItem().getNombre()
+                        : "");
+                ventaTB.setMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
+                ventaTB.setMonedaName(monedaSimbolo);
+                ventaTB.setSerie(lblSerie.getText());
+                ventaTB.setNumeracion(lblNumeracion.getText());
+                ventaTB.setFechaVenta(Tools.getDate());
+                ventaTB.setHoraVenta(Tools.getHour());
+                ventaTB.setSubTotal(subTotal);
+                ventaTB.setDescuento(descuento);
+                ventaTB.setSubImporte(subTotalImporte);
+                ventaTB.setTotal(total);
+                ventaTB.setClienteTB(clienteTB);
+                ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
+                tvList.forEach((stb) -> {
+                    suministroTBs.add(stb);
+                });
+                controller.setInitComponents(ventaTB, suministroTBs);
+            }
+        } catch (IOException ex) {
+            System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void onEventCliente() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_CLIENTE_PROCESO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxClienteProcesoController controller = fXMLLoader.getController();
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+            controller.setValueAdd();
+        } catch (IOException ex) {
+            System.out.println("Cliente controller en openWindowAddCliente()" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void onEventProducto() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_PROCESO_MODAL);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxSuministrosProcesoModalController controller = fXMLLoader.getController();
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+            controller.setInitArticulo();
+        } catch (IOException ex) {
+            System.out.println("Error en producto lista:" + ex.getLocalizedMessage());
         }
     }
 
@@ -615,7 +729,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onMouseClickedProductosAgregados(MouseEvent event) {
         if (lvProductoAgregados.getSelectionModel().getSelectedIndex() >= 0) {
-            openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedItem().getSuministroTB().getNombreMarca());
+            openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedIndex(), lvProductoAgregados.getSelectionModel().getSelectedItem());
             event.consume();
         }
     }
@@ -624,7 +738,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private void onKeyReleasedProductosAgregados(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (lvProductoAgregados.getSelectionModel().getSelectedIndex() >= 0) {
-                openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedItem().getSuministroTB().getNombreMarca());
+                openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedIndex(), lvProductoAgregados.getSelectionModel().getSelectedItem());
 
             }
         }
@@ -639,94 +753,64 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-    class BbItemProducto extends HBox {
-
-        private SuministroTB suministroTB;
-
-        public BbItemProducto(SuministroTB suministroTB) {
-            this.suministroTB = suministroTB;
+    @FXML
+    private void onKeyPressedCobrar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventCobrar();
         }
+    }
 
-        public void addElementListView() {
-            setMinWidth(Control.USE_PREF_SIZE);
-            setPrefWidth(Control.USE_COMPUTED_SIZE);
-            maxWidth(Control.USE_PREF_SIZE);
-
-            VBox vbLeft = new VBox();
-            HBox.setHgrow(vbLeft, Priority.ALWAYS);
-            vbLeft.setAlignment(Pos.CENTER_LEFT);
-            vbLeft.setMaxWidth(Control.USE_PREF_SIZE);
-            Label lblProducto = new Label(suministroTB.getNombreMarca());
-            lblProducto.getStyleClass().add("labelRoboto14");
-            lblProducto.setTextFill(Color.web("#1a2226"));
-            lblProducto.setWrapText(true);
-            lblProducto.setPrefWidth(200);
-            vbLeft.getChildren().add(lblProducto);
-            Label lblPrecio = new Label(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 2));
-            lblPrecio.getStyleClass().add("labelRobotoBold14");
-            lblPrecio.setTextFill(Color.web("#1a2226"));
-            vbLeft.getChildren().add(lblPrecio);
-
-            HBox hbCenter = new HBox();
-            hbCenter.setStyle("-fx-spacing: 0.4166666666666667em;");
-            hbCenter.setAlignment(Pos.CENTER);
-            HBox.setHgrow(hbCenter, Priority.ALWAYS);
-            Button btnMenos = new Button();
-            ImageView ivMenos = new ImageView(new Image("/view/image/remove-item.png"));
-            ivMenos.setFitWidth(24);
-            ivMenos.setFitHeight(24);
-            btnMenos.setGraphic(ivMenos);
-            btnMenos.getStyleClass().add("buttonBorder");
-            Label lblCantidad = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
-            lblCantidad.getStyleClass().add("labelRoboto14");
-            lblCantidad.setTextFill(Color.web("#1a2226"));
-            Button btnMas = new Button();
-            ImageView ivMas = new ImageView(new Image("/view/image/plus.png"));
-            ivMas.setFitWidth(24);
-            ivMas.setFitHeight(24);
-            btnMas.setGraphic(ivMas);
-            btnMas.getStyleClass().add("buttonBorder");
-            hbCenter.getChildren().addAll(btnMenos, lblCantidad, btnMas);
-
-            VBox vbRight = new VBox();
-//            vbRight.setPrefWidth(165);
-            HBox.setHgrow(vbRight, Priority.ALWAYS);
-            vbRight.setStyle("-fx-spacing: 0.4166666666666667em;");
-            vbRight.setAlignment(Pos.CENTER_RIGHT);
-            Label lblImporte = new Label(Tools.roundingValue(suministroTB.getPrecioVentaGeneral() * suministroTB.getCantidad(), 2));
-            lblImporte.getStyleClass().add("labelRoboto14");
-            lblImporte.setTextFill(Color.web("#1a2226"));
-            Button btnRemoved = new Button();
-            ImageView ivRemoved = new ImageView(new Image("/view/image/remove.png"));
-            ivRemoved.setFitWidth(24);
-            ivRemoved.setFitHeight(24);
-            btnRemoved.setGraphic(ivRemoved);
-            btnRemoved.getStyleClass().add("buttonDark");
-            btnRemoved.setOnAction((ActionEvent a) -> {
-                lvProductoAgregados.getItems().remove(this);
-                calculateTotales();
-            });
-            btnRemoved.setOnKeyPressed(a -> {
-                if (a.getCode() == KeyCode.ENTER) {
-                    lvProductoAgregados.getItems().remove(this);
-                    calculateTotales();
-                }
-            });
-            vbRight.getChildren().addAll(lblImporte, btnRemoved);
-
-            getChildren().add(vbLeft);
-            getChildren().add(hbCenter);
-            getChildren().add(vbRight);
+    @FXML
+    private void onKeyPressedProducto(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventProducto();
         }
+    }
 
-        public SuministroTB getSuministroTB() {
-            return suministroTB;
+    @FXML
+    private void onActionProducto(ActionEvent event) {
+        onEventProducto();
+    }
+
+    @FXML
+    private void onKeyPressedCliente(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventCliente();
         }
+    }
 
-        public void setSuministroTB(SuministroTB suministroTB) {
-            this.suministroTB = suministroTB;
-        }
+    @FXML
+    private void onActionCliente(ActionEvent event) {
+        onEventCliente();
+    }
 
+    @FXML
+    private void onActionCobrar(ActionEvent event) {
+        onEventCobrar();
+    }
+
+    public TextField getTxtSearch() {
+        return txtSearch;
+    }
+
+    public ComboBox<MonedaTB> getCbMoneda() {
+        return cbMoneda;
+    }
+
+    public ComboBox<ClienteTB> getCbCliente() {
+        return cbCliente;
+    }
+
+    public ListView<BbItemProducto> getLvProductoAgregados() {
+        return lvProductoAgregados;
+    }
+
+    public String getMonedaNombre() {
+        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
+    }
+
+    public int getIdTipoComprobante() {
+        return cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento();
     }
 
     public void setContent(AnchorPane vbPrincipal) {
