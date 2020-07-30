@@ -138,9 +138,6 @@ public class FxProveedorListaController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Proveedor", apWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                comprasController.loadSearchProveedores();
-            });
             stage.show();
             controller.setValueAdd();
         } catch (IOException ex) {

@@ -2,6 +2,7 @@ package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.font.LineBreakMeasurer;
@@ -310,7 +311,7 @@ public class BillPrintable implements Printable {
         }
     }
 
-    public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie, boolean cortar) {
+    public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie) {
 //        try {
 //            int width = (int) Math.ceil(sheetWidth * pointWidthSizePaper);
         this.apEncabezado = apEncabezado;
@@ -336,39 +337,42 @@ public class BillPrintable implements Printable {
         if (pageIndex == 0) {
 
             int y = 10;
-            
-            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D gimage = image.createGraphics();
+            //Consola
+            //RobotoRegular"
+            //"RobotoBold
+
+//            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
+//            Graphics2D gimage = image.createGraphics();
             Graphics2D g2d = (Graphics2D) graphics;
 
             double width = pageFormat.getImageableWidth();
 
             g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-            gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+//            gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
 
-            gimage.setColor(Color.white);
-            gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
-            gimage.setPaint(Color.black);
+//            gimage.setColor(Color.white);
+//            gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
+//            gimage.setPaint(Color.black);
             g2d.setPaint(Color.black);
 
-            y = createRow(apEncabezado, g2d, gimage, width, y);
-            y = createRow(apDetalle, g2d, gimage, width, y);
-            createRow(apPie, g2d, gimage, width, y);
+            y = createRow(apEncabezado, g2d, width, y);
+            y = createRow(apDetalle, g2d, width, y);
+            createRow(apPie, g2d,  width, y);
 
             graphics.dispose();
-            gimage.dispose();
-            try {
-                ImageIO.write(image, "png", new File("yourImageName.png"));
-            } catch (IOException ex) {
-                System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
-            }
+//            gimage.dispose();
+//            try {
+//                ImageIO.write(image, "png", new File("yourImageName.png"));
+//            } catch (IOException ex) {
+//                System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
+//            }
             return PAGE_EXISTS;
         } else {
             return NO_SUCH_PAGE;
         }
     }
 
-    private int createRow(AnchorPane anchorPane, Graphics2D g2d, Graphics2D gimage, double width, int y) {
+    private int createRow(AnchorPane anchorPane, Graphics2D g2d, /*Graphics2D gimage,*/ double width, int y) {
         for (int i = 0; i < anchorPane.getChildren().size(); i++) {
             HBox box = ((HBox) anchorPane.getChildren().get(i));
             StringBuilder result = new StringBuilder();
@@ -458,18 +462,19 @@ public class BillPrintable implements Printable {
                     }
                 }
 
+                Font font = new Font(FontsPersonalize.FONT_CONSOLAS, Font.PLAIN, (int) (fontSize - 3.5f));
+
                 AttributedString attributedString = new AttributedString(result.toString());
-                attributedString.addAttribute(TextAttribute.FAMILY, "Consolas");
-                attributedString.addAttribute(TextAttribute.SIZE, fontSize - 3.5f);
+                attributedString.addAttribute(TextAttribute.FONT, font);
 
                 AttributedCharacterIterator charIterator = attributedString.getIterator();
                 LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(charIterator, g2d.getFontRenderContext());
                 lineBreakMeasurer.setPosition(charIterator.getBeginIndex());
                 while (lineBreakMeasurer.getPosition() < charIterator.getEndIndex()) {
                     TextLayout layout = lineBreakMeasurer.nextLayout((float) width);
-                    y += layout.getAscent();
+                    y += layout.getAscent() + 3;
                     layout.draw(g2d, 0, y);
-                    layout.draw(gimage, 0, y);
+//                    layout.draw(gimage, 0, y);
                     y += layout.getDescent() + layout.getLeading();
                 }
 
@@ -565,27 +570,41 @@ public class BillPrintable implements Printable {
 //                        }
 //                    }
                     TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
-//                    Font font = new Font("Consolas", Font.PLAIN, (int) (field.getFontSize() - 3.5f));
+                    Font font = new Font(field.getFontName().equalsIgnoreCase("Consola")
+                            ? FontsPersonalize.FONT_CONSOLAS
+                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
+                            ? FontsPersonalize.FONT_ROBOTO
+                            : FontsPersonalize.FONT_ROBOTO,
+                            field.getFontName().equalsIgnoreCase("Consola")
+                            ? Font.PLAIN
+                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
+                            ? Font.PLAIN
+                            : Font.BOLD,
+                            (int) (field.getFontSize() - 3.5f));
 //                    gimage.setFont(font);
 //                    g2d.setFont(font);
 
+// field.getFontName().equalsIgnoreCase("Consola")
+//                            ? "Consola"
+//                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
+//                            ? "RobotoRegular"
+//                            : "RobotoBold"
                     AttributedString attributedString = new AttributedString(field.getText());
-                    attributedString.addAttribute(TextAttribute.FAMILY, "Consolas");
-                    attributedString.addAttribute(TextAttribute.SIZE, field.getFontSize() - 3.5f);
+                    attributedString.addAttribute(TextAttribute.FONT, font);
 
                     AttributedCharacterIterator charIterator = attributedString.getIterator();
                     LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(charIterator, g2d.getFontRenderContext());
                     lineBreakMeasurer.setPosition(charIterator.getBeginIndex());
                     while (lineBreakMeasurer.getPosition() < charIterator.getEndIndex()) {
                         TextLayout layout = lineBreakMeasurer.nextLayout((float) width);
-                        y += layout.getAscent();
+                        y += layout.getAscent() + 3;
                         int x = field.getAlignment() == Pos.CENTER_LEFT
                                 ? 0
                                 : field.getAlignment() == Pos.CENTER
                                 ? (int) (width - layout.getAdvance()) / 2
                                 : (int) (width - layout.getAdvance());
                         layout.draw(g2d, x, y);
-                        layout.draw(gimage, x, y);
+//                        layout.draw(gimage, x, y);
                         y += layout.getDescent() + layout.getLeading();
                     }
 //                    FontMetrics metrics = g2d.getFontMetrics(font);
@@ -621,16 +640,16 @@ public class BillPrintable implements Printable {
                             image = ImageIO.read(bais);
                         }
 
-                        gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
-                                : box.getAlignment() == Pos.CENTER
-                                ? (int) (width - imageView.getFitWidth()) / 2
-                                : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+//                        gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
+//                                : box.getAlignment() == Pos.CENTER
+//                                ? (int) (width - imageView.getFitWidth()) / 2
+//                                : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
                         g2d.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
                                 : box.getAlignment() == Pos.CENTER
                                 ? (int) (width - imageView.getFitWidth()) / 2
                                 : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
 
-                        y += imageView.getFitHeight();
+                        y += imageView.getFitHeight() + 3;
 
                     } catch (Exception ex) {
                         System.out.println(ex.getLocalizedMessage());
@@ -1084,8 +1103,8 @@ public class BillPrintable implements Printable {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
         paper.setSize((int) Math.ceil(sheetWidth * pointWidthSizePaper), 2000);
-        paper.setImageableArea(0, 0, (int) Math.ceil(sheetWidth * pointWidthSizePaper), 20000);        
-        Tools.println(paper.getHeight()+" - "+paper.getImageableHeight());
+        paper.setImageableArea(0, 0, (int) Math.ceil(sheetWidth * pointWidthSizePaper), 20000);
+        Tools.println(paper.getHeight() + " - " + paper.getImageableHeight());
         pf.setOrientation(PageFormat.PORTRAIT);
         pf.setPaper(paper);
         return pf;

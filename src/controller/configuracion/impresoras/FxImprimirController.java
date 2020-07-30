@@ -3,10 +3,12 @@ package controller.configuracion.impresoras;
 import controller.configuracion.tickets.FxTicketController;
 import controller.tools.BillPrintable;
 import controller.tools.PrinterService;
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.awt.print.Book;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -18,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javax.print.DocPrintJob;
+import javax.print.PrintException;
 
 public class FxImprimirController implements Initializable {
 
@@ -48,7 +51,7 @@ public class FxImprimirController implements Initializable {
         if (cbImpresoras.getSelectionModel().getSelectedIndex() >= 0) {
             if (ticketController != null) {
                 billPrintable.setSheetWidth(ticketController.getSheetWidth());
-                billPrintable.generatePDFPrint(ticketController.getHbEncabezado(), ticketController.getHbDetalleCabecera(), ticketController.getHbPie(), cbCortarPapel.isSelected());
+                billPrintable.generatePDFPrint(ticketController.getHbEncabezado(), ticketController.getHbDetalleCabecera(), ticketController.getHbPie());
                 try {
 
                     DocPrintJob job = billPrintable.findPrintService(cbImpresoras.getSelectionModel().getSelectedItem(), PrinterJob.lookupPrintServices()).createPrintJob();
@@ -60,13 +63,15 @@ public class FxImprimirController implements Initializable {
                         Book book = new Book();
                         book.append(billPrintable, billPrintable.getPageFormat(pj));
                         pj.setPageable(book);
-
                         pj.print();
+                        if (cbCortarPapel.isSelected()) {
+                            billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                        }
                     } else {
                         Tools.AlertMessageWarning(apWindow, "Imprimir", "No puedo el nombre de la impresora, intente nuevamente.");
                     }
 
-                } catch (PrinterException ex) {
+                } catch (PrinterException | IOException | PrintException ex) {
                     Tools.AlertMessageError(apWindow, "Imprimir", "Error en imprimit: " + ex.getLocalizedMessage());
                 }
             }

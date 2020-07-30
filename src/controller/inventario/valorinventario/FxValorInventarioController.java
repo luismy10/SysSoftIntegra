@@ -43,6 +43,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.SuministroADO;
@@ -474,7 +475,7 @@ public class FxValorInventarioController implements Initializable {
                                     "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR");
                         }
 
-                        billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie, Session.CORTAPAPEL_IMPRESORA);
+                        billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie);
 
                         DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
 
@@ -486,11 +487,14 @@ public class FxValorInventarioController implements Initializable {
                             book.append(billPrintable, billPrintable.getPageFormat(pj));
                             pj.setPageable(book);
                             pj.print();
+                            if (Session.CORTAPAPEL_IMPRESORA) {
+                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            }
                             return "completed";
                         } else {
                             return "error_name";
                         }
-                    } catch (PrinterException ex) {
+                    } catch (PrinterException | IOException | PrintException ex) {
                         return "Error en imprimir: " + ex.getLocalizedMessage();
                     }
                 }
@@ -553,6 +557,8 @@ public class FxValorInventarioController implements Initializable {
                         });
                 notifications.darkStyle();
                 notifications.show();
+                Tools.println(task.getException());
+                Tools.println(task.getMessage());
             });
 
             task.setOnScheduled(w -> {

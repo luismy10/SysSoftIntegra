@@ -46,6 +46,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import model.EmpleadoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
@@ -596,7 +597,7 @@ public class FxVentaDetalleController implements Initializable {
                                     ventaTB.getClienteTB().getCelular());
                         }
 
-                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.CORTAPAPEL_IMPRESORA);
+                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
 
                         DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
 
@@ -608,12 +609,15 @@ public class FxVentaDetalleController implements Initializable {
                             book.append(billPrintable, billPrintable.getPageFormat(pj));
                             pj.setPageable(book);
                             pj.print();
+                            if (Session.CORTAPAPEL_IMPRESORA) {
+                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            }
                             return "completed";
                         } else {
                             return "error_name";
                         }
-                    } catch (PrinterException ex) {
-                        return "Error en imprimir: " + ex.getLocalizedMessage(); 
+                    } catch (PrinterException | IOException | PrintException ex) {
+                        return "Error en imprimir: " + ex.getLocalizedMessage();
                     }
                 }
             };
@@ -635,7 +639,7 @@ public class FxVentaDetalleController implements Initializable {
                     notifications.darkStyle();
                     notifications.show();
                     //Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
-                }else if (result.equalsIgnoreCase("error_name")) {
+                } else if (result.equalsIgnoreCase("error_name")) {
                     Image image = new Image("/view/image/warning_large.png");
                     Notifications notifications = Notifications.create()
                             .title("Envío de impresión")
@@ -648,8 +652,7 @@ public class FxVentaDetalleController implements Initializable {
                             });
                     notifications.darkStyle();
                     notifications.show();
-                } 
-                else {
+                } else {
 //                    Tools.AlertMessageError(window, "Ventas", result);
                     Image image = new Image("/view/image/error_large.png");
                     Notifications notifications = Notifications.create()
@@ -698,7 +701,7 @@ public class FxVentaDetalleController implements Initializable {
             });
             exec.execute(task);
 
-        }finally {
+        } finally {
             exec.shutdown();
         }
 

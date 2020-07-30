@@ -119,8 +119,6 @@ public class FxComprasController implements Initializable {
 
     private ObservableList<LoteTB> loteTBs;
 
-    private SearchComboBox<ProveedorTB> searchComboBox;
-
     private boolean stateSearchProducto;
 
     private double totalBruto;
@@ -176,8 +174,24 @@ public class FxComprasController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
 
-        searchComboBox = new SearchComboBox<>(cbProveedor,true);
-        searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
+        SearchComboBox<ProveedorTB> searchComboBox = new SearchComboBox<>(cbProveedor,false);
+//        searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBox.getComboBox().hide();
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {       
+            searchComboBox.getComboBox().getItems().clear();
+            List<ProveedorTB> proveedorTBs = ProveedorADO.getSearchComboBoxProveedores(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+            proveedorTBs.forEach(p->cbProveedor.getItems().add(p));
+           
+        });
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
             switch (t.getCode()) {
                 case ENTER:
@@ -224,19 +238,17 @@ public class FxComprasController implements Initializable {
             return t;
         });
 
-        Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
+        Task<Void> task = new Task<Void>() {
             @Override
-            public List<ProveedorTB> call() {
+            public Void call() {
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
                     arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
                 });
-                return ProveedorADO.getSearchComboBoxProveedores();
+                return null;
             }
         };
 
         task.setOnSucceeded((e) -> {
-            List<ProveedorTB> proveedorTBs = task.getValue();
-            searchComboBox.getComboBox().getItems().addAll(proveedorTBs);
             loadData = true;
         });
 
@@ -253,32 +265,6 @@ public class FxComprasController implements Initializable {
             exec.shutdown();
         }
 
-    }
-
-    public void loadSearchProveedores() {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
-            @Override
-            public List<ProveedorTB> call() {
-                return ProveedorADO.getSearchComboBoxProveedores();
-            }
-        };
-
-        task.setOnSucceeded((e) -> {
-            searchComboBox.getComboBox().getItems().clear();
-            List<ProveedorTB> proveedorTBs = task.getValue();
-            searchComboBox.getComboBox().getItems().addAll(proveedorTBs);
-        });
-
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -366,7 +352,7 @@ public class FxComprasController implements Initializable {
         txtObservaciones.clear();
         txtNotas.clear();
         gpImpuestos.getChildren().clear();
-        loadSearchProveedores();
+        cbProveedor.getItems().clear();
     }
 
     private void filterProducto(String search) {
