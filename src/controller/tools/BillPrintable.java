@@ -337,9 +337,7 @@ public class BillPrintable implements Printable {
 
             int y = 10;
             
-            Tools.println(pageFormat.getImageableWidth());
-
-            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D gimage = image.createGraphics();
             Graphics2D g2d = (Graphics2D) graphics;
 
@@ -1085,8 +1083,9 @@ public class BillPrintable implements Printable {
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
-        paper.setImageableArea(0, 0, (int) Math.ceil(sheetWidth * pointWidthSizePaper), pf.getImageableHeight());
-        Tools.println(paper.getImageableWidth()+" - "+paper.getWidth());
+        paper.setSize((int) Math.ceil(sheetWidth * pointWidthSizePaper), 2000);
+        paper.setImageableArea(0, 0, (int) Math.ceil(sheetWidth * pointWidthSizePaper), 20000);        
+        Tools.println(paper.getHeight()+" - "+paper.getImageableHeight());
         pf.setOrientation(PageFormat.PORTRAIT);
         pf.setPaper(paper);
         return pf;

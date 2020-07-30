@@ -81,7 +81,7 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadElements() {
-//        ventaEstructuraNuevoController.setContent(vbPrincipal);
+        ventaEstructuraController.setContent(vbPrincipal);
         ventaEstructuraController.getTxtSearch().requestFocus();
     }
 
