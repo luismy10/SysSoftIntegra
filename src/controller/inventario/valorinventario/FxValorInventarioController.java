@@ -8,6 +8,9 @@ import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.awt.print.Book;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -29,16 +33,21 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javax.print.DocPrintJob;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.SuministroADO;
 import model.SuministroTB;
+import org.controlsfx.control.Notifications;
 
 public class FxValorInventarioController implements Initializable {
 
@@ -157,7 +166,7 @@ public class FxValorInventarioController implements Initializable {
                 int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");                
+                lblPaginaSiguiente.setText(totalPaginacion + "");
             }
             lblLoad.setVisible(false);
         });
@@ -175,7 +184,7 @@ public class FxValorInventarioController implements Initializable {
 
     private void filtercbCategoria() {
 
-        searchComboBoxExistencias = new SearchComboBox<>(cbExistencia,true);
+        searchComboBoxExistencias = new SearchComboBox<>(cbExistencia, true);
         searchComboBoxExistencias.setFilter((item, text) -> item.toLowerCase().contains(text.toLowerCase()));
         searchComboBoxExistencias.getComboBox().getItems().addAll("Todas las Cantidades", "Cantidades negativas", "Cantidades intermedias", "Cantidades necesaria", "Cantidades excedentes");
         searchComboBoxExistencias.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -220,7 +229,7 @@ public class FxValorInventarioController implements Initializable {
             }
         });
 
-        searchComboBoxCategoria = new SearchComboBox<>(cbCategoria,true);
+        searchComboBoxCategoria = new SearchComboBox<>(cbCategoria, true);
         searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxCategoria.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0006"));
         searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -266,7 +275,7 @@ public class FxValorInventarioController implements Initializable {
             }
         });
 
-        searchComboBoxMarca = new SearchComboBox<>(cbMarca,true);
+        searchComboBoxMarca = new SearchComboBox<>(cbMarca, true);
         searchComboBoxMarca.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxMarca.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0007"));
         searchComboBoxMarca.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -417,45 +426,154 @@ public class FxValorInventarioController implements Initializable {
             return;
         }
 
-        billPrintable.loadEstructuraTicket(idTicket, rutaTicket, apEncabezado, apDetalleCabecera, apPie);
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        try {
+            Task<String> task = new Task<String>() {
+                @Override
+                public String call() {
+                    try {
+                        billPrintable.loadEstructuraTicket(idTicket, rutaTicket, apEncabezado, apDetalleCabecera, apPie);
 
-        for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
-            HBox box = ((HBox) apEncabezado.getChildren().get(i));
-            billPrintable.hbEncebezado(box,
-                    "TICKET",
-                    "00000000",
-                    "SIN DOCUMENTO",
-                    "PUBLICO GENERAL",
-                    "SIN CELULAR",
-                    "SIN DIRECCION",
-                    "SIN CODIGO");
+                        for (int i = 0; i < apEncabezado.getChildren().size(); i++) {
+                            HBox box = ((HBox) apEncabezado.getChildren().get(i));
+                            billPrintable.hbEncebezado(box,
+                                    "TICKET",
+                                    "00000000",
+                                    "SIN DOCUMENTO",
+                                    "PUBLICO GENERAL",
+                                    "SIN CELULAR",
+                                    "SIN DIRECCION",
+                                    "SIN CODIGO");
+                        }
+
+                        AnchorPane hbDetalle = new AnchorPane();
+                        for (int m = 0; m < tvList.getItems().size(); m++) {
+                            for (int i = 0; i < apDetalleCabecera.getChildren().size(); i++) {
+                                HBox hBox = new HBox();
+                                hBox.setId("dc_" + m + "" + i);
+                                HBox box = ((HBox) apDetalleCabecera.getChildren().get(i));
+                                billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
+                                hbDetalle.getChildren().add(hBox);
+                            }
+                        }
+
+                        for (int i = 0; i < apPie.getChildren().size(); i++) {
+                            HBox box = ((HBox) apPie.getChildren().get(i));
+                            billPrintable.hbPie(box, "",
+                                    Tools.roundingValue(0, 2),
+                                    "-" + Tools.roundingValue(0, 2),
+                                    Tools.roundingValue(0, 2),
+                                    Tools.roundingValue(0, 2),
+                                    Tools.roundingValue(0, 2),
+                                    Tools.roundingValue(0, 2),
+                                    "SIN DOCUMENTO",
+                                    "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR");
+                        }
+
+                        billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie, Session.CORTAPAPEL_IMPRESORA);
+
+                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                        if (job != null) {
+                            PrinterJob pj = PrinterJob.getPrinterJob();
+                            pj.setPrintService(job.getPrintService());
+                            pj.setJobName(Session.NOMBRE_IMPRESORA);
+                            Book book = new Book();
+                            book.append(billPrintable, billPrintable.getPageFormat(pj));
+                            pj.setPageable(book);
+                            pj.print();
+                            return "completed";
+                        } else {
+                            return "error_name";
+                        }
+                    } catch (PrinterException ex) {
+                        return "Error en imprimir: " + ex.getLocalizedMessage();
+                    }
+                }
+            };
+
+            task.setOnSucceeded(w -> {
+                String result = task.getValue();
+                if (result.equalsIgnoreCase("completed")) {
+                    Image image = new Image("/view/image/information_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Se completo el proceso de impresión correctamente.")
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(5))
+                            .position(Pos.BOTTOM_RIGHT)
+                            .onAction(n -> {
+                                Tools.println(n);
+                            });
+                    notifications.darkStyle();
+                    notifications.show();
+                } else if (result.equalsIgnoreCase("error_name")) {
+                    Image image = new Image("/view/image/warning_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Error en encontrar el nombre de la impresión por problemas de puerto o driver.")
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(10))
+                            .position(Pos.CENTER)
+                            .onAction(n -> {
+                                Tools.println(n);
+                            });
+                    notifications.darkStyle();
+                    notifications.show();
+                } else {
+                    Image image = new Image("/view/image/error_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Error en la configuración de su impresora: " + result)
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(10))
+                            .position(Pos.CENTER)
+                            .onAction(n -> {
+                                Tools.println(n);
+                            });
+                    notifications.darkStyle();
+                    notifications.show();
+                }
+            });
+
+            task.setOnFailed(w -> {
+                Image image = new Image("/view/image/warning_large.png");
+                Notifications notifications = Notifications.create()
+                        .title("Envío de impresión")
+                        .text("Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.")
+                        .graphic(new ImageView(image))
+                        .hideAfter(Duration.seconds(10))
+                        .position(Pos.BOTTOM_RIGHT)
+                        .onAction(n -> {
+                            Tools.println(n);
+                        });
+                notifications.darkStyle();
+                notifications.show();
+            });
+
+            task.setOnScheduled(w -> {
+                Image image = new Image("/view/image/print.png");
+                Notifications notifications = Notifications.create()
+                        .title("Envío de impresión")
+                        .text("Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.")
+                        .graphic(new ImageView(image))
+                        .hideAfter(Duration.seconds(5))
+                        .position(Pos.BOTTOM_RIGHT)
+                        .onAction(n -> {
+                            Tools.println(n);
+                        });
+                notifications.darkStyle();
+                notifications.show();
+            });
+            exec.execute(task);
+
+        } finally {
+            exec.shutdown();
         }
-
-        AnchorPane hbDetalle = new AnchorPane();
-        for (int m = 0; m < tvList.getItems().size(); m++) {
-            for (int i = 0; i < apDetalleCabecera.getChildren().size(); i++) {
-                HBox hBox = new HBox();
-                hBox.setId("dc_" + m + "" + i);
-                HBox box = ((HBox) apDetalleCabecera.getChildren().get(i));
-                billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
-                hbDetalle.getChildren().add(hBox);
-            }
-        }
-
-        for (int i = 0; i < apPie.getChildren().size(); i++) {
-            HBox box = ((HBox) apPie.getChildren().get(i));
-            billPrintable.hbPie(box, "",
-                    Tools.roundingValue(0, 2),
-                    "-" + Tools.roundingValue(0, 2),
-                    Tools.roundingValue(0, 2),
-                    Tools.roundingValue(0, 2),
-                    Tools.roundingValue(0, 2),
-                    Tools.roundingValue(0, 2),
-                    "SIN DOCUMENTO",
-                    "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR");
-        }
-
-        billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 
     }
 

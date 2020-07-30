@@ -83,12 +83,10 @@ public class BillPrintable implements Printable {
 
     private AnchorPane apPie;
 
-    private String nombreImpresora;
-
     public BillPrintable() {
         sheetWidth = 0;
         pointWidthSizeView = 8.10;
-        pointWidthSizePaper = 5.20;
+        pointWidthSizePaper = 5.10;
         fileImages = new ArrayList();
     }
 
@@ -312,20 +310,18 @@ public class BillPrintable implements Printable {
         }
     }
 
-    public String generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie, String nombreImpresora, boolean cortar) {
+    public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie, boolean cortar) {
 //        try {
 //            int width = (int) Math.ceil(sheetWidth * pointWidthSizePaper);
         this.apEncabezado = apEncabezado;
         this.apDetalle = apDetalle;
         this.apPie = apPie;
-        this.nombreImpresora = nombreImpresora;
 //            Map param = new HashMap();
 //            JasperDesign jasperDesign = getJasperDesign(width, 20000, apEncabezado, apDetalle, apPie);
 //            JasperReport report = JasperCompileManager.compileReport(jasperDesign);
 //            JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
 //            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
 //            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
-        return "completed";
 //        } catch (JRException /*| PrintException | IOException*/ er) {
 //            return "Error en imprimir: " + er.getLocalizedMessage();
 //        } finally {
@@ -340,6 +336,8 @@ public class BillPrintable implements Printable {
         if (pageIndex == 0) {
 
             int y = 10;
+            
+            Tools.println(pageFormat.getImageableWidth());
 
             BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D gimage = image.createGraphics();
@@ -1087,7 +1085,8 @@ public class BillPrintable implements Printable {
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
-        paper.setImageableArea(0, 0, pf.getWidth(), pf.getImageableHeight());
+        paper.setImageableArea(0, 0, (int) Math.ceil(sheetWidth * pointWidthSizePaper), pf.getImageableHeight());
+        Tools.println(paper.getImageableWidth()+" - "+paper.getWidth());
         pf.setOrientation(PageFormat.PORTRAIT);
         pf.setPaper(paper);
         return pf;

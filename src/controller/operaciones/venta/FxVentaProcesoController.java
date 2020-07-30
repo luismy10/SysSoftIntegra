@@ -252,10 +252,14 @@ public class FxVentaProcesoController implements Initializable {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                ventaEstructuraController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2), true);
+                                if (ventaEstructuraController != null) {
+                                    ventaEstructuraController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2), true);
+                                }
                                 Tools.Dispose(window);
                             } else {
-                                ventaEstructuraController.resetVenta();
+                                if (ventaEstructuraController != null) {
+                                    ventaEstructuraController.resetVenta();
+                                }
                                 Tools.Dispose(window);
                             }
                             break;
