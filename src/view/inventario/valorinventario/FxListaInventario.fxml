@@ -26,6 +26,7 @@
                         </ImageView>
                      </graphic>
                   </Label>
+                  <Label text="Label" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0px 0.8333333333333334em 0px  0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">

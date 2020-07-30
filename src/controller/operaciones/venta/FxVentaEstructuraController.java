@@ -1151,10 +1151,10 @@ public class FxVentaEstructuraController implements Initializable {
                             billPrintable.hbEncebezado(box,
                                     ticket ? cbComprobante.getSelectionModel().getSelectedItem().getNombre() : "PRE VENTA",
                                     serieNumeracion,
-                                    txtNumeroDocumento.getText().trim(),
-                                    txtDatosCliente.getText().trim(),
-                                    txtCelularCliente.getText().trim(),
-                                    txtDireccionCliente.getText().trim(),
+                                    txtNumeroDocumento.getText().trim().toUpperCase(),
+                                    txtDatosCliente.getText().trim().toUpperCase(),
+                                    txtCelularCliente.getText().trim().toUpperCase(),
+                                    txtDireccionCliente.getText().trim().toUpperCase(),
                                     codigoVenta);
                         }
 
