@@ -33,9 +33,9 @@
                               <Separator HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <HBox style="-fx-padding: 0.5em;">
+                        <HBox style="-fx-padding: 0px 0px  0.4166666666666667em 0px;">
                            <children>
-                              <VBox fx:id="vbEfectivo" alignment="CENTER" onMouseClicked="#onMouseClickedEfectivo" prefHeight="83.0" prefWidth="89.0" style="-fx-padding: 0.5em; -fx-cursor: hand; -fx-background-color: #265B7C;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbEfectivo" alignment="CENTER" onMouseClicked="#onMouseClickedEfectivo" style="-fx-padding: 0.5em; -fx-cursor: hand; -fx-background-color: #265B7C;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="lblEfectivo" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Al contado" textFill="WHITE">
                                        <graphic>
@@ -48,7 +48,7 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" prefWidth="71.0" style="-fx-padding: 0.5em; -fx-cursor: hand;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" style="-fx-padding: 0.5em; -fx-cursor: hand;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Crédito" textFill="#1a2226">
                                        <graphic>
