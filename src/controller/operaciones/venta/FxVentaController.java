@@ -55,8 +55,8 @@ public class FxVentaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
-        // ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
-        ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
+         ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+//        ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -64,7 +64,7 @@ public class FxVentaController implements Initializable {
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             btnAgregarVenta.setDisable(true);
         }
-//        ventaEstructuraController.loadPrivilegios(privilegioTBs);
+        ventaEstructuraController.loadPrivilegios(privilegioTBs);
     }
 
     private Object addEstructura(Tab tab) {
@@ -81,8 +81,8 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadElements() {
-        ventaEstructuraNuevoController.setContent(vbPrincipal);
-//        ventaEstructuraController.getTxtSearch().requestFocus();
+//        ventaEstructuraNuevoController.setContent(vbPrincipal);
+        ventaEstructuraController.getTxtSearch().requestFocus();
     }
 
     private void addTabVentaEstructura() {

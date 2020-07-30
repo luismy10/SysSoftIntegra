@@ -29,8 +29,6 @@ public class FxImpresoraTicketController implements Initializable {
     @FXML
     private CheckBox cbCortarPapel;
 
-    private FxVentaEstructuraController ventaEstructuraController;
-
     private PrinterService printerService;
 
     @Override
@@ -99,14 +97,11 @@ public class FxImpresoraTicketController implements Initializable {
 
     private void eventImprimirPrueba() {
         if (cbImpresoras.getSelectionModel().getSelectedIndex() >= 0) {
-            if (ventaEstructuraController != null) {
                 String text = "Impresora " + cbImpresoras.getSelectionModel().getSelectedItem()
                         + "\nPara uso de todo tipo de tickets"
                         + "\nCorta papel"
                         + "\n\n\n\n\n\n\n\n\n\n";
                 printerService.printString(cbImpresoras.getSelectionModel().getSelectedItem(), text, cbCortarPapel.isSelected());
-               // ventaEstructuraController.imprimirPrueba(cbImpresoras.getSelectionModel().getSelectedItem(), cbCortarPapel.isSelected());
-            }
         } else {
             Tools.AlertMessageWarning(window, "Impresora de ticket", "Seleccione una impresora");
         }
@@ -136,8 +131,5 @@ public class FxImpresoraTicketController implements Initializable {
         eventImprimirPrueba();
     }
 
-    public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
-        this.ventaEstructuraController = ventaEstructuraController;
-    }
 
 }

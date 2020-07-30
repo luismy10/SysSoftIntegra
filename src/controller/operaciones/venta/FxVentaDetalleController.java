@@ -9,6 +9,9 @@ import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.awt.HeadlessException;
+import java.awt.print.Book;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -42,6 +45,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javax.print.DocPrintJob;
 import model.EmpleadoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
@@ -110,7 +114,7 @@ public class FxVentaDetalleController implements Initializable {
     private Label lblValor;
     @FXML
     private Text lbClienteInformacion;
-    
+
     private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
@@ -190,8 +194,8 @@ public class FxVentaDetalleController implements Initializable {
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
                         lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getClienteTB().getInformacion()+" ");
-                        lbClienteInformacion.setText(ventaTB.getClienteTB().getDireccion()+" - "+ventaTB.getClienteTB().getCelular());
+                        lblCliente.setText(ventaTB.getClienteTB().getInformacion() + " ");
+                        lbClienteInformacion.setText(ventaTB.getClienteTB().getDireccion() + " - " + ventaTB.getClienteTB().getCelular());
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                         lblObservaciones.setText(ventaTB.getObservaciones());
@@ -552,46 +556,65 @@ public class FxVentaDetalleController implements Initializable {
             Task<String> task = new Task<String>() {
                 @Override
                 public String call() {
-                    billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                    try {
+                        billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
-                    for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-                        HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-                        billPrintable.hbEncebezado(box,
-                                ventaTB.getComprobanteName(),
-                                lblSerie.getText(),
-                                ventaTB.getClienteTB().getNumeroDocumento(),
-                                ventaTB.getClienteTB().getInformacion(),
-                                ventaTB.getClienteTB().getCelular(),
-                                ventaTB.getClienteTB().getDireccion(),
-                                ventaTB.getCodigo());
-                    }
-
-                    AnchorPane hbDetalle = new AnchorPane();
-                    for (int m = 0; m < arrList.size(); m++) {
-                        for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                            HBox hBox = new HBox();
-                            hBox.setId("dc_" + m + "" + i);
-                            HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                            billPrintable.hbDetalle(hBox, box, arrList, m);
-                            hbDetalle.getChildren().add(hBox);
+                        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                            billPrintable.hbEncebezado(box,
+                                    ventaTB.getComprobanteName(),
+                                    lblSerie.getText(),
+                                    ventaTB.getClienteTB().getNumeroDocumento(),
+                                    ventaTB.getClienteTB().getInformacion(),
+                                    ventaTB.getClienteTB().getCelular(),
+                                    ventaTB.getClienteTB().getDireccion(),
+                                    ventaTB.getCodigo());
                         }
-                    }
 
-                    for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                        HBox box = ((HBox) hbPie.getChildren().get(i));
-                        billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
-                                Tools.roundingValue(subImporte, 2),
-                                "-" + Tools.roundingValue(descuento, 2),
-                                Tools.roundingValue(subTotalImporte, 2),
-                                Tools.roundingValue(total, 2),
-                                Tools.roundingValue(efectivo, 2),
-                                Tools.roundingValue(vuelto, 2),
-                                ventaTB.getClienteTB().getNumeroDocumento(),
-                                ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                ventaTB.getClienteTB().getCelular());
-                    }
+                        AnchorPane hbDetalle = new AnchorPane();
+                        for (int m = 0; m < arrList.size(); m++) {
+                            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                                HBox hBox = new HBox();
+                                hBox.setId("dc_" + m + "" + i);
+                                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                                billPrintable.hbDetalle(hBox, box, arrList, m);
+                                hbDetalle.getChildren().add(hBox);
+                            }
+                        }
 
-                    return billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
+                        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                            HBox box = ((HBox) hbPie.getChildren().get(i));
+                            billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
+                                    Tools.roundingValue(subImporte, 2),
+                                    "-" + Tools.roundingValue(descuento, 2),
+                                    Tools.roundingValue(subTotalImporte, 2),
+                                    Tools.roundingValue(total, 2),
+                                    Tools.roundingValue(efectivo, 2),
+                                    Tools.roundingValue(vuelto, 2),
+                                    ventaTB.getClienteTB().getNumeroDocumento(),
+                                    ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                                    ventaTB.getClienteTB().getCelular());
+                        }
+
+                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.CORTAPAPEL_IMPRESORA);
+
+                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                        if (job != null) {
+                            PrinterJob pj = PrinterJob.getPrinterJob();
+                            pj.setPrintService(job.getPrintService());
+                            pj.setJobName(Session.NOMBRE_IMPRESORA);
+                            Book book = new Book();
+                            book.append(billPrintable, billPrintable.getPageFormat(pj));
+                            pj.setPageable(book);
+                            pj.print();
+                            return "completed";
+                        } else {
+                            return "error_name";
+                        }
+                    } catch (PrinterException ex) {
+                        return "Error en imprimir: " + ex.getLocalizedMessage(); 
+                    }
                 }
             };
 
@@ -612,7 +635,21 @@ public class FxVentaDetalleController implements Initializable {
                     notifications.darkStyle();
                     notifications.show();
                     //Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
-                } else {
+                }else if (result.equalsIgnoreCase("error_name")) {
+                    Image image = new Image("/view/image/warning_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Error en encontrar el nombre de la impresión por problemas de puerto o driver.")
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(10))
+                            .position(Pos.CENTER)
+                            .onAction(n -> {
+                                Tools.println(n);
+                            });
+                    notifications.darkStyle();
+                    notifications.show();
+                } 
+                else {
 //                    Tools.AlertMessageError(window, "Ventas", result);
                     Image image = new Image("/view/image/error_large.png");
                     Notifications notifications = Notifications.create()
@@ -661,8 +698,7 @@ public class FxVentaDetalleController implements Initializable {
             });
             exec.execute(task);
 
-        } catch (Exception ex) {
-        } finally {
+        }finally {
             exec.shutdown();
         }
 

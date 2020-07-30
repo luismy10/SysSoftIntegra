@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="vbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaEstructuraNuevoController">
+<VBox fx:id="vbWindow" onKeyPressed="#onKeyPressedWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaEstructuraNuevoController">
    <children>
       <HBox VBox.vgrow="ALWAYS">
          <opaqueInsets>
@@ -244,7 +244,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Mov. de Caja(F7)">
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionMovimientoCaja" onKeyPressed="#onKeyPressedMovimientoCaja" styleClass="buttonLight" text="Mov. de Caja(F7)">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -253,7 +253,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Ticket(F8)">
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionTicket" onKeyPressed="#onKeyPressedTicket" styleClass="buttonLight" text="Ticket(F8)">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -262,7 +262,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Limpiar(9)">
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionLimpiar" onKeyPressed="#onKeyPressedLimpiar" styleClass="buttonLight" text="Limpiar(9)">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -271,7 +271,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Impresora(10)">
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionImpresora" onKeyPressed="#onKeyPressedImpresora" styleClass="buttonLight" text="Impresora(10)">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>

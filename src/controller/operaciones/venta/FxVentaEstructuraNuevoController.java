@@ -646,7 +646,63 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             System.out.println("Error en producto lista:" + ex.getLocalizedMessage());
         }
     }
+    
+    private void onEventMovimientoCaja(){
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_MOVIMIENTO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaMovimientoController controller = fXMLLoader.getController();
+//            controller.setInitVentaEstructuraController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento de caja", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> {
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            });
+            stage.show();
+        } catch (IOException ex) {
 
+        }
+    }
+    
+    private void onEventTicket(){
+        
+    }
+
+        @FXML
+    private void onKeyPressedWindow(KeyEvent event) {
+        if(event.getCode() == KeyCode.F1){
+            onEventCobrar();
+        }else if(event.getCode() == KeyCode.F2){
+            txtSearch.selectAll();
+            txtSearch.requestFocus();
+        }else if(event.getCode() == KeyCode.F3){
+            cbMoneda.requestFocus();
+        }else if(event.getCode() == KeyCode.F4){
+            cbCliente.requestFocus();
+        }else if(event.getCode() == KeyCode.F5){
+            if (!state) {
+                paginacion = 1;
+                fillSuministrosTable((short) 0, "");
+                opcion = 0;
+            }
+        }else if(event.getCode() == KeyCode.F6){
+            cbComprobante.requestFocus();
+        }else if(event.getCode() == KeyCode.F7){
+            onEventMovimientoCaja();
+        }else if(event.getCode() == KeyCode.F8){
+            
+        }else if(event.getCode() == KeyCode.F9){
+            
+        }else if(event.getCode() == KeyCode.F10){
+            
+        }
+    }
+    
     @FXML
     private void onKeyReleasedToSearch(KeyEvent event) {
         paginacion = 1;
@@ -788,6 +844,51 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private void onActionCobrar(ActionEvent event) {
         onEventCobrar();
     }
+    
+    @FXML
+    private void onKeyPressedMovimientoCaja(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            onEventMovimientoCaja();
+        }
+    }
+
+    @FXML
+    private void onActionMovimientoCaja(ActionEvent event) {
+        onEventMovimientoCaja();
+    }
+
+    @FXML
+    private void onKeyPressedTicket(KeyEvent event) {
+        if(event.getCode() ==  KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionTicket(ActionEvent event) {
+    }
+
+    @FXML
+    private void onKeyPressedLimpiar(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionLimpiar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onKeyPressedImpresora(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionImpresora(ActionEvent event) {
+    }
 
     public TextField getTxtSearch() {
         return txtSearch;
@@ -816,5 +917,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
     }
+
+    
 
 }
