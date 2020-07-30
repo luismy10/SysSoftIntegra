@@ -20,20 +20,16 @@
             <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                <children>
 
-                  <VBox minHeight="-Infinity" minWidth="-Infinity">
+                  <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #cccccc;">
-                           <children>
-                              <ImageView fx:id="ivPrincipal" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true">
-                                 <image>
-                                    <Image url="@../../image/no-image.png" />
-                                 </image>
-                                 <viewport>
-                                    <Rectangle2D />
-                                 </viewport>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <ImageView fx:id="ivPrincipal" fitHeight="140.0" fitWidth="140.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../image/no-image.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                        </ImageView>
                      </children>
                   </VBox>
                   <VBox style="-fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;" HBox.hgrow="ALWAYS">
@@ -102,9 +98,9 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="380.0" prefWidth="1020.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="340.0" prefWidth="1020.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                            <columns>
-                              <TableColumn fx:id="tcId" prefWidth="50.0" style="-fx-alignment: CENTER;" text="N°" />
+                              <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcNombre" prefWidth="300.0" style="fx-alignment: CENTER-LEFT;" text="Clave/Nombre" />
                               <TableColumn fx:id="tcCategoriaMarca" prefWidth="180.0" style="fx-alignment: CENTER-LEFT;" text="Categoria/Marca" />
                               <TableColumn fx:id="tcTipoProducto" prefWidth="40.0" style="-fx-alignment: CENTER;" text="TP" />

@@ -83,7 +83,6 @@ public class FxMovimientosDetalleController implements Initializable {
     public void setIniciarCarga(short type,String value) {
         tipo = type;
         idMovimientoInventario = value;
-        System.out.println(value);
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);

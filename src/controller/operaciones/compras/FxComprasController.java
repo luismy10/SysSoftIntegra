@@ -179,27 +179,27 @@ public class FxComprasController implements Initializable {
         searchComboBox = new SearchComboBox<>(cbProveedor);
         searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-             switch (t.getCode()) {
-                    case ENTER:
-                    case SPACE:
-                    case ESCAPE:                        
-                        searchComboBox.getComboBox().hide();
-                        break;
-                    case UP:
-                    case DOWN:
-                    case LEFT:
-                    case RIGHT:
-                        break;
-                    default:
-                        searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                        searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
-                        break;
-                }
+            switch (t.getCode()) {
+                case ENTER:
+                case SPACE:
+                case ESCAPE:
+                    searchComboBox.getComboBox().hide();
+                    break;
+                case UP:
+                case DOWN:
+                case LEFT:
+                case RIGHT:
+                    break;
+                default:
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+                    break;
+            }
         });
         searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-        if (item != null) {
+            if (item != null) {
                 searchComboBox.getComboBox().getSelectionModel().select(item);
-                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {                    
+                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
                     searchComboBox.getComboBox().hide();
                 }
             }
@@ -434,10 +434,10 @@ public class FxComprasController implements Initializable {
         } else {
             try {
                 CompraTB compraTB = new CompraTB();
-                compraTB.setProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
+                compraTB.setIdProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
                 compraTB.setSerie(cbSerie.getText().trim());
                 compraTB.setNumeracion(cbNumeracion.getText().trim());
-                compraTB.setTipoMoneda(Session.MONEDA_ID);
+                compraTB.setIdMoneda(Session.MONEDA_ID);
                 compraTB.setFechaCompra(Tools.getDatePicker(tpFechaCompra));
                 compraTB.setHoraCompra(Tools.getHour());
                 compraTB.setSubTotal(subTotal);
@@ -477,6 +477,7 @@ public class FxComprasController implements Initializable {
             detalleCompraTBs = tvList.getSelectionModel().getSelectedItems();
             detalleCompraTBs.forEach(e -> {
                 try {
+                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                     URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
                     FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                     Parent parent = fXMLLoader.load(url.openStream());
@@ -486,6 +487,8 @@ public class FxComprasController implements Initializable {
                     //
                     Stage stage = WindowStage.StageLoaderModal(parent, "Editar suministro", spWindow.getScene().getWindow());
                     stage.setResizable(false);
+                    stage.sizeToScene();
+                    stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
                     stage.show();
 
                     DetalleCompraTB detalleCompraTB = new DetalleCompraTB();

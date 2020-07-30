@@ -1,19 +1,14 @@
 package controller.operaciones.compras;
 
 import controller.consultas.compras.FxComprasEditarController;
-import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -31,7 +26,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.BancoADO;
 import model.BancoHistorialTB;
 import model.BancoTB;
@@ -210,20 +204,6 @@ public class FxComprasProcesoController implements Initializable {
                 Tools.AlertMessageError(apWindow, "Compra", result);
             }
         }
-    }
-
-    public void openWindowAddPlazo() throws IOException {
-        URL url = getClass().getResource(FilesRouters.FX_PLAZOS);
-        FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-        Parent parent = fXMLLoader.load(url.openStream());
-        //Controlller here
-        FxPlazosController controller = fXMLLoader.getController();
-        controller.setInitCompraVentaProcesoController(this, null);
-        //
-        Stage stage = WindowStage.StageLoaderModal(parent, "Agegar nuevo plazo", apWindow.getScene().getWindow());
-        stage.setResizable(false);
-        stage.sizeToScene();
-        stage.show();
     }
 
     private void eventAgregarCredito() {

@@ -107,7 +107,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefWidth="260.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
+                              <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefHeight="30.0" prefWidth="260.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
@@ -121,7 +121,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtNameProduct" onKeyReleased="#onKeyReleasedNameProduct" prefWidth="260.0" promptText="Nombre de articulo" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                              <TextField fx:id="txtNameProduct" onKeyReleased="#onKeyReleasedNameProduct" prefHeight="30.0" prefWidth="260.0" promptText="Nombre de articulo" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
@@ -135,7 +135,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbExistencia" prefWidth="260.0" promptText="Seleccione" />
+                              <ComboBox fx:id="cbExistencia" prefHeight="30.0" prefWidth="260.0" promptText="-- Seleccione --" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
@@ -149,7 +149,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbCategoria" prefWidth="260.0" promptText="Seleccione" />
+                              <ComboBox fx:id="cbCategoria" prefWidth="260.0" promptText="-- Seleccione --" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
@@ -163,7 +163,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbMarca" prefWidth="260.0" promptText="Seleccione" />
+                              <ComboBox fx:id="cbMarca" prefWidth="260.0" promptText="-- Seleccione --" />
                            </children>
                         </VBox>
                      </children>

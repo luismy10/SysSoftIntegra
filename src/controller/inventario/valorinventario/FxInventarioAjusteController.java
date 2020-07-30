@@ -55,7 +55,7 @@ public class FxInventarioAjusteController implements Initializable {
             if (option == 1) {
                 String value = SuministroADO.UpdatedInventarioStockMM(idSuministro, txtStockMinimo.getText().trim(), txtstockMaximo.getText().trim());
                 if (value.equalsIgnoreCase("updated")) {
-                    valorInventarioController.fillInventarioTable("", (short) 0, "",(short) 0,0,0);
+                    valorInventarioController.onEventPaginacion();
                     Tools.Dispose(apWindow);
                     Tools.AlertMessageInformation(apWindow, "Ajuste de inventario", "Se realizo los cambios correctamenten.");
                 } else {

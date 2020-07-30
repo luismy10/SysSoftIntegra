@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import model.MovimientoCajaTB;
 import model.SuministroTB;
 import model.VentaADO;
@@ -26,7 +25,7 @@ public class FxVentaDevolucionController implements Initializable {
     @FXML
     private AnchorPane window;
     @FXML
-    private Text lblComprobante;
+    private Label lblComprobante;
     @FXML
     private Label lblTotal;
     @FXML

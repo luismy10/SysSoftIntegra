@@ -280,10 +280,10 @@ public class FxComprasEditarController implements Initializable {
                 btnArticulo.requestFocus();
             } else {
                 CompraTB compraTB = new CompraTB();
-                compraTB.setProveedor(idProveedor);
+                compraTB.setIdProveedor(idProveedor);
 //                compraTB.setComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 compraTB.setNumeracion(cbNumeracion.getText().trim());
-                compraTB.setTipoMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 1
+                compraTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 1
                         ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
                 compraTB.setFechaCompra(Tools.getDatePicker(tpFechaCompra));
                 compraTB.setHoraCompra(Tools.getHour());
@@ -332,7 +332,7 @@ public class FxComprasEditarController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.fillSuministrosTablePaginacion();
+            controller.fillSuministrosTable((short)0,"");
         } catch (IOException ex) {
             System.out.println("Controller compras" + ex.getLocalizedMessage());
         }

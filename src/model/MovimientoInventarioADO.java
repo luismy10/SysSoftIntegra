@@ -441,7 +441,7 @@ public class MovimientoInventarioADO {
                     inventarioTB.setFecha(resultSet.getString("Fecha"));
                     inventarioTB.setHora(resultSet.getTime("Hora").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     inventarioTB.setObservacion(resultSet.getString("Observacion"));
-                    inventarioTB.setProveedor(resultSet.getString("Proveedor"));
+                    inventarioTB.setProveedor(resultSet.getString("Proveedor").toUpperCase());
                     inventarioTB.setEstadoName(resultSet.getString("Estado"));
                 }
                 list.add(inventarioTB);

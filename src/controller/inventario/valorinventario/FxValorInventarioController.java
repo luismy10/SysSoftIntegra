@@ -106,7 +106,9 @@ public class FxValorInventarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcNumero.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()));
+        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getClave() + (cellData.getValue().getClaveAlterna().isEmpty() ? "" : " - ") + cellData.getValue().getClaveAlterna()
+                + "\n" + cellData.getValue().getNombreMarca()));
         tcCostoPromedio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
         tcExistencia.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
@@ -155,9 +157,9 @@ public class FxValorInventarioController implements Initializable {
                 int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-                lblLoad.setVisible(false);
+                lblPaginaSiguiente.setText(totalPaginacion + "");                
             }
+            lblLoad.setVisible(false);
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
@@ -363,7 +365,7 @@ public class FxValorInventarioController implements Initializable {
         }
     }
 
-    private void onEventPaginacion() {
+    public void onEventPaginacion() {
         switch (opcion) {
             case 0:
                 fillInventarioTable("", (short) 0, "", (short) 0, 0, 0);
@@ -450,9 +452,9 @@ public class FxValorInventarioController implements Initializable {
                     Tools.roundingValue(0, 2),
                     Tools.roundingValue(0, 2),
                     "SIN DOCUMENTO",
-                    "PUBLICO GENERAL", "SIN CODIGO","SIN CELULAR");
+                    "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR");
         }
-        
+
         billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie, Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
 
     }

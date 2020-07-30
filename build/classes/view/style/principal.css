@@ -455,7 +455,7 @@
     -fx-background-insets: 0px;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 
@@ -522,7 +522,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -588,7 +588,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -654,7 +654,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -719,7 +719,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -817,7 +817,7 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto";
+    -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 }
@@ -855,7 +855,7 @@
 
 /*******************************************************************************
  *                                                                             *
- * Tab Pane                                                                   *
+ *  Button Dark                                                                    *
  *                                                                             *
  ******************************************************************************/
 
@@ -1173,7 +1173,7 @@
  ******************************************************************************/
 
 .table-view-principal{
-    -fx-background-color: transparent,transparent,transparent, transparent;
+    -fx-background-color: white,white,white, white;
     -fx-border-color: #999999;
     -fx-border-width: 1px;
     -fx-padding: 0;
@@ -1210,7 +1210,7 @@
     -fx-text-fill:  white;
     -fx-font-family:"Open Regular"; 
     -fx-font-weight: 100;
-    -fx-font-size: 1.1666666666666667em; 
+    -fx-font-size: 1.1666666666666667em; /* 14 */
     -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em;/*8px 2px 8px 2px*/
 }
 .table-view-principal .column-header .label:hover{
@@ -1258,9 +1258,7 @@
  ******************************************************************************/
 
 .table-view-secundario{
-    -fx-base: transparent;
-    -fx-control-inner-background: transparent;
-    -fx-background-color: transparent,transparent,transparent, transparent;
+    -fx-background-color: white,white,white, white;
     -fx-border-color: #999999;
     -fx-padding: 0;
 }
@@ -1281,16 +1279,16 @@
 }
 
 .table-view-secundario .column-header .label{
-    -fx-text-fill: #111;
-    -fx-font-family: "Segoe UI SemiBold";
-    -fx-font-size: 1.1666666666666667em;  /* 14 */
+    -fx-text-fill: #1a2226;
+    -fx-font-family:"Open Regular"; 
+    -fx-font-size: 1.1666666666666667em;   
     -fx-alignment: center;
-    -fx-padding:  0.5em;      
+    -fx-padding: 0.75em 0.3333333333333333em 0.75em 0.3333333333333333em;      
 }
 
-/*.table-view-secundario .column-header:hover{
+.table-view-secundario .column-header:hover{
     -fx-background-color: #dadada;
-}*/
+}
 
 .table-view-secundario .column-header:hover .label{
     -fx-text-fill: #111;
@@ -1314,11 +1312,9 @@
     -fx-background-color: white;   
 }
 
-/* Header Sort Arrows */
-/* There can be nested column headers inside other nested column so this declaration is a bit loose. Not sure we can be
-totally specific (always using direct child) and cover all cases, which would be more performant. */
+/*Header Sort Arrows */
 .table-view-secundario > .column-header-background .nested-column-header > .column-header > GridPane > .arrow {
-    -fx-padding: 0.5em 0.416667em 0.5em 0.416667em; /* 6 5 6 5 */
+    -fx-padding: 0.5em 0.416667em 0.5em 0.416667em; 
     -fx-shape: "M 15 4 L 15 24.0625 L 8.21875 17.28125 L 6.78125 18.71875 L 15.28125 27.21875 L 16 27.90625 L 16.71875 27.21875 L 25.21875 18.71875 L 23.78125 17.28125 L 17 24.0625 L 17 4 Z ";
     -fx-background-color: #111;
 }
@@ -1334,11 +1330,9 @@ totally specific (always using direct child) and cover all cases, which would be
 
 .table-view-secundario .table-cell{   
     -fx-text-fill:#1a2226;
-    -fx-font-family:"Segoe UI";    
-    -fx-font-size: 1.1666666666666667em;  /* 14 */
-    -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;/*9px 2px 9px 2*/
-    -fx-border-insets: 0;
-    -fx-border-color: transparent;
+    -fx-font-family:"Roboto";     
+    -fx-font-size: 1.1666666666666667em;   
+    -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;
 }
 
 .table-view-secundario .table-row-cell:empty, .table-cell:empty:hover {
@@ -1514,7 +1508,7 @@ totally specific (always using direct child) and cover all cases, which would be
 .combo-box.combo-box-base > .arrow-button {    
     -fx-background-color: white;
     -fx-background-radius: 0;
-    -fx-padding:  1.125em 0.75em  1.125em 0.75em; /*12.5px 9px 12.5px 9px*/
+    -fx-padding: 1.0833333333333333em 0.75em 1.0833333333333333em 0.75em; /*12.5px 9px 12.5px 9px*/
     -fx-border-width:0px;
     -fx-border-color: #007bff;
 }
@@ -1807,7 +1801,7 @@ totally specific (always using direct child) and cover all cases, which would be
     -fx-border-style: solid;
 
     -fx-padding: 0.5em 0.3333333333333333em 0.5em 0.3333333333333333em; /*5px*/
-      /*-fx-padding: 0.5em 0.75em 0.5em 0.75em; 6px 9px 6px 9px*/
+    /*-fx-padding: 0.5em 0.75em 0.5em 0.75em; 6px 9px 6px 9px*/
 }
 
 .check-box-contenido > .box > .mark {

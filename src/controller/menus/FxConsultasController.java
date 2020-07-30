@@ -1,6 +1,7 @@
 package controller.menus;
 
 import controller.consultas.compras.FxComprasRealizadasController;
+import controller.consultas.pagar.FxCuentasPorPagarController;
 import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.venta.FxVentaRealizadasController;
 import controller.tools.FilesRouters;
@@ -37,7 +38,7 @@ public class FxConsultasController implements Initializable {
     private VBox btnCompras;
     @FXML
     private VBox btnCorteCaja;
-    
+
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -70,6 +71,14 @@ public class FxConsultasController implements Initializable {
     private ScrollPane nodeCajaConsultas;
 
     private FxCajaConsultasController controlleCajaConsultas;
+    /*
+    Controller caja consultas
+     */
+    private FXMLLoader fXMLCuentasPorCobrar;
+
+    private VBox nodeCuentasPorCobrar;
+
+    private FxCuentasPorPagarController controlleCuentasPorCobrar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,6 +94,10 @@ public class FxConsultasController implements Initializable {
             fXMLCajaConsultas = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA_CONSULTA));
             nodeCajaConsultas = fXMLCajaConsultas.load();
             controlleCajaConsultas = fXMLCajaConsultas.getController();
+
+            fXMLCuentasPorCobrar = new FXMLLoader(getClass().getResource(FilesRouters.FX_CUENTAS_POR_COBRAR));
+            nodeCuentasPorCobrar = fXMLCuentasPorCobrar.load();
+            controlleCuentasPorCobrar = fXMLCuentasPorCobrar.getController();
 
         } catch (IOException ex) {
             System.out.println("Error en Inventario Controller:" + ex.getLocalizedMessage());
@@ -106,7 +119,7 @@ public class FxConsultasController implements Initializable {
         }
 
         if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-        
+
         } else {
 
         }
@@ -126,7 +139,9 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
         vbContent.getChildren().add(nodeVentaRealizadas);
-        ventaRealizadasController.loadInit();
+        if (ventaRealizadasController.getTvList().getItems().isEmpty()) {
+            ventaRealizadasController.loadInit();
+        }
     }
 
     private void openWindowPurchasesMade() {
@@ -137,7 +152,9 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeComprasRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeComprasRealizadas, 0d);
         vbContent.getChildren().add(nodeComprasRealizadas);
-        controllerComprasRealizadas.fillPurchasesTable((short) 0, "", Tools.getDate(), Tools.getDate(), 0);
+        if (controllerComprasRealizadas.getTvList().getItems().isEmpty()) {
+            controllerComprasRealizadas.fillPurchasesTable((short) 0, "", Tools.getDate(), Tools.getDate(), 0);
+        }
     }
 
     private void openWindowCortesCaja() {
@@ -148,6 +165,17 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeCajaConsultas, 0d);
         AnchorPane.setBottomAnchor(nodeCajaConsultas, 0d);
         vbContent.getChildren().add(nodeCajaConsultas);
+    }
+
+    private void openWindowCuentasPorCobrar() {
+        controlleCuentasPorCobrar.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeCuentasPorCobrar, 0d);
+        AnchorPane.setTopAnchor(nodeCuentasPorCobrar, 0d);
+        AnchorPane.setRightAnchor(nodeCuentasPorCobrar, 0d);
+        AnchorPane.setBottomAnchor(nodeCuentasPorCobrar, 0d);
+        vbContent.getChildren().add(nodeCuentasPorCobrar);
+        controlleCuentasPorCobrar.fillPurchasesTable("");
     }
 
     @FXML
@@ -174,7 +202,6 @@ public class FxConsultasController implements Initializable {
         openWindowVentaRealizadas();
     }
 
-
     @FXML
     private void onKeyPressedCorteCaja(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -185,6 +212,18 @@ public class FxConsultasController implements Initializable {
     @FXML
     private void onActionCorteCaja(ActionEvent event) {
         openWindowCortesCaja();
+    }
+
+    @FXML
+    private void onKeyPressedCuentasPagar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCuentasPorCobrar();
+        }
+    }
+
+    @FXML
+    private void onActionCuentasPagar(ActionEvent event) {
+        openWindowCuentasPorCobrar();
     }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {

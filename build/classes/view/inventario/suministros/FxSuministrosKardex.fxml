@@ -39,7 +39,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
@@ -80,7 +80,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <VBox alignment="CENTER_LEFT" spacing="10.0">
+                              <VBox alignment="CENTER_LEFT">
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Buscar por clave o clave alterna(F1)" textFill="#1a2226">
                                        <font>
@@ -111,12 +111,19 @@
                                  </children>
                               </VBox>
                               <Separator orientation="VERTICAL" />
-                              <VBox spacing="10.0">
+                              <VBox>
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Periodo" textFill="#1a2226">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/menu-dark.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                     </Label>
                                     <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
@@ -131,7 +138,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dtFechaInicial" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" />
+                                                <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
@@ -145,7 +152,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dtFechaFinal" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
+                                                <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
                                           </HBox>
                                        </children>

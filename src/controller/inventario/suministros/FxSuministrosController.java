@@ -1,9 +1,9 @@
 package controller.inventario.suministros;
 
-import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import controller.configuracion.etiquetas.FxEtiquetasBusquedaController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
+import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -14,19 +14,10 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +27,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -55,7 +45,6 @@ import model.DetalleADO;
 import model.DetalleTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
-import model.ModeloGenerico;
 import model.PrivilegioTB;
 import model.SuministroADO;
 import model.SuministroTB;
@@ -75,19 +64,19 @@ public class FxSuministrosController implements Initializable {
     @FXML
     private TableColumn<SuministroTB, Integer> tcNumeracion;
     @FXML
-    private TableColumn<SuministroTB, String> tcClave;
-    @FXML
     private TableColumn<SuministroTB, String> tcDescripcion;
     @FXML
     private TableColumn<SuministroTB, String> tcCategoria;
+    @FXML
+    private TableColumn<SuministroTB, String> tcMarcar;
     @FXML
     private TableColumn<SuministroTB, Label> tcCantidad;
     @FXML
     private TableColumn<SuministroTB, String> tcCosto;
     @FXML
-    private ComboBox<HideableItem<DetalleTB>> cbCategoria;
+    private ComboBox<DetalleTB> cbCategoria;
     @FXML
-    private ComboBox<HideableItem<DetalleTB>> cbMarca;
+    private ComboBox<DetalleTB> cbMarca;
     @FXML
     private ImageView ivPrincipal;
     @FXML
@@ -142,10 +131,11 @@ public class FxSuministrosController implements Initializable {
 
     private int totalPaginacion;
 
+    private short opcion;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-
             hbWindow.setOnKeyReleased((KeyEvent event) -> {
                 if (null != event.getCode()) {
                     switch (event.getCode()) {
@@ -167,7 +157,8 @@ public class FxSuministrosController implements Initializable {
                         case F5:
                             if (!lblLoad.isVisible()) {
                                 paginacion = 1;
-                                fillTableSuministrosPaginacion();
+                                fillTableSuministros((short) 0, "", "", 0, 0);
+                                opcion = 0;
                             }
                             break;
                         case F6:
@@ -199,23 +190,22 @@ public class FxSuministrosController implements Initializable {
             suministrosProcesoController = fXMLSuministrosProceso.getController();
 
             tcNumeracion.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-            tcClave.setCellValueFactory(cellData -> Bindings.concat(
-                    cellData.getValue().getClaveAlterna() == null || cellData.getValue().getClaveAlterna().equalsIgnoreCase("")
-                    ? cellData.getValue().getClave() : cellData.getValue().getClaveAlterna() + "\n" + cellData.getValue().getClave()
-            ));
-            tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
-            tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()+"\n"+cellData.getValue().getMarcaName()));
+            tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(
+                    cellData.getValue().getClave() + (cellData.getValue().getClaveAlterna().isEmpty() ? "" : " - ") + cellData.getValue().getClaveAlterna()
+                    + "\n" + cellData.getValue().getNombreMarca())
+            );
+
+            tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
+            tcMarcar.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
             tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
             tcCantidad.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
-//        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(),2)));
 
-            tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));//+1
-            tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
-            tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.32));//+4       
-            tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
+            tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+            tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.31));
+            tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+            tcMarcar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-//        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));//+2
 
             arrayArticulosImpuesto = new ArrayList<>();
             ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
@@ -223,6 +213,7 @@ public class FxSuministrosController implements Initializable {
             });
 
             paginacion = 1;
+            opcion = 0;
             filtercbCategoria();
 
         } catch (IOException ex) {
@@ -294,8 +285,116 @@ public class FxSuministrosController implements Initializable {
     }
 
     private void filtercbCategoria() {
-        createComboBoxWithAutoCompletionSupport(cbCategoria, DetalleADO.GetDetailId("0006"));
-        createComboBoxWithAutoCompletionSupport(cbMarca, DetalleADO.GetDetailId("0007"));
+        SearchComboBox<DetalleTB> searchComboBoxCategoria = new SearchComboBox<>(cbCategoria);
+        searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
+        searchComboBoxCategoria.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0006"));
+        searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            if (null == t.getCode()) {
+                searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().selectAll();
+            } else {
+                switch (t.getCode()) {
+                    case ENTER:
+                    case SPACE:
+                    case ESCAPE:
+                        if (!lblLoad.isVisible()) {
+                            paginacion = 1;
+                            fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get(), 0);
+                            opcion = 3;
+                        }
+                        searchComboBoxCategoria.getComboBox().hide();
+                        break;
+                    case UP:
+                    case DOWN:
+                    case LEFT:
+                    case RIGHT:
+                        break;
+                    default:
+                        searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().selectAll();
+                        break;
+                }
+            }
+        }
+        );
+        searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxCategoria.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxCategoria.getSearchComboBoxSkin().isClickSelection()) {
+                    if (!lblLoad.isVisible()) {
+                        paginacion = 1;
+                        fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get(), 0);
+                        opcion = 3;
+                    }
+                    searchComboBoxCategoria.getComboBox().hide();
+                }
+            }
+        });
+
+        SearchComboBox<DetalleTB> searchComboBoxMarca = new SearchComboBox<>(cbMarca);
+        searchComboBoxMarca.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
+        searchComboBoxMarca.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0007"));
+        searchComboBoxMarca.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            if (null == t.getCode()) {
+                searchComboBoxMarca.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                searchComboBoxMarca.getSearchComboBoxSkin().getSearchBox().selectAll();
+            } else {
+                switch (t.getCode()) {
+                    case ENTER:
+                    case SPACE:
+                    case ESCAPE:
+                        if (!lblLoad.isVisible()) {
+                            paginacion = 1;
+                            fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                            opcion = 4;
+                        }
+                        searchComboBoxMarca.getComboBox().hide();
+                        break;
+                    case UP:
+                    case DOWN:
+                    case LEFT:
+                    case RIGHT:
+                        break;
+                    default:
+                        searchComboBoxMarca.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxMarca.getSearchComboBoxSkin().getSearchBox().selectAll();
+                        break;
+                }
+            }
+        });
+        searchComboBoxMarca.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxMarca.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxMarca.getSearchComboBoxSkin().isClickSelection()) {
+                    if (!lblLoad.isVisible()) {
+                        paginacion = 1;
+                        fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                        opcion = 4;
+                    }
+                    searchComboBoxMarca.getComboBox().hide();
+                }
+            }
+        });
+    }
+
+    public void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillTableSuministros((short) 0, "", "", 0, 0);
+                break;
+            case 1:
+                fillTableSuministros((short) 1, txtClave.getText().trim(), "", 0, 0);
+                break;
+            case 2:
+                fillTableSuministros((short) 2, "", txtNombre.getText().trim(), 0, 0);
+                break;
+            case 3:
+                fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get(), 0);
+                break;
+            default:
+                fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                break;
+        }
     }
 
     private void openAlertMessageWarning(String message) {
@@ -304,73 +403,34 @@ public class FxSuministrosController implements Initializable {
         vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
     }
 
-    private void fillTableSuministros(short opcion, String clave, String nombre, int categoria, int marca) {
+    public void fillTableSuministros(short opcion, String clave, String nombreMarca, int categoria, int marca) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
 
-        Task<ObservableList<SuministroTB>> task = new Task<ObservableList<SuministroTB>>() {
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            public ObservableList<SuministroTB> call() {
-                return SuministroADO.List_Suministros(opcion, clave, nombre, categoria, marca);
-            }
-        };
-
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems(task.getValue());
-            if (!tvList.getItems().isEmpty()) {
-                tvList.getSelectionModel().select(0);
-                onViewDetailSuministro();
-            }
-            lblLoad.setVisible(false);
-        });
-
-        task.setOnFailed((WorkerStateEvent e) -> {
-            lblLoad.setVisible(false);
-        });
-        task.setOnScheduled((WorkerStateEvent e) -> {
-            lblLoad.setVisible(true);
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-    }
-
-    public void fillTableSuministrosPaginacion() {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<ModeloGenerico> task = new Task<ModeloGenerico>() {
-            @Override
-            public ModeloGenerico call() {
-                int page = paginacion;
-                int total = SuministroADO.GetAllSuministros();
-                ModeloGenerico generico = new ModeloGenerico();
-                generico.setObjectoE(SuministroADO.List_Suministro_Paginacion((page - 1) * 20));
-                generico.setObjectoN(20);
-                generico.setObjectoM(total);
-                generico.setObjectoO((int) (Math.ceil((double) (total / 20.00))));
-                generico.setObjectoP(page);
-                return generico;
+            public ArrayList<Object> call() {
+                return SuministroADO.ListarSuministros(opcion, clave, nombreMarca, categoria, marca, (paginacion - 1) * 20, 20);
             }
         };
 
         task.setOnSucceeded((e) -> {
-            ModeloGenerico generico = task.getValue();
-            tvList.setItems((ObservableList<SuministroTB>) generico.getObjectoE());
-            if (!tvList.getItems().isEmpty()) {
-                tvList.getSelectionModel().select(0);
-                onViewDetailSuministro();
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                tvList.setItems((ObservableList<SuministroTB>) objects.get(0));
+                if (!tvList.getItems().isEmpty()) {
+                    tvList.getSelectionModel().select(0);
+                    onViewDetailSuministro();
+                }
+
+                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
+                totalPaginacion = integer;
+                lblPaginaActual.setText(paginacion + "");
+                lblPaginaSiguiente.setText(totalPaginacion + "");
             }
-            totalPaginacion = (int) generico.getObjectoO();
-            lblPaginaActual.setText(paginacion + "");
-            lblPaginaSiguiente.setText(totalPaginacion + "");
             lblLoad.setVisible(false);
         });
         task.setOnFailed((e) -> {
@@ -460,33 +520,6 @@ public class FxSuministrosController implements Initializable {
         }
     }
 
-//    private void executeCloneArticulo() {
-//        try {
-//            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-//
-//                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_SUMINISTROS_PROCESO));
-//                ScrollPane node = fXMLLoader.load();
-//                //Controlller here
-//                FxSuministrosProcesoController controller = fXMLLoader.getController();
-//                controller.setInitControllerSuministros(this, vbPrincipal, vbContent);
-//                //
-//                vbContent.getChildren().clear();
-//                AnchorPane.setLeftAnchor(node, 0d);
-//                AnchorPane.setTopAnchor(node, 0d);
-//                AnchorPane.setRightAnchor(node, 0d);
-//                AnchorPane.setBottomAnchor(node, 0d);
-//                vbContent.getChildren().add(node);
-//                //
-//                controller.setValueCloneArticulo(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), true);
-//
-//            } else {
-//                openAlertMessageWarning("Debe seleccionar un producto para clonarlo a artículo");
-//                tvList.requestFocus();
-//            }
-//        } catch (IOException ex) {
-//            System.out.println(ex.getLocalizedMessage());
-//        }
-//    }
     private void removedArticulo() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -639,7 +672,8 @@ public class FxSuministrosController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
                 paginacion = 1;
-                fillTableSuministrosPaginacion();
+                fillTableSuministros((short) 0, "", "", 0, 0);
+                opcion = 0;
             }
         }
     }
@@ -648,7 +682,8 @@ public class FxSuministrosController implements Initializable {
     private void onActionReload(ActionEvent event) {
         if (!lblLoad.isVisible()) {
             paginacion = 1;
-            fillTableSuministrosPaginacion();
+            fillTableSuministros((short) 0, "", "", 0, 0);
+            opcion = 0;
         }
     }
 
@@ -718,7 +753,9 @@ public class FxSuministrosController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
+                paginacion = 1;
                 fillTableSuministros((short) 1, txtClave.getText().trim(), "", 0, 0);
+                opcion = 1;
             }
         }
     }
@@ -761,25 +798,9 @@ public class FxSuministrosController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
+                paginacion = 1;
                 fillTableSuministros((short) 2, "", txtNombre.getText().trim(), 0, 0);
-            }
-        }
-    }
-
-    @FXML
-    private void onActionCategoria(ActionEvent event) {
-        if (cbCategoria.getSelectionModel().getSelectedIndex() >= 0) {
-            if (!lblLoad.isVisible()) {
-                fillTableSuministros((short) 5, "", "", cbCategoria.getSelectionModel().getSelectedItem().getObject().getIdDetalle().get(), 0);
-            }
-        }
-    }
-
-    @FXML
-    private void onActionMarca(ActionEvent event) {
-        if (cbMarca.getSelectionModel().getSelectedIndex() >= 0) {
-            if (!lblLoad.isVisible()) {
-                fillTableSuministros((short) 6, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getObject().getIdDetalle().get());
+                opcion = 2;
             }
         }
     }
@@ -802,7 +823,7 @@ public class FxSuministrosController implements Initializable {
             if (!lblLoad.isVisible()) {
                 if (paginacion > 1) {
                     paginacion--;
-                    fillTableSuministrosPaginacion();
+                    onEventPaginacion();
                 }
             }
         }
@@ -813,7 +834,7 @@ public class FxSuministrosController implements Initializable {
         if (!lblLoad.isVisible()) {
             if (paginacion > 1) {
                 paginacion--;
-                fillTableSuministrosPaginacion();
+                onEventPaginacion();
             }
         }
     }
@@ -824,7 +845,7 @@ public class FxSuministrosController implements Initializable {
             if (!lblLoad.isVisible()) {
                 if (paginacion < totalPaginacion) {
                     paginacion++;
-                    fillTableSuministrosPaginacion();
+                    onEventPaginacion();
                 }
             }
         }
@@ -835,7 +856,7 @@ public class FxSuministrosController implements Initializable {
         if (!lblLoad.isVisible()) {
             if (paginacion < totalPaginacion) {
                 paginacion++;
-                fillTableSuministrosPaginacion();
+                onEventPaginacion();
             }
         }
     }
@@ -851,129 +872,6 @@ public class FxSuministrosController implements Initializable {
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
-    }
-
-    private void createComboBoxWithAutoCompletionSupport(ComboBox<HideableItem<DetalleTB>> comboBox, ObservableList<DetalleTB> items) {
-        ObservableList<HideableItem<DetalleTB>> hideableHideableItems = FXCollections.observableArrayList(hideableItem -> new Observable[]{hideableItem.hiddenProperty()});
-
-        items.forEach(item
-                -> {
-            HideableItem<DetalleTB> hideableItem = new HideableItem<>(item);
-            hideableHideableItems.add(hideableItem);
-        });
-
-        FilteredList<HideableItem<DetalleTB>> filteredHideableItems = new FilteredList<>(hideableHideableItems, t -> !t.isHidden());
-
-        comboBox.setItems(filteredHideableItems);
-
-        @SuppressWarnings("unchecked")
-        HideableItem<DetalleTB>[] selectedItem = (HideableItem<DetalleTB>[]) new HideableItem[1];
-
-        comboBox.addEventHandler(KeyEvent.KEY_PRESSED, event
-                -> {
-            if (!comboBox.isShowing()) {
-                return;
-            }
-
-            comboBox.setEditable(true);
-            comboBox.getEditor().clear();
-        });
-
-        comboBox.showingProperty().addListener((observable, oldValue, newValue)
-                -> {
-            if (newValue) {
-                @SuppressWarnings("unchecked")
-                ListView<HideableItem> lv = ((ComboBoxListViewSkin<HideableItem>) comboBox.getSkin()).getListView();
-                lv.scrollTo(comboBox.getValue());
-            } else {
-                HideableItem<DetalleTB> value = comboBox.getValue();
-                if (value != null) {
-                    selectedItem[0] = value;
-                }
-//
-                comboBox.setEditable(false);
-//
-                Platform.runLater(()
-                        -> {
-                    comboBox.getSelectionModel().select(selectedItem[0]);
-                    comboBox.setValue(selectedItem[0]);
-                });
-            }
-
-        });
-
-        comboBox.setOnHidden(event -> hideableHideableItems.forEach(item -> {
-            item.setHidden(false);
-
-        }));
-
-        comboBox.getEditor().textProperty().addListener((obs, oldValue, newValue)
-                -> {
-
-            if (!comboBox.isShowing()) {
-                return;
-            }
-
-            Platform.runLater(()
-                    -> {
-                if (comboBox.getSelectionModel().getSelectedItem() == null) {
-                    hideableHideableItems.forEach(item -> item.setHidden(!item.getObject().toString().toLowerCase().contains(newValue.toLowerCase())));
-                } else {
-                    boolean validText = false;
-
-                    for (HideableItem hideableItem : hideableHideableItems) {
-                        if (hideableItem.getObject().toString().equals(newValue)) {
-                            validText = true;
-                            break;
-                        }
-                    }
-
-                    if (!validText) {
-                        comboBox.getSelectionModel().select(null);
-                    }
-                }
-            });
-        });
-
-    }
-
-    public class HideableItem<T> {
-
-        private final ObjectProperty<T> object = new SimpleObjectProperty<>();
-        private final BooleanProperty hidden = new SimpleBooleanProperty();
-
-        private HideableItem(T object) {
-            setObject(object);
-        }
-
-        private ObjectProperty<T> objectProperty() {
-            return this.object;
-        }
-
-        private T getObject() {
-            return this.objectProperty().get();
-        }
-
-        private void setObject(T object) {
-            this.objectProperty().set(object);
-        }
-
-        private BooleanProperty hiddenProperty() {
-            return this.hidden;
-        }
-
-        private boolean isHidden() {
-            return this.hiddenProperty().get();
-        }
-
-        private void setHidden(boolean hidden) {
-            this.hiddenProperty().set(hidden);
-        }
-
-        @Override
-        public String toString() {
-            return getObject() == null ? null : getObject().toString();
-        }
     }
 
 }

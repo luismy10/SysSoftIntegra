@@ -94,6 +94,8 @@ public class FxComprasDetalleController implements Initializable {
     private Button btnAnular;
     @FXML
     private Label lblMetodoPago;
+    @FXML
+    private GridPane gpImpuestos;
 
     private FxComprasRealizadasController comprascontroller;
 
@@ -120,8 +122,6 @@ public class FxComprasDetalleController implements Initializable {
     private double subTotal;
 
     private double totalNeto;
-    @FXML
-    private GridPane gpImpuestos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -174,7 +174,7 @@ public class FxComprasDetalleController implements Initializable {
                     lblNotas.setText(compraTB.getNotas().equalsIgnoreCase("") ? "NO TIENE NINGUNA NOTA" : compraTB.getNotas());
                     lblTipo.setText(compraTB.getTipoName());
                     lblEstado.setText(compraTB.getEstadoName());
-                    lblTotalCompra.setText(compraTB.getTipoMonedaName() + " " + Tools.roundingValue(compraTB.getTotal(), 2));
+                    lblTotalCompra.setText(compraTB.getMonedaNombre() + " " + Tools.roundingValue(compraTB.getTotal(), 2));
                     lblValorLetras.setText(monedaCadena.Convertir(Tools.roundingValue(compraTB.getTotal(), 2), true, compraTB.getMonedaTB().getNombre()));
 
                     switch (compraTB.getEstado()) {
@@ -207,7 +207,7 @@ public class FxComprasDetalleController implements Initializable {
                     if (!listComprasCredito.isEmpty()) {
                         lblMetodoPago.setText("Método de pago al crédito");
                         for (int i = 0; i < listComprasCredito.size(); i++) {
-                            vbCondicion.getChildren().add(adddElementCondicion("Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Vence el " + listComprasCredito.get(i).getFechaRegistro() + " por " + compraTB.getTipoMonedaName() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2) + " Estado " + (listComprasCredito.get(i).isEstado() ? "Pagado" : "Pendiente") + " " + (listComprasCredito.get(i).isEstado() ? "el " + listComprasCredito.get(i).getFechaPago() : "")));
+                            vbCondicion.getChildren().add(adddElementCondicion("Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Vence el " + listComprasCredito.get(i).getFechaRegistro() + " por " + compraTB.getMonedaNombre() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2) + " Estado " + (listComprasCredito.get(i).isEstado() ? "Pagado" : "Pendiente") + " " + (listComprasCredito.get(i).isEstado() ? "el " + listComprasCredito.get(i).getFechaPago() : "")));
                         }
                     } else {
                         lblMetodoPago.setText("Método de pago al contado");
@@ -290,8 +290,8 @@ public class FxComprasDetalleController implements Initializable {
                 }
             }
             if (addElement) {
-                gpImpuestos.add(addLabelTitle( arrayArticulos.get(k).getNombreImpuesto().substring(0, 1).toUpperCase()+""+
-                        arrayArticulos.get(k).getNombreImpuesto().substring(1, arrayArticulos.get(k).getNombreImpuesto().length()).toLowerCase(),
+                gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto().substring(0, 1).toUpperCase() + ""
+                        + arrayArticulos.get(k).getNombreImpuesto().substring(1, arrayArticulos.get(k).getNombreImpuesto().length()).toLowerCase(),
                         Pos.CENTER_LEFT), 0, k + 1);
                 gpImpuestos.add(addLabelTotal(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
                 addElement = false;
@@ -414,13 +414,13 @@ public class FxComprasDetalleController implements Initializable {
             map.put("NUMEROCOMPRA", idCompra);
 
             map.put("FECHAELABORACION", compraTB.getFechaCompra().toUpperCase());
-            map.put("MONEDA", compraTB.getTipoMonedaName());
+            map.put("MONEDA", compraTB.getMonedaNombre());
             map.put("DATOSPROVEEDOR", compraTB.getProveedorTB().getNumeroDocumento() + "-" + compraTB.getProveedorTB().getRazonSocial());
             map.put("DIRECCIONPROVEEDOR", compraTB.getProveedorTB().getDireccion());
             map.put("PROVEEDORTELEFONOS", "TEL.: " + compraTB.getProveedorTB().getTelefono() + "  CEL.: " + compraTB.getProveedorTB().getCelular());
             map.put("PROVEEDOREMAIL", compraTB.getProveedorTB().getEmail());
 
-            map.put("SIMBOLO", compraTB.getTipoMonedaName());
+            map.put("SIMBOLO", compraTB.getMonedaNombre());
             map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
             map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(compraTB.getTotal(), 2), true, compraTB.getMonedaTB().getNombre()));
             map.put("VALOR_COMPRA", lblTotalBruto.getText());

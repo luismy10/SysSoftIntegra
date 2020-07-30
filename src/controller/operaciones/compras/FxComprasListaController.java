@@ -55,8 +55,8 @@ public class FxComprasListaController implements Initializable {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCompra()+"\n"+cellData.getValue().getHoraCompra()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
-        tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getProveedor()));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName()+" "+Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdProveedor()));
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre()+" "+Tools.roundingValue(cellData.getValue().getTotal(), 2)));
     }
 
     public void loadListCompras(String search, String fecha, short option) {

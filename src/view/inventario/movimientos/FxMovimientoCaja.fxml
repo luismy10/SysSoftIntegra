@@ -17,7 +17,7 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc;">
                <children>
                   <Label styleClass="labelRobotoBold18" text="Movimiento de caja" textFill="#1a2226">
                      <graphic>
@@ -42,7 +42,7 @@
                                  <children>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Realizar movimiento de salida de dinero">
+                                          <Label fx:id="lblTipoMovimiento" styleClass="labelRoboto14" text="Realizar salida de dinero" textFill="#1a2226" underline="true">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -55,7 +55,7 @@
                                     </HBox>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Salida de:" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Salida de:" textFill="#1a2226" />
                                        </children>
                                     </HBox>
                                     <GridPane style="-fx-vgap: 0.8333333333333334em; -fx-hgap: 0.8333333333333334em;">
@@ -68,7 +68,7 @@
                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Efectivo:">
+                                          <Label styleClass="labelOpenSansRegular14" text="Efectivo:" textFill="#1a2226">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -92,10 +92,9 @@
                                     </GridPane>
                                  </children>
                               </VBox>
-                              <Separator prefWidth="200.0" />
-                              <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                              <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
                                  <children>
-                                    <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Guardar">
+                                    <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Guardar">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>

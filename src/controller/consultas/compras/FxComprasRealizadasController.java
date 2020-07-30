@@ -1,10 +1,7 @@
 package controller.consultas.compras;
 
-import controller.operaciones.compras.FxComprasCreditoController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -22,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -37,7 +33,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.CompraADO;
 import model.CompraTB;
 import model.DetalleADO;
@@ -58,7 +53,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private TableView<CompraTB> tvList;
     @FXML
-    private TableColumn<CompraTB, Integer> tcId;
+    private TableColumn<CompraTB, String> tcId;
     @FXML
     private TableColumn<CompraTB, String> tcFechaCompra;
     @FXML
@@ -80,7 +75,7 @@ public class FxComprasRealizadasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(
                 LocalDate.parse(cellData.getValue().getFechaCompra()).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)).toUpperCase() + "\n"
                 + cellData.getValue().getHoraCompra()
@@ -90,10 +85,9 @@ public class FxComprasRealizadasController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().toUpperCase()
         ));
-//        tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcTipo.setCellValueFactory(new PropertyValueFactory<>("tipoLabel"));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre()+ " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
         tcFechaCompra.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
@@ -160,32 +154,6 @@ public class FxComprasRealizadasController implements Initializable {
             AnchorPane.setBottomAnchor(node, 0d);
             vbContent.getChildren().add(node);
 
-        } else {
-            Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
-        }
-    }
-
-    private void openWindowGenerarPago() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CREDITO);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxComprasCreditoController controller = fXMLLoader.getController();
-                controller.loadData(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(), tvList.getSelectionModel().getSelectedItem().getTotal());
-                controller.setInitControllerComprasRealizadas(this);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Compras al crédito", vbWindow.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-                stage.show();
-
-            } catch (IOException ex) {
-                System.out.println("Controller banco" + ex.getLocalizedMessage());
-            }
         } else {
             Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
         }
@@ -302,20 +270,12 @@ public class FxComprasRealizadasController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyPressedGenerarPago(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowGenerarPago();
-        }
-    }
-
-    @FXML
-    private void onActionGenerarPago(ActionEvent event) {
-        openWindowGenerarPago();
-    }
-
     public VBox getWindow() {
         return vbWindow;
+    }
+
+    public TableView<CompraTB> getTvList() {
+        return tvList;
     }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
