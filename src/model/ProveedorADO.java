@@ -295,13 +295,14 @@ public class ProveedorADO {
         return IdProveedor;
     }
 
-    public static List<ProveedorTB> getSearchComboBoxProveedores() {
-         String selectStmt = "SELECT IdProveedor,NumeroDocumento,RazonSocial FROM ProveedorTB";
+    public static List<ProveedorTB> getSearchComboBoxProveedores(String search) {
+         String selectStmt = "{call Sp_Obtener_Proveedor_For_ComboBox(?)}";
         PreparedStatement preparedStatement = null;
         List<ProveedorTB> proveedorTBs = new ArrayList<>();
           try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, search);
              try (ResultSet rsEmps = preparedStatement.executeQuery()) {
                  while (rsEmps.next()) {
                      ProveedorTB proveedorTB = new ProveedorTB();

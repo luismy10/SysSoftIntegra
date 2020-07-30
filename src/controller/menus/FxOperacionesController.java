@@ -144,9 +144,7 @@ public class FxOperacionesController implements Initializable {
         vbContent.getChildren().add(nodeCompra);
         if (!controllerCompras.isLoadData()) {
             controllerCompras.loadAllComponents();
-        } else {
-            controllerCompras.loadSearchProveedores();
-        }
+        } 
     }
 
     private void openWindowCorteCaja() {

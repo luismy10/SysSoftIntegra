@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
@@ -113,6 +114,9 @@
                                                                <image>
                                                                   <Image url="@../../image/no-image.png" />
                                                                </image>
+                                                               <viewport>
+                                                                  <Rectangle2D />
+                                                               </viewport>
                                                             </ImageView>
                                                          </children>
                                                       </HBox>

@@ -177,6 +177,18 @@ public class FxConsultasController implements Initializable {
         vbContent.getChildren().add(nodeCuentasPorCobrar);
         controlleCuentasPorCobrar.fillPurchasesTable("");
     }
+    
+        @FXML
+    private void onKeyPressedCuentasCobrar(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionCuentasCobrar(ActionEvent event) {
+    
+    }
 
     @FXML
     private void onKeyPressedComprasRealizadas(KeyEvent event) {

@@ -46,6 +46,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.ComprobanteADO;
@@ -1181,7 +1182,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtDatosCliente.getText(), codigoVenta, txtCelularCliente.getText().trim());
                         }
 
-                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie, Session.CORTAPAPEL_IMPRESORA);
+                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
 
                         DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
 
@@ -1193,12 +1194,15 @@ public class FxVentaEstructuraController implements Initializable {
                             book.append(billPrintable, billPrintable.getPageFormat(pj));
                             pj.setPageable(book);
                             pj.print();
+                            if (Session.CORTAPAPEL_IMPRESORA) {
+                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            }
                             return "completed";
                         } else {
                             return "error_name";
                         }
 
-                    } catch (PrinterException ex) {
+                    } catch (PrinterException | IOException | PrintException ex) {
                         return "Error en imprimir: " + ex.getLocalizedMessage();
                     }
                 }

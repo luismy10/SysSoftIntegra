@@ -97,16 +97,34 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCuentasPagar" onKeyPressed="#onKeyPressedCuentasPagar" styleClass="buttonTransparent" text="Cuentas por Pagar">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCuentasCobrar" onKeyPressed="#onKeyPressedCuentasCobrar" styleClass="buttonTransparent" text="Cuentas por Cobrar">
                            <graphic>
-                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
                                  <image>
-                                    <Image url="@../image/asignacion.png" />
+                                    <Image url="@../image/cuentascobrar.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ingresos/Egresos">
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ingresos">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCuentasPagar" onKeyPressed="#onKeyPressedCuentasPagar" styleClass="buttonTransparent" text="Cuentas por Pagar">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/cuentaspagar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Egresos">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

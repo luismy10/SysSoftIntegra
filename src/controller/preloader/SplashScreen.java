@@ -2,6 +2,7 @@ package controller.preloader;
 
 import controller.tools.FilesRouters;
 import controller.tools.Json;
+import controller.tools.LoadFont;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -107,6 +108,8 @@ public class SplashScreen extends Preloader {
                             Session.NOMBRE_IMPRESORA = "";
                         }
 
+                        LoadFont loadFont = new LoadFont(); 
+                        loadFont.loadFont();
 
                         TicketTB ticketTB = TicketADO.GetTicketRuta();
                         if (ticketTB != null) {
