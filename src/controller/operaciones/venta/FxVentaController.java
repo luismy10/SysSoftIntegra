@@ -44,8 +44,7 @@ public class FxVentaController implements Initializable {
 
     private FxVentaEstructuraController ventaEstructuraController;
 
-    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
-
+//    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private AnchorPane vbPrincipal;
@@ -55,7 +54,7 @@ public class FxVentaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
-         ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+        ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
 //        ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
     }
 
@@ -70,7 +69,8 @@ public class FxVentaController implements Initializable {
     private Object addEstructura(Tab tab) {
         Object object = null;
         try {
-            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA_NUEVO));
+//            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA_NUEVO));
+            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA));
             VBox seleccionado = fXMLSeleccionado.load();
             object = fXMLSeleccionado.getController();
             tab.setContent(seleccionado);
