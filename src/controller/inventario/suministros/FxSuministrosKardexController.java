@@ -143,7 +143,6 @@ public class FxSuministrosKardexController implements Initializable {
         };
         task.setOnSucceeded(w -> {
             tvList.setItems(task.getValue());
-            lblLoad.setVisible(false);
             if (!tvList.getItems().isEmpty()) {
                 double cantidadTotal = 0;
                 for (KardexTB item : tvList.getItems()) {
@@ -151,9 +150,13 @@ public class FxSuministrosKardexController implements Initializable {
                 }
                 lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
             }
+            lblLoad.setVisible(false);
+
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
+            Tools.println(task.getMessage());
+            Tools.println(task.getException());
         });
         task.setOnScheduled(w -> {
             lblLoad.setVisible(true);

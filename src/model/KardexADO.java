@@ -58,9 +58,7 @@ public class KardexADO {
 
                 kardexTB.setLblCantidadEntreda(lblCantidadEntrada);
                 kardexTB.setLblCostoEntrada(lblCostoEntrada);
-                kardexTB.setLblTotalEntrada(lblTotalEntrada);
-
-//                
+                kardexTB.setLblTotalEntrada(lblTotalEntrada);             
                 
                 Label lblCantidadSalida = new Label(kardexTB.getTipo() == 2 ? Tools.roundingValue(kardexTB.getCantidad(),4) : "");
                 lblCantidadSalida.getStyleClass().add("labelRoboto14");
@@ -78,13 +76,11 @@ public class KardexADO {
                 kardexTB.setLblCostoSalida(lblCostoSalida);
                 kardexTB.setLblTotalSalida(lblTotalSalida);
 
-//                
 
                 cantidad = cantidad + (kardexTB.getTipo() == 1 ? kardexTB.getCantidad() : -kardexTB.getCantidad());
-                
                 total = total + (kardexTB.getTipo() == 1 ? kardexTB.getTotal(): -kardexTB.getTotal());
-                
-                costo = total / cantidad;
+                //costo = total / cantidad;      
+                costo = kardexTB.getCosto();
 
                 Label lblCantidadSaldo = new Label(Tools.roundingValue(cantidad, 4));
                 lblCantidadSaldo.getStyleClass().add("labelRoboto14");

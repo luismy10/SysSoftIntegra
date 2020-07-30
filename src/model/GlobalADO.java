@@ -17,29 +17,51 @@ public class GlobalADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             try {
-//              compras al contado
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalcontado' from CompraTB where TipoCompra = 1 and EstadoCompra = 1 and FechaCompra between ? and ?");
+
+                // ventas contado
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasContado' from VentaTB where Tipo = 1 and FechaVenta between ? and ?");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
-                double totalcontado = 0;
+                double ventasContado = 0;
                 if (resultSet.next()) {
-                    totalcontado = resultSet.getDouble("totalcontado");
+                    ventasContado += resultSet.getObject("ventasContado") == null ? 0 : resultSet.getDouble("ventasContado");
                 }
-                list.add(totalcontado);
+                list.add(ventasContado);
 
-//              compras al credito
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalcredito' from CompraTB where TipoCompra = 2 and EstadoCompra = 2 and FechaCompra between ? and ?");
+                // ventas credito
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasCredito' from VentaTB where Tipo = 2 and FechaVenta between ? and ?");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
-                double totalcredito = 0;
+                double ventasCredito = 0;
                 if (resultSet.next()) {
-                    totalcredito = resultSet.getDouble("totalcredito");
+                    ventasCredito += resultSet.getObject("ventasCredito") == null ? 0 : resultSet.getDouble("ventasCredito");
                 }
-                list.add(totalcredito);
+                list.add(ventasCredito);
 
-//              utilidad
+                // ventas total
+//                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalVentas' from VentaTB where FechaCompra between ? and ?");
+//                preparedGlobal.setString(1, fechaInicial);
+//                preparedGlobal.setString(2, fechaFinal);
+//                resultSet = preparedGlobal.executeQuery();
+//                double totalVentas = 0;
+//                if (resultSet.next()) {
+//                    totalVentas += resultSet.getDouble("totalVentas");
+//                }
+//                list.add(totalVentas);
+                // ventas anuladas
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasAnuladas' from VentaTB where Estado = 3 and FechaVenta between ? and ?");
+                preparedGlobal.setString(1, fechaInicial);
+                preparedGlobal.setString(2, fechaFinal);
+                resultSet = preparedGlobal.executeQuery();
+                double ventasAnuladas = 0;
+                if (resultSet.next()) {
+                    ventasAnuladas += resultSet.getObject("ventasAnuladas") == null ? 0 : resultSet.getDouble("ventasAnuladas");
+                }
+                list.add(ventasAnuladas);
+
+                // utilidad
                 preparedGlobal = DBUtil.getConnection().prepareStatement("select \n"
                         + "	case \n"
                         + "		when a.ValorInventario = 1 then (dv.Cantidad * a.PrecioVentaGeneral )- (dv.Cantidad * dv.CostoVenta)\n"
@@ -55,19 +77,103 @@ public class GlobalADO {
                 resultSet = preparedGlobal.executeQuery();
                 double utilidad = 0;
                 while (resultSet.next()) {
-                    utilidad += resultSet.getDouble("Utilidad");
+                    utilidad += resultSet.getObject("Utilidad") == null ? 0 : resultSet.getDouble("Utilidad");
                 }
                 list.add(utilidad);
 
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalcancelado' from CompraTB where EstadoCompra = 3 and FechaCompra between ? and ?");
+                // compras al contado
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalcontado' from CompraTB where TipoCompra = 1 and EstadoCompra = 1 and FechaCompra between ? and ?");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
-                double totalcencelado = 0;
+                double totalcontado = 0;
                 if (resultSet.next()) {
-                    totalcencelado += resultSet.getDouble("totalcancelado");
+                    totalcontado = resultSet.getObject("totalcontado") == null ? 0 : resultSet.getDouble("totalcontado");
                 }
-                list.add(totalcencelado);
+                list.add(totalcontado);
+
+//              compras al credito
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalcredito' from CompraTB where TipoCompra = 2 and EstadoCompra = 2 and FechaCompra between ? and ?");
+                preparedGlobal.setString(1, fechaInicial);
+                preparedGlobal.setString(2, fechaFinal);
+                resultSet = preparedGlobal.executeQuery();
+                double totalcredito = 0;
+                if (resultSet.next()) {
+                    totalcredito = resultSet.getObject("totalcredito") == null ? 0 : resultSet.getDouble("totalcredito");
+                }
+                list.add(totalcredito);
+
+                // total compras
+//                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalCompras' from CompraTB where FechaCompra between ? and ?");
+//                preparedGlobal.setString(1, fechaInicial);
+//                preparedGlobal.setString(2, fechaFinal);
+//                resultSet = preparedGlobal.executeQuery();
+//                double totalCompras = 0;
+//                if (resultSet.next()) {
+//                    totalCompras += resultSet.getDouble("totalCompras");
+//                }
+//                list.add(totalCompras);
+                // compras anuladas
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'comprasAnuladas' from CompraTB where EstadoCompra = 3 and FechaCompra between ? and ?");
+                preparedGlobal.setString(1, fechaInicial);
+                preparedGlobal.setString(2, fechaFinal);
+                resultSet = preparedGlobal.executeQuery();
+                double comprasAnuladas = 0;
+                if (resultSet.next()) {
+                    comprasAnuladas += (resultSet.getObject("comprasAnuladas") == null ? 0 : resultSet.getDouble("comprasAnuladas"));
+                }
+                list.add(comprasAnuladas);
+
+                // CUENTAS
+                double ventas_cobrar = 0;
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as VentasCobrar from VentaTB where Tipo = 2 and Estado = 2");
+                resultSet = preparedGlobal.executeQuery();
+                if (resultSet.next()) {
+                    ventas_cobrar = resultSet.getObject("VentasCobrar") == null ? 0 : resultSet.getInt("VentasCobrar");
+                }
+                list.add(ventas_cobrar);
+
+                double compras_pagar = 0;
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as ComprasPagar from CompraTB where TipoCompra = 2 and EstadoCompra = 2");
+                resultSet = preparedGlobal.executeQuery();
+                if (resultSet.next()) {
+                    compras_pagar = resultSet.getObject("ComprasPagar") == null ? 0 : resultSet.getInt("ComprasPagar");
+                }
+                list.add(compras_pagar);
+
+                // CANTIDADES
+                double cantidad_negativas = 0;
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Negativos' from SuministroTB where Cantidad <= 0");
+                resultSet = preparedGlobal.executeQuery();
+                if (resultSet.next()) {
+                    cantidad_negativas = resultSet.getObject("Productos Negativos") == null ? 0 : resultSet.getDouble("Productos Negativos");
+                }
+                list.add(cantidad_negativas);
+
+                double cantidad_intermedias = 0;
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Intermedios' from SuministroTB where Cantidad > 0 and Cantidad < StockMinimo");
+                resultSet = preparedGlobal.executeQuery();
+                if (resultSet.next()) {
+                    cantidad_intermedias = resultSet.getObject("Productos Intermedios") == null ? 0 : resultSet.getInt("Productos Intermedios");
+                }
+                list.add(cantidad_intermedias);
+
+                double cantidad_necesarias = 0;
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Necesarios' from SuministroTB where Cantidad >= StockMinimo and Cantidad < StockMaximo");
+                resultSet = preparedGlobal.executeQuery();
+                if (resultSet.next()) {
+                    cantidad_necesarias = resultSet.getObject("Productos Necesarios") == null ? 0 : resultSet.getInt("Productos Necesarios");
+                }
+                list.add(cantidad_necesarias);
+
+                double cantidad_excedentes = 0;
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as 'Productos Execedentes' from SuministroTB where Cantidad >= StockMaximo");
+                resultSet = preparedGlobal.executeQuery();
+                if (resultSet.next()) {
+                    cantidad_excedentes = resultSet.getObject("Productos Execedentes") == null ? 0 : resultSet.getInt("Productos Execedentes");
+                }
+                list.add(cantidad_excedentes);
+
             } catch (SQLException ex) {
                 System.out.println(ex.getLocalizedMessage());
             } finally {
@@ -377,7 +483,7 @@ public class GlobalADO {
             statementEmpleado.setInt(18, 0);
             statementEmpleado.setString(19, empleadoTB.getUsuario());
             statementEmpleado.setString(20, empleadoTB.getClave());
-            statementEmpleado.setBoolean(21, true); 
+            statementEmpleado.setBoolean(21, true);
             statementEmpleado.addBatch();
 
             statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Predeterminado,CodigoAlterno,Sistema)VALUES(?,?,?,?,?,?)");
