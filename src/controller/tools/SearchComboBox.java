@@ -1,4 +1,3 @@
-
 package controller.tools;
 
 import java.util.function.BiPredicate;
@@ -8,23 +7,23 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
 
-public class SearchComboBox<T>{
-    
+public class SearchComboBox<T> {
+
     private SearchComboBoxSkin searchComboBoxSkin;
     private final ComboBox comboBox;
     private final FilteredList<T> filterList;
     private BiPredicate<T, String> filter;
-    
-    public SearchComboBox(ComboBox comboBox){        
-        this(comboBox,FXCollections.observableArrayList());
+
+    public SearchComboBox(ComboBox comboBox, boolean search) {
+        this(comboBox, FXCollections.observableArrayList(), search);
     }
-    
-    public SearchComboBox(ComboBox comboBox,ObservableList<T> items) {     
+
+    public SearchComboBox(ComboBox comboBox, ObservableList<T> items, boolean search) {
         this.comboBox = comboBox;
         this.filterList = new FilteredList<>(items);
         this.filter = (i, s) -> true;
         this.comboBox.setItems(items);
-        this.searchComboBoxSkin = new SearchComboBoxSkin(this); 
+        this.searchComboBoxSkin = new SearchComboBoxSkin(this, search);
         this.comboBox.setSkin(searchComboBoxSkin);
     }
 
@@ -47,9 +46,9 @@ public class SearchComboBox<T>{
     public SearchComboBoxSkin getSearchComboBoxSkin() {
         return searchComboBoxSkin;
     }
-    
+
     public ComboBox getComboBox() {
         return comboBox;
     }
-    
+
 }

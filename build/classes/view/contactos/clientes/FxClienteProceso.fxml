@@ -107,20 +107,6 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
                                        </children>
                                        <padding>
                                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -188,6 +174,20 @@
                                                          </font>
                                                       </Label>
                                                       <TextField fx:id="txtDireccion" styleClass="text-field-normal" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
+                                             <children>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" />
                                                    </children>
                                                 </VBox>
                                              </children>

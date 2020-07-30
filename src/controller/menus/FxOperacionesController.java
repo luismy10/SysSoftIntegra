@@ -195,7 +195,7 @@ public class FxOperacionesController implements Initializable {
     private void onActionCompras(ActionEvent event) {
         openWindowCompra();
     }
-
+    
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;

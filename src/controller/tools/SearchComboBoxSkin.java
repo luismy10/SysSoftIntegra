@@ -23,18 +23,14 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
     private final ListView<T> itemView;
     private boolean clickSelection = false;
 
-    public SearchComboBoxSkin(SearchComboBox searchComboBox) {
+    public SearchComboBoxSkin(SearchComboBox searchComboBox, boolean search) {
         super(searchComboBox.getComboBox());
 
         searchBox = new TextField();
         searchBox.getStyleClass().add("text-field-normal");
         searchBox.setPromptText("Ingrese los datos a buscar");
         searchBox.textProperty().addListener((ObservableValue<? extends String> p, String o, String text) -> {
-            searchComboBox.setPredicateFilter(item
-                    -> text.isEmpty()
-                    ? true
-                    : searchComboBox.getFilter().test(item, text)
-            );
+            searchComboBox.setPredicateFilter(item -> text.isEmpty() ? true : searchComboBox.getFilter().test(item, text));
         });
 
         itemView = new ListView<>();
@@ -55,19 +51,19 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
 //                }
 //            }
 //        });
-
-
         // cambia el foco del TextField al ListView usando las teclas ENTER y ESC
-        searchBox.setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
-                if (!itemView.getItems().isEmpty()) {
-                    itemView.getSelectionModel().select(0);
-                    itemView.requestFocus();
+        if (search) {
+            searchBox.setOnKeyPressed(t -> {
+                if (t.getCode() == KeyCode.ENTER) {
+                    if (!itemView.getItems().isEmpty()) {
+                        itemView.getSelectionModel().select(0);
+                        itemView.requestFocus();
+                    }
+                } else if (t.getCode() == KeyCode.ESCAPE) {
+                    searchComboBox.getComboBox().hide();
                 }
-            } else if (t.getCode() == KeyCode.ESCAPE) {
-                searchComboBox.getComboBox().hide();
-            }
-        });
+            });
+        }
 
         // se ha hecho click sobre el ListView
         itemView.addEventFilter(MouseEvent.ANY, me -> clickSelection = me.getEventType().equals(MouseEvent.MOUSE_PRESSED));
@@ -139,6 +135,4 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         return clickSelection;
     }
 
-    
-    
 }

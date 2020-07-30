@@ -294,7 +294,7 @@ public class FxSuministrosListaController implements Initializable {
         } else if (suministrosKardexController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-                suministrosKardexController.fillKardexTable(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), "", "");
+                suministrosKardexController.fillKardexTable((short)0,tvList.getSelectionModel().getSelectedItem().getIdSuministro(), "", "");
                 Tools.Dispose(apWindow);
             }
         } else if (asignacionProcesoController != null) {
@@ -418,7 +418,7 @@ public class FxSuministrosListaController implements Initializable {
             //Controlller here
             FxSuministrosProcesoModalController controller = fXMLLoader.getController();
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", apWindow.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Suministro", apWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.show();
@@ -481,9 +481,8 @@ public class FxSuministrosListaController implements Initializable {
 
     private void selectImage() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            ivPrincipal.setImage(new Image(tvList.getSelectionModel().getSelectedItem().getImagenTB().equalsIgnoreCase("")
-                    ? "/view/image/no-image.png"
-                    : new File(tvList.getSelectionModel().getSelectedItem().getImagenTB()).toURI().toString()));
+            File fileImage = new File(tvList.getSelectionModel().getSelectedItem().getImagenTB());
+            ivPrincipal.setImage(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
         }
     }
 

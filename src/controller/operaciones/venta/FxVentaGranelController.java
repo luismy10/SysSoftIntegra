@@ -49,7 +49,7 @@ public class FxVentaGranelController implements Initializable {
                 ? (Double.parseDouble(txtImporte.getText()) <= 0 ? oldPrecio : Double.parseDouble(txtImporte.getText()))
                 : oldPrecio;
 
-        double value = opcion ? importe + suministroTB.getPrecioVentaGeneralUnico(): importe;
+        double value = opcion ? importe + suministroTB.getPrecioVentaGeneralUnico() : importe;
 
         double porcentajeRestante = value * (suministroTB.getDescuento() / 100.00);
         double preciocalculado = value - porcentajeRestante;
@@ -74,6 +74,17 @@ public class FxVentaGranelController implements Initializable {
         Tools.Dispose(window);
         ventaEstructuraController.getTxtSearch().requestFocus();
         ventaEstructuraController.getTxtSearch().clear();
+    }
+
+    @FXML
+    private void onKeyTypedImporte(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtImporte.getText().contains(".") || c == '-' && txtImporte.getText().contains("-")) {
+            event.consume();
+        }
     }
 
     @FXML
@@ -102,17 +113,6 @@ public class FxVentaGranelController implements Initializable {
         Tools.Dispose(window);
         ventaEstructuraController.getTxtSearch().requestFocus();
         ventaEstructuraController.getTxtSearch().clear();
-    }
-
-    @FXML
-    private void onKeyTypedImporte(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-            event.consume();
-        }
-        if (c == '.' && txtImporte.getText().contains(".") || c == '-' && txtImporte.getText().contains("-")) {
-            event.consume();
-        }
     }
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {

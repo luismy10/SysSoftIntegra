@@ -12,17 +12,18 @@ import javafx.scene.control.Label;
 
 public class KardexADO {
 
-    public static ObservableList<KardexTB> List_Kardex_By_Id_Suministro(String value, String fechaInicial, String fechaFinal) {
-        String selectStmt = "{call Sp_Listar_Kardex_Suministro_By_Id(?,?,?)}";
+    public static ObservableList<KardexTB> List_Kardex_By_Id_Suministro(short opcion,String value, String fechaInicial, String fechaFinal) {
+        String selectStmt = "{call Sp_Listar_Kardex_Suministro_By_Id(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<KardexTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value);
-            preparedStatement.setString(2, fechaInicial);
-            preparedStatement.setString(3, fechaFinal);
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, value);
+            preparedStatement.setString(3, fechaInicial);
+            preparedStatement.setString(4, fechaFinal);
             rsEmps = preparedStatement.executeQuery();
 
             double cantidad = 0;

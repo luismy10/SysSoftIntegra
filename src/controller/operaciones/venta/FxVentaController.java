@@ -3,6 +3,7 @@ package controller.operaciones.venta;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
+import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
@@ -41,18 +42,21 @@ public class FxVentaController implements Initializable {
     @FXML
     private Button btnAgregarVenta;
 
-    private AnchorPane vbPrincipal;
-
     private FxVentaEstructuraController ventaEstructuraController;
 
+    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
+
     private ObservableList<PrivilegioTB> privilegioTBs;
+
+    private AnchorPane vbPrincipal;
 
     private boolean aperturaCaja;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
-        ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+        // ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+        ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -60,13 +64,13 @@ public class FxVentaController implements Initializable {
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             btnAgregarVenta.setDisable(true);
         }
-        ventaEstructuraController.loadPrivilegios(privilegioTBs);
+//        ventaEstructuraController.loadPrivilegios(privilegioTBs);
     }
 
     private Object addEstructura(Tab tab) {
         Object object = null;
         try {
-            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA));
+            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA_NUEVO));
             VBox seleccionado = fXMLSeleccionado.load();
             object = fXMLSeleccionado.getController();
             tab.setContent(seleccionado);
@@ -77,8 +81,8 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadElements() {
-        ventaEstructuraController.setContent(vbPrincipal);
-        ventaEstructuraController.getTxtSearch().requestFocus();
+        ventaEstructuraNuevoController.setContent(vbPrincipal);
+//        ventaEstructuraController.getTxtSearch().requestFocus();
     }
 
     private void addTabVentaEstructura() {

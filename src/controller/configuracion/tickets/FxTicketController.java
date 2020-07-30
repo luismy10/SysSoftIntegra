@@ -86,6 +86,10 @@ public class FxTicketController implements Initializable {
     private ComboBox<String> cbFuente;
     @FXML
     private ComboBox<Float> cbSize;
+    @FXML
+    private TextField txtAncho;
+    @FXML
+    private TextField txtAlto;
 
     private AnchorPane vbPrincipal;
 
@@ -184,7 +188,7 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                         imageView.setId(String.valueOf(object.get("value").toString()));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());
@@ -212,7 +216,7 @@ public class FxTicketController implements Initializable {
                         }
                     } else if (objectObtener.get("image") != null) {
                         JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()),  Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                        ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
                         imageView.setId(String.valueOf(object.get("value").toString()));
                         box.setPrefWidth(imageView.getColumnWidth() * pointWidth);
                         box.setPrefHeight(imageView.getFitHeight());
@@ -574,6 +578,13 @@ public class FxTicketController implements Initializable {
             hBox.setStyle("-fx-padding:0 20 0 0;-fx-border-width: 1 1 1 1;-fx-border-color: #0066ff;-fx-background-color: rgb(250, 198, 203);");
 
             hboxReference = hBox;
+            if (hboxReference.getChildren().size() == 1) {
+                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
+                    ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
+                    txtAncho.setText(Tools.roundingValue(viewTicket.getFitWidth(), 0));
+                    txtAlto.setText(Tools.roundingValue(viewTicket.getFitHeight(), 0));
+                }
+            }
         });
         ContextMenu contextMenu = new ContextMenu();
         MenuItem remove = new MenuItem("Remover Renglón");
@@ -1636,6 +1647,63 @@ public class FxTicketController implements Initializable {
                 tfReference.setFontSize(cbSize.getSelectionModel().getSelectedItem());
                 tfReference.setStyle("-fx-background-color: " + tfReference.getFontBackground() + ";-fx-text-fill:" + tfReference.getFontColor() + ";-fx-font-family:" + (tfReference.getFontName().equalsIgnoreCase("Consola") ? "Monospace" : tfReference.getFontName().equalsIgnoreCase("Roboto Regular") ? "Roboto" : "Roboto Bold") + ";-fx-font-size:" + tfReference.getFontSize() + ";");
             }
+        }
+    }
+
+    @FXML
+    private void onActionAncho(ActionEvent event) {
+        if (hboxReference != null) {
+            if (hboxReference.getChildren().size() == 1) {
+                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
+                    ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
+                    double oldWidth = viewTicket.getFitWidth();
+                    viewTicket.setFitWidth(Tools.isNumeric(txtAncho.getText().trim()) && Double.parseDouble(txtAncho.getText().trim()) > 0 ? Double.parseDouble(txtAncho.getText()) : oldWidth);
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyTypedAncho(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onActionAlto(ActionEvent event) {
+        if (hboxReference != null) {
+            if (hboxReference.getChildren().size() == 1) {
+                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
+                    ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
+                    double oldHeight = viewTicket.getFitHeight();
+                    viewTicket.setFitHeight(Tools.isNumeric(txtAlto.getText().trim()) && Double.parseDouble(txtAlto.getText().trim()) > 0 ? Double.parseDouble(txtAlto.getText()) : oldHeight);
+                    hboxReference.setPrefHeight(viewTicket.getFitHeight());
+                    double yPosBefero = 0;
+                    AnchorPane apDady = (AnchorPane) hboxReference.getParent();
+                    for (int p = 0; p < apDady.getChildren().size(); p++) {
+                        HBox hb = (HBox) apDady.getChildren().get(p);
+                        if (p == 0) {
+                            double heightNow = hb.getPrefHeight();
+                            hb.setLayoutY(p * heightNow);
+                            yPosBefero = hb.getLayoutY() + hb.getPrefHeight();
+                        } else {
+                            hb.setLayoutY(yPosBefero);
+                            yPosBefero = hb.getLayoutY() + hb.getPrefHeight();
+                        }
+                    }
+                    apDady.layout();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyTypedAlto(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
         }
     }
 

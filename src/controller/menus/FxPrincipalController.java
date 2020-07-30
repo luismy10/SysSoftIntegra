@@ -85,7 +85,7 @@ public class FxPrincipalController implements Initializable {
     private HBox fxConsultas;
 
     private FxConsultasController consultasController;
-    
+
     private HBox fxBancos;
 
     private FxBancosController bancosController;
@@ -112,12 +112,7 @@ public class FxPrincipalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
 
-//        spWindow.setOnKeyReleased(e->{
-//         System.out.println(e);
-//        });
-        
         lblEstado.setText(Session.CONNECTION_SESSION == true ? "Conectado" : "Desconectado");
         imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/image/connected.png") : new Image("/view/image/disconnected.png"));
         hbReferent = btnInicio;
@@ -136,7 +131,7 @@ public class FxPrincipalController implements Initializable {
             fxConsultas = fXMLConsultas.load();
             consultasController = fXMLConsultas.getController();
             consultasController.setContent(vbPrincipal, vbContent);
-            
+
             FXMLLoader fXMLBancos = new FXMLLoader(getClass().getResource(FilesRouters.FX_BANCOS));
             fxBancos = fXMLBancos.load();
             bancosController = fXMLBancos.getController();
@@ -188,7 +183,7 @@ public class FxPrincipalController implements Initializable {
                     btnInicio.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxInicio, btnInicio));
                     btnOperaciones.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxOperaciones, btnOperaciones));
                     btnConsultas.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxConsultas, btnConsultas));
-                    btnBancos.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxBancos, btnBancos));                    
+                    btnBancos.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxBancos, btnBancos));
                     btnInventario.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxInventario, btnInventario));
                     btnProduccion.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxProduccion, btnProduccion));
                     btnContactos.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxContactos, btnContactos));

@@ -12,7 +12,6 @@ import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,7 +76,7 @@ public class FxSuministrosKardexController implements Initializable {
     @FXML
     private DatePicker dtFechaFinal;
 
-    private String idSuministros;
+    private String idSuministro;
 
     private AnchorPane vbPrincipal;
 
@@ -127,10 +126,10 @@ public class FxSuministrosKardexController implements Initializable {
 //        tcSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
 //        tcSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
 
-        idSuministros = "";
+        idSuministro = "";
     }
 
-    public void fillKardexTable(String value, String fechaInicial, String fechaFinal) {
+    public void fillKardexTable(short opcion, String value, String fechaInicial, String fechaFinal) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -139,11 +138,10 @@ public class FxSuministrosKardexController implements Initializable {
         Task<ObservableList<KardexTB>> task = new Task<ObservableList<KardexTB>>() {
             @Override
             public ObservableList<KardexTB> call() {
-                return KardexADO.List_Kardex_By_Id_Suministro(value, fechaInicial, fechaFinal);
+                return KardexADO.List_Kardex_By_Id_Suministro(opcion, value, fechaInicial, fechaFinal);
             }
         };
-
-        task.setOnSucceeded((WorkerStateEvent e) -> {
+        task.setOnSucceeded(w -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
             if (!tvList.getItems().isEmpty()) {
@@ -154,10 +152,10 @@ public class FxSuministrosKardexController implements Initializable {
                 lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
             }
         });
-        task.setOnFailed((WorkerStateEvent event) -> {
+        task.setOnFailed(w -> {
             lblLoad.setVisible(false);
         });
-        task.setOnScheduled((WorkerStateEvent event) -> {
+        task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
         });
         exec.execute(task);
@@ -179,11 +177,9 @@ public class FxSuministrosKardexController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministro", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
-            controller.fillSuministrosTable((short)0,"");
+            controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
             System.out.println("Error en la vista suministros lista:" + ex.getLocalizedMessage());
         }
@@ -195,10 +191,10 @@ public class FxSuministrosKardexController implements Initializable {
             SuministroTB suministroTB = SuministroADO.GetSuministroById(txtSearch.getText().trim());
             if (suministroTB != null) {
                 setLoadProducto(suministroTB.getIdSuministro(), suministroTB.getClave() + " " + suministroTB.getNombreMarca());
-                fillKardexTable(idSuministros, "", "");
+                fillKardexTable((short) 0, idSuministro, "", "");
             } else {
                 setLoadProducto("", "");
-                fillKardexTable(idSuministros, "", "");
+                fillKardexTable((short) 0, idSuministro, "", "");
             }
         }
     }
@@ -214,7 +210,7 @@ public class FxSuministrosKardexController implements Initializable {
     private void onActionFechaInicial(ActionEvent event) {
         if (!lblLoad.isVisible()) {
             if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-                fillKardexTable(idSuministros, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+                fillKardexTable((short) 1, idSuministro, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
             }
         }
     }
@@ -223,7 +219,7 @@ public class FxSuministrosKardexController implements Initializable {
     private void onActionFechaFinal(ActionEvent event) {
         if (!lblLoad.isVisible()) {
             if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-                fillKardexTable(idSuministros, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
+                fillKardexTable((short) 1, idSuministro, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal));
             }
         }
     }
@@ -234,7 +230,7 @@ public class FxSuministrosKardexController implements Initializable {
     }
 
     public void setLoadProducto(String idSuministro, String value) {
-        idSuministros = idSuministro;
+        this.idSuministro = idSuministro;
         lblProducto.setText(value);
     }
 

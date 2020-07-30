@@ -3,6 +3,7 @@ package controller.operaciones.venta;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.Tools;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,10 +69,16 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private TableColumn<VentaCreditoTB, Button> tcOpcion;
 //    private TextField txtObservacion;
+    @FXML
+    private Label lblMontoPagar;
+    @FXML
+    private Label lblMontoTotal;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
-    private TableView<SuministroTB> tvList;
+    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
+
+    private ArrayList<SuministroTB> tvList;
 
     private ConvertMonedaCadena monedaCadena;
 
@@ -86,10 +93,6 @@ public class FxVentaProcesoController implements Initializable {
     private double tota_venta;
 
     private boolean state_view_pago;
-    @FXML
-    private Label lblMontoPagar;
-    @FXML
-    private Label lblMontoTotal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -105,7 +108,7 @@ public class FxVentaProcesoController implements Initializable {
         tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
     }
 
-    public void setInitComponents(VentaTB ventaTB, TableView<SuministroTB> tvList) {
+    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
@@ -113,7 +116,11 @@ public class FxVentaProcesoController implements Initializable {
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraController.getMonedaNombre()));
+        if (ventaEstructuraNuevoController != null) {
+            lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraNuevoController.getMonedaNombre()));
+        } else if (ventaEstructuraController != null) {
+            lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraController.getMonedaNombre()));
+        }
         hbContenido.setDisable(false);
     }
 
@@ -238,10 +245,9 @@ public class FxVentaProcesoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    String result[] = VentaADO.registrarVentaContado(
-                            ventaTB,
-                            tvList,
-                            ventaEstructuraController.getIdTipoComprobante()).split("/");
+                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList,
+                            ventaEstructuraController != null ? ventaEstructuraController.getIdTipoComprobante()
+                                    : ventaEstructuraNuevoController.getIdTipoComprobante()).split("/");
                     switch (result[0]) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
@@ -435,6 +441,10 @@ public class FxVentaProcesoController implements Initializable {
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
         this.ventaEstructuraController = ventaEstructuraController;
+    }
+
+    public void setInitVentaEstructuraNuevoController(FxVentaEstructuraNuevoController ventaEstructuraNuevoController) {
+        this.ventaEstructuraNuevoController = ventaEstructuraNuevoController;
     }
 
 }

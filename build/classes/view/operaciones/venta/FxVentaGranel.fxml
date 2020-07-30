@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaGranelController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaGranelController">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -17,24 +17,28 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #cccccc;">
                      <children>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/information.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="lblTitle" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo" />
+                        <Label fx:id="lblTitle" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/information.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Label>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                            <children>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../image/articles.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="lblArticulo" styleClass="labelOpenSansRegular16" text="Artículo" />
+                              <Label fx:id="lblArticulo" styleClass="labelOpenSansRegular16" text="Artículo" wrapText="true">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/articles.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Label>
                            </children>
                         </HBox>
                      </children>
@@ -45,15 +49,17 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/billetes.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label styleClass="labelOpenSansRegular16" text="Importe actual" />
+                                    <Label styleClass="labelOpenSansRegular16" text="Importe actual">
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/billetes.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
                                  </children>
                               </HBox>
-                              <TextField fx:id="txtImporte" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="440.0" styleClass="text-field-normal" />
+                              <TextField fx:id="txtImporte" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="440.0" promptText="0.00" styleClass="text-field-normal" />
                            </children>
                         </VBox>
                      </children>

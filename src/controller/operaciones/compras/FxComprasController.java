@@ -176,7 +176,7 @@ public class FxComprasController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
 
-        searchComboBox = new SearchComboBox<>(cbProveedor);
+        searchComboBox = new SearchComboBox<>(cbProveedor,true);
         searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
             switch (t.getCode()) {

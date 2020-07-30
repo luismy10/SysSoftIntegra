@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -34,16 +33,15 @@
                               <Image url="@../../image/left.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/producto.png" />
-                           </image>
-                        </ImageView>
-                        <Text fx:id="lblTitle" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Datos del producto">
-                           <font>
-                              <Font name="Roboto" size="18.0" />
-                           </font>
-                        </Text>
+                        <Label fx:id="lblTitle" styleClass="labelRobotoBold18" text="Datos del producto" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/producto.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
                </children>
@@ -61,57 +59,90 @@
                               </HBox>
                               <VBox style="-fx-padding: 0.8333333333333334em;">
                                  <children>
-                                    <HBox>
-                                       <children>
-                                          <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Label styleClass="labelRoboto14" text="Origen" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <ComboBox fx:id="cbOrigen" disable="true" maxWidth="1.7976931348623157E308" onAction="#onActionOrigen" prefWidth="200.0" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
                                        <children>
-                                          <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Clave" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                   <graphic>
-                                                      <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                                   <children>
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Clave" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                         <graphic>
+                                                            <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../image/asterisk.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Label>
+                                                      <HBox VBox.vgrow="ALWAYS">
+                                                         <children>
+                                                            <TextField fx:id="txtClave" maxHeight="1.7976931348623157E308" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedClave" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionGenerar" prefHeight="30.0" styleClass="buttonLight" text="Crear">
+                                                               <graphic>
+                                                                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@../../image/barcode.png" />
+                                                                     </image>
+                                                                  </ImageView>
+                                                               </graphic>
+                                                            </Button>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto14" text="Clave alterna" textFill="#23283a">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtClaveAlterna" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedClaveAlterna" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </VBox>
+                                          <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em;">
+                                             <children>
+                                                <HBox style="-fx-border-color: #999999;">
+                                                   <children>
+                                                      <ImageView fx:id="lnPrincipal" fitHeight="160.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../image/asterisk.png" />
+                                                            <Image url="@../../image/no-image.png" />
                                                          </image>
                                                       </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <TextField fx:id="txtClave" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedClave" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onAction="#onActionRemovePhoto" styleClass="buttonBorder">
+                                                         <graphic>
+                                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../image/remove-gray.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                      <Button mnemonicParsing="false" onAction="#onActionPhoto" styleClass="buttonBorder">
+                                                         <graphic>
+                                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../image/photo.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
                                              </children>
-                                          </VBox>
-                                          <VBox alignment="BOTTOM_CENTER">
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#onActionGenerar" prefHeight="30.0" styleClass="buttonLight" text="Crear" />
-                                             </children>
-                                          </VBox>
-                                          <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Label styleClass="labelRoboto14" text="Clave alterna" textFill="#23283a">
-                                                   <font>
-                                                      <Font name="Roboto" size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <TextField fx:id="txtClaveAlterna" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedClaveAlterna" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" />
-                                             </children>
-                                          </VBox>
+                                          </HBox>
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em;">
@@ -469,38 +500,6 @@
                               </HBox>
                               <VBox style="-fx-padding: 0.8333333333333334em;">
                                  <children>
-                                    <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em;">
-                                       <children>
-                                          <ImageView fx:id="lnPrincipal" fitHeight="164.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/no-image.png" />
-                                             </image>
-                                          </ImageView>
-                                          <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#onActionRemovePhoto" styleClass="buttonBorder">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/remove-gray.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onAction="#onActionPhoto" styleClass="buttonBorder">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/photo.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </HBox>
-                                    <Separator prefWidth="200.0" />
                                     <VBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
@@ -541,7 +540,7 @@
                                                 <TextField fx:id="txtPresentacion" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPresentacion" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedPresentacion" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                              </children>
                                           </GridPane>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <Label styleClass="labelRoboto14" text="Clave única del producto" textFill="#23283a">
                                                    <font>
@@ -551,7 +550,7 @@
                                                 <TextField fx:id="txtClaveSat" onAction="#onActionToRegister" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <CheckBox fx:id="cbLote" mnemonicParsing="false" styleClass="check-box-contenido" text="Lote" />
                                                 <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(Indica si manejara un control de lotes y caducidades para este artículo)">

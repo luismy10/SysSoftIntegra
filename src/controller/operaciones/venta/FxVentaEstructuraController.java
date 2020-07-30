@@ -311,7 +311,7 @@ public class FxVentaEstructuraController implements Initializable {
         txtDatosCliente.setText(Session.CLIENTE_DATOS);
         txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
         txtCelularCliente.setText("");
-        
+
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
                 if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
@@ -568,7 +568,7 @@ public class FxVentaEstructuraController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.fillSuministrosTable((short)0,""); 
+            controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
             System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }
@@ -604,7 +604,7 @@ public class FxVentaEstructuraController implements Initializable {
                 clienteTB.setInformacion(txtDatosCliente.getText().trim());
                 clienteTB.setDireccion(txtDireccionCliente.getText().trim());
                 clienteTB.setCelular(txtCelularCliente.getText().trim());
-                
+
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
                 ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
@@ -624,7 +624,11 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setTotal(total);
                 ventaTB.setClienteTB(clienteTB);
-                controller.setInitComponents(ventaTB, tvList);
+                ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
+                tvList.getItems().forEach((stb) -> {
+                    suministroTBs.add(stb);
+                });
+                controller.setInitComponents(ventaTB, suministroTBs);
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
@@ -867,7 +871,6 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                 }
             }
-
         } else {
             switch (suministro.getUnidadVenta()) {
                 case 3: {
@@ -1021,6 +1024,17 @@ public class FxVentaEstructuraController implements Initializable {
         } else {
             Tools.AlertMessageWarning(window, "Venta", "Seleccione un artículo para quitarlo");
         }
+    }
+
+    public int getTaxValueOperacion(int impuesto) {
+        int valor = 0;
+        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
+            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
+                valor = arrayArticulosImpuesto.get(i).getOperacion();
+                break;
+            }
+        }
+        return valor;
     }
 
     public double getTaxValue(int impuesto) {
