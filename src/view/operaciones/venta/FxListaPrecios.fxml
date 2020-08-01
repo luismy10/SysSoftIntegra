@@ -28,7 +28,7 @@
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <Label fx:id="lblNombreArticulo" alignment="CENTER" prefWidth="550.0" styleClass="labelOpenSansRegular18" text="Articulo" textFill="#037c09" wrapText="true" />
+                  <Label fx:id="lblNombreArticulo" alignment="CENTER" prefWidth="550.0" styleClass="labelOpenSansRegular18" text="Articulo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />

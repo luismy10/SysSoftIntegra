@@ -175,8 +175,8 @@ public final class FilesRouters {
     public static final String FX_CAJA_PROCESO = "/view/operaciones/cortecaja/FxCajaProceso.fxml";
 
     public static final String FX_CAJA_CONSULTA = "/view/operaciones/cortecaja/FxCajaConsultas.fxml";
-    
-    public static final String FX_CUENTAS_POR_COBRAR= "/view/consultas/pagar/FxCuentasPorPagar.fxml";
+
+    public static final String FX_CUENTAS_POR_COBRAR = "/view/consultas/pagar/FxCuentasPorPagar.fxml";
 
     //--------------------------------------------------------------------------------------------------
     public static final String FX_IMPRESORA_TICKET = "/view/operaciones/venta/FxImpresoraTicket.fxml";
@@ -199,9 +199,9 @@ public final class FilesRouters {
     public static final String FX_VENTA_DEVOLUCION = "/view/operaciones/venta/FxVentaDevolucion.fxml";
 
     public static final String FX_VENTA_ESTRUCTURA = "/view/operaciones/venta/FxVentaEstructura.fxml";
-    
+
     public static final String FX_VENTA_ESTRUCTURA_NUEVO = "/view/operaciones/venta/FxVentaEstructuraNuevo.fxml";
-    
+
     public static final String FX_VENTA_DETALLE_PRODUCTO = "/view/operaciones/venta/FxVentaDetalleProducto.fxml";
 
     public static final String FX_VENTA_FONDO_INICIAL = "/view/operaciones/venta/FxVentaFondoInicial.fxml";
@@ -249,6 +249,8 @@ public final class FilesRouters {
 
     public static final String FX_VALOR_INVENTARIO = "/view/inventario/valorinventario/FxValorInventario.fxml";
 
+    public static final String FX_LISTAR_INVENTARIO = "/view/inventario/valorinventario/FxListaInventario.fxml";
+
     public static final String FX_INVENTARIO_AJUSTE = "/view/inventario/valorinventario/FxInventarioAjuste.fxml";
 
     public static final String FX_REPORTE_OPCIONES_INVENTARIO = "/view/inventario/valorinventario/FxReporteOpcionesInventario.fxml";
@@ -278,7 +280,7 @@ public final class FilesRouters {
 
     //--------------------------------------------------------------------------------------------------
     public static final String FX_MOVIMIENTO_CAJA = "/view/inventario/movimientos/FxMovimientoCaja.fxml";
-    
+
     public static final String FX_MOVIMIENTOS = "/view/inventario/movimientos/FxMovimientos.fxml";
 
     public static final String FX_MOVIMIENTOS_DETALLE = "/view/inventario/movimientos/FxMovimientosDetalle.fxml";

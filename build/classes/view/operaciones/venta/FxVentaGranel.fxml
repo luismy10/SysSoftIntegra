@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,13 +16,13 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #cccccc;">
+                  <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                      <children>
-                        <Label fx:id="lblTitle" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo">
+                        <Label fx:id="lblTitle" contentDisplay="TOP" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo">
                            <graphic>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../image/information.png" />
+                                    <Image url="@../../image/information_large.png" />
                                  </image>
                               </ImageView>
                            </graphic></Label>
@@ -29,20 +30,10 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                           <children>
-                              <Label fx:id="lblArticulo" styleClass="labelOpenSansRegular16" text="Artículo" wrapText="true">
-                                 <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/articles.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic></Label>
-                           </children>
-                        </HBox>
+                        <Label fx:id="lblArticulo" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="500.0" styleClass="labelOpenSansRegular18" text="Artículo" textFill="#037c09" wrapText="true" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
+                  <Separator />
                   <HBox>
                      <children>
                         <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -64,6 +55,7 @@
                         </VBox>
                      </children>
                   </HBox>
+                  <Separator />
                   <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aceptar">

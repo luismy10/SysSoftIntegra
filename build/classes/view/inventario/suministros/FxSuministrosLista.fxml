@@ -22,14 +22,18 @@
 
                   <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <ImageView fx:id="ivPrincipal" fitHeight="140.0" fitWidth="140.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../image/no-image.png" />
-                           </image>
-                           <viewport>
-                              <Rectangle2D />
-                           </viewport>
-                        </ImageView>
+                        <Label style="-fx-border-color: #999999;">
+                           <graphic>
+                              <ImageView fx:id="ivPrincipal" fitHeight="140.0" fitWidth="140.0" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../../image/no-image.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </VBox>
                   <VBox style="-fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;" HBox.hgrow="ALWAYS">

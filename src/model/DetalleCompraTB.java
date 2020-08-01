@@ -21,6 +21,7 @@ public class DetalleCompraTB {
     private boolean lote;
     private ArrayList<LoteTB> listLote;
     private SuministroTB suministroTB;
+    private ArrayList<PreciosTB> listPrecios;
     private Button remove;
     
     public DetalleCompraTB() {
@@ -153,6 +154,14 @@ public class DetalleCompraTB {
     public void setSuministroTB(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
     }     
+
+    public ArrayList<PreciosTB> getListPrecios() {
+        return listPrecios;
+    }
+
+    public void setListPrecios(ArrayList<PreciosTB> listPrecios) {
+        this.listPrecios = listPrecios;
+    }
 
     public Button getRemove() {
         return remove;
