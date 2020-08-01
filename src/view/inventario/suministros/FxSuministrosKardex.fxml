@@ -120,13 +120,27 @@
                                        <graphic>
                                           <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../image/fecha.png" />
+                                                <Image url="@../../image/plazos.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                     </Label>
                                     <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
+                                             <children>
+                                                <Label styleClass="labelRoboto14" text="Fecha Inicial:" textFill="#1a2226">
+                                                   <graphic>
+                                                      <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/calendar.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Label>
+                                                <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
+                                             </children>
+                                          </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
                                                 <Label styleClass="labelRoboto14" text="Fecha Final:" textFill="#1a2226">
@@ -167,48 +181,6 @@
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
                                           <Label fx:id="lblProducto" styleClass="labelRoboto16" text="Producto" textFill="#007fda" wrapText="true" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <VBox spacing="10.0">
-                                 <children>
-                                    <Label styleClass="labelRoboto14" text="Inv. Mínimo" textFill="#1a2226">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/paquete.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="labelRoboto16" text="0" textFill="#007fda" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <VBox spacing="10.0">
-                                 <children>
-                                    <Label styleClass="labelRoboto14" text="Inv. Máximo" textFill="#1a2226">
-                                       <font>
-                                          <Font name="Calibri" size="15.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../image/paquete.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="labelRoboto16" text="0" textFill="#007fda" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>

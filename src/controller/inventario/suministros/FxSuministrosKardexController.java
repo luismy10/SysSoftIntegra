@@ -168,10 +168,7 @@ public class FxSuministrosKardexController implements Initializable {
                 for (KardexTB item : tvList.getItems()) {
                     cantidadTotal = cantidadTotal + (item.getTipo() == 1 ? item.getCantidad() : -item.getCantidad());
                 }
-                
-                //System.out.println("ento On Succed");
-                
-//                lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
+                lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
 //                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
 //
 //                totalPaginacion = integer;
@@ -180,15 +177,13 @@ public class FxSuministrosKardexController implements Initializable {
 //                
 //                cantidad += (double) objects.get(2);
 //                total += (double) objects.get(3);
-                
+
                 //System.out.println("Cantidad: "+cantidad );
-                
             } else {
-                System.out.println("Esta vacia");
+                tvList.getItems().clear();
+                lblCantidadTotal.setText("0");
             }
-
             lblLoad.setVisible(false);
-
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
@@ -246,7 +241,6 @@ public class FxSuministrosKardexController implements Initializable {
         }
     }
 
-    @FXML
     private void onActionFechaInicial(ActionEvent event) {
         if (!lblLoad.isVisible()) {
             if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {

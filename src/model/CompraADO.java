@@ -167,11 +167,11 @@ public class CompraADO extends DBUtil {
 
                     suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_update.setString(3, tableView.getItems().get(i).getIdArticulo());
-                    suministro_update.setInt(4, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
-                    suministro_update.setDouble(5, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
-                    suministro_update.setShort(6, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
-                    suministro_update.setDouble(7, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
+                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
+                    suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
+                    suministro_update.setShort(5, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
+                    suministro_update.setDouble(6, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
+                    suministro_update.setString(7, tableView.getItems().get(i).getIdArticulo());
                     suministro_update.addBatch();
 
                     suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
@@ -249,10 +249,10 @@ public class CompraADO extends DBUtil {
                     if (suministro_kardex != null) {
                         suministro_kardex.close();
                     }
-                    if(suministro_precios_remover != null){
+                    if (suministro_precios_remover != null) {
                         suministro_precios_remover.close();
                     }
-                    if(suministro_precios_insertar != null){
+                    if (suministro_precios_insertar != null) {
                         suministro_precios_insertar.close();
                     }
                     /*if (lote_compra != null) {
@@ -411,11 +411,11 @@ public class CompraADO extends DBUtil {
 
                     suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_update.setString(3, tableView.getItems().get(i).getIdArticulo());
-                    suministro_update.setInt(4, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
-                    suministro_update.setDouble(5, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
-                    suministro_update.setShort(6, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
-                    suministro_update.setDouble(7, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
+                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
+                    suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
+                    suministro_update.setShort(5, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
+                    suministro_update.setDouble(6, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
+                    suministro_update.setString(7, tableView.getItems().get(i).getIdArticulo());
                     suministro_update.addBatch();
 
                     suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
@@ -428,7 +428,7 @@ public class CompraADO extends DBUtil {
                     suministro_kardex.setDouble(8, tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.addBatch();
-                    
+
                     suministro_precios_remover.setString(1, tableView.getItems().get(i).getIdArticulo());
                     suministro_precios_remover.addBatch();
 
@@ -484,10 +484,10 @@ public class CompraADO extends DBUtil {
                     if (lote_compra != null) {
                         lote_compra.close();
                     }
-                     if(suministro_precios_remover != null){
+                    if (suministro_precios_remover != null) {
                         suministro_precios_remover.close();
                     }
-                    if(suministro_precios_insertar != null){
+                    if (suministro_precios_insertar != null) {
                         suministro_precios_insertar.close();
                     }
                     dbDisconnect();
