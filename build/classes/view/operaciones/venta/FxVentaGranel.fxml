@@ -15,13 +15,13 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #cccccc;">
+                  <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #cccccc;">
                      <children>
-                        <Label fx:id="lblTitle" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo">
+                        <Label fx:id="lblTitle" contentDisplay="TOP" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo">
                            <graphic>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../image/information.png" />
+                                    <Image url="@../../image/information_large.png" />
                                  </image>
                               </ImageView>
                            </graphic></Label>

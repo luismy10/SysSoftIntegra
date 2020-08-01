@@ -277,6 +277,7 @@ public class FxSuministrosListaController implements Initializable {
                 if (!validateStock(movimientosProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
                     movimientosProcesoController.addSuministroLista(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
                     Tools.Dispose(apWindow);
+                    
                 } else {
                     Tools.AlertMessageWarning(apWindow, "Movimiento", "Ya hay un producto con las mismas características.");
                 }
@@ -406,7 +407,9 @@ public class FxSuministrosListaController implements Initializable {
                 }
             });
             suministroTB.setRemover(button);
-            Tools.Dispose(apWindow);
+            txtSearch.selectAll();
+            txtSearch.requestFocus();
+            //Tools.Dispose(apWindow);
             ventaEstructuraController.getAddArticulo(suministroTB);
         }
     }

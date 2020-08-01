@@ -6,6 +6,7 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,10 +76,24 @@ public class FxSuministrosKardexController implements Initializable {
     private DatePicker dtFechaInicial;
     @FXML
     private DatePicker dtFechaFinal;
+    @FXML
+    private Label lblPaginaActual;
+    @FXML
+    private Label lblPaginaSiguiente;
 
     private String idSuministro;
 
     private AnchorPane vbPrincipal;
+
+    private int paginacion;
+
+    private int totalPaginacion;
+
+    private boolean status;
+
+    private double cantidad;
+
+    private double total;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -127,6 +142,9 @@ public class FxSuministrosKardexController implements Initializable {
 //        tcSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
 
         idSuministro = "";
+        paginacion = 1;
+        status = false;
+        cantidad = total = 0;
     }
 
     public void fillKardexTable(short opcion, String value, String fechaInicial, String fechaFinal) {
@@ -135,21 +153,40 @@ public class FxSuministrosKardexController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ObservableList<KardexTB>> task = new Task<ObservableList<KardexTB>>() {
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            public ObservableList<KardexTB> call() {
-                return KardexADO.List_Kardex_By_Id_Suministro(opcion, value, fechaInicial, fechaFinal);
+            public ArrayList<Object> call() {
+                return KardexADO.List_Kardex_By_Id_Suministro(opcion, value, fechaInicial, fechaFinal, (paginacion - 1) * 10, 10, cantidad, total);
             }
         };
         task.setOnSucceeded(w -> {
-            tvList.setItems(task.getValue());
-            if (!tvList.getItems().isEmpty()) {
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+
+                tvList.setItems((ObservableList<KardexTB>) objects.get(0));
                 double cantidadTotal = 0;
                 for (KardexTB item : tvList.getItems()) {
                     cantidadTotal = cantidadTotal + (item.getTipo() == 1 ? item.getCantidad() : -item.getCantidad());
                 }
+                
+                //System.out.println("ento On Succed");
+                
                 lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
+                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
+
+                totalPaginacion = integer;
+                lblPaginaActual.setText(paginacion + "");
+                lblPaginaSiguiente.setText(totalPaginacion + "");
+                
+                cantidad += (double) objects.get(2);
+                total += (double) objects.get(3);
+                
+                //System.out.println("Cantidad: "+cantidad );
+                
+            } else {
+                System.out.println("Esta vacia");
             }
+
             lblLoad.setVisible(false);
 
         });
@@ -230,6 +267,34 @@ public class FxSuministrosKardexController implements Initializable {
     @FXML
     private void onActionSearchSuministro(ActionEvent event) {
         openWindowSuministros();
+    }
+
+    @FXML
+    private void onKeyPressedAnterior(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionAnterior(ActionEvent event) {
+        if (!status) {
+            if (paginacion > 1) {
+                paginacion--;
+                fillKardexTable((short) 0, idSuministro, "", "");
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSiguiente(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionSiguiente(ActionEvent event) {
+        if (!status) {
+            if (paginacion < totalPaginacion) {
+                paginacion++;
+                fillKardexTable((short) 0, idSuministro, "", "");
+            }
+        }
     }
 
     public void setLoadProducto(String idSuministro, String value) {

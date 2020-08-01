@@ -6,17 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 
 public class KardexADO {
 
-    public static ObservableList<KardexTB> List_Kardex_By_Id_Suministro(short opcion,String value, String fechaInicial, String fechaFinal) {
-        String selectStmt = "{call Sp_Listar_Kardex_Suministro_By_Id(?,?,?,?)}";
+    public static ArrayList<Object> List_Kardex_By_Id_Suministro(short opcion, String value, String fechaInicial, String fechaFinal, int posicionPagina, int filasPorPagina, double cantidadAcumulado, double totalAcumulado) {
+        String selectStmt = "{call Sp_Listar_Kardex_Suministro_By_Id(?,?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
+
+        ArrayList<Object> objects = new ArrayList<>();
         ObservableList<KardexTB> empList = FXCollections.observableArrayList();
+
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
@@ -24,22 +28,25 @@ public class KardexADO {
             preparedStatement.setString(2, value);
             preparedStatement.setString(3, fechaInicial);
             preparedStatement.setString(4, fechaFinal);
+            preparedStatement.setInt(5, posicionPagina);
+            preparedStatement.setInt(6, filasPorPagina);
+
             rsEmps = preparedStatement.executeQuery();
 
-            double cantidad = 0;
+            double cantidad = cantidadAcumulado;
             double costo;
-            double total = 0;
+            double total = totalAcumulado;
 
             while (rsEmps.next()) {
                 KardexTB kardexTB = new KardexTB();
-                kardexTB.setId(rsEmps.getRow());
+                kardexTB.setId(rsEmps.getRow() + posicionPagina);
                 kardexTB.setIdArticulo(rsEmps.getString("IdSuministro"));
                 kardexTB.setFecha(rsEmps.getDate("Fecha").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
                 kardexTB.setHora(rsEmps.getTime("Hora").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 kardexTB.setTipo(rsEmps.getShort("Tipo"));
                 kardexTB.setMovimientoName(rsEmps.getString("Nombre"));
                 kardexTB.setDetalle(rsEmps.getString("Detalle"));
-                kardexTB.setCantidad(rsEmps.getDouble("Cantidad")); 
+                kardexTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 kardexTB.setCosto(rsEmps.getDouble("Costo"));
                 kardexTB.setTotal(rsEmps.getDouble("Total"));
 //                cantidad = (kardexTB.getTipo() == 1 ? kardexTB.getCantidad() : -kardexTB.getCantidad());
@@ -58,16 +65,16 @@ public class KardexADO {
 
                 kardexTB.setLblCantidadEntreda(lblCantidadEntrada);
                 kardexTB.setLblCostoEntrada(lblCostoEntrada);
-                kardexTB.setLblTotalEntrada(lblTotalEntrada);             
-                
-                Label lblCantidadSalida = new Label(kardexTB.getTipo() == 2 ? Tools.roundingValue(kardexTB.getCantidad(),4) : "");
+                kardexTB.setLblTotalEntrada(lblTotalEntrada);
+
+                Label lblCantidadSalida = new Label(kardexTB.getTipo() == 2 ? Tools.roundingValue(kardexTB.getCantidad(), 4) : "");
                 lblCantidadSalida.getStyleClass().add("labelRoboto14");
                 lblCantidadSalida.setStyle("-fx-text-fill:#f44336;-fx-font-weight:bold;");
-                
+
                 Label lblCostoSalida = new Label(kardexTB.getTipo() == 2 ? Tools.roundingValue(kardexTB.getCosto(), 4) : "");
                 lblCostoSalida.getStyleClass().add("labelRoboto14");
                 lblCostoSalida.setStyle("-fx-text-fill:#000000;-fx-font-weight:bold;");
-                
+
                 Label lblTotalSalida = new Label(kardexTB.getTipo() == 2 ? Tools.roundingValue(kardexTB.getTotal(), 4) : "");
                 lblTotalSalida.getStyleClass().add("labelRoboto14");
                 lblTotalSalida.setStyle("-fx-text-fill:#000000;-fx-font-weight:bold;");
@@ -76,20 +83,19 @@ public class KardexADO {
                 kardexTB.setLblCostoSalida(lblCostoSalida);
                 kardexTB.setLblTotalSalida(lblTotalSalida);
 
-
                 cantidad = cantidad + (kardexTB.getTipo() == 1 ? kardexTB.getCantidad() : -kardexTB.getCantidad());
-                total = total + (kardexTB.getTipo() == 1 ? kardexTB.getTotal(): -kardexTB.getTotal());
+                total = total + (kardexTB.getTipo() == 1 ? kardexTB.getTotal() : -kardexTB.getTotal());
                 //costo = total / cantidad;      
                 costo = kardexTB.getCosto();
 
                 Label lblCantidadSaldo = new Label(Tools.roundingValue(cantidad, 4));
                 lblCantidadSaldo.getStyleClass().add("labelRoboto14");
                 lblCantidadSaldo.setStyle("-fx-text-fill:#000000;-fx-font-weight:bold;");
-                
+
                 Label lblCostoSaldo = new Label(Tools.roundingValue(costo, 4));
                 lblCostoSaldo.getStyleClass().add("labelRoboto14");
                 lblCostoSaldo.setStyle("-fx-text-fill:#000000;-fx-font-weight:bold;");
-                
+
                 Label lblTotalSaldo = new Label(Tools.roundingValue(total, 4));
                 lblTotalSaldo.getStyleClass().add("labelRoboto14");
                 lblTotalSaldo.setStyle("-fx-text-fill:#000000;-fx-font-weight:bold;");
@@ -100,6 +106,23 @@ public class KardexADO {
 
                 empList.add(kardexTB);
             }
+
+            objects.add(empList);
+
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Kardex_Suministro_By_Id_Count(?,?,?,?)}");
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, value);
+            preparedStatement.setString(3, fechaInicial);
+            preparedStatement.setString(4, fechaFinal);
+            rsEmps = preparedStatement.executeQuery();
+            Integer integer = 0;
+            if (rsEmps.next()) {
+                integer = rsEmps.getInt("Total");
+            }
+            objects.add(integer);
+            objects.add(cantidad);
+            objects.add(total);
+
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
 
@@ -116,7 +139,7 @@ public class KardexADO {
 
             }
         }
-        return empList;
+        return objects;
     }
 
 }

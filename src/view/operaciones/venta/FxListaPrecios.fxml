@@ -16,9 +16,9 @@
          <children>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold18" text="Seleccionar Precio">
+                  <Label contentDisplay="TOP" styleClass="labelRobotoBold18" text="Seleccionar Precio">
                      <graphic>
-                        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/prices.png" />
                            </image>
@@ -26,26 +26,20 @@
                      </graphic></Label>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="labelRoboto14" text="Nombre del Artículo" />
-                        <Label fx:id="lblNombreArticulo" styleClass="labelRoboto14" text="Articulo" />
-                     </children>
-                  </VBox>
+                  <Label fx:id="lblNombreArticulo" alignment="CENTER" prefWidth="550.0" styleClass="labelOpenSansRegular18" text="Articulo" textFill="#037c09" wrapText="true" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
             <HBox style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="240.0" prefWidth="520.0" styleClass="table-view-principal">
+                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="240.0" prefWidth="520.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="tcNumero" prefWidth="70.0" text="N°" />
-                      <TableColumn fx:id="tcNombre" prefWidth="200.0" text="Nombre" />
-                        <TableColumn fx:id="tcValor" prefWidth="120.0" text="Valor" />
-                        <TableColumn fx:id="tcFactor" prefWidth="100.0" text="Factor" />
+                      <TableColumn fx:id="tcNombre" prefWidth="216.0" text="Nombre" />
+                        <TableColumn fx:id="tcValor" prefWidth="123.0" text="Valor" />
+                        <TableColumn fx:id="tcFactor" prefWidth="137.0" text="Factor" />
                     </columns>
                   </TableView>
                </children>
