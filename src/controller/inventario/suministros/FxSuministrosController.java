@@ -424,7 +424,6 @@ public class FxSuministrosController implements Initializable {
                     tvList.getSelectionModel().select(0);
                     onViewDetailSuministro();
                 }
-
                 int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");

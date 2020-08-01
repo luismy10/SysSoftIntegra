@@ -26,6 +26,8 @@ public class CompraADO extends DBUtil {
         CallableStatement codigo_compra = null;
         PreparedStatement compra = null;
         PreparedStatement detalle_compra = null;
+        PreparedStatement suministro_precios_remover = null;
+        PreparedStatement suministro_precios_insertar = null;
         PreparedStatement suministro_update = null;
         PreparedStatement suministro_kardex = null;
         //PreparedStatement lote_compra = null;
@@ -82,7 +84,11 @@ public class CompraADO extends DBUtil {
                         + "Descripcion)"
                         + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 
-                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ? WHERE IdSuministro = ?");
+                suministro_precios_remover = getConnection().prepareStatement("DELETE FROM PreciosTB WHERE IdSuministro = ?");
+
+                suministro_precios_insertar = getConnection().prepareStatement("INSERT INTO PreciosTB(IdArticulo, IdSuministro, Nombre, Valor, Factor,Estado) VALUES(?,?,?,?,?,?)");
+
+                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ?,Impuesto=?,PrecioVentaGeneral=?,PrecioMargenGeneral=?,PrecioUtilidadGeneral=? WHERE IdSuministro = ?");
 
                 suministro_kardex = getConnection().prepareStatement("INSERT INTO "
                         + "KardexSuministroTB("
@@ -162,6 +168,10 @@ public class CompraADO extends DBUtil {
                     suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
                     suministro_update.setString(3, tableView.getItems().get(i).getIdArticulo());
+                    suministro_update.setInt(4, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
+                    suministro_update.setDouble(5, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
+                    suministro_update.setShort(6, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
+                    suministro_update.setDouble(7, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
                     suministro_update.addBatch();
 
                     suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
@@ -174,6 +184,19 @@ public class CompraADO extends DBUtil {
                     suministro_kardex.setDouble(8, tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.addBatch();
+
+                    suministro_precios_remover.setString(1, tableView.getItems().get(i).getIdArticulo());
+                    suministro_precios_remover.addBatch();
+
+                    for (PreciosTB t : tableView.getItems().get(i).getListPrecios()) {
+                        suministro_precios_insertar.setString(1, "");
+                        suministro_precios_insertar.setString(2, tableView.getItems().get(i).getIdArticulo());
+                        suministro_precios_insertar.setString(3, t.getNombre());
+                        suministro_precios_insertar.setDouble(4, t.getValor());
+                        suministro_precios_insertar.setDouble(5, t.getFactor() <= 0 ? 1 : t.getFactor());
+                        suministro_precios_insertar.setBoolean(6, true);
+                        suministro_precios_insertar.addBatch();
+                    }
                 }
 
 //            for (int i = 0; i < loteTBs.size(); i++) {
@@ -189,6 +212,8 @@ public class CompraADO extends DBUtil {
                 detalle_compra.executeBatch();
                 suministro_update.executeBatch();
                 suministro_kardex.executeBatch();
+                suministro_precios_remover.executeBatch();
+                suministro_precios_insertar.executeBatch();
                 preparedBanco.executeBatch();
                 preparedBancoHistorial.executeBatch();
                 // lote_compra.executeBatch();
@@ -224,6 +249,12 @@ public class CompraADO extends DBUtil {
                     if (suministro_kardex != null) {
                         suministro_kardex.close();
                     }
+                    if(suministro_precios_remover != null){
+                        suministro_precios_remover.close();
+                    }
+                    if(suministro_precios_insertar != null){
+                        suministro_precios_insertar.close();
+                    }
                     /*if (lote_compra != null) {
                         lote_compra.close();
                     }*/
@@ -243,6 +274,8 @@ public class CompraADO extends DBUtil {
         PreparedStatement compra = null;
         PreparedStatement detalle_compra = null;
         PreparedStatement compra_credito = null;
+        PreparedStatement suministro_precios_remover = null;
+        PreparedStatement suministro_precios_insertar = null;
         PreparedStatement suministro_update = null;
         PreparedStatement suministro_kardex = null;
         PreparedStatement lote_compra = null;
@@ -302,7 +335,11 @@ public class CompraADO extends DBUtil {
                         + ",Estado)"
                         + "VALUES(?,?,?,?,?,?,?)");
 
-                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ? WHERE IdSuministro = ?");
+                suministro_precios_remover = getConnection().prepareStatement("DELETE FROM PreciosTB WHERE IdSuministro = ?");
+
+                suministro_precios_insertar = getConnection().prepareStatement("INSERT INTO PreciosTB(IdArticulo, IdSuministro, Nombre, Valor, Factor,Estado) VALUES(?,?,?,?,?,?)");
+
+                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ?,Impuesto=?,PrecioVentaGeneral=?,PrecioMargenGeneral=?,PrecioUtilidadGeneral=? WHERE IdSuministro = ?");
 
                 suministro_kardex = getConnection().prepareStatement("INSERT INTO "
                         + "KardexSuministroTB("
@@ -375,6 +412,10 @@ public class CompraADO extends DBUtil {
                     suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
                     suministro_update.setString(3, tableView.getItems().get(i).getIdArticulo());
+                    suministro_update.setInt(4, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
+                    suministro_update.setDouble(5, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
+                    suministro_update.setShort(6, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
+                    suministro_update.setDouble(7, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
                     suministro_update.addBatch();
 
                     suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
@@ -387,6 +428,19 @@ public class CompraADO extends DBUtil {
                     suministro_kardex.setDouble(8, tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getPrecioCompra());
                     suministro_kardex.addBatch();
+                    
+                    suministro_precios_remover.setString(1, tableView.getItems().get(i).getIdArticulo());
+                    suministro_precios_remover.addBatch();
+
+                    for (PreciosTB t : tableView.getItems().get(i).getListPrecios()) {
+                        suministro_precios_insertar.setString(1, "");
+                        suministro_precios_insertar.setString(2, tableView.getItems().get(i).getIdArticulo());
+                        suministro_precios_insertar.setString(3, t.getNombre());
+                        suministro_precios_insertar.setDouble(4, t.getValor());
+                        suministro_precios_insertar.setDouble(5, t.getFactor() <= 0 ? 1 : t.getFactor());
+                        suministro_precios_insertar.setBoolean(6, true);
+                        suministro_precios_insertar.addBatch();
+                    }
                 }
 
                 compra.executeBatch();
@@ -429,6 +483,12 @@ public class CompraADO extends DBUtil {
                     }
                     if (lote_compra != null) {
                         lote_compra.close();
+                    }
+                     if(suministro_precios_remover != null){
+                        suministro_precios_remover.close();
+                    }
+                    if(suministro_precios_insertar != null){
+                        suministro_precios_insertar.close();
                     }
                     dbDisconnect();
                 } catch (SQLException ex) {

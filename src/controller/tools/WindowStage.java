@@ -78,12 +78,7 @@ public class WindowStage {
             FxSuministrosCompraController controller = fXMLLoader.getController();
 //                    if (option == 1) {
             controller.setInitComprasController(comprasController);
-            controller.setLoadData(suministroTB.getIdSuministro(), 
-                    suministroTB.getClave(), 
-                    suministroTB.getNombreMarca(), 
-                    Tools.roundingValue(suministroTB.getCostoCompra(),4), 
-                    suministroTB.getUnidadCompraName(), 
-                    false);
+            controller.setLoadData(suministroTB.getIdSuministro(),false);
 //                    } else {
 //                        controller.setInitComprasEditarController(comprasEditarController);
 //                    }

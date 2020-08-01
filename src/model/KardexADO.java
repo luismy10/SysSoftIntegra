@@ -33,9 +33,9 @@ public class KardexADO {
 
             rsEmps = preparedStatement.executeQuery();
 
-            double cantidad = cantidadAcumulado;
+            double cantidad = 0;
             double costo;
-            double total = totalAcumulado;
+            double total = 0;
 
             while (rsEmps.next()) {
                 KardexTB kardexTB = new KardexTB();
@@ -109,19 +109,19 @@ public class KardexADO {
 
             objects.add(empList);
 
-            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Kardex_Suministro_By_Id_Count(?,?,?,?)}");
-            preparedStatement.setShort(1, opcion);
-            preparedStatement.setString(2, value);
-            preparedStatement.setString(3, fechaInicial);
-            preparedStatement.setString(4, fechaFinal);
-            rsEmps = preparedStatement.executeQuery();
-            Integer integer = 0;
-            if (rsEmps.next()) {
-                integer = rsEmps.getInt("Total");
-            }
-            objects.add(integer);
-            objects.add(cantidad);
-            objects.add(total);
+//            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Kardex_Suministro_By_Id_Count(?,?,?,?)}");
+//            preparedStatement.setShort(1, opcion);
+//            preparedStatement.setString(2, value);
+//            preparedStatement.setString(3, fechaInicial);
+//            preparedStatement.setString(4, fechaFinal);
+//            rsEmps = preparedStatement.executeQuery();
+//            Integer integer = 0;
+//            if (rsEmps.next()) {
+//                integer = rsEmps.getInt("Total");
+//            }
+//            objects.add(integer);
+//            objects.add(cantidad);
+//            objects.add(total);
 
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

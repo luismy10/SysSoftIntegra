@@ -1,7 +1,11 @@
 package controller.menus;
 
+import controller.inventario.valorinventario.FxListaInventarioController;
+import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
+import controller.tools.WindowStage;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,12 +23,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.GlobalADO;
 
@@ -64,7 +73,7 @@ public class FxInicioController implements Initializable {
     private Text lblNecesarias;
     @FXML
     private Text lblExcentes;
-    
+
     private final XYChart.Series ventasSeries = new XYChart.Series<>();
 
     private ObservableList<PieChart.Data> datas = FXCollections.observableArrayList(
@@ -142,12 +151,12 @@ public class FxInicioController implements Initializable {
         ventasSeries.getData().set(1, new XYChart.Data("Semana 2", new Random().nextInt(101)));
         ventasSeries.getData().set(2, new XYChart.Data("Semana 3", new Random().nextInt(101)));
         ventasSeries.getData().set(3, new XYChart.Data("Semana 4", new Random().nextInt(101)));
-        
-        lblNegativos.setText(""+negativas);
-        lblIntermedios.setText(""+intermedias);
-        lblNecesarias.setText(""+necesarias);
-        lblExcentes.setText(""+excedentes);
-        
+
+        lblNegativos.setText("" + negativas);
+        lblIntermedios.setText("" + intermedias);
+        lblNecesarias.setText("" + necesarias);
+        lblExcentes.setText("" + excedentes);
+
         datas = FXCollections.observableArrayList(
                 new PieChart.Data("Productos Negativos", negativas),
                 new PieChart.Data("Productos Intermedios", intermedias),
@@ -156,6 +165,78 @@ public class FxInicioController implements Initializable {
         );
         pcCompras.setData(datas);
 
+    }
+
+    private void onEventInventario(short existencia) {
+        try {
+               // ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                URL url = getClass().getResource(FilesRouters.FX_LISTAR_INVENTARIO);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxListaInventarioController controller = fXMLLoader.getController();
+                controller.loadData(existencia);
+                //
+                Stage stage = WindowStage.StageLoaderModal(parent, "Inventario general", spWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.setOnHiding((w) -> {
+                   // vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                });
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
+    }
+
+    @FXML
+    private void onKeyPressedNegativos(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventInventario((short) 1);
+        }
+    }
+
+    @FXML
+    private void onActionNegativos(ActionEvent event) {
+        onEventInventario((short) 1);
+    }
+
+    @FXML
+    private void onKeyPressedIntermedios(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventInventario((short) 2);
+        }
+    }
+
+    @FXML
+    private void onActionIntermedios(ActionEvent event) {
+        onEventInventario((short) 2);
+    }
+
+    @FXML
+    private void onKeyPressedNecesarios(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventInventario((short) 3);
+        }
+
+    }
+
+    @FXML
+    private void onActionNecesarios(ActionEvent event) {
+        onEventInventario((short) 3);
+    }
+
+    @FXML
+    private void onKeyPressedExcedentes(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventInventario((short) 4);
+        }
+
+    }
+
+    @FXML
+    private void onActionExcedentes(ActionEvent event) {
+        onEventInventario((short) 4);
     }
 
 }

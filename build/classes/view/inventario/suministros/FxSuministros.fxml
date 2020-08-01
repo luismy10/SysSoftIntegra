@@ -197,13 +197,17 @@
                                           <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Producto seleccionado" textAlignment="CENTER" wrappingWidth="300.0" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <VBox alignment="CENTER" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                    <VBox alignment="TOP_CENTER" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <ImageView fx:id="ivPrincipal" fitHeight="160.0" fitWidth="160.0" pickOnBounds="true">
-                                             <image>
-                                                <Image url="@../../image/no-image.png" />
-                                             </image>
-                                          </ImageView>
+                                          <Label style="-fx-border-color: #999999;">
+                                             <graphic>
+                                                <ImageView fx:id="ivPrincipal" fitHeight="160.0" fitWidth="160.0" pickOnBounds="true">
+                                                   <image>
+                                                      <Image url="@../../image/no-image.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
                                           <Text fx:id="lblName" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="-" textAlignment="CENTER" wrappingWidth="300.0" />
                                           <Text fx:id="lblPrice" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="-" />
                                           <Text fx:id="lblPriceBruto" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="-" />

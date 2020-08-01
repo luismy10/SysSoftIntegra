@@ -171,15 +171,15 @@ public class FxSuministrosKardexController implements Initializable {
                 
                 //System.out.println("ento On Succed");
                 
-                lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
-                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
-
-                totalPaginacion = integer;
-                lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-                
-                cantidad += (double) objects.get(2);
-                total += (double) objects.get(3);
+//                lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
+//                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
+//
+//                totalPaginacion = integer;
+//                lblPaginaActual.setText(paginacion + "");
+//                lblPaginaSiguiente.setText(totalPaginacion + "");
+//                
+//                cantidad += (double) objects.get(2);
+//                total += (double) objects.get(3);
                 
                 //System.out.println("Cantidad: "+cantidad );
                 

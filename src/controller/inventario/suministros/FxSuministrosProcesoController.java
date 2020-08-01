@@ -1051,7 +1051,7 @@ public class FxSuministrosProcesoController implements Initializable {
 
                 double precioValidado = rbPrecioNormal.isSelected()
                         ? Tools.isNumeric(txtPrecio1.getText()) ? Double.parseDouble(txtPrecio1.getText()) : 0
-                        : Tools.isNumeric(txtPrecioVentaNetoPersonalizado.getText()) ? Double.parseDouble(txtPrecioVentaNetoPersonalizado.getText()) : 0;
+                        : Tools.isNumeric(txtPrecioVentaBrutoPersonalizado.getText()) ? Double.parseDouble(txtPrecioVentaBrutoPersonalizado.getText()) : 0;
                 suministroTB.setPrecioVentaGeneral(precioValidado);
 
                 short margenValidado = rbPrecioNormal.isSelected()
@@ -1587,12 +1587,23 @@ public class FxSuministrosProcesoController implements Initializable {
     }
 
     @FXML
-    private void onKeyTypedPrecioNetoPerzonalizado(KeyEvent event) {
+    private void onKeyTypedPrecioNetoPersonalizado(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
             event.consume();
         }
         if (c == '.' && txtPrecioVentaNetoPersonalizado.getText().contains(".") || c == '-' && txtPrecioVentaNetoPersonalizado.getText().contains("-")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedPrecioBrutoPersonalizado(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            event.consume();
+        }
+        if (c == '.' && txtPrecioVentaBrutoPersonalizado.getText().contains(".") || c == '-' && txtPrecioVentaBrutoPersonalizado.getText().contains("-")) {
             event.consume();
         }
     }
@@ -1708,9 +1719,13 @@ public class FxSuministrosProcesoController implements Initializable {
 
     @FXML
     private void onActionImpuesto(ActionEvent event) {
-        calculateImpuesto(txtCosto, txtMargen1, txtUtilidad1, txtPrecioVentaNeto1, txtPrecio1);
-        calculateImpuesto(txtCosto, txtMargen2, txtUtilidad2, txtPrecioVentaNeto2, txtPrecio2);
-        calculateImpuesto(txtCosto, txtMargen3, txtUtilidad3, txtPrecioVentaNeto3, txtPrecio3);
+        if (rbPrecioNormal.isSelected()) {
+            calculateImpuesto(txtCosto, txtMargen1, txtUtilidad1, txtPrecioVentaNeto1, txtPrecio1);
+            calculateImpuesto(txtCosto, txtMargen2, txtUtilidad2, txtPrecioVentaNeto2, txtPrecio2);
+            calculateImpuesto(txtCosto, txtMargen3, txtUtilidad3, txtPrecioVentaNeto3, txtPrecio3);
+        } else {
+            calculateImpuesto(txtCosto, txtMargenPersonalizado, txtUtilidadPersonalizado, txtPrecioVentaNetoPersonalizado, txtPrecioVentaBrutoPersonalizado);
+        }
     }
 
     @FXML
@@ -1766,6 +1781,11 @@ public class FxSuministrosProcesoController implements Initializable {
     @FXML
     private void onKeyReleasedMargenPersonalizado(KeyEvent event) {
         calculateForMargen(txtMargenPersonalizado, txtCosto, txtPrecioVentaBrutoPersonalizado, txtUtilidadPersonalizado, txtPrecioVentaNetoPersonalizado);
+    }
+
+    @FXML
+    private void onKeyReleasedPrecioBrutoPersonalizado(KeyEvent event) {
+        calculateForPrecio(txtPrecioVentaBrutoPersonalizado, txtCosto, txtMargenPersonalizado, txtUtilidadPersonalizado, txtPrecioVentaNetoPersonalizado);
     }
 
     @FXML

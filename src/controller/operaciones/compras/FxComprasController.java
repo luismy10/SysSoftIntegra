@@ -483,7 +483,15 @@ public class FxComprasController implements Initializable {
                     SuministroTB suministrosTB = new SuministroTB();
                     suministrosTB.setClave(e.getSuministroTB().getClave());
                     suministrosTB.setNombreMarca(e.getSuministroTB().getNombreMarca());
+                    suministrosTB.setPrecioVentaGeneral(e.getSuministroTB().getPrecioVentaGeneral());
+                    suministrosTB.setPrecioMargenGeneral(e.getSuministroTB().getPrecioMargenGeneral());
+                    suministrosTB.setPrecioUtilidadGeneral(e.getSuministroTB().getPrecioUtilidadGeneral());
+                    suministrosTB.setImpuestoArticulo(e.getSuministroTB().getImpuestoArticulo());
+                    suministrosTB.setTipoPrecio(e.getSuministroTB().isTipoPrecio());
                     detalleCompraTB.setSuministroTB(suministrosTB);
+                    //
+                    detalleCompraTB.setListPrecios(e.getListPrecios());
+                    //
                     detalleCompraTB.setCantidad(e.getCantidad());
                     detalleCompraTB.setPrecioCompra(e.getPrecioCompra());
                     detalleCompraTB.setDescuento(e.getDescuento());
