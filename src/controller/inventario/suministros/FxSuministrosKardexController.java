@@ -53,25 +53,23 @@ public class FxSuministrosKardexController implements Initializable {
     @FXML
     private TableColumn<KardexTB, String> tcDetalle;
     @FXML
-    private TableColumn<KardexTB, Label> tcCantidadEntrada;
+    private TableColumn<KardexTB, Label> tcEntrada;
     @FXML
-    private TableColumn<KardexTB, Label> tcCostoEntrada;
+    private TableColumn<KardexTB, Label> tcSalida;
     @FXML
-    private TableColumn<KardexTB, Label> tcTotalEntrada;
+    private TableColumn<KardexTB, String> tcExistencia;
     @FXML
-    private TableColumn<KardexTB, Label> tcCantidadSalida;
+    private TableColumn<KardexTB, String> tcCostoPromedio;
     @FXML
-    private TableColumn<KardexTB, Label> tcCostoSalida;
+    private TableColumn<KardexTB, String> tcDebe;
     @FXML
-    private TableColumn<KardexTB, Label> tcTotalSalida;
+    private TableColumn<KardexTB, String> tcHaber;
     @FXML
-    private TableColumn<KardexTB, Label> tcCantidadSaldo;
+    private TableColumn<KardexTB, String> tcSaldo;
     @FXML
-    private TableColumn<KardexTB, Label> tcCostoSaldo;
+    private Label lblCantidadActual;
     @FXML
-    private TableColumn<KardexTB, Label> tcTotalSaldo;
-    @FXML
-    private Label lblCantidadTotal;
+    private Label lblValorActual;
     @FXML
     private DatePicker dtFechaInicial;
     @FXML
@@ -91,60 +89,40 @@ public class FxSuministrosKardexController implements Initializable {
 
     private boolean status;
 
-    private double cantidad;
-
-    private double total;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + "\n" + cellData.getValue().getHora()));
         tcDetalle.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMovimientoName() + "\n" + cellData.getValue().getDetalle().toUpperCase()));
 
-        tcCantidadEntrada.setCellValueFactory(new PropertyValueFactory<>("lblCantidadEntreda"));
-        tcCostoEntrada.setCellValueFactory(new PropertyValueFactory<>("lblCostoEntrada"));
-        tcTotalEntrada.setCellValueFactory(new PropertyValueFactory<>("lblTotalEntrada"));
+        tcEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntreda"));
+        tcSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
+        tcExistencia.setCellValueFactory(new PropertyValueFactory<>("lblExistencia"));
 
-        tcCantidadSalida.setCellValueFactory(new PropertyValueFactory<>("lblCantidadSalida"));
-        tcCostoSalida.setCellValueFactory(new PropertyValueFactory<>("lblCostoSalida"));
-        tcTotalSalida.setCellValueFactory(new PropertyValueFactory<>("lblTotalSalida"));
+        tcCostoPromedio.setCellValueFactory(new PropertyValueFactory<>("lblCosto"));
 
-        tcCantidadSaldo.setCellValueFactory(new PropertyValueFactory<>("lblCantidadSaldo"));
-        tcCostoSaldo.setCellValueFactory(new PropertyValueFactory<>("lblCostoSaldo"));
-        tcTotalSaldo.setCellValueFactory(new PropertyValueFactory<>("lblTotalSaldo"));
-        //tcInicial.setCellValueFactory(new PropertyValueFactory<>("lblInicial"));
-//        tcEntrada.setCellValueFactory(new PropertyValueFactory<>("lblEntrada"));
-//        tcSalida.setCellValueFactory(new PropertyValueFactory<>("lblSalida"));
-//        tcSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
-        //tcInicial.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getInicial(), 4)));
-        //tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 1 ? Tools.roundingValue(cellData.getValue().getCantidad(), 4) : "0.0000"));
-        //tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipo() == 2 ? Tools.roundingValue(cellData.getValue().getCantidad() == 0 ?  cellData.getValue().getCantidad(): -cellData.getValue().getCantidad(), 4) : "0.0000"));
-        // tcSaldo.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidadTotal(), 4)));
+        tcDebe.setCellValueFactory(new PropertyValueFactory<>("lblDebe"));
+        tcHaber.setCellValueFactory(new PropertyValueFactory<>("lblHaber"));
+        tcSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
 
+        //
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
         tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcDetalle.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
 
-        tcCantidadEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcCostoEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcTotalEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
+        tcEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
+        tcSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
+        tcExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
 
-        tcCantidadSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcCostoSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcTotalSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
+        tcCostoPromedio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
 
-        tcCantidadSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcCostoSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcTotalSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        //tcInicial.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
-//        tcEntrada.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-//        tcSalida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-//        tcSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcDebe.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
+        tcHaber.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
+        tcSaldo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
 
         idSuministro = "";
         paginacion = 1;
         status = false;
-        cantidad = total = 0;
     }
 
     public void fillKardexTable(short opcion, String value, String fechaInicial, String fechaFinal) {
@@ -156,7 +134,7 @@ public class FxSuministrosKardexController implements Initializable {
         Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
             public ArrayList<Object> call() {
-                return KardexADO.List_Kardex_By_Id_Suministro(opcion, value, fechaInicial, fechaFinal, (paginacion - 1) * 10, 10, cantidad, total);
+                return KardexADO.List_Kardex_By_Id_Suministro(opcion, value, fechaInicial, fechaFinal, (paginacion - 1) * 10, 10);
             }
         };
         task.setOnSucceeded(w -> {
@@ -164,11 +142,9 @@ public class FxSuministrosKardexController implements Initializable {
             if (!objects.isEmpty()) {
 
                 tvList.setItems((ObservableList<KardexTB>) objects.get(0));
-                double cantidadTotal = 0;
-                for (KardexTB item : tvList.getItems()) {
-                    cantidadTotal = cantidadTotal + (item.getTipo() == 1 ? item.getCantidad() : -item.getCantidad());
-                }
-                lblCantidadTotal.setText(Tools.roundingValue(cantidadTotal, 2));
+
+                lblCantidadActual.setText((objects.get(1) != null ? Tools.roundingValue((double) objects.get(1), 2) : "0.00"));
+                lblValorActual.setText((objects.get(2) != null ? Tools.roundingValue((double) objects.get(2), 2) : "0.00"));
 //                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
 //
 //                totalPaginacion = integer;
@@ -177,18 +153,18 @@ public class FxSuministrosKardexController implements Initializable {
 //                
 //                cantidad += (double) objects.get(2);
 //                total += (double) objects.get(3);
-
                 //System.out.println("Cantidad: "+cantidad );
+                lblLoad.setVisible(false);
             } else {
                 tvList.getItems().clear();
-                lblCantidadTotal.setText("0");
+                lblCantidadActual.setText("0");
+                lblValorActual.setText("0");
+                lblLoad.setVisible(false);
             }
-            lblLoad.setVisible(false);
+
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
-            Tools.println(task.getMessage());
-            Tools.println(task.getException());
         });
         task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
