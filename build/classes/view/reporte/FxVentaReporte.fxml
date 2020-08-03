@@ -196,7 +196,7 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Reporte Global">
+                  <Tab disable="true" text="Reporte Global">
                     <content>
                       <AnchorPane style="-fx-background-color: white;">
                            <children>

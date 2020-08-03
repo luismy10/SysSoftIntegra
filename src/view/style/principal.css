@@ -2325,14 +2325,3 @@
     -fx-background-size: 100%;  
 }
 
-.chart-bar-propio1 .default-color0{
-    -fx-bar-fill:  #03A9F4;
-}
-
-.chart-bar-propio2 .default-color0{
-    -fx-bar-fill:  #4caf50;
-}
-
-.chart-bar-propio3 .default-color0{
-    -fx-bar-fill: red;
-}

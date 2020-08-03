@@ -19,7 +19,7 @@ public class GlobalADO {
             try {
 
                 // ventas contado
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasContado' from VentaTB where Tipo = 1 and FechaVenta between ? and ?");
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasContado' from VentaTB where Tipo = 1 and Estado = 1 and FechaVenta between ? and ?");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
@@ -40,16 +40,6 @@ public class GlobalADO {
                 }
                 list.add(ventasCredito);
 
-                // ventas total
-//                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalVentas' from VentaTB where FechaCompra between ? and ?");
-//                preparedGlobal.setString(1, fechaInicial);
-//                preparedGlobal.setString(2, fechaFinal);
-//                resultSet = preparedGlobal.executeQuery();
-//                double totalVentas = 0;
-//                if (resultSet.next()) {
-//                    totalVentas += resultSet.getDouble("totalVentas");
-//                }
-//                list.add(totalVentas);
                 // ventas anuladas
                 preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasAnuladas' from VentaTB where Estado = 3 and FechaVenta between ? and ?");
                 preparedGlobal.setString(1, fechaInicial);
@@ -198,7 +188,7 @@ public class GlobalADO {
         return "";
     }
 
-    public static ArrayList<Object> ReporteInicio(String fechaActual) {
+    public static ArrayList<Object> DashboardLoad(String fechaActual) {
         PreparedStatement preparedLista = null;
         ResultSet resultLista = null;
         ArrayList<Object> arrayList = new ArrayList<>();

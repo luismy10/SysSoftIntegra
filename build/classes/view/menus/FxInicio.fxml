@@ -340,21 +340,21 @@
                 </HBox>    
                 <HBox style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                     <children>
-                        <BarChart fx:id="bcVentasMes" categoryGap="8.0" styleClass="chart-bar-propio1" title="Ventas del mes" HBox.hgrow="ALWAYS">
+                        <BarChart fx:id="bcProductos" barGap="0.0" title="Productos más vendidos del día" HBox.hgrow="ALWAYS">
                             <xAxis>
-                                <CategoryAxis label="Semanas">
+                                <CategoryAxis label="Productos">
                            <tickLabelFont>
                               <Font size="14.0" />
                            </tickLabelFont></CategoryAxis>
                             </xAxis>
                             <yAxis>
-                                <NumberAxis label="Total vendidos" side="LEFT">
+                                <NumberAxis label="Cantidad" side="LEFT">
                            <tickLabelFont>
                               <Font size="14.0" />
                            </tickLabelFont></NumberAxis>
                             </yAxis>
                         </BarChart>
-                        <PieChart fx:id="pcCompras" title="Estado del Inventario" HBox.hgrow="ALWAYS" />
+                        <PieChart fx:id="pcInventario" title="Estado del Inventario" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
             </children>

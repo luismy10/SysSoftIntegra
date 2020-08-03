@@ -120,7 +120,7 @@
                                        <graphic>
                                           <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../image/plazos.png" />
+                                                <Image url="@../../image/search_caja.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
@@ -209,6 +209,24 @@
                                        <graphic>
                                           <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
+                                                <Image url="@../../image/generar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="lblCantidadActual" styleClass="labelRoboto16" text="0.0" textFill="#0e7ee5" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Valor Actual" textFill="#1a2226">
+                                       <graphic>
+                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
                                                 <Image url="@../../image/cantidad.png" />
                                              </image>
                                           </ImageView>
@@ -216,7 +234,7 @@
                                     </Label>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="lblCantidadTotal" styleClass="labelRoboto16" text="0.0" textFill="#0e7ee5" />
+                                          <Label fx:id="lblValorActual" styleClass="labelRoboto16" text="0.0" textFill="#0e7ee5" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -230,25 +248,23 @@
                                     <TableColumn fx:id="tcNumero" prefWidth="70.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcFecha" prefWidth="170.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha" />
                                     <TableColumn fx:id="tcDetalle" prefWidth="320.0" style="-fx-alignment: CENTER-LEFT;" text="Detalle" />
-                                    <TableColumn prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Entrada">
+                                    <TableColumn prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Unidades">
                                        <columns>
-                                          <TableColumn fx:id="tcCantidadEntrada" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                          <TableColumn fx:id="tcCostoEntrada" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
-                                          <TableColumn fx:id="tcTotalEntrada" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
+                                          <TableColumn fx:id="tcEntrada" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Entrada" />
+                                          <TableColumn fx:id="tcSalida" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Salida" />
+                                          <TableColumn fx:id="tcExistencia" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Existencia" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Salida">
+                                    <TableColumn prefWidth="116.0" style="-fx-alignment: CENTER-RIGHT;" text="Cambios">
                                        <columns>
-                                          <TableColumn fx:id="tcCantidadSalida" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                          <TableColumn fx:id="tcCostoSalida" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
-                                          <TableColumn fx:id="tcTotalSalida" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
+                                          <TableColumn fx:id="tcCostoPromedio" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo variable" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Saldo">
+                                    <TableColumn prefWidth="184.0" style="-fx-alignment: CENTER-RIGHT;" text="Valores">
                                        <columns>
-                                          <TableColumn fx:id="tcCantidadSaldo" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                          <TableColumn fx:id="tcCostoSaldo" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
-                                          <TableColumn fx:id="tcTotalSaldo" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
+                                          <TableColumn fx:id="tcDebe" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Debe" />
+                                          <TableColumn fx:id="tcHaber" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Haber" />
+                                          <TableColumn fx:id="tcSaldo" prefWidth="75.0" style="-fx-alignment: CENTER-RIGHT;" text="Saldo" />
                                        </columns>
                                     </TableColumn>
                                  </columns>

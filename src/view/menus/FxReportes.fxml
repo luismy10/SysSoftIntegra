@@ -94,24 +94,6 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionProductos" onKeyPressed="#onKeyPressedProductos" styleClass="buttonTransparent" text="Productos">
-                           <graphic>
-                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../image/producto.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER">
-                     <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionUtilidades" onKeyPressed="#onKeyPressedUtilidades" styleClass="buttonTransparent" text="Utilidades">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
@@ -122,6 +104,24 @@
                            </graphic>
                         </Button>
                         <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Finanzas">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="0.0" maxWidth="0.0" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" visible="false">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionProductos" onKeyPressed="#onKeyPressedProductos" styleClass="buttonTransparent" text="Productos">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/producto.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

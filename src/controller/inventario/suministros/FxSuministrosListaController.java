@@ -194,8 +194,11 @@ public class FxSuministrosListaController implements Initializable {
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
+                 status = false;
+            }else{
+                tvList.getItems().clear();
+                status = false;
             }
-            status = false;
         });
         task.setOnFailed(e -> {
             status = false;
@@ -296,7 +299,6 @@ public class FxSuministrosListaController implements Initializable {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
                 suministrosKardexController.fillKardexTable((short)0,tvList.getSelectionModel().getSelectedItem().getIdSuministro(), "", "");
-                System.out.println(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
                 Tools.Dispose(apWindow);
             }
         } else if (asignacionProcesoController != null) {

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="79f8e62d-5e18-47b0-8bea-277498e8137b">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="16"/>
+	<property name="ireport.x" value="75"/>
+	<property name="ireport.y" value="204"/>
 	<parameter name="PERIODO" class="java.lang.String"/>
 	<parameter name="COMPRASCREDITO" class="java.lang.String"/>
 	<parameter name="COMPRASCONTADO" class="java.lang.String"/>
 	<parameter name="COMPRASTOTAL" class="java.lang.String"/>
 	<parameter name="COMPRASANULADAS" class="java.lang.String"/>
-	<parameter name="UTILIDADVENTA" class="java.lang.String"/>
 	<parameter name="VENTASCONTADO" class="java.lang.String"/>
 	<parameter name="VENTASCREDITO" class="java.lang.String"/>
 	<parameter name="VENTASTOTAL" class="java.lang.String"/>
+	<parameter name="VENTASUTILIDAD" class="java.lang.String"/>
 	<parameter name="VENTASANULADAS" class="java.lang.String"/>
 	<parameter name="CUENTASPORPAGAR" class="java.lang.String"/>
 	<parameter name="CUENTASPORCOBRAR" class="java.lang.String"/>
@@ -26,7 +26,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[INVENTARIO GENERAL]]></text>
+				<text><![CDATA[REPORTE GENERAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="368" y="0" width="128" height="30" forecolor="#0D4E9E" uuid="5e201623-8480-4bf2-8416-e3f6aebf5e2c"/>
@@ -134,7 +134,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{UTILIDADVENTA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{VENTASUTILIDAD}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="636" y="285" width="166" height="20" backcolor="#E4E2E2" uuid="5b37b462-5c38-4d7c-a744-7054b50926f9"/>
@@ -249,42 +249,42 @@
 				<text><![CDATA[CANTIDADES INTERMEDIAS:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="383" width="220" height="20" uuid="4af12986-6dea-4e2a-be01-1d3533409bde"/>
+				<reportElement x="0" y="384" width="220" height="20" uuid="4af12986-6dea-4e2a-be01-1d3533409bde"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<text><![CDATA[CANTIDADES NECESARIAS:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="416" y="383" width="220" height="20" uuid="d54dbba3-59d6-4b79-a855-f956a2e7dd30"/>
+				<reportElement x="416" y="384" width="220" height="20" uuid="d54dbba3-59d6-4b79-a855-f956a2e7dd30"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<text><![CDATA[CANTIDADES EXCEDENTES:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="220" y="363" width="166" height="20" uuid="41ba6e82-dd87-4669-97a2-a5999ed0a14b"/>
+				<reportElement mode="Opaque" x="220" y="363" width="166" height="20" forecolor="#FF0000" backcolor="#E4E2E2" uuid="41ba6e82-dd87-4669-97a2-a5999ed0a14b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{CANTNEGATIVAS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="220" y="383" width="166" height="20" uuid="bb857917-967b-4059-96b9-774a0e8d553f"/>
+				<reportElement mode="Opaque" x="220" y="384" width="166" height="20" forecolor="#F19D02" backcolor="#E4E2E2" uuid="bb857917-967b-4059-96b9-774a0e8d553f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{CANTNECESARIAS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="636" y="363" width="166" height="20" uuid="543e58d5-1a4d-4048-b203-86e091e8afef"/>
+				<reportElement mode="Opaque" x="636" y="363" width="166" height="20" forecolor="#008000" backcolor="#E4E2E2" uuid="543e58d5-1a4d-4048-b203-86e091e8afef"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{CANTINTERMEDIAS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="636" y="383" width="166" height="20" uuid="09185b23-b3ea-43c1-80ca-7518c1e4cb7b"/>
+				<reportElement mode="Opaque" x="636" y="384" width="166" height="20" forecolor="#02539A" backcolor="#E4E2E2" uuid="09185b23-b3ea-43c1-80ca-7518c1e4cb7b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
