@@ -61,6 +61,12 @@ public class FxMovimientosController implements Initializable {
     @FXML
     private DatePicker dtFechaFinal;
 
+    private FXMLLoader fXMLLoader;
+
+    private HBox node;
+    //Controlller here
+    private FxMovimientosProcesoController controller;
+
     private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
@@ -93,7 +99,13 @@ public class FxMovimientosController implements Initializable {
 
         Tools.actualDate(Tools.getDate(), dtFechaInicio);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
-
+        try {
+            fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_MOVIMIENTOS_PROCESO));
+            node = fXMLLoader.load();
+            controller = fXMLLoader.getController();
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
     }
 
     public void fillTableMovimiento(boolean init, short opcion, int movimiento, String fechaInicial, String fechaFinal) {
@@ -176,25 +188,16 @@ public class FxMovimientosController implements Initializable {
     }
 
     private void openWindowRealizarMovimientoProducto() {
-        try {
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_MOVIMIENTOS_PROCESO));
-            HBox node = fXMLLoader.load();
-            //Controlller here
-            FxMovimientosProcesoController controller = fXMLLoader.getController();
-            controller.setContent(this, vbPrincipal, vbContent);
-
-            //
-            vbContent.getChildren().clear();
-            AnchorPane.setLeftAnchor(node, 0d);
-            AnchorPane.setTopAnchor(node, 0d);
-            AnchorPane.setRightAnchor(node, 0d);
-            AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
-            //
-            //controller.setInitArticulo();
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
+        controller.setContent(this, vbPrincipal, vbContent);
+        //
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(node, 0d);
+        AnchorPane.setTopAnchor(node, 0d);
+        AnchorPane.setRightAnchor(node, 0d);
+        AnchorPane.setBottomAnchor(node, 0d);
+        vbContent.getChildren().add(node);
+        //
+        //controller.setInitArticulo();
 
     }
 

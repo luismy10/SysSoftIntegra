@@ -42,7 +42,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.ImageADO;
@@ -229,7 +228,8 @@ public class FxTicketController implements Initializable {
                 for (int m = 0; m < apEncabezado.getChildren().size(); m++) {
                     HBox hBox = (HBox) apEncabezado.getChildren().get(m);
                     if (hBox.getChildren().size() == 1) {
-                        if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                        Object object = hBox.getChildren().get(0);
+                        if (object instanceof ImageViewTicket) {
                             ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                             if (imagenTBs.get(i).getIdSubRelacion().equalsIgnoreCase(imageViewTicket.getId())) {
                                 imageViewTicket.setUrl(imagenTBs.get(i).getImagen());
@@ -239,11 +239,13 @@ public class FxTicketController implements Initializable {
                     }
                 }
             }
+
             for (int i = 0; i < imagenTBs.size(); i++) {
                 for (int m = 0; m < apDetalleCabecera.getChildren().size(); m++) {
                     HBox hBox = (HBox) apDetalleCabecera.getChildren().get(m);
                     if (hBox.getChildren().size() == 1) {
-                        if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                        Object object = hBox.getChildren().get(0);
+                        if (object instanceof ImageViewTicket) {
                             ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                             if (imagenTBs.get(i).getIdSubRelacion().equalsIgnoreCase(imageViewTicket.getId())) {
                                 imageViewTicket.setUrl(imagenTBs.get(i).getImagen());
@@ -257,7 +259,8 @@ public class FxTicketController implements Initializable {
                 for (int m = 0; m < apPie.getChildren().size(); m++) {
                     HBox hBox = (HBox) apPie.getChildren().get(m);
                     if (hBox.getChildren().size() == 1) {
-                        if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                        Object object = hBox.getChildren().get(0);
+                        if (object instanceof ImageViewTicket) {
                             ImageViewTicket imageViewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                             if (imagenTBs.get(i).getIdSubRelacion().equalsIgnoreCase(imageViewTicket.getId())) {
                                 imageViewTicket.setUrl(imagenTBs.get(i).getImagen());
@@ -328,7 +331,8 @@ public class FxTicketController implements Initializable {
                             }
                             cb.put("list", kids);
                         } else {
-                            if (hBox.getChildren().get(0) instanceof TextFieldTicket) {
+                            Object object = hBox.getChildren().get(0);
+                            if (object instanceof TextFieldTicket) {
                                 TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
                                 cbkid.put("value", field.getText());
@@ -341,7 +345,7 @@ public class FxTicketController implements Initializable {
                                 cbkid.put("font", field.getFontName());
                                 cbkid.put("size", field.getFontSize());
                                 cb.put("text", cbkid);
-                            } else if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                            } else if (object instanceof ImageViewTicket) {
                                 ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
                                 cbkid.put("value", viewTicket.getId());
@@ -379,7 +383,8 @@ public class FxTicketController implements Initializable {
                             }
                             cb.put("list", kids);
                         } else {
-                            if (hBox.getChildren().get(0) instanceof TextFieldTicket) {
+                            Object object = hBox.getChildren().get(0);
+                            if (object instanceof TextFieldTicket) {
                                 TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
                                 cbkid.put("value", field.getText());
@@ -392,7 +397,7 @@ public class FxTicketController implements Initializable {
                                 cbkid.put("font", field.getFontName());
                                 cbkid.put("size", field.getFontSize());
                                 cb.put("text", cbkid);
-                            } else if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                            } else if (object instanceof ImageViewTicket) {
                                 ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
                                 cbkid.put("value", viewTicket.getId());
@@ -429,7 +434,8 @@ public class FxTicketController implements Initializable {
                             }
                             cb.put("list", kids);
                         } else {
-                            if (hBox.getChildren().get(0) instanceof TextFieldTicket) {
+                            Object object = hBox.getChildren().get(0);
+                            if (object instanceof TextFieldTicket) {
                                 TextFieldTicket field = (TextFieldTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
                                 cbkid.put("value", field.getText());
@@ -442,7 +448,7 @@ public class FxTicketController implements Initializable {
                                 cbkid.put("font", field.getFontName());
                                 cbkid.put("size", field.getFontSize());
                                 cb.put("text", cbkid);
-                            } else if (hBox.getChildren().get(0) instanceof ImageViewTicket) {
+                            } else if (object instanceof ImageViewTicket) {
                                 ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(0);
                                 JSONObject cbkid = new JSONObject();
                                 cbkid.put("value", viewTicket.getId());
@@ -478,12 +484,14 @@ public class FxTicketController implements Initializable {
                     } else if (result.equalsIgnoreCase("updated")) {
                         Tools.AlertMessageInformation(vbWindow, "Ticket", "Se actualizo correctamente el formato.");
                         if (cbPredeterminado.isSelected()) {
-                            Session.TICKET_VENTA_ID = idTicket;
-                            Session.TICKET_VENTA_RUTA = sampleObject.toJSONString();
+                            if (tipoTicket == 1) {
+                                Session.TICKET_VENTA_ID = idTicket;
+                                Session.TICKET_VENTA_RUTA = sampleObject.toJSONString();
+                            }
                         }
                         clearPane();
                     } else if (result.equalsIgnoreCase("registered")) {
-                        Tools.AlertMessageInformation(vbWindow, "Ticket", "Se guardo correctamente el formato.");
+                        Tools.AlertMessageInformation(vbWindow, "Ticket", "Se guardo correctamente el formato, recuerda siempre poner en predeterminado el ticket, si lo va utilizar frecuentemente.");
                         clearPane();
                     } else {
                         Tools.AlertMessageError(vbWindow, "Ticket", result);
@@ -579,7 +587,8 @@ public class FxTicketController implements Initializable {
 
             hboxReference = hBox;
             if (hboxReference.getChildren().size() == 1) {
-                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
+                Object object = hboxReference.getChildren().get(0);
+                if (object instanceof ImageViewTicket) {
                     ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
                     txtAncho.setText(Tools.roundingValue(viewTicket.getFitWidth(), 0));
                     txtAlto.setText(Tools.roundingValue(viewTicket.getFitHeight(), 0));
@@ -615,7 +624,8 @@ public class FxTicketController implements Initializable {
             for (int n = 0; n < contenedor.getChildren().size(); n++) {
                 HBox boxn = (HBox) contenedor.getChildren().get(n);
                 if (boxn.getChildren().size() == 1) {
-                    if (boxn.getChildren().get(0) instanceof ImageViewTicket) {
+                    Object object = boxn.getChildren().get(0);
+                    if (object instanceof ImageViewTicket) {
                         valor++;
                         ImageViewTicket imageViewTicket = (ImageViewTicket) boxn.getChildren().get(0);
                         imageViewTicket.setId(boxn.getParent().equals(apEncabezado) ? "imc" + valor
@@ -737,9 +747,10 @@ public class FxTicketController implements Initializable {
             contextMenu.show(hBox, event.getSceneX(), event.getSceneY());
             short widthContent = 0;
             for (int i = 0; i < hBox.getChildren().size(); i++) {
-                if (hBox.getChildren().get(i) instanceof TextFieldTicket) {
+                Object object = hBox.getChildren().get(i);
+                if (object instanceof TextFieldTicket) {
                     widthContent += ((TextFieldTicket) hBox.getChildren().get(i)).getColumnWidth();
-                } else if (hBox.getChildren().get(i) instanceof ImageViewTicket) {
+                } else if (object instanceof ImageViewTicket) {
                     widthContent += ((ImageViewTicket) hBox.getChildren().get(i)).getColumnWidth();
                 }
             }
@@ -1162,12 +1173,13 @@ public class FxTicketController implements Initializable {
                 short newwidth = (short) (sheetWidth / hBox.getChildren().size());
 
                 for (short j = 0; j < hBox.getChildren().size(); j++) {
-                    if (hBox.getChildren().get(j) instanceof TextFieldTicket) {
-                        TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                    Object object = hBox.getChildren().get(j);
+                    if (object instanceof TextFieldTicket) {
+                        TextFieldTicket fieldTicket = (TextFieldTicket) object;
                         fieldTicket.setColumnWidth(newwidth);
                         fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
-                    } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
-                        ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
+                    } else if (object instanceof ImageViewTicket) {
+                        ImageViewTicket viewTicket = (ImageViewTicket) object;
                         viewTicket.setColumnWidth(newwidth);
                     }
                 }
@@ -1179,13 +1191,13 @@ public class FxTicketController implements Initializable {
 
                 short newwidth = (short) (sheetWidth / hBox.getChildren().size());
                 for (short j = 0; j < hBox.getChildren().size(); j++) {
-                    if (hBox.getChildren().get(j) instanceof TextFieldTicket) {
-
-                        TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                    Object object = hBox.getChildren().get(j);
+                    if (object instanceof TextFieldTicket) {
+                        TextFieldTicket fieldTicket = (TextFieldTicket) object;
                         fieldTicket.setColumnWidth(newwidth);
                         fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
-                    } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
-                        ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
+                    } else if (object instanceof ImageViewTicket) {
+                        ImageViewTicket viewTicket = (ImageViewTicket) object;
                         viewTicket.setColumnWidth(newwidth);
                     }
                 }
@@ -1197,13 +1209,13 @@ public class FxTicketController implements Initializable {
 
                 short newwidth = (short) (sheetWidth / hBox.getChildren().size());
                 for (short j = 0; j < hBox.getChildren().size(); j++) {
-                    if (hBox.getChildren().get(j) instanceof TextFieldTicket) {
-
-                        TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
+                    Object object = hBox.getChildren().get(j);
+                    if (object instanceof TextFieldTicket) {
+                        TextFieldTicket fieldTicket = (TextFieldTicket) object;
                         fieldTicket.setColumnWidth(newwidth);
                         fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
-                    } else if (hBox.getChildren().get(j) instanceof ImageViewTicket) {
-                        ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
+                    } else if (object instanceof ImageViewTicket) {
+                        ImageViewTicket viewTicket = (ImageViewTicket) object;
                         viewTicket.setColumnWidth(newwidth);
                     }
                 }
@@ -1239,11 +1251,12 @@ public class FxTicketController implements Initializable {
                 oldHbox.setPrefHeight(hboxReference.getPrefHeight());
 
                 for (int r = 0; r < hboxReference.getChildren().size(); r++) {
-                    if (hboxReference.getChildren().get(r) instanceof TextFieldTicket) {
+                    Object object = hboxReference.getChildren().get(r);
+                    if (object instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) hboxReference.getChildren().get(r);
                         TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         oldHbox.getChildren().add(fieldTicket);
-                    } else if (hboxReference.getChildren().get(r) instanceof ImageViewTicket) {
+                    } else if (object instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) hboxReference.getChildren().get(r);
                         ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
                         imageTicket.setId(ivAnterior.getId());
@@ -1303,11 +1316,12 @@ public class FxTicketController implements Initializable {
                 newHbox.setPrefHeight(later.getPrefHeight());
 
                 for (int a = 0; a < later.getChildren().size(); a++) {
-                    if (later.getChildren().get(a) instanceof TextFieldTicket) {
+                    Object object = later.getChildren().get(a);
+                    if (object instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) later.getChildren().get(a);
                         TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         newHbox.getChildren().add(fieldTicket);
-                    } else if (later.getChildren().get(a) instanceof ImageViewTicket) {
+                    } else if (object instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) later.getChildren().get(a);
                         ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
                         imageTicket.setImage(new Image(new ByteArrayInputStream(ivAnterior.getUrl())));
@@ -1322,11 +1336,12 @@ public class FxTicketController implements Initializable {
                 oldHbox.setPrefHeight(hboxReference.getPrefHeight());
 
                 for (int r = 0; r < hboxReference.getChildren().size(); r++) {
-                    if (hboxReference.getChildren().get(r) instanceof TextFieldTicket) {
+                    Object object = hboxReference.getChildren().get(r);
+                    if (object instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) hboxReference.getChildren().get(r);
                         TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         oldHbox.getChildren().add(fieldTicket);
-                    } else if (hboxReference.getChildren().get(r) instanceof ImageViewTicket) {
+                    } else if (object instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) hboxReference.getChildren().get(r);
                         ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
                         imageTicket.setImage(new Image(new ByteArrayInputStream(ivAnterior.getUrl())));
@@ -1400,8 +1415,10 @@ public class FxTicketController implements Initializable {
                     Tools.AlertMessageInformation(vbWindow, "Ticket", "Se realizó los cambios correctamente.");
                     cbPredeterminado.setSelected(true);
                     cbPredeterminado.setText("SI");
-                    Session.TICKET_VENTA_ID = idTicket;
-                    Session.TICKET_VENTA_RUTA = ruta;
+                    if (tipoTicket == 1) {
+                        Session.TICKET_VENTA_ID = idTicket;
+                        Session.TICKET_VENTA_RUTA = ruta;
+                    }
                 } else {
                     Tools.AlertMessageError(vbWindow, "Ticket", result);
                 }
@@ -1410,6 +1427,28 @@ public class FxTicketController implements Initializable {
             Tools.AlertMessageWarning(vbWindow, "Ticket", "El modelo del ticket está en proceso de creación, busque en la lista para hacerlo prederteminado.");
         }
 
+    }
+
+    private void onEventEliminar() {
+        if (idTicket != 0) {
+            short value = Tools.AlertMessageConfirmation(vbWindow, "Ticket", "¿Está seguro de continuar?");
+            if (value == 1) {
+                String result = TicketADO.DeleteTicket(idTicket);
+                if (result.equalsIgnoreCase("deleted")) {
+                    Tools.AlertMessageConfirmation(vbWindow, "Ticket", "Se elemino correctamente el ticket.");
+                    if (tipoTicket == 1) {
+                        Session.TICKET_VENTA_ID = 0;
+                        Session.TICKET_VENTA_RUTA = "";
+                    }
+                    clearPane();
+                } else if (result.equalsIgnoreCase("predeterminated")) {
+                    Tools.AlertMessageConfirmation(vbWindow, "Ticket", "El ticket es predeterminado, no puede eliminar por el momento.");
+                } else {
+                    Tools.AlertMessageConfirmation(vbWindow, "Ticket", result);
+                }
+
+            }
+        }
     }
 
     @FXML
@@ -1447,6 +1486,18 @@ public class FxTicketController implements Initializable {
     @FXML
     private void onActionSave(ActionEvent event) {
         saveTicket();
+    }
+
+    @FXML
+    private void onActionEliminar(ActionEvent event) {
+        onEventEliminar();
+    }
+
+    @FXML
+    private void onKeyPressedEliminar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventEliminar();
+        }
     }
 
     @FXML
@@ -1675,8 +1726,9 @@ public class FxTicketController implements Initializable {
     private void onActionAlto(ActionEvent event) {
         if (hboxReference != null) {
             if (hboxReference.getChildren().size() == 1) {
-                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
-                    ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
+                Object object = hboxReference.getChildren().get(0);
+                if (object instanceof ImageViewTicket) {
+                    ImageViewTicket viewTicket = (ImageViewTicket) object;
                     double oldHeight = viewTicket.getFitHeight();
                     viewTicket.setFitHeight(Tools.isNumeric(txtAlto.getText().trim()) && Double.parseDouble(txtAlto.getText().trim()) > 0 ? Double.parseDouble(txtAlto.getText()) : oldHeight);
                     hboxReference.setPrefHeight(viewTicket.getFitHeight());

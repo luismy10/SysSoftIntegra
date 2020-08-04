@@ -54,6 +54,15 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button mnemonicParsing="false" onAction="#onActionEliminar" onKeyPressed="#onKeyPressedEliminar" styleClass="buttonLight" text="Eliminar">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/remove.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Button mnemonicParsing="false" onAction="#onActionSave" onKeyPressed="#onKeyPressedSave" styleClass="buttonLight" text="Guardar">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
