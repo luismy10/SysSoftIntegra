@@ -3,7 +3,6 @@ package controller.operaciones.venta;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
-import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
@@ -44,19 +43,27 @@ public class FxVentaController implements Initializable {
 
     private FxVentaEstructuraController ventaEstructuraController;
 
-//    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
+    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
     
     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private AnchorPane vbPrincipal;
+
+    private short tipoVenta;
 
     private boolean aperturaCaja;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aperturaCaja = false;
-        ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
-//        ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
+    }
+
+    public void loadComponents(){
+        if(tipoVenta == 1){
+            ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
+        }else{
+            ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
+        }
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -64,14 +71,16 @@ public class FxVentaController implements Initializable {
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             btnAgregarVenta.setDisable(true);
         }
-        ventaEstructuraController.loadPrivilegios(privilegioTBs);
+        if(tipoVenta == 1){
+            ventaEstructuraController.loadPrivilegios(privilegioTBs);
+        }
     }
 
     private Object addEstructura(Tab tab) {
         Object object = null;
         try {
 //            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA_NUEVO));
-            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_ESTRUCTURA));
+            FXMLLoader fXMLSeleccionado = new FXMLLoader(getClass().getResource(tipoVenta == 1 ? FilesRouters.FX_VENTA_ESTRUCTURA : FilesRouters.FX_VENTA_ESTRUCTURA_NUEVO));
             VBox seleccionado = fXMLSeleccionado.load();
             object = fXMLSeleccionado.getController();
             tab.setContent(seleccionado);
@@ -82,22 +91,31 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadElements() {
-        ventaEstructuraController.setContent(vbPrincipal);
-        ventaEstructuraController.getTxtSearch().requestFocus();      
-//        ventaEstructuraNuevoController.setContent(vbPrincipal);
+        if(tipoVenta == 1){
+            ventaEstructuraController.setContent(vbPrincipal);
+            ventaEstructuraController.getTxtSearch().requestFocus();
+        }else{
+            ventaEstructuraNuevoController.setContent(vbPrincipal);
+        }
     }
 
     private void addTabVentaEstructura() {
         Tab tab = new Tab("Venta " + (tbContenedor.getTabs().size() + 1));
         tbContenedor.getTabs().add(tab);
-        FxVentaEstructuraController controller = (FxVentaEstructuraController) addEstructura(tab);
-        controller.setContent(vbPrincipal);
-        controller.getTxtSearch().requestFocus();
-        controller.loadPrivilegios(privilegioTBs);
+        if(tipoVenta == 1){
+            FxVentaEstructuraController controller = (FxVentaEstructuraController) addEstructura(tab);
+            controller.setContent(vbPrincipal);
+            controller.getTxtSearch().requestFocus();
+            controller.loadPrivilegios(privilegioTBs);
+        }else{
+            FxVentaEstructuraNuevoController controller = (FxVentaEstructuraNuevoController) addEstructura(tab);
+            controller.setContent(vbPrincipal);
+            controller.getTxtSearch().requestFocus();
+            //controller.loadPrivilegios(privilegioTBs);
+        }
     }
 
     public void loadValidarCaja() {
-
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -141,14 +159,12 @@ public class FxVentaController implements Initializable {
 
         task.setOnScheduled(e -> {
 //            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-
         });
 
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
         }
-
     }
 
     public void openWindowCajaNoRegistrada(String mensaje) {
@@ -173,6 +189,7 @@ public class FxVentaController implements Initializable {
             });
             stage.show();
         } catch (IOException ex) {
+            System.out.println("venta controller openWindowFondoInicial():" + ex.getLocalizedMessage());
         }
     }
 
@@ -186,20 +203,16 @@ public class FxVentaController implements Initializable {
             FxVentaFondoInicialController controller = fXMLLoader.getController();
             controller.setInitVentaController(this);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Fondo incial", window.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Fondo inicial", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                if (!aperturaCaja) {
-                    hbContenedorVentas.setDisable(true);
-                } else {
-                    hbContenedorVentas.setDisable(false);
-                }
+                hbContenedorVentas.setDisable(!aperturaCaja);
             });
             stage.show();
         } catch (IOException ex) {
-            System.out.println("controller.ingresos.venta.FxVentaController.openWindowFondoInicial():" + ex.getLocalizedMessage());
+            System.out.println("venta controller openWindowFondoInicial():" + ex.getLocalizedMessage());
         }
     }
 
@@ -226,9 +239,8 @@ public class FxVentaController implements Initializable {
             stage.show();
             controller.loadData(dateTime);
         } catch (IOException ex) {
-
+            System.out.println("venta controller openWindowFondoInicial():" + ex.getLocalizedMessage());
         }
-
     }
 
     @FXML
@@ -250,5 +262,7 @@ public class FxVentaController implements Initializable {
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
     }
+
+    public void setTipoVenta(short tipoVenta){ this.tipoVenta = tipoVenta; }
 
 }

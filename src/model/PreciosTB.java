@@ -143,6 +143,8 @@ public class PreciosTB {
         this.btnOpcion = btnOpcion;
     }
 
- 
-    
+    @Override
+    public String toString() {
+        return nombre +"= P: "+valor+" F: "+factor;
+    }
 }

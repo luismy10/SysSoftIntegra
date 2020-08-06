@@ -1175,11 +1175,11 @@ public class FxTicketController implements Initializable {
                 for (short j = 0; j < hBox.getChildren().size(); j++) {
                     Object object = hBox.getChildren().get(j);
                     if (object instanceof TextFieldTicket) {
-                        TextFieldTicket fieldTicket = (TextFieldTicket) object;
+                        TextFieldTicket fieldTicket = (TextFieldTicket)  hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
                         fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
                     } else if (object instanceof ImageViewTicket) {
-                        ImageViewTicket viewTicket = (ImageViewTicket) object;
+                        ImageViewTicket viewTicket = (ImageViewTicket)  hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
                     }
                 }
@@ -1193,11 +1193,11 @@ public class FxTicketController implements Initializable {
                 for (short j = 0; j < hBox.getChildren().size(); j++) {
                     Object object = hBox.getChildren().get(j);
                     if (object instanceof TextFieldTicket) {
-                        TextFieldTicket fieldTicket = (TextFieldTicket) object;
+                        TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
                         fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
                     } else if (object instanceof ImageViewTicket) {
-                        ImageViewTicket viewTicket = (ImageViewTicket) object;
+                        ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
                     }
                 }
@@ -1211,11 +1211,11 @@ public class FxTicketController implements Initializable {
                 for (short j = 0; j < hBox.getChildren().size(); j++) {
                     Object object = hBox.getChildren().get(j);
                     if (object instanceof TextFieldTicket) {
-                        TextFieldTicket fieldTicket = (TextFieldTicket) object;
+                        TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
                         fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
                     } else if (object instanceof ImageViewTicket) {
-                        ImageViewTicket viewTicket = (ImageViewTicket) object;
+                        ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
                     }
                 }
@@ -1272,11 +1272,12 @@ public class FxTicketController implements Initializable {
                 newHbox.setPrefHeight(previous.getPrefHeight());
 
                 for (int a = 0; a < previous.getChildren().size(); a++) {
-                    if (previous.getChildren().get(a) instanceof TextFieldTicket) {
+                    Object object = previous.getChildren().get(a);
+                    if (object instanceof TextFieldTicket) {
                         TextFieldTicket tftAnterior = (TextFieldTicket) previous.getChildren().get(a);
                         TextFieldTicket fieldTicket = addElementTextField(tftAnterior.getId(), tftAnterior.getText(), tftAnterior.isMultilineas(), tftAnterior.getLines(), tftAnterior.getColumnWidth(), tftAnterior.getAlignment(), tftAnterior.isEditable(), tftAnterior.getVariable(), tftAnterior.getFontName(), tftAnterior.getFontSize());
                         newHbox.getChildren().add(fieldTicket);
-                    } else if (previous.getChildren().get(a) instanceof ImageViewTicket) {
+                    } else if (object instanceof ImageViewTicket) {
                         ImageViewTicket ivAnterior = (ImageViewTicket) previous.getChildren().get(a);
                         ImageViewTicket imageTicket = addElementImageView("", ivAnterior.getColumnWidth(), ivAnterior.getFitWidth(), ivAnterior.getFitHeight(), false);
                         imageTicket.setId(ivAnterior.getId());
@@ -1383,7 +1384,8 @@ public class FxTicketController implements Initializable {
     private void loadSelectImage() {
         if (hboxReference != null) {
             if (hboxReference.getChildren().size() == 1) {
-                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
+                Object object = hboxReference.getChildren().get(0);
+                if (object instanceof ImageViewTicket) {
                     ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Importar una imagen");
@@ -1705,7 +1707,8 @@ public class FxTicketController implements Initializable {
     private void onActionAncho(ActionEvent event) {
         if (hboxReference != null) {
             if (hboxReference.getChildren().size() == 1) {
-                if (hboxReference.getChildren().get(0) instanceof ImageViewTicket) {
+                Object object = hboxReference.getChildren().get(0);
+                if (object instanceof ImageViewTicket) {
                     ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
                     double oldWidth = viewTicket.getFitWidth();
                     viewTicket.setFitWidth(Tools.isNumeric(txtAncho.getText().trim()) && Double.parseDouble(txtAncho.getText().trim()) > 0 ? Double.parseDouble(txtAncho.getText()) : oldWidth);
@@ -1728,7 +1731,7 @@ public class FxTicketController implements Initializable {
             if (hboxReference.getChildren().size() == 1) {
                 Object object = hboxReference.getChildren().get(0);
                 if (object instanceof ImageViewTicket) {
-                    ImageViewTicket viewTicket = (ImageViewTicket) object;
+                    ImageViewTicket viewTicket = (ImageViewTicket) hboxReference.getChildren().get(0);
                     double oldHeight = viewTicket.getFitHeight();
                     viewTicket.setFitHeight(Tools.isNumeric(txtAlto.getText().trim()) && Double.parseDouble(txtAlto.getText().trim()) > 0 ? Double.parseDouble(txtAlto.getText()) : oldHeight);
                     hboxReference.setPrefHeight(viewTicket.getFitHeight());

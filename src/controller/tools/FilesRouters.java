@@ -220,6 +220,8 @@ public final class FilesRouters {
 
     public static final String FX_VENTA_PROCESO = "/view/operaciones/venta/FxVentaProceso.fxml";
 
+    public static final String FX_VENTA_PROCESO_NUEVO = "/view/operaciones/venta/FxVentaProcesoNuevo.fxml";
+
     public static final String FX_VENTA_REALIZADAS = "/view/operaciones/venta/FxVentaRealizadas.fxml";
 
     public static final String FX_AJUSTE_INVENTARIO = "/view/inventario/ajusteinventario/FxAjusteInventario.fxml";

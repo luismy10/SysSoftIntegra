@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/poi-scratchpad-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/commons-javaflow-20060411.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/iText-5.0.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/jasperreports-4.7.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/poi-excelant-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/rtextpr.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/commons-beanutils-1.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/barbecue-1.5-beta1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/commons-collections-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/poi-ooxml-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/jasperreports-fonts-4.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/png-encoder-1.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/poi-3.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/groovy-all-1.7.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/commons-logging-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/poi-ooxml-schemas-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/commons-digester-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/poi-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/sqljdbc4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/jasperreports-javaflow-4.7.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/json-simple-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/iText-2.1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/xmlbeans-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/nbproject/dist/lib/Util.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

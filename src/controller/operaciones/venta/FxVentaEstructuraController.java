@@ -274,7 +274,7 @@ public class FxVentaEstructuraController implements Initializable {
         });
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
-                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                if (cbComprobante.getItems().get(i).isPredeterminado()) {
                     cbComprobante.getSelectionModel().select(i);
                     break;
                 }
@@ -569,9 +569,7 @@ public class FxVentaEstructuraController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {

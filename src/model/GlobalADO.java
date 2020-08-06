@@ -286,7 +286,7 @@ public class GlobalADO {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setNombreMarca(resultLista.getString("NombreMarca"));
                     suministroTB.setCantidad(resultLista.getDouble("Cantidad"));
-                    listaProductos.add(suministroTB);
+                    listaProductos.add(suministroTB);                    
                 }
 
                 preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as VentasCobrar from VentaTB where Tipo = 2 and Estado = 2");

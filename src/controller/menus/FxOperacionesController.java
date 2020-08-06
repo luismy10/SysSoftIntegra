@@ -46,11 +46,20 @@ public class FxOperacionesController implements Initializable {
     /*
     Controller ventas
      */
-    private FXMLLoader fXMLVenta;
+    private FXMLLoader fXMLVentaOld;
 
-    private AnchorPane nodeVenta;
+    private AnchorPane nodeVentaOld;
 
-    private FxVentaController controllerVenta;
+    private FxVentaController controllerVentaOld;
+
+    /*
+    Controller ventas nueva
+     */
+    private FXMLLoader fXMLVentaNew;
+
+    private AnchorPane nodeVentaNew;
+
+    private FxVentaController controllerVentaNew;
 
     /*
     Controller compra
@@ -72,9 +81,17 @@ public class FxOperacionesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            fXMLVenta = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
-            nodeVenta = fXMLVenta.load();
-            controllerVenta = fXMLVenta.getController();
+            fXMLVentaOld = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
+            nodeVentaOld = fXMLVentaOld.load();
+            controllerVentaOld = fXMLVentaOld.getController();
+            controllerVentaOld.setTipoVenta((short)1);
+            controllerVentaOld.loadComponents();
+
+            fXMLVentaNew = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
+            nodeVentaNew = fXMLVentaNew.load();
+            controllerVentaNew = fXMLVentaNew.getController();
+            controllerVentaNew.setTipoVenta((short)2);
+            controllerVentaNew.loadComponents();
 
             fXMLCompra = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS));
             nodeCompra = fXMLCompra.load();
@@ -95,7 +112,8 @@ public class FxOperacionesController implements Initializable {
             hbOperacionesUno.getChildren().remove(btnVentas);
         } else {
             ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
-            controllerVenta.loadPrivilegios(privilegioTBs);
+            controllerVentaOld.loadPrivilegios(privilegioTBs);
+            controllerVentaNew.loadPrivilegios(privilegioTBs);
         }
 
         if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
@@ -123,15 +141,27 @@ public class FxOperacionesController implements Initializable {
     }
 
     private void openWindowVenta() {
-        controllerVenta.setContent(vbPrincipal);
+        controllerVentaOld.setContent(vbPrincipal);
         vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeVenta, 0d);
-        AnchorPane.setTopAnchor(nodeVenta, 0d);
-        AnchorPane.setRightAnchor(nodeVenta, 0d);
-        AnchorPane.setBottomAnchor(nodeVenta, 0d);
-        vbContent.getChildren().add(nodeVenta);
-        controllerVenta.loadValidarCaja();
-        controllerVenta.loadElements();
+        AnchorPane.setLeftAnchor(nodeVentaOld, 0d);
+        AnchorPane.setTopAnchor(nodeVentaOld, 0d);
+        AnchorPane.setRightAnchor(nodeVentaOld, 0d);
+        AnchorPane.setBottomAnchor(nodeVentaOld, 0d);
+        vbContent.getChildren().add(nodeVentaOld);
+        controllerVentaOld.loadValidarCaja();
+        controllerVentaOld.loadElements();
+    }
+
+    private void openWindowVentaNueva(){
+        controllerVentaNew.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeVentaNew, 0d);
+        AnchorPane.setTopAnchor(nodeVentaNew, 0d);
+        AnchorPane.setRightAnchor(nodeVentaNew, 0d);
+        AnchorPane.setBottomAnchor(nodeVentaNew, 0d);
+        vbContent.getChildren().add(nodeVentaNew);
+        controllerVentaNew.loadValidarCaja();
+        controllerVentaNew.loadElements();
     }
 
     private void openWindowCompra() {
@@ -170,6 +200,14 @@ public class FxOperacionesController implements Initializable {
         openWindowVenta();
     }
 
+    public void onActionVentasNueva(ActionEvent event) {
+        openWindowVentaNueva();
+    }
+
+    public void onKeyPressedVentasNueva(KeyEvent keyEvent) {
+        openWindowVentaNueva();
+    }
+
     @FXML
     private void onKeyPressedCorteCaja(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -198,5 +236,6 @@ public class FxOperacionesController implements Initializable {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
     }
+
 
 }

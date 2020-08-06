@@ -2,13 +2,11 @@ package controller.operaciones.venta;
 
 import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosProcesoModalController;
-import controller.tools.BbItemProducto;
-import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
-import controller.tools.SearchComboBox;
-import controller.tools.Session;
-import controller.tools.Tools;
-import controller.tools.WindowStage;
+import controller.tools.*;
+
+import java.awt.print.Book;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +15,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -40,11 +40,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.ComprobanteADO;
@@ -57,6 +59,10 @@ import model.SuministroTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.VentaTB;
+import org.controlsfx.control.Notifications;
+
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
 
 public class FxVentaEstructuraNuevoController implements Initializable {
 
@@ -87,9 +93,17 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private AnchorPane vbPrincipal;
 
+    private BillPrintable billPrintable;
+
     private ObservableList<SuministroTB> tvList;
 
     private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
+
+    private AnchorPane hbEncabezado;
+
+    private AnchorPane hbDetalleCabecera;
+
+    private AnchorPane hbPie;
 
     private String monedaSimbolo;
 
@@ -114,7 +128,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         arrayArticulosImpuesto = new ArrayList<>();
+        tvList = FXCollections.observableArrayList();
+        billPrintable = new BillPrintable();
+        hbEncabezado = new AnchorPane();
+        hbDetalleCabecera = new AnchorPane();
+        hbPie = new AnchorPane();
         paginacion = 1;
+        totalPaginacion=0;
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
@@ -135,7 +155,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         });
         searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             cbCliente.getItems().clear();
-            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 3, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
+            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 4, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
             clienteTBs.forEach(e -> cbCliente.getItems().add(e));
         });
         searchComboBoxCliente.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -173,12 +193,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private void loadDataComponent() {
         cbComprobante.getItems().clear();
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
-            cbComprobante.getItems().add(e);
-        });
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> cbComprobante.getItems().add(e));
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
-                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                if (cbComprobante.getItems().get(i).isPredeterminado()) {
                     cbComprobante.getSelectionModel().select(i);
                     break;
                 }
@@ -192,18 +210,14 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
 
         arrayArticulosImpuesto.clear();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-        });
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
 
         cbMoneda.getItems().clear();
-        MonedaADO.GetMonedasCombBox().forEach(e -> {
-            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado()));
-        });
+        MonedaADO.GetMonedasCombBox().forEach(e -> cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado())));
 
         if (!cbMoneda.getItems().isEmpty()) {
             for (int i = 0; i < cbMoneda.getItems().size(); i++) {
-                if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
+                if (cbMoneda.getItems().get(i).getPredeterminado()) {
                     cbMoneda.getSelectionModel().select(i);
                     monedaSimbolo = cbMoneda.getItems().get(i).getSimbolo();
                     break;
@@ -242,7 +256,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
                 fpProductos.setAlignment(Pos.TOP_CENTER);
-                tvList = (ObservableList<SuministroTB>) objects.get(0);
+                ObservableList<SuministroTB> observableList = (ObservableList<SuministroTB>) objects.get(0);
+                tvList.addAll(observableList);
                 tvList.stream().map(tvList1 -> {
                     VBox vBox = new VBox();
                     vBox.setOnMouseClicked(m -> {
@@ -334,25 +349,24 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     lblMarca.setTextFill(Color.web("#1a2226"));
                     vBox.getChildren().add(lblMarca);
 
-                    Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
+                    double impuestoimpuesto = getTaxValue(tvList1.getImpuestoArticulo());
+                    double impuestototal = Tools.calculateTax(impuestoimpuesto,tvList1.getPrecioVentaGeneral());
+                    double precioventa = tvList1.getPrecioVentaGeneral() + impuestototal;
+
+                    Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(precioventa, 2));
                     lblTotalProducto.getStyleClass().add("labelRobotoBold18");
                     lblTotalProducto.setTextFill(Color.web("#0478b2"));
                     lblTotalProducto.maxWidth(Double.MAX_VALUE);
                     vBox.getChildren().add(lblTotalProducto);
                     return vBox;
-                }).forEachOrdered(vBox -> {
-                    fpProductos.getChildren().add(vBox);
-                });
-                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 15.00)));
-                totalPaginacion = integer;
+                }).forEachOrdered(vBox -> fpProductos.getChildren().add(vBox));
+                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 15.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
             }
             state = false;
         });
-        task.setOnFailed(e -> {
-            state = false;
-        });
+        task.setOnFailed(e -> state = false);
         task.setOnScheduled(e -> {
             state = true;
             fpProductos.getChildren().clear();
@@ -384,7 +398,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         return ret;
     }
 
-    private void searchTable(KeyEvent event, short tipo, String value) {
+    private void searchTable(KeyEvent event, String value) {
         if (event.getCode() != KeyCode.ESCAPE
                 && event.getCode() != KeyCode.F1
                 && event.getCode() != KeyCode.F2
@@ -420,16 +434,16 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
             if (!state) {
-                fillSuministrosTable(tipo, value);
+                fillSuministrosTable((short) 1, value);
             }
         }
     }
 
     public int getTaxValueOperacion(int impuesto) {
         int valor = 0;
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getOperacion();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getOperacion();
                 break;
             }
         }
@@ -438,9 +452,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     public double getTaxValue(int impuesto) {
         double valor = 0;
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getValor();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getValor();
                 break;
             }
         }
@@ -449,9 +463,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     public String getTaxName(int impuesto) {
         String valor = "";
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getNombreImpuesto();
                 break;
             }
         }
@@ -478,9 +492,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         double sumaElement = 0;
         double totalImpuestos = 0;
         if (!lvProductoAgregados.getItems().isEmpty()) {
-            for (int k = 0; k < arrayArticulosImpuesto.size(); k++) {
+            for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
                 for (int i = 0; i < lvProductoAgregados.getItems().size(); i++) {
-                    if (arrayArticulosImpuesto.get(k).getIdImpuesto() == lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoArticulo()) {
+                    if (impuestoTB.getIdImpuesto() == lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoArticulo()) {
                         addElement = true;
                         sumaElement += lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoSumado();
                     }
@@ -508,15 +522,221 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     }
 
     public void resetVenta() {
+        paginacion = 1;
+        totalPaginacion=0;
+        opcion = 0;
+        state = false;
         tvList.clear();
-
+        fpProductos.getChildren().clear();
+        lvProductoAgregados.getItems().clear();
+        cbCliente.getSelectionModel().select(null);
         loadDataComponent();
-
+        lblPaginaActual.setText(paginacion + "");
+        lblPaginaSiguiente.setText(totalPaginacion + "");
         lblTotal.setText(monedaSimbolo + " 0.00");
-
         txtSearch.requestFocus();
-
         calculateTotales();
+    }
+
+    public void imprimirVenta(String serieNumeracion, String codigoVenta, String efectivo, String vuelto, boolean ticket) {
+        if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
+            Tools.AlertMessageWarning(vbWindow, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+            if (ticket) {
+                resetVenta();
+            }
+            return;
+        }
+        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA.equalsIgnoreCase("")) {
+            Tools.AlertMessageWarning(vbWindow, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
+            if (ticket) {
+                resetVenta();
+            }
+            return;
+        }
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        try {
+            Task<String> task = new Task<String>() {
+                @Override
+                public String call() {
+
+                    try {
+                        billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+
+                        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                            billPrintable.hbEncebezado(box,
+                                    ticket ? cbComprobante.getSelectionModel().getSelectedItem().getNombre() : "PRE VENTA",
+                                    serieNumeracion,
+                                    cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento().toUpperCase(),
+                                    cbCliente.getSelectionModel().getSelectedItem().getInformacion().toUpperCase(),
+                                    cbCliente.getSelectionModel().getSelectedItem().getCelular().toUpperCase(),
+                                    cbCliente.getSelectionModel().getSelectedItem().getDireccion().toUpperCase(),
+                                    codigoVenta);
+                        }
+
+                        AnchorPane hbDetalle = new AnchorPane();
+                        for (int m = 0; m < tvList.size(); m++) {
+                            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                                HBox hBox = new HBox();
+                                hBox.setId("dc_" + m + "" + i);
+                                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                                billPrintable.hbDetalle(hBox, box, tvList, m);
+                                hbDetalle.getChildren().add(hBox);
+                            }
+                        }
+
+                        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                            HBox box = ((HBox) hbPie.getChildren().get(i));
+                            billPrintable.hbPie(box, monedaSimbolo,
+                                    Tools.roundingValue(subTotal, 2),
+                                    "-" + Tools.roundingValue(descuento, 2),
+                                    Tools.roundingValue(subTotalImporte, 2),
+                                    Tools.roundingValue(total, 2),
+                                    efectivo,
+                                    vuelto,
+                                    cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento().toUpperCase(),
+                                    cbCliente.getSelectionModel().getSelectedItem().getInformacion().toUpperCase(),
+                                    codigoVenta,
+                                    cbCliente.getSelectionModel().getSelectedItem().getCelular().toUpperCase());
+                        }
+
+                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                        if (job != null) {
+                            PrinterJob pj = PrinterJob.getPrinterJob();
+                            pj.setPrintService(job.getPrintService());
+                            pj.setJobName(Session.NOMBRE_IMPRESORA);
+                            Book book = new Book();
+                            book.append(billPrintable, billPrintable.getPageFormat(pj));
+                            pj.setPageable(book);
+                            pj.print();
+                            if (Session.CORTAPAPEL_IMPRESORA) {
+                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            }
+                            return "completed";
+                        } else {
+                            return "error_name";
+                        }
+
+                    } catch (PrinterException | IOException | PrintException ex) {
+                        return "Error en imprimir: " + ex.getLocalizedMessage();
+                    }
+                }
+            };
+
+            task.setOnSucceeded(w -> {
+//                if (!task.isRunning()) {
+//                    if (alert != null) {
+//                        ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+//                    }
+//                }
+                String result = task.getValue();
+                if (result.equalsIgnoreCase("completed")) {
+//                    Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
+//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    Image image = new Image("/view/image/information_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Se completo el proceso de impresión correctamente.")
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(5))
+                            .position(Pos.BOTTOM_RIGHT)
+                            .onAction(Tools::println);
+                    notifications.darkStyle();
+                    notifications.show();
+                    if (ticket) {
+                        resetVenta();
+                    }
+                } else if (result.equalsIgnoreCase("error_name")) {
+                    Image image = new Image("/view/image/warning_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Error en encontrar el nombre de la impresión por problemas de puerto o driver.")
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(10))
+                            .position(Pos.CENTER)
+                            .onAction(Tools::println);
+                    notifications.darkStyle();
+                    notifications.show();
+                    if (ticket) {
+                        resetVenta();
+                    }
+                } else {
+//                    Tools.AlertMessageError(window, "Ventas", result);
+//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    Image image = new Image("/view/image/error_large.png");
+                    Notifications notifications = Notifications.create()
+                            .title("Envío de impresión")
+                            .text("Error en la configuración de su impresora: " + result)
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.seconds(10))
+                            .position(Pos.CENTER)
+                            .onAction(Tools::println);
+                    notifications.darkStyle();
+                    notifications.show();
+                    if (ticket) {
+                        resetVenta();
+                    }
+                }
+            });
+            task.setOnFailed(w -> {
+//                if (alert != null) {
+//                    ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+//                }
+//                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema en el proceso de envío, intente nuevamente.");
+//                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                Image image = new Image("/view/image/warning_large.png");
+                Notifications notifications = Notifications.create()
+                        .title("Envío de impresión")
+                        .text("Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.")
+                        .graphic(new ImageView(image))
+                        .hideAfter(Duration.seconds(10))
+                        .position(Pos.BOTTOM_RIGHT)
+                        .onAction(Tools::println);
+                notifications.darkStyle();
+                notifications.show();
+                if (ticket) {
+                    resetVenta();
+                }
+                Tools.println(task.getMessage());
+            });
+
+            task.setOnScheduled(w -> {
+                Image image = new Image("/view/image/print.png");
+                Notifications notifications = Notifications.create()
+                        .title("Envío de impresión")
+                        .text("Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.")
+                        .graphic(new ImageView(image))
+                        .hideAfter(Duration.seconds(5))
+                        .position(Pos.BOTTOM_RIGHT)
+                        .onAction(Tools::println);
+                notifications.darkStyle();
+                notifications.show();
+
+//                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+//                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
+            });
+            exec.execute(task);
+
+        } finally {
+            exec.shutdown();
+        }
+
+    }
+
+    private void cancelarVenta() {
+        short value = Tools.AlertMessageConfirmation(vbWindow, "Venta", "¿Está seguro de limpiar la venta?");
+        if (value == 1) {
+            resetVenta();
+        }
     }
 
     private void openWindowDetalleProducto(int index, BbItemProducto bbItemProducto) {
@@ -533,9 +753,30 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Detalle producto", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowImpresora() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_IMPRESORA_TICKET);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxImpresoraTicketController controller = fXMLLoader.getController();
+//            controller.setInitVentaEstructuraController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Configurar impresora", vbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w ->
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
+            );
+            controller.loadConfigurationDefauld();
             stage.show();
         } catch (IOException ex) {
             System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
@@ -555,11 +796,11 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             } else {
 
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO);
+                URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO_NUEVO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
                 //Controlller here
-                FxVentaProcesoController controller = fXMLLoader.getController();
+                FxVentaProcesoNuevoController controller = fXMLLoader.getController();
                 controller.setInitVentaEstructuraNuevoController(this);
                 //
                 Stage stage = WindowStage.StageLoaderModal(parent, "Completar la venta", vbWindow.getScene().getWindow());
@@ -596,10 +837,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setTotal(total);
                 ventaTB.setClienteTB(clienteTB);
-                ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
-                tvList.forEach((stb) -> {
-                    suministroTBs.add(stb);
-                });
+                ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList);
                 controller.setInitComponents(ventaTB, suministroTBs);
             }
         } catch (IOException ex) {
@@ -654,26 +892,20 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-            FxVentaMovimientoController controller = fXMLLoader.getController();
+            //FxVentaMovimientoController controller = fXMLLoader.getController();
 //            controller.setInitVentaEstructuraController(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento de caja", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
         } catch (IOException ex) {
-
+            Tools.println("Venta estructura nuevo onEventMovimientoCaja:"+ex.getLocalizedMessage());
         }
     }
-    
-    private void onEventTicket(){
-        
-    }
 
-        @FXML
+    @FXML
     private void onKeyPressedWindow(KeyEvent event) {
         if(event.getCode() == KeyCode.F1){
             onEventCobrar();
@@ -694,19 +926,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             cbComprobante.requestFocus();
         }else if(event.getCode() == KeyCode.F7){
             onEventMovimientoCaja();
-        }else if(event.getCode() == KeyCode.F8){
-            
-        }else if(event.getCode() == KeyCode.F9){
-            
-        }else if(event.getCode() == KeyCode.F10){
-            
         }
     }
     
     @FXML
     private void onKeyReleasedToSearch(KeyEvent event) {
         paginacion = 1;
-        searchTable(event, (short) 1, txtSearch.getText().trim());
+        searchTable(event, txtSearch.getText().trim());
         opcion = 1;
     }
 
@@ -860,34 +1086,36 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if(event.getCode() ==  KeyCode.ENTER){
-            
+            imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
+        imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
     }
 
     @FXML
     private void onKeyPressedLimpiar(KeyEvent event) {
         if(event.getCode() == KeyCode.ENTER){
-            
+            cancelarVenta();
         }
     }
 
     @FXML
-    private void onActionLimpiar(ActionEvent event) {
+    private void onActionLimpiar(ActionEvent event) {cancelarVenta();
     }
 
     @FXML
     private void onKeyPressedImpresora(KeyEvent event) {
         if(event.getCode() == KeyCode.ENTER){
-            
+            openWindowImpresora();
         }
     }
 
     @FXML
     private void onActionImpresora(ActionEvent event) {
+        openWindowImpresora();
     }
 
     public TextField getTxtSearch() {
