@@ -217,7 +217,7 @@
                <children>
                   <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
+                        <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -229,7 +229,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label styleClass="labelBorder" text="0">
+                        <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -239,12 +239,12 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelBorder" text="0">
+                        <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
+                        <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>

@@ -262,6 +262,7 @@ public class ClienteADO {
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
+                clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTBs.add(clienteTB);
             }
         } catch (SQLException e) {

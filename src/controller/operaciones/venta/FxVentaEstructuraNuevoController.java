@@ -133,7 +133,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         hbEncabezado = new AnchorPane();
         hbDetalleCabecera = new AnchorPane();
         hbPie = new AnchorPane();
-        paginacion = 1;
+        paginacion = 0;
         totalPaginacion=0;
         opcion = 0;
         state = false;
@@ -189,6 +189,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 }
             }
         });
+
+        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID,Session.CLIENTE_NUMERO_DOCUMENTO,Session.CLIENTE_DATOS,"",Session.CLIENTE_DIRECCION));
+        cbCliente.getSelectionModel().select(0);
     }
 
     private void loadDataComponent() {
@@ -247,17 +250,17 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
             public ArrayList<Object> call() {
-                return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 15, 15);
+                return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 10, 10);
             }
         };
 
         task.setOnSucceeded(e -> {
             fpProductos.getChildren().clear();
+            tvList.clear();
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
                 fpProductos.setAlignment(Pos.TOP_CENTER);
-                ObservableList<SuministroTB> observableList = (ObservableList<SuministroTB>) objects.get(0);
-                tvList.addAll(observableList);
+                tvList.addAll((ObservableList<SuministroTB>) objects.get(0));
                 tvList.stream().map(tvList1 -> {
                     VBox vBox = new VBox();
                     vBox.setOnMouseClicked(m -> {
@@ -360,7 +363,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.getChildren().add(lblTotalProducto);
                     return vBox;
                 }).forEachOrdered(vBox -> fpProductos.getChildren().add(vBox));
-                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 15.00));
+                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
             }
@@ -434,7 +437,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
             if (!state) {
-                fillSuministrosTable((short) 1, value);
+                paginacion=1;
+                fillSuministrosTable((short)1, value);
+                opcion=1;
             }
         }
     }
@@ -522,18 +527,21 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     }
 
     public void resetVenta() {
-        paginacion = 1;
+        paginacion = 0;
         totalPaginacion=0;
         opcion = 0;
         state = false;
         tvList.clear();
         fpProductos.getChildren().clear();
         lvProductoAgregados.getItems().clear();
-        cbCliente.getSelectionModel().select(null);
+        cbCliente.getItems().clear();
+        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID,Session.CLIENTE_NUMERO_DOCUMENTO,Session.CLIENTE_DATOS,"",Session.CLIENTE_DIRECCION));
+        cbCliente.getSelectionModel().select(0);
         loadDataComponent();
         lblPaginaActual.setText(paginacion + "");
         lblPaginaSiguiente.setText(totalPaginacion + "");
         lblTotal.setText(monedaSimbolo + " 0.00");
+        txtSearch.clear();
         txtSearch.requestFocus();
         calculateTotales();
     }
@@ -568,25 +576,40 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     try {
                         billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
+                        String numeroDocumento = "";
+                        String informacion = "";
+                        String celular = "";
+                        String direccion = "";
+
+                        if(cbCliente.getSelectionModel().getSelectedIndex()>=0){
+                             ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
+                             numeroDocumento = clienteTB.getNumeroDocumento() == null ? "":clienteTB.getNumeroDocumento().toUpperCase();
+                             informacion = clienteTB.getInformacion() == null? "":clienteTB.getInformacion().toUpperCase();
+                             celular = clienteTB.getCelular() == null? "":clienteTB.getCelular().toUpperCase();
+                             direccion = clienteTB.getDireccion() == null? "":clienteTB.getDireccion().toUpperCase();
+                        }
+
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             billPrintable.hbEncebezado(box,
                                     ticket ? cbComprobante.getSelectionModel().getSelectedItem().getNombre() : "PRE VENTA",
                                     serieNumeracion,
-                                    cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento().toUpperCase(),
-                                    cbCliente.getSelectionModel().getSelectedItem().getInformacion().toUpperCase(),
-                                    cbCliente.getSelectionModel().getSelectedItem().getCelular().toUpperCase(),
-                                    cbCliente.getSelectionModel().getSelectedItem().getDireccion().toUpperCase(),
+                                    numeroDocumento ,
+                                    informacion,
+                                    celular,
+                                    direccion,
                                     codigoVenta);
                         }
 
+                        ObservableList<SuministroTB> observableList = FXCollections.observableArrayList();
+                        lvProductoAgregados.getItems().forEach(o-> observableList.add(o.getSuministroTB()));
                         AnchorPane hbDetalle = new AnchorPane();
-                        for (int m = 0; m < tvList.size(); m++) {
+                        for (int m = 0; m < lvProductoAgregados.getItems().size(); m++) {
                             for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
                                 HBox hBox = new HBox();
                                 hBox.setId("dc_" + m + "" + i);
                                 HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                                billPrintable.hbDetalle(hBox, box, tvList, m);
+                                billPrintable.hbDetalle(hBox, box, observableList, m);
                                 hbDetalle.getChildren().add(hBox);
                             }
                         }
@@ -600,10 +623,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     Tools.roundingValue(total, 2),
                                     efectivo,
                                     vuelto,
-                                    cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento().toUpperCase(),
-                                    cbCliente.getSelectionModel().getSelectedItem().getInformacion().toUpperCase(),
+                                    numeroDocumento,
+                                    informacion,
                                     codigoVenta,
-                                    cbCliente.getSelectionModel().getSelectedItem().getCelular().toUpperCase());
+                                    celular);
                         }
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -706,7 +729,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 if (ticket) {
                     resetVenta();
                 }
-                Tools.println(task.getMessage());
             });
 
             task.setOnScheduled(w -> {
@@ -892,7 +914,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-            //FxVentaMovimientoController controller = fXMLLoader.getController();
+//            FxVentaMovimientoController controller = fXMLLoader.getController();
 //            controller.setInitVentaEstructuraController(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento de caja", vbWindow.getScene().getWindow());
@@ -1017,11 +1039,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     }
 
     @FXML
-    private void onKeyReleasedProductosAgregados(KeyEvent event) {
+    private void onKeyPressedProductosAgregados(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (lvProductoAgregados.getSelectionModel().getSelectedIndex() >= 0) {
                 openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedIndex(), lvProductoAgregados.getSelectionModel().getSelectedItem());
-
             }
         }
     }
@@ -1145,7 +1166,5 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
     }
-
-    
 
 }

@@ -202,7 +202,7 @@
                         </HBox>
                         <HBox VBox.vgrow="SOMETIMES">
                            <children>
-                              <ListView fx:id="lvProductoAgregados" onKeyReleased="#onKeyReleasedProductosAgregados" onMouseClicked="#onMouseClickedProductosAgregados" HBox.hgrow="SOMETIMES" />
+                              <ListView fx:id="lvProductoAgregados" onKeyPressed="#onKeyPressedProductosAgregados" onMouseClicked="#onMouseClickedProductosAgregados" HBox.hgrow="SOMETIMES" />
                            </children>
                         </HBox>
                         <HBox>

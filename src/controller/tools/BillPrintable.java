@@ -156,7 +156,7 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
                     fieldTicket.setText(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%");
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getTotalImporte(), 2));
+                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral()*arrList.get(m).getCantidad(), 2));
                 }
                 hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
             }

@@ -139,9 +139,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
         vbContent.getChildren().add(nodeVentaRealizadas);
-        if (ventaRealizadasController.getTvList().getItems().isEmpty()) {
-            ventaRealizadasController.loadInit();
-        }
+        ventaRealizadasController.loadInit();
     }
 
     private void openWindowPurchasesMade() {
