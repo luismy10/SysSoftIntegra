@@ -453,6 +453,7 @@ public class VentaADO {
                     clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
                     clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
+                    clienteTB.setEmail(resultSetVenta.getString("Email"));
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
                     clienteTB.setCelular(resultSetVenta.getString("Celular"));
                     ventaTB.setClienteTB(clienteTB);

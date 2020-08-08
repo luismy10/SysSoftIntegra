@@ -95,7 +95,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private BillPrintable billPrintable;
 
-    private ObservableList<SuministroTB> tvList;
+    private ObservableList<SuministroTB> listSuministros;
 
     private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
 
@@ -128,13 +128,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         arrayArticulosImpuesto = new ArrayList<>();
-        tvList = FXCollections.observableArrayList();
+        listSuministros = FXCollections.observableArrayList();
         billPrintable = new BillPrintable();
         hbEncabezado = new AnchorPane();
         hbDetalleCabecera = new AnchorPane();
         hbPie = new AnchorPane();
         paginacion = 0;
-        totalPaginacion=0;
+        totalPaginacion = 0;
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
@@ -190,7 +190,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             }
         });
 
-        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID,Session.CLIENTE_NUMERO_DOCUMENTO,Session.CLIENTE_DATOS,"",Session.CLIENTE_DIRECCION));
+        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
         cbCliente.getSelectionModel().select(0);
     }
 
@@ -256,12 +256,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
         task.setOnSucceeded(e -> {
             fpProductos.getChildren().clear();
-            tvList.clear();
+            listSuministros.clear();
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
                 fpProductos.setAlignment(Pos.TOP_CENTER);
-                tvList.addAll((ObservableList<SuministroTB>) objects.get(0));
-                tvList.stream().map(tvList1 -> {
+                listSuministros.addAll((ObservableList<SuministroTB>) objects.get(0));
+                listSuministros.stream().map(tvList1 -> {
                     VBox vBox = new VBox();
                     vBox.setOnMouseClicked(m -> {
 
@@ -353,7 +353,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.getChildren().add(lblMarca);
 
                     double impuestoimpuesto = getTaxValue(tvList1.getImpuestoArticulo());
-                    double impuestototal = Tools.calculateTax(impuestoimpuesto,tvList1.getPrecioVentaGeneral());
+                    double impuestototal = Tools.calculateTax(impuestoimpuesto, tvList1.getPrecioVentaGeneral());
                     double precioventa = tvList1.getPrecioVentaGeneral() + impuestototal;
 
                     Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(precioventa, 2));
@@ -437,9 +437,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
             if (!state) {
-                paginacion=1;
-                fillSuministrosTable((short)1, value);
-                opcion=1;
+                paginacion = 1;
+                fillSuministrosTable((short) 1, value);
+                opcion = 1;
             }
         }
     }
@@ -528,14 +528,14 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     public void resetVenta() {
         paginacion = 0;
-        totalPaginacion=0;
+        totalPaginacion = 0;
         opcion = 0;
         state = false;
-        tvList.clear();
+        listSuministros.clear();
         fpProductos.getChildren().clear();
         lvProductoAgregados.getItems().clear();
         cbCliente.getItems().clear();
-        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID,Session.CLIENTE_NUMERO_DOCUMENTO,Session.CLIENTE_DATOS,"",Session.CLIENTE_DIRECCION));
+        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
         cbCliente.getSelectionModel().select(0);
         loadDataComponent();
         lblPaginaActual.setText(paginacion + "");
@@ -581,12 +581,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                         String celular = "";
                         String direccion = "";
 
-                        if(cbCliente.getSelectionModel().getSelectedIndex()>=0){
-                             ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
-                             numeroDocumento = clienteTB.getNumeroDocumento() == null ? "":clienteTB.getNumeroDocumento().toUpperCase();
-                             informacion = clienteTB.getInformacion() == null? "":clienteTB.getInformacion().toUpperCase();
-                             celular = clienteTB.getCelular() == null? "":clienteTB.getCelular().toUpperCase();
-                             direccion = clienteTB.getDireccion() == null? "":clienteTB.getDireccion().toUpperCase();
+                        if (cbCliente.getSelectionModel().getSelectedIndex() >= 0) {
+                            ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
+                            numeroDocumento = clienteTB.getNumeroDocumento() == null ? "" : clienteTB.getNumeroDocumento().toUpperCase();
+                            informacion = clienteTB.getInformacion() == null ? "" : clienteTB.getInformacion().toUpperCase();
+                            celular = clienteTB.getCelular() == null ? "" : clienteTB.getCelular().toUpperCase();
+                            direccion = clienteTB.getDireccion() == null ? "" : clienteTB.getDireccion().toUpperCase();
                         }
 
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
@@ -594,7 +594,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             billPrintable.hbEncebezado(box,
                                     ticket ? cbComprobante.getSelectionModel().getSelectedItem().getNombre() : "PRE VENTA",
                                     serieNumeracion,
-                                    numeroDocumento ,
+                                    numeroDocumento,
                                     informacion,
                                     celular,
                                     direccion,
@@ -602,7 +602,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                         }
 
                         ObservableList<SuministroTB> observableList = FXCollections.observableArrayList();
-                        lvProductoAgregados.getItems().forEach(o-> observableList.add(o.getSuministroTB()));
+                        lvProductoAgregados.getItems().forEach(o -> observableList.add(o.getSuministroTB()));
                         AnchorPane hbDetalle = new AnchorPane();
                         for (int m = 0; m < lvProductoAgregados.getItems().size(); m++) {
                             for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
@@ -795,8 +795,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Configurar impresora", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w ->
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
+            stage.setOnHiding(w
+                    -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
             );
             controller.loadConfigurationDefauld();
             stage.show();
@@ -833,12 +833,11 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
-//                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
-//                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim());
-//                clienteTB.setInformacion(txtDatosCliente.getText().trim());
-//                clienteTB.setDireccion(txtDireccionCliente.getText().trim());
-//                clienteTB.setCelular(txtCelularCliente.getText().trim());
-                Tools.println(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
+                clienteTB.setTipoDocumento(cbCliente.getSelectionModel().getSelectedItem().getTipoDocumento());
+                clienteTB.setNumeroDocumento(cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento());
+                clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
+                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
+                clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -859,7 +858,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setTotal(total);
                 ventaTB.setClienteTB(clienteTB);
-                ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList);
+                ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
+                lvProductoAgregados.getItems().forEach(e -> suministroTBs.add(e.getSuministroTB()));
                 controller.setInitComponents(ventaTB, suministroTBs);
             }
         } catch (IOException ex) {
@@ -906,8 +906,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             System.out.println("Error en producto lista:" + ex.getLocalizedMessage());
         }
     }
-    
-    private void onEventMovimientoCaja(){
+
+    private void onEventMovimientoCaja() {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_VENTA_MOVIMIENTO);
@@ -923,34 +923,34 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
         } catch (IOException ex) {
-            Tools.println("Venta estructura nuevo onEventMovimientoCaja:"+ex.getLocalizedMessage());
+            Tools.println("Venta estructura nuevo onEventMovimientoCaja:" + ex.getLocalizedMessage());
         }
     }
 
     @FXML
     private void onKeyPressedWindow(KeyEvent event) {
-        if(event.getCode() == KeyCode.F1){
+        if (event.getCode() == KeyCode.F1) {
             onEventCobrar();
-        }else if(event.getCode() == KeyCode.F2){
+        } else if (event.getCode() == KeyCode.F2) {
             txtSearch.selectAll();
             txtSearch.requestFocus();
-        }else if(event.getCode() == KeyCode.F3){
+        } else if (event.getCode() == KeyCode.F3) {
             cbMoneda.requestFocus();
-        }else if(event.getCode() == KeyCode.F4){
+        } else if (event.getCode() == KeyCode.F4) {
             cbCliente.requestFocus();
-        }else if(event.getCode() == KeyCode.F5){
+        } else if (event.getCode() == KeyCode.F5) {
             if (!state) {
                 paginacion = 1;
                 fillSuministrosTable((short) 0, "");
                 opcion = 0;
             }
-        }else if(event.getCode() == KeyCode.F6){
+        } else if (event.getCode() == KeyCode.F6) {
             cbComprobante.requestFocus();
-        }else if(event.getCode() == KeyCode.F7){
+        } else if (event.getCode() == KeyCode.F7) {
             onEventMovimientoCaja();
         }
     }
-    
+
     @FXML
     private void onKeyReleasedToSearch(KeyEvent event) {
         paginacion = 1;
@@ -1091,10 +1091,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private void onActionCobrar(ActionEvent event) {
         onEventCobrar();
     }
-    
+
     @FXML
     private void onKeyPressedMovimientoCaja(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             onEventMovimientoCaja();
         }
     }
@@ -1106,7 +1106,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
-        if(event.getCode() ==  KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
         }
     }
@@ -1118,18 +1118,19 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @FXML
     private void onKeyPressedLimpiar(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             cancelarVenta();
         }
     }
 
     @FXML
-    private void onActionLimpiar(ActionEvent event) {cancelarVenta();
+    private void onActionLimpiar(ActionEvent event) {
+        cancelarVenta();
     }
 
     @FXML
     private void onKeyPressedImpresora(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             openWindowImpresora();
         }
     }

@@ -170,18 +170,18 @@
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-padding: 0em  0.4166666666666667em  0.4166666666666667em  0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <VBox alignment="CENTER" style="-fx-spacing: 0.1666665em;">
+                                    <HBox alignment="CENTER" style="-fx-spacing: 0.16666666666666666em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE:" />
                                           <Text fx:id="lblSerie" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="0000" />
                                        </children>
-                                    </VBox>
-                                    <VBox alignment="CENTER" style="-fx-spacing: 0.1666665em;">
+                                    </HBox>
+                                    <HBox alignment="CENTER" style="-fx-spacing: 0.16666666666666666em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA" />
+                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA:" />
                                           <Text fx:id="lblNumeracion" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="00000000" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-border-color: #cccccc; -fx-spacing: 0.8333333333333334em; -fx-border-width: 1px 0 0 0;">

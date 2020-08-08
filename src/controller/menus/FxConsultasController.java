@@ -173,7 +173,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setBottomAnchor(nodeCuentasPorCobrar, 0d);
         vbContent.getChildren().add(nodeCuentasPorCobrar);
-        controlleCuentasPorCobrar.fillPurchasesTable("");
+        controlleCuentasPorCobrar.fillPurchasesTable("","","",(short)0);
     }
     
         @FXML
