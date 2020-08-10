@@ -71,7 +71,7 @@
                               </Button>
                               <ComboBox fx:id="cbTipoDocumento" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="160.0" promptText="Tipo de documento" HBox.hgrow="ALWAYS" />
                               <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionSearchCliente" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="200.0" promptText="N° de documento" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                              <TextField fx:id="txtDatosCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="Cliente" styleClass="text-field-normal" />
+                              <TextField fx:id="txtDatosCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="Cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
