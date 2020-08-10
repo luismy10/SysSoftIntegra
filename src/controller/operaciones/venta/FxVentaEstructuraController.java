@@ -575,6 +575,8 @@ public class FxVentaEstructuraController implements Initializable {
                 Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento");
+            } else if (total <= 0) {
+                Tools.AlertMessageWarning(window, "Ventas", "El total de la venta no puede ser menor que 0.");
             } else {
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO);
@@ -791,7 +793,7 @@ public class FxVentaEstructuraController implements Initializable {
                     stage.show();
                     controller.getTxtCantidad().requestFocus();
                 } catch (IOException ex) {
-                    Tools.println("Venta estructura openWindowCantidad:"+ex.getLocalizedMessage());
+                    Tools.println("Venta estructura openWindowCantidad:" + ex.getLocalizedMessage());
                 }
             }
         } else {
@@ -810,7 +812,7 @@ public class FxVentaEstructuraController implements Initializable {
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-          //  FxVentaMostrarController controller = fXMLLoader.getController();
+            //  FxVentaMostrarController controller = fXMLLoader.getController();
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar ventas", window.getScene().getWindow());
             stage.setResizable(false);
@@ -819,7 +821,7 @@ public class FxVentaEstructuraController implements Initializable {
             stage.show();
 
         } catch (IOException ex) {
-            Tools.println("Venta estructura openWindowMostrarVentas: "+ex.getLocalizedMessage());
+            Tools.println("Venta estructura openWindowMostrarVentas: " + ex.getLocalizedMessage());
         }
     }
 
@@ -1275,7 +1277,8 @@ public class FxVentaEstructuraController implements Initializable {
                         .graphic(new ImageView(image))
                         .hideAfter(Duration.seconds(5))
                         .position(Pos.BOTTOM_RIGHT)
-                        .onAction(n -> {});
+                        .onAction(n -> {
+                        });
                 notifications.darkStyle();
                 notifications.show();
 
