@@ -192,8 +192,8 @@ public class FxSuministrosListaController implements Initializable {
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
-                 status = false;
-            }else{
+                status = false;
+            } else {
                 tvList.getItems().clear();
                 status = false;
             }
@@ -278,7 +278,7 @@ public class FxSuministrosListaController implements Initializable {
                 if (!validateStock(movimientosProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
                     movimientosProcesoController.addSuministroLista(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
                     Tools.Dispose(apWindow);
-                    
+
                 } else {
                     Tools.AlertMessageWarning(apWindow, "Movimiento", "Ya hay un producto con las mismas características.");
                 }
@@ -296,7 +296,7 @@ public class FxSuministrosListaController implements Initializable {
         } else if (suministrosKardexController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-                suministrosKardexController.fillKardexTable((short)0,tvList.getSelectionModel().getSelectedItem().getIdSuministro(), "", "");
+                suministrosKardexController.fillKardexTable((short) 0, tvList.getSelectionModel().getSelectedItem().getIdSuministro(), "", "");
                 Tools.Dispose(apWindow);
             }
         } else if (asignacionProcesoController != null) {
@@ -409,8 +409,10 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setRemover(button);
             txtSearch.selectAll();
             txtSearch.requestFocus();
+            ventaEstructuraController.openWindowCantidadLista(suministroTB, true);
+            tvList.requestFocus();
 //            Tools.Dispose(apWindow);
-            ventaEstructuraController.getAddArticulo(suministroTB);
+//            ventaEstructuraController.getAddArticulo(suministroTB);
         }
     }
 

@@ -28,15 +28,18 @@ public class FxVentaCantidadesController implements Initializable {
 
     private double oldCantidad;
 
+    private boolean tipoVenta;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
     }
 
-    public void initComponents(SuministroTB suministroTB) {
+    public void initComponents(SuministroTB suministroTB, boolean tipoVenta) {
         lblArticulo.setText(suministroTB.getNombreMarca());
         this.suministroTB = suministroTB;
         this.oldCantidad = suministroTB.getCantidad();
+        this.tipoVenta = tipoVenta;
         txtCantidad.setText(Tools.roundingValue(suministroTB.getCantidad(), 2));
     }
 
@@ -83,12 +86,16 @@ public class FxVentaCantidadesController implements Initializable {
         suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
         suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
-        ventaEstructuraController.getTvList().refresh();
-        ventaEstructuraController.calculateTotales();
-        Tools.Dispose(apWindow);
-        ventaEstructuraController.getTxtSearch().requestFocus();
-        ventaEstructuraController.getTxtSearch().clear();
-
+        if (tipoVenta) {
+            ventaEstructuraController.getAddArticulo(suministroTB);
+            Tools.Dispose(apWindow);
+        } else {
+            ventaEstructuraController.getTvList().refresh();
+            ventaEstructuraController.calculateTotales();
+            Tools.Dispose(apWindow);
+            ventaEstructuraController.getTxtSearch().requestFocus();
+            ventaEstructuraController.getTxtSearch().clear();
+        }
     }
 
     @FXML

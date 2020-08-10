@@ -788,7 +788,7 @@ public class FxVentaEstructuraController implements Initializable {
                     //Controlller here
                     FxVentaCantidadesController controller = fXMLLoader.getController();
                     controller.setInitVentaEstructuraController(this);
-                    controller.initComponents(tvList.getSelectionModel().getSelectedItem());
+                    controller.initComponents(tvList.getSelectionModel().getSelectedItem(),false);
                     //
                     Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window.getScene().getWindow());
                     stage.setResizable(false);
@@ -807,6 +807,27 @@ public class FxVentaEstructuraController implements Initializable {
             }
         }
 
+    }
+
+    public void openWindowCantidadLista(SuministroTB suministroTB,Boolean tipoVenta) {
+        try {
+          
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_CANTIDADES);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaCantidadesController controller = fXMLLoader.getController();
+            controller.setInitVentaEstructuraController(this);
+            controller.initComponents(suministroTB,tipoVenta);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();        
+            stage.show();
+            controller.getTxtCantidad().requestFocus();
+        } catch (IOException ex) {
+            Tools.println("Venta estructura openWindowCantidad:" + ex.getLocalizedMessage());
+        }
     }
 
     public void openWindowMostrarVentas() {
@@ -833,17 +854,16 @@ public class FxVentaEstructuraController implements Initializable {
         if (validateDuplicateArticulo(tvList, suministro)) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
                 if (tvList.getItems().get(i).getIdSuministro().equalsIgnoreCase(suministro.getIdSuministro())) {
-
                     switch (suministro.getUnidadVenta()) {
                         case 3:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowCantidad();
+//                            openWindowCantidad();
                             break;
                         case 2:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+//                            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
                             break;
                         default:
                             SuministroTB suministroTB = tvList.getItems().get(i);
@@ -871,7 +891,8 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowCantidad();
+//                    openWindowCantidad();
+                    calculateTotales();
                     break;
                 }
                 case 2: {
@@ -879,7 +900,8 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+//                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+                    calculateTotales();
                     break;
                 }
                 default: {
