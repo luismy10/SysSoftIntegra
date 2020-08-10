@@ -1,5 +1,6 @@
 package model;
 
+import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -410,6 +411,34 @@ public class EmpleadoADO {
             result = "No se puedo conectar el servidor, revise su conexión.";
         }
         return result;
+    }
+
+    public static ArrayList<String> CountSuministros(long sleep) throws InterruptedException {
+        ArrayList<String> arrayList = new ArrayList();
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementValidation = null;
+            try {
+                statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM SuministroTB");
+                ResultSet resultSet = statementValidation.executeQuery();
+                Thread.sleep(sleep);
+                while(resultSet.next()){
+                    arrayList.add(resultSet.getString("IdSuministro"));
+                }
+            } catch (SQLException ex) {
+                Tools.println("Error sql: "+ex.getLocalizedMessage());
+            } finally {
+                try {
+                    if (statementValidation != null) {
+                        statementValidation.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    
+                }
+            }
+        } 
+        return arrayList;
     }
 
 }

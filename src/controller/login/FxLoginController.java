@@ -2,11 +2,15 @@ package controller.login;
 
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
+import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
+import static controller.tools.Tools.Dispose;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +32,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import model.DBUtil;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
 
@@ -46,7 +52,7 @@ public class FxLoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+     
     }
 
     private void eventEntrar() {
@@ -67,6 +73,7 @@ public class FxLoginController implements Initializable {
             Task<Short> task = new Task<Short>() {
                 @Override
                 protected Short call() throws Exception {
+                    
                     EmpleadoTB empleadoTB = EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim());
                     if (empleadoTB != null) {
                         if (empleadoTB.getIdEmpleado() != null) {
@@ -119,7 +126,7 @@ public class FxLoginController implements Initializable {
                                 stage.setScene(scene);
                                 stage.setTitle(FilesRouters.TITLE_APP);
                                 stage.centerOnScreen();
-                                stage.setMaximized(true);      
+                                stage.setMaximized(true);
                                 stage.show();
                                 stage.requestFocus();
                                 controller.initLoadMenus();
@@ -138,18 +145,15 @@ public class FxLoginController implements Initializable {
                             break;
                     }
                 }
-
             });
             task.setOnFailed(e -> {
                 lblError.setText("No se pudo completar la carga, revise su conexión e intente nuevamente.");
                 lblEntrar.setDisable(false);
             });
-
             executor.execute(task);
             if (!executor.isShutdown()) {
                 executor.shutdown();
             }
-
         }
     }
 
@@ -168,5 +172,6 @@ public class FxLoginController implements Initializable {
     public void initComponents() {
         txtUsuario.requestFocus();
     }
+
 
 }

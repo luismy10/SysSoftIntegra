@@ -204,12 +204,9 @@ public class FxInicioController implements Initializable {
             FxListaInventarioController controller = fXMLLoader.getController();
             controller.loadData(existencia);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Inventario general", spWindow.getScene().getWindow());
-            stage.setResizable(false);
+            Stage stage = WindowStage.StageLoader(parent, "Inventario general");
+            stage.setResizable(true);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                // vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
             stage.show();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());

@@ -1,3 +1,4 @@
+
 package controller.menus;
 
 import controller.banco.FxBancosController;
@@ -8,6 +9,7 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.DBUtil;
 import model.MenuADO;
 import model.MenuTB;
 import model.SubMenusTB;
@@ -279,7 +282,14 @@ public class FxPrincipalController implements Initializable {
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 short option = Tools.AlertMessageConfirmation(spWindow, "SysSoft Integra", "¿Está seguro de cerrar la aplicación?");
                 if (option == 1) {
-                    System.exit(0);
+                    try {
+                        if (DBUtil.getConnection() != null && !DBUtil.getConnection().isClosed()) {
+                            DBUtil.getConnection().close();
+                        }
+                        System.exit(0);
+                    } catch (SQLException e) {
+                        System.exit(0);
+                    }
                 } else {
                     vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
                     c.consume();
