@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -1404,8 +1406,8 @@ public class CompraADO extends DBUtil {
         return arrayList;
     }
 
-    public static ObservableList<CompraTB> ListComprasCredito(String result) {
-        String selectStmt = "{call Sp_Listar_Compras_Credito(?)}";
+    public static ObservableList<CompraTB> ListComprasCredito(String result,String fechaInicio,String fechaFinal,short opcion) {
+        String selectStmt = "{call Sp_Listar_Compras_Credito(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ObservableList<CompraTB> empList = FXCollections.observableArrayList();
@@ -1413,6 +1415,9 @@ public class CompraADO extends DBUtil {
             dbConnect();
             preparedStatement = getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, result);
+            preparedStatement.setString(2, fechaInicio);
+            preparedStatement.setString(3, fechaFinal);
+            preparedStatement.setShort(4, opcion);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 CompraTB compraTB = new CompraTB();
@@ -1421,6 +1426,8 @@ public class CompraADO extends DBUtil {
                 compraTB.setIdProveedor(rsEmps.getString("IdProveedor"));
                 compraTB.setFechaCompra(rsEmps.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
                 compraTB.setHoraCompra(rsEmps.getTime("HoraCompra").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                compraTB.setSerie(rsEmps.getString("Serie").toUpperCase());
+                compraTB.setNumeracion(rsEmps.getString("Numeracion").toUpperCase());
                 compraTB.setProveedorTB(new ProveedorTB(rsEmps.getString("NumeroDocumento"), rsEmps.getString("RazonSocial")));
 
                 compraTB.setEstado(rsEmps.getInt("EstadoCompra"));
@@ -1437,11 +1444,19 @@ public class CompraADO extends DBUtil {
                 hBox.setAlignment(Pos.CENTER);
                 hBox.setStyle(";-fx-spacing:0.8333333333333334em;");
 
-                Button btnVisualizar = new Button("V");
+                Button btnVisualizar = new Button();
+                ImageView imageViewVisualizar = new ImageView(new Image("/view/image/search_caja.png"));
+                imageViewVisualizar.setFitWidth(24);
+                imageViewVisualizar.setFitHeight(24);
+                 btnVisualizar.setGraphic(imageViewVisualizar);
                 btnVisualizar.getStyleClass().add("buttonLightWarning");
 
-                Button btnAbonar = new Button("A");
-                btnAbonar.getStyleClass().add("buttonLightSuccess");
+                Button btnAbonar = new Button();
+                ImageView imageViewAbonar = new ImageView(new Image("/view/image/billetes.png"));
+                imageViewAbonar.setFitWidth(24);
+                imageViewAbonar.setFitHeight(24);
+                btnAbonar.setGraphic(imageViewAbonar);
+                btnAbonar.getStyleClass().add("buttonLightWarning");
 
                 hBox.getChildren().add(btnVisualizar);
                 hBox.getChildren().add(btnAbonar);

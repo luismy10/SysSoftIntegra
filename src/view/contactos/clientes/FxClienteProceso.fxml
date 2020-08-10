@@ -102,7 +102,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtRepresentante" prefHeight="30.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtRepresentante" onAction="#onActionToRegister" prefHeight="30.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -134,7 +134,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtTelefono" prefWidth="280.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtTelefono" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                                 <Separator orientation="VERTICAL" />
@@ -145,7 +145,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtCelular" prefWidth="280.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtCelular" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -159,7 +159,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtEmail" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtEmail" onAction="#onActionToRegister" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -173,7 +173,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtDireccion" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtDireccion" onAction="#onActionToRegister" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>

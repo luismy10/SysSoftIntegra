@@ -17,12 +17,15 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../image/ticket.png" />
-               </image>
-            </ImageView>
-            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Tickets" />
+            <Label styleClass="labelRobotoMedium18" text="Tickets" textFill="#1a2226">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/ticket.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
          </children>
       </HBox>
       <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
@@ -50,6 +53,15 @@
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/edit.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionEliminar" onKeyPressed="#onKeyPressedEliminar" styleClass="buttonLight" text="Eliminar">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/remove.png" />
                      </image>
                   </ImageView>
                </graphic>

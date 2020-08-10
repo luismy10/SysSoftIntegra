@@ -111,7 +111,6 @@ public class FxMovimientosProcesoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         hbWindow.setOnKeyReleased((KeyEvent event) -> {
             if (null != event.getCode()) {
                 switch (event.getCode()) {

@@ -1087,7 +1087,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());
 
                 tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecio2.getId()), "Precio de Venta 1", !Tools.isNumeric(txtPrecio2.getText()) ? 0 : Double.parseDouble(txtPrecio2.getText()), 1));
-                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecio3.getId()), "Pricio de Venta 2", !Tools.isNumeric(txtPrecio3.getText()) ? 0 : Double.parseDouble(txtPrecio3.getText()), 1));
+                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecio3.getId()), "Precio de Venta 2", !Tools.isNumeric(txtPrecio3.getText()) ? 0 : Double.parseDouble(txtPrecio3.getText()), 1));
 
 //                if (articulo) {
 //                    String result = SuministroADO.CrudSuministro_Articulo(suministroTB);

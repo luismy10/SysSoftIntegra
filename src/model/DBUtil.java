@@ -18,22 +18,24 @@ public class DBUtil {
 
     public static void dbConnect() {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-           //Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            if (connection == null) {
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                //Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            }
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Error en conexión: " + e.getLocalizedMessage());
         }
     }
 
     public static void dbDisconnect() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getLocalizedMessage());
-        }
+//        try {
+//            if (connection != null && !connection.isClosed()) {
+//                connection.close();
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getLocalizedMessage());
+//        }
     }
 
     public static Connection getConnection() {

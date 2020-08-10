@@ -502,10 +502,13 @@ public class FxVentaDetalleController implements Initializable {
             map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
             map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
             map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
+            map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular());
+            map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail());
             map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
 
             map.put("FECHAEMISION", ventaTB.getFechaVenta());
             map.put("MONEDA", ventaTB.getMonedaTB().getAbreviado());
+            map.put("CONDICIONPAGO", lblTipo.getText());
 
             map.put("VALOR_VENTA", lblValorVenta.getText());
             map.put("DESCUENTO", lblDescuento.getText());

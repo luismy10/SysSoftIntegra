@@ -58,6 +58,24 @@
                               </Text>
                            </children>
                         </VBox>
+                        <VBox fx:id="btnVentas1" alignment="CENTER">
+                           <children>
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasNueva" onKeyPressed="#onKeyPressedVentasNueva" styleClass="buttonTransparent" text="Ventas">
+                                 <graphic>
+                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../image/sales_other.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ingresos">
+                                 <font>
+                                    <Font name="Roboto" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
                         <VBox fx:id="btnCompras" alignment="CENTER">
                            <children>
                               <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCompras" onKeyPressed="#onKeyPressedCompras" styleClass="buttonTransparent" text="Compras">

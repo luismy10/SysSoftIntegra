@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
@@ -54,7 +53,7 @@
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/historial-de-pagos.png" />
+                              <Image url="@../../image/billetes.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -89,7 +88,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha inicial:" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -101,12 +100,12 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="220.0" />
+                                          <DatePicker fx:id="dpFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="220.0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha final:" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -118,24 +117,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="220.0" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
-                                       <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Estado:" textFill="#020203">
-                                             <font>
-                                                <Font name="Calibri" size="15.0" />
-                                             </font>
-                                             <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../image/options.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                          <ComboBox prefHeight="30.0" prefWidth="220.0" />
+                                          <DatePicker fx:id="dpFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="220.0" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -164,9 +146,9 @@
                               <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="310.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                                    <TableColumn fx:id="tcProveedor" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Proveedor/Persona" />
                                     <TableColumn fx:id="tcFechaRegistro" prefWidth="244.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de Registro" />
-                                    <TableColumn fx:id="tcNumeroCuotas" prefWidth="232.0" style="-fx-alignment: CENTER-LEFT;" text="N° de Cuotas" />
+                                    <TableColumn fx:id="tcProveedor" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Proveedor/Persona" />
+                                    <TableColumn fx:id="tcComprobante" prefWidth="232.0" style="-fx-alignment: CENTER-LEFT;" text="Comprobante" />
                                     <TableColumn fx:id="tcEstado" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
                                     <TableColumn fx:id="tcTotal" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                     <TableColumn fx:id="tcOpciones" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Opciones" />

@@ -24,11 +24,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -36,6 +39,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.GlobalADO;
 import model.SuministroTB;
+import org.controlsfx.control.Notifications;
 
 public class FxInicioController implements Initializable {
 
@@ -117,15 +121,18 @@ public class FxInicioController implements Initializable {
 
                     ArrayList<SuministroTB> listaProductos = (ArrayList<SuministroTB>) arrayList.get(10);
 
-                    loadGraphics((int) arrayList.get(6), (int) arrayList.get(7), (int) arrayList.get(8), (int) arrayList.get(9), listaProductos);
+//                    loadGraphics((int) arrayList.get(6), (int) arrayList.get(7), (int) arrayList.get(8), (int) arrayList.get(9), listaProductos);
 
                     lblVentasPagar.setText(Tools.roundingValue((int) arrayList.get(11), 0));
                     lblComprasPagar.setText(Tools.roundingValue((int) arrayList.get(12), 0));
-
+                   // notificationState("Estado del producto","Tiene 15 dás para su prueba, despues de ello\n se va bloquear el producto, gracias por elegirnos.","warning_large.png",Pos.TOP_RIGHT);
+                    //notificationState("Estado del inventario","Tiene un total de "+((int) arrayList.get(6))+" producto negativos,\n actualize su inventario por favor.","warning_large.png",Pos.TOP_RIGHT);
+                  //  notificationState("SysSoftIntegra","Usa la AppSysSoftIntegra para realizar consular\n en tiempo real de sus tiendas.","logo.png",Pos.TOP_LEFT);
                 });
                 count = 59;
             }
         }, 0, 1, TimeUnit.SECONDS);
+
     }
 
     public void initGraphics() {
@@ -156,16 +163,16 @@ public class FxInicioController implements Initializable {
 
         if (!arrayList.isEmpty()) {
 
-            productosSeries.getData().set(0, new XYChart.Data(arrayList.get(0) == null ?"Sin producto":arrayList.get(0).getNombreMarca().length()>10?arrayList.get(0).getNombreMarca().substring(0, 9)+"...":arrayList.get(0).getNombreMarca(), arrayList.get(0) == null ? 0 : (int) arrayList.get(0).getCantidad()));
-            productosSeries.getData().set(1, new XYChart.Data(arrayList.get(1) == null ?"Sin producto":arrayList.get(1).getNombreMarca().length()>10?arrayList.get(1).getNombreMarca().substring(0, 9)+"...":arrayList.get(1).getNombreMarca(), arrayList.get(1) == null ? 0 : (int) arrayList.get(1).getCantidad()));
-            productosSeries.getData().set(2, new XYChart.Data(arrayList.get(2) == null ?"Sin producto":arrayList.get(2).getNombreMarca().length()>10?arrayList.get(2).getNombreMarca().substring(0, 9)+"...":arrayList.get(2).getNombreMarca(), arrayList.get(2) == null ? 0 : (int) arrayList.get(2).getCantidad()));
-            productosSeries.getData().set(3, new XYChart.Data(arrayList.get(3) == null ?"Sin producto":arrayList.get(3).getNombreMarca().length()>10?arrayList.get(3).getNombreMarca().substring(0, 9)+"...":arrayList.get(3).getNombreMarca(), arrayList.get(3) == null ? 0 : (int) arrayList.get(3).getCantidad()));
-            productosSeries.getData().set(4, new XYChart.Data(arrayList.get(4) == null ?"Sin producto":arrayList.get(4).getNombreMarca().length()>10?arrayList.get(4).getNombreMarca().substring(0, 9)+"...":arrayList.get(4).getNombreMarca(), arrayList.get(4) == null ? 0 : (int) arrayList.get(4).getCantidad()));
-            productosSeries.getData().set(5, new XYChart.Data(arrayList.get(5) == null ?"Sin producto":arrayList.get(5).getNombreMarca().length()>10?arrayList.get(5).getNombreMarca().substring(0, 9)+"...":arrayList.get(5).getNombreMarca(), arrayList.get(5) == null ? 0 : (int) arrayList.get(5).getCantidad()));
-            productosSeries.getData().set(6, new XYChart.Data(arrayList.get(6) == null ?"Sin producto":arrayList.get(6).getNombreMarca().length()>10?arrayList.get(6).getNombreMarca().substring(0, 9)+"...":arrayList.get(6).getNombreMarca(), arrayList.get(6) == null ? 0 : (int) arrayList.get(6).getCantidad()));
-            productosSeries.getData().set(7, new XYChart.Data(arrayList.get(7) == null ?"Sin producto":arrayList.get(7).getNombreMarca().length()>10?arrayList.get(7).getNombreMarca().substring(0, 9)+"...":arrayList.get(7).getNombreMarca(), arrayList.get(7) == null ? 0 : (int) arrayList.get(7).getCantidad()));
-            productosSeries.getData().set(8, new XYChart.Data(arrayList.get(8) == null ?"Sin producto":arrayList.get(8).getNombreMarca().length()>10?arrayList.get(8).getNombreMarca().substring(0, 9)+"...":arrayList.get(8).getNombreMarca(), arrayList.get(8) == null ? 0 : (int) arrayList.get(8).getCantidad()));
-            productosSeries.getData().set(9, new XYChart.Data(arrayList.get(9) == null ?"Sin producto":arrayList.get(9).getNombreMarca().length()>10?arrayList.get(9).getNombreMarca().substring(0, 9)+"...":arrayList.get(9).getNombreMarca(), arrayList.get(9) == null ? 0 : (int) arrayList.get(9).getCantidad()));
+            productosSeries.getData().set(0, new XYChart.Data(arrayList.get(0) == null ? "Sin producto" : arrayList.get(0).getNombreMarca().length() > 10 ? arrayList.get(0).getNombreMarca().substring(0, 9) + "..." : arrayList.get(0).getNombreMarca(), arrayList.get(0) == null ? 0 : (int) arrayList.get(0).getCantidad()));
+            productosSeries.getData().set(1, new XYChart.Data(arrayList.get(1) == null ? "Sin producto" : arrayList.get(1).getNombreMarca().length() > 10 ? arrayList.get(1).getNombreMarca().substring(0, 9) + "..." : arrayList.get(1).getNombreMarca(), arrayList.get(1) == null ? 0 : (int) arrayList.get(1).getCantidad()));
+            productosSeries.getData().set(2, new XYChart.Data(arrayList.get(2) == null ? "Sin producto" : arrayList.get(2).getNombreMarca().length() > 10 ? arrayList.get(2).getNombreMarca().substring(0, 9) + "..." : arrayList.get(2).getNombreMarca(), arrayList.get(2) == null ? 0 : (int) arrayList.get(2).getCantidad()));
+            productosSeries.getData().set(3, new XYChart.Data(arrayList.get(3) == null ? "Sin producto" : arrayList.get(3).getNombreMarca().length() > 10 ? arrayList.get(3).getNombreMarca().substring(0, 9) + "..." : arrayList.get(3).getNombreMarca(), arrayList.get(3) == null ? 0 : (int) arrayList.get(3).getCantidad()));
+            productosSeries.getData().set(4, new XYChart.Data(arrayList.get(4) == null ? "Sin producto" : arrayList.get(4).getNombreMarca().length() > 10 ? arrayList.get(4).getNombreMarca().substring(0, 9) + "..." : arrayList.get(4).getNombreMarca(), arrayList.get(4) == null ? 0 : (int) arrayList.get(4).getCantidad()));
+            productosSeries.getData().set(5, new XYChart.Data(arrayList.get(5) == null ? "Sin producto" : arrayList.get(5).getNombreMarca().length() > 10 ? arrayList.get(5).getNombreMarca().substring(0, 9) + "..." : arrayList.get(5).getNombreMarca(), arrayList.get(5) == null ? 0 : (int) arrayList.get(5).getCantidad()));
+            productosSeries.getData().set(6, new XYChart.Data(arrayList.get(6) == null ? "Sin producto" : arrayList.get(6).getNombreMarca().length() > 10 ? arrayList.get(6).getNombreMarca().substring(0, 9) + "..." : arrayList.get(6).getNombreMarca(), arrayList.get(6) == null ? 0 : (int) arrayList.get(6).getCantidad()));
+            productosSeries.getData().set(7, new XYChart.Data(arrayList.get(7) == null ? "Sin producto" : arrayList.get(7).getNombreMarca().length() > 10 ? arrayList.get(7).getNombreMarca().substring(0, 9) + "..." : arrayList.get(7).getNombreMarca(), arrayList.get(7) == null ? 0 : (int) arrayList.get(7).getCantidad()));
+            productosSeries.getData().set(8, new XYChart.Data(arrayList.get(8) == null ? "Sin producto" : arrayList.get(8).getNombreMarca().length() > 10 ? arrayList.get(8).getNombreMarca().substring(0, 9) + "..." : arrayList.get(8).getNombreMarca(), arrayList.get(8) == null ? 0 : (int) arrayList.get(8).getCantidad()));
+            productosSeries.getData().set(9, new XYChart.Data(arrayList.get(9) == null ? "Sin producto" : arrayList.get(9).getNombreMarca().length() > 10 ? arrayList.get(9).getNombreMarca().substring(0, 9) + "..." : arrayList.get(9).getNombreMarca(), arrayList.get(9) == null ? 0 : (int) arrayList.get(9).getCantidad()));
 
         } else {
             for (int i = 0; i < 10; i++) {
@@ -197,16 +204,28 @@ public class FxInicioController implements Initializable {
             FxListaInventarioController controller = fXMLLoader.getController();
             controller.loadData(existencia);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Inventario general", spWindow.getScene().getWindow());
-            stage.setResizable(false);
+            Stage stage = WindowStage.StageLoader(parent, "Inventario general");
+            stage.setResizable(true);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                // vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
             stage.show();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
+    }
+
+    private void notificationState(String title,String message,String url,Pos pos) {
+         Image image = new Image("/view/image/"+url);
+                Notifications notifications = Notifications.create()
+                        .title(title)
+                        .text(message)
+                        .graphic(new ImageView(image))
+                        .hideAfter(Duration.seconds(5))
+                        .position(pos)
+                        .onAction(n -> {
+                            Tools.println(n);
+                        });
+                notifications.darkStyle();
+                notifications.show();
     }
 
     @FXML

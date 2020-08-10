@@ -1,6 +1,8 @@
 package controller.tools;
 
 import controller.operaciones.venta.FxVentaEstructuraNuevoController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,15 +21,15 @@ import model.SuministroTB;
 public class BbItemProducto extends HBox {
 
     private final ListView<BbItemProducto> lvProductoAgregados;
-    
-    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
+
+    private final FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
 
     private SuministroTB suministroTB;
 
-    public BbItemProducto(SuministroTB suministroTB, ListView<BbItemProducto> lvProductoAgregados,FxVentaEstructuraNuevoController ventaEstructuraNuevoController) {
+    public BbItemProducto(SuministroTB suministroTB, ListView<BbItemProducto> lvProductoAgregados, FxVentaEstructuraNuevoController ventaEstructuraNuevoController) {
         this.suministroTB = suministroTB;
         this.lvProductoAgregados = lvProductoAgregados;
-        this.ventaEstructuraNuevoController=ventaEstructuraNuevoController;
+        this.ventaEstructuraNuevoController = ventaEstructuraNuevoController;
     }
 
     public void addElementListView() {
@@ -54,22 +56,51 @@ public class BbItemProducto extends HBox {
         hbCenter.setStyle("-fx-spacing: 0.4166666666666667em;");
         hbCenter.setAlignment(Pos.CENTER);
         HBox.setHgrow(hbCenter, Priority.ALWAYS);
-        Button btnMenos = new Button();
-        ImageView ivMenos = new ImageView(new Image("/view/image/remove-item.png"));
-        ivMenos.setFitWidth(24);
-        ivMenos.setFitHeight(24);
-        btnMenos.setGraphic(ivMenos);
-        btnMenos.getStyleClass().add("buttonBorder");
+//        Button btnMenos = new Button();
+//        ImageView ivMenos = new ImageView(new Image("/view/image/remove-item.png"));
+//        ivMenos.setFitWidth(24);
+//        ivMenos.setFitHeight(24);
+//        btnMenos.setGraphic(ivMenos);
+//        btnMenos.getStyleClass().add("buttonBorder");
+//        btnMenos.setOnAction(a -> {
+//
+//        });
+//        btnMenos.setOnKeyPressed(a -> {
+//            if (a.getCode() == KeyCode.ENTER) {
+//
+//            }
+//        });
         Label lblCantidad = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
-        lblCantidad.getStyleClass().add("labelRoboto14");
-        lblCantidad.setTextFill(Color.web("#1a2226"));
-        Button btnMas = new Button();
-        ImageView ivMas = new ImageView(new Image("/view/image/plus.png"));
-        ivMas.setFitWidth(24);
-        ivMas.setFitHeight(24);
-        btnMas.setGraphic(ivMas);
-        btnMas.getStyleClass().add("buttonBorder");
-        hbCenter.getChildren().addAll(btnMenos, lblCantidad, btnMas);
+        lblCantidad.getStyleClass().add("labelRobotoMedium14");
+        lblCantidad.setTextFill(Color.web("#020203"));
+//        Button btnMas = new Button();
+//        ImageView ivMas = new ImageView(new Image("/view/image/plus.png"));
+//        ivMas.setFitWidth(24);
+//        ivMas.setFitHeight(24);
+//        btnMas.setGraphic(ivMas);
+//        btnMas.getStyleClass().add("buttonBorder");
+//        btnMas.setOnAction(a -> {
+//            suministroTB.setCantidad(suministroTB.getCantidad() + 1);
+//            double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
+//
+//            suministroTB.setDescuentoCalculado(porcentajeRestante);
+//            suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+//
+//            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+//            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+//
+//            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+//            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+//            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());           
+//
+//            ventaEstructuraNuevoController.calculateTotales();
+//        });
+//        btnMas.setOnKeyPressed(a -> {
+//            if (a.getCode() == KeyCode.ENTER) {
+//
+//            }
+//        });
+        hbCenter.getChildren().addAll(lblCantidad);
 
         VBox vbRight = new VBox();
 //            vbRight.setPrefWidth(165);
@@ -78,7 +109,7 @@ public class BbItemProducto extends HBox {
         vbRight.setAlignment(Pos.CENTER_RIGHT);
         Label lblImporte = new Label(Tools.roundingValue(suministroTB.getPrecioVentaGeneral() * suministroTB.getCantidad(), 2));
         lblImporte.getStyleClass().add("labelRoboto14");
-        lblImporte.setTextFill(Color.web("#1a2226"));
+        lblImporte.setTextFill(Color.web("#020203"));
         Button btnRemoved = new Button();
         ImageView ivRemoved = new ImageView(new Image("/view/image/remove.png"));
         ivRemoved.setFitWidth(24);

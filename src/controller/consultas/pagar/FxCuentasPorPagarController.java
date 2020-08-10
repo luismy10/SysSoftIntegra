@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -45,11 +46,11 @@ public class FxCuentasPorPagarController implements Initializable {
     @FXML
     private TableColumn<CompraTB, String> tcNumero;
     @FXML
-    private TableColumn<CompraTB, String> tcProveedor;
-    @FXML
     private TableColumn<CompraTB, String> tcFechaRegistro;
     @FXML
-    private TableColumn<CompraTB, String> tcNumeroCuotas;
+    private TableColumn<CompraTB, String> tcProveedor;
+    @FXML
+    private TableColumn<CompraTB, String> tcComprobante;
     @FXML
     private TableColumn<CompraTB, String> tcTotal;
     @FXML
@@ -58,30 +59,36 @@ public class FxCuentasPorPagarController implements Initializable {
     private TableColumn<CompraTB, HBox> tcOpciones;
     @FXML
     private TextField txtSearch;
+    @FXML
+    private DatePicker dpFechaInicial;
+    @FXML
+    private DatePicker dpFechaFinal;
 
     private AnchorPane vbPrincipal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
-        tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial()));
         tcFechaRegistro.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCompra() + "\n" + cellData.getValue().getHoraCompra()));
-        tcNumeroCuotas.setCellValueFactory(cellData -> Bindings.concat(""));
+        tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial()));
+        tcComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcOpciones.setCellValueFactory(new PropertyValueFactory<>("hbOpciones"));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
-        tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
         tcFechaRegistro.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcNumeroCuotas.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
+        tcComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
         tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
         tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
         tcOpciones.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
 
+        Tools.actualDate(Tools.getDate(), dpFechaInicial);
+        Tools.actualDate(Tools.getDate(), dpFechaFinal);
     }
 
-    public void fillPurchasesTable(String search) {
+    public void fillPurchasesTable(String search, String fechaInicio, String fechaFinal, short opcion) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -91,7 +98,7 @@ public class FxCuentasPorPagarController implements Initializable {
         Task<ObservableList<CompraTB>> task = new Task<ObservableList<CompraTB>>() {
             @Override
             public ObservableList<CompraTB> call() {
-                return CompraADO.ListComprasCredito(search);
+                return CompraADO.ListComprasCredito(search, fechaInicio, fechaFinal, opcion);
             }
         };
         task.setOnSucceeded(w -> {
@@ -106,10 +113,10 @@ public class FxCuentasPorPagarController implements Initializable {
                 });
                 Button btnAbonar = (Button) f.getHbOpciones().getChildren().get(1);
                 btnAbonar.setOnAction(event -> {
-                    openWindowGenerarPago(f.getIdCompra(),f.getProveedorTB().getRazonSocial(),f.getTotal());
+                    openWindowGenerarPago(f.getIdCompra(), f.getProveedorTB().getRazonSocial(), f.getTotal());
                 });
                 btnAbonar.setOnKeyPressed(event -> {
-                    openWindowGenerarPago(f.getIdCompra(),f.getProveedorTB().getRazonSocial(),f.getTotal());
+                    openWindowGenerarPago(f.getIdCompra(), f.getProveedorTB().getRazonSocial(), f.getTotal());
                 });
             });
             tvList.setItems(observableList);
@@ -131,7 +138,7 @@ public class FxCuentasPorPagarController implements Initializable {
         }
     }
 
-    private void openWindowGenerarPago(String idCompra,String nombreProveedor,double total) {
+    private void openWindowGenerarPago(String idCompra, String nombreProveedor, double total) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CREDITO);
@@ -199,7 +206,7 @@ public class FxCuentasPorPagarController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
-                fillPurchasesTable(txtSearch.getText().trim());
+                fillPurchasesTable(txtSearch.getText().trim(), "", "", (short) 0);
             }
         }
     }
@@ -208,7 +215,7 @@ public class FxCuentasPorPagarController implements Initializable {
     private void onKeyPressedAbonar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                openWindowGenerarPago(tvList.getSelectionModel().getSelectedItem().getIdCompra(),tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(),tvList.getSelectionModel().getSelectedItem().getTotal());
+                openWindowGenerarPago(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(), tvList.getSelectionModel().getSelectedItem().getTotal());
             } else {
                 Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
             }
@@ -218,9 +225,27 @@ public class FxCuentasPorPagarController implements Initializable {
     @FXML
     private void onActionAbonar(ActionEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            openWindowGenerarPago(tvList.getSelectionModel().getSelectedItem().getIdCompra(),tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(),tvList.getSelectionModel().getSelectedItem().getTotal());
+            openWindowGenerarPago(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getProveedorTB().getRazonSocial(), tvList.getSelectionModel().getSelectedItem().getTotal());
         } else {
             Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
+        }
+    }
+
+    @FXML
+    private void onActionFechaInicial(ActionEvent event) {
+        if (dpFechaInicial.getValue() != null && dpFechaFinal.getValue() != null) {
+            if (!lblLoad.isVisible()) {
+                fillPurchasesTable("", Tools.getDatePicker(dpFechaInicial), Tools.getDatePicker(dpFechaFinal), (short) 1);
+            }
+        }
+    }
+
+    @FXML
+    private void onActionFechaFinal(ActionEvent event) {
+        if (dpFechaInicial.getValue() != null && dpFechaFinal.getValue() != null) {
+            if (!lblLoad.isVisible()) {
+                fillPurchasesTable("", Tools.getDatePicker(dpFechaInicial), Tools.getDatePicker(dpFechaFinal), (short) 1);
+            }
         }
     }
 

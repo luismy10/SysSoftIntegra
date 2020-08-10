@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="21"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="EMPRESA" class="java.lang.String"/>
@@ -26,6 +26,9 @@
 	<parameter name="TOTAL" class="java.lang.String"/>
 	<parameter name="SIMBOLO" class="java.lang.String"/>
 	<parameter name="VALORSOLES" class="java.lang.String"/>
+	<parameter name="CELULARCLIENTE" class="java.lang.String"/>
+	<parameter name="EMAILCLIENTE" class="java.lang.String"/>
+	<parameter name="CONDICIONPAGO" class="java.lang.String"/>
 	<field name="cantidad" class="java.lang.Double"/>
 	<field name="unidadCompraName" class="java.lang.String"/>
 	<field name="nombreMarca" class="java.lang.String"/>
@@ -201,7 +204,7 @@
 						<font fontName="Arial" size="11" isBold="true"/>
 						<paragraph rightIndent="5"/>
 					</textElement>
-					<text><![CDATA[Observación:]]></text>
+					<text><![CDATA[Condición de Pago:]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement x="435" y="0" width="120" height="20" backcolor="#CCCCCC" uuid="c9127ff5-02d0-4440-8678-48446db487b1"/>
@@ -305,6 +308,30 @@
 						<font fontName="Arial"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{FECHAEMISION}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement stretchType="RelativeToBandHeight" x="120" y="40" width="313" height="20" forecolor="#1A2226" uuid="72871642-a974-486b-a40a-b7cc2b0e16bd"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{CELULARCLIENTE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement stretchType="RelativeToBandHeight" x="120" y="60" width="313" height="20" forecolor="#1A2226" uuid="bce4dac6-59c5-4515-953c-3e783a9cefed"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{EMAILCLIENTE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement stretchType="RelativeToBandHeight" x="120" y="100" width="313" height="20" forecolor="#1A2226" uuid="d63f0a79-e9ad-4a88-97a1-7406c4b6ce51"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{CONDICIONPAGO}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

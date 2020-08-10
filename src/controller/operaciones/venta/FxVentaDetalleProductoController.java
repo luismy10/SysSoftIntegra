@@ -4,14 +4,18 @@ import controller.tools.BbItemProducto;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.PreciosTB;
+import model.SuministroADO;
 
 public class FxVentaDetalleProductoController implements Initializable {
 
@@ -31,6 +35,8 @@ public class FxVentaDetalleProductoController implements Initializable {
     private Label lblDescuento;
     @FXML
     private Label lblTotal;
+    @FXML
+    private ListView<PreciosTB> tvListPrecios;
 
     private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
 
@@ -54,6 +60,42 @@ public class FxVentaDetalleProductoController implements Initializable {
         lblSubTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporte(), 2));
         lblDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuentoSumado(), 2));
         lblTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getTotalImporte(), 2));
+        loadDataView(bbItemProducto.getSuministroTB().getIdSuministro());
+    }
+
+    public void loadDataView(String idSuministro) {
+        ObservableList<PreciosTB> artPrices = SuministroADO.GetItemPriceList(idSuministro);
+        tvListPrecios.setItems(artPrices);
+        tvListPrecios.setOnMouseClicked(n->{
+            if(tvListPrecios.getSelectionModel().getSelectedIndex()>=0){
+                if (Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
+                    double importe = tvListPrecios.getSelectionModel().getSelectedItem().getValor();
+
+                    double porcentajeRestante = importe * (Double.parseDouble(txtDescuento.getText()) / 100.00);
+                    double preciocalculado = importe - porcentajeRestante;
+
+                    bbItemProducto.getSuministroTB().setDescuentoCalculado(porcentajeRestante);
+                    bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * Double.parseDouble(txtCantidad.getText()));
+
+                    bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(importe);
+                    bbItemProducto.getSuministroTB().setPrecioVentaGeneralReal(preciocalculado);
+
+                    double impuesto = Tools.calculateTax(bbItemProducto.getSuministroTB().getImpuestoValor(), bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+
+                    bbItemProducto.getSuministroTB().setImpuestoSumado(Double.parseDouble(txtCantidad.getText()) * impuesto);
+                    bbItemProducto.getSuministroTB().setPrecioVentaGeneral(bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() + impuesto);
+
+                    bbItemProducto.getSuministroTB().setSubImporte(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * Double.parseDouble(txtCantidad.getText()));
+                    bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+                    bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+
+                    txtPrecio.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico(),2));
+                    lblSubTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporte(), 2));
+                    lblDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuentoSumado(), 2));
+                    lblTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporteDescuento(), 2));
+                }
+            }
+        });
     }
 
     @FXML

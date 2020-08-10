@@ -136,54 +136,6 @@ public class FxSuministrosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            hbWindow.setOnKeyReleased((KeyEvent event) -> {
-                if (null != event.getCode()) {
-                    switch (event.getCode()) {
-                        case F1:
-                            openWindowAdd();
-                            break;
-
-                        case F2:
-                            openWindowEdit();
-                            break;
-
-                        case F3:
-                            onViewArticuloClone();
-                            break;
-
-//                    case F4:
-//                        executeCloneArticulo();
-//                        break;
-                        case F5:
-                            if (!lblLoad.isVisible()) {
-                                paginacion = 1;
-                                fillTableSuministros((short) 0, "", "", 0, 0);
-                                opcion = 0;
-                            }
-                            break;
-                        case F6:
-                            eventEtiqueta();
-                            break;
-                        case F7:
-                            txtClave.requestFocus();
-                            txtClave.selectAll();
-                            break;
-
-                        case F8:
-                            txtNombre.requestFocus();
-                            txtNombre.selectAll();
-                            break;
-                        case F9:
-                            cbCategoria.requestFocus();
-                            break;
-                        case F10:
-                            cbMarca.requestFocus();
-                            break;
-                        case DELETE:
-                            break;
-                    }
-                }
-            });
 
             fXMLSuministrosProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_SUMINISTROS_PROCESO));
             nodeSuministrosProceso = fXMLSuministrosProceso.load();
@@ -208,9 +160,7 @@ public class FxSuministrosController implements Initializable {
             tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
 
             arrayArticulosImpuesto = new ArrayList<>();
-            ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-            });
+            ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
 
             paginacion = 1;
             opcion = 0;
@@ -225,62 +175,42 @@ public class FxSuministrosController implements Initializable {
         this.privilegioTBs = privilegioTBs;
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             hbContenedorBotonos.getChildren().remove(btnAgregar);
-        } else {
-
         }
 
         if (privilegioTBs.get(1).getIdPrivilegio() != 0 && !privilegioTBs.get(1).isEstado()) {
             hbContenedorBotonos.getChildren().remove(btnEditar);
-        } else {
-
         }
 
         if (privilegioTBs.get(2).getIdPrivilegio() != 0 && !privilegioTBs.get(2).isEstado()) {
             hbContenedorBotonos.getChildren().remove(btnClonar);
-        } else {
-
         }
 
         if (privilegioTBs.get(3).getIdPrivilegio() != 0 && !privilegioTBs.get(3).isEstado()) {
             hbContenedorBotonos.getChildren().remove(btnRecargar);
-        } else {
-
         }
 
         if (privilegioTBs.get(4).getIdPrivilegio() != 0 && !privilegioTBs.get(4).isEstado()) {
             hbContenedorBotonos.getChildren().remove(btnEtiqueta);
-        } else {
-
         }
 
         if (privilegioTBs.get(5).getIdPrivilegio() != 0 && !privilegioTBs.get(5).isEstado()) {
             hbContenedorBotonos.getChildren().remove(btnSuprimir);
-        } else {
-
         }
 
         if (privilegioTBs.get(6).getIdPrivilegio() != 0 && !privilegioTBs.get(6).isEstado()) {
             txtClave.setDisable(true);
-        } else {
-
         }
 
         if (privilegioTBs.get(7).getIdPrivilegio() != 0 && !privilegioTBs.get(7).isEstado()) {
             txtNombre.setDisable(true);
-        } else {
-
         }
 
         if (privilegioTBs.get(8).getIdPrivilegio() != 0 && !privilegioTBs.get(8).isEstado()) {
             cbCategoria.setDisable(true);
-        } else {
-
         }
 
         if (privilegioTBs.get(9).getIdPrivilegio() != 0 && !privilegioTBs.get(9).isEstado()) {
             cbMarca.setEditable(true);
-        } else {
-
         }
     }
 
@@ -424,19 +354,16 @@ public class FxSuministrosController implements Initializable {
                     tvList.getSelectionModel().select(0);
                     onViewDetailSuministro();
                 }
-                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
-                totalPaginacion = integer;
+                totalPaginacion = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
+                lblLoad.setVisible(false);
+            }else{
+                lblLoad.setVisible(false);
             }
-            lblLoad.setVisible(false);
         });
-        task.setOnFailed((e) -> {
-            lblLoad.setVisible(false);
-        });
-        task.setOnScheduled((e) -> {
-            lblLoad.setVisible(true);
-        });
+        task.setOnFailed((e) -> lblLoad.setVisible(false));
+        task.setOnScheduled((e) -> lblLoad.setVisible(true));
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -551,9 +478,9 @@ public class FxSuministrosController implements Initializable {
 
     public double getTaxValue(int impuesto) {
         double valor = 0;
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getValor();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getValor();
                 break;
             }
         }
@@ -562,9 +489,9 @@ public class FxSuministrosController implements Initializable {
 
     public String getTaxName(int impuesto) {
         String valor = "";
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getNombreImpuesto();
                 break;
             }
         }
@@ -657,15 +584,6 @@ public class FxSuministrosController implements Initializable {
         onViewArticuloClone();
     }
 
-    private void onKeyPressedCloneArticulo(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            onViewArticuloClone();
-        }
-    }
-
-//    private void onActionCloneArticulo(ActionEvent event) {
-//        executeCloneArticulo();
-//    }
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -860,6 +778,54 @@ public class FxSuministrosController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyPressedWindow(KeyEvent event) {
+        switch (event.getCode()) {
+            case F1:
+                openWindowAdd();
+                break;
+
+            case F2:
+                openWindowEdit();
+                break;
+
+            case F3:
+                onViewArticuloClone();
+                break;
+
+//                    case F4:
+//                        executeCloneArticulo();
+//                        break;
+            case F5:
+                if (!lblLoad.isVisible()) {
+                    paginacion = 1;
+                    fillTableSuministros((short) 0, "", "", 0, 0);
+                    opcion = 0;
+                }
+                break;
+            case F6:
+                eventEtiqueta();
+                break;
+            case F7:
+                txtClave.requestFocus();
+                txtClave.selectAll();
+                break;
+
+            case F8:
+                txtNombre.requestFocus();
+                txtNombre.selectAll();
+                break;
+            case F9:
+                cbCategoria.requestFocus();
+                break;
+            case F10:
+                cbMarca.requestFocus();
+                break;
+            case DELETE:
+                break;
+        }
+    }
+
     public TableView<SuministroTB> getTvList() {
         return tvList;
     }
@@ -872,5 +838,7 @@ public class FxSuministrosController implements Initializable {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
     }
+
+
 
 }

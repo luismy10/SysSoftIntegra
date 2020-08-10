@@ -364,4 +364,51 @@ public class TicketADO {
         return result;
     }
 
+    public static String DeleteTicket(int idTicket) {
+        String result = "";
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statementValidate = null;
+            PreparedStatement statementTicket = null;
+            try {
+                DBUtil.getConnection().setAutoCommit(false);
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM TicketTB WHERE idTicket = ? and predeterminado = 1");
+                statementValidate.setInt(1, idTicket);
+                if (statementValidate.executeQuery().next()) {
+                    DBUtil.getConnection().rollback();
+                    result = "predeterminado";
+                } else {
+                    statementTicket = DBUtil.getConnection().prepareStatement("delete TicketTB where idTicket = ?");
+                    statementTicket.setInt(1, idTicket);
+                    statementTicket.addBatch();
+                    statementTicket.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result = "deleted";
+                }
+            } catch (SQLException ex) {
+                try {
+                    DBUtil.getConnection().rollback();
+                } catch (SQLException e) {
+
+                }
+                result = ex.getLocalizedMessage();
+            } finally {
+                try {
+                    if (statementValidate != null) {
+                        statementValidate.close();
+                    }
+                    if (statementTicket != null) {
+                        statementTicket.close();
+                    }
+                } catch (SQLException ex) {
+
+                }
+            }
+        } else {
+            result = "No se puedo establecer conexión con el servidor, revice y vuelva a intentarlo.";
+
+        }
+        return result;
+    }
+
 }

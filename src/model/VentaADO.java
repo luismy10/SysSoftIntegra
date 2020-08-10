@@ -311,14 +311,14 @@ public class VentaADO {
         }
     }
 
-    public static ObservableList<VentaTB> ListVentas(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado, String usuario) {
-        String selectStmt = "{call Sp_Listar_Ventas(?,?,?,?,?,?,?)}";
+    public static ArrayList<Object> ListVentas(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado, String usuario,int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
+        ArrayList<Object> objects = new ArrayList<>();
         ObservableList<VentaTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas(?,?,?,?,?,?,?,?,?)}");
             preparedStatement.setShort(1, opcion);
             preparedStatement.setString(2, value);
             preparedStatement.setString(3, fechaInicial);
@@ -326,6 +326,8 @@ public class VentaADO {
             preparedStatement.setInt(5, comprobante);
             preparedStatement.setInt(6, estado);
             preparedStatement.setString(7, usuario);
+            preparedStatement.setInt(8,posicionPagina);
+            preparedStatement.setInt(9,filasPorPagina);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
@@ -354,7 +356,22 @@ public class VentaADO {
                 ventaTB.setEstadoLabel(label);
                 empList.add(ventaTB);
             }
+            objects.add(empList);
 
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Count(?,?,?,?,?,?,?)}");
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, value);
+            preparedStatement.setString(3, fechaInicial);
+            preparedStatement.setString(4, fechaFinal);
+            preparedStatement.setInt(5, comprobante);
+            preparedStatement.setInt(6, estado);
+            preparedStatement.setString(7, usuario);
+            rsEmps = preparedStatement.executeQuery();
+            Integer integer = 0;
+            if (rsEmps.next()) {
+                integer = rsEmps.getInt("Total");
+            }
+            objects.add(integer);
         } catch (SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
         } finally {
@@ -369,7 +386,7 @@ public class VentaADO {
             } catch (SQLException e) {
             }
         }
-        return empList;
+        return objects;
     }
 
     public static ObservableList<VentaTB> ListVentasMostrar(String search) {
@@ -436,6 +453,7 @@ public class VentaADO {
                     clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
                     clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
+                    clienteTB.setEmail(resultSetVenta.getString("Email"));
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
                     clienteTB.setCelular(resultSetVenta.getString("Celular"));
                     ventaTB.setClienteTB(clienteTB);

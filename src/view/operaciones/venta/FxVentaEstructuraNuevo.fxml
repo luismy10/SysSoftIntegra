@@ -202,7 +202,7 @@
                         </HBox>
                         <HBox VBox.vgrow="SOMETIMES">
                            <children>
-                              <ListView fx:id="lvProductoAgregados" onKeyReleased="#onKeyReleasedProductosAgregados" onMouseClicked="#onMouseClickedProductosAgregados" HBox.hgrow="SOMETIMES" />
+                              <ListView fx:id="lvProductoAgregados" onKeyPressed="#onKeyPressedProductosAgregados" onMouseClicked="#onMouseClickedProductosAgregados" HBox.hgrow="SOMETIMES" />
                            </children>
                         </HBox>
                         <HBox>
@@ -262,7 +262,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionLimpiar" onKeyPressed="#onKeyPressedLimpiar" styleClass="buttonLight" text="Limpiar(9)">
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionLimpiar" onKeyPressed="#onKeyPressedLimpiar" styleClass="buttonLight" text="Limpiar(F9)">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>

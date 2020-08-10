@@ -156,7 +156,7 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
                     fieldTicket.setText(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%");
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getTotalImporte(), 2));
+                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral()*arrList.get(m).getCantidad(), 2));
                 }
                 hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
             }
@@ -336,7 +336,7 @@ public class BillPrintable implements Printable {
     public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
         if (pageIndex == 0) {
 
-            int y = 10;
+            int y = 0;
             //Consola
             //RobotoRegular"
             //"RobotoBold
@@ -355,9 +355,9 @@ public class BillPrintable implements Printable {
 //            gimage.setPaint(Color.black);
             g2d.setPaint(Color.black);
 
-            y = createRow(apEncabezado, g2d, width, y);
-            y = createRow(apDetalle, g2d, width, y);
-            createRow(apPie, g2d,  width, y);
+            y = createRow(apEncabezado, g2d,width, y);
+            y = createRow(apDetalle, g2d,width, y);
+            createRow(apPie, g2d,width, y);
 
             graphics.dispose();
 //            gimage.dispose();
@@ -372,7 +372,7 @@ public class BillPrintable implements Printable {
         }
     }
 
-    private int createRow(AnchorPane anchorPane, Graphics2D g2d, /*Graphics2D gimage,*/ double width, int y) {
+    private int createRow(AnchorPane anchorPane, Graphics2D g2d/*, Graphics2D gimage*/, double width, int y) {
         for (int i = 0; i < anchorPane.getChildren().size(); i++) {
             HBox box = ((HBox) anchorPane.getChildren().get(i));
             StringBuilder result = new StringBuilder();
@@ -1340,5 +1340,6 @@ public class BillPrintable implements Printable {
     public void setSheetWidth(int sheetWidth) {
         this.sheetWidth = sheetWidth;
     }
-
+    
+    
 }

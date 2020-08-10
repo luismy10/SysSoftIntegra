@@ -219,7 +219,7 @@ public class FxVentaEstructuraController implements Initializable {
                     openWindowArticulos();
                     event.consume();
                 } else if (event.getCode() == KeyCode.F3) {
-                    openWindowListaPrecios("Lista de precios");
+                    openWindowListaPrecios();
                     event.consume();
                 } else if (event.getCode() == KeyCode.F8) {
                     openWindowCashMovement();
@@ -269,12 +269,10 @@ public class FxVentaEstructuraController implements Initializable {
 
     private void loadDataComponent() {
         cbComprobante.getItems().clear();
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
-            cbComprobante.getItems().add(e);
-        });
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(cbComprobante.getItems()::add);
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
-                if (cbComprobante.getItems().get(i).isPredeterminado() == true) {
+                if (cbComprobante.getItems().get(i).isPredeterminado()) {
                     cbComprobante.getSelectionModel().select(i);
                     break;
                 }
@@ -287,13 +285,11 @@ public class FxVentaEstructuraController implements Initializable {
             }
         }
         cbMoneda.getItems().clear();
-        MonedaADO.GetMonedasCombBox().forEach(e -> {
-            cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado()));
-        });
+        MonedaADO.GetMonedasCombBox().forEach(e -> cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado())));
 
         if (!cbMoneda.getItems().isEmpty()) {
             for (int i = 0; i < cbMoneda.getItems().size(); i++) {
-                if (cbMoneda.getItems().get(i).getPredeterminado() == true) {
+                if (cbMoneda.getItems().get(i).getPredeterminado()) {
                     cbMoneda.getSelectionModel().select(i);
                     monedaSimbolo = cbMoneda.getItems().get(i).getSimbolo();
                     break;
@@ -302,14 +298,10 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         arrayArticulosImpuesto.clear();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-        });
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
 
         cbTipoDocumento.getItems().clear();
-        DetalleADO.GetDetailId("0003").forEach(e -> {
-            cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
+        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
 
         idCliente = Session.CLIENTE_ID;
         txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
@@ -569,9 +561,7 @@ public class FxVentaEstructuraController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
@@ -597,9 +587,7 @@ public class FxVentaEstructuraController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Completar la venta", window.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> {
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                });
+                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
                 stage.show();
 
                 ClienteTB clienteTB = new ClienteTB();
@@ -629,10 +617,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setTotal(total);
                 ventaTB.setClienteTB(clienteTB);
-                ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
-                tvList.getItems().forEach((stb) -> {
-                    suministroTBs.add(stb);
-                });
+                ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList.getItems());
                 controller.setInitComponents(ventaTB, suministroTBs);
             }
         } catch (IOException ex) {
@@ -653,9 +638,7 @@ public class FxVentaEstructuraController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Configurar impresora", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             controller.loadConfigurationDefauld();
             stage.show();
         } catch (IOException ex) {
@@ -682,9 +665,7 @@ public class FxVentaEstructuraController implements Initializable {
                     Stage stage = WindowStage.StageLoaderModal(parent, "Descuento del Artículo", window.getScene().getWindow());
                     stage.setResizable(false);
                     stage.sizeToScene();
-                    stage.setOnHiding(w -> {
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                    });
+                    stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
                     stage.show();
                     controller.initComponents(tvList.getSelectionModel().getSelectedItem());
                 }
@@ -731,7 +712,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-    private void openWindowListaPrecios(String title) {
+    private void openWindowListaPrecios() {
         try {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -743,7 +724,7 @@ public class FxVentaEstructuraController implements Initializable {
                 controller.setInitVentaEstructuraController(this);
                 controller.loadDataView(tvList.getSelectionModel().getSelectedItem());
                 //
-                Stage stage = WindowStage.StageLoaderModal(parent, title, window.getScene().getWindow());
+                Stage stage = WindowStage.StageLoaderModal(parent, "Lista de precios", window.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
                 stage.setOnHiding(w -> {
@@ -810,7 +791,7 @@ public class FxVentaEstructuraController implements Initializable {
                     stage.show();
                     controller.getTxtCantidad().requestFocus();
                 } catch (IOException ex) {
-
+                    Tools.println("Venta estructura openWindowCantidad:"+ex.getLocalizedMessage());
                 }
             }
         } else {
@@ -829,7 +810,7 @@ public class FxVentaEstructuraController implements Initializable {
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-            FxVentaMostrarController controller = fXMLLoader.getController();
+          //  FxVentaMostrarController controller = fXMLLoader.getController();
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar ventas", window.getScene().getWindow());
             stage.setResizable(false);
@@ -838,6 +819,7 @@ public class FxVentaEstructuraController implements Initializable {
             stage.show();
 
         } catch (IOException ex) {
+            Tools.println("Venta estructura openWindowMostrarVentas: "+ex.getLocalizedMessage());
         }
     }
 
@@ -1033,9 +1015,9 @@ public class FxVentaEstructuraController implements Initializable {
 
     public int getTaxValueOperacion(int impuesto) {
         int valor = 0;
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getOperacion();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getOperacion();
                 break;
             }
         }
@@ -1044,9 +1026,9 @@ public class FxVentaEstructuraController implements Initializable {
 
     public double getTaxValue(int impuesto) {
         double valor = 0;
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getValor();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getValor();
                 break;
             }
         }
@@ -1055,9 +1037,9 @@ public class FxVentaEstructuraController implements Initializable {
 
     public String getTaxName(int impuesto) {
         String valor = "";
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getNombreImpuesto();
                 break;
             }
         }
@@ -1101,13 +1083,9 @@ public class FxVentaEstructuraController implements Initializable {
             btnBuscarCliente.setDisable(false);
         });
 
-        task.setOnFailed(e -> {
-            btnBuscarCliente.setDisable(false);
-        });
+        task.setOnFailed(e -> btnBuscarCliente.setDisable(false));
 
-        task.setOnScheduled(e -> {
-            btnBuscarCliente.setDisable(true);
-        });
+        task.setOnScheduled(e -> btnBuscarCliente.setDisable(true));
 
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -1226,7 +1204,6 @@ public class FxVentaEstructuraController implements Initializable {
                             .hideAfter(Duration.seconds(5))
                             .position(Pos.BOTTOM_RIGHT)
                             .onAction(n -> {
-                                Tools.println(n);
                             });
                     notifications.darkStyle();
                     notifications.show();
@@ -1242,7 +1219,6 @@ public class FxVentaEstructuraController implements Initializable {
                             .hideAfter(Duration.seconds(10))
                             .position(Pos.CENTER)
                             .onAction(n -> {
-                                Tools.println(n);
                             });
                     notifications.darkStyle();
                     notifications.show();
@@ -1260,7 +1236,6 @@ public class FxVentaEstructuraController implements Initializable {
                             .hideAfter(Duration.seconds(10))
                             .position(Pos.CENTER)
                             .onAction(n -> {
-                                Tools.println(n);
                             });
                     notifications.darkStyle();
                     notifications.show();
@@ -1283,7 +1258,6 @@ public class FxVentaEstructuraController implements Initializable {
                         .hideAfter(Duration.seconds(10))
                         .position(Pos.BOTTOM_RIGHT)
                         .onAction(n -> {
-                            Tools.println(n);
                         });
                 notifications.darkStyle();
                 notifications.show();
@@ -1301,9 +1275,7 @@ public class FxVentaEstructuraController implements Initializable {
                         .graphic(new ImageView(image))
                         .hideAfter(Duration.seconds(5))
                         .position(Pos.BOTTOM_RIGHT)
-                        .onAction(n -> {
-                            Tools.println(n);
-                        });
+                        .onAction(n -> {});
                 notifications.darkStyle();
                 notifications.show();
 
@@ -1345,13 +1317,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedListaPrecios(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowListaPrecios("Lista de precios");
+            openWindowListaPrecios();
         }
     }
 
     @FXML
     private void onActionListaPrecios(ActionEvent event) {
-        openWindowListaPrecios("Lista de precios");
+        openWindowListaPrecios();
     }
 
     @FXML
@@ -1594,10 +1566,6 @@ public class FxVentaEstructuraController implements Initializable {
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
             event.consume();
         }
-    }
-
-    public String obtenerTipoComprobante() {
-        return cbComprobante.getSelectionModel().getSelectedItem().getNombre();
     }
 
     public int getIdTipoComprobante() {

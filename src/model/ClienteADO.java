@@ -259,9 +259,11 @@ public class ClienteADO {
             while(rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento")); 
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
+                clienteTB.setCelular(rsEmps.getString("Celular"));
                 clienteTBs.add(clienteTB);
             }
         } catch (SQLException e) {

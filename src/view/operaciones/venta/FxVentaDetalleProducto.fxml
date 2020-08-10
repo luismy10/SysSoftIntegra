@@ -46,7 +46,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <ListView prefHeight="260.0" prefWidth="320.0" />
+                        <ListView fx:id="tvListPrecios" prefHeight="260.0" prefWidth="320.0" />
                      </children>
                   </VBox>
                   <VBox prefWidth="320.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">

@@ -162,7 +162,7 @@ public class FxInventarioInicialController implements Initializable {
 
                     Font font = workbook.createFont();
                     font.setFontHeightInPoints((short) 12);
-                    font.setBold(true);
+                    //font.setBold(true);
                     font.setColor(HSSFColor.BLACK.index);
 
                     CellStyle cellStyle = workbook.createCellStyle();
@@ -232,7 +232,7 @@ public class FxInventarioInicialController implements Initializable {
                     try (FileOutputStream out = new FileOutputStream(file)) {
                         workbook.write(out);
                     }
-                    workbook.close();
+                    //workbook.close();
                     Tools.openFile(file.getAbsolutePath());
 
                 } catch (IOException ex) {

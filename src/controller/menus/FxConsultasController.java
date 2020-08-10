@@ -139,9 +139,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
         vbContent.getChildren().add(nodeVentaRealizadas);
-        if (ventaRealizadasController.getTvList().getItems().isEmpty()) {
-            ventaRealizadasController.loadInit();
-        }
+        ventaRealizadasController.loadInit();
     }
 
     private void openWindowPurchasesMade() {
@@ -175,7 +173,7 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setBottomAnchor(nodeCuentasPorCobrar, 0d);
         vbContent.getChildren().add(nodeCuentasPorCobrar);
-        controlleCuentasPorCobrar.fillPurchasesTable("");
+        controlleCuentasPorCobrar.fillPurchasesTable("","","",(short)0);
     }
     
         @FXML

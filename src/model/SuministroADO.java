@@ -421,14 +421,13 @@ public class SuministroADO {
     }
 
     public static ArrayList<Object> ListSuministrosListaView(short tipo, String value, int posicionPagina, int filasPorPagina) {
-        String selectStmt = "{call Sp_Listar_Suministros_Lista_View(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ArrayList<Object> objects = new ArrayList<>();
         ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Suministros_Lista_View(?,?,?,?)}");
             preparedStatement.setShort(1, tipo);
             preparedStatement.setString(2, value);
             preparedStatement.setInt(3, posicionPagina);

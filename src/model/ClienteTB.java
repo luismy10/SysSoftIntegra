@@ -26,6 +26,14 @@ public class ClienteTB {
 
     }
 
+    public ClienteTB(String idCliente,String numeroDocumento,String informacion,String celular,String direccion){
+        this.idCliente=idCliente;
+        this.numeroDocumento = numeroDocumento;
+        this.informacion = informacion;
+        this.celular = celular;
+        this.direccion = direccion;
+    }
+
     public SimpleIntegerProperty getId() {
         return id;
     }

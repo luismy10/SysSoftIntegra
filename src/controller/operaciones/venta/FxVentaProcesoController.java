@@ -76,8 +76,6 @@ public class FxVentaProcesoController implements Initializable {
 
     private FxVentaEstructuraController ventaEstructuraController;
 
-    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
-
     private ArrayList<SuministroTB> tvList;
 
     private ConvertMonedaCadena monedaCadena;
@@ -116,11 +114,7 @@ public class FxVentaProcesoController implements Initializable {
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        if (ventaEstructuraNuevoController != null) {
-            lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraNuevoController.getMonedaNombre()));
-        } else if (ventaEstructuraController != null) {
             lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraController.getMonedaNombre()));
-        }
         hbContenido.setDisable(false);
     }
 
@@ -204,7 +198,7 @@ public class FxVentaProcesoController implements Initializable {
 
             }
         } else {
-            if (estado == false) {
+            if (!estado) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
             } else {
                 ventaTB.setTipo(1);
@@ -245,21 +239,17 @@ public class FxVentaProcesoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList,
-                            ventaEstructuraController != null ? ventaEstructuraController.getIdTipoComprobante()
-                                    : ventaEstructuraNuevoController.getIdTipoComprobante()).split("/");
+                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList,ventaEstructuraController.getIdTipoComprobante()).split("/");
                     switch (result[0]) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                if (ventaEstructuraController != null) {
                                     ventaEstructuraController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2), true);
-                                }
+
                                 Tools.Dispose(window);
                             } else {
-                                if (ventaEstructuraController != null) {
                                     ventaEstructuraController.resetVenta();
-                                }
+
                                 Tools.Dispose(window);
                             }
                             break;
@@ -445,10 +435,6 @@ public class FxVentaProcesoController implements Initializable {
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
         this.ventaEstructuraController = ventaEstructuraController;
-    }
-
-    public void setInitVentaEstructuraNuevoController(FxVentaEstructuraNuevoController ventaEstructuraNuevoController) {
-        this.ventaEstructuraNuevoController = ventaEstructuraNuevoController;
     }
 
 }

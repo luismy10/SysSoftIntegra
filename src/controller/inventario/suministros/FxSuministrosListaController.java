@@ -90,9 +90,9 @@ public class FxSuministrosListaController implements Initializable {
 
     private FxSuministrosKardexController suministrosKardexController;
 
-    private FxProducirProcesoController producirProcesoController;
+    public FxProducirProcesoController producirProcesoController;
 
-    private FxAsignacionController asignacionController;
+    public FxAsignacionController asignacionController;
 
     private FxAsignacionProcesoController asignacionProcesoController;
 
@@ -160,9 +160,7 @@ public class FxSuministrosListaController implements Initializable {
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (getTaxValue(cellData.getValue().getImpuestoArticulo()) / 100.00)), 4)));
 
         arrayArticulosImpuesto = new ArrayList<>();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getOperacion(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-        });
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getOperacion(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
 
         paginacion = 1;
         opcion = 0;
@@ -190,7 +188,7 @@ public class FxSuministrosListaController implements Initializable {
                 if (!tvList.getItems().isEmpty()) {
                     tvList.getSelectionModel().select(0);
                 }
-                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
+                int integer = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -332,9 +330,9 @@ public class FxSuministrosListaController implements Initializable {
 
     public int getTaxValueOperacion(int impuesto) {
         int valor = 0;
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getOperacion();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getOperacion();
                 break;
             }
         }
@@ -343,9 +341,9 @@ public class FxSuministrosListaController implements Initializable {
 
     public double getTaxValue(int impuesto) {
         double valor = 0;
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getValor();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getValor();
                 break;
             }
         }
@@ -354,9 +352,9 @@ public class FxSuministrosListaController implements Initializable {
 
     public String getTaxName(int impuesto) {
         String valor = "";
-        for (int i = 0; i < arrayArticulosImpuesto.size(); i++) {
-            if (arrayArticulosImpuesto.get(i).getIdImpuesto() == impuesto) {
-                valor = arrayArticulosImpuesto.get(i).getNombreImpuesto();
+        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+            if (impuestoTB.getIdImpuesto() == impuesto) {
+                valor = impuestoTB.getNombreImpuesto();
                 break;
             }
         }
@@ -409,9 +407,9 @@ public class FxSuministrosListaController implements Initializable {
                 }
             });
             suministroTB.setRemover(button);
-            txtSearch.selectAll();
-            txtSearch.requestFocus();
-            //Tools.Dispose(apWindow);
+            //txtSearch.selectAll();
+            //txtSearch.requestFocus();
+            Tools.Dispose(apWindow);
             ventaEstructuraController.getAddArticulo(suministroTB);
         }
     }
