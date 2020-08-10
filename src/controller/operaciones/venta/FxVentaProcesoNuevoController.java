@@ -114,7 +114,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(ventaTB.getTotal(), 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-            lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraNuevoController.getMonedaNombre()));
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraNuevoController.getMonedaNombre()));
         hbContenido.setDisable(false);
     }
 
@@ -239,12 +239,12 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList,ventaEstructuraNuevoController.getIdTipoComprobante()).split("/");
+                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante()).split("/");
                     switch (result[0]) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                ventaEstructuraNuevoController.resetVenta();
+                                ventaEstructuraNuevoController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2), true);
                                 Tools.Dispose(window);
                             } else {
                                 ventaEstructuraNuevoController.resetVenta();
