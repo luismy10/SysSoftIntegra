@@ -73,12 +73,13 @@ public class FxListaInventarioController implements Initializable {
         tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
         tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
 
-//        tcNumero.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.04));
-//        tcDescripcion.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.25));
-//        tcCantidad.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.16));
-//        tcStock.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.13));
-//        tcCategoria.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.10));
-//        tcMarca.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.10));
+        tcNumero.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.06));
+        tcDescripcion.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.29));
+        tcCantidad.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.18));
+        tcStock.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.15));
+        tcCategoria.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.15));
+        tcMarca.prefWidthProperty().bind(tvLista.widthProperty().multiply(0.15));
+
         //falta 0.20
         paginacion = 1;
         totalPaginacion = 0;
