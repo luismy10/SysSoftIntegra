@@ -146,7 +146,7 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnBuscarCliente;
     @FXML
     private ComboBox<DetalleTB> cbTipoDocumento;
-    //-----------------------------------------------
+
     private AnchorPane vbPrincipal;
 
     private String monedaSimbolo;
@@ -573,6 +573,10 @@ public class FxVentaEstructuraController implements Initializable {
         try {
             if (tvList.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
+            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(window, "Ventas", "Ingrese el número del documento del cliente.");
+            } else if (txtDatosCliente.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(window, "Ventas", "Ingrese los datos del cliente.");
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento");
             } else if (total <= 0) {
@@ -595,10 +599,10 @@ public class FxVentaEstructuraController implements Initializable {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(idCliente);
                 clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim());
-                clienteTB.setInformacion(txtDatosCliente.getText().trim());
-                clienteTB.setDireccion(txtDireccionCliente.getText().trim());
-                clienteTB.setCelular(txtCelularCliente.getText().trim());
+                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
+                clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
+                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
+                clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);

@@ -160,14 +160,14 @@ public class FxClienteProcesoController implements Initializable {
 
     public void aValidityProcess() throws ParseException {
         if (cbDocumentType.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageInformation(window, "Persona", "Seleccione el tipo de documento, por favor.");
+            Tools.AlertMessageWarning(window, "Persona", "Seleccione el tipo de documento, por favor.");
 
             cbDocumentType.requestFocus();
-        } else if (txtDocumentNumber.getText().equalsIgnoreCase("")) {
+        } else if (txtDocumentNumber.getText().trim().equalsIgnoreCase("")) {
             Tools.AlertMessageWarning(window, "Persona", "Ingrese el documento de identificación, por favor.");
 
             txtDocumentNumber.requestFocus();
-        } else if (txtInformacion.getText().equalsIgnoreCase("")) {
+        } else if (txtInformacion.getText().trim().equalsIgnoreCase("")) {
             Tools.AlertMessageWarning(window, "Persona", "Ingrese la información del cliente, por favor.");
             txtInformacion.requestFocus();
         } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
