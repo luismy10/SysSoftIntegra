@@ -20,9 +20,9 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="72.0" prefWidth="522.0" style="-fx-spacing: 0.3333333333333333em; -fx-padding: 0.4166666666666667em;">
+                        <VBox alignment="CENTER" style="-fx-spacing: 0.3333333333333333em; -fx-padding: 0.5em;">
                            <children>
-                              <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold22" text="TOTAL A PAGAR M. 00.00" textFill="#1a2226" />
+                              <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold20" text="TOTAL A PAGAR M. 00.00" textFill="#1a2226" />
                               <Label fx:id="lblMonedaLetras" styleClass="labelRoboto16" text="( CIEN/ 100 SOLES )" />
                            </children>
                         </VBox>
@@ -39,7 +39,7 @@
                                  <children>
                                     <Label fx:id="lblEfectivo" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Al contado" textFill="WHITE">
                                        <graphic>
-                                          <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/efectivo.png" />
                                              </image>
@@ -52,7 +52,7 @@
                                  <children>
                                     <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Crédito" textFill="#1a2226">
                                        <graphic>
-                                          <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/client.png" />
                                              </image>

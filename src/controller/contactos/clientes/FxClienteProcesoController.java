@@ -10,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -32,8 +34,6 @@ public class FxClienteProcesoController implements Initializable {
     @FXML
     private Button btnRegister;
     @FXML
-    private ComboBox<DetalleTB> cbEstado;
-    @FXML
     private TextField txtTelefono;
     @FXML
     private TextField txtCelular;
@@ -43,7 +43,11 @@ public class FxClienteProcesoController implements Initializable {
     private TextField txtDireccion;
     @FXML
     private TextField txtRepresentante;
-        
+    @FXML
+    private RadioButton rbActivo;
+    @FXML
+    private RadioButton rbInactivo;
+
     private String idCliente;
 
     @Override
@@ -53,10 +57,9 @@ public class FxClienteProcesoController implements Initializable {
         DetalleADO.GetDetailId("0003").forEach(e -> {
             cbDocumentType.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
-        DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
-            cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
-        cbEstado.getSelectionModel().select(0);
+        ToggleGroup group = new ToggleGroup();
+        rbActivo.setToggleGroup(group);
+        rbInactivo.setToggleGroup(group);
 
     }
 
@@ -83,12 +86,10 @@ public class FxClienteProcesoController implements Initializable {
             txtDocumentNumber.setDisable(clienteTB.getNumeroDocumento().equals("00000000"));
             txtInformacion.setText(clienteTB.getInformacion());
 
-            ObservableList<DetalleTB> lsest = cbEstado.getItems();
-            for (int i = 0; i < lsest.size(); i++) {
-                if (clienteTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
-                    cbEstado.getSelectionModel().select(i);
-                    break;
-                }
+            if (clienteTB.getEstado() == 1) {
+                rbActivo.setSelected(true);
+            } else {
+                rbInactivo.setSelected(true);
             }
 
             txtTelefono.setText(clienteTB.getTelefono());
@@ -157,7 +158,6 @@ public class FxClienteProcesoController implements Initializable {
 
     }
 
-
     public void aValidityProcess() throws ParseException {
         if (cbDocumentType.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(window, "Persona", "Seleccione el tipo de documento, por favor.");
@@ -170,9 +170,6 @@ public class FxClienteProcesoController implements Initializable {
         } else if (txtInformacion.getText().trim().equalsIgnoreCase("")) {
             Tools.AlertMessageWarning(window, "Persona", "Ingrese la información del cliente, por favor.");
             txtInformacion.requestFocus();
-        } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(window, "Persona", "Seleccione el estado, por favor.");
-            cbEstado.requestFocus();
         } else {
 
             short confirmation = Tools.AlertMessageConfirmation(window, "Mantenimiento", "¿Esta seguro de continuar?");
@@ -189,7 +186,7 @@ public class FxClienteProcesoController implements Initializable {
                 clienteTB.setEmail(txtEmail.getText().trim());
                 clienteTB.setDireccion(txtDireccion.getText().trim().toUpperCase());
                 clienteTB.setRepresentante(txtRepresentante.getText().trim().toUpperCase());
-                clienteTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setEstado(rbActivo.isSelected() ? 1 : 0);
                 clienteTB.setPredeterminado(false);
                 clienteTB.setSistema(false);
 
@@ -206,6 +203,10 @@ public class FxClienteProcesoController implements Initializable {
                     case "duplicate":
                         Tools.AlertMessageWarning(window, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.");
                         txtDocumentNumber.requestFocus();
+                        break;
+                    case "duplicatename":
+                        Tools.AlertMessageWarning(window, "Persona", "No se puede haber 2 personas con la misma información.");
+                        txtInformacion.requestFocus();
                         break;
                     default:
                         Tools.AlertMessageError(window, "Persona", result);
@@ -239,6 +240,5 @@ public class FxClienteProcesoController implements Initializable {
     private void onActionToCancel(ActionEvent event) {
         Tools.Dispose(window);
     }
-
 
 }

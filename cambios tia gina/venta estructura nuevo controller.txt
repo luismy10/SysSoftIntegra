@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,7 +24,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Control;
@@ -48,7 +46,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.ClienteADO;
 import model.ClienteTB;
 import model.ComprobanteADO;
 import model.ImpuestoADO;
@@ -64,6 +61,9 @@ import org.controlsfx.control.Notifications;
 
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
+import model.ClienteADO;
+import model.DetalleADO;
+import model.DetalleTB;
 
 public class FxVentaEstructuraNuevoController implements Initializable {
 
@@ -84,13 +84,21 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private ComboBox<ClienteTB> cbCliente;
-    @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
     private Text lblSerie;
     @FXML
     private Text lblNumeracion;
+    @FXML
+    private ComboBox<DetalleTB> cbTipoDocumento;
+    @FXML
+    private TextField txtNumeroDocumento;
+    @FXML
+    private TextField txtDatosCliente;
+    @FXML
+    private TextField txtCelularCliente;
+    @FXML
+    private TextField txtDireccionCliente;
 
     private AnchorPane vbPrincipal;
 
@@ -107,6 +115,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private AnchorPane hbPie;
 
     private String monedaSimbolo;
+
+    private String idCliente;
 
     private int totalPaginacion;
 
@@ -139,62 +149,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
+        idCliente = "";
 
         loadDataComponent();
-
-        SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
-//        searchComboBoxClientes.getComboBox().getItems().addAll(ClienteADO.GetSearchComboBoxCliente((short) 1, ""));
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
-                if (!searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().requestFocus();
-                }
-            } else if (t.getCode() == KeyCode.ESCAPE) {
-                searchComboBoxCliente.getComboBox().hide();
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-            cbCliente.getItems().clear();
-            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 4, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
-            clienteTBs.forEach(e -> cbCliente.getItems().add(e));
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-            if (null == t.getCode()) {
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-            } else {
-                switch (t.getCode()) {
-                    case ENTER:
-                    case SPACE:
-                    case ESCAPE:
-                        searchComboBoxCliente.getComboBox().hide();
-                        break;
-                    case UP:
-                    case DOWN:
-                    case LEFT:
-                    case RIGHT:
-                        break;
-                    default:
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-                        break;
-                }
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-            if (item != null) {
-                searchComboBoxCliente.getComboBox().getSelectionModel().select(item);
-                if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
-                    searchComboBoxCliente.getComboBox().hide();
-                }
-            }
-        });
-
-        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
-            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
-            cbCliente.getSelectionModel().select(0);
-        }
 
     }
 
@@ -231,6 +188,24 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 }
             }
         }
+
+        cbTipoDocumento.getItems().clear();
+        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
+
+        if (!cbTipoDocumento.getItems().isEmpty()) {
+            for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
+                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                    cbTipoDocumento.getSelectionModel().select(detalleTB);
+                    break;
+                }
+            }
+        }
+
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+        txtCelularCliente.setText("");
     }
 
     public void onEventPaginacion() {
@@ -267,7 +242,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 listSuministros.addAll((ObservableList<SuministroTB>) objects.get(0));
                 listSuministros.stream().map(tvList1 -> {
                     VBox vBox = new VBox();
-                    vBox.setOnMouseClicked(m -> {
+                    vBox.setOnMousePressed(m -> {
 
                         SuministroTB suministroTB = new SuministroTB();
                         suministroTB.setIdSuministro(tvList1.getIdSuministro());
@@ -331,7 +306,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setMinWidth(Control.USE_PREF_SIZE);
                     vBox.setPrefWidth(300);
                     vBox.maxWidth(Control.USE_PREF_SIZE);
-                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color:  #0478b2;-fx-border-width:1px;-fx-background-color:transparent;");
+                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color:  #0478b2;-fx-cursor:hand;-fx-border-width:1px;-fx-background-color:#f4f4f4;");
                     vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
@@ -365,12 +340,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     lblTotalProducto.setTextFill(Color.web("#0478b2"));
                     lblTotalProducto.maxWidth(Double.MAX_VALUE);
                     vBox.getChildren().add(lblTotalProducto);
-
-                    Button button = new Button();
-                    button.getStyleClass().add("buttonView");
-                    button.setGraphic(vBox);
-                    return button;
-                }).forEachOrdered(button -> fpProductos.getChildren().add(button));
+                    return vBox;
+                }).forEachOrdered(vBox -> fpProductos.getChildren().add(vBox));
                 totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -542,9 +513,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         listSuministros.clear();
         fpProductos.getChildren().clear();
         lvProductoAgregados.getItems().clear();
-        cbCliente.getItems().clear();
-        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
-        cbCliente.getSelectionModel().select(0);
+
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+        txtCelularCliente.setText("");
+
         loadDataComponent();
         lblPaginaActual.setText(paginacion + "");
         lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -554,6 +529,54 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         calculateTotales();
     }
 
+     public void onExecuteCliente(short opcion, String search) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ClienteTB> task = new Task<ClienteTB>() {
+            @Override
+            public ClienteTB call() {
+                return ClienteADO.GetSearchClienteNumeroDocumento(opcion, search);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            ClienteTB clienteTB = task.getValue();
+            if (clienteTB != null) {
+                idCliente = clienteTB.getIdCliente();
+                txtDatosCliente.setText(clienteTB.getInformacion());
+                txtDireccionCliente.setText(clienteTB.getDireccion());
+                txtCelularCliente.setText(clienteTB.getCelular());
+                for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                        cbTipoDocumento.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            } else {
+                idCliente = "";
+                txtDatosCliente.setText("");
+                txtDireccionCliente.setText("");
+                txtCelularCliente.setText("");
+            }
+            txtNumeroDocumento.setDisable(false);
+        });
+
+        task.setOnFailed(e -> txtNumeroDocumento.setDisable(false));
+
+        task.setOnScheduled(e -> txtNumeroDocumento.setDisable(true));
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
+    }
+    
     public void imprimirVenta(String serieNumeracion, String codigoVenta, String efectivo, String vuelto, boolean ticket) {
         if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
             Tools.AlertMessageWarning(vbWindow, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
@@ -584,28 +607,15 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     try {
                         billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
-                        String numeroDocumento = "";
-                        String informacion = "";
-                        String celular = "";
-                        String direccion = "";
-
-                        if (cbCliente.getSelectionModel().getSelectedIndex() >= 0) {
-                            ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
-                            numeroDocumento = clienteTB.getNumeroDocumento() == null ? "" : clienteTB.getNumeroDocumento().toUpperCase();
-                            informacion = clienteTB.getInformacion() == null ? "" : clienteTB.getInformacion().toUpperCase();
-                            celular = clienteTB.getCelular() == null ? "" : clienteTB.getCelular().toUpperCase();
-                            direccion = clienteTB.getDireccion() == null ? "" : clienteTB.getDireccion().toUpperCase();
-                        }
-
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             billPrintable.hbEncebezado(box,
                                     ticket ? cbComprobante.getSelectionModel().getSelectedItem().getNombre() : "PRE VENTA",
                                     serieNumeracion,
-                                    numeroDocumento,
-                                    informacion,
-                                    celular,
-                                    direccion,
+                                    txtNumeroDocumento.getText().trim().toUpperCase(),
+                                    txtDatosCliente.getText().trim().toUpperCase(),
+                                    txtCelularCliente.getText().trim().toUpperCase(),
+                                    txtDireccionCliente.getText().trim().toUpperCase(),
                                     codigoVenta);
                         }
 
@@ -631,10 +641,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     Tools.roundingValue(total, 2),
                                     efectivo,
                                     vuelto,
-                                    numeroDocumento,
-                                    informacion,
+                                    txtNumeroDocumento.getText().trim().toUpperCase(),
+                                    txtDatosCliente.getText().trim().toUpperCase(),
                                     codigoVenta,
-                                    celular);
+                                    txtCelularCliente.getText().trim().trim().toUpperCase());
                         }
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -817,12 +827,16 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         try {
             if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione la moneda ha usar.");
-            } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione un cliente.");
+            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Ingrese el número del documento del cliente.");
+            } else if (txtDatosCliente.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Ingrese los datos del cliente.");
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione el tipo de comprobante.");
             } else if (lvProductoAgregados.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "No hay productos en la lista para vender.");
+            } else if (total <= 0) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "El total de la venta no puede ser menor que 0.");
             } else {
 
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -840,12 +854,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 stage.show();
 
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
-                clienteTB.setTipoDocumento(cbCliente.getSelectionModel().getSelectedItem().getTipoDocumento());
-                clienteTB.setNumeroDocumento(cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento());
-                clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
-                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
-                clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
+                clienteTB.setIdCliente(idCliente);
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
+                clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
+                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
+                clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -937,35 +951,36 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @FXML
     private void onKeyPressedWindow(KeyEvent event) {
-        if (event.getCode() == KeyCode.F1) {
-            onEventCobrar();
-        } else if (event.getCode() == KeyCode.F2) {
-            txtSearch.selectAll();
-            txtSearch.requestFocus();
-        } else if (event.getCode() == KeyCode.F3) {
-            cbMoneda.requestFocus();
-        } else if (event.getCode() == KeyCode.F4) {
-            cbCliente.requestFocus();
-        } else if (event.getCode() == KeyCode.F5) {
-            if (!state) {
-                paginacion = 1;
-                fillSuministrosTable((short) 0, "");
-                opcion = 0;
-            }
-        } else if (event.getCode() == KeyCode.F6) {
-            cbComprobante.requestFocus();
-        } else if (event.getCode() == KeyCode.F7) {
-            onEventMovimientoCaja();
-        }
-    }
-
-    @FXML
-    private void onKeyPressedToSearch(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            fpProductos.requestFocus();
-            if (!fpProductos.getChildren().isEmpty()) {
-                Button button = (Button) fpProductos.getChildren().get(0);
-                button.requestFocus();
+        if (null != event.getCode()) {
+            switch (event.getCode()) {
+                case F1:
+                    onEventCobrar();
+                    break;
+                case F2:
+                    txtSearch.selectAll();
+                    txtSearch.requestFocus();
+                    break;
+                case F3:
+                    cbMoneda.requestFocus();
+                    break;
+                case F4:
+                     onEventCliente();
+                    break;
+                case F5:
+                    if (!state) {
+                        paginacion = 1;
+                        fillSuministrosTable((short) 0, "");
+                        opcion = 0;
+                    }
+                    break;
+                case F6:
+                    cbComprobante.requestFocus();
+                    break;
+                case F7:
+                    onEventMovimientoCaja();
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -1159,16 +1174,25 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         openWindowImpresora();
     }
 
+    @FXML
+    private void onKeyTypedNumeroDocumento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onActionSearchCliente(ActionEvent event) {
+        onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+    }
+
     public TextField getTxtSearch() {
         return txtSearch;
     }
 
     public ComboBox<MonedaTB> getCbMoneda() {
         return cbMoneda;
-    }
-
-    public ComboBox<ClienteTB> getCbCliente() {
-        return cbCliente;
     }
 
     public ListView<BbItemProducto> getLvProductoAgregados() {

@@ -407,8 +407,12 @@ public class FxSuministrosListaController implements Initializable {
                 }
             });
             suministroTB.setRemover(button);
-            Tools.Dispose(apWindow);
-            ventaEstructuraController.getAddArticulo(suministroTB);
+            txtSearch.selectAll();
+            txtSearch.requestFocus();
+            ventaEstructuraController.openWindowCantidadLista(suministroTB, true);
+            tvList.requestFocus();
+//            Tools.Dispose(apWindow);
+//            ventaEstructuraController.getAddArticulo(suministroTB);
         }
     }
 

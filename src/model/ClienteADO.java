@@ -33,27 +33,34 @@ public class ClienteADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        preparedCliente = DBUtil.getConnection().prepareStatement("update ClienteTB set TipoDocumento=?,NumeroDocumento=?,Informacion=UPPER(?),Telefono=?,Celular=?,Email=?,Direccion=?,Representante=?,Estado=?,Predeterminado=? where IdCliente = ?");
+                        preparedValidation = DBUtil.getConnection().prepareStatement("select Informacion from ClienteTB where IdCliente <> ? and Informacion = ?");
+                        preparedValidation.setString(1, clienteTB.getIdCliente());
+                        preparedValidation.setString(2, clienteTB.getInformacion());
+                        if (preparedValidation.executeQuery().next()) {
+                            DBUtil.getConnection().rollback();
+                            result = "duplicatename";
+                        } else {
+                            preparedCliente = DBUtil.getConnection().prepareStatement("update ClienteTB set TipoDocumento=?,NumeroDocumento=?,Informacion=UPPER(?),Telefono=?,Celular=?,Email=?,Direccion=?,Representante=?,Estado=?,Predeterminado=? where IdCliente = ?");
 
-                        preparedCliente.setInt(1, clienteTB.getTipoDocumento());
-                        preparedCliente.setString(2, clienteTB.getNumeroDocumento());
-                        preparedCliente.setString(3, clienteTB.getInformacion());
-                        preparedCliente.setString(4, clienteTB.getTelefono());
-                        preparedCliente.setString(5, clienteTB.getCelular());
-                        preparedCliente.setString(6, clienteTB.getEmail());
-                        preparedCliente.setString(7, clienteTB.getDireccion());
-                        preparedCliente.setString(8, clienteTB.getRepresentante());
-                        preparedCliente.setInt(9, clienteTB.getEstado());
-                        preparedCliente.setBoolean(10, clienteTB.isPredeterminado());
-                        preparedCliente.setString(11, clienteTB.getIdCliente());
+                            preparedCliente.setInt(1, clienteTB.getTipoDocumento());
+                            preparedCliente.setString(2, clienteTB.getNumeroDocumento());
+                            preparedCliente.setString(3, clienteTB.getInformacion());
+                            preparedCliente.setString(4, clienteTB.getTelefono());
+                            preparedCliente.setString(5, clienteTB.getCelular());
+                            preparedCliente.setString(6, clienteTB.getEmail());
+                            preparedCliente.setString(7, clienteTB.getDireccion());
+                            preparedCliente.setString(8, clienteTB.getRepresentante());
+                            preparedCliente.setInt(9, clienteTB.getEstado());
+                            preparedCliente.setBoolean(10, clienteTB.isPredeterminado());
+                            preparedCliente.setString(11, clienteTB.getIdCliente());
 
-                        preparedCliente.addBatch();
-                        preparedCliente.executeBatch();
+                            preparedCliente.addBatch();
+                            preparedCliente.executeBatch();
 
-                        DBUtil.getConnection().commit();
-                        result = "updated";
+                            DBUtil.getConnection().commit();
+                            result = "updated";
+                        }
                     }
-
                 } else {
                     preparedValidation = DBUtil.getConnection().prepareStatement("select NumeroDocumento from ClienteTB where NumeroDocumento = ?");
                     preparedValidation.setString(1, clienteTB.getNumeroDocumento());
@@ -61,30 +68,37 @@ public class ClienteADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
-                        codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
-                        codigoCliente.execute();
-                        String idSuministro = codigoCliente.getString(1);
+                        preparedValidation = DBUtil.getConnection().prepareStatement("select Informacion from ClienteTB where Informacion = ?");
+                        preparedValidation.setString(1, clienteTB.getInformacion());
+                        if (preparedValidation.executeQuery().next()) {
+                            DBUtil.getConnection().rollback();
+                            result = "duplicatename";
+                        } else {
+                            codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
+                            codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
+                            codigoCliente.execute();
+                            String idSuministro = codigoCliente.getString(1);
 
-                        preparedCliente = DBUtil.getConnection().prepareStatement("INSERT INTO ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-                        preparedCliente.setString(1, idSuministro);
-                        preparedCliente.setInt(2, clienteTB.getTipoDocumento());
-                        preparedCliente.setString(3, clienteTB.getNumeroDocumento());
-                        preparedCliente.setString(4, clienteTB.getInformacion());
-                        preparedCliente.setString(5, clienteTB.getTelefono());
-                        preparedCliente.setString(6, clienteTB.getCelular());
-                        preparedCliente.setString(7, clienteTB.getEmail());
-                        preparedCliente.setString(8, clienteTB.getDireccion());
-                        preparedCliente.setString(9, clienteTB.getRepresentante());
-                        preparedCliente.setInt(10, clienteTB.getEstado());
-                        preparedCliente.setBoolean(11, clienteTB.isPredeterminado());
-                        preparedCliente.setBoolean(12, clienteTB.isSistema());
+                            preparedCliente = DBUtil.getConnection().prepareStatement("INSERT INTO ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+                            preparedCliente.setString(1, idSuministro);
+                            preparedCliente.setInt(2, clienteTB.getTipoDocumento());
+                            preparedCliente.setString(3, clienteTB.getNumeroDocumento());
+                            preparedCliente.setString(4, clienteTB.getInformacion());
+                            preparedCliente.setString(5, clienteTB.getTelefono());
+                            preparedCliente.setString(6, clienteTB.getCelular());
+                            preparedCliente.setString(7, clienteTB.getEmail());
+                            preparedCliente.setString(8, clienteTB.getDireccion());
+                            preparedCliente.setString(9, clienteTB.getRepresentante());
+                            preparedCliente.setInt(10, clienteTB.getEstado());
+                            preparedCliente.setBoolean(11, clienteTB.isPredeterminado());
+                            preparedCliente.setBoolean(12, clienteTB.isSistema());
 
-                        preparedCliente.addBatch();
-                        preparedCliente.executeBatch();
+                            preparedCliente.addBatch();
+                            preparedCliente.executeBatch();
 
-                        DBUtil.getConnection().commit();
-                        result = "registered";
+                            DBUtil.getConnection().commit();
+                            result = "registered";
+                        }
                     }
                 }
             } catch (SQLException ex) {
@@ -245,21 +259,21 @@ public class ClienteADO {
         return clienteTB;
     }
 
-    public static List<ClienteTB> GetSearchComboBoxCliente(short opcion,String search) {
+    public static List<ClienteTB> GetSearchComboBoxCliente(short opcion, String search) {
         String selectStmt = "{call Sp_Obtener_Cliente_Informacion_NumeroDocumento(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-         List<ClienteTB> clienteTBs = new ArrayList<>();
+        List<ClienteTB> clienteTBs = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setShort(1, opcion);
             preparedStatement.setString(2, search);
             rsEmps = preparedStatement.executeQuery();
-            while(rsEmps.next()) {
+            while (rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
-                clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento")); 
+                clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
@@ -283,9 +297,8 @@ public class ClienteADO {
         }
         return clienteTBs;
     }
-    
-    
-    public static ClienteTB GetSearchClienteNumeroDocumento(short opcion,String search) {
+
+    public static ClienteTB GetSearchClienteNumeroDocumento(short opcion, String search) {
         String selectStmt = "{call Sp_Obtener_Cliente_Informacion_NumeroDocumento(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -296,7 +309,7 @@ public class ClienteADO {
             preparedStatement.setShort(1, opcion);
             preparedStatement.setString(2, search);
             rsEmps = preparedStatement.executeQuery();
-            if(rsEmps.next()) {
+            if (rsEmps.next()) {
                 clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
                 clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
@@ -339,7 +352,7 @@ public class ClienteADO {
                 clienteTB.setDireccion(resultSet.getString("Direccion"));
             }
         } catch (SQLException ex) {
-            System.out.println("Error Moneda: " + ex.getLocalizedMessage());
+            System.out.println("Error Cliente: " + ex.getLocalizedMessage());
         } finally {
             try {
                 if (statement != null) {
@@ -353,7 +366,7 @@ public class ClienteADO {
         return clienteTB;
     }
 
-     public static String RemoveCliente(String idCliente) {
+    public static String RemoveCliente(String idCliente) {
         PreparedStatement statementValidate = null;
         PreparedStatement statementCliente = null;
         DBUtil.dbConnect();
