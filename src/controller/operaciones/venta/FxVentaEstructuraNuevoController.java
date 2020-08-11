@@ -188,7 +188,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
                     searchComboBoxCliente.getComboBox().hide();
                 }
-            }
+            } 
         });
 
         if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
