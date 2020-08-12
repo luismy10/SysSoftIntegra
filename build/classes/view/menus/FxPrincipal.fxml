@@ -228,29 +228,6 @@
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <HBox fx:id="btnBancos" alignment="CENTER_LEFT" styleClass="buttonMenu">
-                                       <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Bancos / Cajas" textFill="WHITE">
-                                             <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../image/bank.png" />
-                                                   </image>
-                                                   <effect>
-                                                      <Lighting diffuseConstant="1.5" specularConstant="0.0">
-                                                         <bumpInput>
-                                                            <Shadow />
-                                                         </bumpInput>
-                                                         <light>
-                                                            <Light.Distant />
-                                                         </light>
-                                                      </Lighting>
-                                                   </effect>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                       </children>
-                                    </HBox>
                                     <HBox fx:id="btnProduccion" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Produccion" textFill="WHITE">

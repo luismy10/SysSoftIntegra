@@ -188,7 +188,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
                     searchComboBoxCliente.getComboBox().hide();
                 }
-            } 
+            }
         });
 
         if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
@@ -543,8 +543,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         fpProductos.getChildren().clear();
         lvProductoAgregados.getItems().clear();
         cbCliente.getItems().clear();
-        cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
-        cbCliente.getSelectionModel().select(0);
+        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
+            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
+            cbCliente.getSelectionModel().select(0);
+        }
         loadDataComponent();
         lblPaginaActual.setText(paginacion + "");
         lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -937,25 +939,37 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @FXML
     private void onKeyPressedWindow(KeyEvent event) {
-        if (event.getCode() == KeyCode.F1) {
-            onEventCobrar();
-        } else if (event.getCode() == KeyCode.F2) {
-            txtSearch.selectAll();
-            txtSearch.requestFocus();
-        } else if (event.getCode() == KeyCode.F3) {
-            cbMoneda.requestFocus();
-        } else if (event.getCode() == KeyCode.F4) {
-            cbCliente.requestFocus();
-        } else if (event.getCode() == KeyCode.F5) {
-            if (!state) {
-                paginacion = 1;
-                fillSuministrosTable((short) 0, "");
-                opcion = 0;
+        if (null != event.getCode()) {
+            switch (event.getCode()) {
+                case F1:
+                    onEventCobrar();
+                    break;
+                case F2:
+                    txtSearch.selectAll();
+                    txtSearch.requestFocus();
+                    break;
+                case F3:
+                    cbMoneda.requestFocus();
+                    break;
+                case F4:
+                    cbCliente.requestFocus();
+                    break;
+                case F5:
+                    if (!state) {
+                        paginacion = 1;
+                        fillSuministrosTable((short) 0, "");
+                        opcion = 0;
+                    }
+                    break;
+                case F6:
+                    cbComprobante.requestFocus();
+                    break;
+                case F7:
+                    onEventMovimientoCaja();
+                    break;
+                default:
+                    break;
             }
-        } else if (event.getCode() == KeyCode.F6) {
-            cbComprobante.requestFocus();
-        } else if (event.getCode() == KeyCode.F7) {
-            onEventMovimientoCaja();
         }
     }
 

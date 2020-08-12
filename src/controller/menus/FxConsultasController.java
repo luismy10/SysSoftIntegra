@@ -1,5 +1,6 @@
 package controller.menus;
 
+import controller.banco.FxBancosController;
 import controller.consultas.compras.FxComprasRealizadasController;
 import controller.consultas.pagar.FxCuentasPorPagarController;
 import controller.operaciones.cortecaja.FxCajaConsultasController;
@@ -71,6 +72,7 @@ public class FxConsultasController implements Initializable {
     private ScrollPane nodeCajaConsultas;
 
     private FxCajaConsultasController controlleCajaConsultas;
+
     /*
     Controller caja consultas
      */
@@ -79,6 +81,15 @@ public class FxConsultasController implements Initializable {
     private VBox nodeCuentasPorCobrar;
 
     private FxCuentasPorPagarController controlleCuentasPorCobrar;
+
+    /*
+    Controller caja consultas
+     */
+    private FXMLLoader fXMLBancos;
+
+    private HBox nodeBancos;
+
+    private FxBancosController bancosController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -98,6 +109,10 @@ public class FxConsultasController implements Initializable {
             fXMLCuentasPorCobrar = new FXMLLoader(getClass().getResource(FilesRouters.FX_CUENTAS_POR_COBRAR));
             nodeCuentasPorCobrar = fXMLCuentasPorCobrar.load();
             controlleCuentasPorCobrar = fXMLCuentasPorCobrar.getController();
+
+            fXMLBancos = new FXMLLoader(getClass().getResource(FilesRouters.FX_BANCOS));
+            nodeBancos = fXMLBancos.load();
+            bancosController = fXMLBancos.getController();
 
         } catch (IOException ex) {
             System.out.println("Error en Inventario Controller:" + ex.getLocalizedMessage());
@@ -173,19 +188,30 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setBottomAnchor(nodeCuentasPorCobrar, 0d);
         vbContent.getChildren().add(nodeCuentasPorCobrar);
-        controlleCuentasPorCobrar.fillPurchasesTable("","","",(short)0);
+        controlleCuentasPorCobrar.fillPurchasesTable("", "", "", (short) 0);
     }
-    
-        @FXML
+
+    private void openWindowBancos() {
+        bancosController.setContent(vbPrincipal, vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeBancos, 0d);
+        AnchorPane.setTopAnchor(nodeBancos, 0d);
+        AnchorPane.setRightAnchor(nodeBancos, 0d);
+        AnchorPane.setBottomAnchor(nodeBancos, 0d);
+        vbContent.getChildren().add(nodeBancos);
+        bancosController.loadTableViewBanco("");
+    }
+
+    @FXML
     private void onKeyPressedCuentasCobrar(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
-            
+        if (event.getCode() == KeyCode.ENTER) {
+
         }
     }
 
     @FXML
     private void onActionCuentasCobrar(ActionEvent event) {
-    
+
     }
 
     @FXML
@@ -234,6 +260,18 @@ public class FxConsultasController implements Initializable {
     @FXML
     private void onActionCuentasPagar(ActionEvent event) {
         openWindowCuentasPorCobrar();
+    }
+
+    @FXML
+    private void onKeyPressedBanco(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowBancos();
+        }
+    }
+
+    @FXML
+    private void onActionBanco(ActionEvent event) {
+        openWindowBancos();
     }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {

@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="66.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto20" text="Seleccione la operacion a realiazar">
+                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto20" text="Seleccione la operacion a realizar">
                      <font>
                         <Font name="Roboto" size="22.0" />
                      </font>
