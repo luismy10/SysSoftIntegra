@@ -10,26 +10,28 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaAbonoProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaAbonoProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px;">
+            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-                     <image>
-                        <Image url="@../../image/arrow.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="labelRobotoBold18" text="Abonar" />
+                  <Label styleClass="labelRobotoBold16" text="Abonar" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/billetes.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
                <children>
                   <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Abono:">
+                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Abono:" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -40,14 +42,14 @@
                         </Label>
                      </children>
                   </VBox>
-                  <TextField fx:id="txtValorCuota" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedValorCuotas" prefHeight="30.0" prefWidth="400.0" styleClass="text-field-normal" />
+                  <TextField fx:id="txtValorCuota" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedValorCuotas" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
                <children>
                   <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Referencia:">
+                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Referencia:" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -58,7 +60,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="400.0" styleClass="text-field-normal" />
+                  <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
@@ -66,7 +68,7 @@
                <children>
                   <Button fx:id="btnAceptar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Agregar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
                            </image>
@@ -75,7 +77,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>

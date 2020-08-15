@@ -26,9 +26,9 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <Label styleClass="labelRobotoMedium18" text="Historial de la cuenta" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Historial de la cuenta" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/bank.png" />
                            </image>
@@ -49,7 +49,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar dinero">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/plus.png" />
                            </image>
@@ -58,7 +58,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionRetirar" onKeyPressed="#onKeyPressedRetirar" styleClass="buttonLight" text="Retirar dinero">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/remove-item.png" />
                            </image>
@@ -67,7 +67,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionTransferir" onKeyPressed="#onKeyPressedTransferir" styleClass="buttonLight" text="Transferir">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                            <image>
                               <Image url="@../image/ordenar.png" />
                            </image>
@@ -76,7 +76,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/reload.png" />
                            </image>
@@ -94,7 +94,7 @@
                               <HBox alignment="CENTER_LEFT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <Label styleClass="labelRobotoBold16" text="Saldo Total" textFill="#0777ae" />
-                                    <Label fx:id="lblSaldoTotal" styleClass="labelRoboto16" text="M 0000.0000" textFill="#1a2226" />
+                                    <Label fx:id="lblSaldoTotal" styleClass="labelRoboto16" text="M 0000.0000" textFill="#020203" />
                                  </children>
                               </HBox>
                            </children>

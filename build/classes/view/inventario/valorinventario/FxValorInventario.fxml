@@ -18,9 +18,9 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <Label styleClass="labelRobotoMedium18" text="Inventario" textFill="#1a2226">
+            <Label styleClass="labelRobotoBold16" text="Inventario" textFill="#020203">
                <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/almacen.png" />
                      </image>
@@ -43,7 +43,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAjuste" onKeyPressed="#onKeyPressedAjuste" styleClass="buttonLight" text="Ajuste">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image>
@@ -52,7 +52,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
@@ -61,7 +61,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/complete.png" />
                            </image>
@@ -70,7 +70,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionTicket" onKeyPressed="#onKeyPressedTicket" styleClass="buttonLight" text="Ticket">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/ticket.png" />
                            </image>
@@ -82,8 +82,8 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Valor del inventario (PEN S/)" textFill="#0777ae" />
-                        <Label fx:id="lblValoTotal" styleClass="labelRoboto16" text="M 00.0000" textFill="#1a2226" />
+                        <Label styleClass="labelRobotoBold16" text="Valor del inventario (PEN S/)" textFill="#006cf8" />
+                        <Label fx:id="lblValoTotal" styleClass="labelRoboto16" text="M 00.0000" textFill="#020203" />
                      </children>
                   </HBox>
                </children>
@@ -98,9 +98,9 @@
                      <children>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Codigo" textFill="#1a2226">
+                              <Label styleClass="labelOpenSansRegular14" text="Codigo" textFill="#020203">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/barcode.png" />
                                        </image>
@@ -112,9 +112,9 @@
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Producto" textFill="#1a2226">
+                              <Label styleClass="labelOpenSansRegular14" text="Producto" textFill="#020203">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/lote-box.png" />
                                        </image>
@@ -126,9 +126,9 @@
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Opciones de cantidades" textFill="#1a2226">
+                              <Label styleClass="labelOpenSansRegular14" text="Opciones de cantidades" textFill="#020203">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/plazos.png" />
                                        </image>
@@ -140,9 +140,9 @@
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Categoria" textFill="#1a2226">
+                              <Label styleClass="labelOpenSansRegular14" text="Categoria" textFill="#020203">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/options.png" />
                                        </image>
@@ -154,9 +154,9 @@
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Marca" textFill="#1a2226">
+                              <Label styleClass="labelOpenSansRegular14" text="Marca" textFill="#020203">
                                  <graphic>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/bullets.png" />
                                        </image>
@@ -175,7 +175,7 @@
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Negativas: son cantidades menores que cero" textFill="RED">
                                  <graphic>
-                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/note.png" />
                                        </image>
@@ -184,7 +184,7 @@
                               </Label>
                               <Label styleClass="labelOpenSansRegular14" text="Intermedias: son cantidades mayores que cero y menores que el stock mínimo" textFill="ORANGE">
                                  <graphic>
-                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/note.png" />
                                        </image>
@@ -197,7 +197,7 @@
                            <children>
                               <Label prefHeight="28.0" styleClass="labelOpenSansRegular14" text="Necesarias: son cantidades mayores que el stock mínimo y menores que el stock máximo" textFill="GREEN">
                                  <graphic>
-                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/note.png" />
                                        </image>
@@ -206,7 +206,7 @@
                               </Label>
                               <Label styleClass="labelOpenSansRegular14" text="Excedentes: son cantidades mayores que el stock máximo" textFill="#02539a">
                                  <graphic>
-                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/note.png" />
                                        </image>

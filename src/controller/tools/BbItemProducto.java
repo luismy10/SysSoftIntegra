@@ -43,13 +43,13 @@ public class BbItemProducto extends HBox {
         vbLeft.setMaxWidth(Control.USE_PREF_SIZE);
         Label lblProducto = new Label(suministroTB.getNombreMarca());
         lblProducto.getStyleClass().add("labelRoboto14");
-        lblProducto.setTextFill(Color.web("#1a2226"));
+        lblProducto.setTextFill(Color.web("#020203"));
         lblProducto.setWrapText(true);
         lblProducto.setPrefWidth(200);
         vbLeft.getChildren().add(lblProducto);
         Label lblPrecio = new Label(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 2));
         lblPrecio.getStyleClass().add("labelRobotoBold14");
-        lblPrecio.setTextFill(Color.web("#1a2226"));
+        lblPrecio.setTextFill(Color.web("#020203"));
         vbLeft.getChildren().add(lblPrecio);
 
         HBox hbCenter = new HBox();

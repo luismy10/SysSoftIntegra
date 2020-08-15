@@ -19,26 +19,29 @@
    <children>
       <VBox>
          <children>
-            <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Realizar corte" />
-                  <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/choose_movement.png" />
-                     </image>
-                  </ImageView>
+                  <Label styleClass="labelRobotoBold16" text="Realizar corte" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/choose_movement.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
             <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-background-color: #FFFF;">
                <children>
                   <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Cerrar Turno" />
+                        <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Cerrar Turno" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text fx:id="lblFechaCierre" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Cierre de turno: 00/00/0000 0:00 M" />
+                        <Text fx:id="lblFechaCierre" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Cierre de turno: 00/00/0000 0:00 M" />
                      </children>
                   </HBox>
                </children>
@@ -59,10 +62,10 @@
                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="VALOR REAL EN TARJETA:" GridPane.rowIndex="1" />
-                                    <Label styleClass="labelOpenSansRegular14" text="VALOR REAL EN CAJA:" />
+                                    <Label styleClass="labelRoboto14" text="VALOR REAL EN TARJETA:" textFill="#020203" GridPane.rowIndex="1" />
+                                    <Label styleClass="labelRoboto14" text="VALOR REAL EN CAJA:" textFill="#020203" />
                                     <TextField fx:id="txtEfectivo" alignment="CENTER_RIGHT" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedEfectivo" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                    <Label fx:id="lblValorTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold14" text="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblValorTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold16" text="0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
@@ -70,7 +73,7 @@
                         <Separator prefWidth="200.0" />
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Realizar movimiento a las siguientes cuentas:" />
+                              <Label styleClass="labelRoboto14" text="Realizar movimiento a las siguientes cuentas:" textFill="#020203" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
@@ -85,8 +88,8 @@
                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Cuenta efectivo:" />
-                                    <Label styleClass="labelOpenSansRegular14" text="Cuenta bancaria:" GridPane.rowIndex="1" />
+                                    <Label styleClass="labelRoboto14" text="Cuenta efectivo:" textFill="#020203" />
+                                    <Label styleClass="labelRoboto14" text="Cuenta bancaria:" textFill="#020203" GridPane.rowIndex="1" />
                                     <ComboBox fx:id="cbCuentasEfectivo" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
                                     <ComboBox fx:id="cbCuentasTarjeta" maxWidth="1.7976931348623157E308" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
@@ -98,7 +101,7 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Cerrar turno">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/save.png" />
                                        </image>

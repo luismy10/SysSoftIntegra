@@ -20,12 +20,15 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/impuestos.png" />
-                           </image>
-                        </ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Impuestos" />
+                        <Label styleClass="labelRobotoBold16" text="Impuestos" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/impuestos.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                         <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                            <font>
                               <Font name="Roboto" size="14.0" />
@@ -40,7 +43,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/plus.png" />
                                  </image>
@@ -49,7 +52,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/edit.png" />
                                  </image>
@@ -58,7 +61,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionDelete" onKeyPressed="#onKeyPressedDelete" styleClass="buttonLight" text="Eliminar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/remove.png" />
                                  </image>
@@ -67,7 +70,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/reload.png" />
                                  </image>
@@ -76,7 +79,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionPredetermined" onKeyPressed="#onKeyPressedPredetermined" styleClass="buttonLight" text="Predeterminado">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/accept.png" />
                                  </image>
@@ -91,8 +94,8 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Tipo de impuesto Predeterminado:" textFill="#1a2226" />
-                                    <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" />
+                                    <Label styleClass="labelOpenSansRegular14" text="Tipo de impuesto Predeterminado:" textFill="#020203" />
+                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" />
                                  </children>
                               </HBox>
                               <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">

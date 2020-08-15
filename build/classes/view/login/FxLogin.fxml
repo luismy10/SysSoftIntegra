@@ -42,7 +42,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" style="-fx-padding: 1.6666666666666667em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Digite los datos de ingreso al sistema">
+                        <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Digite los datos de ingreso al sistema">
                            <font>
                               <Font name="Roboto" size="18.0" />
                            </font>

@@ -316,7 +316,7 @@ public class FxComprasDetalleController implements Initializable {
 
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill:#1a2226;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
+        label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
         label.getStyleClass().add("labelRoboto14");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);

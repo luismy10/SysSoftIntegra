@@ -11,20 +11,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tablasbasicas.FxMantenimientoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tablasbasicas.FxMantenimientoController">
    <children>
       <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/table.png" />
-                     </image></ImageView>
-                  <Label styleClass="labelRoboto16" text="Mantenimiento" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Mantenimiento" textFill="#020203">
                      <font>
                         <Font name="Calibri" size="19.0" />
                      </font>
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/table.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Label>
                </children>
             </HBox>
@@ -32,12 +35,12 @@
                <children>
                   <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Codigo" textFill="#1a2226">
+                        <Label styleClass="labelRoboto14" text="Codigo" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtCode" disable="true" onAction="#onActionToRegister" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
+                        <TextField fx:id="txtCode" disable="true" onAction="#onActionToRegister" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -45,12 +48,12 @@
                               <Insets />
                            </VBox.margin>
                         </TextField>
-                        <Label styleClass="labelRoboto14" text="Nombre" textFill="#1a2226">
+                        <Label styleClass="labelRoboto14" text="Nombre" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtName" onAction="#onActionToRegister" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
+                        <TextField fx:id="txtName" onAction="#onActionToRegister" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -62,7 +65,7 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/save.png" />
                                        </image></ImageView>
@@ -73,7 +76,7 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/error.png" />
                                        </image></ImageView>

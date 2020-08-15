@@ -32,8 +32,6 @@ public class FxLoteProcesoController implements Initializable {
     @FXML
     private AnchorPane window;
     @FXML
-    private Text lblClave;
-    @FXML
     private Text lblDescripcion;
     @FXML
     private TableView<LoteTB> tvList;
@@ -90,8 +88,7 @@ public class FxLoteProcesoController implements Initializable {
 
     public void setLoadData(String... value) {
         idArticulo = value[0];
-        lblClave.setText(value[1]);
-        lblDescripcion.setText(value[2]);
+        lblDescripcion.setText(value[1]+"-"+value[2]);
         lblCantidad.setText(lblCantidad.getText() + " " + value[3]);
         cantidadlote = Double.parseDouble(value[3]);
         lblDiferencia.setText(lblDiferencia.getText() + " " + value[3]);
@@ -100,8 +97,7 @@ public class FxLoteProcesoController implements Initializable {
 
     public void setEditData(String value[], ObservableList<LoteTB> loteTBs) {
         idArticulo = value[0];
-        lblClave.setText(value[1]);
-        lblDescripcion.setText(value[2]);
+        lblDescripcion.setText(value[1]+"-"+value[2]);
         lblCantidad.setText(lblCantidad.getText() + " " + value[3]);
         cantidadlote = Double.parseDouble(value[3]);
         lblDiferencia.setText(lblDiferencia.getText() + " " + value[3]);

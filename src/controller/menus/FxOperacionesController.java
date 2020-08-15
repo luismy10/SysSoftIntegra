@@ -76,7 +76,7 @@ public class FxOperacionesController implements Initializable {
 
     private VBox nodeCorteCaja;
 
-    private FxCajaController controllerCorteCaja;
+    private FxCajaController controllerCorteCaja; 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -200,10 +200,12 @@ public class FxOperacionesController implements Initializable {
         openWindowVenta();
     }
 
+    @FXML
     public void onActionVentasNueva(ActionEvent event) {
         openWindowVentaNueva();
     }
 
+    @FXML
     public void onKeyPressedVentasNueva(KeyEvent keyEvent) {
         openWindowVentaNueva();
     }

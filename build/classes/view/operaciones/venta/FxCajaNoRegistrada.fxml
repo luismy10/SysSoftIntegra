@@ -14,39 +14,37 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #cccccc;">
+                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc;">
                      <children>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/caja_registradora.png" />
-                           </image>
-                        </ImageView>
-                        <Label styleClass="labelRobotoBold18" text="Caja no registrada" />
+                        <Label styleClass="labelRobotoBold16" text="Caja no registrada" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/caja_registradora.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox style="-fx-padding: 0.8333333333333334em;">
                      <children>
-                        <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                           <children>
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                 <children>
-                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/generar.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="lblMensaje" prefWidth="300.0" styleClass="labelRoboto16" wrapText="true" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
+                        <Label fx:id="lblMensaje" prefWidth="320.0" styleClass="labelRoboto16" textFill="#020203" wrapText="true">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/generar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aceptar">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/plus.png" />
                                  </image>

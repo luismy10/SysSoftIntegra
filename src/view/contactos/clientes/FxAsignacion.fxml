@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.contactos.clientes.FxAsignacionController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.contactos.clientes.FxAsignacionController">
    <children>
       <VBox style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -30,9 +30,9 @@
                <children>
                   <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Atributo" />
+                        <Label styleClass="labelRoboto14" text="Atributo" textFill="#020203" />
                         <ComboBox fx:id="cbAtributo" prefWidth="501.0" promptText="Ejemplo: Teléfono, Celular, Dirección, Email etc." styleClass="comboBox" />
-                        <Label styleClass="labelRoboto14" text="Valor" />
+                        <Label styleClass="labelRoboto14" text="Valor" textFill="#020203" />
                         <TextField fx:id="txtValor" promptText="Ejemplo: 966750883, av.las flores n°1, www.somos.com" styleClass="text-field-normal" />
                      </children>
                      <padding>
@@ -45,7 +45,7 @@
                <children>
                   <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Agregar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
                            </image></ImageView>
@@ -53,7 +53,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancel" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image></ImageView>

@@ -92,6 +92,18 @@ public class FxDetalleProcesoController implements Initializable {
             toValidateRegister();
         }
     }
+    
+        @FXML
+    private void onKeyCancelar(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            Tools.Dispose(window);
+        }
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
+        Tools.Dispose(window);
+    }
 
     public void setInitComponents(int idDetalle, String idMantenimiento) {
         this.idDetalle = idDetalle;
@@ -101,5 +113,6 @@ public class FxDetalleProcesoController implements Initializable {
     public void setControllerDetalleLista(FxDetalleListaController listaController) {
         this.listaController = listaController;
     }
+
 
 }

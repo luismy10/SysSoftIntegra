@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.etiquetas.FxImpresoraEtiquetaController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.etiquetas.FxImpresoraEtiquetaController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,7 +20,7 @@
                      <children>
                         <HBox alignment="CENTER" style="-fx-background-color: #34495e; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/brochure-96.png" />
                                  </image></ImageView>
@@ -28,7 +28,7 @@
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelRobotoBold16" text="Ventana de impresión" />
+                              <Label styleClass="labelRobotoBold16" text="Ventana de impresión" textFill="#020203" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
@@ -42,28 +42,28 @@
             </HBox>
             <HBox alignment="CENTER">
                <children>
-                  <VBox>
+                  <VBox style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
+                        <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Impresoras disponibles:" />
+                              <Label styleClass="labelOpenSansRegular14" text="Impresoras disponibles:" textFill="#020203" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                            <children>
                               <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Nombre:" />
+                                    <Label styleClass="labelOpenSansRegular14" text="Nombre:" textFill="#020203" />
                                     <ComboBox fx:id="cbImpresoras" maxWidth="1.7976931348623157E308" prefWidth="260.0" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
-                        <HBox style="-fx-padding: 0.8333333333333334em;">
+                        <HBox>
                            <children>
                               <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Copias:" />
+                                    <Label styleClass="labelOpenSansRegular14" text="Copias:" textFill="#020203" />
                                     <Spinner fx:id="spCopias" maxWidth="1.7976931348623157E308" />
                                  </children>
                               </VBox>
@@ -71,7 +71,14 @@
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Imprimir" />
+                              <Button mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Imprimir">
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/print.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
                         </HBox>
                      </children>

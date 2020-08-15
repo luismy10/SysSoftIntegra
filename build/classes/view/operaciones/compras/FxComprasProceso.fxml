@@ -20,14 +20,14 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #CCCCCC; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                      <children>
-                        <Label styleClass="labelRobotoBold18" text="TOTAL EN EFECTIVO" />
-                        <Label fx:id="lblTotal" styleClass="labelRobotoBold18" text="M 00.00">
+                        <Label styleClass="labelRobotoBold18" text="TOTAL EN EFECTIVO" textFill="#020203" />
+                        <Label fx:id="lblTotal" styleClass="labelRobotoBold18" text="M 00.00" textFill="#020203">
                            <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/money.png" />
                                  </image>
@@ -44,7 +44,7 @@
                      <children>
                         <HBox>
                            <children>
-                              <RadioButton fx:id="rbContado" mnemonicParsing="false" onAction="#onActionRbContado" selected="true" styleClass="labelOpenSansRegular14" text="Pago con Banco / Caja" />
+                              <RadioButton fx:id="rbContado" mnemonicParsing="false" onAction="#onActionRbContado" selected="true" styleClass="labelRoboto14" text="Pago con Banco / Caja" />
                            </children>
                         </HBox>
                         <HBox fx:id="hbPagoContado" alignment="CENTER_LEFT">
@@ -59,8 +59,8 @@
                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Cuenta:" textFill="#1a2226" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Valor recibido:" textFill="#1a2226" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Cuenta:" textFill="#020203" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Valor recibido:" textFill="#020203" GridPane.rowIndex="1" />
                                     <ComboBox fx:id="cbCuentas" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" />
                                     <TextField fx:id="txtEfectivo" onKeyTyped="#onKeyTypedEfectivo" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
@@ -79,24 +79,24 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <RadioButton fx:id="rbCredito" mnemonicParsing="false" onAction="#onActionRbCredito" styleClass="labelOpenSansRegular14" text="Crédito" />
+                                    <RadioButton fx:id="rbCredito" mnemonicParsing="false" onAction="#onActionRbCredito" styleClass="labelRoboto14" text="Crédito" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Monto Total:" />
+                                          <Label styleClass="labelRoboto14" text="Monto Total:" textFill="#020203" />
                                           <Label fx:id="lblMontoTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#08435e" />
-                                          <Label styleClass="labelOpenSansRegular14" text="Monto a Pagar:" />
-                                          <Label fx:id="lblMontoPagar" styleClass="labelRobotoBold14" text="0.00" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Monto a Pagar:" textFill="#020203" />
+                                          <Label fx:id="lblMontoPagar" styleClass="labelRobotoBold14" text="0.00" textFill="#0240bc" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
                                        <children>
                                           <Button mnemonicParsing="false" onAction="#oActionAgregarCredito" onKeyPressed="#onKeyPressedCredito" styleClass="buttonBorder">
                                              <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../image/plus.png" />
                                                    </image>
@@ -162,7 +162,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightSuccess" text="Aceptar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image></ImageView>
@@ -170,7 +170,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image></ImageView>

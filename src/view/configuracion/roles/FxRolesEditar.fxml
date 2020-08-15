@@ -16,22 +16,26 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 0  0 1px 0; -fx-border-color: #cccccc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/privileges.png" />
-                     </image></ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Editar Rol" />
+                  <Label styleClass="labelRobotoBold16" text="Editar Rol" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/privileges.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;" VBox.vgrow="SOMETIMES">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Nombre del rol:" />
+                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Nombre del rol:" />
                   <TextField fx:id="txtNombre" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionEditarNombre" onKeyPressed="#onKeyPressedEditarNombre" styleClass="buttonLight" text="Editar nombre">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image>
@@ -40,9 +44,9 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cerrar Ventana">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/left.png" />
+                              <Image url="@../../image/error.png" />
                            </image></ImageView>
                      </graphic>
                   </Button>
@@ -84,11 +88,6 @@
                         <ListView fx:id="lvPrivilegios" prefHeight="180.0" prefWidth="300.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 1 0 0 0; -fx-border-color: #CCCCCC; -fx-background-color: white;">
-               <children>
-                  <Label styleClass="labelRobotoBold16" text="Los cambios se guardar automaticamente al seleccionar cada menú, sub menús y provilegios" textFill="#1a2226" />
                </children>
             </HBox>
          </children>

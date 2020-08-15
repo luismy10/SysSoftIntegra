@@ -11,19 +11,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-
 
 <VBox fx:id="vbWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.reporte.FxGlobalReporteController">
    <children>
       <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
          <children>
-            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../image/purchases.png" />
-               </image>
-            </ImageView>
-            <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Reporte de Compras" />
+            <Label styleClass="labelRobotoBold16" text="Reporte de Compras" textFill="#020203">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/purchases.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
          </children>
       </HBox>
       <TabPane tabClosingPolicy="UNAVAILABLE">
@@ -52,7 +53,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#1a2226">
+                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -66,7 +67,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#1a2226">
+                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

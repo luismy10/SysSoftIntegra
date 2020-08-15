@@ -14,22 +14,25 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #cccccc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/ticket.png" />
-                     </image></ImageView>
-                  <Label styleClass="labelRobotoMedium18" text="Agregar variable" textFill="#1a2226" />
+                  <Label styleClass="labelRobotoBold16" text="Agregar variable" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/ticket.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Label>
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Doble click para agregar a la lista" />
+                        <Label styleClass="labelOpenSansRegular14" text="Doble click para agregar a la lista" textFill="#020203" />
                         <ListView fx:id="lvLista" onMouseClicked="#onMouseClickedList" prefHeight="280.0" prefWidth="320.0" />
-                        <TextField fx:id="txtContenido" disable="true" styleClass="text-field-normal" />
+                        <TextField fx:id="txtContenido" disable="true" prefHeight="30.0" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>
@@ -38,7 +41,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLightDefault" text="Agregar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
                            </image></ImageView>
@@ -46,7 +49,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image></ImageView>

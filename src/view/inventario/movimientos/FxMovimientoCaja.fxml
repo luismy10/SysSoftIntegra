@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,11 +16,11 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc;">
                <children>
-                  <Label styleClass="labelRobotoBold18" text="Movimiento de caja" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Movimiento de caja" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/cash_movement.png" />
                            </image>
@@ -36,13 +35,11 @@
                      <children>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox />
-                              <Separator prefWidth="200.0" />
                               <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <HBox>
                                        <children>
-                                          <Label fx:id="lblTipoMovimiento" styleClass="labelRoboto14" text="Realizar salida de dinero" textFill="#1a2226" underline="true">
+                                          <Label fx:id="lblTipoMovimiento" styleClass="labelRoboto14" text="Realizar salida de dinero" textFill="#020203" underline="true">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -55,7 +52,7 @@
                                     </HBox>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Salida de:" textFill="#1a2226" />
+                                          <Label styleClass="labelOpenSansRegular14" text="Salida de:" textFill="#020203" />
                                        </children>
                                     </HBox>
                                     <GridPane style="-fx-vgap: 0.8333333333333334em; -fx-hgap: 0.8333333333333334em;">
@@ -68,7 +65,7 @@
                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Efectivo:" textFill="#1a2226">
+                                          <Label styleClass="labelOpenSansRegular14" text="Efectivo:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -78,7 +75,7 @@
                                              </graphic>
                                           </Label>
                                           <TextField fx:id="txtEfectivo" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedEfectivo" prefHeight="30.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                          <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226" GridPane.rowIndex="1">
+                                          <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#020203" GridPane.rowIndex="1">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -96,9 +93,18 @@
                                  <children>
                                     <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Guardar">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/save.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
+                                       <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/error.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>

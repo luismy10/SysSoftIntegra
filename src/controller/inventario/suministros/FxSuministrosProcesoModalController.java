@@ -43,7 +43,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.DetalleADO;
@@ -132,8 +131,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     private RadioButton rbValorMedida;
     //private CheckBox cbAceptar;
     @FXML
-    private Text lblTitle;
-    @FXML
     private TextField txtClaveSat;
     @FXML
     private TableView<PreciosTB> tvPrecios;
@@ -218,7 +215,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         vbContenedorPrecioNormal.getChildren().add(hbPrecioNormal);
         setIniciarCarga();
         txtClave.requestFocus();
-        lblTitle.setText("Registrar datos del Producto");
     }
 
     public void clearElements() {
@@ -236,7 +232,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         txtMargen1.setText("30");
         txtMargen2.setText("25");
         txtMargen3.setText("20");
-        lblTitle.setText("Datos del producto");
         btnRegister.setText("Registrar");
         btnRegister.getStyleClass().clear();
         btnRegister.getStyleClass().add("buttonLightDefault");

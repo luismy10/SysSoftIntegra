@@ -292,7 +292,7 @@ public class FxSuministrosCompraController implements Initializable {
         detalleCompraTB.setSuministroTB(suministrosTB);
         //
         tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 1", !Tools.isNumeric(txtPrecio2.getText()) ? 0 : Double.parseDouble(txtPrecio2.getText()), 1));
-        tvPreciosNormal.add(new PreciosTB(0, "Pricio de Venta 2", !Tools.isNumeric(txtPrecio3.getText()) ? 0 : Double.parseDouble(txtPrecio3.getText()), 1));
+        tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 2", !Tools.isNumeric(txtPrecio3.getText()) ? 0 : Double.parseDouble(txtPrecio3.getText()), 1));
         detalleCompraTB.setListPrecios(tvPreciosNormal);
         //        
         detalleCompraTB.setCantidad(Double.parseDouble(txtCantidad.getText()));

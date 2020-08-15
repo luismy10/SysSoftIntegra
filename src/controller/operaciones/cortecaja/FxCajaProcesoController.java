@@ -7,13 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import model.CajaADO;
 
 public class FxCajaProcesoController implements Initializable {
@@ -21,7 +21,7 @@ public class FxCajaProcesoController implements Initializable {
     @FXML
     private AnchorPane apWindow;
     @FXML
-    private Text lblTitle;
+    private Label lblTitle;
     @FXML
     private TextField txtNombre;
     @FXML

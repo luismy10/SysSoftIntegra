@@ -18,9 +18,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRoboto14" text="Buscar(F1):">
+                  <Label styleClass="labelRoboto14" text="Buscar(F1):" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/search.png" />
                            </image></ImageView>
@@ -29,13 +29,14 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearh" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearh" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar(F2)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
-                           </image></ImageView>
+                           </image>
+                        </ImageView>
                      </graphic>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar(F3)">
@@ -75,9 +76,9 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Label styleClass="labelBorder" text="0" />
-                              <Label styleClass="labelForm" text="de" />
-                              <Label styleClass="labelBorder" text="0" />
+                              <Label styleClass="labelBorder" text="0" textFill="#020203" />
+                              <Label styleClass="labelForm" text="de" textFill="#020203" />
+                              <Label styleClass="labelBorder" text="0" textFill="#020203" />
                               <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">

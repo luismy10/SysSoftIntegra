@@ -14,16 +14,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" fx:id="apWindow" stylesheets="@../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.banco.FxBancoRetirarDineroController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.banco.FxBancoRetirarDineroController">
    <children>
       <VBox>
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Nuevo egreso" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Nuevo egreso" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                            <image>
                               <Image url="@../image/bankmove.png" />
                            </image>
@@ -44,7 +43,7 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Monto:" textFill="#1a2226">
+                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Monto:" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -53,8 +52,8 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <TextField fx:id="txtMonto" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMonto" prefWidth="220.0" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Descripción:" textFill="#1a2226" GridPane.rowIndex="1">
+                        <TextField fx:id="txtMonto" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMonto" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
+                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Descripción:" textFill="#020203" GridPane.rowIndex="1">
                            <graphic>
                               <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

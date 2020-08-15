@@ -341,12 +341,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
                     Label lblCodigo = new Label(tvList1.getClave());
                     lblCodigo.getStyleClass().add("labelOpenSansRegular14");
-                    lblCodigo.setTextFill(Color.web("#1a2226"));
+                    lblCodigo.setTextFill(Color.web("#020203"));
                     vBox.getChildren().add(lblCodigo);
 
                     Label lblProducto = new Label(tvList1.getNombreMarca());
                     lblProducto.getStyleClass().add("labelRobotoBold14");
-                    lblProducto.setTextFill(Color.web("#1a2226"));
+                    lblProducto.setTextFill(Color.web("#020203"));
                     lblProducto.setWrapText(true);
                     lblProducto.setTextAlignment(TextAlignment.CENTER);
                     vBox.getChildren().add(lblProducto);
@@ -819,12 +819,16 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         try {
             if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione la moneda ha usar.");
+                cbMoneda.requestFocus();
             } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione un cliente.");
+                cbCliente.requestFocus();
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione el tipo de comprobante.");
+                cbComprobante.requestFocus();
             } else if (lvProductoAgregados.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "No hay productos en la lista para vender.");
+                txtSearch.requestFocus();
             } else {
 
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);

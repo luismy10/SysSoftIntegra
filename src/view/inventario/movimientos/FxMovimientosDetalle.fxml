@@ -21,9 +21,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: white; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoMedium18" text="Detalle del movimiento" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Detalle del movimiento" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/ajuste-inventario.png" />
                            </image>
@@ -55,17 +55,17 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Tipo de Movimiento:" textFill="#1a2226" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Tipo de Movimiento:" textFill="#020203" />
                         <Label fx:id="lblTIpoMovimiento" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="1" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha y Hora" textFill="#1a2226" GridPane.rowIndex="1" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha y Hora" textFill="#020203" GridPane.rowIndex="1" />
                         <Label fx:id="lblHoraFecha" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226" GridPane.rowIndex="2" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Observación:" textFill="#020203" GridPane.rowIndex="2" />
                         <Label fx:id="lblObservacion" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor:" textFill="#1a2226" GridPane.columnIndex="2" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Proveedor:" textFill="#020203" GridPane.columnIndex="2" />
                         <Label fx:id="lblProveedor" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="3" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del mivimiento:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del mivimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label fx:id="lblEstado" styleClass="labelRoboto14" text="--" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Verificación del mivimiento:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Verificación del mivimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <Label fx:id="lblVerificar" styleClass="labelRobotoBold14" text="--" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
@@ -79,7 +79,7 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/reports.png" />
                                        </image>
@@ -106,7 +106,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" editable="true" prefHeight="280.0" styleClass="table-view-principal">
+                        <TableView fx:id="tvList" editable="true" prefHeight="260.0" styleClass="table-view-principal">
                           <columns>
                             <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: TOP-CENTER;" text="N°" />
                             <TableColumn fx:id="tcDescripcion" prefWidth="440.0" style="-fx-alignment: TOP-LEFT;" text="Descripción" />
