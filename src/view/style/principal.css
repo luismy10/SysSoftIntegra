@@ -344,6 +344,7 @@
     -fx-border-color: #151a23;
     -fx-font-size:1.1666666666666667em; 
     -fx-font-family:"Roboto"; 
+    -fx-text-fill: #020203;
 }
 .text-field-login:hover{
     -fx-border-color: #0066cc;

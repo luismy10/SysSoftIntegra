@@ -19,7 +19,7 @@
          <children>
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="CENTER_LEFT" style="-fx-padding: 1.6666666666666667em; -fx-background-color: #151a23;">
+                  <VBox alignment="CENTER_LEFT" style="-fx-padding: 1.6666666666666667em; -fx-background-color: #020203;">
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 1.6666666666666667em;">
                            <children>

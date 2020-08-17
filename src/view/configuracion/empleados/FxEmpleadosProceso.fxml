@@ -22,7 +22,7 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-background-color: #1a2226;" styleClass="paddinContainer">
+                  <HBox alignment="CENTER_LEFT" style="-fx-background-color: #020203;" styleClass="paddinContainer">
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                            <children>
