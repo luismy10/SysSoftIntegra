@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,7 +47,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.ClienteADO;
 import model.ClienteTB;
 import model.ComprobanteADO;
 import model.ImpuestoADO;
@@ -64,6 +62,9 @@ import org.controlsfx.control.Notifications;
 
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
+import model.ClienteADO;
+import model.DetalleADO;
+import model.DetalleTB;
 
 public class FxVentaEstructuraNuevoController implements Initializable {
 
@@ -84,13 +85,21 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private ComboBox<ClienteTB> cbCliente;
-    @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
     private Text lblSerie;
     @FXML
     private Text lblNumeracion;
+    @FXML
+    private ComboBox<DetalleTB> cbTipoDocumento;
+    @FXML
+    private TextField txtNumeroDocumento;
+    @FXML
+    private TextField txtDatosCliente;
+    @FXML
+    private TextField txtCelularCliente;
+    @FXML
+    private TextField txtDireccionCliente;
 
     private AnchorPane vbPrincipal;
 
@@ -107,6 +116,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private AnchorPane hbPie;
 
     private String monedaSimbolo;
+
+    private String idCliente;
 
     private int totalPaginacion;
 
@@ -139,62 +150,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
+        idCliente = "";
 
         loadDataComponent();
-
-        SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
-//        searchComboBoxClientes.getComboBox().getItems().addAll(ClienteADO.GetSearchComboBoxCliente((short) 1, ""));
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
-                if (!searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().requestFocus();
-                }
-            } else if (t.getCode() == KeyCode.ESCAPE) {
-                searchComboBoxCliente.getComboBox().hide();
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-            cbCliente.getItems().clear();
-            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 4, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
-            clienteTBs.forEach(e -> cbCliente.getItems().add(e));
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-            if (null == t.getCode()) {
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-            } else {
-                switch (t.getCode()) {
-                    case ENTER:
-                    case SPACE:
-                    case ESCAPE:
-                        searchComboBoxCliente.getComboBox().hide();
-                        break;
-                    case UP:
-                    case DOWN:
-                    case LEFT:
-                    case RIGHT:
-                        break;
-                    default:
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-                        break;
-                }
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-            if (item != null) {
-                searchComboBoxCliente.getComboBox().getSelectionModel().select(item);
-                if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
-                    searchComboBoxCliente.getComboBox().hide();
-                }
-            }
-        });
-
-        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
-            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
-            cbCliente.getSelectionModel().select(0);
-        }
 
     }
 
@@ -231,6 +189,24 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 }
             }
         }
+
+        cbTipoDocumento.getItems().clear();
+        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
+
+        if (!cbTipoDocumento.getItems().isEmpty()) {
+            for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
+                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                    cbTipoDocumento.getSelectionModel().select(detalleTB);
+                    break;
+                }
+            }
+        }
+
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+        txtCelularCliente.setText("");
     }
 
     public void onEventPaginacion() {
@@ -267,67 +243,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 listSuministros.addAll((ObservableList<SuministroTB>) objects.get(0));
                 listSuministros.stream().map(tvList1 -> {
                     VBox vBox = new VBox();
-                    vBox.setOnMouseClicked(m -> {
-
-                        SuministroTB suministroTB = new SuministroTB();
-                        suministroTB.setIdSuministro(tvList1.getIdSuministro());
-                        suministroTB.setClave(tvList1.getClave());
-                        suministroTB.setNombreMarca(tvList1.getNombreMarca());
-                        suministroTB.setCantidad(1);
-                        suministroTB.setCostoCompra(tvList1.getCostoCompra());
-
-                        suministroTB.setDescuento(0);
-                        suministroTB.setDescuentoCalculado(0);
-                        suministroTB.setDescuentoSumado(0);
-
-                        suministroTB.setPrecioVentaGeneralUnico(tvList1.getPrecioVentaGeneral());
-                        suministroTB.setPrecioVentaGeneralReal(tvList1.getPrecioVentaGeneral());
-                        suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
-
-                        suministroTB.setImpuestoOperacion(getTaxValueOperacion(tvList1.getImpuestoArticulo()));
-                        suministroTB.setImpuestoArticulo(tvList1.getImpuestoArticulo());
-                        suministroTB.setImpuestoArticuloName(getTaxName(tvList1.getImpuestoArticulo()));
-                        suministroTB.setImpuestoValor(getTaxValue(tvList1.getImpuestoArticulo()));
-                        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
-
-                        suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
-
-                        suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                        suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                        suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-
-                        suministroTB.setInventario(tvList1.isInventario());
-                        suministroTB.setUnidadVenta(tvList1.getUnidadVenta());
-                        suministroTB.setValorInventario(tvList1.getValorInventario());
-
-                        if (validateDuplicateArticulo(lvProductoAgregados, suministroTB)) {
-                            for (int i = 0; i < lvProductoAgregados.getItems().size(); i++) {
-                                if (lvProductoAgregados.getItems().get(i).getSuministroTB().getIdSuministro().equalsIgnoreCase(suministroTB.getIdSuministro())) {
-                                    BbItemProducto bbItemProducto = lvProductoAgregados.getItems().get(i);
-                                    bbItemProducto.getSuministroTB().setCantidad(bbItemProducto.getSuministroTB().getCantidad() + 1);
-                                    double porcentajeRestante = bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * (bbItemProducto.getSuministroTB().getDescuento() / 100.00);
-
-                                    bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * bbItemProducto.getSuministroTB().getCantidad());
-                                    bbItemProducto.getSuministroTB().setImpuestoSumado(bbItemProducto.getSuministroTB().getCantidad() * (bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() * (bbItemProducto.getSuministroTB().getImpuestoValor() / 100.00)));
-
-                                    bbItemProducto.getSuministroTB().setSubImporte(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * bbItemProducto.getSuministroTB().getCantidad());
-                                    bbItemProducto.getSuministroTB().setSubImporteDescuento(bbItemProducto.getSuministroTB().getCantidad() * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
-                                    bbItemProducto.getSuministroTB().setTotalImporte(bbItemProducto.getSuministroTB().getCantidad() * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
-                                    bbItemProducto.getChildren().clear();
-                                    bbItemProducto.addElementListView();
-
-                                    lvProductoAgregados.getItems().set(i, bbItemProducto);
-                                    calculateTotales();
-                                }
-                            }
-                        } else {
-                            BbItemProducto bbItemProducto = new BbItemProducto(suministroTB, lvProductoAgregados, this);
-                            bbItemProducto.addElementListView();
-
-                            lvProductoAgregados.getItems().add(bbItemProducto);
-                            calculateTotales();
-                        }
-                    });
                     vBox.setMinWidth(Control.USE_PREF_SIZE);
                     vBox.setPrefWidth(300);
                     vBox.maxWidth(Control.USE_PREF_SIZE);
@@ -369,8 +284,16 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     Button button = new Button();
                     button.getStyleClass().add("buttonView");
                     button.setGraphic(vBox);
+                    button.setOnAction(event -> {
+                        addElementListView(tvList1);
+                    });
+                    button.setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            addElementListView(tvList1);
+                        }
+                    });
                     return button;
-                }).forEachOrdered(button -> fpProductos.getChildren().add(button));
+                }).forEachOrdered(vBox -> fpProductos.getChildren().add(vBox));
                 totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -395,6 +318,67 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
+        }
+    }
+
+    private void addElementListView(SuministroTB tvList1) {
+        SuministroTB suministroTB = new SuministroTB();
+        suministroTB.setIdSuministro(tvList1.getIdSuministro());
+        suministroTB.setClave(tvList1.getClave());
+        suministroTB.setNombreMarca(tvList1.getNombreMarca());
+        suministroTB.setCantidad(1);
+        suministroTB.setCostoCompra(tvList1.getCostoCompra());
+
+        suministroTB.setDescuento(0);
+        suministroTB.setDescuentoCalculado(0);
+        suministroTB.setDescuentoSumado(0);
+
+        suministroTB.setPrecioVentaGeneralUnico(tvList1.getPrecioVentaGeneral());
+        suministroTB.setPrecioVentaGeneralReal(tvList1.getPrecioVentaGeneral());
+        suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
+
+        suministroTB.setImpuestoOperacion(getTaxValueOperacion(tvList1.getImpuestoArticulo()));
+        suministroTB.setImpuestoArticulo(tvList1.getImpuestoArticulo());
+        suministroTB.setImpuestoArticuloName(getTaxName(tvList1.getImpuestoArticulo()));
+        suministroTB.setImpuestoValor(getTaxValue(tvList1.getImpuestoArticulo()));
+        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
+
+        suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
+
+        suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+        suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+        suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+
+        suministroTB.setInventario(tvList1.isInventario());
+        suministroTB.setUnidadVenta(tvList1.getUnidadVenta());
+        suministroTB.setValorInventario(tvList1.getValorInventario());
+
+        if (validateDuplicateArticulo(lvProductoAgregados, suministroTB)) {
+            for (int i = 0; i < lvProductoAgregados.getItems().size(); i++) {
+                if (lvProductoAgregados.getItems().get(i).getSuministroTB().getIdSuministro().equalsIgnoreCase(suministroTB.getIdSuministro())) {
+                    BbItemProducto bbItemProducto = lvProductoAgregados.getItems().get(i);
+                    bbItemProducto.getSuministroTB().setCantidad(bbItemProducto.getSuministroTB().getCantidad() + 1);
+                    double porcentajeRestante = bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * (bbItemProducto.getSuministroTB().getDescuento() / 100.00);
+
+                    bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * bbItemProducto.getSuministroTB().getCantidad());
+                    bbItemProducto.getSuministroTB().setImpuestoSumado(bbItemProducto.getSuministroTB().getCantidad() * (bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() * (bbItemProducto.getSuministroTB().getImpuestoValor() / 100.00)));
+
+                    bbItemProducto.getSuministroTB().setSubImporte(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * bbItemProducto.getSuministroTB().getCantidad());
+                    bbItemProducto.getSuministroTB().setSubImporteDescuento(bbItemProducto.getSuministroTB().getCantidad() * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+                    bbItemProducto.getSuministroTB().setTotalImporte(bbItemProducto.getSuministroTB().getCantidad() * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+                    bbItemProducto.getChildren().clear();
+                    bbItemProducto.addElementListView();
+
+                    lvProductoAgregados.getItems().set(i, bbItemProducto);
+                    calculateTotales();
+                }
+            }
+        } else {
+            BbItemProducto bbItemProducto = new BbItemProducto(suministroTB, lvProductoAgregados, this);
+            bbItemProducto.addElementListView();
+
+            lvProductoAgregados.getItems().add(bbItemProducto);
+            calculateTotales();
         }
     }
 
@@ -542,11 +526,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         listSuministros.clear();
         fpProductos.getChildren().clear();
         lvProductoAgregados.getItems().clear();
-        cbCliente.getItems().clear();
-        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
-            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
-            cbCliente.getSelectionModel().select(0);
-        }
+
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+        txtCelularCliente.setText("");
+
         loadDataComponent();
         lblPaginaActual.setText(paginacion + "");
         lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -554,6 +540,54 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         txtSearch.clear();
         txtSearch.requestFocus();
         calculateTotales();
+    }
+
+    public void onExecuteCliente(short opcion, String search) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ClienteTB> task = new Task<ClienteTB>() {
+            @Override
+            public ClienteTB call() {
+                return ClienteADO.GetSearchClienteNumeroDocumento(opcion, search);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            ClienteTB clienteTB = task.getValue();
+            if (clienteTB != null) {
+                idCliente = clienteTB.getIdCliente();
+                txtDatosCliente.setText(clienteTB.getInformacion());
+                txtDireccionCliente.setText(clienteTB.getDireccion());
+                txtCelularCliente.setText(clienteTB.getCelular());
+                for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                        cbTipoDocumento.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            } else {
+                idCliente = "";
+                txtDatosCliente.setText("");
+                txtDireccionCliente.setText("");
+                txtCelularCliente.setText("");
+            }
+            txtNumeroDocumento.setDisable(false);
+        });
+
+        task.setOnFailed(e -> txtNumeroDocumento.setDisable(false));
+
+        task.setOnScheduled(e -> txtNumeroDocumento.setDisable(true));
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
     }
 
     public void imprimirVenta(String serieNumeracion, String codigoVenta, String efectivo, String vuelto, boolean ticket) {
@@ -586,28 +620,15 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     try {
                         billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
-                        String numeroDocumento = "";
-                        String informacion = "";
-                        String celular = "";
-                        String direccion = "";
-
-                        if (cbCliente.getSelectionModel().getSelectedIndex() >= 0) {
-                            ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
-                            numeroDocumento = clienteTB.getNumeroDocumento() == null ? "" : clienteTB.getNumeroDocumento().toUpperCase();
-                            informacion = clienteTB.getInformacion() == null ? "" : clienteTB.getInformacion().toUpperCase();
-                            celular = clienteTB.getCelular() == null ? "" : clienteTB.getCelular().toUpperCase();
-                            direccion = clienteTB.getDireccion() == null ? "" : clienteTB.getDireccion().toUpperCase();
-                        }
-
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             billPrintable.hbEncebezado(box,
                                     ticket ? cbComprobante.getSelectionModel().getSelectedItem().getNombre() : "PRE VENTA",
                                     serieNumeracion,
-                                    numeroDocumento,
-                                    informacion,
-                                    celular,
-                                    direccion,
+                                    txtNumeroDocumento.getText().trim().toUpperCase(),
+                                    txtDatosCliente.getText().trim().toUpperCase(),
+                                    txtCelularCliente.getText().trim().toUpperCase(),
+                                    txtDireccionCliente.getText().trim().toUpperCase(),
                                     codigoVenta);
                         }
 
@@ -633,10 +654,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     Tools.roundingValue(total, 2),
                                     efectivo,
                                     vuelto,
-                                    numeroDocumento,
-                                    informacion,
+                                    txtNumeroDocumento.getText().trim().toUpperCase(),
+                                    txtDatosCliente.getText().trim().toUpperCase(),
                                     codigoVenta,
-                                    celular);
+                                    txtCelularCliente.getText().trim().trim().toUpperCase());
                         }
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -819,16 +840,16 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         try {
             if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione la moneda ha usar.");
-                cbMoneda.requestFocus();
-            } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione un cliente.");
-                cbCliente.requestFocus();
+            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Ingrese el número del documento del cliente.");
+            } else if (txtDatosCliente.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Ingrese los datos del cliente.");
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione el tipo de comprobante.");
-                cbComprobante.requestFocus();
             } else if (lvProductoAgregados.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "No hay productos en la lista para vender.");
-                txtSearch.requestFocus();
+            } else if (total <= 0) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "El total de la venta no puede ser menor que 0.");
             } else {
 
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -846,12 +867,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 stage.show();
 
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
-                clienteTB.setTipoDocumento(cbCliente.getSelectionModel().getSelectedItem().getTipoDocumento());
-                clienteTB.setNumeroDocumento(cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento());
-                clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
-                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
-                clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
+                clienteTB.setIdCliente(idCliente);
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
+                clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
+                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
+                clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -956,7 +977,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     cbMoneda.requestFocus();
                     break;
                 case F4:
-                    cbCliente.requestFocus();
+                    onEventCliente();
                     break;
                 case F5:
                     if (!state) {
@@ -1177,16 +1198,25 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         openWindowImpresora();
     }
 
+    @FXML
+    private void onKeyTypedNumeroDocumento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onActionSearchCliente(ActionEvent event) {
+        onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+    }
+
     public TextField getTxtSearch() {
         return txtSearch;
     }
 
     public ComboBox<MonedaTB> getCbMoneda() {
         return cbMoneda;
-    }
-
-    public ComboBox<ClienteTB> getCbCliente() {
-        return cbCliente;
     }
 
     public ListView<BbItemProducto> getLvProductoAgregados() {

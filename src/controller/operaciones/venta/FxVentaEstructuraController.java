@@ -788,7 +788,7 @@ public class FxVentaEstructuraController implements Initializable {
                     //Controlller here
                     FxVentaCantidadesController controller = fXMLLoader.getController();
                     controller.setInitVentaEstructuraController(this);
-                    controller.initComponents(tvList.getSelectionModel().getSelectedItem());
+                    controller.initComponents(tvList.getSelectionModel().getSelectedItem(),false);
                     //
                     Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window.getScene().getWindow());
                     stage.setResizable(false);
@@ -807,6 +807,27 @@ public class FxVentaEstructuraController implements Initializable {
             }
         }
 
+    }
+
+    public void openWindowCantidadLista(SuministroTB suministroTB,Boolean tipoVenta) {
+        try {
+          
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_CANTIDADES);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaCantidadesController controller = fXMLLoader.getController();
+            controller.setInitVentaEstructuraController(this);
+            controller.initComponents(suministroTB,tipoVenta);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();        
+            stage.show();
+            controller.getTxtCantidad().requestFocus();
+        } catch (IOException ex) {
+            Tools.println("Venta estructura openWindowCantidad:" + ex.getLocalizedMessage());
+        }
     }
 
     public void openWindowMostrarVentas() {
@@ -837,12 +858,12 @@ public class FxVentaEstructuraController implements Initializable {
                         case 3:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowCantidad();
+//                            openWindowCantidad();
                             break;
                         case 2:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+//                            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
                             break;
                         default:
                             SuministroTB suministroTB = tvList.getItems().get(i);
@@ -870,7 +891,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowCantidad();
+//                    openWindowCantidad();
                     calculateTotales();
                     break;
                 }
@@ -879,7 +900,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+//                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
                     calculateTotales();
                     break;
                 }
@@ -966,7 +987,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
+        label.setStyle("-fx-text-fill:#1a2226;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
         label.getStyleClass().add("labelRoboto14");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
@@ -978,7 +999,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill:#020203;");
+        label.setStyle("-fx-text-fill:#000000;");
         label.getStyleClass().add("labelRobotoMedium16");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);

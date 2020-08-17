@@ -96,7 +96,7 @@
                                  <children>
                                     <VBox alignment="CENTER">
                                        <children>
-                                          <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/client.png" />
                                              </image>

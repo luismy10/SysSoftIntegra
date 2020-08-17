@@ -341,7 +341,7 @@
     -fx-background-radius: 0, 0;
     -fx-background-color:transparent;
     -fx-border-width: 0 0 2px 0;
-    -fx-border-color: #151a23;
+    -fx-border-color: #020203;
     -fx-font-size:1.1666666666666667em; 
     -fx-font-family:"Roboto"; 
     -fx-text-fill: #020203;
@@ -864,19 +864,19 @@
 .buttonDark{
     -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
 
-    -fx-border-color: #343a40;
+    -fx-border-color: #020203;
     -fx-border-width: 1;
 
     -fx-background-radius: 0;
     -fx-background-insets: 0;
-    -fx-background-color: #343a40;
+    -fx-background-color: #020203;
 
     -fx-font-family:"Roboto bold";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: white;
 }
 .buttonDark:hover{
-    -fx-text-fill: #343a40;
+    -fx-text-fill: #020203;
     -fx-background-color: white;
     -fx-cursor: hand;
 }
