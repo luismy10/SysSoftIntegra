@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -36,6 +37,12 @@
                               <Label styleClass="labelRobotoMedium18" text="Bienvenido" textFill="WHITE" />
                               <Label styleClass="labelRoboto18" text="SysSoftIntegra Versión 1.1" textFill="#a6aeb5" />
                               <Label prefWidth="379.0" styleClass="labelOpenSansRegular14" text="El software punto de venta más sencilla para administrar su negocio, con muchas características que van hacer la interacción con el usuario más rápida y sencilla, agilizando los procesos comerciales que se van dando en el negocio." textFill="#a6aeb5" wrapText="true" />
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-padding: 1.6666666666666667em; -fx-spacing: 1.6666666666666667em;">
+                           <children>
+                              <Hyperlink onAction="#onActionUrlPrincipal" styleClass="labelRobotoMedium18" text="www.syssoftintegra.com" textFill="WHITE" />
+                              <Hyperlink styleClass="labelOpenSansRegular14" text="Comunícate con soporte al +51 966750883 o +51 931341082" textFill="WHITE" />
                            </children>
                         </VBox>
                      </children>

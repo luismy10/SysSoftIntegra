@@ -1,5 +1,7 @@
 package controller.login;
 
+import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
+import com.sun.javafx.application.HostServicesDelegate;
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -7,7 +9,10 @@ import controller.tools.Session;
 import controller.tools.Tools;
 import static controller.tools.Tools.Dispose;
 import controller.tools.WindowStage;
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,8 +37,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import model.DBUtil;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
 
@@ -52,7 +55,7 @@ public class FxLoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     
+
     }
 
     private void eventEntrar() {
@@ -73,7 +76,7 @@ public class FxLoginController implements Initializable {
             Task<Short> task = new Task<Short>() {
                 @Override
                 protected Short call() throws Exception {
-                    
+
                     EmpleadoTB empleadoTB = EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim());
                     if (empleadoTB != null) {
                         if (empleadoTB.getIdEmpleado() != null) {
@@ -169,9 +172,18 @@ public class FxLoginController implements Initializable {
         }
     }
 
+    @FXML
+    private void onActionUrlPrincipal(ActionEvent event) {
+        try {
+            Desktop d = Desktop.getDesktop();
+            d.browse(new URI("www.syssoftintegra.com/"));
+        } catch (Exception ex) {
+            Tools.println(ex.getMessage());
+        }
+    }
+
     public void initComponents() {
         txtUsuario.requestFocus();
     }
-
 
 }
