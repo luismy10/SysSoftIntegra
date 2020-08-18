@@ -71,7 +71,7 @@ public class FxPrincipalController implements Initializable {
     @FXML
     private HBox btnConfiguracion;
     @FXML
-    private Text lblDatos;
+    private Label lblDatos;
     @FXML
     private VBox vbSiderBar;
 

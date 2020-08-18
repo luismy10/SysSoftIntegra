@@ -40,7 +40,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em 0em; -fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Buscar(F1):" textFill="#1a2226">
+                              <Label styleClass="labelRoboto14" text="Buscar(F1):" textFill="#020203">
                                  <font>
                                     <Font name="Roboto" size="14.0" />
                                  </font>
@@ -70,25 +70,25 @@
                            <children>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Categoria(F2)" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Categoria(F2)" textFill="#020203" />
                                     <TextField fx:id="txtCategoria" onKeyPressed="#onKeyPressedToCategoria" onKeyReleased="#onKeyReleasedToCategoria" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Marca(F3)" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Marca(F3)" textFill="#020203" />
                                     <TextField fx:id="txtMarca" onKeyPressed="#onKeyPressedToMarca" onKeyReleased="#onKeyReleasedToMarca" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Presentación(F4)" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Presentación(F4)" textFill="#020203" />
                                     <TextField fx:id="txtPresentacion" onKeyPressed="#onKeyPressedToPresentacion" onKeyReleased="#onKeyReleasedToPresentacion" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Unidad de Medida(F5)" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Unidad de Medida(F5)" textFill="#020203" />
                                     <TextField fx:id="txtMedida" onKeyPressed="#onKeyPressedToMedida" onKeyReleased="#onKeyReleasedToMedida" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
@@ -132,9 +132,9 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" />
-                              <Label styleClass="labelForm" text="de" />
-                              <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" />
+                              <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" textFill="#020203" />
+                              <Label styleClass="labelForm" text="de" textFill="#020203" />
+                              <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203" />
                               <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">

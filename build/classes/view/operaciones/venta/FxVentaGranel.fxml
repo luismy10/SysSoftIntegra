@@ -16,9 +16,9 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                  <HBox alignment="CENTER">
                      <children>
-                        <Label fx:id="lblTitle" contentDisplay="TOP" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo">
+                        <Label fx:id="lblTitle" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelRobotoBold18" text="Cambiar precio al Artículo" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -40,7 +40,7 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular16" text="Importe actual">
+                                    <Label styleClass="labelOpenSansRegular16" text="Importe actual" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -50,7 +50,7 @@
                                        </graphic></Label>
                                  </children>
                               </HBox>
-                              <TextField fx:id="txtImporte" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="440.0" promptText="0.00" styleClass="text-field-normal" />
+                              <TextField fx:id="txtImporte" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="400.0" promptText="0.00" styleClass="text-field-normal" />
                            </children>
                         </VBox>
                      </children>
@@ -60,7 +60,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aceptar">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/plus.png" />
                                  </image>
@@ -69,7 +69,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/error.png" />
                                  </image>

@@ -13,20 +13,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="window" prefWidth="540.0" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tablasbasicas.FxDetalleController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.tablasbasicas.FxDetalleController">
     <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
+            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/table.png" />
-                     </image></ImageView>
-                      <Label fx:id="lblTitle" styleClass="labelRoboto16" text="Detalle del mantenimiento" textFill="#1a2226">
+                      <Label fx:id="lblTitle" styleClass="labelRobotoBold16" text="Detalle del mantenimiento" textFill="#020203">
                           <font>
                               <Font name="Calibri" size="19.0" />
                           </font>
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/table.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                       </Label>
                </children>
             </HBox>
@@ -34,42 +37,42 @@
                     <children>
                   <HBox style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                            <children>
-                                    <Label styleClass="labelRoboto14" text="Código">
+                                    <Label styleClass="labelRoboto14" text="Código" textFill="#020203">
                                         <font>
                                             <Font name="Roboto Bold" size="14.0" />
                                         </font>
                                     </Label>
-                                    <TextField fx:id="txtCode" disable="true" onAction="#onActionToRegister" styleClass="text-field-normal" />
+                                    <TextField fx:id="txtCode" disable="true" onAction="#onActionToRegister" prefWidth="220.0" styleClass="text-field-normal" />
                            </children>
                         </VBox>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Código Auxiliar">
+                              <Label styleClass="labelRoboto14" text="Código Auxiliar" textFill="#020203">
                                  <font>
                                     <Font name="Roboto" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtCodigoAuxiliar" onAction="#onActionToRegister" styleClass="text-field-normal" />
+                              <TextField fx:id="txtCodigoAuxiliar" onAction="#onActionToRegister" prefWidth="220.0" styleClass="text-field-normal" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                        <Label styleClass="labelRoboto14" text="Nombre">
+                        <Label styleClass="labelRoboto14" text="Nombre" textFill="#020203">
                             <font>
                                 <Font name="Roboto" size="14.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="txtName" onAction="#onActionToRegister" styleClass="text-field-normal" />
-                        <Label styleClass="labelRoboto14" text="Descripción">
+                        <TextField fx:id="txtName" onAction="#onActionToRegister" prefWidth="220.0" styleClass="text-field-normal" />
+                        <Label styleClass="labelRoboto14" text="Descripción" textFill="#020203">
                             <font>
                                 <Font name="Roboto" size="14.0" />
                             </font>
                         </Label>
-                        <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" wrapText="true" />
-                        <Label styleClass="labelRoboto14" text="Estado" />
-                        <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="comboBox" />
+                        <TextArea fx:id="txtDescripcion" onKeyPressed="#OnKeyPressedDescripcion" prefHeight="88.0" prefWidth="220.0" wrapText="true" />
+                        <Label styleClass="labelRoboto14" text="Estado" textFill="#020203" />
+                        <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefWidth="220.0" styleClass="comboBox" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -79,7 +82,7 @@
                       <children>
                           <Button fx:id="btnToAction" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image>
@@ -88,7 +91,7 @@
                   </Button>
                           <Button mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onPressedToCancel" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>

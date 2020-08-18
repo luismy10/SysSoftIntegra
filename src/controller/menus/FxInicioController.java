@@ -121,7 +121,7 @@ public class FxInicioController implements Initializable {
 
                     ArrayList<SuministroTB> listaProductos = (ArrayList<SuministroTB>) arrayList.get(10);
 
-//                    loadGraphics((int) arrayList.get(6), (int) arrayList.get(7), (int) arrayList.get(8), (int) arrayList.get(9), listaProductos);
+                    loadGraphics((int) arrayList.get(6), (int) arrayList.get(7), (int) arrayList.get(8), (int) arrayList.get(9), listaProductos);
 
                     lblVentasPagar.setText(Tools.roundingValue((int) arrayList.get(11), 0));
                     lblComprasPagar.setText(Tools.roundingValue((int) arrayList.get(12), 0));
@@ -161,29 +161,29 @@ public class FxInicioController implements Initializable {
 
     private void loadGraphics(double negativas, double intermedias, double necesarias, double excedentes, ArrayList<SuministroTB> arrayList) {
 
-        if (!arrayList.isEmpty()) {
+//        if (!arrayList.isEmpty()) {
+//
+//            productosSeries.getData().set(0, new XYChart.Data(arrayList.get(0) == null ? "Sin producto" : arrayList.get(0).getNombreMarca().length() > 10 ? arrayList.get(0).getNombreMarca().substring(0, 9) + "..." : arrayList.get(0).getNombreMarca(), arrayList.get(0) == null ? 0 : (int) arrayList.get(0).getCantidad()));
+//            productosSeries.getData().set(1, new XYChart.Data(arrayList.get(1) == null ? "Sin producto" : arrayList.get(1).getNombreMarca().length() > 10 ? arrayList.get(1).getNombreMarca().substring(0, 9) + "..." : arrayList.get(1).getNombreMarca(), arrayList.get(1) == null ? 0 : (int) arrayList.get(1).getCantidad()));
+//            productosSeries.getData().set(2, new XYChart.Data(arrayList.get(2) == null ? "Sin producto" : arrayList.get(2).getNombreMarca().length() > 10 ? arrayList.get(2).getNombreMarca().substring(0, 9) + "..." : arrayList.get(2).getNombreMarca(), arrayList.get(2) == null ? 0 : (int) arrayList.get(2).getCantidad()));
+//            productosSeries.getData().set(3, new XYChart.Data(arrayList.get(3) == null ? "Sin producto" : arrayList.get(3).getNombreMarca().length() > 10 ? arrayList.get(3).getNombreMarca().substring(0, 9) + "..." : arrayList.get(3).getNombreMarca(), arrayList.get(3) == null ? 0 : (int) arrayList.get(3).getCantidad()));
+//            productosSeries.getData().set(4, new XYChart.Data(arrayList.get(4) == null ? "Sin producto" : arrayList.get(4).getNombreMarca().length() > 10 ? arrayList.get(4).getNombreMarca().substring(0, 9) + "..." : arrayList.get(4).getNombreMarca(), arrayList.get(4) == null ? 0 : (int) arrayList.get(4).getCantidad()));
+//            productosSeries.getData().set(5, new XYChart.Data(arrayList.get(5) == null ? "Sin producto" : arrayList.get(5).getNombreMarca().length() > 10 ? arrayList.get(5).getNombreMarca().substring(0, 9) + "..." : arrayList.get(5).getNombreMarca(), arrayList.get(5) == null ? 0 : (int) arrayList.get(5).getCantidad()));
+//            productosSeries.getData().set(6, new XYChart.Data(arrayList.get(6) == null ? "Sin producto" : arrayList.get(6).getNombreMarca().length() > 10 ? arrayList.get(6).getNombreMarca().substring(0, 9) + "..." : arrayList.get(6).getNombreMarca(), arrayList.get(6) == null ? 0 : (int) arrayList.get(6).getCantidad()));
+//            productosSeries.getData().set(7, new XYChart.Data(arrayList.get(7) == null ? "Sin producto" : arrayList.get(7).getNombreMarca().length() > 10 ? arrayList.get(7).getNombreMarca().substring(0, 9) + "..." : arrayList.get(7).getNombreMarca(), arrayList.get(7) == null ? 0 : (int) arrayList.get(7).getCantidad()));
+//            productosSeries.getData().set(8, new XYChart.Data(arrayList.get(8) == null ? "Sin producto" : arrayList.get(8).getNombreMarca().length() > 10 ? arrayList.get(8).getNombreMarca().substring(0, 9) + "..." : arrayList.get(8).getNombreMarca(), arrayList.get(8) == null ? 0 : (int) arrayList.get(8).getCantidad()));
+//            productosSeries.getData().set(9, new XYChart.Data(arrayList.get(9) == null ? "Sin producto" : arrayList.get(9).getNombreMarca().length() > 10 ? arrayList.get(9).getNombreMarca().substring(0, 9) + "..." : arrayList.get(9).getNombreMarca(), arrayList.get(9) == null ? 0 : (int) arrayList.get(9).getCantidad()));
+//
+//        } else {
+//            for (int i = 0; i < 10; i++) {
+//                productosSeries.getData().set(i, new XYChart.Data("Producto " + (i + 1), 0));
+//            }
+//        }
 
-            productosSeries.getData().set(0, new XYChart.Data(arrayList.get(0) == null ? "Sin producto" : arrayList.get(0).getNombreMarca().length() > 10 ? arrayList.get(0).getNombreMarca().substring(0, 9) + "..." : arrayList.get(0).getNombreMarca(), arrayList.get(0) == null ? 0 : (int) arrayList.get(0).getCantidad()));
-            productosSeries.getData().set(1, new XYChart.Data(arrayList.get(1) == null ? "Sin producto" : arrayList.get(1).getNombreMarca().length() > 10 ? arrayList.get(1).getNombreMarca().substring(0, 9) + "..." : arrayList.get(1).getNombreMarca(), arrayList.get(1) == null ? 0 : (int) arrayList.get(1).getCantidad()));
-            productosSeries.getData().set(2, new XYChart.Data(arrayList.get(2) == null ? "Sin producto" : arrayList.get(2).getNombreMarca().length() > 10 ? arrayList.get(2).getNombreMarca().substring(0, 9) + "..." : arrayList.get(2).getNombreMarca(), arrayList.get(2) == null ? 0 : (int) arrayList.get(2).getCantidad()));
-            productosSeries.getData().set(3, new XYChart.Data(arrayList.get(3) == null ? "Sin producto" : arrayList.get(3).getNombreMarca().length() > 10 ? arrayList.get(3).getNombreMarca().substring(0, 9) + "..." : arrayList.get(3).getNombreMarca(), arrayList.get(3) == null ? 0 : (int) arrayList.get(3).getCantidad()));
-            productosSeries.getData().set(4, new XYChart.Data(arrayList.get(4) == null ? "Sin producto" : arrayList.get(4).getNombreMarca().length() > 10 ? arrayList.get(4).getNombreMarca().substring(0, 9) + "..." : arrayList.get(4).getNombreMarca(), arrayList.get(4) == null ? 0 : (int) arrayList.get(4).getCantidad()));
-            productosSeries.getData().set(5, new XYChart.Data(arrayList.get(5) == null ? "Sin producto" : arrayList.get(5).getNombreMarca().length() > 10 ? arrayList.get(5).getNombreMarca().substring(0, 9) + "..." : arrayList.get(5).getNombreMarca(), arrayList.get(5) == null ? 0 : (int) arrayList.get(5).getCantidad()));
-            productosSeries.getData().set(6, new XYChart.Data(arrayList.get(6) == null ? "Sin producto" : arrayList.get(6).getNombreMarca().length() > 10 ? arrayList.get(6).getNombreMarca().substring(0, 9) + "..." : arrayList.get(6).getNombreMarca(), arrayList.get(6) == null ? 0 : (int) arrayList.get(6).getCantidad()));
-            productosSeries.getData().set(7, new XYChart.Data(arrayList.get(7) == null ? "Sin producto" : arrayList.get(7).getNombreMarca().length() > 10 ? arrayList.get(7).getNombreMarca().substring(0, 9) + "..." : arrayList.get(7).getNombreMarca(), arrayList.get(7) == null ? 0 : (int) arrayList.get(7).getCantidad()));
-            productosSeries.getData().set(8, new XYChart.Data(arrayList.get(8) == null ? "Sin producto" : arrayList.get(8).getNombreMarca().length() > 10 ? arrayList.get(8).getNombreMarca().substring(0, 9) + "..." : arrayList.get(8).getNombreMarca(), arrayList.get(8) == null ? 0 : (int) arrayList.get(8).getCantidad()));
-            productosSeries.getData().set(9, new XYChart.Data(arrayList.get(9) == null ? "Sin producto" : arrayList.get(9).getNombreMarca().length() > 10 ? arrayList.get(9).getNombreMarca().substring(0, 9) + "..." : arrayList.get(9).getNombreMarca(), arrayList.get(9) == null ? 0 : (int) arrayList.get(9).getCantidad()));
-
-        } else {
-            for (int i = 0; i < 10; i++) {
-                productosSeries.getData().set(i, new XYChart.Data("Producto " + (i + 1), 0));
-            }
-        }
-
-        lblNegativos.setText("" + negativas);
-        lblIntermedios.setText("" + intermedias);
-        lblNecesarias.setText("" + necesarias);
-        lblExcentes.setText("" + excedentes);
+        lblNegativos.setText("" + Tools.roundingValue(negativas, 0));
+        lblIntermedios.setText("" + Tools.roundingValue(intermedias, 0));
+        lblNecesarias.setText("" + Tools.roundingValue(necesarias, 0));
+        lblExcentes.setText("" + Tools.roundingValue(excedentes, 0));
 
         datas = FXCollections.observableArrayList(
                 new PieChart.Data("Productos Negativos", negativas),

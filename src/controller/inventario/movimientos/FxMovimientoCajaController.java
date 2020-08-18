@@ -114,6 +114,18 @@ public class FxMovimientoCajaController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyPressedCancelar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Tools.Dispose(apWindow);
+        }
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
+        Tools.Dispose(apWindow);
+    }
+
     public void setInitMovimientoProcesoController(FxMovimientosProcesoController movimientosProcesoController) {
         this.movimientosProcesoController = movimientosProcesoController;
     }

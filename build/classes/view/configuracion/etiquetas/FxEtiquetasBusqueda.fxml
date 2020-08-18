@@ -9,17 +9,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.etiquetas.FxEtiquetasBusquedaController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.etiquetas.FxEtiquetasBusquedaController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #cccccc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/search.png" />
-                     </image></ImageView>
-                  <Label styleClass="labelRobotoMedium18" text="Abrir Formatos de Etiquetas" textFill="#1a2226" />
+                  <Label styleClass="labelRobotoBold16" text="Abrir Formatos de Etiquetas" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Label>
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
@@ -28,7 +31,7 @@
                      <children>
                         <VBox alignment="CENTER" style="-fx-border-color: #999999;">
                            <children>
-                              <ScrollPane fitToWidth="true" pannable="true" prefHeight="400.0" prefWidth="620.0" styleClass="scroll-pane-ticket" VBox.vgrow="ALWAYS">
+                              <ScrollPane fitToWidth="true" pannable="true" prefHeight="360.0" prefWidth="620.0" styleClass="scroll-pane-ticket" VBox.vgrow="ALWAYS">
                                  <content>
                                     <VBox>
                                        <children>
@@ -43,7 +46,7 @@
                               </ScrollPane>
                            </children>
                         </VBox>
-                        <Label styleClass="labelOpenSansRegular14" text="Seleccione una etiqueta con el mouse." />
+                        <Label styleClass="labelOpenSansRegular14" text="Seleccione una etiqueta con el mouse." textFill="#020203" />
                      </children>
                   </VBox>
                </children>
@@ -52,7 +55,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionSelect" onKeyPressed="#onKeyPressedSelect" styleClass="buttonLightDefault" text="Abrir">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/accept.png" />
                            </image></ImageView>
@@ -60,7 +63,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image></ImageView>

@@ -14,9 +14,9 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
+            <HBox alignment="CENTER">
                <children>
-                  <Label contentDisplay="TOP" styleClass="labelRobotoBold18" text="Seleccionar Precio">
+                  <Label contentDisplay="TOP" styleClass="labelRobotoBold16" text="Seleccionar Precio" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -26,15 +26,15 @@
                      </graphic></Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
+            <HBox alignment="CENTER">
                <children>
-                  <Label fx:id="lblNombreArticulo" alignment="CENTER" prefWidth="550.0" styleClass="labelOpenSansRegular18" text="Articulo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
+                  <Label fx:id="lblNombreArticulo" alignment="CENTER" prefWidth="550.0" styleClass="labelOpenSansRegular16" text="Articulo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
             <HBox style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="240.0" prefWidth="520.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="240.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="tcNumero" prefWidth="70.0" text="N°" />
                       <TableColumn fx:id="tcNombre" prefWidth="216.0" text="Nombre" />

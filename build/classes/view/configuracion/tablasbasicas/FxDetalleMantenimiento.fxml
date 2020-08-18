@@ -22,11 +22,15 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                      <children>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/table.png" />
-                           </image></ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Mantenimiento de los detalles básicos" />
+                        <Label styleClass="labelRobotoBold16" text="Mantenimiento de los detalles básicos" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/table.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
                   <VBox>
@@ -35,7 +39,7 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionAdd" styleClass="buttonLight" text="Agregar">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/plus.png" />
                                        </image></ImageView>
@@ -43,7 +47,7 @@
                               </Button>
                               <Button mnemonicParsing="false" onAction="#onActionEdit" styleClass="buttonLight" text="Editar">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/edit.png" />
                                        </image></ImageView>
@@ -51,7 +55,7 @@
                               </Button>
                               <Button mnemonicParsing="false" onAction="#onActionRemover" styleClass="buttonLight" text="Eliminar">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/remove.png" />
                                        </image></ImageView>
@@ -59,7 +63,7 @@
                               </Button>
                               <Button mnemonicParsing="false" onAction="#onActionReload" styleClass="buttonLight" text="Recargar">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/reload.png" />
                                        </image></ImageView>
@@ -77,7 +81,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Text fx:id="lblItems" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Items (0)">
+                                          <Text fx:id="lblItems" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Items (0)">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -112,7 +116,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Text fx:id="lblDetail" fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Ingrese el nombre del detalle (0)">
+                                          <Text fx:id="lblDetail" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Ingrese el nombre del detalle (0)">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
@@ -129,7 +133,7 @@
                                           <TableColumn fx:id="tcEstado" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Estado" />
                                        </columns>
                                     </TableView>
-                                    <Label fx:id="lblWarnings" contentDisplay="RIGHT" styleClass="labelRoboto14" text="Las opciones del detalle están en el panel de los botonen." textFill="#23283a">
+                                    <Label fx:id="lblWarnings" contentDisplay="RIGHT" styleClass="labelRoboto14" text="Las opciones del detalle están en el panel de los botonen." textFill="#020203">
                                        <graphic>
                                           <ImageView fx:id="imWarning" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>

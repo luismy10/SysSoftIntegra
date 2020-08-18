@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.inventarioinicial.FxInventarioInicialController">
    <children>
@@ -20,19 +19,22 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/inventario.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Inventario inicial" />
+                  <Label styleClass="labelRobotoBold16" text="Inventario inicial" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/inventario.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionBuscar" styleClass="buttonLight" text="Buscar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/search.png" />
                            </image>
@@ -41,7 +43,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionIniciar" styleClass="buttonLight" text="Iniciar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/start.png" />
                            </image>
@@ -50,7 +52,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionGenerar" styleClass="buttonLight" text="Generar excel">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/excel.png" />
                            </image>
@@ -59,7 +61,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionSubir" styleClass="buttonLight" text="Importar excel">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/excel.png" />
                            </image>
@@ -82,7 +84,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Buscar artículo" textFill="#1a2226">
+                              <Label styleClass="labelRoboto14" text="Buscar artículo:" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="15.0" />
                                  </font>
@@ -119,24 +121,24 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/left.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label styleClass="labelBorder" text="0">
+                        <Label styleClass="labelBorder" text="0" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelForm" text="de">
+                        <Label styleClass="labelForm" text="de" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelBorder" text="0">
+                        <Label styleClass="labelBorder" text="0" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -146,7 +148,7 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/right.png" />
                                  </image>

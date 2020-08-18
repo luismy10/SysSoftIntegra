@@ -31,9 +31,9 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <Label styleClass="labelRobotoMedium18" text="Detalle de la Venta" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Detalle de la Venta" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/sales.png" />
                            </image>
@@ -54,7 +54,7 @@
                <children>
                   <Button fx:id="btnReporte" mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/complete.png" />
                            </image>
@@ -63,7 +63,7 @@
                   </Button>
                   <Button fx:id="btnCancelarVenta" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Anular la venta">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/cancel.png" />
                            </image>
@@ -72,7 +72,7 @@
                   </Button>
                   <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Imprimir">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/print.png" />
                            </image>
@@ -81,7 +81,7 @@
                   </Button>
                   <Button fx:id="btnAbonos" mnemonicParsing="false" onAction="#onActionHistorialPagos" onKeyPressed="#onKeyPressedHistorialPagos" styleClass="buttonLight" text="Abonos">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/historial-de-pagos.png" />
                            </image>
@@ -96,7 +96,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0em 0.8333333333333334em;">
                            <children>
-                              <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Fecha Venta:" />
+                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Fecha Venta:" />
                               <Text fx:id="lblFechaVenta" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="20/10/2018" />
                            </children>
                         </HBox>
@@ -163,14 +163,14 @@
                                     <RowConstraints />
                                  </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="N°" textFill="WHITE" />
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Descripción" textFill="WHITE" GridPane.columnIndex="1" />
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Cantidad" textFill="WHITE" GridPane.columnIndex="2" />
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Medida" textFill="WHITE" GridPane.columnIndex="3" />
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Impuesto" textFill="WHITE" GridPane.columnIndex="4" />
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Precio" textFill="WHITE" GridPane.columnIndex="5" />
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Descuento" textFill="WHITE" GridPane.columnIndex="6" />
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1a2226; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Importe" textFill="WHITE" GridPane.columnIndex="7" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="N°" textFill="WHITE" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Descripción" textFill="WHITE" GridPane.columnIndex="1" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Cantidad" textFill="WHITE" GridPane.columnIndex="2" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Medida" textFill="WHITE" GridPane.columnIndex="3" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Impuesto" textFill="WHITE" GridPane.columnIndex="4" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Precio" textFill="WHITE" GridPane.columnIndex="5" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Descuento" textFill="WHITE" GridPane.columnIndex="6" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #020203; -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em; -fx-font-weight: 100;" styleClass="labelOpenSansRegular14" text="Importe" textFill="WHITE" GridPane.columnIndex="7" />
                                  </children>
                               </GridPane>
                            </children>
@@ -197,14 +197,14 @@
                                              <children>
                                                 <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Metodo De Pago" />
                                                 <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold14" text="Valor" textFill="#020203" GridPane.columnIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular14" text="Efectivo" textFill="#1a2226" GridPane.rowIndex="1" />
-                                                <Label fx:id="lblEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular14" text="Tarjeta" textFill="#1a2226" GridPane.rowIndex="2" />
-                                                <Label fx:id="lblTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Efectivo" textFill="#020203" GridPane.rowIndex="1" />
+                                                <Label fx:id="lblEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Tarjeta" textFill="#020203" GridPane.rowIndex="2" />
+                                                <Label fx:id="lblTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <Label styleClass="labelOpenSansRegular14" text="Vuelto" textFill="#0673b1" GridPane.rowIndex="5" />
                                                 <Label fx:id="lblVuelto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#0673b1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                                <Label styleClass="labelOpenSansRegular14" text="Total" textFill="#1a2226" GridPane.rowIndex="3" />
-                                                <Label fx:id="lblValor" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label styleClass="labelOpenSansRegular14" text="Total" textFill="#020203" GridPane.rowIndex="3" />
+                                                <Label fx:id="lblValor" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <Separator GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                              </children>
                                           </GridPane>

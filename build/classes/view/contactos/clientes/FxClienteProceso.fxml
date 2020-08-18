@@ -23,11 +23,11 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #1a2226;">
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #020203;">
                      <children>
                         <Label styleClass="labelRobotoBold16" text="Datos del cliente" textFill="WHITE">
                            <graphic>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/client.png" />
                                  </image>
@@ -54,7 +54,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Tipo documento" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Tipo documento" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -71,7 +71,7 @@
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="N° Documento" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="N° Documento" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -92,7 +92,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Razón social/Datos de la persona" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Razón social/Datos de la persona" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -114,7 +114,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Email" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Email" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -124,7 +124,7 @@
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Celular" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Celular" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -138,7 +138,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Dirección" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Dirección" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -170,7 +170,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Teléfono" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Teléfono" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -184,7 +184,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Representante" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Representante" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -198,7 +198,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -240,7 +240,7 @@
                      <children>
                         <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/save.png" />
                                  </image>
@@ -249,7 +249,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onKeyPressedToCancel" styleClass="buttonLight" text="Cancelar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/error.png" />
                                  </image>

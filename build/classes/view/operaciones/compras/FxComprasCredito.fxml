@@ -18,7 +18,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Generar Pago" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Generar Pago" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -41,21 +41,21 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="lblProveedor" styleClass="labelRoboto16" text="Proveedor" textFill="#007bd3" />
+                        <Label fx:id="lblProveedor" styleClass="labelRoboto16" text="Proveedor" textFill="#04528a" />
                      </children>
                   </VBox>
                   <HBox style="-fx-spacing: 0.8333333333333334em;">
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Monto Total:" textFill="#1a2226" />
-                              <Label fx:id="lblTotal" styleClass="labelRobotoBold14" text="0.00" />
+                              <Label styleClass="labelOpenSansRegular14" text="Monto Total:" textFill="#020203" />
+                              <Label fx:id="lblTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#020203" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Monto Pagado:" textFill="#1a2226" />
-                              <Label fx:id="lblMontoPagado" styleClass="labelRobotoBold14" text="0.00" textFill="#1a2226" />
+                              <Label styleClass="labelOpenSansRegular14" text="Monto Pagado:" textFill="#020203" />
+                              <Label fx:id="lblMontoPagado" styleClass="labelRobotoBold14" text="0.00" textFill="#020203" />
                            </children>
                         </HBox>
                      </children>

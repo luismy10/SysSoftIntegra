@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="66.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto20" text="Seleccione el reporte a consultar">
+                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto20" text="Seleccione el reporte a consultar">
                      <font>
                         <Font name="Roboto" size="22.0" />
                      </font>
@@ -26,7 +26,7 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 1.25em;">
                      <children>
-                        <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular18" text="Ingrese la opción a buscar">
+                        <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular18" text="Ingrese la opción a buscar">
                            <font>
                               <Font name="Roboto" size="16.0" />
                            </font>
@@ -40,7 +40,7 @@
                <children>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGlobal" onKeyPressed="#onKeyPressedGlobal" styleClass="buttonTransparent" text="Global">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGlobal" onKeyPressed="#onKeyPressedGlobal" styleClass="buttonTransparent" text="Global" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -49,7 +49,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Resumen">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Resumen">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -58,7 +58,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonTransparent" text="Ventas">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonTransparent" text="Ventas" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -67,7 +67,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Salidas">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Salidas">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -76,7 +76,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCompras" onKeyPressed="#onKeyPressedCompras" styleClass="buttonTransparent" text="Compras">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCompras" onKeyPressed="#onKeyPressedCompras" styleClass="buttonTransparent" text="Compras" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -85,7 +85,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Entradas">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Entradas">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -94,7 +94,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionUtilidades" onKeyPressed="#onKeyPressedUtilidades" styleClass="buttonTransparent" text="Utilidades">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionUtilidades" onKeyPressed="#onKeyPressedUtilidades" styleClass="buttonTransparent" text="Utilidades" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -103,7 +103,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Finanzas">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Finanzas">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

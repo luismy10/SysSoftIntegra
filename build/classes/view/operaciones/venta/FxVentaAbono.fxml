@@ -13,34 +13,36 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaAbonoController">
    <children>
       <VBox>
          <children>
-            <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/efectivo.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Abonos" />
+                  <Label styleClass="labelRobotoBold16" text="Abonos" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/efectivo.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em;">
+            <HBox>
                <children>
-                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                  <VBox HBox.hgrow="ALWAYS">
                      <children>
                         <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Datos Generales" textFill="#1a2226" />
+                              <Label styleClass="labelOpenSansRegular14" text="Datos Generales" textFill="#020203" />
                            </children>
                         </HBox>
-                        <HBox>
+                        <HBox style="-fx-padding: 0.8333333333333334em;">
                            <children>
-                              <GridPane style="-fx-hgap: 0.5em; -fx-vgap: 0.5em;" HBox.hgrow="ALWAYS">
+                              <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -53,18 +55,18 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelOpenSansRegular14" text="Total:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Saldo:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblTotal" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelOpenSansRegular14" text="M 00.00" textFill="#0771d3" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblPagado" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="M 00.00" textFill="#0771d3" GridPane.columnIndex="3" />
-                                    <Label fx:id="lblPendiente" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="M 00.00" textFill="#0771d3" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Abono:" textFill="#1a2226" GridPane.columnIndex="2" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Plazo(s):" textFill="#1a2226" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblPlazos" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Fecha de vencimiento:" textFill="#1a2226" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblFechaVencimiento" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="0000-00-00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Monto a cobrar:" textFill="#1a2226" />
-                                    <Label fx:id="lblMontoCobrar" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="00.00" textFill="#0771d3" GridPane.columnIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelRoboto14" text="Total:" textFill="#1a2226" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Saldo:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblTotal" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="labelRoboto14" text="M 00.00" textFill="#0771d3" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblPagado" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="M 00.00" textFill="#0771d3" GridPane.columnIndex="3" />
+                                    <Label fx:id="lblPendiente" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="M 00.00" textFill="#0771d3" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Abono:" textFill="#020203" GridPane.columnIndex="2" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Plazo(s):" textFill="#020203" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblPlazos" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="0" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Fecha de vencimiento:" textFill="#020203" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblFechaVencimiento" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="0000-00-00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Monto a cobrar:" textFill="#020203" />
+                                    <Label fx:id="lblMontoCobrar" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="00.00" textFill="#0771d3" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
@@ -78,18 +80,13 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox style="-fx-background-color: #c9c9c9; -fx-padding: 0.4166666666666667em 0 0.4166666666666667em 0.4166666666666667em;">
-                           <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Lista de Abonos" textFill="#1a2226" />
-                           </children>
-                        </HBox>
                         <VBox>
                            <children>
-                              <TableView fx:id="tvList" prefHeight="260.0" prefWidth="700.0" styleClass="table-view-principal">
+                              <TableView fx:id="tvList" prefHeight="260.0" styleClass="table-view-principal">
                                  <columns>
                                     <TableColumn fx:id="tcFecha" prefWidth="220.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de abono" />
-                                    <TableColumn fx:id="tcMonto" prefWidth="140.0" style="-fx-alignment: CENTER-RIGHT;" text="Monto" />
-                                    <TableColumn fx:id="tcReferencia" prefWidth="310.0" style="-fx-alignment: CENTER-LEFT;" text="Referencia" />
+                                    <TableColumn fx:id="tcMonto" prefWidth="145.0" style="-fx-alignment: CENTER-RIGHT;" text="Monto" />
+                                    <TableColumn fx:id="tcReferencia" prefWidth="305.0" style="-fx-alignment: CENTER-LEFT;" text="Referencia" />
                                  </columns>
                               </TableView>
                            </children>
@@ -103,7 +100,7 @@
                <children>
                   <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/cancel.png" />
                            </image>
@@ -112,7 +109,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionAbono" onKeyPressed="#onKeyPressedAbono" styleClass="buttonLightDefault" text="Abono">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/efectivo.png" />
                            </image>
@@ -121,9 +118,9 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCerrar" onKeyPressed="#onKeyPressedCerrar" styleClass="buttonLight" text="Cerrar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/left.png" />
+                              <Image url="@../../image/error.png" />
                            </image>
                         </ImageView>
                      </graphic>

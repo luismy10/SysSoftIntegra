@@ -14,11 +14,11 @@
    <children>
       <VBox>
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Ajustar Inventario" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Ajustar Inventario" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/almacen.png" />
                            </image>
@@ -29,28 +29,28 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelOpenSansRegular14" text="Clave:" />
-                  <Label fx:id="lblClave" styleClass="labelOpenSansRegular14" text="--" />
+                  <Label styleClass="labelOpenSansRegular14" text="Clave:" textFill="#020203" />
+                  <Label fx:id="lblClave" styleClass="labelOpenSansRegular14" text="--" textFill="#020203" />
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelOpenSansRegular14" text="Producto" />
-                  <Label fx:id="lblProducto" styleClass="labelOpenSansRegular14" text="--" />
+                  <Label styleClass="labelOpenSansRegular14" text="Producto" textFill="#020203" />
+                  <Label fx:id="lblProducto" styleClass="labelOpenSansRegular14" text="--" textFill="#020203" />
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
                   <VBox style="-fx-spacing: 0.6666666666666666em;">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Stock mínimo" />
-                        <TextField fx:id="txtStockMinimo" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMinimo" promptText="0.00" styleClass="text-field-normal" />
+                        <Label styleClass="labelOpenSansRegular14" text="Stock mínimo" textFill="#020203" />
+                        <TextField fx:id="txtStockMinimo" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMinimo" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.6666666666666666em;">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Stockmáximo" />
-                        <TextField fx:id="txtstockMaximo" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMaxino" promptText="0.00" styleClass="text-field-normal" />
+                        <Label styleClass="labelOpenSansRegular14" text="Stockmáximo" textFill="#020203" />
+                        <TextField fx:id="txtstockMaximo" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMaxino" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

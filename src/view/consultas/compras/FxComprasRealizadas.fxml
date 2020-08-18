@@ -22,9 +22,9 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelRobotoMedium18" text="Compras realizadas" textFill="#1a2226">
+                        <Label styleClass="labelRobotoBold16" text="Compras realizadas" textFill="#020203">
                            <graphic>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/purchases.png" />
                                  </image>
@@ -45,7 +45,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionView" styleClass="buttonLight" text="Mostrar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/view.png" />
                                  </image>
@@ -54,7 +54,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/reload.png" />
                                  </image>
@@ -78,7 +78,7 @@
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                    <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/calendar.png" />
                                                          </image>
@@ -95,7 +95,7 @@
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                    <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/calendar.png" />
                                                          </image>
@@ -112,7 +112,7 @@
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                    <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/options.png" />
                                                          </image>
@@ -131,7 +131,7 @@
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                              <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../image/search.png" />
                                                    </image>
@@ -171,23 +171,23 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/left.png" />
                                        </image></ImageView>
                                  </graphic>
                               </Button>
-                              <Label styleClass="labelBorder" text="0">
+                              <Label styleClass="labelBorder" text="0" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="labelForm" text="de">
+                              <Label styleClass="labelForm" text="de" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="labelBorder" text="0">
+                              <Label styleClass="labelBorder" text="0" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
@@ -197,7 +197,7 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/right.png" />
                                        </image></ImageView>

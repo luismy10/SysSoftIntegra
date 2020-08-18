@@ -15,14 +15,17 @@
          <children>
             <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #cccccc;">
+                  <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc;">
                      <children>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/billetes.png" />
-                           </image>
-                        </ImageView>
-                        <Label styleClass="labelRobotoBold18" text="Aperturar caja" />
+                        <Label styleClass="labelRobotoBold16" text="Aperturar caja" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/billetes.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox VBox.vgrow="ALWAYS">
@@ -31,12 +34,12 @@
                            <children>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefWidth="460.0" styleClass="labelRoboto16" text="Ahora puedes usar tu base inicial para generar transacciones." textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefWidth="460.0" styleClass="labelRoboto16" text="Ahora puedes usar tu base inicial para generar transacciones." textAlignment="CENTER" textFill="#020203" wrapText="true" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Label styleClass="labelRoboto16" text="Ingresa tu base inicial." />
+                                    <Label styleClass="labelRoboto16" text="Ingresa tu base inicial." textFill="#020203" />
                                  </children>
                               </HBox>
                               <TextField fx:id="txtImporte" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="240.0" promptText="base inicial" styleClass="text-field-normal" />
@@ -44,11 +47,11 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aplicar">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/plus.png" />
                                  </image>
@@ -57,7 +60,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/error.png" />
                                  </image>

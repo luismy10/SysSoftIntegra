@@ -20,9 +20,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <Label styleClass="labelRobotoMedium18" text="Kardex" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Kardex" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/kardex.png" />
                            </image>
@@ -45,7 +45,7 @@
                      <children>
                         <Button mnemonicParsing="false" styleClass="buttonLight" text="Recargar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/reload.png" />
                                  </image>
@@ -54,7 +54,7 @@
                         </Button>
                         <Button mnemonicParsing="false" styleClass="buttonLight" text="Reporte">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/complete.png" />
                                  </image>
@@ -63,7 +63,7 @@
                         </Button>
                         <Button mnemonicParsing="false" styleClass="buttonLight" text="Ticket">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/ticket.png" />
                                  </image>
@@ -82,7 +82,7 @@
                            <children>
                               <VBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Buscar por clave o clave alterna(F1)" textFill="#1a2226">
+                                    <Label styleClass="labelRoboto14" text="Buscar por clave o clave alterna(F1)" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
@@ -94,12 +94,12 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <HBox style="-fx-spacing: 0.4166666666666667em;">
+                                    <HBox>
                                        <children>
                                           <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
                                           <Button contentDisplay="GRAPHIC_ONLY" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSearchSuministro" onKeyPressed="#onKeyPressedSearchSuministro" prefHeight="30.0" styleClass="buttonBorder" text="0">
                                              <graphic>
-                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="18.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../image/search.png" />
                                                    </image>
@@ -113,7 +113,7 @@
                               <Separator orientation="VERTICAL" />
                               <VBox>
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Periodo" textFill="#1a2226">
+                                    <Label styleClass="labelRoboto14" text="Periodo" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
@@ -129,9 +129,9 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Fecha Inicial:" textFill="#1a2226">
+                                                <Label styleClass="labelRoboto14" text="Fecha Inicial:" textFill="#020203">
                                                    <graphic>
-                                                      <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/calendar.png" />
                                                          </image>
@@ -143,9 +143,9 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Fecha Final:" textFill="#1a2226">
+                                                <Label styleClass="labelRoboto14" text="Fecha Final:" textFill="#020203">
                                                    <graphic>
-                                                      <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/calendar.png" />
                                                          </image>
@@ -166,12 +166,12 @@
                            <children>
                               <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Nombre de Producto" textFill="#1a2226">
+                                    <Label styleClass="labelRoboto14" text="Nombre de Producto" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                        <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/categoria.png" />
                                              </image>
@@ -180,16 +180,16 @@
                                     </Label>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="lblProducto" styleClass="labelRoboto16" text="Producto" textFill="#007fda" wrapText="true" HBox.hgrow="ALWAYS" />
+                                          <Label fx:id="lblProducto" styleClass="labelRoboto16" text="Producto" textFill="#006cf8" wrapText="true" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Metodo" textFill="#1a2226">
+                                    <Label styleClass="labelRoboto14" text="Metodo" textFill="#020203">
                                        <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/accept.png" />
                                              </image>
@@ -198,16 +198,16 @@
                                     </Label>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto16" text="Promedio ponderado" textFill="#02539a" />
+                                          <Label styleClass="labelRoboto16" text="Promedio ponderado" textFill="#006cf8" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Cantidad Actual" textFill="#1a2226">
+                                    <Label styleClass="labelRoboto14" text="Cantidad Actual" textFill="#020203">
                                        <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/generar.png" />
                                              </image>
@@ -223,9 +223,9 @@
                               </VBox>
                               <VBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Valor Actual" textFill="#1a2226">
+                                    <Label styleClass="labelRoboto14" text="Valor Actual" textFill="#020203">
                                        <graphic>
-                                          <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/cantidad.png" />
                                              </image>
@@ -277,19 +277,19 @@
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/left.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" />
-                                    <Label styleClass="labelForm" text="de" />
-                                    <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" />
+                                    <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" textFill="#020203" />
+                                    <Label styleClass="labelForm" text="de" textFill="#020203" />
+                                    <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203" />
                                     <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/right.png" />
                                              </image>

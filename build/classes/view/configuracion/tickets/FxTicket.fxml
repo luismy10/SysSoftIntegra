@@ -17,9 +17,9 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <Label styleClass="labelRobotoMedium18" text="Tickets" textFill="#1a2226">
+            <Label styleClass="labelRobotoBold16" text="Tickets" textFill="#020203">
                <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/ticket.png" />
                      </image>
@@ -32,7 +32,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#onActionSearch" onKeyPressed="#onKeyPressedSearch" styleClass="buttonLight" text="Buscar">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/search_caja.png" />
                      </image>
@@ -41,7 +41,7 @@
             </Button>
             <Button mnemonicParsing="false" onAction="#onActionNuevo" onKeyPressed="#onKeyPressNuevo" styleClass="buttonLight" text="Nuevo">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/rows.png" />
                      </image>
@@ -50,7 +50,7 @@
             </Button>
             <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressEditar" styleClass="buttonLight" text="Editar">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/edit.png" />
                      </image>
@@ -59,7 +59,7 @@
             </Button>
             <Button mnemonicParsing="false" onAction="#onActionEliminar" onKeyPressed="#onKeyPressedEliminar" styleClass="buttonLight" text="Eliminar">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/remove.png" />
                      </image>
@@ -68,7 +68,7 @@
             </Button>
             <Button mnemonicParsing="false" onAction="#onActionSave" onKeyPressed="#onKeyPressedSave" styleClass="buttonLight" text="Guardar">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/save.png" />
                      </image>
@@ -77,7 +77,7 @@
             </Button>
             <Button mnemonicParsing="false" onAction="#onActionPrint" onKeyPressed="#onKeyPressedPrint" styleClass="buttonLight" text="Imprimir">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/print.png" />
                      </image>
@@ -86,7 +86,7 @@
             </Button>
             <Button mnemonicParsing="false" onAction="#onActionClear" onKeyPressed="#onKeyPressedClear" styleClass="buttonLight" text="Limpiar">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/escoba.png" />
                      </image>
@@ -95,7 +95,7 @@
             </Button>
             <Button mnemonicParsing="false" onAction="#onActionPredeterminado" onKeyPressed="#onKeyPressedPredeterminado" styleClass="buttonLight" text="Predeterminado">
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/accept.png" />
                      </image>
@@ -116,7 +116,7 @@
                                  <children>
                                     <HBox alignment="CENTER" style="-fx-border-width: 1 0 1 0; -fx-border-color: #999999; -fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0;">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="Imagen" />
+                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="Imagen" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER">
@@ -134,13 +134,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Ancho:" textFill="#1a2226" HBox.hgrow="ALWAYS" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Ancho:" textFill="#020203" HBox.hgrow="ALWAYS" />
                                           <TextField fx:id="txtAncho" onAction="#onActionAncho" onKeyTyped="#onKeyTypedAncho" prefHeight="30.0" prefWidth="100.0" promptText="0" styleClass="text-field-normal" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Alto:" textFill="#1a2226" HBox.hgrow="ALWAYS" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Alto:" textFill="#020203" HBox.hgrow="ALWAYS" />
                                           <TextField fx:id="txtAlto" onAction="#onActionAlto" onKeyTyped="#onKeyTypedAlto" prefHeight="30.0" prefWidth="100.0" promptText="0" styleClass="text-field-normal" />
                                        </children>
                                     </HBox>
@@ -214,7 +214,7 @@
                                                       <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
                                                          <children>
                                                             <Label styleClass="labelMonospaced13" text="Encabezado" textFill="WHITE" />
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedEncabezadoAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                                            <ImageView fitHeight="22.0" fitWidth="22.0" onMouseClicked="#onMouseClickedEncabezadoAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                                                <image>
                                                                   <Image url="@../../image/plus.png" />
                                                                </image>
@@ -225,7 +225,7 @@
                                                       <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em;">
                                                          <children>
                                                             <Label styleClass="labelMonospaced13" text="Detalle" textFill="WHITE" />
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedDetalleCabeceraAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                                            <ImageView fitHeight="22.0" fitWidth="22.0" onMouseClicked="#onMouseClickedDetalleCabeceraAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                                                <image>
                                                                   <Image url="@../../image/plus.png" />
                                                                </image>
@@ -236,7 +236,7 @@
                                                       <HBox alignment="CENTER" style="-fx-background-color: #292F33; -fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em;">
                                                          <children>
                                                             <Label styleClass="labelMonospaced13" text="Pie" textFill="WHITE" />
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onMouseClickedPieAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                                            <ImageView fitHeight="22.0" fitWidth="22.0" onMouseClicked="#onMouseClickedPieAdd" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                                                <image>
                                                                   <Image url="@../../image/plus.png" />
                                                                </image>
@@ -260,30 +260,30 @@
                                  <children>
                                     <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Característica de las letras" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Característica de las letras" textFill="#020203" />
                                        </children>
                                     </HBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Ancho en columnas" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Ancho en columnas" textFill="#020203" />
                                           <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fuente" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Fuente" textFill="#020203" />
                                           <ComboBox fx:id="cbFuente" maxWidth="1.7976931348623157E308" onAction="#onActionFuente" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Tamaño" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Tamaño" textFill="#020203" />
                                           <ComboBox fx:id="cbSize" maxWidth="1.7976931348623157E308" onAction="#onSize" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Alineación" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Alineación" textFill="#020203" />
                                           <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
@@ -293,13 +293,13 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelOpenSansRegular14" text="Multilinea" textFill="#1a2226" />
+                                                      <Label styleClass="labelRoboto14" text="Multilinea" textFill="#020203" />
                                                       <CheckBox fx:id="cbMultilinea" mnemonicParsing="false" onAction="#onActionMultilinea" styleClass="check-box-contenido" text="No" />
                                                    </children>
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelOpenSansRegular14" text="Editable" textFill="#1a2226" />
+                                                      <Label styleClass="labelRoboto14" text="Editable" textFill="#020203" />
                                                       <CheckBox fx:id="cbEditable" disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="No" />
                                                    </children>
                                                 </VBox>
@@ -309,7 +309,7 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Variable" textFill="#1a2226" />
+                                          <Label styleClass="labelRoboto14" text="Variable" textFill="#020203" />
                                           <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
@@ -323,25 +323,25 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Nombre del ticket" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="Nombre del ticket" textFill="#020203" />
                               <Label fx:id="lblNombre" styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Formato de ticket" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="Formato de ticket" textFill="#020203" />
                               <Label fx:id="formatoTicket" styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Tamaño" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="Tamaño" textFill="#020203" />
                               <Label fx:id="lblColumnas" styleClass="labelRobotoBold16" text="0" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Predeterminado" textFill="#1a2226" />
+                              <Label styleClass="labelRoboto14" text="Predeterminado" textFill="#020203" />
                               <CheckBox fx:id="cbPredeterminado" disable="true" mnemonicParsing="false" styleClass="check-box-ticket" text="No" />
                            </children>
                         </VBox>

@@ -13,14 +13,17 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #cccccc;">
+            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc;">
                <children>
-                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/caja_registradora.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="labelRobotoBold18" text="Tienes un caja aperturada" />
+                  <Label styleClass="labelRobotoBold16" text="Tienes un caja aperturada" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/caja_registradora.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
             <HBox>
@@ -29,12 +32,14 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../image/generar.png" />
-                                 </image>
-                              </ImageView>
-                              <Label styleClass="labelRoboto16" text="Fecha y Hora" />
+                              <Label styleClass="labelRoboto16" text="Fecha y Hora" textFill="#020203">
+                                 <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/generar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Label>
                            </children>
                         </HBox>
                         <TextField fx:id="txtFecha" disable="true" onAction="#onActionOk" prefHeight="30.0" styleClass="text-field-normal" />
@@ -46,10 +51,10 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelRoboto18" text="Para aperturar una nueva caja tiene que cerrar al actual" textFill="#a11b00" />
+                        <Label styleClass="labelRoboto16" text="Para aperturar una nueva caja tiene que cerrar al actual" textFill="#a11b00" />
                         <Button mnemonicParsing="false" onAction="#onActionOk" onKeyPressed="#onKeyPressedOk" styleClass="buttonLightDefault" text="Ok">
                            <graphic>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/accept.png" />
                                  </image>

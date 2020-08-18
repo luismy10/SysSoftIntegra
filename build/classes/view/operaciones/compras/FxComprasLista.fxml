@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasListaController">
    <children>
@@ -21,14 +20,17 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #cccccc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/purchases.png" />
-                           </image>
-                        </ImageView>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Lista de compras" />
+                        <Label styleClass="labelRobotoBold16" text="Lista de compras" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/purchases.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
                         <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                            <font>
                               <Font name="Roboto" size="14.0" />
@@ -41,7 +43,7 @@
                   </HBox>
                   <HBox style="-fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Buscar por Proveedor o Serie/Numeración" textFill="#020203">
                                  <font>
@@ -58,7 +60,7 @@
                               <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Buscar...." styleClass="text-field-normal" />
                            </children>
                         </VBox>
-                        <VBox style="-fx-spacing: 0.8333333333333334em;">
+                        <VBox style="-fx-spacing: 0.6666666666666666em;">
                            <children>
                               <Label styleClass="labelOpenSansRegular14" text="Fecha de Compra" textFill="#020203">
                                  <font>
@@ -90,7 +92,7 @@
                                     <TableColumn fx:id="tcTotal" prefWidth="200.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
                                  </columns>
                               </TableView>
-                              <Label styleClass="labelOpenSansRegular14" text="Seleccione con 2 clicks o con la tecla enter la compra." />
+                              <Label styleClass="labelOpenSansRegular14" text="Seleccione con 2 clicks o con la tecla enter la compra." textFill="#020203" />
                            </children>
                         </VBox>
                      </children>
@@ -99,7 +101,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLight" text="Aceptar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/accept.png" />
                                  </image>
@@ -108,9 +110,9 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionCerrar" onKeyPressed="#onKeyPressedCerrar" styleClass="buttonLight" text="Cerrar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                                  <image>
-                                    <Image url="@../../image/right.png" />
+                                    <Image url="@../../image/error.png" />
                                  </image>
                               </ImageView>
                            </graphic>

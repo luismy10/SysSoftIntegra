@@ -21,12 +21,12 @@
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-background-color: white; -fx-padding: 0.8333333333333334em;">
                     <children>
-                        <Text fx:id="lblFechaActual" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Jueves 12 de Enero del 2018" />
+                        <Text fx:id="lblFechaActual" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Jueves 12 de Enero del 2018" />
                     </children>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                     <children>
-                        <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="Dashboard" />
+                        <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold20" text="Dashboard" />
                   <Text fx:id="lblActualización" fill="#287900" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="El dashboard  se va actualizar en 0 segundos" />
                     </children>
                 </HBox>
@@ -44,7 +44,7 @@
                                         <Text fill="WHITE" fontSmoothingType="LCD" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="VENTAS DEL DÍA " wrappingWidth="238.0" VBox.vgrow="SOMETIMES" />
                               <Button mnemonicParsing="false" styleClass="buttonLight" text="Visualizar resumen">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../image/search_caja.png" />
                                        </image>
@@ -70,7 +70,7 @@
                                         <Text fill="WHITE" fontSmoothingType="LCD" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="COMPRAS DEL DÍA" wrappingWidth="238.0" VBox.vgrow="ALWAYS" />
                               <Button mnemonicParsing="false" styleClass="buttonLight" text="Visualizar resumen">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../image/search_caja.png" />
                                        </image>
@@ -99,7 +99,7 @@
                               <Text fill="WHITE" fontSmoothingType="LCD" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="VENTAS POR COBRAR" wrappingWidth="238.0" VBox.vgrow="ALWAYS" />
                               <Button mnemonicParsing="false" styleClass="buttonLight" text="Visualizar resumen">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../image/search_caja.png" />
                                        </image>
@@ -122,7 +122,7 @@
                                         <Text fill="WHITE" fontSmoothingType="LCD" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="COMPRAS POR PAGAR" wrappingWidth="238.0" VBox.vgrow="ALWAYS" />
                               <Button mnemonicParsing="false" styleClass="buttonLight" text="Visualizar resumen">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../image/search_caja.png" />
                                        </image>
@@ -140,11 +140,11 @@
                 </HBox>
             <HBox alignment="BASELINE_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 1.6666666666666667em;">
                <children>
-                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #1a2226; -fx-border-color: #1a2226; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #020203; -fx-border-color: #1a22#02020326; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/producto.png" />
                                  </image>
@@ -155,7 +155,7 @@
                                     <Text fx:id="lblNegativos" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="0" />
                                     <Button mnemonicParsing="false" onAction="#onActionNegativos" onKeyPressed="#onKeyPressedNegativos" styleClass="buttonLight" text="Visualizar">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/search_caja.png" />
                                              </image>
@@ -168,22 +168,22 @@
                         </HBox>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #1a2226; -fx-border-color: #1a2226; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #020203; -fx-border-color: #020203; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/producto.png" />
                                  </image>
                               </ImageView>
                               <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Text fill="#fcba03" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Intemedios" />
+                                    <Text fill="#fcba03" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Intermedios" />
                                     <Text fx:id="lblIntermedios" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="0" />
                                     <Button mnemonicParsing="false" onAction="#onActionIntermedios" onKeyPressed="#onKeyPressedIntermedios" styleClass="buttonLight" text="Visualizar">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/search_caja.png" />
                                              </image>
@@ -196,11 +196,11 @@
                         </HBox>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #1a2226; -fx-border-color: #1a2226; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #020203; -fx-border-color: #020203; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/producto.png" />
                                  </image>
@@ -211,7 +211,7 @@
                                     <Text fx:id="lblNecesarias" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="0" />
                                     <Button mnemonicParsing="false" onAction="#onActionNecesarios" onKeyPressed="#onKeyPressedNecesarios" styleClass="buttonLight" text="Visualizar">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/search_caja.png" />
                                              </image>
@@ -224,11 +224,11 @@
                         </HBox>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #1a2226; -fx-border-color: #1a2226; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
+                  <AnchorPane prefWidth="240.0" style="-fx-background-color: #020203; -fx-border-color: #020203; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/producto.png" />
                                  </image>
@@ -239,7 +239,7 @@
                                     <Text fx:id="lblExcentes" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="0" />
                                     <Button mnemonicParsing="false" onAction="#onActionExcedentes" onKeyPressed="#onKeyPressedExcedentes" styleClass="buttonLight" text="Visualizar">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/search_caja.png" />
                                              </image>
@@ -261,7 +261,7 @@
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/articles.png" />
                                  </image></ImageView>
@@ -282,7 +282,7 @@
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/clients.png" />
                                  </image></ImageView>
@@ -301,7 +301,7 @@
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/providers.png" />
                                  </image></ImageView>
@@ -320,7 +320,7 @@
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/employees.png" />
                                  </image></ImageView>

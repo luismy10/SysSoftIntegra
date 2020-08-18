@@ -18,7 +18,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRoboto14" text="Buscar(F1):">
+                  <Label styleClass="labelRoboto14" text="Buscar(F1):" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -32,7 +32,7 @@
                   <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearch" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLight" text="Agregar(F2)">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
                            </image></ImageView>
@@ -40,7 +40,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionToReload" onKeyPressed="#onKeyPressedToReload" styleClass="buttonLight" text="Recargar(F3)">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image></ImageView>
@@ -52,12 +52,12 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefWidth="970.0" styleClass="table-view-principal">
+                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" styleClass="table-view-principal">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcDocument" prefWidth="190.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
-                              <TableColumn fx:id="tcRepresentative" prefWidth="455.0" style="-fx-alignment: CENTER-LEFT;" text="Datos personales/Razón social " />
-                              <TableColumn fx:id="tcMovil" prefWidth="240.0" style="-fx-alignment: CENTER-LEFT;" text="Tel/Cel" />
+                              <TableColumn fx:id="tcDocument" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
+                              <TableColumn fx:id="tcRepresentative" prefWidth="400.0" style="-fx-alignment: CENTER-LEFT;" text="Datos personales/Razón social " />
+                              <TableColumn fx:id="tcMovil" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Tel/Cel" />
                            </columns>
                         </TableView>
                      </children>
@@ -79,9 +79,9 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Label styleClass="labelBorder" text="0" />
-                              <Label styleClass="labelForm" text="de" />
-                              <Label styleClass="labelBorder" text="0" />
+                              <Label styleClass="labelBorder" text="0" textFill="#020203" />
+                              <Label styleClass="labelForm" text="de" textFill="#020203" />
+                              <Label styleClass="labelBorder" text="0" textFill="#020203" />
                               <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">

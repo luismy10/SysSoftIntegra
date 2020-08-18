@@ -16,14 +16,14 @@
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" style="-fx-padding: 0.8333333333333334em;">
+                  <VBox alignment="TOP_CENTER">
                      <children>
                         <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/target.png" />
                            </image>
                         </ImageView>
-                        <Label styleClass="labelRobotoBold18" text="Descuento por Artículo" />
+                        <Label styleClass="labelRobotoBold18" text="Descuento por Artículo" textFill="#020203" />
                      </children>
                   </VBox>
                </children>
@@ -31,9 +31,9 @@
             <Separator prefWidth="200.0" />
             <HBox>
                <children>
-                  <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                  <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Precio de Venta">
+                        <Label styleClass="labelRoboto14" text="Precio de Venta" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -47,12 +47,11 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
             <HBox>
                <children>
-                  <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                  <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Porcentaje de Descuento">
+                        <Label styleClass="labelRoboto14" text="Porcentaje de Descuento" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -71,7 +70,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Aceptar">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/accept.png" />
                            </image>
@@ -80,7 +79,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>

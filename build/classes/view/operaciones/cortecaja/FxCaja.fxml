@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.cortecaja.FxCajaController">
    <children>
@@ -20,12 +19,15 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/caja_registradora.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Corte de caja" />
+                  <Label styleClass="labelRobotoBold16" text="Corte de caja" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/caja_registradora.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -40,7 +42,7 @@
                <children>
                   <Button fx:id="btnRealizarCorte" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCorte" onKeyPressed="#onKeyPressedCorte" styleClass="buttonLight" text="Realizar corte">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/tijera.png" />
                            </image>
@@ -66,22 +68,22 @@
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRobotoBold16" text="Inico de turno:" textFill="#1a2226" />
-                                    <Label fx:id="lblTurno" styleClass="labelRoboto16" text="00/00/0000 0:00" textFill="#1a2226" />
+                                    <Label styleClass="labelRobotoBold16" text="Inico de turno:" textFill="#020203" />
+                                    <Label fx:id="lblTurno" styleClass="labelRoboto16" text="00/00/0000 0:00" textFill="#020203" />
                                  </children>
                               </VBox>
                               <Separator orientation="VERTICAL" />
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRobotoBold16" text="Base:" textFill="#1a2226" />
-                                    <Label fx:id="lblMontoBase" styleClass="labelRoboto16" text="M 00.00" textFill="#1a2226" />
+                                    <Label styleClass="labelRobotoBold16" text="Base:" textFill="#020203" />
+                                    <Label fx:id="lblMontoBase" styleClass="labelRoboto16" text="M 00.00" textFill="#020203" />
                                  </children>
                               </VBox>
                               <Separator orientation="VERTICAL" />
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRobotoBold16" text="Ventas:" textFill="#1a2226" />
-                                    <Label fx:id="lblTotalVentas" styleClass="labelRoboto16" text="M 00.00" textFill="#1a2226" />
+                                    <Label styleClass="labelRobotoBold16" text="Ventas:" textFill="#020203" />
+                                    <Label fx:id="lblTotalVentas" styleClass="labelRoboto16" text="M 00.00" textFill="#020203" />
                                  </children>
                               </VBox>
                            </children>
@@ -113,7 +115,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelOpenSansRegular16" text="Ventas en efectivo" textFill="#1a2226" GridPane.rowIndex="2">
+                                    <Label styleClass="labelOpenSansRegular16" text="Ventas en efectivo" textFill="#020203" GridPane.rowIndex="2">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -121,7 +123,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelOpenSansRegular16" text="Ventas con tarjera" textFill="#1a2226" GridPane.rowIndex="3">
+                                    <Label styleClass="labelOpenSansRegular16" text="Ventas con tarjera" textFill="#020203" GridPane.rowIndex="3">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -145,7 +147,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelRobotoBold16" text="Total" textFill="#1a2226" GridPane.rowIndex="7">
+                                    <Label styleClass="labelRobotoBold16" text="Total" textFill="#020203" GridPane.rowIndex="7">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -153,10 +155,10 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label fx:id="lblTotal" alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <Label fx:id="lblTotal" alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                     <Label fx:id="lblBase" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#025a9d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblVentaEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblVentaTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label fx:id="lblVentaEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblVentaTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Label fx:id="lblIngresosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#016e29" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                     <Label fx:id="lblRetirosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular16" text="M 0.00" textFill="#e42c0f" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <Label styleClass="labelOpenSansRegular16" text="Base" textFill="#025a9d" GridPane.rowIndex="1">

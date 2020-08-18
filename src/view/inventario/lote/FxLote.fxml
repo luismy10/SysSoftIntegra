@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.lote.FxLoteController">
    <children>
@@ -21,12 +20,15 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/lote-box.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Lotes" />
+                  <Label styleClass="labelRobotoBold16" text="Lotes" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/lote-box.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -41,7 +43,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image>
@@ -50,7 +52,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onActionReporte" styleClass="buttonLight" text="Reporte">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/complete.png" />
                            </image>
@@ -59,7 +61,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReload" styleClass="buttonLight" text="Recargar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
@@ -79,7 +81,7 @@
                            <children>
                               <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Busca por n° Lote o artículo (Presione enter para completar la busqueda)" textFill="#1a2226">
+                                    <Label styleClass="labelRoboto14" text="Busca por n° Lote o artículo (Presione enter para completar la busqueda)" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
@@ -114,7 +116,7 @@
                            <children>
                               <HBox>
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Mostrar todos los movimientos realizados de inventario" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Mostrar todos los movimientos realizados de inventario" textFill="#020203" />
                                  </children>
                               </HBox>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="260.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
@@ -131,9 +133,9 @@
                         </VBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular16" text="Los lotes a caducarse se marcan en rojo" textFill="#003d8d" />
-                              <Label fx:id="lblCaducados" styleClass="labelOpenSansRegular16" text="Lotes caducados - 0" textFill="#d00c0c" />
-                              <Label fx:id="lblPorCaducar" styleClass="labelOpenSansRegular16" text="Lotes proximos a caducarse a 2 semanas - 0" textFill="#0b6100" />
+                              <Label styleClass="labelRoboto14" text="Los lotes a caducarse se marcan en rojo" textFill="#003d8d" />
+                              <Label fx:id="lblCaducados" styleClass="labelRoboto14" text="Lotes caducados - 0" textFill="#d00c0c" />
+                              <Label fx:id="lblPorCaducar" styleClass="labelRoboto14" text="Lotes proximos a caducarse a 2 semanas - 0" textFill="#0b6100" />
                            </children>
                         </HBox>
                      </children>
@@ -155,17 +157,17 @@
                                  </image></ImageView>
                            </graphic>
                         </Button>
-                        <Label styleClass="labelBorder" text="0">
+                        <Label styleClass="labelBorder" text="0" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelForm" text="de">
+                        <Label styleClass="labelForm" text="de" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelBorder" text="0">
+                        <Label styleClass="labelBorder" text="0" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>

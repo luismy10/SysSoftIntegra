@@ -32,20 +32,15 @@
                <children>
                   <HBox style="-fx-background-color: #1a2226; -fx-padding: 0.8333333333333334em;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                           <children>
-                              <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                        <Label styleClass="labelRobotoBold16" text="Datos del producto" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/producto.png" />
                                  </image>
                               </ImageView>
-                              <Text fx:id="lblTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold18" text="Datos del producto">
-                                 <font>
-                                    <Font name="Roboto" size="18.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </HBox>
+                           </graphic>
+                        </Label>
                      </children>
                   </HBox>
                   <TabPane fx:id="tpContenedor" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
@@ -64,7 +59,7 @@
                                                          <children>
                                                             <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                <children>
-                                                                  <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Clave" textFill="#23283a">
+                                                                  <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Clave" textFill="#020203">
                                                                      <font>
                                                                         <Font name="Roboto" size="14.0" />
                                                                      </font>
@@ -81,7 +76,7 @@
                                                                         <TextField fx:id="txtClave" maxHeight="1.7976931348623157E308" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedClave" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                                                         <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionGenerar" prefHeight="30.0" styleClass="buttonLight" text="Crear">
                                                                            <graphic>
-                                                                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                                  <image>
                                                                                     <Image url="@../../image/barcode.png" />
                                                                                  </image>
@@ -96,7 +91,7 @@
                                                       </HBox>
                                                       <VBox style="-fx-spacing: 0.4166666666666667em;">
                                                          <children>
-                                                            <Label styleClass="labelRoboto14" text="Clave alterna" textFill="#23283a">
+                                                            <Label styleClass="labelRoboto14" text="Clave alterna" textFill="#020203">
                                                                <font>
                                                                   <Font name="Roboto" size="14.0" />
                                                                </font>
@@ -124,7 +119,7 @@
                                                          <children>
                                                             <Button mnemonicParsing="false" onAction="#onActionRemovePhoto" styleClass="buttonBorder">
                                                                <graphic>
-                                                                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
                                                                         <Image url="@../../image/remove-gray.png" />
                                                                      </image>
@@ -133,7 +128,7 @@
                                                             </Button>
                                                             <Button mnemonicParsing="false" onAction="#onActionPhoto" styleClass="buttonBorder">
                                                                <graphic>
-                                                                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
                                                                         <Image url="@../../image/photo.png" />
                                                                      </image>
@@ -150,7 +145,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" prefHeight="18.0" styleClass="labelRoboto14" text="Descripción" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" prefHeight="18.0" styleClass="labelRoboto14" text="Descripción" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -171,7 +166,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Unidad de medidad(Espacio)" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Unidad de medidad(Espacio)" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -188,7 +183,7 @@
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Categoría(Espacio)" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Categoría(Espacio)" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -209,7 +204,7 @@
                                              <children>
                                                 <VBox minWidth="-Infinity" style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Se vende" textFill="#23283a">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Se vende" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -253,7 +248,7 @@
                                                    <children>
                                                       <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em; -fx-border-color: cccccc; -fx-border-width: 0px 0px 1px 0px;">
                                                          <children>
-                                                            <Label styleClass="labelRoboto14" text="El artículo utiliza inventario">
+                                                            <Label styleClass="labelRoboto14" text="El artículo utiliza inventario" textFill="#020203">
                                                                <font>
                                                                   <Font name="Roboto" size="14.0" />
                                                                </font>
@@ -269,7 +264,7 @@
                                                                      <children>
                                                                         <VBox style="-fx-spacing: 0.4166666666666667em;">
                                                                            <children>
-                                                                              <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Costo" textFill="#23283a">
+                                                                              <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Costo" textFill="#020203">
                                                                                  <font>
                                                                                     <Font name="Roboto" size="14.0" />
                                                                                  </font>
@@ -290,7 +285,7 @@
                                                                                  <children>
                                                                                     <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                                        <children>
-                                                                                          <Label styleClass="labelRoboto14" text="Inventario mínimo" textFill="#23283a">
+                                                                                          <Label styleClass="labelRoboto14" text="Inventario mínimo" textFill="#020203">
                                                                                              <font>
                                                                                                 <Font name="Roboto" size="14.0" />
                                                                                              </font>
@@ -300,7 +295,7 @@
                                                                                     </VBox>
                                                                                     <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                                        <children>
-                                                                                          <Label styleClass="labelRoboto14" text="Inventario máximo" textFill="#23283a">
+                                                                                          <Label styleClass="labelRoboto14" text="Inventario máximo" textFill="#020203">
                                                                                              <font>
                                                                                                 <Font name="Roboto" size="14.0" />
                                                                                              </font>
@@ -316,7 +311,7 @@
                                                                   </VBox>
                                                                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                                                      <children>
-                                                                        <Label styleClass="labelRoboto14" text="Valor de salida del producto" />
+                                                                        <Label styleClass="labelRoboto14" text="Valor de salida del producto" textFill="#020203" />
                                                                         <VBox alignment="CENTER_LEFT" style="-fx-spacing: 1.1666666666666667em;" VBox.vgrow="ALWAYS">
                                                                            <children>
                                                                               <RadioButton fx:id="rbValorUnidad" minWidth="-Infinity" mnemonicParsing="false" selected="true" styleClass="labelRoboto14" text="Por unidades(cantidades)" />
@@ -338,7 +333,7 @@
                                                          <children>
                                                             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                                                                <children>
-                                                                  <Label styleClass="labelRoboto14" text="Datos de precio">
+                                                                  <Label styleClass="labelRoboto14" text="Datos de precio" textFill="#020203">
                                                                      <font>
                                                                         <Font name="Roboto" size="14.0" />
                                                                      </font>
@@ -352,7 +347,7 @@
                                                                <children>
                                                                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                      <children>
-                                                                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Impuesto" textFill="#23283a">
+                                                                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Impuesto" textFill="#020203">
                                                                            <font>
                                                                               <Font name="Roboto" size="14.0" />
                                                                            </font>
@@ -395,14 +390,14 @@
                                                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                      </rowConstraints>
                                                                      <children>
-                                                                        <Label styleClass="labelRoboto14" text="Precio Venta Neto" textFill="#23283a" GridPane.rowIndex="1" />
-                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#23283a" GridPane.rowIndex="2" />
-                                                                        <Label styleClass="labelRoboto14" text="Margen de Utilidad %" textFill="#23283a" GridPane.rowIndex="3" />
-                                                                        <Label styleClass="labelRoboto14" text="Utilidad(precio bruto - costo)" textFill="#23283a" GridPane.rowIndex="4" />
+                                                                        <Label styleClass="labelRoboto14" text="Precio Venta Neto" textFill="#020203" GridPane.rowIndex="1" />
+                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#020203" GridPane.rowIndex="2" />
+                                                                        <Label styleClass="labelRoboto14" text="Margen de Utilidad %" textFill="#020203" GridPane.rowIndex="3" />
+                                                                        <Label styleClass="labelRoboto14" text="Utilidad(precio bruto - costo)" textFill="#020203" GridPane.rowIndex="4" />
                                                                         <TextField fx:id="txtPrecio1" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecio1" onKeyTyped="#onKeyTypedPrecio1" prefHeight="30.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta 1" GridPane.columnIndex="1" />
-                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta 2" textFill="#23283a" GridPane.columnIndex="2" />
-                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta 3" textFill="#23283a" GridPane.columnIndex="3" />
+                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta 1" textFill="#020203" GridPane.columnIndex="1" />
+                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta 2" textFill="#020203" GridPane.columnIndex="2" />
+                                                                        <Label styleClass="labelRoboto14" text="Precio de Venta 3" textFill="#020203" GridPane.columnIndex="3" />
                                                                         <TextField fx:id="txtPrecioVentaNeto1" disable="true" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNeto1" onKeyTyped="#onKeyTypedPrecioNeto1" prefHeight="30.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                         <TextField fx:id="txtMargen1" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMargen1" onKeyTyped="#onKeyTypedMargen" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                         <TextField fx:id="txtUtilidad1" disable="true" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -433,25 +428,25 @@
                                                                      <children>
                                                                         <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                            <children>
-                                                                              <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#23283a" />
+                                                                              <Label styleClass="labelRoboto14" text="Precio de Venta Bruto" textFill="#020203" />
                                                                               <TextField fx:id="txtPrecioVentaBrutoPersonalizado" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedPrecioBrutoPersonalizado" onKeyTyped="#onKeyTypedPrecioBrutoPersonalizado" promptText="0.00" styleClass="text-field-normal" />
                                                                            </children>
                                                                         </VBox>
                                                                         <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                            <children>
-                                                                              <Label styleClass="labelRoboto14" text="Precio de Venta Neto" textFill="#23283a" />
+                                                                              <Label styleClass="labelRoboto14" text="Precio de Venta Neto" textFill="#020203" />
                                                                               <TextField fx:id="txtPrecioVentaNetoPersonalizado" disable="true" onAction="#onActionToRegister" onKeyReleased="#onKeyRealesedPrecioNetoPerzonalizado" onKeyTyped="#onKeyTypedPrecioNetoPerzonalizado" promptText="0.00" styleClass="text-field-normal" />
                                                                            </children>
                                                                         </VBox>
                                                                         <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                            <children>
-                                                                              <Label styleClass="labelRoboto14" text="Margen" textFill="#23283a" />
+                                                                              <Label styleClass="labelRoboto14" text="Margen" textFill="#020203" />
                                                                               <TextField fx:id="txtMargenPersonalizado" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMargenPersonalizado" onKeyTyped="#onKeyTypedMargen" promptText="0.00" styleClass="text-field-normal" />
                                                                            </children>
                                                                         </VBox>
                                                                         <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                            <children>
-                                                                              <Label styleClass="labelRoboto14" text="Utilidad" textFill="#23283a" />
+                                                                              <Label styleClass="labelRoboto14" text="Utilidad" textFill="#020203" />
                                                                               <TextField fx:id="txtUtilidadPersonalizado" disable="true" promptText="0.00" styleClass="text-field-normal" />
                                                                            </children>
                                                                         </VBox>
@@ -465,7 +460,7 @@
                                                                                  <children>
                                                                                     <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
                                                                                        <graphic>
-                                                                                          <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                                                              <image>
                                                                                                 <Image url="@../../image/plus.png" />
                                                                                              </image>
@@ -531,25 +526,25 @@
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Descripción alterna" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Descripción alterna" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <TextField fx:id="txtNombreGenerico" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" GridPane.rowIndex="1" />
-                                                      <Label styleClass="labelRoboto14" text="Marca(Espacio)" textFill="#23283a" GridPane.rowIndex="2">
+                                                      <Label styleClass="labelRoboto14" text="Marca(Espacio)" textFill="#020203" GridPane.rowIndex="2">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <TextField fx:id="txtMarca" onAction="#onActionToRegister" onKeyReleased="#onKeyReleasedMarca" onKeyTyped="#onKeyTypedDetalle" onMouseClicked="#onMouseClickedMarca" prefHeight="30.0" prefWidth="200.0" styleClass="text-field-normal" GridPane.rowIndex="3" />
-                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#23283a" GridPane.columnIndex="1">
+                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#020203" GridPane.columnIndex="1">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <ComboBox fx:id="cbEstado" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                      <Label styleClass="labelRoboto14" text="Presentación(Espacio)" textFill="#23283a" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                      <Label styleClass="labelRoboto14" text="Presentación(Espacio)" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -559,7 +554,7 @@
                                                 </GridPane>
                                                 <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Clave única del producto" textFill="#23283a">
+                                                      <Label styleClass="labelRoboto14" text="Clave única del producto" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -570,7 +565,7 @@
                                                 <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                                    <children>
                                                       <CheckBox fx:id="cbLote" mnemonicParsing="false" styleClass="check-box-contenido" text="Lote" />
-                                                      <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(Indica si manejara un control de lotes y caducidades para este artículo)">
+                                                      <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="(Indica si manejara un control de lotes y caducidades para este artículo)">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -596,7 +591,7 @@
                <children>
                   <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image>
@@ -605,7 +600,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onKeyPressedToCancel" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>

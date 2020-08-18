@@ -17,9 +17,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoMedium18" text="Bancos y Cajas" textFill="#1a2226">
+                  <Label styleClass="labelRobotoBold16" text="Bancos y Cajas" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/bank.png" />
                            </image>
@@ -40,7 +40,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionView" onKeyPressed="#onKeyPressedView" styleClass="buttonLight" text="Visualizar (F1)">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/view.png" />
                            </image>
@@ -49,7 +49,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionNew" onKeyPressed="#onKeyPressedNew" styleClass="buttonLight" text="Nuevo (F2)">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/plus.png" />
                            </image>
@@ -58,7 +58,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar(F3)">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/edit.png" />
                            </image>
@@ -67,7 +67,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar (F4) ">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/remove.png" />
                            </image>
@@ -76,7 +76,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar(F5)">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/reload.png" />
                            </image>

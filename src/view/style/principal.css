@@ -363,7 +363,7 @@
     BACKGROUND: white;
     BACKGROUND_FOCUSED: #00aff0;
     BACKGROUND_HOVER: white;
-    TEXT_COLOR: #111;
+    TEXT_COLOR: #020203;
     PROMPT_TEXT: #666666;
     HIGHLIGHT: ACCENT_COLOR;
     HIGHLIGHT_TEXT: white; 
@@ -377,13 +377,14 @@
     -fx-border-color: #999999;
     -fx-font-size:1.1666666666666667em; 
     -fx-font-family:"Roboto"; 
+    -fx-text-fill: TEXT_COLOR;
 }
 .text-field-normal:hover{
     /*-fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;*/
     -fx-border-color: #7a7a7a;
 }
 .text-field-normal:focused{
-    -fx-border-color: #00aff0;
+    -fx-border-color:  #007bff;
 }
 .text-field-normal:disabled{
     -fx-opacity: 1;
@@ -433,11 +434,11 @@
  ******************************************************************************/
 
 .buttonLight{
-    BACKGROUND:   #ccc;
+    BACKGROUND: #cccccc;
     BACKGROUND_PRESSED: #999999;
-    BORDER_HOVER: #666666;
+    BORDER_HOVER:  #007bff;
 
-    TEXT: #444;
+    TEXT: #020203;
     DEFAULT_BUTTON_TEXT: white;
 
     FOCUS_RING_BORDER: #111;
@@ -471,7 +472,7 @@
     -fx-border-width: 1;
 }
 .buttonLight:focused{
-    -fx-border-color: transparent, #00aff0;
+    -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
 }
@@ -502,7 +503,7 @@
     BACKGROUND: #007bff;
     BACKGROUND_PRESSED: #175a75;
 
-    BORDER_HOVER: #175a75;
+    BORDER_HOVER: #007bff;
 
     TEXT: #ffffff;
     DEFAULT_BUTTON_TEXT: white;
@@ -536,7 +537,7 @@
     -fx-border-width: 1;
 }
 .buttonLightDefault:focused{
-    -fx-border-color: transparent, #00aff0;
+    -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
 }
@@ -568,7 +569,7 @@
     BACKGROUND: #ea5f09;
     BACKGROUND_PRESSED: #aa521d;
 
-    BORDER_HOVER: #ce5104;
+    BORDER_HOVER: #007bff;
 
     TEXT: #ffffff;
     DEFAULT_BUTTON_TEXT: white;
@@ -602,7 +603,7 @@
     -fx-border-width: 1;
 }
 .buttonLightWarning:focused{
-    -fx-border-color: transparent, #00aff0;
+    -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
 }
@@ -634,7 +635,7 @@
     BACKGROUND: #32a019;
     BACKGROUND_PRESSED: #264f1c;
 
-    BORDER_HOVER: #237c0e;
+    BORDER_HOVER: #007bff;
 
     TEXT: #ffffff;
     DEFAULT_BUTTON_TEXT: white;
@@ -668,7 +669,7 @@
     -fx-border-width: 1;
 }
 .buttonLightSuccess:focused{
-    -fx-border-color: transparent, #00aff0;
+    -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
 }
@@ -697,9 +698,9 @@
 
 .buttonLightError  {
     BACKGROUND: red;
-    BACKGROUND_PRESSED: #264f1c;
+    BACKGROUND_PRESSED: #bb0404;
 
-    BORDER_HOVER: #237c0e;
+    BORDER_HOVER: #007bff;
 
     TEXT: #ffffff;
     DEFAULT_BUTTON_TEXT: white;
@@ -733,7 +734,7 @@
     -fx-border-width: 1;
 }
 .buttonLightError:focused{
-    -fx-border-color: transparent, #00aff0;
+    -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
 }
@@ -798,9 +799,9 @@
     BACKGROUND: transparent;
     BACKGROUND_PRESSED: #cccccc;
 
-    BORDER_HOVER: #175a75;
+    BORDER_HOVER:  #007bff;
 
-    TEXT: #1a2226;
+    TEXT: #020203;
     DEFAULT_BUTTON_TEXT: white;
 
     FOCUS_RING_BORDER: #ffffff;
@@ -831,7 +832,7 @@
     -fx-border-width: 1;
 }
 .buttonBorder:focused{
-    -fx-border-color: transparent, #00aff0;
+    -fx-border-color: transparent,  #007bff;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
 }
@@ -900,7 +901,7 @@
 .tab {
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0;
-    -fx-background-color: #1a2226;
+    -fx-background-color: #020203;
 }
 .tab:selected{
     -fx-background-color: #e7e6e6;
@@ -916,7 +917,7 @@
     -fx-padding: 0 2.5em 0 2.5em;/*0 30px 0 30px*/
 }
 .tab-pane *.tab-header-background {
-    -fx-background-color: #1a2226;
+    -fx-background-color: #020203;
 }
 .tab-pane:top *.tab-header-area {
     -fx-background-insets: 0, 0 0 1 0;
@@ -1179,7 +1180,7 @@
     -fx-padding: 0;
 }
 .table-view-principal:focused {
-    -fx-border-color: #00aff0;
+    -fx-border-color:  #007bff;
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;
 }
@@ -1187,11 +1188,11 @@
 /***** Column Header *****/
 
 .table-view-principal .column-header-background{
-    -fx-background-color: #1a2226;
+    -fx-background-color: #020203;
 }
 
 .table-view-principal .column-header{
-    -fx-background-color: #1a2226;
+    -fx-background-color: #020203;
     -fx-border-width:0px 1px 1px 0px;
     -fx-border-color:#999999;
 }
@@ -1208,7 +1209,7 @@
 
 .table-view-principal .column-header .label{
     -fx-text-fill:  white;
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: 100;
     -fx-font-size: 1.1666666666666667em; /* 14 */
     -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em;/*8px 2px 8px 2px*/
@@ -1223,7 +1224,7 @@
     -fx-font-family:"Roboto"; 
     -fx-font-size: 1.1666666666666667em;
     -fx-padding: 0.75em 0.3333333333333333em 0.75em 0.3333333333333333em;
-    -fx-text-fill:#1a2226;
+    -fx-text-fill: #020203;
 }
 
 .table-view-principal:row-selection .table-row-cell:filled:hover { 
@@ -1380,7 +1381,7 @@
     -fx-border-color: #7a7a7a;
 }
 .date-picker:focused{
-    -fx-border-color: #00aff0;
+    -fx-border-color: #007bff;
 }
 .date-picker .text-field{
     -fx-background-color: transparent, transparent, transparent, transparent;
@@ -1389,6 +1390,7 @@
     -fx-border-style: none;
     -fx-border-radius: 0;
     -fx-padding: 0.5em 0.75em 0.5em 0.75em; /*7px 9px 7px 9px*/
+    -fx-text-fill: #020203;
 }
 .date-picker.date-picker > .arrow-button{
     -fx-background-color:  #007bff;
@@ -1484,13 +1486,17 @@
     -fx-border-color: #999999;
     -fx-font-family:"Roboto";  
     -fx-font-size: 1.1666666666666667em;
+    
 }
 .combo-box:hover {
     -fx-border-color: #7a7a7a;
 }
 .combo-box:focused {
     -fx-border-width:1;
-    -fx-border-color: #00aff0;
+    -fx-border-color:  #007bff;
+}
+.combo-box .cell:selected{
+    -fx-text-fill: #020203;
 }
 .combo-box.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
     -fx-font-family:"Roboto";  
@@ -1498,7 +1504,7 @@
     -fx-padding: 0.5em;
 }
 .combo-box > .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover{
-    -fx-background-color: #00aff0;
+    -fx-background-color:  #007bff;
     -fx-text-fill: white;
 }
 .combo-box .text-field{
@@ -1539,13 +1545,14 @@
 }
 
 .list-view:focused {
-    -fx-border-color: #00aff0;
+    -fx-border-color:  #007bff;
 }
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
     -fx-padding: 0.6666666666666666em;
     -fx-font-family: "Roboto";
     -fx-font-size: 1.166667em;  
+    -fx-text-fill: #020203;
 }
 /*
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
@@ -1554,9 +1561,14 @@
 */
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover {
-    -fx-background-color: #cccccc;
-    -fx-text-fill: black;
+    -fx-background-color:  #007bff;
+    -fx-text-fill: white;
     -fx-cursor:hand;
+}
+
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:selected {
+    -fx-background-color:  #007bff;
+    -fx-text-fill: white;
 }
 
 /*
@@ -1578,7 +1590,6 @@
 
 .spinner {    
     -fx-background-radius: 0, 0;
-
     -fx-background-color: transparent, transparent;
     -fx-border-width:1;
     -fx-border-color: #999999;
@@ -1587,7 +1598,7 @@
 .spinner:focused,
 .spinner:contains-focus {
     -fx-border-width:1;
-    -fx-border-color: #00aff0;
+    -fx-border-color:  #007bff;
 
 
 }
@@ -1708,7 +1719,7 @@
  ******************************************************************************/
 
 .radio-button {
-    -fx-text-fill: #23283a;
+    -fx-text-fill: #020203;
     -fx-font-size: 1.1666666666666667em; 
     -fx-font-family: "Roboto"; 
 }
@@ -1752,7 +1763,7 @@
 
 /* selected */
 .radio-button:selected > .radio {
-    -fx-border-color: #007bff;
+    -fx-border-color:  #007bff;
 }
 
 .radio-button:selected > .radio > .dot {
@@ -1762,7 +1773,7 @@
 /* focused */
 .radio-button:focused > .radio
 { 
-    -fx-border-color:#00aff0;
+    -fx-border-color: #007bff;
 }
 
 
@@ -1785,7 +1796,7 @@
  ******************************************************************************/
 
 .check-box-contenido {
-    -fx-text-fill:  #23283a;
+    -fx-text-fill:  #020203;
     -fx-font-family:"Roboto";  
     -fx-font-size: 1.1666666666666667em;
 }

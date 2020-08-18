@@ -24,19 +24,19 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Precio" textFill="#1a2226" />
+                        <Label styleClass="labelRoboto14" text="Precio" textFill="#020203" />
                         <TextField fx:id="txtPrecio" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedPrecio" onKeyTyped="#onKeyTypedPrecio" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.4166666666666667em;">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Cantidad" textFill="#1a2226" />
+                        <Label styleClass="labelRoboto14" text="Cantidad" textFill="#020203" />
                         <TextField fx:id="txtCantidad" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedCantidad" onKeyTyped="#onKeyTypedCantidad" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.4166666666666667em;">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Descuento(%)" textFill="#1a2226" />
+                        <Label styleClass="labelRoboto14" text="Descuento(%)" textFill="#020203" />
                         <TextField fx:id="txtDescuento" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedDescuento" onKeyTyped="#onKeyTypedPorcentajeDescuento" prefWidth="220.0" promptText="\%" styleClass="text-field-normal" />
                      </children>
                   </VBox>
@@ -46,7 +46,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <ListView fx:id="tvListPrecios" prefHeight="260.0" prefWidth="320.0" />
+                        <ListView fx:id="tvListPrecios" prefHeight="240.0" prefWidth="320.0" />
                      </children>
                   </VBox>
                   <VBox prefWidth="320.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -55,12 +55,12 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="SubTotal:" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="SubTotal:" textFill="#020203" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="lblSubTotal" styleClass="labelRoboto14" text="0.00" textFill="#1a2226" />
+                                    <Label fx:id="lblSubTotal" styleClass="labelRoboto14" text="0.00" textFill="#020203" />
                                  </children>
                               </HBox>
                            </children>
@@ -69,12 +69,12 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Descuento:" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto14" text="Descuento:" textFill="#020203" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="lblDescuento" styleClass="labelRoboto14" text="0.00" textFill="#1a2226" />
+                                    <Label fx:id="lblDescuento" styleClass="labelRoboto14" text="0.00" textFill="#020203" />
                                  </children>
                               </HBox>
                            </children>
@@ -84,12 +84,12 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRobotoBold14" text="Total:" textFill="#1a2226" />
+                                    <Label styleClass="labelRobotoBold14" text="Total:" textFill="#020203" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="lblTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#1a2226" />
+                                    <Label fx:id="lblTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#020203" />
                                  </children>
                               </HBox>
                            </children>

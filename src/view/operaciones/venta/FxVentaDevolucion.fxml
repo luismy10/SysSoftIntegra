@@ -19,9 +19,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label fx:id="lblComprobante" styleClass="labelRobotoBold18" text="Documento" textFill="#1a2226">
+                  <Label fx:id="lblComprobante" styleClass="labelRobotoBold16" text="Documento" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/recibo.png" />
                            </image>
@@ -38,15 +38,14 @@
                            <children>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold28" text="M. 00.00" textFill="#1a2226" />
+                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold22" text="M. 00.00" textFill="#020203" />
                                  </children>
                               </VBox>
-                              <Separator prefWidth="200.0" />
                               <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Realizar movimiento de salida de dinero" textFill="#1a2226">
+                                          <Label styleClass="labelRoboto14" text="Realizar movimiento de salida de dinero" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -59,7 +58,7 @@
                                     </HBox>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelRobotoBold14" text="Salida de:" textFill="#1a2226" />
+                                          <Label styleClass="labelRobotoBold14" text="Salida de:" textFill="#020203" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
@@ -74,7 +73,7 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Efectivo:" textFill="#1a2226">
+                                                <Label styleClass="labelOpenSansRegular14" text="Efectivo:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -84,7 +83,7 @@
                                                    </graphic>
                                                 </Label>
                                                 <TextField fx:id="txtEfectivo" disable="true" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedEfectivo" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#1a2226" GridPane.rowIndex="1">
+                                                <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#020203" GridPane.rowIndex="1">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -103,9 +102,9 @@
                               <Separator prefWidth="200.0" />
                               <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightWarning" text="Ejecutar">
+                                    <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Ejecutar">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/save.png" />
                                              </image>

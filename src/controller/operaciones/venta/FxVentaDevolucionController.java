@@ -43,7 +43,7 @@ public class FxVentaDevolucionController implements Initializable {
 
     private ObservableList<SuministroTB> arrList;
 
-    private double totalVenta;
+    private double totalVenta;   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

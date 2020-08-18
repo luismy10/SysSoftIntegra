@@ -13,11 +13,11 @@
    <children>
       <VBox>
          <children>
-            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Formato del reporte">
+                  <Label styleClass="labelRobotoBold16" text="Formato del reporte" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reports.png" />
                            </image>
@@ -30,7 +30,7 @@
                <children>
                   <RadioButton fx:id="rbOpcionUno" mnemonicParsing="false" selected="true" styleClass="labelOpenSansRegular14" text="Reporte Inventario General">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plazos.png" />
                            </image>
@@ -39,7 +39,7 @@
                   </RadioButton>
                   <RadioButton fx:id="rbOpcionDos" mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="Reporte Inventario para Ajuste">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/rows.png" />
                            </image>

@@ -331,7 +331,7 @@ public class VentaADO {
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
-                ventaTB.setId(rsEmps.getRow());
+                ventaTB.setId(rsEmps.getRow()+posicionPagina);
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
                 ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
                 ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));

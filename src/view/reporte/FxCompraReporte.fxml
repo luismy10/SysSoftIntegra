@@ -18,7 +18,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
 <VBox fx:id="vbWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.reporte.FxCompraReporteController">
    <children>
@@ -26,12 +25,15 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/purchases.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Reporte de Compras" />
+                  <Label styleClass="labelRobotoBold16" text="Reporte de Compras" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/purchases.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
                <VBox.margin>
                   <Insets />
@@ -63,7 +65,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#1a2226">
+                                                <Label styleClass="labelRoboto14" text="Fecha Inicial:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -77,7 +79,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#1a2226">
+                                                <Label styleClass="labelRoboto14" text="Fecha Final:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -109,7 +111,7 @@
                                                    <children>
                                                       <CheckBox fx:id="cbProveedoresSeleccionar" mnemonicParsing="false" onAction="#onActionCbProveedoresSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los Proveedores" textFill="#1a2226" />
                                                       <CheckBox fx:id="cbFormasPagoSeleccionar" mnemonicParsing="false" onAction="#onActionCbFormasPagoSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos las Formas de Compra" textFill="#1a2226" GridPane.rowIndex="1" />
-                                                      <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Proveedores" textFill="#1a2226" GridPane.columnIndex="1">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Proveedores" textFill="#020203" GridPane.columnIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -118,7 +120,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Compras" textFill="#1a2226" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Compras" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -127,7 +129,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <HBox style="-fx-spacing: 0.5em;" GridPane.columnIndex="2">
+                                                      <HBox GridPane.columnIndex="2">
                                                          <children>
                                                             <TextField fx:id="txtProveedor" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
                                                             <Button fx:id="btnProveedor" disable="true" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionProveedor" onKeyPressed="#onKeyPressedProveedor" styleClass="buttonBorder">
