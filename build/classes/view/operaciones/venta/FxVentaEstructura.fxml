@@ -249,7 +249,7 @@
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../image/directory.png" />
+                                                            <Image url="@../../image/phone.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>
@@ -263,7 +263,7 @@
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../image/home.png" />
+                                                            <Image url="@../../image/directory.png" />
                                                          </image>
                                                       </ImageView>
                                                    </graphic>

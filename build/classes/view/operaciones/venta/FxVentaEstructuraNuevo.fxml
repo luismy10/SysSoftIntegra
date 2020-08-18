@@ -29,7 +29,7 @@
                            <children>
                               <Label style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;" styleClass="labelRoboto14" text="(F2)" textFill="#1a2226">
                                  <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/search.png" />
                                        </image>
@@ -43,7 +43,7 @@
                               <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyPressed="#onKeyPressedToSearch" onKeyReleased="#onKeyReleasedToSearch" prefHeight="30.0" promptText="Buscar producto o servicio" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                               <Button contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionProducto" onKeyPressed="#onKeyPressedProducto" prefHeight="30.0" styleClass="buttonBorder">
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/plus.png" />
                                        </image>
@@ -84,9 +84,9 @@
                                        <children>
                                           <Label maxHeight="1.7976931348623157E308" style="-fx-border-color: #999999; -fx-border-width: 1px 0px 1px 1px; -fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;" styleClass="labelRoboto14" text="(00)" textFill="#1a2226">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../image/directory.png" />
+                                                      <Image url="@../../image/phone.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -98,9 +98,9 @@
                                        <children>
                                           <Label maxHeight="1.7976931348623157E308" style="-fx-border-color: #999999; -fx-border-width: 1px 0px 1px 1px; -fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;" styleClass="labelRoboto14" text="(00)" textFill="#1a2226">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../image/home.png" />
+                                                      <Image url="@../../image/directory.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -188,7 +188,7 @@
                            <children>
                               <Label maxHeight="1.7976931348623157E308" style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em; -fx-border-width: 1px 0px 1px 1px; -fx-border-color: #999999;" styleClass="labelRoboto14" text="(F3)" textFill="#1a2226">
                                  <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/moneda.png" />
                                        </image>

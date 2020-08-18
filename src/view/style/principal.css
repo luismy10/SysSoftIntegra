@@ -307,8 +307,9 @@
  ******************************************************************************/
 .buttonMenu {
     -fx-padding: 0.8333333333333334em 1.25em 0.8333333333333334em 1.25em;
-    -fx-spacing:0.8333333333333334em;
-    -fx-opacity:0.5;
+    -fx-spacing: 0.8333333333333334em;
+    -fx-opacity: 0.5;
+    
 }
 .buttonMenu:hover {
     -fx-background-color:  #41494e;
@@ -327,7 +328,7 @@
 }
 .buttonMenuActivateText{
     -fx-font-size:1.3333333333333333em; /*16px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-smoothing-type: lcd;
     -fx-text-fill: #1a2226;
 }

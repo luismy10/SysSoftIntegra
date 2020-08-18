@@ -96,7 +96,7 @@
                                  <children>
                                     <VBox alignment="CENTER">
                                        <children>
-                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/client.png" />
                                              </image>
@@ -308,7 +308,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Configuración" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/configuracion.png" />
                                                    </image>
