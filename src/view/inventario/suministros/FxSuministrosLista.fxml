@@ -45,7 +45,7 @@
                                     <Font name="Roboto" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearch" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyPressed="#onKeyPressedToSearh" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                               <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar(F6)">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -71,25 +71,25 @@
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Categoria(F2)" textFill="#020203" />
-                                    <TextField fx:id="txtCategoria" onKeyPressed="#onKeyPressedToCategoria" onKeyReleased="#onKeyReleasedToCategoria" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtCategoria" onKeyPressed="#onKeyPressedToCategoria" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Marca(F3)" textFill="#020203" />
-                                    <TextField fx:id="txtMarca" onKeyPressed="#onKeyPressedToMarca" onKeyReleased="#onKeyReleasedToMarca" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtMarca" onKeyPressed="#onKeyPressedToMarca" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Presentación(F4)" textFill="#020203" />
-                                    <TextField fx:id="txtPresentacion" onKeyPressed="#onKeyPressedToPresentacion" onKeyReleased="#onKeyReleasedToPresentacion" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtPresentacion" onKeyPressed="#onKeyPressedToPresentacion" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto14" text="Unidad de Medida(F5)" textFill="#020203" />
-                                    <TextField fx:id="txtMedida" onKeyPressed="#onKeyPressedToMedida" onKeyReleased="#onKeyReleasedToMedida" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtMedida" onKeyPressed="#onKeyPressedToMedida" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -102,7 +102,7 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="340.0" prefWidth="1020.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="340.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcNombre" prefWidth="300.0" style="fx-alignment: CENTER-LEFT;" text="Clave/Nombre" />

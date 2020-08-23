@@ -34,11 +34,19 @@ public class FxConsultasController implements Initializable {
     @FXML
     private HBox hbOperacionesUno;
     @FXML
+    private HBox hbOperacionesDos;
+    @FXML
     private VBox btnVentas;
     @FXML
     private VBox btnCompras;
     @FXML
     private VBox btnCorteCaja;
+    @FXML
+    private VBox btnCuentasPorCobrar;
+    @FXML
+    private VBox btnCuentasPorPagar;
+    @FXML
+    private VBox btnBancos;
 
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
@@ -129,20 +137,22 @@ public class FxConsultasController implements Initializable {
 
         if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnCompras);
-        } else {
-
         }
 
         if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-
-        } else {
-
+            hbOperacionesUno.getChildren().remove(btnCorteCaja);
         }
 
         if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCorteCaja);
-        } else {
+            hbOperacionesUno.getChildren().remove(btnCuentasPorCobrar);
+        }
 
+        if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCuentasPorPagar);
+        }
+
+        if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
+            hbOperacionesDos.getChildren().remove(btnBancos);
         }
     }
 

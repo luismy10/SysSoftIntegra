@@ -31,13 +31,13 @@
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Nombre de Operación" textFill="#020203" />
-                        <ComboBox fx:id="cbOperaciones" maxWidth="1.7976931348623157E308" prefWidth="220.0" />
+                        <ComboBox fx:id="cbOperaciones" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Nombre del impuesto" textFill="#020203" />
-                        <TextField fx:id="txtNombreImpuesto" onAction="#onActionGuardar" prefWidth="220.0" promptText="Igv, Iva" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtNombreImpuesto" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" promptText="Igv, Iva" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
@@ -47,13 +47,13 @@
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Valor" textFill="#020203" />
-                        <TextField fx:id="txtValor" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedValor" prefWidth="220.0" promptText="18, 15, 20" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtValor" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedValor" prefHeight="30.0" prefWidth="240.0" promptText="18, 15, 20" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.5em;">
                      <children>
                         <Label styleClass="labelRoboto14" text="Codigo alterno" textFill="#020203" />
-                        <TextField fx:id="txtCodigoAlterno" onAction="#onActionGuardar" prefWidth="220.0" styleClass="text-field-normal" />
+                        <TextField fx:id="txtCodigoAlterno" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

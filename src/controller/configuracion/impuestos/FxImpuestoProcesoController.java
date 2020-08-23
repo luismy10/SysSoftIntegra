@@ -34,11 +34,20 @@ public class FxImpuestoProcesoController implements Initializable {
     @FXML
     private TextField txtCodigoAlterno;
     @FXML
+    private TextField txtNumero;
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private TextField txtLetra;
+    @FXML
+    private TextField txtCategoria;
+    @FXML
     private Button btnGuardar;
 
     private FxImpuestoController impuestoController;
 
     private int idImpuesto;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

@@ -33,7 +33,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" styleClass="paddinContainer" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
@@ -96,7 +96,7 @@
                                  <children>
                                     <VBox alignment="CENTER">
                                        <children>
-                                          <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../image/client.png" />
                                              </image>
@@ -147,7 +147,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Dashboard" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/home.png" />
                                                    </image>
@@ -170,7 +170,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Operaciones" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/operaciones.png" />
                                                    </image>
@@ -193,7 +193,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Consultas" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/consultas.png" />
                                                    </image>
@@ -216,7 +216,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Produccion" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/produccion.png" />
                                                    </image>
@@ -239,9 +239,9 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Inventario" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../image/inventario.png" />
+                                                      <Image url="@../image/almacen.png" />
                                                    </image>
                                                    <effect>
                                                       <Lighting diffuseConstant="1.5" specularConstant="0.0">
@@ -262,7 +262,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Contactos" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/contactos.png" />
                                                    </image>
@@ -285,7 +285,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Reportes" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/reporte.png" />
                                                    </image>
@@ -308,7 +308,7 @@
                                        <children>
                                           <Label styleClass="labelOpenSansRegular16" text="Configuración" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/configuracion.png" />
                                                    </image>

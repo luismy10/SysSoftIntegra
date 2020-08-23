@@ -104,11 +104,12 @@
                                        <children>
                                           <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="320.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                                              <columns>
-                                                <TableColumn fx:id="tcOperacion" prefWidth="225.0" style="-fx-alignment: CENTER-LEFT;" text="Operación" />
-                                                <TableColumn fx:id="tcNombre" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Impuesto" />
-                                                <TableColumn fx:id="tcValor" prefWidth="200.0" style="-fx-alignment: CENTER;" text="Valor" />
-                                                <TableColumn fx:id="tcPredeterminado" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
-                                                <TableColumn fx:id="tcCodigoAlterno" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Codigo alterno" />
+                                                <TableColumn fx:id="tcNumeracion" prefWidth="86.99996948242188" style="-fx-alignment: CENTER;" text="Nrm" />
+                                                <TableColumn fx:id="tcOperacion" prefWidth="179.0" style="-fx-alignment: CENTER-LEFT;" text="Operación" />
+                                                <TableColumn fx:id="tcNombre" prefWidth="187.0" style="-fx-alignment: CENTER-LEFT;" text="Impuesto" />
+                                                <TableColumn fx:id="tcValor" prefWidth="189.0" style="-fx-alignment: CENTER;" text="Valor" />
+                                                <TableColumn fx:id="tcCodigoAlterno" prefWidth="196.0" style="-fx-alignment: CENTER;" text="Codigo" />
+                                                <TableColumn fx:id="tcPredeterminado" prefWidth="200.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
                                              </columns>
                                           </TableView>
                                        </children>

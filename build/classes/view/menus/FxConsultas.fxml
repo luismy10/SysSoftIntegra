@@ -95,7 +95,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="btnCuentasPorCobrar" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCuentasCobrar" onKeyPressed="#onKeyPressedCuentasCobrar" styleClass="buttonTransparent" text="Cuentas por Cobrar" textFill="#020203">
                            <graphic>
@@ -113,7 +113,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="btnCuentasPorPagar" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCuentasPagar" onKeyPressed="#onKeyPressedCuentasPagar" styleClass="buttonTransparent" text="Cuentas por Pagar" textFill="#020203">
                            <graphic>
@@ -133,9 +133,9 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+            <HBox fx:id="hbOperacionesDos" alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <VBox alignment="CENTER">
+                  <VBox fx:id="btnBancos" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionBanco" onKeyPressed="#onKeyPressedBanco" styleClass="buttonTransparent" text="Bancos / Cajas" textFill="#020203">
                            <graphic>

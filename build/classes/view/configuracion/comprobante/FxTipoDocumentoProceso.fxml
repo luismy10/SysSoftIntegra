@@ -27,20 +27,30 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
+                  <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Nombre del Comprobante" textFill="#020203" />
-                        <TextField fx:id="txtNombre" onAction="#onActionGuardar" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtNombre" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;">
                <children>
-                  <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
+                  <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Serie" textFill="#020203" />
-                        <TextField fx:id="txtSerie" onAction="#onActionGuardar" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtSerie" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox style="-fx-padding: 0.8333333333333334em;">
+               <children>
+                  <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto14" text="Codigo Alterno" textFill="#020203" />
+                        <TextField fx:id="txtCodigoAlterno" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>

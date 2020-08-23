@@ -1,4 +1,3 @@
-
 package controller.menus;
 
 import controller.banco.FxBancosController;
@@ -128,7 +127,6 @@ public class FxPrincipalController implements Initializable {
             fxConsultas = fXMLConsultas.load();
             consultasController = fXMLConsultas.getController();
             consultasController.setContent(vbPrincipal, vbContent);
-            
 
             FXMLLoader fXMLInventario = new FXMLLoader(getClass().getResource(FilesRouters.FX_INVENTARIO));
             fxInventario = fXMLInventario.load();
@@ -264,7 +262,10 @@ public class FxPrincipalController implements Initializable {
     }
 
     public void initInicioController() {
-        Stage stage = (Stage) spWindow.getScene().getWindow();
+        spWindow.setOnKeyPressed(event->{
+           // Tools.println(event);
+        });
+        Stage stage = (Stage) spWindow.getScene().getWindow();        
         stage.setOnCloseRequest(c -> {
             try {
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);

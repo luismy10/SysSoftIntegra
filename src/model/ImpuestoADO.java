@@ -96,6 +96,7 @@ public class ImpuestoADO {
                 try (ResultSet resultSet = statementList.executeQuery()) {
                     while (resultSet.next()) {
                         ImpuestoTB impuestoTB = new ImpuestoTB();
+                        impuestoTB.setId(resultSet.getRow());
                         impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
                         impuestoTB.setNombreOperacion(resultSet.getString("Operacion"));
                         impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));

@@ -3,14 +3,15 @@ package model;
 import javafx.scene.image.ImageView;
 
 public class ImpuestoTB {
-
+    
+    private int id;
     private int idImpuesto;
     private int operacion;
     private String nombreOperacion;
     private String nombreImpuesto;
     private double valor;
+    private String codigo;
     private boolean predeterminado;
-    private String codigoAlterno;
     private boolean sistema;
     private ImageView imagePredeterminado;
 
@@ -50,6 +51,14 @@ public class ImpuestoTB {
         this.nombreImpuesto = nombreImpuesto;
         this.valor = valor;
         this.predeterminado = predeterminado;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdImpuesto() {
@@ -100,12 +109,12 @@ public class ImpuestoTB {
         this.predeterminado = predeterminado;
     }
 
-    public String getCodigoAlterno() {
-        return codigoAlterno;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setCodigoAlterno(String codigoAlterno) {
-        this.codigoAlterno = codigoAlterno;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public ImageView getImagePredeterminado() {

@@ -165,6 +165,41 @@ public class FxSuministrosListaController implements Initializable {
         paginacion = 1;
         opcion = 0;
         status = false;
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTextInput(1, (short) 1, (short) 1, oldValue, newValue);
+        });
+
+        txtCategoria.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTextInput(1, (short) 2, (short) 2, oldValue, newValue);
+        });
+        txtMarca.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTextInput(1, (short) 3, (short) 3, oldValue, newValue);
+        });
+        txtPresentacion.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTextInput(1, (short) 4, (short) 4, oldValue, newValue);
+        });
+        txtMedida.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTextInput(1, (short) 5, (short) 5, oldValue, newValue);
+        });
+    }
+
+    private void filterTextInput(int paginacion, short opcion, short tipo, String oldValue, String newValue) {
+        if (!newValue.trim().equalsIgnoreCase("")) {
+            this.paginacion = paginacion;
+            fillSuministrosTable(tipo, newValue.trim());
+            this.opcion = opcion;
+        } else {
+            if (oldValue.trim().length() > 0) {
+                this.paginacion = 0;
+                tvList.getItems().clear();
+                this.opcion = -1;
+                totalPaginacion = 0;
+                lblPaginaActual.setText(this.paginacion + "");
+                lblPaginaSiguiente.setText(totalPaginacion + "");
+                ivPrincipal.setImage(new Image("/view/image/no-image.png"));
+            }
+        }
     }
 
     public void fillSuministrosTable(short tipo, String value) {
@@ -273,7 +308,7 @@ public class FxSuministrosListaController implements Initializable {
     private void executeEvent() {
         if (ventaEstructuraController != null) {
             addArticuloToList();
-             txtSearch.requestFocus();
+//            txtSearch.requestFocus();
         } else if (movimientosProcesoController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!validateStock(movimientosProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
@@ -408,7 +443,8 @@ public class FxSuministrosListaController implements Initializable {
                 }
             });
             suministroTB.setRemover(button);
-//            Tools.Dispose(apWindow);
+            //ventaEstructuraController.openWindowCantidadLista(suministroTB, true);
+            Tools.Dispose(apWindow);
             ventaEstructuraController.getAddArticulo(suministroTB);
         }
     }
@@ -572,45 +608,42 @@ public class FxSuministrosListaController implements Initializable {
     }
 
     @FXML
-    private void onKeyReleasedToSearch(KeyEvent event) {
-        paginacion = 1;
-        searchTable(event, (short) 1, txtSearch.getText().trim());
-        opcion = 1;
-    }
-
-    @FXML
-    private void onKeyReleasedToCategoria(KeyEvent event) {
-        paginacion = 1;
-        searchTable(event, (short) 2, txtCategoria.getText().trim());
-        opcion = 2;
-    }
-
-    @FXML
-    private void onKeyReleasedToMarca(KeyEvent event) {
-        paginacion = 1;
-        searchTable(event, (short) 3, txtMarca.getText().trim());
-        opcion = 3;
-    }
-
-    @FXML
-    private void onKeyReleasedToPresentacion(KeyEvent event) {
-        paginacion = 1;
-        searchTable(event, (short) 4, txtPresentacion.getText().trim());
-        opcion = 4;
-    }
-
-    @FXML
-    private void onKeyReleasedToMedida(KeyEvent event) {
-        paginacion = 1;
-        searchTable(event, (short) 5, txtMedida.getText().trim());
-        opcion = 5;
-    }
-
-    @FXML
     private void onKeyPressedToSearh(KeyEvent event) {
         selectTable(event);
     }
 
+//    @FXML
+//    private void onKeyReleasedToCategoria(KeyEvent event) {
+//        if (!txtCategoria.getText().trim().equalsIgnoreCase("")) {
+//            paginacion = 1;
+//            searchTable(event, (short) 2, txtCategoria.getText().trim());
+//            opcion = 2;
+//        }
+//    }
+//    @FXML
+//    private void onKeyReleasedToMarca(KeyEvent event) {
+//        if (!txtMarca.getText().trim().equalsIgnoreCase("")) {
+//            paginacion = 1;
+//            searchTable(event, (short) 3, txtMarca.getText().trim());
+//            opcion = 3;
+//        }
+//    }
+//    @FXML
+//    private void onKeyReleasedToPresentacion(KeyEvent event) {
+//        if (!txtPresentacion.getText().trim().equalsIgnoreCase("")) {
+//            paginacion = 1;
+//            searchTable(event, (short) 4, txtPresentacion.getText().trim());
+//            opcion = 4;
+//        }
+//    }
+//    @FXML
+//    private void onKeyReleasedToMedida(KeyEvent event) {
+//        if (!txtMedida.getText().trim().equalsIgnoreCase("")) {
+//            paginacion = 1;
+//            searchTable(event, (short) 5, txtMedida.getText().trim());
+//            opcion = 5;
+//        }
+//    }
     @FXML
     private void onKeyPressedToCategoria(KeyEvent event) {
         selectTable(event);
