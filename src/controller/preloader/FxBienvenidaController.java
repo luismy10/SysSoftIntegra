@@ -280,7 +280,7 @@ public class FxBienvenidaController implements Initializable {
             impuestoTB.setNombreImpuesto("NINGUNO(%)");
             impuestoTB.setValor(0);
             impuestoTB.setPredeterminado(true);
-            impuestoTB.setCodigoAlterno("0");
+            impuestoTB.setCodigo("0");
             impuestoTB.setSistema(true);
 
             TipoDocumentoTB tipoDocumentoTB = new TipoDocumentoTB();
@@ -325,6 +325,7 @@ public class FxBienvenidaController implements Initializable {
                 }
             });
             task.setOnFailed(w -> {
+                Tools.AlertMessageError(apWindow, "SysSoftIntegra", task.getMessage());
                 btnAnterior.setDisable(false);
                 btnTerminar.setDisable(false);
                 btnCancelar.setDisable(false);

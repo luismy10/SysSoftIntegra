@@ -29,11 +29,11 @@ public class ImpuestoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicated";
                     } else {
-                        statementImpuesto = DBUtil.getConnection().prepareStatement("UPDATE ImpuestoTB SET Operacion=?,Nombre=?,Valor=?,CodigoAlterno=? WHERE IdImpuesto = ?");
+                        statementImpuesto = DBUtil.getConnection().prepareStatement("UPDATE ImpuestoTB SET Operacion=?,Nombre=?,Valor=?,Codigo=? WHERE IdImpuesto = ?");
                         statementImpuesto.setInt(1, impuestoTB.getOperacion());
                         statementImpuesto.setString(2, impuestoTB.getNombreImpuesto());
                         statementImpuesto.setDouble(3, impuestoTB.getValor());
-                        statementImpuesto.setString(4, impuestoTB.getCodigoAlterno());
+                        statementImpuesto.setString(4, impuestoTB.getCodigo());
                         statementImpuesto.setInt(5, impuestoTB.getIdImpuesto());
                         statementImpuesto.addBatch();
                         statementImpuesto.executeBatch();
@@ -49,12 +49,12 @@ public class ImpuestoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicated";
                     } else {
-                        statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Predeterminado,CodigoAlterno,Sistema) values(?,?,?,?,?,?)");
+                        statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Predeterminado,Codigo,Sistema) values(?,?,?,?,?,?)");
                         statementImpuesto.setInt(1, impuestoTB.getOperacion());
                         statementImpuesto.setString(2, impuestoTB.getNombreImpuesto());
                         statementImpuesto.setDouble(3, impuestoTB.getValor());
                         statementImpuesto.setBoolean(4, impuestoTB.getPredeterminado());
-                        statementImpuesto.setString(5, impuestoTB.getCodigoAlterno());
+                        statementImpuesto.setString(5, impuestoTB.getCodigo());
                         statementImpuesto.setBoolean(6, impuestoTB.isSistema());
                         statementImpuesto.addBatch();
                         statementImpuesto.executeBatch();
@@ -102,7 +102,7 @@ public class ImpuestoADO {
                         impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                         impuestoTB.setValor(resultSet.getDouble("Valor"));
                         impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
-                        impuestoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
+                        impuestoTB.setCodigo(resultSet.getString("Codigo"));
                         impuestoTB.setImagePredeterminado(resultSet.getBoolean("Predeterminado")
                                 ? new ImageView(new Image("/view/image/checked.png", 22, 22, false, false))
                                 : new ImageView(new Image("/view/image/unchecked.png", 22, 22, false, false)));
@@ -299,7 +299,7 @@ public class ImpuestoADO {
                         impuestoTB.setOperacion(resultSet.getInt("Operacion"));
                         impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                         impuestoTB.setValor(resultSet.getDouble("Valor"));
-                        impuestoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
+                        impuestoTB.setCodigo(resultSet.getString("Codigo"));
                     }
                 }
             } catch (SQLException ex) {
