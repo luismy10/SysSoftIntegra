@@ -52,7 +52,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Reporte">
+                        <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#OnKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

@@ -1,13 +1,18 @@
 package controller.operaciones.cortecaja;
 
+import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.awt.HeadlessException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +35,11 @@ import javafx.stage.Stage;
 import model.CajaADO;
 import model.CajaTB;
 import model.MovimientoCajaTB;
+import model.SuministroTB;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 public class FxCajaConsultasController implements Initializable {
 
@@ -63,9 +73,8 @@ public class FxCajaConsultasController implements Initializable {
     private Label lblDiferencia;
     @FXML
     private Label lblTotal;
-    
+
     private AnchorPane windowinit;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,14 +104,14 @@ public class FxCajaConsultasController implements Initializable {
                     ArrayList<Double> arrayList = (ArrayList<Double>) objects.get(1);
 
                     lblInicoTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
-                    lblFinTurno.setText(cajaTB.getFechaCierre()+ " " + cajaTB.getHoraCierre());
+                    lblFinTurno.setText(cajaTB.getFechaCierre() + " " + cajaTB.getHoraCierre());
                     lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
                     lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
 
                     lblContado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
                     lblCanculado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getCalculado(), 2));
                     lblDiferencia.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getDiferencia(), 2));
-                    
+
                     lblVentaEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(1), 2));
                     lblVentaTarjeta.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(2), 2));
                     lblIngresosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(3), 2));
@@ -202,6 +211,67 @@ public class FxCajaConsultasController implements Initializable {
         }
     }
 
+    private void onOpenReporte() {
+        try {
+
+//            InputStream imgInputStream
+//                    = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+//
+            InputStream dir = getClass().getResourceAsStream("/report/CortedeCaja.jasper");
+//
+            Map map = new HashMap();
+            map.put("EMPRESA",Session.COMPANY_RAZON_SOCIAL);
+            
+//            map.put("LOGO", imgInputStream);
+//            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+//            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+//            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
+//            map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
+//            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
+////
+//            map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
+//            map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+//
+//            map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
+//            map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
+//            map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
+//            map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular());
+//            map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail());
+//            map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
+//
+//            map.put("FECHAEMISION", ventaTB.getFechaVenta());
+//            map.put("MONEDA", ventaTB.getMonedaTB().getAbreviado());
+//            map.put("CONDICIONPAGO", lblTipo.getText());
+//
+//            map.put("VALOR_VENTA", lblValorVenta.getText());
+//            map.put("DESCUENTO", lblDescuento.getText());
+//            map.put("SUB_TOTAL", lblSubTotal.getText());
+//            map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
+////            map.put("SUBREPORT_DIR", "VentaRealizadaDetalle.jasper");
+//            map.put("TOTAL", lblTotal.getText());
+//            map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
+//            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
+
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
+
+            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxReportViewController controller = fXMLLoader.getController();
+            controller.setJasperPrint(jasperPrint);
+            controller.show();
+            Stage stage = WindowStage.StageLoader(parent, "Corte de Caja");
+            stage.setResizable(true);
+            stage.show();
+            stage.requestFocus();
+
+        } catch (HeadlessException | JRException | IOException ex) {
+            Tools.AlertMessageError(window, "Reporte de Corte de Caja", "Error al generar el reporte : " + ex.getLocalizedMessage());
+        }
+    }
+
     @FXML
     private void onKeyPressedSearch(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -216,6 +286,18 @@ public class FxCajaConsultasController implements Initializable {
 
     public void setContent(AnchorPane windowinit) {
         this.windowinit = windowinit;
+    }
+
+    @FXML
+    private void OnKeyPressedReporte(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onOpenReporte();
+        }
+    }
+
+    @FXML
+    private void onActionReporte(ActionEvent event) {
+        onOpenReporte();
     }
 
 }
