@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
+	<parameter name="EMPRESA" class="java.lang.String"/>
+	<parameter name="DIRECCION" class="java.lang.String"/>
+	<parameter name="TELEFONOCELULAR" class="java.lang.String"/>
+	<parameter name="EMAIL" class="java.lang.String"/>
+	<parameter name="DOCUMENTOEMPRESA" class="java.lang.String"/>
+	<parameter name="NOMBREDOCUMENTO" class="java.lang.String"/>
+	<parameter name="NUMERODOCUMENTO" class="java.lang.String"/>
+	<parameter name="DATOSCLIENTE" class="java.lang.String"/>
+	<parameter name="DOCUMENTOCLIENTE" class="java.lang.String"/>
+	<parameter name="NUMERODOCUMENTOCLIENTE" class="java.lang.String"/>
+	<parameter name="DIRECCIONCLIENTE" class="java.lang.String"/>
+	<parameter name="FECHAEMISION" class="java.lang.String"/>
+	<parameter name="MONEDA" class="java.lang.String"/>
+	<parameter name="LOGO" class="java.io.InputStream"/>
+	<parameter name="CALCULAR_TOTALES" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="VALOR_VENTA" class="java.lang.String"/>
+	<parameter name="DESCUENTO" class="java.lang.String"/>
+	<parameter name="SUB_TOTAL" class="java.lang.String"/>
+	<parameter name="TOTAL" class="java.lang.String"/>
+	<parameter name="SIMBOLO" class="java.lang.String"/>
+	<parameter name="VALORSOLES" class="java.lang.String"/>
+	<parameter name="CELULARCLIENTE" class="java.lang.String"/>
+	<parameter name="EMAILCLIENTE" class="java.lang.String"/>
+	<parameter name="CONDICIONPAGO" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Double"/>
+	<field name="unidadCompraName" class="java.lang.String"/>
+	<field name="nombreMarca" class="java.lang.String"/>
+	<field name="precioVentaGeneral" class="java.lang.Double"/>
+	<field name="descuento" class="java.lang.Double"/>
+	<field name="totalImporte" class="java.lang.Double"/>
+	<title>
+		<band height="212" splitType="Stretch">
+			<rectangle>
+				<reportElement x="285" y="0" width="270" height="105" backcolor="#FE3152" uuid="6d509428-6887-4106-851b-99ff7fbcb677"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="249" y="79" width="36" height="26" backcolor="#B5B5B5" uuid="d7b93662-2673-4513-8f6f-47e0d8251351"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="249" y="0" width="36" height="79" backcolor="#576767" uuid="b643d54b-9eb9-41af-93db-144c28a9e85e"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="249" height="79" backcolor="#373B46" uuid="19032309-773d-4f69-b43f-645505f281cc"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="63" y="16" width="173" height="28" forecolor="#F0F3FC" uuid="ce666f3e-cbcf-43b9-a830-dae156e2d424"/>
+				<textElement>
+					<font fontName="Arial" size="24"/>
+				</textElement>
+				<text><![CDATA[Brand Name ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="29" width="173" height="46" forecolor="#F0F3FC" uuid="93eab743-6106-4446-84b3-3e11797a1f71"/>
+				<textElement>
+					<font fontName="Arial Black" size="32" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INVOICE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="129" width="92" height="20" uuid="6268599d-7d1c-455b-9567-bffb7291d8a4"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoice to:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="150" width="100" height="13" uuid="04e11805-c424-40a6-a39c-d8ed2130ecd1"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[24 oummy street area]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="163" width="116" height="13" uuid="4ac3b6c4-d6eb-4244-8d67-4befe251e3d6"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Location. Lorem ipsum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="176" width="48" height="23" uuid="22087006-3a98-4da5-9194-2252e1b19567"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[579x59s]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="129" width="119" height="20" uuid="0767ce99-7e7b-43ba-9626-e692927a1e96"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dwyane clark]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="130" width="100" height="20" uuid="2ff05e34-b5c5-4f26-b41c-aa3ba76820d7"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoice #]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="156" width="100" height="20" uuid="40c17523-d3f4-43de-b4a1-2330cbc23987"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="458" y="130" width="52" height="20" uuid="9ac88895-c2ab-42c0-8c6f-dc6d5a90d11a"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[52148]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="458" y="156" width="97" height="20" uuid="27a85a86-678d-47ca-9373-77564b328845"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[01 / 02 / 2020]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="47" width="173" height="28" forecolor="#F0F3FC" uuid="a481a8a7-62df-4999-95cf-e31c69f637a0"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[LUIS MONO & DESAUCIADOS]]></text>
+			</staticText>
+			<image>
+				<reportElement x="8" y="15" width="51" height="51" uuid="77ede66d-1c2f-484e-9b88-ad7ee1e6feab"/>
+				<imageExpression><![CDATA["C:\\Users\\Rubert\\Documents\\NetBeansProjects\\SysSoftIntegra\\src\\view\\image\\logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="14" width="25" height="20" uuid="f15640e3-c578-412d-b069-843ec39317a8"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="125" y="14" width="111" height="20" uuid="b8e43c9c-4d78-43fd-844e-9af346f1a423"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="14" width="30" height="20" uuid="1588dbca-0d4e-4c37-a0ab-0204d21cc0d9"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Price]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="16" width="25" height="20" uuid="0d2de88f-6252-41c1-ae0e-a966d1988277"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qty.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="467" y="17" width="38" height="20" uuid="b228c2b4-d5ba-4747-8290-bf8eb139b42a"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.spreadsheet.SpreadsheetLayout"/>
+			<line>
+				<reportElement x="0" y="32" width="555" height="1" uuid="f7d90d15-ea5f-4939-8699-474eb90fdace"/>
+			</line>
+			<staticText>
+				<reportElement x="16" y="12" width="32" height="20" uuid="7c263e87-7b9a-4112-94de-a99305c09ebd"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="12" width="115" height="20" uuid="22792496-718c-4264-8cb8-c75c4d481933"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Lorem Ipsum Dolor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="11" width="32" height="20" uuid="80a17d45-db0f-4e29-87de-f096066b1a6f"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[$50]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="12" width="32" height="20" uuid="b44db70b-0caf-4d67-8625-720a46d241d7"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="467" y="12" width="43" height="20" uuid="26aac15f-56cf-4d8a-ba4d-563767943caa"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[$50.00]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="261" splitType="Stretch">
+			<staticText>
+				<reportElement x="15" y="8" width="100" height="16" uuid="b9797b66-cbd1-4b22-b392-2f12ee9b1678"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Payment Info:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="32" width="54" height="17" uuid="846d9a1b-64c4-4a9a-a009-115f964f9ca9"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Account:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="49" width="54" height="17" uuid="dec4bc72-f3e1-49a4-bf57-20b2cf057292"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[A/C Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="66" width="54" height="17" uuid="e076aa5f-5fbd-4fa2-8d41-8d6ad1f3f895"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Bank Detail:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="32" width="54" height="17" uuid="01a63a39-f788-4096-80c0-6a3a8a68c710"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[234-234]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="49" width="69" height="17" uuid="99ae2c1f-c743-41c0-a429-feeeaaa6261c"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Lorem Ipsum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="66" width="82" height="17" uuid="4d290766-a6af-43b2-b35e-05a702d5eae8"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Add your details.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="16" y="96" width="134" height="1" uuid="70830ef2-14a7-484d-9b80-74f41e825c8f"/>
+			</line>
+			<staticText>
+				<reportElement x="15" y="106" width="120" height="16" uuid="a82dbd7c-d02a-4456-8226-ecac866a4947"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Terms & Conditions]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="9" width="68" height="16" uuid="b0c7de20-d318-403b-a123-3ff6596b0c82"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sub Total:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="30" width="68" height="16" uuid="f1622bf7-ad96-4b59-9616-1e5716888c0a"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tax:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="62" width="69" height="21" uuid="1005907b-51ab-4cbc-ab1c-f93c2b2df6ac"/>
+				<textElement>
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="320" y="54" width="149" height="1" uuid="bbd10b12-23b7-4271-a596-6ff13164fe27"/>
+			</line>
+			<staticText>
+				<reportElement x="409" y="9" width="49" height="16" uuid="220ef272-57cf-4617-8690-1b3d9c01d887"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[$220.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="30" width="43" height="16" uuid="cafccdcf-8f6e-410c-bb9c-9224c7a8cdc1"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[0.00%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="62" width="60" height="21" uuid="31ebf12a-7ca7-4daf-b559-e5514671f491"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<text><![CDATA[$220.00]]></text>
+			</staticText>
+			<line>
+				<reportElement x="320" y="194" width="149" height="1" uuid="1046eb80-1eb3-4b8c-b774-475b5961f2a2"/>
+			</line>
+			<staticText>
+				<reportElement x="337" y="206" width="120" height="16" uuid="1416161b-115a-4fd0-aa14-31ec5a984e24"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Authorised Sign ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="138" width="201" height="68" uuid="731808f7-f06a-4974-b474-9fddeacd0a51"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Lorem ipsum...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="285" y="232" width="270" height="29" backcolor="#FE3152" uuid="34f80073-10bf-4c80-b7ed-717be45dbc6f"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="249" y="232" width="36" height="10" backcolor="#B5B5B5" uuid="342f9856-bef3-4c5d-9436-8d64132a1cff"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="242" width="249" height="19" backcolor="#373B46" uuid="8af19b3d-9e8d-400f-b142-74f52e7618e8"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="249" y="242" width="36" height="19" backcolor="#576767" uuid="9e2a6532-b8fe-48b5-a31c-e569c48056c3"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="320" y="237" width="173" height="19" forecolor="#F0F3FC" uuid="4f80459a-ffc0-4f83-8fd9-09bb66340d04"/>
+				<textElement>
+					<font fontName="Arial" size="16"/>
+				</textElement>
+				<text><![CDATA[Thank you for business]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

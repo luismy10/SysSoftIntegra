@@ -53,6 +53,7 @@ import model.ImpuestoTB;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaTB;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -484,12 +485,13 @@ public class FxVentaDetalleController implements Initializable {
                 Tools.AlertMessageWarning(window, "Venta realizada", "No hay registros para mostrar en el reporte.");
                 return;
             }
-            InputStream imgInputStream
-                    = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
-            InputStream dir = getClass().getResourceAsStream("/report/VentaRealizada.jasper");
-
+//            InputStream imgInputStream
+//                    = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+//
+            InputStream dir = getClass().getResourceAsStream("/report/GuiadeRemision.jasper");
+//
             Map map = new HashMap();
+<<<<<<< HEAD
             map.put("LOGO", imgInputStream);
             map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
@@ -520,6 +522,40 @@ public class FxVentaDetalleController implements Initializable {
             map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
+=======
+//            map.put("LOGO", imgInputStream);
+//            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+//            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+//            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
+//            map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
+//            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
+////
+//            map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
+//            map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+//
+//            map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
+//            map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
+//            map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
+//            map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular());
+//            map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail());
+//            map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
+//
+//            map.put("FECHAEMISION", ventaTB.getFechaVenta());
+//            map.put("MONEDA", ventaTB.getMonedaTB().getAbreviado());
+//            map.put("CONDICIONPAGO", lblTipo.getText());
+//
+//            map.put("VALOR_VENTA", lblValorVenta.getText());
+//            map.put("DESCUENTO", lblDescuento.getText());
+//            map.put("SUB_TOTAL", lblSubTotal.getText());
+//            map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
+////            map.put("SUBREPORT_DIR", "VentaRealizadaDetalle.jasper");
+//            map.put("TOTAL", lblTotal.getText());
+//            map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
+//            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
+
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
+JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
+>>>>>>> 0fe2c118a04528cef81f577a8a155e8211349243
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
