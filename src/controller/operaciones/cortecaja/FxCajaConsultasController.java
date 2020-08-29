@@ -220,8 +220,23 @@ public class FxCajaConsultasController implements Initializable {
             InputStream dir = getClass().getResourceAsStream("/report/CortedeCaja.jasper");
 //
             Map map = new HashMap();
-            map.put("EMPRESA",Session.COMPANY_RAZON_SOCIAL);
-            
+            map.put("LOGO", "");
+            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+            map.put("INICIODETURNO", "");
+            map.put("HORAINICIO", "");
+            map.put("FINDETURNO", "");
+            map.put("HORAFIN", "");
+            map.put("CONTADO", "");
+            map.put("CALCULADO", "");
+            map.put("DIFERENCIA", "");
+            map.put("CAJEROASISTENTE", "");
+            map.put("BASE", "");
+            map.put("VENTASENEFECTIVO", "");
+            map.put("VENTASCONTARJETA", "");
+            map.put("INGRESOSDEEFECTIVO", "");
+            map.put("SALIDASDEEFECTIVO", "");
+            map.put("TOTAL", "");
+
 //            map.put("LOGO", imgInputStream);
 //            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
 //            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
@@ -251,7 +266,6 @@ public class FxCajaConsultasController implements Initializable {
 //            map.put("TOTAL", lblTotal.getText());
 //            map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
 //            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
-
 //            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
             JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
 
