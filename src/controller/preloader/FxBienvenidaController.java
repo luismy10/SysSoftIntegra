@@ -325,6 +325,7 @@ public class FxBienvenidaController implements Initializable {
                 }
             });
             task.setOnFailed(w -> {
+                Tools.AlertMessageError(apWindow, "SysSoftIntegra", task.getMessage());
                 btnAnterior.setDisable(false);
                 btnTerminar.setDisable(false);
                 btnCancelar.setDisable(false);

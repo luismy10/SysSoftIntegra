@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/consultas/pagar/FxCuentasPorPagarVisualizarController.java</file>
             <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/report/CompraAmortizar.jrxml</file>
             <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/model/CompraADO.java</file>
+=======
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/ImpuestoADO.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/VentaADO.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaDetalleController.java</file>
+>>>>>>> cb8c566a7a188e98581703858c76742678412a8c
         </group>
     </open-files>
 </project-private>

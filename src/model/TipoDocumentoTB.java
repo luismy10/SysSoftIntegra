@@ -89,7 +89,7 @@ public class TipoDocumentoTB {
     }
 
     public void setCodigoAlterno(String codigoAlterno) {
-        this.codigoAlterno = codigoAlterno;
+        this.codigoAlterno = codigoAlterno == null ? "":codigoAlterno;
     }
 
     public ImageView getImagePredeterminado() {
