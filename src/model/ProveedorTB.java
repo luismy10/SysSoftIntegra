@@ -156,7 +156,7 @@ public class ProveedorTB {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? "" : email;
     }
 
     public String getPaginaWeb() {
@@ -172,7 +172,7 @@ public class ProveedorTB {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        this.direccion = direccion == null ? "" : direccion;
     }
 
     public String getTipoDocumentoName() {

@@ -1172,13 +1172,42 @@ public class CompraADO extends DBUtil {
         return arrayList;
     }
 
-    public static ObservableList<CompraCreditoTB> Listar_Compra_Credito(String value) {
+    public static ArrayList<Object> Listar_Compra_Credito(String idCompra) {
+
+        ArrayList<Object> arrayList = new ArrayList<>();
+
+        PreparedStatement preparedProveedor = null;
         PreparedStatement preparedCompraCredito = null;
+
+        CompraTB compraTB = null;
         ObservableList<CompraCreditoTB> empList = FXCollections.observableArrayList();
         try {
             dbConnect();
-            preparedCompraCredito = getConnection().prepareStatement("{call Sp__Listar_Compra_Credito_Abonar_Por_IdCompra(?)}");
-            preparedCompraCredito.setString(1, value);
+            preparedProveedor = getConnection().prepareStatement("{call Sp_Obtener_Proveedor_ByIdCompra(?)}");
+            preparedProveedor.setString(1, idCompra);
+            try (ResultSet rsEmps = preparedProveedor.executeQuery()) {
+                if (rsEmps.next()) {
+                    compraTB = new CompraTB();
+                    compraTB.setSerie(rsEmps.getString("Serie"));
+                    compraTB.setNumeracion(rsEmps.getString("Numeracion"));
+                    compraTB.setEstadoName(rsEmps.getString("EstadoName"));
+                    compraTB.setTotal(rsEmps.getDouble("Total"));
+
+                    ProveedorTB proveedorTB = new ProveedorTB();
+                    proveedorTB.setTipoDocumentoName(rsEmps.getString("NombreDocumento"));
+                    proveedorTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                    proveedorTB.setRazonSocial(rsEmps.getString("Proveedor"));
+                    proveedorTB.setTelefono(rsEmps.getString("Telefono"));
+                    proveedorTB.setCelular(rsEmps.getString("Celular"));
+                    proveedorTB.setDireccion(rsEmps.getString("Direccion"));
+                    proveedorTB.setEmail(rsEmps.getString("Email"));
+                    compraTB.setProveedorTB(proveedorTB);
+                }
+            }
+            arrayList.add(compraTB);
+
+            preparedCompraCredito = getConnection().prepareStatement("{call Sp_Listar_Compra_Credito_Abonar_Por_IdCompra(?)}");
+            preparedCompraCredito.setString(1, idCompra);
             try (ResultSet rsEmps = preparedCompraCredito.executeQuery()) {
                 while (rsEmps.next()) {
                     CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
@@ -1188,35 +1217,48 @@ public class CompraADO extends DBUtil {
                     compraCreditoTB.setMonto(rsEmps.getDouble("Monto"));
                     compraCreditoTB.setFechaRegistro(rsEmps.getDate("FechaRegistro").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                     compraCreditoTB.setFechaPago(rsEmps.getDate("FechaPago").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    compraCreditoTB.setHoraPago(rsEmps.getTime("HoraPago").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     compraCreditoTB.setEstado(rsEmps.getBoolean("Estado"));
+
                     Text txtEstado = new Text(compraCreditoTB.isEstado() ? "PAGADO" : "PENDIENTE");
                     txtEstado.setFill(Color.web(compraCreditoTB.isEstado() ? "#04a421" : "#d32300"));
                     txtEstado.getStyleClass().add("labelRobotoBold14");
                     compraCreditoTB.setTxtEstado(txtEstado);
+
                     CheckBox cbSeleccion = new CheckBox();
                     cbSeleccion.getStyleClass().add("check-box-contenido");
                     cbSeleccion.setDisable(compraCreditoTB.isEstado());
                     cbSeleccion.setSelected(compraCreditoTB.isEstado());
                     compraCreditoTB.setCbSeleccion(cbSeleccion);
+
+                    Button btnImprimir = new Button();
+                    ImageView imageViewVisualizar = new ImageView(new Image("/view/image/print.png"));
+                    imageViewVisualizar.setFitWidth(24);
+                    imageViewVisualizar.setFitHeight(24);
+                    btnImprimir.setGraphic(imageViewVisualizar);
+                    btnImprimir.getStyleClass().add("buttonLightSuccess");
+                    compraCreditoTB.setBtnImprimir(btnImprimir);
+
                     empList.add(compraCreditoTB);
                 }
             }
+            arrayList.add(empList);
         } catch (SQLException e) {
-            System.out.println("Listar_Compra_Credito - La operación de selección de SQL ha fallado: " + e);
+            System.out.println("Error SQL en Listar_Compra_Credito(): " + e);
         } finally {
             try {
                 if (preparedCompraCredito != null) {
                     preparedCompraCredito.close();
                 }
-                if (preparedCompraCredito != null) {
-                    preparedCompraCredito.close();
+                if (preparedProveedor != null) {
+                    preparedProveedor.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
 
             }
         }
-        return empList;
+        return arrayList;
     }
 
     public static ProveedorTB Obtener_Proveedor_Por_Id_Compra(String value) {
@@ -1255,7 +1297,7 @@ public class CompraADO extends DBUtil {
         return proveedorTB;
     }
 
-    public static String Registrar_Amortizacion(TableView<CompraCreditoTB> tvList, BancoHistorialTB bancoHistorialTB) {
+    public static String Registrar_Amortizacion(ObservableList<CompraCreditoTB> tvList, BancoHistorialTB bancoHistorialTB) {
         String result = "";
         dbConnect();
         if (getConnection() != null) {
@@ -1281,7 +1323,7 @@ public class CompraADO extends DBUtil {
                 preparedBancoHistorial.addBatch();
 
                 preparedCompraCredito = DBUtil.getConnection().prepareStatement("UPDATE CompraCreditoTB SET FechaPago = ?,HoraPago = ?,Estado = ?  WHERE IdCompraCredito = ?");
-                for (CompraCreditoTB cctb : tvList.getItems()) {
+                for (CompraCreditoTB cctb : tvList) {
                     if (cctb.getCbSeleccion().isSelected() && !cctb.getCbSeleccion().isDisable()) {
                         preparedCompraCredito.setString(1, cctb.getFechaPago());
                         preparedCompraCredito.setString(2, cctb.getHoraPago());
@@ -1406,7 +1448,7 @@ public class CompraADO extends DBUtil {
         return arrayList;
     }
 
-    public static ObservableList<CompraTB> ListComprasCredito(String result,String fechaInicio,String fechaFinal,short opcion) {
+    public static ObservableList<CompraTB> ListComprasCredito(String result, String fechaInicio, String fechaFinal, short opcion) {
         String selectStmt = "{call Sp_Listar_Compras_Credito(?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
@@ -1448,18 +1490,10 @@ public class CompraADO extends DBUtil {
                 ImageView imageViewVisualizar = new ImageView(new Image("/view/image/search_caja.png"));
                 imageViewVisualizar.setFitWidth(24);
                 imageViewVisualizar.setFitHeight(24);
-                 btnVisualizar.setGraphic(imageViewVisualizar);
+                btnVisualizar.setGraphic(imageViewVisualizar);
                 btnVisualizar.getStyleClass().add("buttonLightWarning");
 
-                Button btnAbonar = new Button();
-                ImageView imageViewAbonar = new ImageView(new Image("/view/image/billetes.png"));
-                imageViewAbonar.setFitWidth(24);
-                imageViewAbonar.setFitHeight(24);
-                btnAbonar.setGraphic(imageViewAbonar);
-                btnAbonar.getStyleClass().add("buttonLightWarning");
-
                 hBox.getChildren().add(btnVisualizar);
-                hBox.getChildren().add(btnAbonar);
                 compraTB.setHbOpciones(hBox);
 
                 empList.add(compraTB);

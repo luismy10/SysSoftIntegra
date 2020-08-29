@@ -164,6 +164,8 @@ public final class FilesRouters {
     public static final String FX_COMPRAS_REALIZADAS = "/view/consultas/compras/FxComprasRealizadas.fxml";
 
     public static final String FX_COMPRAS_CREDITO = "/view/operaciones/compras/FxComprasCredito.fxml";
+    
+    public static final String FX_CUENTAS_POR_PAGAR_VISUALIZAR = "/view/consultas/pagar/FxCuentasPorPagarVisualizar.fxml";
 
     //--------------------------------------------------------------------------------------------------
     public static final String FX_CAJA = "/view/operaciones/cortecaja/FxCaja.fxml";

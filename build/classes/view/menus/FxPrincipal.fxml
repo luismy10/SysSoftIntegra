@@ -33,7 +33,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" styleClass="paddinContainer" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox alignment="CENTER_LEFT">
                                  <children>

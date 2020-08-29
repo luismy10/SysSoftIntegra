@@ -1,7 +1,5 @@
-
 package controller.menus;
 
-import controller.banco.FxBancosController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
@@ -13,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -128,7 +127,6 @@ public class FxPrincipalController implements Initializable {
             fxConsultas = fXMLConsultas.load();
             consultasController = fXMLConsultas.getController();
             consultasController.setContent(vbPrincipal, vbContent);
-            
 
             FXMLLoader fXMLInventario = new FXMLLoader(getClass().getResource(FilesRouters.FX_INVENTARIO));
             fxInventario = fXMLInventario.load();
@@ -264,6 +262,9 @@ public class FxPrincipalController implements Initializable {
     }
 
     public void initInicioController() {
+        spWindow.setOnKeyPressed(event -> {
+            // Tools.println(event);
+        });
         Stage stage = (Stage) spWindow.getScene().getWindow();
         stage.setOnCloseRequest(c -> {
             try {
@@ -275,8 +276,10 @@ public class FxPrincipalController implements Initializable {
                             DBUtil.getConnection().close();
                         }
                         System.exit(0);
+                        Platform.exit();
                     } catch (SQLException e) {
                         System.exit(0);
+                        Platform.exit();
                     }
                 } else {
                     vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
@@ -362,6 +365,23 @@ public class FxPrincipalController implements Initializable {
         primaryStage.setTitle(FilesRouters.TITLE_APP);
         primaryStage.centerOnScreen();
         primaryStage.setMaximized(true);
+        primaryStage.setOnCloseRequest(c -> {
+            short option = Tools.AlertMessageConfirmation(parent, "SysSoft Integra", "¿Está seguro de cerrar la aplicación?");
+            if (option == 1) {
+                try {
+                    if (DBUtil.getConnection() != null && !DBUtil.getConnection().isClosed()) {
+                        DBUtil.getConnection().close();
+                    }
+                    System.exit(0);
+                    Platform.exit();
+                } catch (SQLException e) {
+                    System.exit(0);
+                    Platform.exit();
+                }
+            } else {
+                c.consume();
+            }
+        });
         primaryStage.show();
         primaryStage.requestFocus();
     }

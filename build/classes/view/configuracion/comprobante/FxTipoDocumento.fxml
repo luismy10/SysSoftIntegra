@@ -99,7 +99,8 @@
                                  <columns>
                                     <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcTipoComprobante" prefWidth="168.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de comprobante" />
-                                    <TableColumn fx:id="tcSerie" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Serie" />
+                                    <TableColumn fx:id="tcSerie" prefWidth="103.0" style="-fx-alignment: CENTER-LEFT;" text="Serie" />
+                                    <TableColumn fx:id="tcCodigoAlterno" prefWidth="103.0" style="-fx-alignment: CENTER-LEFT;" text="Codigo Alterno" />
                                     <TableColumn fx:id="tcPredeterminado" prefWidth="119.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
                                  </columns>
                               </TableView>

@@ -10,6 +10,7 @@ import controller.tools.Tools;
 import java.net.URL;
 import java.sql.SQLException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -72,8 +73,10 @@ public class SysSoftIntegra extends Application {
                             DBUtil.getConnection().close();
                         }
                         System.exit(0);
+                        Platform.exit();
                     } catch (SQLException e) {
                         System.exit(0);
+                        Platform.exit();
                     }
                 } else {
                     c.consume();

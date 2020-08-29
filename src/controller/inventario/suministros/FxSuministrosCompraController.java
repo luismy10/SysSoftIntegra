@@ -49,7 +49,7 @@ public class FxSuministrosCompraController implements Initializable {
     @FXML
     private AnchorPane apWindow;
     @FXML
-    private Text lblDescripcion;
+    private Label lblDescripcion;
     @FXML
     private VBox vbImpuestos;
     @FXML
@@ -306,7 +306,7 @@ public class FxSuministrosCompraController implements Initializable {
                 }
             }
         }
-
+        txtCantidad.requestFocus();
     }
 
     private boolean validateStock(TableView<DetalleCompraTB> view, String clave) {
@@ -786,6 +786,22 @@ public class FxSuministrosCompraController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyPressedNew(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            addElementsTablePrecios();
+        }
+    }
+
+    @FXML
+    private void onActionNew(ActionEvent event) {
+        addElementsTablePrecios();
+    }
+
+    public TextField getTxtCantidad() {
+        return txtCantidad;
+    }
+
     public void setValidarlote(boolean loteSuministro) {
         this.loteSuministro = loteSuministro;
     }
@@ -800,18 +816,6 @@ public class FxSuministrosCompraController implements Initializable {
 
     public FxComprasController getComprasController() {
         return comprasController;
-    }
-
-    @FXML
-    private void onKeyPressedNew(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            addElementsTablePrecios();
-        }
-    }
-
-    @FXML
-    private void onActionNew(ActionEvent event) {
-        addElementsTablePrecios();
     }
 
 }

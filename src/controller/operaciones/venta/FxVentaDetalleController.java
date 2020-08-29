@@ -495,7 +495,7 @@ public class FxVentaDetalleController implements Initializable {
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
             map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
             map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
-            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
+            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
 
             map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
             map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());

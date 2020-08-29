@@ -41,6 +41,8 @@ public class FxImpuestoController implements Initializable {
     @FXML
     private TableView<ImpuestoTB> tvList;
     @FXML
+    private TableColumn<ImpuestoTB, String> tcNumeracion;
+    @FXML
     private TableColumn<ImpuestoTB, String> tcOperacion;
     @FXML
     private TableColumn<ImpuestoTB, String> tcNombre;
@@ -55,17 +57,19 @@ public class FxImpuestoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcOperacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreOperacion()));
         tcNombre.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreImpuesto()));
         tcValor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getValor()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
-        tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigoAlterno()));
-        
-        tcOperacion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigo()));
+
+        tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+        tcOperacion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.18));
         tcNombre.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
         tcValor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.18));
-        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.18));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.18));
     }
 
     public void fillTabletTax() {

@@ -1,21 +1,15 @@
 package controller.login;
 
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
-import com.sun.javafx.application.HostServicesDelegate;
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
-import static controller.tools.Tools.Dispose;
 import controller.tools.WindowStage;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,7 +20,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -60,10 +53,10 @@ public class FxLoginController implements Initializable {
 
     private void eventEntrar() {
         if (Tools.isText(txtUsuario.getText())) {
-            Tools.AlertMessage(apLogin.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Ingrese su usuario", false);
+            Tools.AlertMessageWarning(apLogin, "Iniciar Sesión", "Ingrese su usuario");
             txtUsuario.requestFocus();
         } else if (Tools.isText(txtClave.getText())) {
-            Tools.AlertMessage(apLogin.getScene().getWindow(), Alert.AlertType.WARNING, "Iniciar Sesión", "Ingrese su contraseña", false);
+            Tools.AlertMessageWarning(apLogin, "Iniciar Sesión", "Ingrese su contraseña");
             txtClave.requestFocus();
         } else {
 
@@ -176,8 +169,8 @@ public class FxLoginController implements Initializable {
     private void onActionUrlPrincipal(ActionEvent event) {
         try {
             Desktop d = Desktop.getDesktop();
-            d.browse(new URI("www.syssoftintegra.com/"));
-        } catch (Exception ex) {
+            d.browse(new URI("www.syssoftintegra.com"));
+        } catch (IOException | URISyntaxException ex) {
             Tools.println(ex.getMessage());
         }
     }

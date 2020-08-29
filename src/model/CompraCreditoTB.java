@@ -23,6 +23,7 @@ public class CompraCreditoTB {
     private Button btnRemove;
     private Text txtEstado;
     private CheckBox cbSeleccion;
+    private Button btnImprimir;
     private ProveedorTB proveedorTB;
 
     public CompraCreditoTB() {
@@ -147,6 +148,14 @@ public class CompraCreditoTB {
 
     public void setCbSeleccion(CheckBox cbSeleccion) {
         this.cbSeleccion = cbSeleccion;
+    }
+
+    public Button getBtnImprimir() {
+        return btnImprimir;
+    }
+
+    public void setBtnImprimir(Button btnImprimir) {
+        this.btnImprimir = btnImprimir;
     }
 
     public ProveedorTB getProveedorTB() {

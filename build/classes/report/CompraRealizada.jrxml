@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7d62a643-4a95-442f-a890-0f620d0c0de2">
-	<property name="ireport.zoom" value="2.1961500000000007"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="195"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="239"/>
+	<property name="ireport.y" value="186"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="EMPRESA" class="java.lang.String"/>
 	<parameter name="DIRECCION" class="java.lang.String"/>
@@ -38,7 +38,7 @@
 	</background>
 	<title>
 		<band height="179">
-			<image scaleImage="FillFrame">
+			<image scaleImage="RetainShape">
 				<reportElement x="0" y="0" width="103" height="87" uuid="8bb31660-d501-40c8-bd08-5d8311c1056f"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
@@ -182,6 +182,9 @@
 	</title>
 	<columnHeader>
 		<band height="26" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="26" uuid="8fe02804-41da-404b-a0e4-6f83ebdf7d1a"/>
+			</rectangle>
 			<frame>
 				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="555" height="26" forecolor="#1A2226" backcolor="#1A2226" uuid="48b47f8b-ad01-4c54-82d7-4980dc1c6731">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
@@ -259,9 +262,12 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="29" splitType="Stretch">
+		<band height="32" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="32" uuid="f0ee450c-7584-47c2-b947-6e8b272df802"/>
+			</rectangle>
 			<textField>
-				<reportElement positionType="Float" x="0" y="0" width="70" height="28" forecolor="#1A2226" uuid="d125e986-9d52-479f-8963-a43fa94d8ce4">
+				<reportElement positionType="Float" x="0" y="0" width="70" height="32" forecolor="#1A2226" uuid="d125e986-9d52-479f-8963-a43fa94d8ce4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -270,35 +276,36 @@
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{cantidad})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="0" width="70" height="28" uuid="6011dc51-5445-4d85-991d-5fc00f7b9038"/>
+				<reportElement x="70" y="0" width="70" height="32" uuid="6011dc51-5445-4d85-991d-5fc00f7b9038"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unidadCompraName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="140" y="0" width="190" height="28" uuid="62debbe3-0ece-4917-8487-108056dfb124"/>
+				<reportElement x="140" y="0" width="190" height="32" uuid="62debbe3-0ece-4917-8487-108056dfb124"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombreMarca}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="330" y="0" width="75" height="28" uuid="74ab0bca-106f-445f-b218-222b6111ffdc"/>
+				<reportElement x="330" y="0" width="75" height="32" uuid="74ab0bca-106f-445f-b218-222b6111ffdc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{costoCompra})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="480" y="0" width="75" height="28" uuid="c75fc831-4c45-40e9-939d-c798b5c3999d"/>
+				<reportElement x="480" y="0" width="75" height="32" uuid="c75fc831-4c45-40e9-939d-c798b5c3999d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
+					<paragraph rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{totalImporte})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="405" y="0" width="75" height="28" uuid="48f41418-a602-4c1f-8b63-33a780b3fdbd"/>
+				<reportElement x="405" y="0" width="75" height="32" uuid="48f41418-a602-4c1f-8b63-33a780b3fdbd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -307,7 +314,7 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="25" splitType="Stretch">
+		<band height="25">
 			<textField>
 				<reportElement x="0" y="0" width="280" height="25" forecolor="#1A2226" uuid="6a6241b8-917d-47f1-8b78-c4214f2b44e4"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -326,10 +333,7 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="50" splitType="Stretch">
-			<line>
-				<reportElement x="0" y="0" width="555" height="1" forecolor="#1A2226" uuid="04617c4b-d8fd-4308-a2cb-d5cece26e608"/>
-			</line>
+		<band height="50">
 			<subreport>
 				<reportElement x="0" y="0" width="555" height="50" uuid="4825e5d1-85bb-4c40-8cd5-4bc65998877b"/>
 				<subreportParameter name="TOTAL">

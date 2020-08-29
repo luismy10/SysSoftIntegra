@@ -34,11 +34,20 @@ public class FxImpuestoProcesoController implements Initializable {
     @FXML
     private TextField txtCodigoAlterno;
     @FXML
+    private TextField txtNumero;
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private TextField txtLetra;
+    @FXML
+    private TextField txtCategoria;
+    @FXML
     private Button btnGuardar;
 
     private FxImpuestoController impuestoController;
 
     private int idImpuesto;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -81,7 +90,7 @@ public class FxImpuestoProcesoController implements Initializable {
 
                 txtNombreImpuesto.setText(impuestoTB.getNombreImpuesto());
                 txtValor.setText(Tools.roundingValue(impuestoTB.getValor(), 2));
-                txtCodigoAlterno.setText(impuestoTB.getCodigoAlterno());
+                txtCodigoAlterno.setText(impuestoTB.getCodigo());
             }
         });
 
@@ -119,7 +128,7 @@ public class FxImpuestoProcesoController implements Initializable {
             impuestoTB.setNombreImpuesto(txtNombreImpuesto.getText().trim());
             impuestoTB.setValor(Double.parseDouble(txtValor.getText()));
             impuestoTB.setPredeterminado(false);
-            impuestoTB.setCodigoAlterno(txtCodigoAlterno.getText().isEmpty() ? "0" : txtCodigoAlterno.getText().trim());
+            impuestoTB.setCodigo(txtCodigoAlterno.getText().isEmpty() ? "0" : txtCodigoAlterno.getText().trim());
             impuestoTB.setSistema(false);
             String result = ImpuestoADO.CrudImpuesto(impuestoTB);
             if (result.equalsIgnoreCase("duplicated")) {

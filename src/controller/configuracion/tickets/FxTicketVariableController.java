@@ -59,7 +59,7 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Pagina web de la empresa", Session.COMPANY_PAGINAWEB.isEmpty() ? "WWW.COMPANY.COM" : Session.COMPANY_PAGINAWEB, "pagwempresa"));
             listCabecera.add(new TicketTB("Email de la empresa", Session.COMPANY_EMAIL.isEmpty() ? "COMPANY@EMAIL.COM" : Session.COMPANY_EMAIL, "emailempresa"));
             listCabecera.add(new TicketTB("Dirección de la empresa", Session.COMPANY_DOMICILIO.isEmpty() ? "DIRECCION" : Session.COMPANY_DOMICILIO, "direcempresa"));
-            listCabecera.add(new TicketTB("Ruc de la empresa", Session.COMPANY_NUM_DOCUMENTO.isEmpty() ? "56232665" : Session.COMPANY_NUM_DOCUMENTO, "rucempresa"));
+            listCabecera.add(new TicketTB("Ruc de la empresa", Session.COMPANY_NUMERO_DOCUMENTO.isEmpty() ? "56232665" : Session.COMPANY_NUMERO_DOCUMENTO, "rucempresa"));
             listCabecera.add(new TicketTB("Razón social de la empresa", Session.COMPANY_RAZON_SOCIAL.isEmpty() ? "COMPANY" : Session.COMPANY_RAZON_SOCIAL, "razoempresa"));
             listCabecera.add(new TicketTB("Nombre comercial de la empresa", Session.COMPANY_NOMBRE_COMERCIAL.isEmpty() ? "COMPANY" : Session.COMPANY_NOMBRE_COMERCIAL, "nomcomempresa"));
             listCabecera.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual"));

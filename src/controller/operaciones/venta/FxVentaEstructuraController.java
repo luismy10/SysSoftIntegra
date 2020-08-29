@@ -858,12 +858,12 @@ public class FxVentaEstructuraController implements Initializable {
                         case 3:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-//                            openWindowCantidad();
+                            openWindowCantidad();
                             break;
                         case 2:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-//                            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+                            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
                             break;
                         default:
                             SuministroTB suministroTB = tvList.getItems().get(i);
@@ -891,7 +891,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-//                    openWindowCantidad();
+                    openWindowCantidad();
                     calculateTotales();
                     break;
                 }
@@ -900,7 +900,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-//                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
                     calculateTotales();
                     break;
                 }

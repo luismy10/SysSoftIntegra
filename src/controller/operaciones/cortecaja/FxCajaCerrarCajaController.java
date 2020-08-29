@@ -6,7 +6,9 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +29,7 @@ import model.BancoADO;
 import model.BancoHistorialTB;
 import model.BancoTB;
 import model.CajaADO;
+import model.DBUtil;
 
 public class FxCajaCerrarCajaController implements Initializable {
 
@@ -48,7 +51,7 @@ public class FxCajaCerrarCajaController implements Initializable {
     private double calculado;
 
     private double valorTarjeta;
-    
+
     private AnchorPane vbPrincipal;
 
     @Override
@@ -120,6 +123,23 @@ public class FxCajaCerrarCajaController implements Initializable {
                     primaryStage.setTitle(FilesRouters.TITLE_APP);
                     primaryStage.centerOnScreen();
                     primaryStage.setMaximized(true);
+                    primaryStage.setOnCloseRequest(c -> {
+                        short optionI = Tools.AlertMessageConfirmation(parent, "SysSoft Integra", "¿Está seguro de cerrar la aplicación?");
+                        if (optionI == 1) {
+                            try {
+                                if (DBUtil.getConnection() != null && !DBUtil.getConnection().isClosed()) {
+                                    DBUtil.getConnection().close();
+                                }
+                                System.exit(0);
+                                Platform.exit();
+                            } catch (SQLException e) {
+                                System.exit(0);
+                                Platform.exit();
+                            }
+                        } else {
+                            c.consume();
+                        }
+                    });
                     primaryStage.show();
                     primaryStage.requestFocus();
 
@@ -155,7 +175,7 @@ public class FxCajaCerrarCajaController implements Initializable {
     }
 
     void setInitCerrarCajaController(AnchorPane vbPrincipal) {
-        this.vbPrincipal=vbPrincipal;
+        this.vbPrincipal = vbPrincipal;
     }
 
 }

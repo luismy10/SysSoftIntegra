@@ -106,7 +106,7 @@ public class FxSuministrosKardexController implements Initializable {
         tcSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
 
         //
-        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
         tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcDetalle.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
 

@@ -410,7 +410,7 @@ public class FxComprasDetalleController implements Initializable {
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
             map.put("TELEFONOCELULAR", "TEL.: " + Session.COMPANY_TELEFONO + " CEL.: " + Session.COMPANY_CELULAR);
             map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL.toUpperCase());
-            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
+            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
             map.put("NUMEROCOMPRA", idCompra);
 
             map.put("FECHAELABORACION", compraTB.getFechaCompra().toUpperCase());

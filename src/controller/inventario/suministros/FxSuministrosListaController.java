@@ -308,7 +308,7 @@ public class FxSuministrosListaController implements Initializable {
     private void executeEvent() {
         if (ventaEstructuraController != null) {
             addArticuloToList();
-            txtSearch.requestFocus();
+//            txtSearch.requestFocus();
         } else if (movimientosProcesoController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!validateStock(movimientosProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
@@ -443,9 +443,9 @@ public class FxSuministrosListaController implements Initializable {
                 }
             });
             suministroTB.setRemover(button);
-            ventaEstructuraController.openWindowCantidadLista(suministroTB, true);
-//            Tools.Dispose(apWindow);
-//            ventaEstructuraController.getAddArticulo(suministroTB);
+            //ventaEstructuraController.openWindowCantidadLista(suministroTB, true);
+            Tools.Dispose(apWindow);
+            ventaEstructuraController.getAddArticulo(suministroTB);
         }
     }
 

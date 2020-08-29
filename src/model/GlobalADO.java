@@ -481,7 +481,7 @@ public class GlobalADO {
             statementImpuesto.setString(2, impuestoTB.getNombreImpuesto());
             statementImpuesto.setDouble(3, impuestoTB.getValor());
             statementImpuesto.setBoolean(4, impuestoTB.getPredeterminado());
-            statementImpuesto.setString(5, impuestoTB.getCodigoAlterno());
+            statementImpuesto.setString(5, impuestoTB.getCodigo());
             statementImpuesto.setBoolean(6, impuestoTB.isSistema());
             statementImpuesto.addBatch();
 

@@ -125,7 +125,7 @@ public class SplashScreen extends Preloader {
                             Session.COMPANY_REPRESENTANTE = list.getNombre();
                             Session.COMPANY_RAZON_SOCIAL = list.getRazonSocial();
                             Session.COMPANY_NOMBRE_COMERCIAL = list.getNombreComercial();
-                            Session.COMPANY_NUM_DOCUMENTO = list.getNumeroDocumento();
+                            Session.COMPANY_NUMERO_DOCUMENTO = list.getNumeroDocumento();
                             Session.COMPANY_TELEFONO = list.getTelefono();
                             Session.COMPANY_CELULAR = list.getCelular();
                             Session.COMPANY_PAGINAWEB = list.getPaginaWeb();

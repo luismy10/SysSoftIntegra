@@ -24,21 +24,24 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     @FXML
     private TextField txtSerie;
     @FXML
+    private TextField txtCodigoAlterno;
+    @FXML
     private Button btnGuardar;
-    
+
     private FxTipoDocumentoController tipoDocumentoController;
-    
-    private int idTipoDocumento;    
+
+    private int idTipoDocumento;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo,String nombre,String serie) {
+    public void initUpdate(int codigo, String nombre, String serie,String codigoAlterno) {
         idTipoDocumento = codigo;
         txtNombre.setText(nombre);
         txtSerie.setText(serie);
+        txtCodigoAlterno.setText(codigoAlterno);
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
     }
@@ -47,16 +50,17 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         if (txtNombre.getText().trim().isEmpty()) {
             Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese el nombre del comprobante.");
             txtNombre.requestFocus();
-        }else if(txtSerie.getText().trim().isEmpty()){
-            Tools.AlertMessageWarning(window,"Tipo de documento","Ingrese serie del comprobante.");
+        } else if (txtSerie.getText().trim().isEmpty()) {
+            Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese serie del comprobante.");
             txtSerie.requestFocus();
-        }else {
+        } else {
             TipoDocumentoTB documentoTB = new TipoDocumentoTB();
             documentoTB.setIdTipoDocumento(idTipoDocumento);
             documentoTB.setNombre(txtNombre.getText().toUpperCase().trim());
             documentoTB.setSerie(txtSerie.getText().trim());
+            documentoTB.setCodigoAlterno(txtCodigoAlterno.getText().trim());
             documentoTB.setPredeterminado(false);
-            
+
             String result = TipoDocumentoADO.CrudTipoDocumento(documentoTB);
             if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de documento", "Se actualizado correctamente", false);
@@ -65,11 +69,11 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             } else if (result.equalsIgnoreCase("duplicate")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de documento", "Ya existe comprobante con el mismo nombre", false);
                 txtNombre.requestFocus();
-            } else if(result.equalsIgnoreCase("inserted")){
+            } else if (result.equalsIgnoreCase("inserted")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de documento", "Se ha insertado correctamente", false);
                 Tools.Dispose(window);
                 tipoDocumentoController.fillTabletTipoDocumento();
-            }else {
+            } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Tipo de documento", result, false);
             }
         }
@@ -98,9 +102,9 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
     }
-    
-    public void setTipoDocumentoController(FxTipoDocumentoController tipoDocumentoController){
+
+    public void setTipoDocumentoController(FxTipoDocumentoController tipoDocumentoController) {
         this.tipoDocumentoController = tipoDocumentoController;
     }
-    
+
 }

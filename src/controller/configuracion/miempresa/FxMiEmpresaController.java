@@ -276,24 +276,30 @@ public class FxMiEmpresaController implements Initializable {
                         Session.COMPANY_REPRESENTANTE = txtRepresentante.getText();
                         Session.COMPANY_RAZON_SOCIAL = txtRazonSocial.getText();
                         Session.COMPANY_NOMBRE_COMERCIAL = txtNombreComercial.getText();
-                        Session.COMPANY_NUM_DOCUMENTO = txtNumeroDocumento.getText();
+                        Session.COMPANY_NUMERO_DOCUMENTO = txtNumeroDocumento.getText();
                         Session.COMPANY_TELEFONO = txtTelefono.getText();
                         Session.COMPANY_CELULAR = txtCelular.getText();
                         Session.COMPANY_PAGINAWEB = txtPaginasWeb.getText();
                         Session.COMPANY_EMAIL = txtEmail.getText();
                         Session.COMPANY_DOMICILIO = txtDomicilio.getText();
+                        Session.COMPANY_IMAGE = imageBytes != null ? imageBytes : selectFile == null
+                                ? null
+                                : Tools.getImageBytes(selectFile);
                         break;
                     case "updated":
                         Tools.AlertMessageInformation(window, "Mi Empresa", "Actualizado correctamente.");
                         Session.COMPANY_REPRESENTANTE = txtRepresentante.getText();
                         Session.COMPANY_RAZON_SOCIAL = txtRazonSocial.getText();
                         Session.COMPANY_NOMBRE_COMERCIAL = txtNombreComercial.getText();
-                        Session.COMPANY_NUM_DOCUMENTO = txtNumeroDocumento.getText();
+                        Session.COMPANY_NUMERO_DOCUMENTO = txtNumeroDocumento.getText();
                         Session.COMPANY_TELEFONO = txtTelefono.getText();
                         Session.COMPANY_CELULAR = txtCelular.getText();
                         Session.COMPANY_PAGINAWEB = txtPaginasWeb.getText();
                         Session.COMPANY_EMAIL = txtEmail.getText();
                         Session.COMPANY_DOMICILIO = txtDomicilio.getText();
+                        Session.COMPANY_IMAGE = imageBytes != null ? imageBytes : selectFile == null
+                                ? null
+                                : Tools.getImageBytes(selectFile);
                         break;
                     default:
                         Tools.AlertMessageError(window, "Mi Empresa", result);

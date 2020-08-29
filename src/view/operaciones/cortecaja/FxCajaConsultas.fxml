@@ -82,7 +82,7 @@
                                        <children>
                                           <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label styleClass="labelRobotoBold16" text="Inico de turno:" textFill="#020203" />
+                                                <Label styleClass="labelRobotoBold16" text="Inicio de turno:" textFill="#020203" />
                                                 <Label fx:id="lblInicoTurno" styleClass="labelRoboto16" text="00/00/0000 0:00" textFill="#020203" />
                                              </children>
                                           </VBox>

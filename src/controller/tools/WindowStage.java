@@ -97,6 +97,8 @@ public class WindowStage {
             stage.sizeToScene();
             if(background)stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
+            controller.getTxtCantidad().requestFocus();
+            
         } catch (IOException ix) {
             System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
         }
