@@ -1190,6 +1190,7 @@ public class CompraADO extends DBUtil {
                     compraTB = new CompraTB();
                     compraTB.setSerie(rsEmps.getString("Serie"));
                     compraTB.setNumeracion(rsEmps.getString("Numeracion"));
+                    compraTB.setEstado(rsEmps.getInt("EstadoCompra"));
                     compraTB.setEstadoName(rsEmps.getString("EstadoName"));
                     compraTB.setTotal(rsEmps.getDouble("Total"));
 
@@ -1219,6 +1220,7 @@ public class CompraADO extends DBUtil {
                     compraCreditoTB.setFechaPago(rsEmps.getDate("FechaPago").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                     compraCreditoTB.setHoraPago(rsEmps.getTime("HoraPago").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     compraCreditoTB.setEstado(rsEmps.getBoolean("Estado"));
+                    compraCreditoTB.setIdTransaccion(rsEmps.getString("IdTransaccion"));
 
                     Text txtEstado = new Text(compraCreditoTB.isEstado() ? "PAGADO" : "PENDIENTE");
                     txtEstado.setFill(Color.web(compraCreditoTB.isEstado() ? "#04a421" : "#d32300"));
@@ -1243,6 +1245,96 @@ public class CompraADO extends DBUtil {
                 }
             }
             arrayList.add(empList);
+        } catch (SQLException e) {
+            System.out.println("Error SQL en Listar_Compra_Credito(): " + e);
+        } finally {
+            try {
+                if (preparedCompraCredito != null) {
+                    preparedCompraCredito.close();
+                }
+                if (preparedProveedor != null) {
+                    preparedProveedor.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return arrayList;
+    }
+
+    public static ArrayList<Object> Listar_Compra_Credito_By_IdTransaccion(String idTransaccion) {
+
+        ArrayList<Object> arrayList = null;
+
+        PreparedStatement preparedValidate = null;
+        PreparedStatement preparedProveedor = null;
+        PreparedStatement preparedCompraCredito = null;
+        PreparedStatement preparedTransaccion = null;
+
+        CompraTB compraTB = null;
+        ArrayList<CompraCreditoTB> compraCreditoTBs = null;
+        TransaccionTB transaccionTB = null;
+        try {
+            dbConnect();
+            preparedValidate = getConnection().prepareStatement("SELECT IdCompra FROM  CompraCreditoTB WHERE IdTransaccion = ?");
+            preparedValidate.setString(1, idTransaccion);
+            ResultSet resultSet = preparedValidate.executeQuery();
+            if (resultSet.next()) {
+                arrayList = new ArrayList<>();
+                preparedProveedor = getConnection().prepareStatement("{call Sp_Obtener_Proveedor_ByIdCompra(?)}");
+                preparedProveedor.setString(1, resultSet.getString("IdCompra"));
+                try (ResultSet rsEmps = preparedProveedor.executeQuery()) {
+                    if (rsEmps.next()) {
+                        compraTB = new CompraTB();
+                        compraTB.setSerie(rsEmps.getString("Serie"));
+                        compraTB.setNumeracion(rsEmps.getString("Numeracion"));
+                        compraTB.setEstadoName(rsEmps.getString("EstadoName"));
+                        compraTB.setTotal(rsEmps.getDouble("Total"));
+
+                        ProveedorTB proveedorTB = new ProveedorTB();
+                        proveedorTB.setTipoDocumentoName(rsEmps.getString("NombreDocumento"));
+                        proveedorTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                        proveedorTB.setRazonSocial(rsEmps.getString("Proveedor"));
+                        proveedorTB.setTelefono(rsEmps.getString("Telefono"));
+                        proveedorTB.setCelular(rsEmps.getString("Celular"));
+                        proveedorTB.setDireccion(rsEmps.getString("Direccion"));
+                        proveedorTB.setEmail(rsEmps.getString("Email"));
+                        compraTB.setProveedorTB(proveedorTB);
+                    }
+                }
+                arrayList.add(compraTB);
+
+                preparedCompraCredito = getConnection().prepareStatement("{call Sp_Listar_Compra_Credito_Abonar_Por_IdTransaccion(?)}");
+                preparedCompraCredito.setString(1, idTransaccion);
+                try (ResultSet rsEmps = preparedCompraCredito.executeQuery()) {
+                    compraCreditoTBs = new ArrayList<>();
+                    while (rsEmps.next()) {
+
+                        CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
+                        compraCreditoTB.setId(rsEmps.getRow());
+                        compraCreditoTB.setFechaRegistro(rsEmps.getDate("FechaRegistro").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                        compraCreditoTB.setFechaPago("Se realizó el pago de la fecha del " + compraCreditoTB.getFechaRegistro() + " por el monto de " + Tools.roundingValue(rsEmps.getDouble("Monto"), 2));
+                        compraCreditoTB.setMonto(rsEmps.getDouble("Monto"));
+
+                        compraCreditoTBs.add(compraCreditoTB);
+                    }
+                }
+                arrayList.add(compraCreditoTBs);
+
+                preparedTransaccion = getConnection().prepareStatement("SELECT Fecha FROM TransaccionTB WHERE IdTransaccion = ?");
+                preparedTransaccion.setString(1, idTransaccion);
+                try (ResultSet result = preparedTransaccion.executeQuery()) {
+                    if (result.next()) {
+                        transaccionTB = new TransaccionTB();
+                        transaccionTB.setFecha(result.getDate("Fecha").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    }
+                }
+
+                arrayList.add(transaccionTB);
+
+            }
+
         } catch (SQLException e) {
             System.out.println("Error SQL en Listar_Compra_Credito(): " + e);
         } finally {
@@ -1297,15 +1389,32 @@ public class CompraADO extends DBUtil {
         return proveedorTB;
     }
 
-    public static String Registrar_Amortizacion(ObservableList<CompraCreditoTB> tvList, BancoHistorialTB bancoHistorialTB) {
-        String result = "";
+    public static ModeloObject Registrar_Amortizacion(String idCompra, ObservableList<CompraCreditoTB> tvList, BancoHistorialTB bancoHistorialTB, TransaccionTB transaccionTB) {
+        ModeloObject result = new ModeloObject();
         dbConnect();
         if (getConnection() != null) {
+            CallableStatement callableIdTransaccion = null;
+            PreparedStatement preparedTransaccion = null;
             PreparedStatement preparedCompraCredito = null;
             PreparedStatement preparedBanco = null;
             PreparedStatement preparedBancoHistorial = null;
             try {
                 getConnection().setAutoCommit(false);
+
+                callableIdTransaccion = getConnection().prepareCall("{? = call Fc_Transaccion_Codigo_Alfanumerico()}");
+                callableIdTransaccion.registerOutParameter(1, java.sql.Types.VARCHAR);
+                callableIdTransaccion.execute();
+                String idTransaccion = callableIdTransaccion.getString(1);
+
+                preparedTransaccion = getConnection().prepareStatement("INSERT INTO TransaccionTB(IdTransaccion,Fecha,Hora,Descripcion,TipoTransaccion,Monto,Usuario)VALUES(?,?,?,?,?,?,?)");
+                preparedTransaccion.setString(1, idTransaccion);
+                preparedTransaccion.setString(2, transaccionTB.getFecha());
+                preparedTransaccion.setString(3, transaccionTB.getHora());
+                preparedTransaccion.setString(4, transaccionTB.getDescripcion());
+                preparedTransaccion.setShort(5, transaccionTB.getTipoTransaccion());
+                preparedTransaccion.setDouble(6, transaccionTB.getMonto());
+                preparedTransaccion.setString(7, transaccionTB.getUsuario());
+                preparedTransaccion.addBatch();
 
                 preparedBanco = getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial - ? WHERE IdBanco = ?");
                 preparedBanco.setDouble(1, bancoHistorialTB.getSalida());
@@ -1322,31 +1431,44 @@ public class CompraADO extends DBUtil {
                 preparedBancoHistorial.setDouble(7, bancoHistorialTB.getSalida());
                 preparedBancoHistorial.addBatch();
 
-                preparedCompraCredito = DBUtil.getConnection().prepareStatement("UPDATE CompraCreditoTB SET FechaPago = ?,HoraPago = ?,Estado = ?  WHERE IdCompraCredito = ?");
+                preparedCompraCredito = DBUtil.getConnection().prepareStatement("UPDATE CompraCreditoTB SET FechaPago = ?,HoraPago = ?,Estado = ?,IdTransaccion = ?  WHERE IdCompraCredito = ?");
                 for (CompraCreditoTB cctb : tvList) {
                     if (cctb.getCbSeleccion().isSelected() && !cctb.getCbSeleccion().isDisable()) {
                         preparedCompraCredito.setString(1, cctb.getFechaPago());
                         preparedCompraCredito.setString(2, cctb.getHoraPago());
                         preparedCompraCredito.setBoolean(3, cctb.isEstado());
-                        preparedCompraCredito.setInt(4, cctb.getIdCompraCredito());
+                        preparedCompraCredito.setString(4, idTransaccion);
+                        preparedCompraCredito.setInt(5, cctb.getIdCompraCredito());
                         preparedCompraCredito.addBatch();
                     }
                 }
 
+                preparedTransaccion.executeBatch();
                 preparedCompraCredito.executeBatch();
                 preparedBanco.executeBatch();
                 preparedBancoHistorial.executeBatch();
                 DBUtil.getConnection().commit();
-                result = "updated";
+
+                result.setId((short) 1);
+                result.setMessage(idTransaccion);
+                result.setState("updated");
             } catch (SQLException e) {
                 try {
                     getConnection().rollback();
                 } catch (SQLException ex) {
 
                 }
-                result = e.getLocalizedMessage();
+                result.setId((short) 2);
+                result.setMessage(e.getLocalizedMessage());
+                result.setState("error");
             } finally {
                 try {
+                    if (callableIdTransaccion != null) {
+                        callableIdTransaccion.close();
+                    }
+                    if (preparedTransaccion != null) {
+                        preparedTransaccion.close();
+                    }
                     if (preparedCompraCredito != null) {
                         preparedCompraCredito.close();
                     }
@@ -1356,13 +1478,16 @@ public class CompraADO extends DBUtil {
                     if (preparedBancoHistorial != null) {
                         preparedBancoHistorial.close();
                     }
+
                     dbDisconnect();
                 } catch (SQLException ex) {
-                    result = ex.getLocalizedMessage();
                 }
             }
         } else {
-            result = "No se pudo conectar el servidor, intente nuevamente.";
+            result.setId((short) 3);
+            result.setMessage("No se pudo conectar el servidor, intente nuevamente.");
+            result.setState("conexion");
+
         }
         return result;
     }
@@ -1371,13 +1496,23 @@ public class CompraADO extends DBUtil {
         String result = "";
         dbConnect();
         if (getConnection() != null) {
+            CallableStatement callableValidate = null;
             PreparedStatement preparedCompra = null;
             try {
                 getConnection().setAutoCommit(false);
-                preparedCompra = getConnection().prepareStatement("UPDATE CompraTB SET EstadoCompra = ? WHERE IdCompra = ?");
-                preparedCompra.setInt(1, 1);
-                preparedCompra.setString(2, idCompra);
-                preparedCompra.addBatch();
+
+                callableValidate = getConnection().prepareCall("{? = call Fc_Cambiar_Estado_Compra(?)}");
+                callableValidate.registerOutParameter(1, java.sql.Types.VARCHAR);
+                callableValidate.setString(2, idCompra);
+                callableValidate.execute();
+                String estadoCompra = callableValidate.getString(1);
+
+                preparedCompra = DBUtil.getConnection().prepareStatement("UPDATE CompraTB SET EstadoCompra = 1 WHERE IdCompra = ?");
+                if (estadoCompra.equalsIgnoreCase("completado")) {
+                    preparedCompra.setString(1, idCompra);
+                    preparedCompra.addBatch();
+                }
+
                 preparedCompra.executeBatch();
                 getConnection().commit();
                 result = "updated";
@@ -1390,6 +1525,9 @@ public class CompraADO extends DBUtil {
                 result = e.getLocalizedMessage();
             } finally {
                 try {
+                    if (callableValidate != null) {
+                        callableValidate.close();
+                    }
                     if (preparedCompra != null) {
                         preparedCompra.close();
                     }

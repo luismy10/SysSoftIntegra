@@ -249,6 +249,7 @@ public class FxMovimientosProcesoController implements Initializable {
     }
      */
     private void ejecutarConsulta(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+        
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);

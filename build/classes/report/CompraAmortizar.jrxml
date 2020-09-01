@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="20a29463-6330-40c7-a3e6-e8999082e908">
-	<property name="ireport.zoom" value="1.1269722013523664"/>
+	<property name="ireport.zoom" value="2.415765000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="16"/>
+	<property name="ireport.y" value="329"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="EMPRESA" class="java.lang.String"/>
 	<parameter name="FECHA_EMISION" class="java.lang.String"/>
@@ -17,6 +17,7 @@
 	<parameter name="PROVEEDORTELEFONOS" class="java.lang.String"/>
 	<parameter name="PROVEEDOREMAIL" class="java.lang.String"/>
 	<field name="id" class="java.lang.Integer"/>
+	<field name="idTransaccion" class="java.lang.String"/>
 	<field name="fechaPago" class="java.lang.String"/>
 	<field name="monto" class="java.lang.Double"/>
 	<title>
@@ -123,7 +124,7 @@
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="555" height="20" forecolor="#0D4E9E" backcolor="#CCCCCC" uuid="8965392e-3904-46d6-9f57-dfa9f7c5ca4b"/>
 				<staticText>
-					<reportElement x="0" y="0" width="77" height="20" forecolor="#1A2226" uuid="93a43042-1988-4f58-9554-918570deba48"/>
+					<reportElement x="0" y="0" width="70" height="20" forecolor="#1A2226" uuid="93a43042-1988-4f58-9554-918570deba48"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
@@ -137,11 +138,18 @@
 					<text><![CDATA[Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="77" y="0" width="370" height="20" forecolor="#1A2226" uuid="a5f2df83-f020-484d-82bc-3b98b0f1c908"/>
+					<reportElement x="165" y="0" width="282" height="20" forecolor="#1A2226" uuid="a5f2df83-f020-484d-82bc-3b98b0f1c908"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Descripción]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="70" y="0" width="95" height="20" forecolor="#1A2226" uuid="e9f8c4ab-559f-4c6d-b26c-e1c129d724f4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Transacción]]></text>
 				</staticText>
 			</frame>
 		</band>
@@ -149,14 +157,14 @@
 	<detail>
 		<band height="26">
 			<textField>
-				<reportElement x="0" y="0" width="77" height="26" uuid="ce1cf5c1-e1c7-4ac3-a326-c8aafd3c0f1c"/>
+				<reportElement x="0" y="0" width="70" height="26" uuid="ce1cf5c1-e1c7-4ac3-a326-c8aafd3c0f1c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="76" y="0" width="371" height="26" uuid="491d1984-9b24-457c-803c-c2f086327c57"/>
+				<reportElement x="165" y="0" width="282" height="26" uuid="491d1984-9b24-457c-803c-c2f086327c57"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" isStrikeThrough="false"/>
 				</textElement>
@@ -168,6 +176,13 @@
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{monto})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="95" height="26" uuid="3f679bc7-25fa-4c97-9fa6-3b72d87cd038"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idTransaccion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

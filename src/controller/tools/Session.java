@@ -60,6 +60,7 @@ public class Session {
     varialble de moneda
      */
     public static int MONEDA_ID;
+    public static String MONEDA_NOMBRE;
     public static String MONEDA_SIMBOLO;
 
     /*

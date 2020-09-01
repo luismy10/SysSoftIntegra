@@ -254,13 +254,15 @@ public class MonedaADO {
         PreparedStatement statement = null;
         try {
             DBUtil.dbConnect();
-            statement = DBUtil.getConnection().prepareStatement("SELECT IdMoneda,Simbolo FROM MonedaTB WHERE Predeterminado = 1");
+            statement = DBUtil.getConnection().prepareStatement("SELECT IdMoneda,Nombre,Simbolo FROM MonedaTB WHERE Predeterminado = 1");
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 Session.MONEDA_ID = resultSet.getInt("IdMoneda");
+                Session.MONEDA_NOMBRE = resultSet.getString("Nombre");
                 Session.MONEDA_SIMBOLO = resultSet.getString("Simbolo");
             } else {
                 Session.MONEDA_ID = 0;
+                Session.MONEDA_NOMBRE = "MONEDA";
                 Session.MONEDA_SIMBOLO = "M";
             }
         } catch (SQLException ex) {
