@@ -102,11 +102,7 @@ public class ImpuestoADO {
                         impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                         impuestoTB.setValor(resultSet.getDouble("Valor"));
                         impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
-<<<<<<< HEAD
-                        impuestoTB.setCodigo(resultSet.getString("CodigoAlterno"));
-=======
                         impuestoTB.setCodigo(resultSet.getString("Codigo"));
->>>>>>> cb8c566a7a188e98581703858c76742678412a8c
                         impuestoTB.setImagePredeterminado(resultSet.getBoolean("Predeterminado")
                                 ? new ImageView(new Image("/view/image/checked.png", 22, 22, false, false))
                                 : new ImageView(new Image("/view/image/unchecked.png", 22, 22, false, false)));
@@ -142,13 +138,13 @@ public class ImpuestoADO {
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     ImpuestoTB impuestoTB = new ImpuestoTB();
-                    impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto")); 
-                    impuestoTB.setOperacion(resultSet.getInt("Operacion")); 
+                    impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
+                    impuestoTB.setOperacion(resultSet.getInt("Operacion"));
                     impuestoTB.setNombreOperacion(resultSet.getString("OperacionNombre"));
                     impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                     impuestoTB.setValor(resultSet.getDouble("Valor"));
                     impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
-                    impuestoTB.setSistema(resultSet.getBoolean("Sistema")); 
+                    impuestoTB.setSistema(resultSet.getBoolean("Sistema"));
                     empList.add(impuestoTB);
                 }
             } catch (SQLException ex) {
@@ -293,9 +289,9 @@ public class ImpuestoADO {
         ImpuestoTB impuestoTB = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
-            PreparedStatement statement = null;    
+            PreparedStatement statement = null;
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT Operacion,Nombre,Valor,CodigoAlterno FROM ImpuestoTB WHERE IdImpuesto = ?");
+                statement = DBUtil.getConnection().prepareStatement("SELECT Operacion,Nombre,Valor,Codigo,Numeracion,NombreImpuesto,Letra,Categoria, FROM ImpuestoTB WHERE IdImpuesto = ?");
                 statement.setInt(1, idImpuesto);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
@@ -303,11 +299,7 @@ public class ImpuestoADO {
                         impuestoTB.setOperacion(resultSet.getInt("Operacion"));
                         impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
                         impuestoTB.setValor(resultSet.getDouble("Valor"));
-<<<<<<< HEAD
-                        impuestoTB.setCodigo(resultSet.getString("CodigoAlterno"));
-=======
                         impuestoTB.setCodigo(resultSet.getString("Codigo"));
->>>>>>> cb8c566a7a188e98581703858c76742678412a8c
                     }
                 }
             } catch (SQLException ex) {
@@ -316,7 +308,7 @@ public class ImpuestoADO {
                 try {
                     if (statement != null) {
                         statement.close();
-                    }                    
+                    }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
                     System.out.println("Error Impuesto: " + ex.getLocalizedMessage());

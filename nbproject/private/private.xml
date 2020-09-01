@@ -2,20 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/consultas/pagar/FxCuentasPorPagarVisualizarController.java</file>
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/report/CompraAmortizar.jrxml</file>
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/model/CompraADO.java</file>
-=======
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/ImpuestoADO.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/VentaADO.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaDetalleController.java</file>
->>>>>>> cb8c566a7a188e98581703858c76742678412a8c
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/CajaADO.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/cortecaja/FxCajaBusquedaController.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/cortecaja/FxCajaConsultasController.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/MovimientoCajaTB.java</file>
+            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/report/CortedeCaja.jrxml</file>
         </group>
-=======
-        <group/>
->>>>>>> 0fe2c118a04528cef81f577a8a155e8211349243
     </open-files>
 </project-private>

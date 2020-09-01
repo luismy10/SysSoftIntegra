@@ -7,6 +7,7 @@ import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.awt.HeadlessException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -40,6 +41,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class FxCajaConsultasController implements Initializable {
 
@@ -74,7 +76,23 @@ public class FxCajaConsultasController implements Initializable {
     @FXML
     private Label lblTotal;
 
+    private CajaTB cajaTB;
+    
+    private ArrayList<MovimientoCajaTB> arrList;
+
     private AnchorPane windowinit;
+    
+    private double base;
+    
+    private double ventaEfectivo;
+    
+    private double ventasconTarjeta;
+    
+    private double ingresosdeEfectivo;
+    
+    private double salidasdeEfectivo;
+    
+    private double total;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -100,13 +118,15 @@ public class FxCajaConsultasController implements Initializable {
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
                 if (objects.get(0) != null && objects.get(1) != null && objects.get(2) != null) {
-                    CajaTB cajaTB = (CajaTB) objects.get(0);
+                    cajaTB = (CajaTB) objects.get(0);
                     ArrayList<Double> arrayList = (ArrayList<Double>) objects.get(1);
 
                     lblInicoTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
                     lblFinTurno.setText(cajaTB.getFechaCierre() + " " + cajaTB.getHoraCierre());
                     lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
                     lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
+                    
+                    
 
                     lblContado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
                     lblCanculado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getCalculado(), 2));
@@ -145,6 +165,7 @@ public class FxCajaConsultasController implements Initializable {
     }
 
     private void fillVentasDetalleTable(ArrayList<MovimientoCajaTB> arrList) {
+        this.arrList=arrList;
         for (int i = 0; i < arrList.size(); i++) {
             gpList.add(addElementGridPane("l1" + (i + 1), "" + arrList.get(i).getId(), Pos.CENTER_LEFT, "#020203"), 0, (i + 1));
             gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getFechaMovimiento() + "\n" + arrList.get(i).getHoraMovimiento(), Pos.CENTER_LEFT, "#020203"), 1, (i + 1));
@@ -214,73 +235,51 @@ public class FxCajaConsultasController implements Initializable {
     private void onOpenReporte() {
         try {
 
-//            InputStream imgInputStream
-//                    = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-//
-            InputStream dir = getClass().getResourceAsStream("/report/CortedeCaja.jasper");
-//
-            Map map = new HashMap();
-            map.put("LOGO", "");
-            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
-            map.put("INICIODETURNO", "");
-            map.put("HORAINICIO", "");
-            map.put("FINDETURNO", "");
-            map.put("HORAFIN", "");
-            map.put("CONTADO", "");
-            map.put("CALCULADO", "");
-            map.put("DIFERENCIA", "");
-            map.put("CAJEROASISTENTE", "");
-            map.put("BASE", "");
-            map.put("VENTASENEFECTIVO", "");
-            map.put("VENTASCONTARJETA", "");
-            map.put("INGRESOSDEEFECTIVO", "");
-            map.put("SALIDASDEEFECTIVO", "");
-            map.put("TOTAL", "");
+            if (cajaTB != null) {
 
-//            map.put("LOGO", imgInputStream);
-//            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
-//            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
-//            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
-//            map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
-//            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
-////
-//            map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
-//            map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
-//
-//            map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
-//            map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
-//            map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
-//            map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular());
-//            map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail());
-//            map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
-//
-//            map.put("FECHAEMISION", ventaTB.getFechaVenta());
-//            map.put("MONEDA", ventaTB.getMonedaTB().getAbreviado());
-//            map.put("CONDICIONPAGO", lblTipo.getText());
-//
-//            map.put("VALOR_VENTA", lblValorVenta.getText());
-//            map.put("DESCUENTO", lblDescuento.getText());
-//            map.put("SUB_TOTAL", lblSubTotal.getText());
-//            map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
-////            map.put("SUBREPORT_DIR", "VentaRealizadaDetalle.jasper");
-//            map.put("TOTAL", lblTotal.getText());
-//            map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
-//            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
+                InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
-            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxReportViewController controller = fXMLLoader.getController();
-            controller.setJasperPrint(jasperPrint);
-            controller.show();
-            Stage stage = WindowStage.StageLoader(parent, "Corte de Caja");
-            stage.setResizable(true);
-            stage.show();
-            stage.requestFocus();
+                if (Session.COMPANY_IMAGE != null) {
+                    imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
+                }
 
+                InputStream dir = getClass().getResourceAsStream("/report/CortedeCaja.jasper");
+//
+                Map map = new HashMap();
+                map.put("LOGO", imgInputStream);
+                map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+                map.put("INICIODETURNO", cajaTB.getFechaApertura());
+                map.put("HORAINICIO", cajaTB.getHoraApertura());
+                map.put("FINDETURNO", cajaTB.getFechaCierre());
+                map.put("HORAFIN", cajaTB.getHoraCierre());
+                map.put("CONTADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
+                map.put("CALCULADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getCalculado(), 2));
+                map.put("DIFERENCIA", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getDiferencia(), 2));
+                map.put("CAJEROASISTENTE", cajaTB.getEmpleadoTB().getNombres()+" "+cajaTB.getEmpleadoTB().getApellidos());
+                map.put("BASE", ""); 
+                map.put("VENTASENEFECTIVO", "");
+                map.put("VENTASCONTARJETA", "");
+                map.put("INGRESOSDEEFECTIVO", "");
+                map.put("SALIDASDEEFECTIVO", "");
+                map.put("TOTAL", "");
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(arrList));
+//                JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
+
+                URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxReportViewController controller = fXMLLoader.getController();
+                controller.setJasperPrint(jasperPrint);
+                controller.show();
+                Stage stage = WindowStage.StageLoader(parent, "Corte de Caja");
+                stage.setResizable(true);
+                stage.show();
+                stage.requestFocus();
+            } else {
+Tools.AlertMessageWarning(window,"Reporte de Corte de Caja","No hay datos para mostrar en el reporte");
+            }
         } catch (HeadlessException | JRException | IOException ex) {
             Tools.AlertMessageError(window, "Reporte de Corte de Caja", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
@@ -298,10 +297,6 @@ public class FxCajaConsultasController implements Initializable {
         openWindowCaja();
     }
 
-    public void setContent(AnchorPane windowinit) {
-        this.windowinit = windowinit;
-    }
-
     @FXML
     private void OnKeyPressedReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -312,6 +307,10 @@ public class FxCajaConsultasController implements Initializable {
     @FXML
     private void onActionReporte(ActionEvent event) {
         onOpenReporte();
+    }
+
+    public void setContent(AnchorPane windowinit) {
+        this.windowinit = windowinit;
     }
 
 }
