@@ -305,103 +305,96 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        try {
 
-            Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
-                @Override
-                public ArrayList<Object> call() {
-                    return CompraADO.Listar_Compra_Credito_By_IdTransaccion(idTransaccion);
-                }
-            };
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                return CompraADO.Listar_Compra_Credito_By_IdTransaccion(idTransaccion);
+            }
+        };
 
-            task.setOnScheduled(w -> {
-                Tools.println("inicio");
-            });
+        task.setOnScheduled(w -> {
+            Tools.println("inicio");
+        });
 
-            task.setOnFailed(w -> {
-                Tools.println("fallo");
-            });
+        task.setOnFailed(w -> {
+            Tools.println("fallo");
+        });
 
-            task.setOnSucceeded(w -> {
-                try {
-                    ArrayList<Object> objects = task.getValue();
-                    if (objects == null) {
-                        Tools.AlertMessageWarning(spWindow, "Amortizar pago", "No se pudo crear el reporte por problemas de conexión intente nuevamente.");
-                    } else if (objects.get(0) == null && objects.get(1) == null && objects.get(2) == null) {
-                        Tools.AlertMessageWarning(spWindow, "Amortizar pago", "No se pudo crear el reporte por problemas de conexión intente nuevamente.");
-                    } else {
+        task.setOnSucceeded(w -> {
+            try {
+                ArrayList<Object> objects = task.getValue();
+                if (objects == null) {
+                    Tools.AlertMessageWarning(spWindow, "Amortizar pago", "No se pudo crear el reporte por problemas de conexión intente nuevamente.");
+                } else if (objects.get(0) == null && objects.get(1) == null && objects.get(2) == null) {
+                    Tools.AlertMessageWarning(spWindow, "Amortizar pago", "No se pudo crear el reporte por problemas de conexión intente nuevamente.");
+                } else {
 
-                        CompraTB compraTB = (CompraTB) objects.get(0);
-                        ArrayList<CompraCreditoTB> empListThis = (ArrayList<CompraCreditoTB>) objects.get(1);
-                        TransaccionTB transaccionTB = (TransaccionTB) objects.get(2);
+                    CompraTB compraTB = (CompraTB) objects.get(0);
+                    ArrayList<CompraCreditoTB> empListThis = (ArrayList<CompraCreditoTB>) objects.get(1);
+                    TransaccionTB transaccionTB = (TransaccionTB) objects.get(2);
 
-                        double montoPagar = 0;
-                        for (CompraCreditoTB cc : empListThis) {
-                            montoPagar += cc.getMonto();
-                        }
-
-                        InputStream dir = getClass().getResourceAsStream("/report/CompraAmortizarPago.jasper");
-
-                        InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
-                        if (Session.COMPANY_IMAGE != null) {
-                            imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
-                        }
-
-                        Map map = new HashMap();
-                        map.put("LOGO", imgInputStream);
-
-                        map.put("NOMBRE_EMPRESA", Session.COMPANY_RAZON_SOCIAL);
-                        map.put("NUMERODOCUMENTO_EMPRESA", Session.COMPANY_NUMERO_DOCUMENTO);
-                        map.put("DIRECCION_EMPRESA", Session.COMPANY_DOMICILIO.equalsIgnoreCase("") ? "Domicio no registrado" : Session.COMPANY_DOMICILIO);
-                        map.put("TELEFONOS_EMPRESA", (Session.COMPANY_TELEFONO.equalsIgnoreCase("") ? "Teléfono no registrado" : Session.COMPANY_TELEFONO) + " " + (Session.COMPANY_CELULAR.equalsIgnoreCase("") ? "Celular no registrado" : Session.COMPANY_CELULAR));
-                        map.put("EMAIL_EMPRESA", Session.COMPANY_EMAIL.equalsIgnoreCase("") ? "Email no registrado" : Session.COMPANY_EMAIL);
-                        map.put("PAGINAWEB_EMPRESA", Session.COMPANY_PAGINAWEB.equalsIgnoreCase("") ? "Pagina web no registrada" : Session.COMPANY_PAGINAWEB);
-//
-                        map.put("NUMERODOCUMENTO_PROVEEDOR", compraTB.getProveedorTB().getNumeroDocumento());
-                        map.put("INFORMACION_PROVEEDOR", compraTB.getProveedorTB().getRazonSocial());
-                        map.put("TELEFONO_PROVEEDOR", compraTB.getProveedorTB().getTelefono().equalsIgnoreCase("") ? "Teléfono no registrado" : compraTB.getProveedorTB().getTelefono());
-                        map.put("CELULAR_PROVEEDOR", compraTB.getProveedorTB().getCelular().equalsIgnoreCase("") ? "Celular no registrado" : compraTB.getProveedorTB().getCelular());
-                        map.put("EMAIL_PROVEEDOR", compraTB.getProveedorTB().getEmail().equalsIgnoreCase("") ? "Email no registrado" : compraTB.getProveedorTB().getEmail());
-                        map.put("DIRECCION_PROVEEDOR", compraTB.getProveedorTB().getDireccion().equalsIgnoreCase("") ? "Dirección no registrada" : compraTB.getProveedorTB().getDireccion());
-
-                        map.put("NUM_TRANSACCION", idTransaccion);
-                        map.put("FECHA_PAGO", transaccionTB.getFecha());
-                        map.put("METODO_PAGO", "EFECTIVO");
-
-                        map.put("TOTAL_LETRAS", monedaCadena.Convertir(Tools.roundingValue(montoPagar, 2), true, Session.MONEDA_NOMBRE));
-                        map.put("TOTAL", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(montoPagar, 2));
-
-                        JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(empListThis));
-
-                        URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
-                        FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                        Parent parent = fXMLLoader.load(url.openStream());
-                        //Controlller here
-                        FxReportViewController controller = fXMLLoader.getController();
-                        controller.setJasperPrint(jasperPrint);
-                        controller.show();
-                        Stage stage = WindowStage.StageLoader(parent, "Reporte de Pago");
-                        stage.setResizable(true);
-                        stage.show();
-                        stage.requestFocus();
+                    double montoPagar = 0;
+                    for (CompraCreditoTB cc : empListThis) {
+                        montoPagar += cc.getMonto();
                     }
 
-                } catch (HeadlessException | JRException | IOException ex) {
-                    Tools.AlertMessageError(spWindow, "Reporte de Pago", "Error al generar el reporte: " + ex.getLocalizedMessage());
+                    InputStream dir = getClass().getResourceAsStream("/report/CompraAmortizarPago.jasper");
+
+                    InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+                    if (Session.COMPANY_IMAGE != null) {
+                        imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
+                    }
+
+                    Map map = new HashMap();
+                    map.put("LOGO", imgInputStream);
+
+                    map.put("NOMBRE_EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+                    map.put("NUMERODOCUMENTO_EMPRESA", Session.COMPANY_NUMERO_DOCUMENTO);
+                    map.put("DIRECCION_EMPRESA", Session.COMPANY_DOMICILIO.equalsIgnoreCase("") ? "Domicio no registrado" : Session.COMPANY_DOMICILIO);
+                    map.put("TELEFONOS_EMPRESA", (Session.COMPANY_TELEFONO.equalsIgnoreCase("") ? "Teléfono no registrado" : Session.COMPANY_TELEFONO) + " " + (Session.COMPANY_CELULAR.equalsIgnoreCase("") ? "Celular no registrado" : Session.COMPANY_CELULAR));
+                    map.put("EMAIL_EMPRESA", Session.COMPANY_EMAIL.equalsIgnoreCase("") ? "Email no registrado" : Session.COMPANY_EMAIL);
+                    map.put("PAGINAWEB_EMPRESA", Session.COMPANY_PAGINAWEB.equalsIgnoreCase("") ? "Pagina web no registrada" : Session.COMPANY_PAGINAWEB);
+//
+                    map.put("NUMERODOCUMENTO_PROVEEDOR", compraTB.getProveedorTB().getNumeroDocumento());
+                    map.put("INFORMACION_PROVEEDOR", compraTB.getProveedorTB().getRazonSocial());
+                    map.put("TELEFONO_PROVEEDOR", compraTB.getProveedorTB().getTelefono().equalsIgnoreCase("") ? "Teléfono no registrado" : compraTB.getProveedorTB().getTelefono());
+                    map.put("CELULAR_PROVEEDOR", compraTB.getProveedorTB().getCelular().equalsIgnoreCase("") ? "Celular no registrado" : compraTB.getProveedorTB().getCelular());
+                    map.put("EMAIL_PROVEEDOR", compraTB.getProveedorTB().getEmail().equalsIgnoreCase("") ? "Email no registrado" : compraTB.getProveedorTB().getEmail());
+                    map.put("DIRECCION_PROVEEDOR", compraTB.getProveedorTB().getDireccion().equalsIgnoreCase("") ? "Dirección no registrada" : compraTB.getProveedorTB().getDireccion());
+
+                    map.put("NUM_TRANSACCION", idTransaccion);
+                    map.put("FECHA_PAGO", transaccionTB.getFecha());
+                    map.put("METODO_PAGO", "EFECTIVO");
+
+                    map.put("TOTAL_LETRAS", monedaCadena.Convertir(Tools.roundingValue(montoPagar, 2), true, Session.MONEDA_NOMBRE));
+                    map.put("TOTAL", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(montoPagar, 2));
+
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(empListThis));
+
+                    URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                    Parent parent = fXMLLoader.load(url.openStream());
+                    //Controlller here
+                    FxReportViewController controller = fXMLLoader.getController();
+                    controller.setJasperPrint(jasperPrint);
+                    controller.show();
+                    Stage stage = WindowStage.StageLoader(parent, "Reporte de Pago");
+                    stage.setResizable(true);
+                    stage.show();
+                    stage.requestFocus();
                 }
-            });
 
-            exec.execute(task);
-
-        } catch (Exception ex) {
-            Tools.AlertMessageError(spWindow, "Reporte de Pago", "Error en el ExecutorService: " + ex.getLocalizedMessage());
-        } finally {
-            if (!exec.isShutdown()) {
-                exec.shutdown();
-                Tools.println("detro...");
+            } catch (HeadlessException | JRException | IOException ex) {
+                Tools.AlertMessageError(spWindow, "Reporte de Pago", "Error al generar el reporte: " + ex.getLocalizedMessage());
             }
-            Tools.println("finally");
+        });
+
+        exec.execute(task);
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
         }
     }
 

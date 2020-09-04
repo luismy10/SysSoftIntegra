@@ -1444,9 +1444,9 @@ public class CompraADO extends DBUtil {
                 }
 
                 preparedTransaccion.executeBatch();
-                preparedCompraCredito.executeBatch();
                 preparedBanco.executeBatch();
                 preparedBancoHistorial.executeBatch();
+                preparedCompraCredito.executeBatch();
                 DBUtil.getConnection().commit();
 
                 result.setId((short) 1);

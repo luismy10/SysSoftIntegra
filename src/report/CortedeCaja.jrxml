@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1da2485e-74ba-4396-a787-1cae4b3cbf12">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="9"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="EMPRESA" class="java.lang.String"/>
 	<parameter name="INICIODETURNO" class="java.lang.String"/>
 	<parameter name="HORAINICIO" class="java.lang.String"/>
@@ -19,6 +19,8 @@
 	<parameter name="SALIDASDEEFECTIVO" class="java.lang.String"/>
 	<parameter name="TOTAL" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="fechaMovimiento" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -172,28 +174,28 @@
 				<text><![CDATA[DINERO RECIBIDO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="55" width="65" height="14" forecolor="#FE3152" uuid="3312b8bf-43e6-4d8d-a086-4f52cf6ad4d0"/>
+				<reportElement x="11" y="55" width="114" height="14" forecolor="#000000" uuid="3312b8bf-43e6-4d8d-a086-4f52cf6ad4d0"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Base]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="75" width="95" height="14" forecolor="#B5B5B5" uuid="d89139a3-7f50-4373-99c6-f4e984d8b4f2"/>
+				<reportElement x="11" y="75" width="114" height="14" forecolor="#000000" uuid="d89139a3-7f50-4373-99c6-f4e984d8b4f2"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Ventas en Efectivo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="95" width="95" height="14" forecolor="#576767" uuid="e4d380dc-6e73-437c-885a-e8c3a2eda5f7"/>
+				<reportElement x="11" y="95" width="114" height="14" forecolor="#000000" uuid="e4d380dc-6e73-437c-885a-e8c3a2eda5f7"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Ventas con Tarjeta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="115" width="114" height="14" forecolor="#373B46" uuid="59bdd97d-9e32-4c05-8c9c-a2ba7c6ad044"/>
+				<reportElement x="11" y="115" width="114" height="14" forecolor="#000000" uuid="59bdd97d-9e32-4c05-8c9c-a2ba7c6ad044"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="false"/>
 				</textElement>
@@ -225,34 +227,34 @@
 			</staticText>
 			<textField>
 				<reportElement x="114" y="4" width="440" height="20" uuid="54aa5ee5-a076-41ad-9981-16481252f854"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{CAJEROASISTENTE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="462" y="55" width="65" height="14" forecolor="#FE3152" uuid="167905f9-1e2f-47dc-b305-60f5849b50e7"/>
+				<reportElement x="462" y="55" width="65" height="14" forecolor="#000000" uuid="167905f9-1e2f-47dc-b305-60f5849b50e7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{BASE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="462" y="75" width="65" height="14" forecolor="#B5B5B5" uuid="92ecef4b-6df0-4fab-9a49-6fd1dbd68afc"/>
+				<reportElement x="462" y="75" width="65" height="14" forecolor="#000000" uuid="92ecef4b-6df0-4fab-9a49-6fd1dbd68afc"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VENTASENEFECTIVO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="462" y="95" width="65" height="14" forecolor="#576767" uuid="1f2240bb-981f-475b-839a-8a3526bede02"/>
+				<reportElement x="462" y="95" width="65" height="14" forecolor="#000000" uuid="1f2240bb-981f-475b-839a-8a3526bede02"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VENTASCONTARJETA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="462" y="115" width="65" height="14" forecolor="#373B46" uuid="6a0fdaa9-bb04-4d6f-9927-e4829226a600"/>
+				<reportElement x="462" y="115" width="65" height="14" forecolor="#000000" uuid="6a0fdaa9-bb04-4d6f-9927-e4829226a600"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
@@ -322,54 +324,19 @@
 	</columnHeader>
 	<detail>
 		<band height="32" splitType="Stretch">
-			<staticText>
-				<reportElement mode="Opaque" x="1" y="1" width="90" height="30" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="4249f296-2d4f-4feb-b0f2-592ff974dbb4"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[1]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="186" y="1" width="90" height="30" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="7eeefba3-5563-49db-b321-ed0b01c780dd"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[APERTURA DE CAJA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="279" y="1" width="90" height="30" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="2e2563a0-b3a3-436a-8674-41f989299f49"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[MONTO INICIAL]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="372" y="1" width="90" height="30" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="2c6e8c02-30f6-43d7-9f23-8adaa788294a"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[100.00]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="465" y="1" width="90" height="30" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="0e374e98-0343-4c2d-b361-21a363460f67"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[N#]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="93" y="1" width="90" height="30" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="ab98cd16-7bf9-40c0-ba6f-b2e242bbc075"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[26/08/2020   4:20PM]]></text>
-			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="346" y="115" width="89" height="30" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="0b54364d-86fe-4378-b934-bb384c807bd8"/>
+				<reportElement mode="Opaque" x="0" y="2" width="90" height="22" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="bc629df8-10ac-412c-a29e-d959343a079a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="93" y="2" width="90" height="22" forecolor="#F0F3FC" backcolor="#B5B5B5" uuid="3045ada9-23c3-49c7-bafe-923ec74a4f3a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaMovimiento}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

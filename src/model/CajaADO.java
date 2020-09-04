@@ -336,7 +336,7 @@ public class CajaADO {
         ArrayList<Object> objects = new ArrayList<>();
         try {
             DBUtil.dbConnect();
-            statementValidar = DBUtil.getConnection().prepareStatement("SELECT IdCaja,FechaApertura,FechaCierre,HoraApertura,HoraCierre,Contado,Calculado,Diferencia FROM CajaTB WHERE IdCaja = ?");
+            statementValidar = DBUtil.getConnection().prepareStatement("{call Sp_Obtener_Caja_Aperturada_By_Id(?)}");
             statementValidar.setString(1, idCaja);
             try (ResultSet resultSet = statementValidar.executeQuery()) {
                 if (resultSet.next()) {
@@ -349,9 +349,9 @@ public class CajaADO {
                     cajaTB.setContado(resultSet.getDouble("Contado"));
                     cajaTB.setCalculado(resultSet.getDouble("Calculado"));
                     cajaTB.setDiferencia(resultSet.getDouble("Diferencia"));
-
+                    cajaTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("Apellidos"), resultSet.getString("Nombres")));
                     arrayTotales = new ArrayList();
-                    
+
                     statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto as MontoBase FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
                     statementMovimientoBase.setString(1, cajaTB.getIdCaja());
                     try (ResultSet setMovimientoBase = statementMovimientoBase.executeQuery()) {
@@ -360,7 +360,7 @@ public class CajaADO {
                         } else {
                             arrayTotales.add(0.00);
                         }
-                    }                   
+                    }
 
                     statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT SUM(Monto) AS VentaEfectivo FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 2");
                     statementMovimientoBase.setString(1, cajaTB.getIdCaja());
