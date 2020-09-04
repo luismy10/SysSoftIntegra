@@ -3,17 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/CajaADO.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/cortecaja/FxCajaBusquedaController.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/cortecaja/FxCajaConsultasController.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/model/MovimientoCajaTB.java</file>
-            <file>file:/C:/Users/Rubert/Documents/NetBeansProjects/SysSoftIntegra/src/report/CortedeCaja.jrxml</file>
-=======
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/consultas/pagar/FxCuentasPorPagarVisualizarController.java</file>
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/compras/FxAmortizarPagosController.java</file>
-            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/model/CompraADO.java</file>
->>>>>>> 43058abd0dd3985450cabe17e917a3270febc1ec
+            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/report/VentaRealizada.jrxml</file>
+            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/report/GuiadeRemision.jrxml</file>
+            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/configuracion/impresoras/FxImpresoraController.java</file>
+            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaEstructuraController.java</file>
+            <file>file:/C:/Users/Aleza/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/venta/FxVentaDetalleController.java</file>
         </group>
     </open-files>
 </project-private>

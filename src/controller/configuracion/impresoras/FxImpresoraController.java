@@ -85,10 +85,28 @@ public class FxImpresoraController implements Initializable {
         rbDocumentos.setToggleGroup(group);
         printerService = new PrinterService();
         loadPrinters();
+        loadConfigurationDefauld();
     }
 
     private void loadPrinters() {
+        cbImpresoras.getItems().clear();
         printerService.getPrinters().forEach(e -> cbImpresoras.getItems().add(e));
+    }
+
+    public void loadConfigurationDefauld() {
+        if (Session.TIPO_IMPRESORA.equalsIgnoreCase("ticket")) {
+            rbTicket.setSelected(true);
+        } else if (Session.TIPO_IMPRESORA.equalsIgnoreCase("a4")) {
+            rbDocumentos.setSelected(true);
+            cbPaperCut.setDisable(true);
+        }
+        for (int i = 0; i < cbImpresoras.getItems().size(); i++) {
+            if (cbImpresoras.getItems().get(i).equalsIgnoreCase(Session.NOMBRE_IMPRESORA)) {
+                cbImpresoras.getSelectionModel().select(i);
+                break;
+            }
+        }
+        cbPaperCut.setSelected(Session.CORTAPAPEL_IMPRESORA);
     }
 
     private PrintService findPrintService(String printerName, PrintService[] services) {
@@ -237,7 +255,7 @@ public class FxImpresoraController implements Initializable {
                 Properties prop = new Properties();
                 prop.setProperty("printername", cbImpresoras.getSelectionModel().getSelectedItem());
                 prop.setProperty("printercutpaper", cbPaperCut.isSelected() + "");
-                prop.setProperty("printertype", rbTicket.isSelected() + "");
+                prop.setProperty("printertype", rbTicket.isSelected() ? "ticket" : "a4");
                 prop.store(output, "Ruta de configuración de la impresora");
                 state = true;
                 Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");

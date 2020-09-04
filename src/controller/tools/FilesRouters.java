@@ -183,7 +183,6 @@ public final class FilesRouters {
     public static final String FX_CUENTAS_POR_COBRAR = "/view/consultas/pagar/FxCuentasPorPagar.fxml";
 
     //--------------------------------------------------------------------------------------------------
-    public static final String FX_IMPRESORA_TICKET = "/view/operaciones/venta/FxImpresoraTicket.fxml";
 
     public static final String FX_IMPRIMIR = "/view/configuracion/impresoras/FxImprimir.fxml";
 

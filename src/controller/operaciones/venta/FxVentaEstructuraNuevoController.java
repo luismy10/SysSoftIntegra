@@ -598,8 +598,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             }
             return;
         }
-        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA.equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(vbWindow, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
+        if (!Session.ESTADO_IMPRESORA) {
+            Tools.AlertMessageWarning(vbWindow, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración impresora e impresora.");
             if (ticket) {
                 resetVenta();
             }
@@ -807,29 +807,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-        } catch (IOException ex) {
-            System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
-        }
-    }
-
-    private void openWindowImpresora() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_IMPRESORA_TICKET);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxImpresoraTicketController controller = fXMLLoader.getController();
-//            controller.setInitVentaEstructuraController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Configurar impresora", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w
-                    -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
-            );
-            controller.loadConfigurationDefauld();
             stage.show();
         } catch (IOException ex) {
             System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
@@ -1184,18 +1161,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onActionLimpiar(ActionEvent event) {
         cancelarVenta();
-    }
-
-    @FXML
-    private void onKeyPressedImpresora(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowImpresora();
-        }
-    }
-
-    @FXML
-    private void onActionImpresora(ActionEvent event) {
-        openWindowImpresora();
     }
 
     @FXML

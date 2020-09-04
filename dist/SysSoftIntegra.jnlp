@@ -8,11 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-<<<<<<< HEAD
-    <jar href="SysSoftIntegra.jar" size="2834100" download="eager" />
-=======
-    <jar href="SysSoftIntegra.jar" size="2830554" download="eager" />
->>>>>>> a072f5d0def3e278576a3f5e639049642cacc66c
+    <jar href="SysSoftIntegra.jar" size="2847850" download="eager" />
     <jar href="lib\Consola.jar" size="254096" download="eager" />
     <jar href="lib\RobotoBold.jar" size="91740" download="eager" />
     <jar href="lib\RobotoMedium.jar" size="91979" download="eager" />
@@ -72,6 +68,9 @@
     <jar href="lib\stax-api-1.0.1.jar" size="26514" download="eager" />
     <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
   </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="SysSoftIntegra" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
   <jfx:javafx-desc  width="800" height="600" main-class="controller.preloader.SysSoftIntegra"  name="SysSoftIntegra" />
   <update check="always"/>
 </jnlp>

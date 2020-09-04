@@ -64,14 +64,14 @@ public class FxImprimirController implements Initializable {
                         book.append(billPrintable, billPrintable.getPageFormat(pj));
                         pj.setPageable(book);
                         pj.print();
-//                        if (cbCortarPapel.isSelected()) {
-//                            billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
-//                        }
+                        if (cbCortarPapel.isSelected()) {
+                            billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                        }
                     } else {
                         Tools.AlertMessageWarning(apWindow, "Imprimir", "No puedo el nombre de la impresora, intente nuevamente.");
                     }
 
-                } catch (PrinterException ex) {
+                } catch (PrinterException | PrintException | IOException ex) {
                     Tools.AlertMessageError(apWindow, "Imprimir", "Error en imprimit: " + ex.getLocalizedMessage());
                 }
             }

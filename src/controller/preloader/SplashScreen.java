@@ -101,11 +101,10 @@ public class SplashScreen extends Preloader {
 
                             Session.ESTADO_IMPRESORA = true;
                             Session.NOMBRE_IMPRESORA = prop.getProperty("printername");
-                            Session.CORTAPAPEL_IMPRESORA = Boolean.parseBoolean(prop.getProperty("printcutspaper"));
-
+                            Session.CORTAPAPEL_IMPRESORA = Boolean.parseBoolean(prop.getProperty("printercutpaper"));
+                            Session.TIPO_IMPRESORA = prop.getProperty("printertype");
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA = false;
-                            Session.NOMBRE_IMPRESORA = "";
                         }
 
                         LoadFont loadFont = new LoadFont(); 

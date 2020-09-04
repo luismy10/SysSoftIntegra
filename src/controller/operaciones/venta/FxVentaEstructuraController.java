@@ -1,8 +1,10 @@
 package controller.operaciones.venta;
 
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.tools.ApiSunat;
 import controller.tools.BillPrintable;
 import controller.tools.FilesRouters;
+import controller.tools.Json;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -63,6 +65,7 @@ import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.VentaTB;
 import org.controlsfx.control.Notifications;
+import org.json.simple.JSONObject;
 
 public class FxVentaEstructuraController implements Initializable {
 
@@ -131,11 +134,7 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private Label lblTotalPagar;
     @FXML
-    private HBox hbBotonesInferior;
-    @FXML
     private Button btnMovimiento;
-    @FXML
-    private Button btnImpresora;
     @FXML
     private Button btnCancelar;
     @FXML
@@ -365,13 +364,13 @@ public class FxVentaEstructuraController implements Initializable {
 //            hbBotonesInferior.getChildren().remove(btnQuitar);
         }
         if (privilegioTBs.get(9).getIdPrivilegio() != 0 && !privilegioTBs.get(9).isEstado()) {
-            hbBotonesInferior.getChildren().remove(btnMovimiento);
+            hbBotonesSuperior.getChildren().remove(btnMovimiento);
         }
         if (privilegioTBs.get(10).getIdPrivilegio() != 0 && !privilegioTBs.get(10).isEstado()) {
-            hbBotonesInferior.getChildren().remove(btnImpresora);
+//            hbBotonesInferior.getChildren().remove(btnImpresora);
         }
         if (privilegioTBs.get(11).getIdPrivilegio() != 0 && !privilegioTBs.get(11).isEstado()) {
-            hbBotonesInferior.getChildren().remove(btnCancelar);
+            hbBotonesSuperior.getChildren().remove(btnCancelar);
         }
         if (privilegioTBs.get(12).getIdPrivilegio() != 0 && !privilegioTBs.get(12).isEstado()) {
             // btnCliente.setDisable(true);
@@ -630,27 +629,6 @@ public class FxVentaEstructuraController implements Initializable {
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
-        }
-    }
-
-    private void openWindowImpresora() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_IMPRESORA_TICKET);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxImpresoraTicketController controller = fXMLLoader.getController();
-//            controller.setInitVentaEstructuraController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Configurar impresora", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            controller.loadConfigurationDefauld();
-            stage.show();
-        } catch (IOException ex) {
-            System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
         }
     }
 
@@ -1132,8 +1110,8 @@ public class FxVentaEstructuraController implements Initializable {
             }
             return;
         }
-        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA.equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
+        if (!Session.ESTADO_IMPRESORA) {
+            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración impresora e impresora.");
             if (ticket) {
                 resetVenta();
             }
@@ -1319,6 +1297,93 @@ public class FxVentaEstructuraController implements Initializable {
             exec.shutdown();
         }
 
+    }
+
+    private void getApiSunat() {
+        ApiSunat apiSunat = new ApiSunat(txtNumeroDocumento.getText().trim());
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return apiSunat.GetRequest();
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtDireccionCliente.setText("");
+        });
+
+        task.setOnFailed(e -> {
+              clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("200")) {
+                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
+                      clearDataClient();
+                } else {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                          clearDataClient();
+                    } else {
+                        txtNumeroDocumento.setDisable(false);
+                        txtDatosCliente.setDisable(false);
+                        txtCelularCliente.setDisable(false);
+                        txtDireccionCliente.setDisable(false);
+                        btnBuscarCliente.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        if (sONObject.get("ruc") != null) {
+                            txtNumeroDocumento.setText(sONObject.get("ruc").toString());
+                        }
+                        if (sONObject.get("razon_social") != null) {
+                            txtDatosCliente.setText(sONObject.get("razon_social").toString());
+                        }
+                        if (sONObject.get("domicilio_fiscal") != null) {
+                            txtDireccionCliente.setText(sONObject.get("domicilio_fiscal").toString());
+                        }
+                        txtCelularCliente.setText("");
+                    }
+                }
+            } else {
+                clearDataClient();
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
+    }
+
+    private void clearDataClient() {
+        txtNumeroDocumento.setDisable(false);
+        txtDatosCliente.setDisable(false);
+        txtCelularCliente.setDisable(false);
+        txtDireccionCliente.setDisable(false);
+        btnBuscarCliente.setDisable(false);
+        btnBuscarSunat.setDisable(false);
+
+        txtNumeroDocumento.setText("");
+        txtDatosCliente.setText("");
+        txtCelularCliente.setText("");
+        txtDireccionCliente.setText("");
     }
 
     @FXML
@@ -1532,18 +1597,6 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedImprimir(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowImpresora();
-        }
-    }
-
-    @FXML
-    private void onActionImprimir(ActionEvent event) {
-        openWindowImpresora();
-    }
-
-    @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             cancelarVenta();
@@ -1602,13 +1655,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedSunat(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            getApiSunat();
         }
     }
 
     @FXML
     private void onActionSunat(ActionEvent event) {
-
+        getApiSunat();
     }
 
     public int getIdTipoComprobante() {

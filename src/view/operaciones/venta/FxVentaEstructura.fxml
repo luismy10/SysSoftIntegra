@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -14,6 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -22,17 +22,8 @@
    <children>
       <VBox VBox.vgrow="ALWAYS">
          <children>
-            <HBox fx:id="hbBotonesSuperior" alignment="CENTER_LEFT" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
+            <HBox fx:id="hbBotonesSuperior" alignment="CENTER_LEFT" style="-fx-background-color: #cccccc;">
                <children>
-                  <Button fx:id="btnCobrar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" text="Cobrar(F1)">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/complete.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <Button fx:id="btnArticulo" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Productos(F2)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -42,7 +33,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnListaPrecio" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionListaPrecios" onKeyPressed="#onKeyPressedListaPrecios" styleClass="buttonLight" text="Lista de Precios(F3)">
+                  <Button fx:id="btnListaPrecio" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionListaPrecios" onKeyPressed="#onKeyPressedListaPrecios" styleClass="buttonLight" text="Precios(F3)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -87,13 +78,49 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Button fx:id="btnMovimiento" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCashMovement" onKeyPressed="#onKeyPressedCashMovement" styleClass="buttonLight" text="Mov. de Caja(F8)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/cash_movement.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionTicket" onKeyPressed="#onKeyPressedTicket" styleClass="buttonLight" text="Ticket(F9)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/ticket.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnCancelar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Limpiar(10)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/escoba.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnVentasPorDia" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasPorDia" onKeyPressed="#onKeyPressedVentasPorDia" styleClass="buttonLight" visible="false">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/view.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
                   <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox style="-fx-spacing: 0.5em; -fx-padding: 0.5em; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
+                        <VBox style="-fx-spacing: 0.5em; -fx-padding: 0.5em; -fx-border-color: #999999;" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                  <children>
@@ -145,13 +172,30 @@
                         <Insets />
                      </HBox.margin>
                   </HBox>
-                  <HBox style="-fx-border-width: 1px; -fx-border-color: #cccccc;">
+                  <HBox style="-fx-border-width: 1px; -fx-border-color: #999999;">
                      <children>
                         <VBox>
                            <children>
-                              <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-padding: 0.6666666666666666em; -fx-spacing: 0.6666666666666666em;">
+                              <HBox alignment="CENTER">
                                  <children>
-                                    <Text fx:id="lblTotal" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="M 0.00" />
+                                    <Button fx:id="btnCobrar" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionRegister" onKeyPressed="#onKeyPressedRegister" styleClass="buttonLightDefault" HBox.hgrow="ALWAYS">
+                                       <graphic>
+                                          <HBox>
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto16" text="Cobrar(F1)" textFill="WHITE" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Text fx:id="lblTotal" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium28" text="M 0.00" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                    </Button>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
@@ -165,7 +209,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="220.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-padding: 0em  0.4166666666666667em  0.4166666666666667em  0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
@@ -184,7 +228,7 @@
                                     </HBox>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" style="-fx-border-color: #cccccc; -fx-spacing: 0.8333333333333334em; -fx-border-width: 1px 0 0 0;">
+                              <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-border-width: 1px 0 0 0;">
                                  <children>
                                     <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                                        <children>
@@ -199,7 +243,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <ComboBox fx:id="cbTipoDocumento" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Tipo de documento" HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="cbTipoDocumento" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Tipo de documento" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT">
@@ -215,8 +259,8 @@
                                                 </Label>
                                                 <HBox>
                                                    <children>
-                                                      <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionCliente" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="240.0" promptText="N° de documento" styleClass="text-field-normal" />
-                                                      <Button fx:id="btnBuscarCliente" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonLightSuccess">
+                                                      <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionCliente" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="220.0" promptText="N° de documento" styleClass="text-field-normal" />
+                                                      <Button fx:id="btnBuscarCliente" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonLight">
                                                          <graphic>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -225,11 +269,11 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="btnBuscarSunat" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSunat" onKeyPressed="#onKeyPressedSunat" prefHeight="30.0" styleClass="buttonLightWarning">
+                                                      <Button fx:id="btnBuscarSunat" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSunat" onKeyPressed="#onKeyPressedSunat" prefHeight="30.0" styleClass="buttonLight">
                                                          <graphic>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
-                                                                  <Image url="@../../image/configuracion.png" />
+                                                                  <Image url="@../../image/sunat_logo.png" />
                                                                </image>
                                                             </ImageView>
                                                          </graphic>
@@ -249,7 +293,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtDatosCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtDatosCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT">
@@ -263,7 +307,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtCelularCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Celular del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtCelularCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Celular del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT">
@@ -277,20 +321,20 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <TextField fx:id="txtDireccionCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtDireccionCliente" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Dirección del cliente" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;" VBox.vgrow="ALWAYS">
+                              <HBox alignment="CENTER_LEFT" style="-fx-border-width: 1px 0 0 0; -fx-border-color: #999999;" VBox.vgrow="ALWAYS">
                                  <children>
                                     <ScrollPane fitToWidth="true" styleClass="scroll-pane-primary" HBox.hgrow="ALWAYS">
                                        <content>
-                                          <VBox style="-fx-background-color: white; -fx-padding: 0.8333333333333334em;">
+                                          <VBox style="-fx-background-color: white;">
                                              <children>
-                                                <GridPane>
+                                                <GridPane style="-fx-padding: 0.8333333333333334em  0.8333333333333334em 0px  0.8333333333333334em;">
                                                   <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
@@ -305,18 +349,18 @@
                                                       <Label fx:id="lblValorVenta" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #000000;" styleClass="labelRobotoMedium16" text="M 0.00" GridPane.columnIndex="1" />
                                                       <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #1a2226;" styleClass="labelRoboto14" text="Descuento:" textFill="#1a2226" GridPane.rowIndex="1" />
                                                       <Label fx:id="lblDescuento" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #000000;" styleClass="labelRobotoMedium16" text="M 0.00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                      <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #1a2226;" styleClass="labelRoboto14" text="Sub Importe" textFill="#1a2226" GridPane.rowIndex="2" />
+                                                      <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #1a2226;" styleClass="labelRoboto14" text="Sub Importe:" textFill="#1a2226" GridPane.rowIndex="2" />
                                                       <Label fx:id="lblSubImporte" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #000000;" styleClass="labelRobotoMedium16" text="M 0.00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                    </children>
                                                 </GridPane>
-                                                <GridPane fx:id="gpTotales">
+                                                <GridPane fx:id="gpTotales" style="-fx-padding: 0px  0.8333333333333334em 0px  0.8333333333333334em;">
                                                   <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                                   </columnConstraints>
                                                 </GridPane>
-                                                <Separator minHeight="1.0" prefHeight="1.0" VBox.vgrow="ALWAYS" />
-                                                <GridPane>
+                                                <Pane minHeight="1.0" prefHeight="1.0" style="-fx-border-color: #999999; -fx-border-width: 1px;" />
+                                                <GridPane style="-fx-padding: 0px  0.8333333333333334em  0.8333333333333334em  0.8333333333333334em;">
                                                   <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
@@ -328,7 +372,7 @@
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #1a2226;" styleClass="labelRoboto14" text="Total Importe" GridPane.rowIndex="2" />
+                                                      <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #1a2226;" styleClass="labelRoboto14" text="Total Importe:" GridPane.rowIndex="2" />
                                                       <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #1a2226;" styleClass="labelRoboto16" text="Total Importe(rdon.):" GridPane.rowIndex="3" />
                                                       <Label fx:id="lblImporteTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #000000;" styleClass="labelRobotoMedium16" text="M 0.00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                       <Label fx:id="lblTotalPagar" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #0771d3;" styleClass="labelRobotoMedium18" text="M 0.00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -347,55 +391,6 @@
                         <Insets />
                      </HBox.margin>
                   </HBox>
-               </children>
-            </HBox>
-            <HBox fx:id="hbBotonesInferior" alignment="CENTER_LEFT" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
-               <children>
-                  <Button fx:id="btnMovimiento" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCashMovement" onKeyPressed="#onKeyPressedCashMovement" styleClass="buttonLight" text="Mov. de Caja(F8)">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/cash_movement.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionTicket" onKeyPressed="#onKeyPressedTicket" styleClass="buttonLight" text="Ticket(F9)">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/ticket.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnCancelar" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Limpiar(10)">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/escoba.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnImpresora" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionImprimir" onKeyPressed="#onKeyPressedImprimir" styleClass="buttonLight" text="Impresora(11)">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/print.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnVentasPorDia" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasPorDia" onKeyPressed="#onKeyPressedVentasPorDia" styleClass="buttonLight" text="Ventas y Devoluciones(F10)" visible="false">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/view.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                </children>
             </HBox>
          </children>

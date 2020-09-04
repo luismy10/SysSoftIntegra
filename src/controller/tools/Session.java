@@ -41,9 +41,10 @@ public class Session {
     /*
     impresora session
      */
-    public static String NOMBRE_IMPRESORA;
     public static int TICKET_VENTA_ID;
     public static String TICKET_VENTA_RUTA;
+
+    public static String NOMBRE_IMPRESORA;
     public static boolean CORTAPAPEL_IMPRESORA;
     public static boolean ESTADO_IMPRESORA;
     public static String TIPO_IMPRESORA;
