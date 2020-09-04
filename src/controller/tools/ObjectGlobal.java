@@ -23,7 +23,7 @@ public class ObjectGlobal {
     public static AnchorPane PANE_PRINCIPAL;
 
     static {
-        PANE_PRINCIPAL = new AnchorPane();       
+        PANE_PRINCIPAL = new AnchorPane();
     }
 
     public static void InitializationTransparentBackground(AnchorPane vbPrincipal) {

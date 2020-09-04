@@ -68,7 +68,7 @@ public class WindowStage {
         }
     }
 
-    public static void openWindowSuministroCompra(boolean background,AnchorPane vbPrincipal,FxComprasController comprasController, SuministroTB suministroTB,Window window) {
+     public static void openWindowSuministroCompra(boolean background,AnchorPane vbPrincipal,FxComprasController comprasController, SuministroTB suministroTB,Window window) {
         try {
             if(background)ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = WindowStage.class.getClassLoader().getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);

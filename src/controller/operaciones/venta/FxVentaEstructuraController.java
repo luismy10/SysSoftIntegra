@@ -146,6 +146,8 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnBuscarCliente;
     @FXML
     private ComboBox<DetalleTB> cbTipoDocumento;
+    @FXML
+    private Button btnBuscarSunat;
 
     private AnchorPane vbPrincipal;
 
@@ -788,7 +790,7 @@ public class FxVentaEstructuraController implements Initializable {
                     //Controlller here
                     FxVentaCantidadesController controller = fXMLLoader.getController();
                     controller.setInitVentaEstructuraController(this);
-                    controller.initComponents(tvList.getSelectionModel().getSelectedItem(),false);
+                    controller.initComponents(tvList.getSelectionModel().getSelectedItem(), false);
                     //
                     Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window.getScene().getWindow());
                     stage.setResizable(false);
@@ -809,20 +811,20 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-    public void openWindowCantidadLista(SuministroTB suministroTB,Boolean tipoVenta) {
+    public void openWindowCantidadLista(SuministroTB suministroTB, Boolean tipoVenta) {
         try {
-          
+
             URL url = getClass().getResource(FilesRouters.FX_VENTA_CANTIDADES);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxVentaCantidadesController controller = fXMLLoader.getController();
             controller.setInitVentaEstructuraController(this);
-            controller.initComponents(suministroTB,tipoVenta);
+            controller.initComponents(suministroTB, tipoVenta);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window.getScene().getWindow());
             stage.setResizable(false);
-            stage.sizeToScene();        
+            stage.sizeToScene();
             stage.show();
             controller.getTxtCantidad().requestFocus();
         } catch (IOException ex) {
@@ -1595,6 +1597,18 @@ public class FxVentaEstructuraController implements Initializable {
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
             event.consume();
         }
+    }
+
+    @FXML
+    private void onKeyPressedSunat(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionSunat(ActionEvent event) {
+
     }
 
     public int getIdTipoComprobante() {

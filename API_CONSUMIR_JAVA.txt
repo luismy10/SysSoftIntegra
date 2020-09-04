@@ -1,0 +1,304 @@
+package controller;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import model.ColegiadoModel;
+import model.DBUtil;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+public class FxPrincipalController implements Initializable {
+
+    @FXML
+    private AnchorPane window;
+    @FXML
+    private TableView<ColegiadoModel> tvLista;
+    @FXML
+    private TableColumn<ColegiadoModel, Integer> tcNumero;
+    @FXML
+    private TableColumn<ColegiadoModel, String> tcCip;
+    @FXML
+    private TableColumn<ColegiadoModel, String> tcDatosPersonales;
+    @FXML
+    private TableColumn<ColegiadoModel, String> tcEspecialidad;
+    @FXML
+    private Label lblLoad;
+    @FXML
+    private Button btnLista;
+    @FXML
+    private Button btnActualizar;
+
+    private final String URLCOLEGIADOS = "http://www.cip-junin.org.pe/cd/servicios/json_colegiados.php";
+
+    private String jsonURL;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        tcNumero.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIdColegiado()).asObject());
+        tcCip.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCip()));
+        tcDatosPersonales.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getApellidos() + " " + cellData.getValue().getNombres()));
+        tcEspecialidad.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEspecilidad()));
+    }
+
+    private ObservableList<ColegiadoModel> listarColegiados() {
+        ObservableList<ColegiadoModel> models = FXCollections.observableArrayList();
+        String result = GetRequest();
+        if (result.equalsIgnoreCase("200")) {
+            if (jsonURL.equalsIgnoreCase("") || jsonURL == null) {
+                //Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Página principal", "La lista está vacía, verifique la respuesta del servidor.", false);
+                System.out.println("La lista está vacía, verifique la respuesta del servidor.");
+            } else {
+                JSONObject sONObject = obtenerObjetoJSON(jsonURL);
+                if (sONObject.get("estado").toString().equalsIgnoreCase("1")) {
+                    JSONArray array = obtenerArrayJSON(sONObject.get("colegiados").toString());
+                    Iterator it = array.iterator();
+                    int count = 0;
+                    while (it.hasNext()) {
+                        JSONObject object = obtenerObjetoJSON(it.next().toString());
+                        count++;
+                        ColegiadoModel colegiadoModel = new ColegiadoModel();
+                        colegiadoModel.setId(count);
+                        colegiadoModel.setCip(object.get("cip").toString());
+                        colegiadoModel.setApellidos(object.get("apellidos").toString());
+                        colegiadoModel.setNombres(object.get("nombres").toString());
+                        colegiadoModel.setEspecilidad(object.get("especialidad").toString());                        
+                        models.add(colegiadoModel);
+                    }
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Página principal", sONObject.get("mensaje").toString(), false);
+                }
+            }
+
+        } else {
+            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Página principal", result, false);
+        }
+        return models;
+    }
+
+    private void fillColegiadosTable() {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ObservableList<ColegiadoModel>> task = new Task<ObservableList<ColegiadoModel>>() {
+            @Override
+            public ObservableList<ColegiadoModel> call() {
+                return listarColegiados();
+            }
+        };
+
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+            tvLista.setItems(task.getValue());
+            lblLoad.setVisible(false);
+            btnLista.setDisable(false);
+            btnActualizar.setDisable(false);
+        });
+
+        task.setOnFailed((WorkerStateEvent e) -> {
+            lblLoad.setVisible(false);
+            btnLista.setDisable(false);
+            btnActualizar.setDisable(false);
+        });
+        task.setOnScheduled((WorkerStateEvent e) -> {
+            lblLoad.setVisible(true);
+            btnLista.setDisable(true);
+            btnActualizar.setDisable(true);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
+    }
+
+    private void updateColegiados() {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return UpdateData() ;
+            }
+        };
+
+        task.setOnSucceeded((WorkerStateEvent e) -> {
+
+            lblLoad.setVisible(false);
+            btnLista.setDisable(false);
+        });
+
+        task.setOnFailed((WorkerStateEvent e) -> {
+            lblLoad.setVisible(false);
+            btnLista.setDisable(false);
+        });
+        task.setOnScheduled((WorkerStateEvent e) -> {
+            lblLoad.setVisible(true);
+            btnLista.setDisable(true);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+    
+    private String UpdateData(){
+        String result="";
+        PreparedStatement statementColegiados;
+        try{
+            DBUtil.dbConnect();
+            DBUtil.getConnection().setAutoCommit(false);
+            statementColegiados = DBUtil.getConnection().prepareStatement("");
+            statementColegiados.addBatch();
+            
+            statementColegiados.executeBatch();
+            DBUtil.getConnection().commit();
+        }catch(SQLException ex){
+            try{
+                DBUtil.getConnection().rollback();
+            }catch(SQLException e){              
+            }
+            result = ex.getLocalizedMessage();
+        }
+        return result;
+        
+    }
+    
+    private String GetRequest() {
+        String result = "";
+        if (isValid(URLCOLEGIADOS)) {
+            BufferedReader reader = null;
+            try {
+                URL obj = new URL(URLCOLEGIADOS);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setRequestMethod("GET");
+                int responseCode = con.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    StringBuilder buffer = new StringBuilder();
+                    int read;
+                    char[] chars = new char[1024];
+                    while ((read = reader.read(chars)) != -1) {
+                        buffer.append(chars, 0, read);
+                    }
+                    jsonURL = buffer.toString();
+                    result = "200";
+                } else {
+                    result = "GET Response Code:" + responseCode;
+                }
+
+            } catch (IOException ex) {
+                result = "Error:" + ex.getLocalizedMessage();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        result = "Error:" + ex.getLocalizedMessage();
+                    }
+                }
+            }
+
+        } else {
+            result = "Error en el formato de la URL";
+        }
+        return result;
+    }
+
+    private boolean isValid(String url) {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
+            return false;
+        }
+    }
+
+    private JSONObject obtenerObjetoJSON(final String codigoJSON) {
+        JSONParser lector = new JSONParser();
+        JSONObject objectJSON = null;
+        try {
+            Object recuperado = lector.parse(codigoJSON);
+            objectJSON = (JSONObject) recuperado;
+        } catch (ParseException ex) {
+            System.out.println("Posicion:" + ex.getPosition());
+            System.out.println(ex);
+        }
+        return objectJSON;
+    }
+
+    private JSONArray obtenerArrayJSON(final String codigoJSON) {
+        JSONParser lector = new JSONParser();
+        JSONArray arrayJSON = null;
+
+        try {
+            Object recuperado = lector.parse(codigoJSON);
+            arrayJSON = (JSONArray) recuperado;
+        } catch (ParseException e) {
+            System.out.println("Posicion: " + e.getPosition());
+            System.out.println(e);
+        }
+
+        return arrayJSON;
+    }
+
+    @FXML
+    private void onKeyPressedListar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            fillColegiadosTable();
+        }
+    }
+
+    @FXML
+    private void onActionListar(ActionEvent event) {
+        fillColegiadosTable();
+    }
+
+    @FXML
+    private void onKeyPressedActualizar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            updateColegiados();
+        }
+    }
+
+    @FXML
+    private void onActionActualizar(ActionEvent event) {
+        updateColegiados();
+    }
+
+}

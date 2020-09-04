@@ -18,6 +18,7 @@ public class CompraCreditoTB {
     private String fechaPago;
     private String horaPago;
     private boolean estado;
+    private String idTransaccion;
     private TextField txtCredito;
     private DatePicker dpFecha;
     private Button btnRemove;
@@ -108,6 +109,14 @@ public class CompraCreditoTB {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public String getIdTransaccion() {
+        return idTransaccion;
+    }
+
+    public void setIdTransaccion(String idTransaccion) {
+        this.idTransaccion = idTransaccion == null ? "" : idTransaccion;
     }
 
     public TextField getTxtCredito() {
