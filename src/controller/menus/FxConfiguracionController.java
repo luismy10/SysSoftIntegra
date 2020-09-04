@@ -3,6 +3,7 @@ package controller.menus;
 import controller.configuracion.comprobante.FxTipoDocumentoController;
 import controller.configuracion.empleados.FxEmpleadosController;
 import controller.configuracion.etiquetas.FxEtiquetasController;
+import controller.configuracion.impresoras.FxImpresoraController;
 import controller.configuracion.impuestos.FxImpuestoController;
 import controller.configuracion.miempresa.FxMiEmpresaController;
 import controller.configuracion.moneda.FxMonedaController;
@@ -52,6 +53,8 @@ public class FxConfiguracionController implements Initializable {
     private VBox btnTickets;
     @FXML
     private VBox btnEtiqueta;
+    @FXML
+    private VBox btnImpresora;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -74,6 +77,14 @@ public class FxConfiguracionController implements Initializable {
     private VBox nodeEtiqueta;
 
     private FxEtiquetasController controllerEtiqueta;
+    /*
+    Controller impresora
+     */
+    private FXMLLoader fXMLImpresora;
+
+    private VBox nodeImpresora;
+
+    private FxImpresoraController controllerImpresora;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,6 +96,10 @@ public class FxConfiguracionController implements Initializable {
             fXMLEtiquetas = new FXMLLoader(getClass().getResource(FilesRouters.FX_ETIQUETA));
             nodeEtiqueta = fXMLEtiquetas.load();
             controllerEtiqueta = fXMLEtiquetas.getController();
+
+            fXMLImpresora = new FXMLLoader(getClass().getResource(FilesRouters.FX_IMPRESORA));
+            nodeImpresora = fXMLImpresora.load();
+            controllerImpresora = fXMLImpresora.getController();
         } catch (IOException ex) {
             System.out.println("Error en Configuración Controller:" + ex.getLocalizedMessage());
         }
@@ -283,6 +298,16 @@ public class FxConfiguracionController implements Initializable {
         //controllerEtiqueta.loadEtiqueta(0, new File("./archivos/etiqueta.json").getAbsolutePath());
     }
 
+    private void openWindowImpresora() {
+        controllerImpresora.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeImpresora, 0d);
+        AnchorPane.setTopAnchor(nodeImpresora, 0d);
+        AnchorPane.setRightAnchor(nodeImpresora, 0d);
+        AnchorPane.setBottomAnchor(nodeImpresora, 0d);
+        vbContent.getChildren().add(nodeImpresora);
+    }
+
     @FXML
     private void onKeyPressedCompany(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -389,6 +414,18 @@ public class FxConfiguracionController implements Initializable {
     @FXML
     private void onActionEtiquetas(ActionEvent event) {
         openWindowEtiquetas();
+    }
+
+    @FXML
+    private void onKeyPressedImpresora(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowImpresora();
+        }
+    }
+
+    @FXML
+    private void onActionImpresora(ActionEvent event) {
+        openWindowImpresora();
     }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {

@@ -488,13 +488,13 @@ public class FxValorInventarioController implements Initializable {
                             pj.setPageable(book);
                             pj.print();
                             if (Session.CORTAPAPEL_IMPRESORA) {
-                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+//                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
                             }
                             return "completed";
                         } else {
                             return "error_name";
                         }
-                    } catch (PrinterException | IOException | PrintException ex) {
+                    } catch (PrinterException/* | IOException | PrintException*/ ex) {
                         return "Error en imprimir: " + ex.getLocalizedMessage();
                     }
                 }

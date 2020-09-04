@@ -46,7 +46,7 @@ public class Session {
     public static String TICKET_VENTA_RUTA;
     public static boolean CORTAPAPEL_IMPRESORA;
     public static boolean ESTADO_IMPRESORA;
-
+    public static String TIPO_IMPRESORA;
     /*
     variable de cliente
      */

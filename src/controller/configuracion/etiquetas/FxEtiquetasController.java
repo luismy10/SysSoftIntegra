@@ -119,7 +119,7 @@ public class FxEtiquetasController implements Initializable {
 
     private SelectionModel selectionModel;
 
-    private AnchorPane content;
+    private AnchorPane vbPrincipal;
 
     private int idEtiqueta;
 
@@ -664,7 +664,7 @@ public class FxEtiquetasController implements Initializable {
 
     private void eventNuevo() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(content);
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_ETIQUETA_NUEVO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -675,18 +675,18 @@ public class FxEtiquetasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Nueva Etiqueta", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                content.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w
+                    -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
+            );
             stage.show();
         } catch (IOException ex) {
-            System.out.println("Etiqueta controlller nuevo:"+ex.getLocalizedMessage());
+            System.out.println("Etiqueta controlller nuevo:" + ex.getLocalizedMessage());
         }
     }
 
     private void eventSearch() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(content);
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_ETIQUETA_BUSQUEDA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -698,9 +698,9 @@ public class FxEtiquetasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Buscar etiquetas", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                content.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w
+                    -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
+            );
             stage.show();
         } catch (IOException exception) {
 
@@ -709,7 +709,7 @@ public class FxEtiquetasController implements Initializable {
 
     private void eventWindowPrint(Printable billPrintableEtiquetas) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(content);
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_IMPRESORA_ETIQUETA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -720,9 +720,9 @@ public class FxEtiquetasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Ventana de impresión", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                content.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w
+                    -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
+            );
             stage.show();
         } catch (IOException exception) {
 
@@ -750,7 +750,7 @@ public class FxEtiquetasController implements Initializable {
             if (!etiquetaProceso) {
                 return;
             }
-            ObjectGlobal.InitializationTransparentBackground(content);
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_ETIQUETA_EDITAR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -762,9 +762,9 @@ public class FxEtiquetasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Editar Etiqueta", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                content.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w
+                    -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE)
+            );
             stage.show();
         } catch (IOException exception) {
 
@@ -1350,8 +1350,8 @@ public class FxEtiquetasController implements Initializable {
 
     }
 
-    public void setContent(AnchorPane content) {
-        this.content = content;
+    public void setContent(AnchorPane vbPrincipal) {
+        this.vbPrincipal = vbPrincipal;
     }
 
 }

@@ -112,6 +112,8 @@ public final class FilesRouters {
     public static final String FX_DETALLE_PROCESO = "/view/configuracion/tablasbasicas/FxDetalleProceso.fxml";
 
     public static final String FX_MENTANIMIENTO = "/view/configuracion/tablasbasicas/FxMantenimiento.fxml";
+    
+    public static final String FX_IMPRESORA = "/view/configuracion/impresoras/FxImpresora.fxml";
     //--------------------------------------------------------------------------------------------------
 
     public static final String FX_TICKET = "/view/configuracion/tickets/FxTicket.fxml";

@@ -2,7 +2,6 @@ package controller.consultas.pagar;
 
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -40,7 +39,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javax.swing.ImageIcon;
 import model.CompraADO;
 import model.CompraTB;
 import net.sf.jasperreports.engine.JRException;
