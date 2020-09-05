@@ -173,7 +173,7 @@ public class FxImpresoraController implements Initializable {
             PrintReportToPrinter(jasperPrint, printName);
 
         } catch (JRException | PrintException | IOException er) {
-
+            Tools.AlertMessageWarning(vbWindow, "Impresora", "Error en generar e imprimir el documento de prueba A4.");
         }
     }
 
@@ -200,7 +200,7 @@ public class FxImpresoraController implements Initializable {
         staticText.setWidth(width);
         staticText.setHeight(50);
         staticText.setHorizontalTextAlign(HorizontalTextAlignEnum.LEFT);
-        staticText.setText("Diseño de impresión 4a");
+        staticText.setText("Diseño de impresión A4");
         band.addElement(staticText);
 
         jasperDesign.setTitle(band);
