@@ -42,6 +42,8 @@ public class FxBancoAgregarDineroController implements Initializable {
             Tools.AlertMessageWarning(apWindow, "Banco", "Ingrese una descripción");
             txtDescripcion.requestFocus();
         } else {
+            
+            
             BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
             bancoHistorialTB.setIdBanco(idBanco);
             bancoHistorialTB.setDescripcion(txtDescripcion.getText().trim());
