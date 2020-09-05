@@ -548,8 +548,7 @@ public class FxVentaDetalleController implements Initializable {
         map.put("VALOR_VENTA", lblValorVenta.getText());
         map.put("DESCUENTO", lblDescuento.getText());
         map.put("SUB_IMPORTE", lblSubTotal.getText());
-//            map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
-////            map.put("SUBREPORT_DIR", "VentaRealizadaDetalle.jasper");
+        map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", lblTotal.getText());
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));

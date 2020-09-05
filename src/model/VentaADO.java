@@ -97,6 +97,7 @@ public class VentaADO {
                     + "           ,HoraVencimiento\n"
                     + "           ,SubTotal\n"
                     + "           ,Descuento\n"
+                    + "           ,Impuesto\n"
                     + "           ,Total"
                     + "           ,Tipo"
                     + "           ,Estado"
@@ -106,7 +107,7 @@ public class VentaADO {
                     + "           ,Tarjeta"
                     + "           ,Codigo)\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             comprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(IdTipoDocumento,Serie,Numeracion,FechaRegistro)VALUES(?,?,?,?)");
 
@@ -156,14 +157,15 @@ public class VentaADO {
             venta.setString(11, ventaTB.getHoraVenta());
             venta.setDouble(12, ventaTB.getSubTotal());
             venta.setDouble(13, ventaTB.getDescuento());
-            venta.setDouble(14, ventaTB.getTotal());
-            venta.setInt(15, ventaTB.getTipo());
-            venta.setInt(16, ventaTB.getEstado());
-            venta.setString(17, ventaTB.getObservaciones());
-            venta.setDouble(18, ventaTB.getEfectivo());
-            venta.setDouble(19, ventaTB.getVuelto());
-            venta.setDouble(20, ventaTB.getTarjeta());
-            venta.setString(21, Integer.toString(dig5) + id_comprabante[1]);
+            venta.setDouble(14, ventaTB.getImpuesto());
+            venta.setDouble(15, ventaTB.getTotal());
+            venta.setInt(16, ventaTB.getTipo());
+            venta.setInt(17, ventaTB.getEstado());
+            venta.setString(18, ventaTB.getObservaciones());
+            venta.setDouble(19, ventaTB.getEfectivo());
+            venta.setDouble(20, ventaTB.getVuelto());
+            venta.setDouble(21, ventaTB.getTarjeta());
+            venta.setString(22, Integer.toString(dig5) + id_comprabante[1]);
             venta.addBatch();
 
             comprobante.setInt(1, idTipoDocumento);
@@ -467,6 +469,7 @@ public class VentaADO {
                     ventaTB.setEfectivo(resultSetVenta.getDouble("Efectivo"));
                     ventaTB.setVuelto(resultSetVenta.getDouble("Vuelto"));
                     ventaTB.setTarjeta(resultSetVenta.getDouble("Tarjeta"));
+                    ventaTB.setImpuesto(resultSetVenta.getDouble("Impuesto")); 
                     ventaTB.setTotal(resultSetVenta.getDouble("Total"));
                     ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
                     //moneda start

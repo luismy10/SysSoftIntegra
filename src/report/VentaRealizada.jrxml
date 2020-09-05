@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
-	<property name="ireport.zoom" value="4.0"/>
-	<property name="ireport.x" value="1751"/>
-	<property name="ireport.y" value="774"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="336"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -17,19 +17,20 @@
 	<parameter name="DATOSCLIENTE" class="java.lang.String"/>
 	<parameter name="DOCUMENTOCLIENTE" class="java.lang.String"/>
 	<parameter name="NUMERODOCUMENTOCLIENTE" class="java.lang.String"/>
-	<parameter name="DIRECCIONCLIENTE" class="java.lang.String"/>
-	<parameter name="FECHAEMISION" class="java.lang.String"/>
-	<parameter name="MONEDA" class="java.lang.String"/>
-	<parameter name="CALCULAR_TOTALES" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
-	<parameter name="VALOR_VENTA" class="java.lang.String"/>
-	<parameter name="DESCUENTO" class="java.lang.String"/>
-	<parameter name="SUB_TOTAL" class="java.lang.String"/>
-	<parameter name="TOTAL" class="java.lang.String"/>
-	<parameter name="SIMBOLO" class="java.lang.String"/>
-	<parameter name="VALORSOLES" class="java.lang.String"/>
 	<parameter name="CELULARCLIENTE" class="java.lang.String"/>
 	<parameter name="EMAILCLIENTE" class="java.lang.String"/>
+	<parameter name="DIRECCIONCLIENTE" class="java.lang.String"/>
+	<parameter name="FECHAEMISION" class="java.lang.String"/>
 	<parameter name="CONDICIONPAGO" class="java.lang.String"/>
+	<parameter name="MONEDA" class="java.lang.String"/>
+	<parameter name="SIMBOLO" class="java.lang.String"/>
+	<parameter name="CALCULAR_TOTALES" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="VALORSOLES" class="java.lang.String"/>
+	<parameter name="VALOR_VENTA" class="java.lang.String"/>
+	<parameter name="DESCUENTO" class="java.lang.String"/>
+	<parameter name="SUB_IMPORTE" class="java.lang.String"/>
+	<parameter name="IMPUESTO_TOTAL" class="java.lang.String"/>
+	<parameter name="IMPORTE_TOTAL" class="java.lang.String"/>
 	<field name="cantidad" class="java.lang.Double"/>
 	<field name="unidadCompraName" class="java.lang.String"/>
 	<field name="nombreMarca" class="java.lang.String"/>
@@ -610,7 +611,7 @@
 					<font fontName="Arial" size="9" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[OP. GRAVADAS]]></text>
+				<text><![CDATA[VALOR VENTA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="335" y="36" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="c19a7b74-ee51-442d-befc-502754ce2f6c"/>
@@ -624,7 +625,7 @@
 					<font fontName="Arial" size="9" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[OP. GRATUITAS]]></text>
+				<text><![CDATA[DESCUENTO TOTAL:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="335" y="52" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="b654c53b-4953-43a5-88a8-42be0b63995e"/>
@@ -638,161 +639,7 @@
 					<font fontName="Arial" size="9" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[OP. EXONERADAS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="335" y="68" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="d6ffbed1-e50a-48d7-adbf-584a22f1cee7"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<text><![CDATA[OP. INAFECTADAS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="335" y="84" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="4893f931-843a-4a6d-b565-e678e27af75f"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<text><![CDATA[DESCUENTOS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="335" y="100" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="b2c15b56-b501-4158-aebc-508c55f155e8"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<text><![CDATA[IGV 18.00%]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="335" y="116" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="4f4f33e7-5bf9-405d-b78f-f6538d43d003"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<text><![CDATA[IMPORTE TOTAL]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="435" y="20" width="120" height="16" uuid="0a822b38-33ca-46c0-a099-57b5248afd44"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[    S/. 112.50]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="435" y="36" width="120" height="16" uuid="8c82926b-5ddc-417a-8762-2f4e7f850119"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[    S/. ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="435" y="52" width="120" height="16" uuid="27118b7e-af64-455b-a763-54eca32402bc"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[    S/. ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="435" y="68" width="120" height="16" uuid="34013a32-4050-482a-be44-94c7419c19d4"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[    S/. ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="435" y="84" width="120" height="16" uuid="c0cd08c6-7afd-4306-8879-03a8fd2af80b"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[    S/. ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="435" y="100" width="120" height="16" uuid="7e13b70e-5fcd-4baa-884f-9e496ebce462"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[    S/. ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="435" y="116" width="120" height="16" uuid="4a49e4fb-90bc-4b8d-89bb-544caa227bb4"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[    S/.  112.50]]></text>
+				<text><![CDATA[SUB IMPORTE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="185" y="56" width="100" height="16" uuid="db217523-8c2f-459c-b532-9ca0fcd66a44"/>
@@ -802,27 +649,27 @@
 				<text><![CDATA[CANCELADO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="168" y="86" width="23" height="16" uuid="b349411a-fd3b-403e-ba69-d4b0140389b6"/>
+				<reportElement x="168" y="84" width="23" height="16" uuid="b349411a-fd3b-403e-ba69-d4b0140389b6"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="248" y="86" width="23" height="16" uuid="d08ad396-393d-4296-91d8-fd38513624c0"/>
+				<reportElement x="248" y="84" width="23" height="16" uuid="d08ad396-393d-4296-91d8-fd38513624c0"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DEL]]></text>
 			</staticText>
 			<line>
-				<reportElement x="187" y="102" width="56" height="1" uuid="b8d8aae4-9e32-4151-8be4-1da22d843920"/>
+				<reportElement x="187" y="100" width="56" height="1" uuid="b8d8aae4-9e32-4151-8be4-1da22d843920"/>
 			</line>
 			<line>
-				<reportElement x="271" y="101" width="56" height="1" uuid="de0fb102-6b95-4a1f-9d53-e6da9b311f0d"/>
+				<reportElement x="271" y="99" width="56" height="1" uuid="de0fb102-6b95-4a1f-9d53-e6da9b311f0d"/>
 			</line>
 			<line>
-				<reportElement x="110" y="100" width="56" height="1" uuid="c338a9e9-17a7-4183-ad96-55889c96bbc5"/>
+				<reportElement x="110" y="98" width="56" height="1" uuid="c338a9e9-17a7-4183-ad96-55889c96bbc5"/>
 			</line>
 			<staticText>
 				<reportElement x="0" y="145" width="249" height="25" uuid="b193a854-2471-4e19-b1a0-1e72572b9ada"/>
@@ -875,6 +722,114 @@ Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 				</textElement>
 				<text><![CDATA[Gracias por hacer negocios.]]></text>
 			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="20" width="120" height="16" forecolor="#1A2226" uuid="4cbc1bec-6316-4158-b00d-e25c7762248a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VALOR_VENTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="36" width="120" height="16" forecolor="#1A2226" uuid="cf8e03ea-7522-4cf0-b20a-339742d1e94e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESCUENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="52" width="120" height="16" forecolor="#1A2226" uuid="2dbcfc6d-3086-4b18-8c49-77f714a62758">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SUB_IMPORTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="335" y="84" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="7cbd56d3-bd14-4c15-8b8b-3c050add7716"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[IMPORTE TOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="84" width="120" height="16" forecolor="#1A2226" uuid="e2b2ed1e-9b8d-4abc-858c-8e4fbe718dc4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{IMPORTE_TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="335" y="68" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="19a62b92-98b0-401b-a5f4-5face941fd21"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[IGV(18%):]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="68" width="120" height="16" forecolor="#1A2226" uuid="efc2574d-65ff-4367-a415-d6dac617ac87">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SIMBOLO}+" "+$P{IMPUESTO_TOTAL}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

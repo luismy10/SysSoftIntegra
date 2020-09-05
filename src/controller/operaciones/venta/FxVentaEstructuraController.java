@@ -192,9 +192,10 @@ public class FxVentaEstructuraController implements Initializable {
 
     private double totalImporte;
 
+    private double totalImpuesto;
+
     private double total;
 
-//    private Alert alert = null;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -628,6 +629,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setSubTotal(subTotal);
                 ventaTB.setDescuento(descuento);
                 ventaTB.setSubImporte(subTotalImporte);
+                ventaTB.setImpuesto(totalImpuesto);
                 ventaTB.setTotal(total);
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList.getItems());
@@ -959,9 +961,11 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         totalImporte = 0;
+        totalImpuesto = 0;
         total = 0;
         tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        total = totalImporte + totalImpuestos;
+        totalImpuesto = totalImpuestos;
+        total = totalImporte + totalImpuesto;
         lblImporteTotal.setText(monedaSimbolo + " " + Tools.roundingValue(total, 2));
         lblTotalPagar.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));
         lblTotal.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));

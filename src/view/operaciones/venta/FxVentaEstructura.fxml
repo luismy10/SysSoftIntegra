@@ -353,6 +353,7 @@
                                                       <Label fx:id="lblSubImporte" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #000000;" styleClass="labelRobotoMedium16" text="M 0.00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                    </children>
                                                 </GridPane>
+                                                <Pane minHeight="1.0" prefHeight="1.0" style="-fx-border-color: #999999; -fx-border-width: 1px;" />
                                                 <GridPane fx:id="gpTotales" style="-fx-padding: 0px  0.8333333333333334em 0px  0.8333333333333334em;">
                                                   <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />

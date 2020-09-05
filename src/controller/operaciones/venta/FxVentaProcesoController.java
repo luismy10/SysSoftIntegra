@@ -110,11 +110,11 @@ public class FxVentaProcesoController implements Initializable {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
-        tota_venta = ventaTB.getTotal();
-        lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
-        lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(ventaTB.getTotal(), 2));
+        tota_venta = Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1));
+        lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(tota_venta, 2));
+        lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(tota_venta, 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaEstructuraController.getMonedaNombre()));
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ventaEstructuraController.getMonedaNombre()));
         hbContenido.setDisable(false);
     }
 
@@ -239,16 +239,16 @@ public class FxVentaProcesoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList,ventaEstructuraController.getIdTipoComprobante()).split("/");
+                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante()).split("/");
                     switch (result[0]) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                    ventaEstructuraController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2), true);
+                                ventaEstructuraController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2), true);
 
                                 Tools.Dispose(window);
                             } else {
-                                    ventaEstructuraController.resetVenta();
+                                ventaEstructuraController.resetVenta();
 
                                 Tools.Dispose(window);
                             }
