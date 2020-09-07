@@ -469,6 +469,9 @@ public class VentaADO {
                     ventaTB.setEfectivo(resultSetVenta.getDouble("Efectivo"));
                     ventaTB.setVuelto(resultSetVenta.getDouble("Vuelto"));
                     ventaTB.setTarjeta(resultSetVenta.getDouble("Tarjeta"));
+                    ventaTB.setSubTotal(resultSetVenta.getDouble("SubTotal"));
+                    ventaTB.setDescuento(resultSetVenta.getDouble("Descuento"));
+                    ventaTB.setSubImporte(ventaTB.getSubTotal()-ventaTB.getDescuento());
                     ventaTB.setImpuesto(resultSetVenta.getDouble("Impuesto")); 
                     ventaTB.setTotal(resultSetVenta.getDouble("Total"));
                     ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
