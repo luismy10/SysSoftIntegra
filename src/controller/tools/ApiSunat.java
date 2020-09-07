@@ -11,7 +11,11 @@ import java.net.URL;
 public class ApiSunat {
 
     private String URLAPI = "https://api.sunat.cloud/ruc/";
-
+    
+    private String URLSUNATAPI = "https://dniruc.apisperu.com/api/v1/dni/48909348?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFsZXhhbmRlcl9keF8xMEBob3RtYWlsLmNvbSJ9.6TLycBwcRyW1d-f_hhCoWK1yOWG_HJvXo8b-EoS5MhE";
+    
+    private String URLRENIECAPI = "https://dniruc.apisperu.com/api/v1/ruc/10764233889?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFsZXhhbmRlcl9keF8xMEBob3RtYWlsLmNvbSJ9.6TLycBwcRyW1d-f_hhCoWK1yOWG_HJvXo8b-EoS5MhE";
+    
     private String jsonURL;
 
     public ApiSunat(String numdocument) {

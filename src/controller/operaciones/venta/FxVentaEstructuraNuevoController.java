@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -62,8 +63,6 @@ import model.SuministroTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.VentaTB;
-import org.controlsfx.control.Notifications;
-
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -73,8 +72,6 @@ import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
 import model.ClienteADO;
-import model.DetalleADO;
-import model.DetalleTB;
 import model.EmpleadoTB;
 import model.VentaADO;
 import net.sf.jasperreports.engine.JRException;
@@ -104,21 +101,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
+    private ComboBox<ClienteTB> cbCliente;
+    @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
     private Text lblSerie;
     @FXML
     private Text lblNumeracion;
-    @FXML
-    private ComboBox<DetalleTB> cbTipoDocumento;
-    @FXML
-    private TextField txtNumeroDocumento;
-    @FXML
-    private TextField txtDatosCliente;
-    @FXML
-    private TextField txtCelularCliente;
-    @FXML
-    private TextField txtDireccionCliente;
 
     private AnchorPane vbPrincipal;
 
@@ -138,8 +127,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private String monedaSimbolo;
 
-    private String idCliente;
-
     private int totalPaginacion;
 
     private int paginacion;
@@ -155,7 +142,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private double subTotalImporte;
 
     private double totalImporte;
-    
+
     private double totalImpuesto;
 
     private double total;
@@ -174,10 +161,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
-        idCliente = "";
-
         loadDataComponent();
-
     }
 
     private void loadDataComponent() {
@@ -214,23 +198,60 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             }
         }
 
-        cbTipoDocumento.getItems().clear();
-        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
-
-        if (!cbTipoDocumento.getItems().isEmpty()) {
-            for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
-                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
-                    cbTipoDocumento.getSelectionModel().select(detalleTB);
-                    break;
+        SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
+//        searchComboBoxClientes.getComboBox().getItems().addAll(ClienteADO.GetSearchComboBoxCliente((short) 1, ""));
+        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBoxCliente.getComboBox().hide();
+            }
+        });
+        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            cbCliente.getItems().clear();
+            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 4, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
+            clienteTBs.forEach(e -> cbCliente.getItems().add(e));
+        });
+        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            if (null == t.getCode()) {
+                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
+            } else {
+                switch (t.getCode()) {
+                    case ENTER:
+                    case SPACE:
+                    case ESCAPE:
+                        searchComboBoxCliente.getComboBox().hide();
+                        break;
+                    case UP:
+                    case DOWN:
+                    case LEFT:
+                    case RIGHT:
+                        break;
+                    default:
+                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
+                        break;
                 }
             }
+        });
+        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxCliente.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBoxCliente.getComboBox().hide();
+                }
+            }
+        });
+
+        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
+            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
+            cbCliente.getSelectionModel().select(0);
         }
 
-        idCliente = Session.CLIENTE_ID;
-        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
-        txtDatosCliente.setText(Session.CLIENTE_DATOS);
-        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
-        txtCelularCliente.setText("");
     }
 
     public void onEventPaginacion() {
@@ -268,14 +289,14 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 listSuministros.stream().map(tvList1 -> {
                     VBox vBox = new VBox();
                     vBox.setMinWidth(Control.USE_PREF_SIZE);
-                    vBox.setPrefWidth(300);
+                    vBox.setPrefWidth(200);
                     vBox.maxWidth(Control.USE_PREF_SIZE);
-                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color:  #0478b2;-fx-border-width:1px;-fx-background-color:transparent;");
+                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color:  #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
                     vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
-                    imageView.setFitWidth(160);
-                    imageView.setFitHeight(160);
+                    imageView.setFitWidth(120);
+                    imageView.setFitHeight(120);
                     vBox.getChildren().add(imageView);
 
                     Label lblCodigo = new Label(tvList1.getClave());
@@ -553,11 +574,11 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         fpProductos.getChildren().clear();
         lvProductoAgregados.getItems().clear();
 
-        idCliente = Session.CLIENTE_ID;
-        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
-        txtDatosCliente.setText(Session.CLIENTE_DATOS);
-        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
-        txtCelularCliente.setText("");
+        cbCliente.getItems().clear();
+        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
+            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
+            cbCliente.getSelectionModel().select(0);
+        }
 
         loadDataComponent();
         lblPaginaActual.setText(paginacion + "");
@@ -566,54 +587,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         txtSearch.clear();
         txtSearch.requestFocus();
         calculateTotales();
-    }
-
-    public void onExecuteCliente(short opcion, String search) {
-
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<ClienteTB> task = new Task<ClienteTB>() {
-            @Override
-            public ClienteTB call() {
-                return ClienteADO.GetSearchClienteNumeroDocumento(opcion, search);
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            ClienteTB clienteTB = task.getValue();
-            if (clienteTB != null) {
-                idCliente = clienteTB.getIdCliente();
-                txtDatosCliente.setText(clienteTB.getInformacion());
-                txtDireccionCliente.setText(clienteTB.getDireccion());
-                txtCelularCliente.setText(clienteTB.getCelular());
-                for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
-                        cbTipoDocumento.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            } else {
-                idCliente = "";
-                txtDatosCliente.setText("");
-                txtDireccionCliente.setText("");
-                txtCelularCliente.setText("");
-            }
-            txtNumeroDocumento.setDisable(false);
-        });
-
-        task.setOnFailed(e -> txtNumeroDocumento.setDisable(false));
-
-        task.setOnScheduled(e -> txtNumeroDocumento.setDisable(true));
-
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-
     }
 
     private JasperPrint reportA4(VentaTB ventaTB, ArrayList<SuministroTB> list) throws JRException {
@@ -893,15 +866,28 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 try {
                     billPrintable.loadEstructuraTicket(Session.TICKET_PRE_VENTA_ID, Session.TICKET_PRE_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
+                    String numeroDocumento = "";
+                    String informacion = "";
+                    String celular = "";
+                    String direccion = "";
+
+                    if (cbCliente.getSelectionModel().getSelectedIndex() >= 0) {
+                        ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
+                        numeroDocumento = clienteTB.getNumeroDocumento() == null ? "" : clienteTB.getNumeroDocumento().toUpperCase();
+                        informacion = clienteTB.getInformacion() == null ? "" : clienteTB.getInformacion().toUpperCase();
+                        celular = clienteTB.getCelular() == null ? "" : clienteTB.getCelular().toUpperCase();
+                        direccion = clienteTB.getDireccion() == null ? "" : clienteTB.getDireccion().toUpperCase();
+                    }
+
                     for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                         HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                         billPrintable.hbEncebezado(box,
                                 "PRE VENTA",
                                 "-------",
-                                txtNumeroDocumento.getText().trim().toUpperCase(),
-                                txtDatosCliente.getText().trim().toUpperCase(),
-                                txtCelularCliente.getText().trim().toUpperCase(),
-                                txtDireccionCliente.getText().trim().toUpperCase(),
+                                numeroDocumento,
+                                informacion,
+                                celular,
+                                direccion,
                                 "00000000");
                     }
 
@@ -927,8 +913,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                 Tools.roundingValue(total, 2),
                                 "EFECTIVO",
                                 "VUELTO",
-                                txtNumeroDocumento.getText(),
-                                txtDatosCliente.getText(), "CODIGO DE VENTA", txtCelularCliente.getText().trim());
+                                numeroDocumento,
+                                informacion,
+                                "CODIGO DE VENTA",
+                                celular);
                     }
 
                     billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -1046,14 +1034,16 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         try {
             if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione la moneda ha usar.");
-            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
-                Tools.AlertMessageWarning(vbWindow, "Venta", "Ingrese el número del documento del cliente.");
-            } else if (txtDatosCliente.getText().trim().equalsIgnoreCase("")) {
-                Tools.AlertMessageWarning(vbWindow, "Venta", "Ingrese los datos del cliente.");
+                cbMoneda.requestFocus();
+            } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione un cliente.");
+                cbCliente.requestFocus();
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione el tipo de comprobante.");
+                cbComprobante.requestFocus();
             } else if (lvProductoAgregados.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "No hay productos en la lista para vender.");
+                txtSearch.requestFocus();
             } else if (total <= 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "El total de la venta no puede ser menor que 0.");
             } else {
@@ -1073,12 +1063,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 stage.show();
 
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setIdCliente(idCliente);
-                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
-                clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
-                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
-                clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
+                clienteTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
+                clienteTB.setTipoDocumento(cbCliente.getSelectionModel().getSelectedItem().getTipoDocumento());
+                clienteTB.setNumeroDocumento(cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento());
+                clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
+                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
+                clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -1297,9 +1287,11 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @FXML
     private void onMouseClickedProductosAgregados(MouseEvent event) {
-        if (lvProductoAgregados.getSelectionModel().getSelectedIndex() >= 0) {
-            openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedIndex(), lvProductoAgregados.getSelectionModel().getSelectedItem());
-            event.consume();
+        if (event.getClickCount() == 2) {
+            if (lvProductoAgregados.getSelectionModel().getSelectedIndex() >= 0) {
+                openWindowDetalleProducto(lvProductoAgregados.getSelectionModel().getSelectedIndex(), lvProductoAgregados.getSelectionModel().getSelectedItem());
+                event.consume();
+            }
         }
     }
 
@@ -1318,13 +1310,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             String[] array = ComprobanteADO.GetSerieNumeracionEspecifico(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()).split("-");
             lblSerie.setText(array[0]);
             lblNumeracion.setText(array[1]);
-        }
-    }
-
-    @FXML
-    private void onKeyPressedCobrar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            onEventCobrar();
         }
     }
 
@@ -1350,6 +1335,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onActionCliente(ActionEvent event) {
         onEventCliente();
+    }
+
+    @FXML
+    private void onKeyPressedCobrar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventCobrar();
+        }
     }
 
     @FXML
@@ -1393,7 +1385,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         cancelarVenta();
     }
 
-    @FXML
     private void onKeyTypedNumeroDocumento(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
@@ -1401,9 +1392,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-    @FXML
-    private void onActionSearchCliente(ActionEvent event) {
-        onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+    private void onKeyPressedSunat(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
     }
 
     public TextField getTxtSearch() {
