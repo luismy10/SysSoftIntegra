@@ -53,9 +53,7 @@ public class FxImprimirController implements Initializable {
                 billPrintable.setSheetWidth(ticketController.getSheetWidth());
                 billPrintable.generatePDFPrint(ticketController.getHbEncabezado(), ticketController.getHbDetalleCabecera(), ticketController.getHbPie());
                 try {
-
                     DocPrintJob job = billPrintable.findPrintService(cbImpresoras.getSelectionModel().getSelectedItem(), PrinterJob.lookupPrintServices()).createPrintJob();
-
                     if (job != null) {
                         PrinterJob pj = PrinterJob.getPrinterJob();
                         pj.setPrintService(job.getPrintService());
@@ -65,12 +63,11 @@ public class FxImprimirController implements Initializable {
                         pj.setPageable(book);
                         pj.print();
                         if (cbCortarPapel.isSelected()) {
-                            billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_VENTA);
                         }
                     } else {
                         Tools.AlertMessageWarning(apWindow, "Imprimir", "No puedo el nombre de la impresora, intente nuevamente.");
                     }
-
                 } catch (PrinterException | PrintException | IOException ex) {
                     Tools.AlertMessageError(apWindow, "Imprimir", "Error en imprimit: " + ex.getLocalizedMessage());
                 }

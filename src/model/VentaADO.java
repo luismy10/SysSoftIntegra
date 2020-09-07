@@ -258,11 +258,11 @@ public class VentaADO {
             suministro_update_granel.executeBatch();
             suministro_kardex.executeBatch();
             DBUtil.getConnection().commit();
-            return "register/" + id_comprabante[0] + "-" + id_comprabante[1] + "/" + (Integer.toString(dig5) + id_comprabante[1]);
+            return "register/"+id_venta;
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
-                return ex.getLocalizedMessage() + "/ ";
+                return ex.getLocalizedMessage() + "/";
             } catch (SQLException ex1) {
                 return ex1.getLocalizedMessage() + "/";
             }

@@ -12,18 +12,26 @@ import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.Printable;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,6 +53,8 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
+import model.TicketADO;
+import model.TicketTB;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -73,6 +83,10 @@ public class FxImpresoraController implements Initializable {
     private RadioButton rbDocumentos;
     @FXML
     private CheckBox cbPaperCut;
+    @FXML
+    private ComboBox<TicketTB> cbTipo;
+    @FXML
+    private Label lblEstado;
 
     private PrinterService printerService;
 
@@ -84,29 +98,60 @@ public class FxImpresoraController implements Initializable {
         rbTicket.setToggleGroup(group);
         rbDocumentos.setToggleGroup(group);
         printerService = new PrinterService();
-        loadPrinters();
-        loadConfigurationDefauld();
+        loadComponents();
     }
 
-    private void loadPrinters() {
-        cbImpresoras.getItems().clear();
-        printerService.getPrinters().forEach(e -> cbImpresoras.getItems().add(e));
-    }
+    private void loadComponents() {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-    public void loadConfigurationDefauld() {
-        if (Session.TIPO_IMPRESORA.equalsIgnoreCase("ticket")) {
-            rbTicket.setSelected(true);
-        } else if (Session.TIPO_IMPRESORA.equalsIgnoreCase("a4")) {
-            rbDocumentos.setSelected(true);
-            cbPaperCut.setDisable(true);
-        }
-        for (int i = 0; i < cbImpresoras.getItems().size(); i++) {
-            if (cbImpresoras.getItems().get(i).equalsIgnoreCase(Session.NOMBRE_IMPRESORA)) {
-                cbImpresoras.getSelectionModel().select(i);
-                break;
+        Task<List<Object>> task = new Task<List<Object>>() {
+            @Override
+            public List<Object> call() throws InterruptedException {
+                ArrayList<TicketTB> ticketTBs = TicketADO.ListTipoTicket();
+                List<String> printerList = printerService.getPrinters();
+                List<Object> objects = new ArrayList<>();
+                objects.add(ticketTBs);
+                objects.add(printerList);
+                return objects;
             }
+        };
+
+        task.setOnSucceeded(w -> {
+            List<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                if (objects.get(0) != null && objects.get(1) != null) {
+                    cbTipo.getItems().clear();
+                    cbImpresoras.getItems().clear();
+                    cbTipo.getItems().addAll((ArrayList<TicketTB>) objects.get(0));
+                    cbImpresoras.getItems().addAll((ArrayList<String>) objects.get(1));
+                }
+                lblEstado.setText("Información cargada correctamente.");
+                lblLoad.setVisible(false);
+            } else {
+                lblEstado.setText("Información cargada sin datos.");
+                lblLoad.setVisible(false);
+            }
+        });
+
+        task.setOnFailed(w -> {
+            lblLoad.setVisible(false);
+            lblEstado.setText("Error en cargar la información, intente nuevamente.");
+        });
+
+        task.setOnScheduled(w -> {
+            lblLoad.setVisible(true);
+            lblEstado.setText("Procesando carga...");
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
         }
-        cbPaperCut.setSelected(Session.CORTAPAPEL_IMPRESORA);
+
     }
 
     private PrintService findPrintService(String printerName, PrintService[] services) {
@@ -248,61 +293,60 @@ public class FxImpresoraController implements Initializable {
         if (cbImpresoras.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(vbWindow, "Impresora", "Seleccione una impresora para continuar.");
             cbImpresoras.requestFocus();
+        } else if (cbTipo.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(vbWindow, "Impresora", "Seleccione el destino de la impresión.");
+            cbTipo.requestFocus();
         } else {
-            String ruta = "./archivos/printSetting.properties";
-            boolean state = false;
-            try (OutputStream output = new FileOutputStream(ruta)) {
-                Properties prop = new Properties();
-                prop.setProperty("printername", cbImpresoras.getSelectionModel().getSelectedItem());
-                prop.setProperty("printercutpaper", cbPaperCut.isSelected() + "");
-                prop.setProperty("printertype", rbTicket.isSelected() ? "ticket" : "a4");
-                prop.store(output, "Ruta de configuración de la impresora");
-                state = true;
-                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
-            } catch (IOException io) {
-                state = false;
-                Tools.AlertMessageError(vbWindow, "Impresora", "Error al crear el archivo: " + io.getLocalizedMessage());
-            } finally {
-                if (state) {
-                    iniciarRutasImpresion();
+            String ruta = "./archivos/" + cbTipo.getSelectionModel().getSelectedItem().getNombreTicket() + ".properties";
+            File file = new File(ruta);
+            Properties prop = new Properties();
+            if (file.exists()) {
+                try (InputStream input = new FileInputStream(ruta)) {
+                    prop.load(input);
+                    saveProperties(prop, ruta);
+                } catch (IOException ex) {
+                    Tools.AlertMessageError(vbWindow, "Impresora", "Error en cargar el archivo: " + ex.getLocalizedMessage());
                 }
+            } else {
+                saveProperties(prop, ruta);
             }
         }
     }
 
-    private void iniciarRutasImpresion() {
-        String ruta = "./archivos/printSetting.properties";
-        try (InputStream input = new FileInputStream(ruta)) {
+    private void saveProperties(Properties prop, String ruta) {
+        try (OutputStream output = new FileOutputStream(ruta)) {
+            if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("VENTA")) {
+                prop.setProperty("printerNameVenta", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperVenta", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatVenta", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.store(output, "Ruta de configuración de la impresora de venta");
+                
+                Session.ESTADO_IMPRESORA_VENTA = true;
+                Session.NOMBRE_IMPRESORA_VENTA = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_VENTA = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_VENTA = rbTicket.isSelected() ? "ticket" : "a4";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("PRE VENTA")) {
+                prop.setProperty("printerNamePreVenta", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperPreVenta", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatPreVenta", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.store(output, "Ruta de configuración de la impresora de pre venta");
 
-            Properties prop = new Properties();
-            prop.load(input);
-
-            Session.ESTADO_IMPRESORA = true;
-            Session.NOMBRE_IMPRESORA = prop.getProperty("printername");
-            Session.CORTAPAPEL_IMPRESORA = Boolean.parseBoolean(prop.getProperty("printercutpaper"));
-            Session.TIPO_IMPRESORA = prop.getProperty("printertype");
-            Tools.AlertMessageInformation(vbWindow, "Impresora", "Se ha creado una ruta de impresión con la impresora " + Session.NOMBRE_IMPRESORA + ", por defecto " + (Session.CORTAPAPEL_IMPRESORA ? "corta papel" : "no corta papel") + ".");
-        } catch (IOException ex) {
-            Tools.AlertMessageError(vbWindow, "Impresora", "Se ha producido un error al crear la ruta de impresión, " + ex.getLocalizedMessage());
-            Session.ESTADO_IMPRESORA = false;
+                Session.ESTADO_IMPRESORA_PRE_VENTA = true;
+                Session.NOMBRE_IMPRESORA_PRE_VENTA = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_PRE_VENTA = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_PRE_VENTA = rbTicket.isSelected() ? "ticket" : "a4";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            }
+        } catch (IOException io) {
+            Tools.AlertMessageError(vbWindow, "Impresora", "Error al crear el archivo: " + io.getLocalizedMessage());
+      
         }
     }
 
     @FXML
     private void onActionOpcionRadioButton(ActionEvent event) {
         cbPaperCut.setDisable(!rbTicket.isSelected());
-    }
-
-    @FXML
-    private void onKeyPressedReloadPrinters(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            loadPrinters();
-        }
-    }
-
-    @FXML
-    private void onActionReloadPrinters(ActionEvent event) {
-        loadPrinters();
     }
 
     @FXML
@@ -327,6 +371,22 @@ public class FxImpresoraController implements Initializable {
     @FXML
     private void onActionGuardarConfiguracion(ActionEvent event) {
         onEventSaveConfiguration();
+    }
+
+    @FXML
+    private void onKeyPressedReload(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                loadComponents();
+            }
+        }
+    }
+
+    @FXML
+    private void onActionReload(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            loadComponents();
+        }
     }
 
     public void setContent(AnchorPane vbPrincipal) {

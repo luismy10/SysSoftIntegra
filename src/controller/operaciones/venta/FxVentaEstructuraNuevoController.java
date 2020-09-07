@@ -598,7 +598,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             }
             return;
         }
-        if (!Session.ESTADO_IMPRESORA) {
+        if (!Session.ESTADO_IMPRESORA_VENTA) {
             Tools.AlertMessageWarning(vbWindow, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración impresora e impresora.");
             if (ticket) {
                 resetVenta();
@@ -662,24 +662,23 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
 
-                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
+                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_VENTA, PrinterJob.lookupPrintServices()).createPrintJob();
 
                         if (job != null) {
                             PrinterJob pj = PrinterJob.getPrinterJob();
                             pj.setPrintService(job.getPrintService());
-                            pj.setJobName(Session.NOMBRE_IMPRESORA);
+                            pj.setJobName(Session.NOMBRE_IMPRESORA_VENTA);
                             Book book = new Book();
                             book.append(billPrintable, billPrintable.getPageFormat(pj));
                             pj.setPageable(book);
                             pj.print();
-                            if (Session.CORTAPAPEL_IMPRESORA) {
-                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            if (Session.CORTAPAPEL_IMPRESORA_VENTA) {
+                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_VENTA);
                             }
                             return "completed";
                         } else {
                             return "error_name";
                         }
-
                     } catch (PrinterException | IOException | PrintException ex) {
                         return "Error en imprimir: " + ex.getLocalizedMessage();
                     }

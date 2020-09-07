@@ -119,7 +119,6 @@ public class FxVentaProcesoController implements Initializable {
     }
 
     private void TotalAPagar() {
-
         if (txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()) {
             lblVuelto.setText(moneda_simbolo + " 0.00");
             lblVueltoNombre.setText("POR PAGAR: ");
@@ -159,7 +158,6 @@ public class FxVentaProcesoController implements Initializable {
         }
 
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-
     }
 
     private void onEventAceptar() {
@@ -244,12 +242,11 @@ public class FxVentaProcesoController implements Initializable {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
-                                ventaEstructuraController.imprimirVenta(result[1], result[2], txtEfectivo.getText(), Tools.roundingValue(vuelto, 2), true);
-
+                                ventaEstructuraController.resetVenta();
+                                ventaEstructuraController.imprimirVenta(result[1]);
                                 Tools.Dispose(window);
                             } else {
                                 ventaEstructuraController.resetVenta();
-
                                 Tools.Dispose(window);
                             }
                             break;

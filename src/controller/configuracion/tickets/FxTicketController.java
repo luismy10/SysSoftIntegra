@@ -487,6 +487,9 @@ public class FxTicketController implements Initializable {
                             if (tipoTicket == 1) {
                                 Session.TICKET_VENTA_ID = idTicket;
                                 Session.TICKET_VENTA_RUTA = sampleObject.toJSONString();
+                            } else if (tipoTicket == 7) {
+                                Session.TICKET_PRE_VENTA_ID = idTicket;
+                                Session.TICKET_PRE_VENTA_RUTA = sampleObject.toJSONString();
                             }
                         }
                         clearPane();
@@ -1175,11 +1178,11 @@ public class FxTicketController implements Initializable {
                 for (short j = 0; j < hBox.getChildren().size(); j++) {
                     Object object = hBox.getChildren().get(j);
                     if (object instanceof TextFieldTicket) {
-                        TextFieldTicket fieldTicket = (TextFieldTicket)  hBox.getChildren().get(j);
+                        TextFieldTicket fieldTicket = (TextFieldTicket) hBox.getChildren().get(j);
                         fieldTicket.setColumnWidth(newwidth);
                         fieldTicket.setPreferredSize(newwidth * pointWidth, fieldTicket.getPrefHeight());
                     } else if (object instanceof ImageViewTicket) {
-                        ImageViewTicket viewTicket = (ImageViewTicket)  hBox.getChildren().get(j);
+                        ImageViewTicket viewTicket = (ImageViewTicket) hBox.getChildren().get(j);
                         viewTicket.setColumnWidth(newwidth);
                     }
                 }
@@ -1420,6 +1423,9 @@ public class FxTicketController implements Initializable {
                     if (tipoTicket == 1) {
                         Session.TICKET_VENTA_ID = idTicket;
                         Session.TICKET_VENTA_RUTA = ruta;
+                    }else if(tipoTicket == 7){
+                        Session.TICKET_PRE_VENTA_ID = idTicket;
+                        Session.TICKET_PRE_VENTA_RUTA = ruta;
                     }
                 } else {
                     Tools.AlertMessageError(vbWindow, "Ticket", result);

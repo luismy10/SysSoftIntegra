@@ -283,7 +283,7 @@ public class FxVentaMostrarController implements Initializable {
         if ("".equals(idVenta) || idVenta == null) {
             return;
         }
-        if (Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA != null) {
+        if (Session.ESTADO_IMPRESORA_VENTA && Session.NOMBRE_IMPRESORA_VENTA != null) {
             loadTicket();
             ArrayList<HBox> object = new ArrayList<>();
             int rows = 0;
@@ -313,7 +313,6 @@ public class FxVentaMostrarController implements Initializable {
 //                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getNumeroDocumento());
             }
 //            billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
-
         } else {
             Tools.AlertMessageWarning(apWindow, "Detalle de venta", "No esta configurado la impresora :D");
         }

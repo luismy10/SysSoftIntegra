@@ -154,7 +154,7 @@ public class FxTicketVariableController implements Initializable {
         if (event.getClickCount() == 2) {
             addTextVariable();
         } else if (event.getClickCount() == 1) {
-            if (!lvLista.getItems().isEmpty()) {
+            if (lvLista.getSelectionModel().getSelectedIndex() >= 0) {
                 txtContenido.setText(lvLista.getSelectionModel().getSelectedItem().getVariable().toString());
             }
         }

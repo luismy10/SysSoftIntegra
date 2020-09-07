@@ -41,13 +41,21 @@ public class Session {
     /*
     impresora session
      */
-    public static int TICKET_VENTA_ID;
-    public static String TICKET_VENTA_RUTA;
+    public static int TICKET_VENTA_ID = 0;
+    public static String TICKET_VENTA_RUTA = "";
+    
+    public static int TICKET_PRE_VENTA_ID = 0;
+    public static String TICKET_PRE_VENTA_RUTA = "";
 
-    public static String NOMBRE_IMPRESORA;
-    public static boolean CORTAPAPEL_IMPRESORA;
-    public static boolean ESTADO_IMPRESORA;
-    public static String TIPO_IMPRESORA;
+    public static boolean ESTADO_IMPRESORA_VENTA;
+    public static String NOMBRE_IMPRESORA_VENTA = "";
+    public static boolean CORTAPAPEL_IMPRESORA_VENTA;
+    public static String FORMATO_IMPRESORA_VENTA = "";
+    
+    public static boolean ESTADO_IMPRESORA_PRE_VENTA;
+    public static String NOMBRE_IMPRESORA_PRE_VENTA = "";
+    public static boolean CORTAPAPEL_IMPRESORA_PRE_VENTA;
+    public static String FORMATO_IMPRESORA_PRE_VENTA = "";
     /*
     variable de cliente
      */

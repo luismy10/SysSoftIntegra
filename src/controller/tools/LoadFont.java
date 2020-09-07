@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class LoadFont {
 
-    private GraphicsEnvironment ge[];
+    private final GraphicsEnvironment ge[];
 
     public LoadFont() {
         ge = new GraphicsEnvironment[8];

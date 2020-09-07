@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventType;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -29,13 +30,16 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import javax.imageio.ImageIO;
+import org.controlsfx.control.Notifications;
 
 public class Tools {
 
@@ -55,13 +59,13 @@ public class Tools {
         return AlertMessage(node.getScene().getWindow(), Alert.AlertType.ERROR, title, value, false);
     }
 
-    public static short AlertMessage(Window window, Alert.AlertType type, String title, String value, boolean validation) {
+    public static short AlertMessage(Window window, Alert.AlertType type, String title, String message, boolean validation) {
         final URL url = Tools.class.getClass().getResource(FilesRouters.STYLE_ALERT);
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
         alert.setTitle(title);
-        alert.setContentText(value);
+        alert.setContentText(message);
         alert.setHeaderText(null);
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
@@ -142,7 +146,7 @@ public class Tools {
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
-        alert.setTitle("Prueba");
+        alert.setTitle("Movimiento");
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
         alert.setHeaderText(null);
@@ -272,7 +276,7 @@ public class Tools {
     }
 
     public static boolean isText(String cadena) {
-        return cadena.trim() == null || cadena.trim().isEmpty();
+        return cadena.trim() == null || cadena.trim().isEmpty();        
     }
 
     public static String getDate() {
@@ -354,6 +358,21 @@ public class Tools {
         } catch (IOException ex) {
         }
         return null;
+    }
+
+    public static void showAlertNotification(String url, String title, String message, Duration duration, Pos pos) {
+        Image image = new Image(url);
+        Notifications notifications = Notifications.create()
+                .title(title)
+                .text(message)
+                .graphic(new ImageView(image))
+                .hideAfter(duration)
+                .position(pos)
+                .onAction(n -> {
+
+                });
+        notifications.darkStyle();
+        notifications.show();
     }
 
 }

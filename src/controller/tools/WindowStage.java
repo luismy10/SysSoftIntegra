@@ -103,5 +103,7 @@ public class WindowStage {
             System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
         }
     }
+     
+     
 
 }
