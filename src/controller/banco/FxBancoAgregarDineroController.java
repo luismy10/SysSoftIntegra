@@ -41,8 +41,7 @@ public class FxBancoAgregarDineroController implements Initializable {
         } else if (txtDescripcion.getText().trim().isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Banco", "Ingrese una descripción");
             txtDescripcion.requestFocus();
-        } else {
-            
+        } else {           
             
             BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
             bancoHistorialTB.setIdBanco(idBanco);
@@ -58,6 +57,7 @@ public class FxBancoAgregarDineroController implements Initializable {
             }else{
                 Tools.AlertMessageError(apWindow, "Banco", result);
             }
+            
         }
     }
 
