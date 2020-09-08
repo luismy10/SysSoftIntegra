@@ -63,7 +63,6 @@ import model.ClienteTB;
 import model.ComprobanteADO;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.EmpleadoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.MonedaADO;
@@ -164,6 +163,8 @@ public class FxVentaEstructuraController implements Initializable {
     private ComboBox<DetalleTB> cbTipoDocumento;
     @FXML
     private Button btnBuscarSunat;
+    @FXML
+    private Button btnBuscarReniec;
 
     private AnchorPane vbPrincipal;
 
@@ -214,8 +215,7 @@ public class FxVentaEstructuraController implements Initializable {
     private double totalImpuesto;
 
     private double total;
-    @FXML
-    private Button btnBuscarReniec;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -1549,6 +1549,7 @@ public class FxVentaEstructuraController implements Initializable {
             txtDireccionCliente.setDisable(true);
             btnBuscarCliente.setDisable(true);
             btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
 
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
@@ -1600,6 +1601,7 @@ public class FxVentaEstructuraController implements Initializable {
                         txtDireccionCliente.setDisable(false);
                         btnBuscarCliente.setDisable(false);
                         btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
                         if (sONObject.get("ruc") != null) {
                             txtNumeroDocumento.setText(sONObject.get("ruc").toString());
                         }
@@ -1652,6 +1654,7 @@ public class FxVentaEstructuraController implements Initializable {
             txtDireccionCliente.setDisable(true);
             btnBuscarCliente.setDisable(true);
             btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
 
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
@@ -1704,6 +1707,7 @@ public class FxVentaEstructuraController implements Initializable {
                         txtDireccionCliente.setDisable(false);
                         btnBuscarCliente.setDisable(false);
                         btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false); 
                         if (sONObject.get("dni") != null) {
                             txtNumeroDocumento.setText(sONObject.get("dni").toString());
                         }
@@ -1735,6 +1739,7 @@ public class FxVentaEstructuraController implements Initializable {
         txtDireccionCliente.setDisable(false);
         btnBuscarCliente.setDisable(false);
         btnBuscarSunat.setDisable(false);
+        btnBuscarReniec.setDisable(false);
 
         txtNumeroDocumento.setText("");
         txtDatosCliente.setText("");
