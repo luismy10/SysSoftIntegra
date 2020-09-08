@@ -215,7 +215,6 @@ public class FxVentaEstructuraController implements Initializable {
     private double totalImpuesto;
 
     private double total;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -1451,7 +1450,7 @@ public class FxVentaEstructuraController implements Initializable {
             } else {
                 Tools.showAlertNotification("/view/image/error_large.png",
                         "Envío de impresión",
-                         "Se producto un problema por problemas de la impresora\n" + result,
+                        "Se producto un problema por problemas de la impresora\n" + result,
                         Duration.seconds(10),
                         Pos.CENTER);
             }
@@ -1494,6 +1493,34 @@ public class FxVentaEstructuraController implements Initializable {
             }
         };
 
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtDireccionCliente.setText("");
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente internamente.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
         task.setOnSucceeded(e -> {
             ClienteTB clienteTB = task.getValue();
             if (clienteTB != null) {
@@ -1507,18 +1534,18 @@ public class FxVentaEstructuraController implements Initializable {
                         break;
                     }
                 }
+                btnBuscarCliente.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
             } else {
-                idCliente = "";
-                txtDatosCliente.setText("");
-                txtDireccionCliente.setText("");
-                txtCelularCliente.setText("");
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
             }
-            btnBuscarCliente.setDisable(false);
         });
-
-        task.setOnFailed(e -> btnBuscarCliente.setDisable(false));
-
-        task.setOnScheduled(e -> btnBuscarCliente.setDisable(true));
 
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -1580,7 +1607,7 @@ public class FxVentaEstructuraController implements Initializable {
                             Duration.seconds(5),
                             Pos.TOP_RIGHT);
                     clearDataClient();
-                } else {
+                }  else {
                     JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
                     if (sONObject == null) {
                         Tools.showAlertNotification("/view/image/warning_large.png",
@@ -1617,7 +1644,7 @@ public class FxVentaEstructuraController implements Initializable {
             } else {
                 Tools.showAlertNotification("/view/image/warning_large.png",
                         "Buscando clíente",
-                        "Paso un problema en trear la información por\n problemas de conexión o error el número del ruc.",
+                        "Paso un problema en trear la información por\n problemas de conexión o error el número ruc.",
                         Duration.seconds(5),
                         Pos.TOP_RIGHT);
                 clearDataClient();
@@ -1707,7 +1734,7 @@ public class FxVentaEstructuraController implements Initializable {
                         txtDireccionCliente.setDisable(false);
                         btnBuscarCliente.setDisable(false);
                         btnBuscarSunat.setDisable(false);
-                        btnBuscarReniec.setDisable(false); 
+                        btnBuscarReniec.setDisable(false);
                         if (sONObject.get("dni") != null) {
                             txtNumeroDocumento.setText(sONObject.get("dni").toString());
                         }
