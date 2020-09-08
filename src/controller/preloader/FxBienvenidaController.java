@@ -297,10 +297,11 @@ public class FxBienvenidaController implements Initializable {
             clienteTB.setCelular("");
             clienteTB.setEmail("");
             clienteTB.setDireccion("");
+            clienteTB.setRepresentante("");
             clienteTB.setEstado(1);
             clienteTB.setPredeterminado(true);
             clienteTB.setSistema(true);
-            
+
             ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
@@ -312,17 +313,10 @@ public class FxBienvenidaController implements Initializable {
                     return GlobalADO.RegistrarInicioPrograma(empresaTB, monedaTB, empleadoTB, impuestoTB, tipoDocumentoTB, clienteTB);
                 }
             };
-            task.setOnSucceeded(w -> {
-                String result = task.getValue();
-                if (result.equalsIgnoreCase("inserted")) {
-                    Tools.AlertMessageInformation(apWindow, "SysSoftIntegra", "Se guardo los cambios correctamente, habra nuevamente la aplicación son su usuario y clave creada.");
-                    System.exit(0);                   
-                } else {
-                    Tools.AlertMessageError(apWindow, "SysSoftIntegra", result);
-                    btnAnterior.setDisable(false);
-                    btnTerminar.setDisable(false);
-                    btnCancelar.setDisable(false);
-                }
+            task.setOnScheduled(w -> {
+                btnAnterior.setDisable(true);
+                btnTerminar.setDisable(true);
+                btnCancelar.setDisable(true);
             });
             task.setOnFailed(w -> {
                 Tools.AlertMessageError(apWindow, "SysSoftIntegra", task.getMessage());
@@ -330,10 +324,17 @@ public class FxBienvenidaController implements Initializable {
                 btnTerminar.setDisable(false);
                 btnCancelar.setDisable(false);
             });
-            task.setOnScheduled(w -> {
-                btnAnterior.setDisable(true);
-                btnTerminar.setDisable(true);
-                btnCancelar.setDisable(true);
+            task.setOnSucceeded(w -> {
+                String result = task.getValue();
+                if (result.equalsIgnoreCase("inserted")) {
+                    Tools.AlertMessageInformation(apWindow, "SysSoftIntegra", "Se guardo los cambios correctamente, habra nuevamente la aplicación son su usuario y clave creada.");
+                    System.exit(0);
+                } else {
+                    Tools.AlertMessageError(apWindow, "SysSoftIntegra", result);
+                    btnAnterior.setDisable(false);
+                    btnTerminar.setDisable(false);
+                    btnCancelar.setDisable(false);
+                }
             });
             exec.execute(task);
             if (!exec.isShutdown()) {
@@ -468,7 +469,6 @@ public class FxBienvenidaController implements Initializable {
         clearImage();
     }
 
-    
     @FXML
     private void onKeyTypedTipoCambio(KeyEvent event) {
         char c = event.getCharacter().charAt(0);

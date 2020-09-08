@@ -8,10 +8,10 @@ import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
-import java.awt.HeadlessException;
 import java.awt.print.Book;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -29,13 +29,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -47,6 +44,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.HashPrintServiceAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.PrintServiceAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.PrinterName;
 import model.EmpleadoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
@@ -55,10 +58,12 @@ import model.VentaADO;
 import model.VentaTB;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.controlsfx.control.Notifications;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 
 public class FxVentaDetalleController implements Initializable {
 
@@ -105,7 +110,7 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Button btnImprimir;
     @FXML
-    private Button btnAbonos;
+    private Button btnGuiaRemision;
     @FXML
     private Label lblEfectivo;
     @FXML
@@ -187,9 +192,7 @@ public class FxVentaDetalleController implements Initializable {
                 }
             };
             task.setOnSucceeded(e -> {
-
                 ArrayList<Object> objects = task.getValue();
-
                 if (!objects.isEmpty()) {
                     ventaTB = (VentaTB) objects.get(0);
                     EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
@@ -201,7 +204,7 @@ public class FxVentaDetalleController implements Initializable {
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                         lblObservaciones.setText(ventaTB.getObservaciones());
-                        lblTipo.setText(ventaTB.getTipoName() + " " + ventaTB.getEstadoName());
+                        lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
                         btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
                         lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
                         efectivo = ventaTB.getEfectivo();
@@ -215,20 +218,19 @@ public class FxVentaDetalleController implements Initializable {
                         lblValor.setText(Tools.roundingValue(totalVenta, 2));
                         lblVuelto.setText(Tools.roundingValue(vuelto, 2));
                     }
-
                     if (empleadoTB != null) {
                         lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
                     }
                     fillVentasDetalleTable(empList);
-
+                    lblLoad.setVisible(false);
                 } else {
                     btnReporte.setDisable(true);
                     btnCancelarVenta.setDisable(true);
                     btnImprimir.setDisable(true);
-                    btnAbonos.setDisable(true);
+                    btnGuiaRemision.setDisable(true);
+                    lblLoad.setVisible(false);
                 }
 
-                lblLoad.setVisible(false);
             });
             task.setOnScheduled(e -> {
                 lblLoad.setVisible(true);
@@ -287,35 +289,33 @@ public class FxVentaDetalleController implements Initializable {
         }
     }
 
-    private void openWindowAbonos() {
-        if (lblTipo.getText().equalsIgnoreCase("credito")) {
-            try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_VENTA_ABONO);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-
-                FxVentaAbonoController controller = fXMLLoader.getController();
-                controller.setInitVentaAbonoController(this);
-
-                Stage stage = WindowStage.StageLoaderModal(parent, "Historial de abonos", window.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w -> {
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                });
-                stage.show();
-                controller.loadInitData(idVenta, ventaTB.getMonedaTB().getSimbolo());
-
-            } catch (IOException ex) {
-                System.out.println(ex.getLocalizedMessage());
-            }
-        } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Venta", "La venta se realizó al contado.", false);
-        }
-
-    }
-
+//    private void openWindowAbonos() {
+//        if (lblTipo.getText().equalsIgnoreCase("credito")) {
+//            try {
+//                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+//                URL url = getClass().getResource(FilesRouters.FX_VENTA_ABONO);
+//                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//                Parent parent = fXMLLoader.load(url.openStream());
+//
+//                FxVentaAbonoController controller = fXMLLoader.getController();
+//                controller.setInitVentaAbonoController(this);
+//
+//                Stage stage = WindowStage.StageLoaderModal(parent, "Historial de abonos", window.getScene().getWindow());
+//                stage.setResizable(false);
+//                stage.sizeToScene();
+//                stage.setOnHiding(w -> {
+//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+//                });
+//                stage.show();
+//                controller.loadInitData(idVenta, ventaTB.getMonedaTB().getSimbolo());
+//
+//            } catch (IOException ex) {
+//                System.out.println(ex.getLocalizedMessage());
+//            }
+//        } else {
+//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Venta", "La venta se realizó al contado.", false);
+//        }
+//    }
     private void calcularTotales() {
         if (arrList != null) {
 
@@ -423,7 +423,6 @@ public class FxVentaDetalleController implements Initializable {
 
     private void openWindowReporte() {
         try {
-
             ArrayList<SuministroTB> list = new ArrayList();
             arrList.stream().map((suministroTB) -> {
                 SuministroTB stb = new SuministroTB();
@@ -439,131 +438,187 @@ public class FxVentaDetalleController implements Initializable {
                 list.add(stb);
             });
 
-            boolean addOperacion = false;
-            double sumaOperacion = 0;
-
-            boolean addImpuesto = false;
-            double sumaImpuesto = 0;
-
-            ArrayList<SuministroTB> list_totales = new ArrayList();
-
-            for (int k = 0; k < arrayArticulos.size(); k++) {
-                for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
-                        addOperacion = true;
-                        sumaOperacion += arrList.get(i).getSubImporteDescuento();
-                    }
-                }
-                if (addOperacion) {
-                    SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
-                    suministroTB.setImpuestoValor(sumaOperacion);
-                    list_totales.add(suministroTB);
-                    addOperacion = false;
-                    sumaOperacion = 0;
-                }
-            }
-
-            for (int k = 0; k < arrayArticulos.size(); k++) {
-                for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
-                        addImpuesto = true;
-                        sumaImpuesto += arrList.get(i).getImpuestoSumado();
-                    }
-                }
-                if (addImpuesto) {
-                    SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreImpuesto() + ":");
-                    suministroTB.setImpuestoValor(sumaImpuesto);
-                    list_totales.add(suministroTB);
-                    addImpuesto = false;
-                    sumaImpuesto = 0;
-                }
-            }
-
+//            boolean addOperacion = false;
+//            double sumaOperacion = 0;
+//
+//            boolean addImpuesto = false;
+//            double sumaImpuesto = 0;
+//            ArrayList<SuministroTB> list_totales = new ArrayList();
+//            for (int k = 0; k < arrayArticulos.size(); k++) {
+//                for (int i = 0; i < arrList.size(); i++) {
+//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
+//                        addOperacion = true;
+//                        sumaOperacion += arrList.get(i).getSubImporteDescuento();
+//                    }
+//                }
+//                if (addOperacion) {
+//                    SuministroTB suministroTB = new SuministroTB();
+//                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
+//                    suministroTB.setImpuestoValor(sumaOperacion);
+//                    list_totales.add(suministroTB);
+//                    addOperacion = false;
+//                    sumaOperacion = 0;
+//                }
+//            }
+//            for (int k = 0; k < arrayArticulos.size(); k++) {
+//                for (int i = 0; i < arrList.size(); i++) {
+//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
+//                        addImpuesto = true;
+//                        sumaImpuesto += arrList.get(i).getImpuestoSumado();
+//                    }
+//                }
+//                if (addImpuesto) {
+//                    SuministroTB suministroTB = new SuministroTB();
+//                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreImpuesto() + ":");
+//                    suministroTB.setImpuestoValor(sumaImpuesto);
+//                    list_totales.add(suministroTB);
+//                    addImpuesto = false;
+//                    sumaImpuesto = 0;
+//                }
+//            }
             if (list.isEmpty()) {
                 Tools.AlertMessageWarning(window, "Venta realizada", "No hay registros para mostrar en el reporte.");
                 return;
             }
-//            InputStream imgInputStream
-//                    = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-//
-            InputStream dir = getClass().getResourceAsStream("/report/GuiadeRemision.jasper");
-//
-            Map map = new HashMap();
-//            map.put("LOGO", imgInputStream);
-//            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
-//            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
-//            map.put("TELEFONOCELULAR", "Tel.: " + Session.COMPANY_TELEFONO + " Cel.: " + Session.COMPANY_CELULAR);
-//            map.put("EMAIL", "Email: " + Session.COMPANY_EMAIL);
-//            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUM_DOCUMENTO);
-////
-//            map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
-//            map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
-//
-//            map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
-//            map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
-//            map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
-//            map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular());
-//            map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail());
-//            map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
-//
-//            map.put("FECHAEMISION", ventaTB.getFechaVenta());
-//            map.put("MONEDA", ventaTB.getMonedaTB().getAbreviado());
-//            map.put("CONDICIONPAGO", lblTipo.getText());
-//
-//            map.put("VALOR_VENTA", lblValorVenta.getText());
-//            map.put("DESCUENTO", lblDescuento.getText());
-//            map.put("SUB_TOTAL", lblSubTotal.getText());
-//            map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
-////            map.put("SUBREPORT_DIR", "VentaRealizadaDetalle.jasper");
-//            map.put("TOTAL", lblTotal.getText());
-//            map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
-//            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
-
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxReportViewController controller = fXMLLoader.getController();
-            controller.setJasperPrint(jasperPrint);
+            controller.setJasperPrint(reportA4(list));
             controller.show();
             Stage stage = WindowStage.StageLoader(parent, "Venta realizada");
             stage.setResizable(true);
             stage.show();
             stage.requestFocus();
 
-        } catch (HeadlessException | JRException | IOException ex) {
+        } catch (IOException | JRException ex) {
             Tools.AlertMessageError(window, "Reporte de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 
-    private void onEventimprimirVenta() {
-        if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+    private JasperPrint reportA4(ArrayList<SuministroTB> list) throws JRException {
+
+        InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+        InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+        if (Session.COMPANY_IMAGE != null) {
+            imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
+        }
+
+        InputStream dir = getClass().getResourceAsStream("/report/VentaRealizada.jasper");
+
+        Map map = new HashMap();
+        map.put("LOGO", imgInputStream);
+        map.put("ICON", imgInputStreamIcon);
+        map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+        map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+        map.put("TELEFONOCELULAR", "TELÉFONO: " + Session.COMPANY_TELEFONO + " CELULAR: " + Session.COMPANY_CELULAR);
+        map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL);
+
+        map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
+        map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
+        map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+
+        map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
+        map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
+        map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
+        map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular().equals("") ? "---" : ventaTB.getClienteTB().getCelular());
+        map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail().equals("") ? "---" : ventaTB.getClienteTB().getEmail());
+        map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion().equals("") ? "---" : ventaTB.getClienteTB().getDireccion());
+
+        map.put("FECHAEMISION", ventaTB.getFechaVenta());
+        map.put("MONEDA", ventaTB.getMonedaTB().getNombre() + "-" + ventaTB.getMonedaTB().getAbreviado());
+        map.put("CONDICIONPAGO", lblTipo.getText());
+
+        map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
+        map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
+
+        map.put("VALOR_VENTA", lblValorVenta.getText());
+        map.put("DESCUENTO", lblDescuento.getText());
+        map.put("SUB_IMPORTE", lblSubTotal.getText());
+        map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
+        map.put("IMPORTE_TOTAL", lblTotal.getText());
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
+        return jasperPrint;
+    }
+
+    private void onEventImprimirVenta() {
+        if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
+            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración/impresora.");
             return;
         }
 
-        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA.equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
-            return;
+        if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+            } else {
+                executeProcessPrinter(Session.FORMATO_IMPRESORA_VENTA);
+            }
+        } else if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("a4")) {
+            executeProcessPrinter(Session.FORMATO_IMPRESORA_VENTA);
+        } else {
+            Tools.AlertMessageWarning(window, "Venta", "Error al validar el formato de impresión, configure en la sección configuración/impresora.");
         }
+    }
 
+    private void executeProcessPrinter(String format) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
 
-        try {
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                try {
 
-            Task<String> task = new Task<String>() {
-                @Override
-                public String call() {
-                    try {
+                    if (format.equalsIgnoreCase("a4")) {
+
+                        ArrayList<SuministroTB> list = new ArrayList();
+                        arrList.stream().map((suministroTB) -> {
+                            SuministroTB stb = new SuministroTB();
+                            stb.setClave(suministroTB.getClave());
+                            stb.setNombreMarca(suministroTB.getNombreMarca());
+                            stb.setCantidad(suministroTB.getCantidad());
+                            stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
+                            stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
+                            stb.setDescuento(suministroTB.getDescuento());
+                            stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
+                            return stb;
+                        }).forEachOrdered((stb) -> {
+                            list.add(stb);
+                        });
+
+                        if (list.isEmpty()) {
+                            return "empty";
+                        } else {
+
+                            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+                            printRequestAttributeSet.add(new Copies(1));
+
+                            PrinterName printerName = new PrinterName(Session.NOMBRE_IMPRESORA_VENTA, null);
+
+                            PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
+                            printServiceAttributeSet.add(printerName);
+
+                            JRPrintServiceExporter exporter = new JRPrintServiceExporter();
+
+                            exporter.setParameter(JRExporterParameter.JASPER_PRINT, reportA4(list));
+                            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+                            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
+                            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+                            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+                            exporter.exportReport();
+                            return "completed";
+                        }
+                    } else {
+
                         billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
@@ -605,112 +660,117 @@ public class FxVentaDetalleController implements Initializable {
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
 
-                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
+                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_VENTA, PrinterJob.lookupPrintServices()).createPrintJob();
 
                         if (job != null) {
                             PrinterJob pj = PrinterJob.getPrinterJob();
                             pj.setPrintService(job.getPrintService());
-                            pj.setJobName(Session.NOMBRE_IMPRESORA);
+                            pj.setJobName(Session.NOMBRE_IMPRESORA_VENTA);
                             Book book = new Book();
                             book.append(billPrintable, billPrintable.getPageFormat(pj));
                             pj.setPageable(book);
                             pj.print();
-                            if (Session.CORTAPAPEL_IMPRESORA) {
-                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            if (Session.CORTAPAPEL_IMPRESORA_VENTA) {
+                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_VENTA);
                             }
                             return "completed";
                         } else {
                             return "error_name";
                         }
-                    } catch (PrinterException | IOException | PrintException ex) {
-                        return "Error en imprimir: " + ex.getLocalizedMessage();
                     }
+
+                } catch (PrinterException | IOException | PrintException | JRException ex) {
+                    return "Error en imprimir: " + ex.getLocalizedMessage();
                 }
-            };
+            }
+        };
 
-            task.setOnSucceeded(w -> {
+        task.setOnSucceeded(w -> {
 
-                String result = task.getValue();
-                if (result.equalsIgnoreCase("completed")) {
-                    Image image = new Image("/view/image/information_large.png");
-                    Notifications notifications = Notifications.create()
-                            .title("Envío de impresión")
-                            .text("Se completo el proceso de impresión correctamente.")
-                            .graphic(new ImageView(image))
-                            .hideAfter(Duration.seconds(5))
-                            .position(Pos.BOTTOM_RIGHT)
-                            .onAction(n -> {
-                                Tools.println(n);
-                            });
-                    notifications.darkStyle();
-                    notifications.show();
-                    //Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
-                } else if (result.equalsIgnoreCase("error_name")) {
-                    Image image = new Image("/view/image/warning_large.png");
-                    Notifications notifications = Notifications.create()
-                            .title("Envío de impresión")
-                            .text("Error en encontrar el nombre de la impresión por problemas de puerto o driver.")
-                            .graphic(new ImageView(image))
-                            .hideAfter(Duration.seconds(10))
-                            .position(Pos.CENTER)
-                            .onAction(n -> {
-                                Tools.println(n);
-                            });
-                    notifications.darkStyle();
-                    notifications.show();
-                } else {
-//                    Tools.AlertMessageError(window, "Ventas", result);
-                    Image image = new Image("/view/image/error_large.png");
-                    Notifications notifications = Notifications.create()
-                            .title("Envío de impresión")
-                            .text("Error en la configuración de su impresora: " + result)
-                            .graphic(new ImageView(image))
-                            .hideAfter(Duration.seconds(10))
-                            .position(Pos.CENTER)
-                            .onAction(n -> {
-                                Tools.println(n);
-                            });
-                    notifications.darkStyle();
-                    notifications.show();
-                }
-            });
-            task.setOnFailed(w -> {
-                Image image = new Image("/view/image/warning_large.png");
-                Notifications notifications = Notifications.create()
-                        .title("Envío de impresión")
-                        .text("Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.")
-                        .graphic(new ImageView(image))
-                        .hideAfter(Duration.seconds(10))
-                        .position(Pos.BOTTOM_RIGHT)
-                        .onAction(n -> {
-                            Tools.println(n);
-                        });
-                notifications.darkStyle();
-                notifications.show();
-//                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema en el proceso de envío, intente nuevamente.");
-            });
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("completed")) {
+                Tools.showAlertNotification("/view/image/information_large.png",
+                        "Envío de impresión",
+                        "Se completo el proceso de impresión correctamente.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+            } else if (result.equalsIgnoreCase("error_name")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("empty")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "No hay registros para mostrar en el reporte.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else {
+                Tools.showAlertNotification("/view/image/error_large.png",
+                        "Envío de impresión",
+                         "Se producto un problema por problemas de la impresora\n" + result,
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            }
+        });
+        task.setOnFailed(w -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
+                    "Envío de impresión",
+                    "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.BOTTOM_RIGHT);
+        });
 
-            task.setOnScheduled(w -> {
-                Image image = new Image("/view/image/print.png");
-                Notifications notifications = Notifications.create()
-                        .title("Envío de impresión")
-                        .text("Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.")
-                        .graphic(new ImageView(image))
-                        .hideAfter(Duration.seconds(5))
-                        .position(Pos.BOTTOM_RIGHT)
-                        .onAction(n -> {
-                            Tools.println(n);
-                        });
-                notifications.darkStyle();
-                notifications.show();
-//                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
-            });
-            exec.execute(task);
-
-        } finally {
+        task.setOnScheduled(w -> {
+            Tools.showAlertNotification("/view/image/print.png",
+                    "Envío de impresión",
+                    "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                    Duration.seconds(5),
+                    Pos.BOTTOM_RIGHT);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
             exec.shutdown();
         }
 
+    }
+
+    private void reportGuiaRemision() {
+        try {
+            InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+            InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+            if (Session.COMPANY_IMAGE != null) {
+                imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
+            }
+            InputStream dir = getClass().getResourceAsStream("/report/GuiadeRemision.jasper");
+            Map map = new HashMap();
+            map.put("LOGO", imgInputStream);
+            map.put("ICON", imgInputStreamIcon);
+            map.put("RUC_EMPRESA", Session.COMPANY_NUMERO_DOCUMENTO);
+            map.put("NOMBRE_EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+            map.put("DIRECCION_EMPRESA", Session.COMPANY_DOMICILIO);
+            map.put("TELEFONO_EMPRESA", Session.COMPANY_TELEFONO);
+            map.put("CELULAR_EMPRESA", Session.COMPANY_CELULAR);
+            map.put("EMAIL_EMPRESA", Session.COMPANY_EMAIL);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
+            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxReportViewController controller = fXMLLoader.getController();
+            controller.setJasperPrint(jasperPrint);
+            controller.show();
+            Stage stage = WindowStage.StageLoader(parent, "Guia de remisión");
+            stage.setResizable(true);
+            stage.show();
+            stage.requestFocus();
+        } catch (JRException | IOException ex) {
+            Tools.AlertMessageError(window, "Reporte de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
+        }
     }
 
     @FXML
@@ -728,13 +788,13 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private void onKeyPressedImprimir(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            onEventimprimirVenta();
+            onEventImprimirVenta();
         }
     }
 
     @FXML
     private void onActionImprimir(ActionEvent event) {
-        onEventimprimirVenta();
+        onEventImprimirVenta();
     }
 
     @FXML
@@ -750,18 +810,6 @@ public class FxVentaDetalleController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedHistorialPagos(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowAbonos();
-        }
-    }
-
-    @FXML
-    private void onActionHistorialPagos(ActionEvent event) {
-        openWindowAbonos();
-    }
-
-    @FXML
     private void onKeyPressedReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowReporte();
@@ -773,10 +821,21 @@ public class FxVentaDetalleController implements Initializable {
         openWindowReporte();
     }
 
+    @FXML
+    private void onKeyPressedGuiaRemision(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            reportGuiaRemision();
+        }
+    }
+
+    @FXML
+    private void onActionGuiaRemision(ActionEvent event) {
+        reportGuiaRemision();
+    }
+
     public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.ventaRealizadasController = ventaRealizadasController;
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
     }
-
 }

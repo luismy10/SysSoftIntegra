@@ -93,19 +93,28 @@ public class SplashScreen extends Preloader {
                     } else {
                         Session.CONNECTION_SESSION = true;
 
-                        String ruta = "./archivos/printSetting.properties";
-                        try (InputStream input = new FileInputStream(ruta)) {
-
+                        String rutaVenta = "./archivos/VENTA.properties";
+                        try (InputStream input = new FileInputStream(rutaVenta)) {
                             Properties prop = new Properties();
                             prop.load(input);
-
-                            Session.ESTADO_IMPRESORA = true;
-                            Session.NOMBRE_IMPRESORA = prop.getProperty("printername");
-                            Session.CORTAPAPEL_IMPRESORA = Boolean.parseBoolean(prop.getProperty("printcutspaper"));
-
+                            Session.ESTADO_IMPRESORA_VENTA = true;
+                            Session.NOMBRE_IMPRESORA_VENTA = prop.getProperty("printerNameVenta");
+                            Session.CORTAPAPEL_IMPRESORA_VENTA = Boolean.parseBoolean(prop.getProperty("printerCutPaperVenta"));
+                            Session.FORMATO_IMPRESORA_VENTA = prop.getProperty("printerTypeFormatVenta");
                         } catch (IOException ex) {
-                            Session.ESTADO_IMPRESORA = false;
-                            Session.NOMBRE_IMPRESORA = "";
+                            Session.ESTADO_IMPRESORA_VENTA = false;
+                        }
+                        
+                        String rutaPreVenta = "./archivos/PRE VENTA.properties";
+                        try (InputStream input = new FileInputStream(rutaPreVenta)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_PRE_VENTA = true;
+                            Session.NOMBRE_IMPRESORA_PRE_VENTA = prop.getProperty("printerNamePreVenta");
+                            Session.CORTAPAPEL_IMPRESORA_PRE_VENTA = Boolean.parseBoolean(prop.getProperty("printerCutPaperPreVenta"));
+                            Session.FORMATO_IMPRESORA_PRE_VENTA = prop.getProperty("printerTypeFormatPreVenta");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_PRE_VENTA = false;
                         }
 
                         LoadFont loadFont = new LoadFont(); 

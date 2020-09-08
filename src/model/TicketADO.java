@@ -241,12 +241,12 @@ public class TicketADO {
             PreparedStatement statementLista = null;
             ResultSet resultSet = null;
             try {
-                statementLista = DBUtil.getConnection().prepareStatement("SELECT * FROM TipoTicketTB");
+                statementLista = DBUtil.getConnection().prepareStatement("SELECT idTipoTicket,Nombre FROM TipoTicketTB");
                 resultSet = statementLista.executeQuery();
                 while (resultSet.next()) {
                     TicketTB ticketTB = new TicketTB();
-                    ticketTB.setId(resultSet.getInt(1));
-                    ticketTB.setNombreTicket(resultSet.getString(2));
+                    ticketTB.setId(resultSet.getInt("idTipoTicket"));
+                    ticketTB.setNombreTicket(resultSet.getString("Nombre"));
                     list.add(ticketTB);
                 }
             } catch (SQLException ex) {

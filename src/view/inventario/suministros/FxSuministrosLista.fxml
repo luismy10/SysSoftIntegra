@@ -108,7 +108,7 @@
                               <TableColumn fx:id="tcNombre" prefWidth="300.0" style="fx-alignment: CENTER-LEFT;" text="Clave/Nombre" />
                               <TableColumn fx:id="tcCategoriaMarca" prefWidth="180.0" style="fx-alignment: CENTER-LEFT;" text="Categoria/Marca" />
                               <TableColumn fx:id="tcTipoProducto" prefWidth="40.0" style="-fx-alignment: CENTER;" text="TP" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
                               <TableColumn fx:id="tcCosto" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Impuesto" />
                               <TableColumn fx:id="tcPrecio" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Precio" />
                            </columns>

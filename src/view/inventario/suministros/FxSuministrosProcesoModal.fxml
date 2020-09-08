@@ -30,7 +30,7 @@
          <children>
             <VBox>
                <children>
-                  <HBox style="-fx-background-color: #1a2226; -fx-padding: 0.8333333333333334em;">
+                  <HBox style="-fx-background-color: #020203; -fx-padding: 0.8333333333333334em;">
                      <children>
                         <Label styleClass="labelRobotoBold16" text="Datos del producto" textFill="WHITE">
                            <graphic>

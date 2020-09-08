@@ -43,7 +43,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
-import javax.print.PrintException;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.SuministroADO;
@@ -422,7 +421,7 @@ public class FxValorInventarioController implements Initializable {
 
     public void setGenerarTicket(int idTicket, String rutaTicket) {
 
-        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA == null) {
+        if (!Session.ESTADO_IMPRESORA_VENTA && Session.NOMBRE_IMPRESORA_VENTA == null) {
             Tools.AlertMessageWarning(vbWindow, "Inventario general", "No hay ruta de impresión, no se ha configurado la ruta de impresión");
             return;
         }
@@ -477,24 +476,24 @@ public class FxValorInventarioController implements Initializable {
 
                         billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie);
 
-                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
+                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_VENTA, PrinterJob.lookupPrintServices()).createPrintJob();
 
                         if (job != null) {
                             PrinterJob pj = PrinterJob.getPrinterJob();
                             pj.setPrintService(job.getPrintService());
-                            pj.setJobName(Session.NOMBRE_IMPRESORA);
+                            pj.setJobName(Session.NOMBRE_IMPRESORA_VENTA);
                             Book book = new Book();
                             book.append(billPrintable, billPrintable.getPageFormat(pj));
                             pj.setPageable(book);
                             pj.print();
-                            if (Session.CORTAPAPEL_IMPRESORA) {
-                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
+                            if (Session.CORTAPAPEL_IMPRESORA_VENTA) {
+//                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
                             }
                             return "completed";
                         } else {
                             return "error_name";
                         }
-                    } catch (PrinterException | IOException | PrintException ex) {
+                    } catch (PrinterException/* | IOException | PrintException*/ ex) {
                         return "Error en imprimir: " + ex.getLocalizedMessage();
                     }
                 }

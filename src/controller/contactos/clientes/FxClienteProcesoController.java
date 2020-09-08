@@ -1,10 +1,15 @@
 package controller.contactos.clientes;
 
+import controller.tools.ApiPeru;
+import controller.tools.Json;
 import controller.tools.Tools;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +25,7 @@ import model.ClienteADO;
 import model.ClienteTB;
 import model.DetalleADO;
 import model.DetalleTB;
+import org.json.simple.JSONObject;
 
 public class FxClienteProcesoController implements Initializable {
 
@@ -47,6 +53,10 @@ public class FxClienteProcesoController implements Initializable {
     private RadioButton rbActivo;
     @FXML
     private RadioButton rbInactivo;
+    @FXML
+    private Button btnBuscarSunat;
+    @FXML
+    private Button btnBuscarReniec;
 
     private String idCliente;
 
@@ -160,19 +170,17 @@ public class FxClienteProcesoController implements Initializable {
 
     public void aValidityProcess() throws ParseException {
         if (cbDocumentType.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(window, "Persona", "Seleccione el tipo de documento, por favor.");
-
+            Tools.AlertMessageWarning(window, "Cliente", "Seleccione el tipo de documento por favor.");
             cbDocumentType.requestFocus();
         } else if (txtDocumentNumber.getText().trim().equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(window, "Persona", "Ingrese el documento de identificación, por favor.");
-
+            Tools.AlertMessageWarning(window, "Cliente", "Ingrese el documento de identificación por favor.");
             txtDocumentNumber.requestFocus();
         } else if (txtInformacion.getText().trim().equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(window, "Persona", "Ingrese la información del cliente, por favor.");
+            Tools.AlertMessageWarning(window, "Cliente", "Ingrese la información del cliente por favor.");
             txtInformacion.requestFocus();
         } else {
 
-            short confirmation = Tools.AlertMessageConfirmation(window, "Mantenimiento", "¿Esta seguro de continuar?");
+            short confirmation = Tools.AlertMessageConfirmation(window, "Cliente", "¿Esta seguro de continuar?");
             if (confirmation == 1) {
 
                 ClienteTB clienteTB = new ClienteTB();
@@ -193,28 +201,211 @@ public class FxClienteProcesoController implements Initializable {
                 String result = ClienteADO.CrudCliente(clienteTB);
                 switch (result) {
                     case "registered":
-                        Tools.AlertMessageInformation(window, "Persona", "Registrado correctamente.");
+                        Tools.AlertMessageInformation(window, "Cliente", "Registrado correctamente.");
                         Tools.Dispose(window);
                         break;
                     case "updated":
-                        Tools.AlertMessageInformation(window, "Persona", "Actualizado correctamente.");
+                        Tools.AlertMessageInformation(window, "Cliente", "Actualizado correctamente.");
                         Tools.Dispose(window);
                         break;
                     case "duplicate":
-                        Tools.AlertMessageWarning(window, "Persona", "No se puede haber 2 personas con el mismo documento de identidad.");
+                        Tools.AlertMessageWarning(window, "Cliente", "No se puede haber 2 personas con el mismo documento de identidad.");
                         txtDocumentNumber.requestFocus();
                         break;
                     case "duplicatename":
-                        Tools.AlertMessageWarning(window, "Persona", "No se puede haber 2 personas con la misma información.");
+                        Tools.AlertMessageWarning(window, "Cliente", "No se puede haber 2 personas con la misma información.");
                         txtInformacion.requestFocus();
                         break;
                     default:
-                        Tools.AlertMessageError(window, "Persona", result);
+                        Tools.AlertMessageError(window, "Cliente", result);
                         break;
                 }
 
             }
         }
+    }
+
+    private void getApiSunat() {
+        ApiPeru apiSunat = new ApiPeru();
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return apiSunat.getUrlSunatApisPeru(txtDocumentNumber.getText().trim());
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtDocumentNumber.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+        });
+
+        task.setOnFailed(e -> {
+            txtDocumentNumber.setDisable(false);
+            btnBuscarSunat.setDisable(false);
+            btnBuscarReniec.setDisable(false);
+        });
+
+        task.setOnSucceeded(e -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("200")) {
+                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
+                    txtDocumentNumber.setDisable(false);
+                    btnBuscarSunat.setDisable(false);
+                    btnBuscarReniec.setDisable(false);
+
+                    txtDocumentNumber.clear();
+
+                    Tools.AlertMessageWarning(window, "Cliente", "Hubo un problema en cargar el JSON de la API.");
+                } else {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        txtDocumentNumber.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+
+                        txtDocumentNumber.clear();
+
+                        Tools.AlertMessageWarning(window, "Cliente", "No se puedo obtener el formato del JSON.");
+                    } else {
+                        txtDocumentNumber.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("ruc") != null) {
+                            txtDocumentNumber.setText(sONObject.get("ruc").toString());
+                        }
+                        if (sONObject.get("razonSocial") != null) {
+                            txtInformacion.setText(sONObject.get("razonSocial").toString());
+                        }
+                        if (sONObject.get("direccion") != null) {
+                            txtDireccion.setText(sONObject.get("direccion").toString());
+                        }
+                    }
+                }
+            } else {
+                txtDocumentNumber.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
+
+                txtDocumentNumber.clear();
+
+                Tools.AlertMessageError(window, "Cliente", result);
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void getApiReniec() {
+        ApiPeru apiSunat = new ApiPeru();
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return apiSunat.getUrlReniecApisPeru(txtDocumentNumber.getText().trim());
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtDocumentNumber.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+        });
+
+        task.setOnFailed(e -> {
+            txtDocumentNumber.setDisable(false);
+            btnBuscarSunat.setDisable(false);
+            btnBuscarReniec.setDisable(false);
+        });
+
+        task.setOnSucceeded(e -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("200")) {
+                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
+                    txtDocumentNumber.setDisable(false);
+                    btnBuscarSunat.setDisable(false);
+                    btnBuscarReniec.setDisable(false);
+
+                    txtDocumentNumber.clear();
+
+                    Tools.AlertMessageWarning(window, "Cliente", "Hubo un problema en cargar el JSON de la API.");
+                } else {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        txtDocumentNumber.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+
+                        txtDocumentNumber.clear();
+
+                        Tools.AlertMessageWarning(window, "Cliente", "No se puedo obtener el formato del JSON.");
+                    } else {
+                        txtDocumentNumber.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("dni") != null) {
+                            txtDocumentNumber.setText(sONObject.get("dni").toString());
+                        }
+                        if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
+                            txtInformacion.setText(sONObject.get("apellidoPaterno").toString()+" "+sONObject.get("apellidoMaterno").toString()+" "+sONObject.get("nombres").toString());
+                        }
+                    }
+                }
+            } else {
+                txtDocumentNumber.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
+
+                txtDocumentNumber.clear();
+
+                Tools.AlertMessageError(window, "Cliente", result);
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSunat(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiSunat();
+        }
+    }
+
+    @FXML
+    private void onActionSunat(ActionEvent event) {
+        getApiSunat();
+    }
+
+    @FXML
+    private void onKeyPressedReniec(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiReniec();
+        }
+    }
+
+    @FXML
+    private void onActionReniec(ActionEvent event) {
+        getApiReniec();
     }
 
     @FXML

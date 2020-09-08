@@ -309,7 +309,7 @@
     -fx-padding: 0.8333333333333334em 1.25em 0.8333333333333334em 1.25em;
     -fx-spacing: 0.8333333333333334em;
     -fx-opacity: 0.5;
-    
+
 }
 .buttonMenu:hover {
     -fx-background-color:  #41494e;
@@ -462,7 +462,7 @@
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
 
-    -fx-curso: hand;
+    -fx-cursor: hand;
 }
 .buttonLight:hover{
     -fx-border-color: BORDER_HOVER;
@@ -528,6 +528,7 @@
     -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
+    -fx-cursor: hand;
 }
 .buttonLightDefault:hover{
     -fx-border-color: BORDER_HOVER;
@@ -594,6 +595,8 @@
     -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
+
+    -fx-cursor: hand;
 }
 .buttonLightWarning:hover{
     -fx-border-color: BORDER_HOVER;
@@ -660,6 +663,8 @@
     -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
+
+    -fx-cursor: hand;
 }
 .buttonLightSuccess:hover{
     -fx-border-color: BORDER_HOVER;
@@ -725,6 +730,8 @@
     -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
+
+    -fx-cursor: hand;
 }
 .buttonLightError:hover{
     -fx-border-color: BORDER_HOVER;
@@ -823,6 +830,8 @@
     -fx-font-family:"Roboto Medium";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: TEXT;
+    
+    -fx-cursor: hand;
 }
 .buttonBorder:hover{
     -fx-border-color: BORDER_HOVER;
@@ -875,6 +884,8 @@
     -fx-font-family:"Roboto bold";
     -fx-font-size: 1.1666666666666667em;
     -fx-text-fill: white;
+    
+    -fx-cursor: hand;
 }
 .buttonDark:hover{
     -fx-text-fill: #020203;
@@ -1488,7 +1499,7 @@
     -fx-border-color: #999999;
     -fx-font-family:"Roboto";  
     -fx-font-size: 1.1666666666666667em;
-    
+
 }
 .combo-box:hover {
     -fx-border-color: #7a7a7a;

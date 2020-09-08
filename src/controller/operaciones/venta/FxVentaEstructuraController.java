@@ -1,8 +1,11 @@
 package controller.operaciones.venta;
 
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.tools.ApiPeru;
 import controller.tools.BillPrintable;
+import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
+import controller.tools.Json;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -10,9 +13,13 @@ import controller.tools.WindowStage;
 import java.awt.print.Book;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,8 +41,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -47,11 +52,18 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.HashPrintServiceAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.PrintServiceAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.PrinterName;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.ComprobanteADO;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.EmpleadoTB;
 import model.ImpuestoADO;
 import model.ImpuestoTB;
 import model.MonedaADO;
@@ -61,8 +73,16 @@ import model.SuministroADO;
 import model.SuministroTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
+import model.VentaADO;
 import model.VentaTB;
-import org.controlsfx.control.Notifications;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import org.json.simple.JSONObject;
 
 public class FxVentaEstructuraController implements Initializable {
 
@@ -131,11 +151,7 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private Label lblTotalPagar;
     @FXML
-    private HBox hbBotonesInferior;
-    @FXML
     private Button btnMovimiento;
-    @FXML
-    private Button btnImpresora;
     @FXML
     private Button btnCancelar;
     @FXML
@@ -158,6 +174,8 @@ public class FxVentaEstructuraController implements Initializable {
     private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
 
     private BillPrintable billPrintable;
+
+    private ConvertMonedaCadena monedaCadena;
 
     private AnchorPane hbEncabezado;
 
@@ -193,9 +211,12 @@ public class FxVentaEstructuraController implements Initializable {
 
     private double totalImporte;
 
-    private double total;
+    private double totalImpuesto;
 
-//    private Alert alert = null;
+    private double total;
+    @FXML
+    private Button btnBuscarReniec;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -227,7 +248,7 @@ public class FxVentaEstructuraController implements Initializable {
                     openWindowCashMovement();
                     event.consume();
                 } else if (event.getCode() == KeyCode.F9) {
-                    imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
+//                    imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
                     event.consume();
                 } else if (event.getCode() == KeyCode.F10) {
                     short value = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de limpiar la venta?");
@@ -261,6 +282,7 @@ public class FxVentaEstructuraController implements Initializable {
             }
         });
         billPrintable = new BillPrintable();
+        monedaCadena = new ConvertMonedaCadena();
         arrayArticulosImpuesto = new ArrayList<>();
         monedaSimbolo = "M";
         idCliente = "";
@@ -365,13 +387,13 @@ public class FxVentaEstructuraController implements Initializable {
 //            hbBotonesInferior.getChildren().remove(btnQuitar);
         }
         if (privilegioTBs.get(9).getIdPrivilegio() != 0 && !privilegioTBs.get(9).isEstado()) {
-            hbBotonesInferior.getChildren().remove(btnMovimiento);
+            hbBotonesSuperior.getChildren().remove(btnMovimiento);
         }
         if (privilegioTBs.get(10).getIdPrivilegio() != 0 && !privilegioTBs.get(10).isEstado()) {
-            hbBotonesInferior.getChildren().remove(btnImpresora);
+//            hbBotonesInferior.getChildren().remove(btnImpresora);
         }
         if (privilegioTBs.get(11).getIdPrivilegio() != 0 && !privilegioTBs.get(11).isEstado()) {
-            hbBotonesInferior.getChildren().remove(btnCancelar);
+            hbBotonesSuperior.getChildren().remove(btnCancelar);
         }
         if (privilegioTBs.get(12).getIdPrivilegio() != 0 && !privilegioTBs.get(12).isEstado()) {
             // btnCliente.setDisable(true);
@@ -577,10 +599,16 @@ public class FxVentaEstructuraController implements Initializable {
                 Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
             } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(window, "Ventas", "Ingrese el número del documento del cliente.");
+                txtNumeroDocumento.requestFocus();
             } else if (txtDatosCliente.getText().trim().equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(window, "Ventas", "Ingrese los datos del cliente.");
+                txtDatosCliente.requestFocus();
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento");
+                cbComprobante.requestFocus();
+            } else if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Ventas", "Seleccione un moneda.");
+                cbMoneda.requestFocus();
             } else if (total <= 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "El total de la venta no puede ser menor que 0.");
             } else {
@@ -623,6 +651,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setSubTotal(subTotal);
                 ventaTB.setDescuento(descuento);
                 ventaTB.setSubImporte(subTotalImporte);
+                ventaTB.setImpuesto(totalImpuesto);
                 ventaTB.setTotal(total);
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList.getItems());
@@ -630,27 +659,6 @@ public class FxVentaEstructuraController implements Initializable {
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
-        }
-    }
-
-    private void openWindowImpresora() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_IMPRESORA_TICKET);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxImpresoraTicketController controller = fXMLLoader.getController();
-//            controller.setInitVentaEstructuraController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Configurar impresora", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            controller.loadConfigurationDefauld();
-            stage.show();
-        } catch (IOException ex) {
-            System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
         }
     }
 
@@ -739,9 +747,6 @@ public class FxVentaEstructuraController implements Initializable {
                     vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
                     calculateTotales();
                 });
-//                stage.setOnHidden(W -> {
-//                    openWindowCantidad(factor);
-//                });
                 stage.show();
 
             } else {
@@ -978,9 +983,11 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         totalImporte = 0;
+        totalImpuesto = 0;
         total = 0;
         tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        total = totalImporte + totalImpuestos;
+        totalImpuesto = totalImpuestos;
+        total = totalImporte + totalImpuesto;
         lblImporteTotal.setText(monedaSimbolo + " " + Tools.roundingValue(total, 2));
         lblTotalPagar.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));
         lblTotal.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));
@@ -1076,6 +1083,402 @@ public class FxVentaEstructuraController implements Initializable {
         return valor;
     }
 
+    private JasperPrint reportA4(VentaTB ventaTB, ArrayList<SuministroTB> list) throws JRException {
+
+        InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+        InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+        if (Session.COMPANY_IMAGE != null) {
+            imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
+        }
+
+        InputStream dir = getClass().getResourceAsStream("/report/VentaRealizada.jasper");
+
+        Map map = new HashMap();
+        map.put("LOGO", imgInputStream);
+        map.put("ICON", imgInputStreamIcon);
+        map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+        map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+        map.put("TELEFONOCELULAR", "TELÉFONO: " + Session.COMPANY_TELEFONO + " CELULAR: " + Session.COMPANY_CELULAR);
+        map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL);
+
+        map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
+        map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
+        map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+
+        map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
+        map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
+        map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
+        map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular().equals("") ? "---" : ventaTB.getClienteTB().getCelular());
+        map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail().equals("") ? "---" : ventaTB.getClienteTB().getEmail());
+        map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion().equals("") ? "---" : ventaTB.getClienteTB().getDireccion());
+
+        map.put("FECHAEMISION", ventaTB.getFechaVenta());
+        map.put("MONEDA", ventaTB.getMonedaTB().getNombre() + "-" + ventaTB.getMonedaTB().getAbreviado());
+        map.put("CONDICIONPAGO", ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
+
+        map.put("SIMBOLO", ventaTB.getMonedaTB().getSimbolo());
+        map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()));
+
+        map.put("VALOR_VENTA", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getSubTotal(), 2));
+        map.put("DESCUENTO", ventaTB.getMonedaTB().getSimbolo() + " -" + Tools.roundingValue(ventaTB.getDescuento(), 2));
+        map.put("SUB_IMPORTE", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getSubImporte(), 2));
+        map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
+        map.put("IMPORTE_TOTAL", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
+        return jasperPrint;
+    }
+
+    public void imprimirVenta(String idVenta) {
+        if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
+            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración/impresora.");
+            return;
+        }
+
+        if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_VENTA_ID == 0 && Tools.isText(Session.TICKET_VENTA_RUTA)) {
+                Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+            } else {
+                executeProcessPrinterVenta(idVenta, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA, Session.FORMATO_IMPRESORA_VENTA);
+            }
+        } else if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("a4")) {
+            executeProcessPrinterVenta(idVenta, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA, Session.FORMATO_IMPRESORA_VENTA);
+        } else {
+            Tools.AlertMessageWarning(window, "Venta", "Error al validar el formato de impresión, configure en la sección configuración/impresora.");
+        }
+    }
+
+    private void executeProcessPrinterVenta(String idVenta, String printerName, boolean printerCut, String format) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
+                try {
+                    if (!objects.isEmpty()) {
+                        VentaTB ventaTB = (VentaTB) objects.get(0);
+//                        EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
+                        ObservableList<SuministroTB> suministroTBs = (ObservableList<SuministroTB>) objects.get(2);
+
+                        if (format.equalsIgnoreCase("a4")) {
+                            ArrayList<SuministroTB> list = new ArrayList();
+                            suministroTBs.stream().map((suministroTB) -> {
+                                SuministroTB stb = new SuministroTB();
+                                stb.setClave(suministroTB.getClave());
+                                stb.setNombreMarca(suministroTB.getNombreMarca());
+                                stb.setCantidad(suministroTB.getCantidad());
+                                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
+                                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
+                                stb.setDescuento(suministroTB.getDescuento());
+                                stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
+                                return stb;
+                            }).forEachOrdered((stb) -> {
+                                list.add(stb);
+                            });
+
+                            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+                            printRequestAttributeSet.add(new Copies(1));
+
+                            PrinterName pn = new PrinterName(printerName, null);
+
+                            PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
+                            printServiceAttributeSet.add(pn);
+
+                            JRPrintServiceExporter exporter = new JRPrintServiceExporter();
+
+                            exporter.setParameter(JRExporterParameter.JASPER_PRINT, reportA4(ventaTB, list));
+                            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+                            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
+                            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+                            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+                            exporter.exportReport();
+                            return "completed";
+                        } else {
+
+                            billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+
+                            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                                billPrintable.hbEncebezado(box,
+                                        ventaTB.getComprobanteName(),
+                                        ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
+                                        ventaTB.getClienteTB().getNumeroDocumento(),
+                                        ventaTB.getClienteTB().getInformacion(),
+                                        ventaTB.getClienteTB().getCelular(),
+                                        ventaTB.getClienteTB().getDireccion(),
+                                        ventaTB.getCodigo());
+                            }
+
+                            AnchorPane hbDetalle = new AnchorPane();
+                            for (int m = 0; m < suministroTBs.size(); m++) {
+                                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                                    HBox hBox = new HBox();
+                                    hBox.setId("dc_" + m + "" + i);
+                                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                                    billPrintable.hbDetalle(hBox, box, suministroTBs, m);
+                                    hbDetalle.getChildren().add(hBox);
+                                }
+                            }
+
+                            for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                                HBox box = ((HBox) hbPie.getChildren().get(i));
+                                billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
+                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                        "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
+                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                        Tools.roundingValue(ventaTB.getTotal(), 2),
+                                        Tools.roundingValue(ventaTB.getEfectivo(), 2),
+                                        Tools.roundingValue(ventaTB.getVuelto(), 2),
+                                        ventaTB.getClienteTB().getNumeroDocumento(),
+                                        ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                                        ventaTB.getClienteTB().getCelular());
+                            }
+
+                            billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+                            DocPrintJob job = billPrintable.findPrintService(printerName, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                            if (job != null) {
+                                PrinterJob pj = PrinterJob.getPrinterJob();
+                                pj.setPrintService(job.getPrintService());
+                                pj.setJobName(printerName);
+                                Book book = new Book();
+                                book.append(billPrintable, billPrintable.getPageFormat(pj));
+                                pj.setPageable(book);
+                                pj.print();
+                                if (printerCut) {
+                                    billPrintable.printCortarPapel(printerName);
+                                }
+                                return "completed";
+                            } else {
+                                return "error_name";
+                            }
+                        }
+                    } else {
+                        return "empty";
+                    }
+                } catch (PrinterException | IOException | PrintException | JRException ex) {
+                    return "Error en imprimir: " + ex.getLocalizedMessage();
+                }
+            }
+        };
+
+        task.setOnSucceeded(w -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("completed")) {
+                Tools.showAlertNotification("/view/image/information_large.png",
+                        "Envío de impresión",
+                        "Se completo el proceso de impresión correctamente.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+            } else if (result.equalsIgnoreCase("error_name")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("no_config")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error al validar el tipo de impresión, cofigure nuevamente la impresora.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("empty")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "No hay registros para mostrar en el reporte.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else {
+                Tools.showAlertNotification("/view/image/error_large.png",
+                        "Envío de impresión",
+                        "Se producto un problema por problemas de la impresora\n" + result,
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            }
+        });
+
+        task.setOnFailed(w -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
+                    "Envío de impresión",
+                    "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.BOTTOM_RIGHT);
+        });
+
+        task.setOnScheduled(w -> {
+            Tools.showAlertNotification("/view/image/print.png",
+                    "Envío de impresión",
+                    "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                    Duration.seconds(5),
+                    Pos.BOTTOM_RIGHT);
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void imprimirPreVenta() {
+        if (!Session.ESTADO_IMPRESORA_PRE_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_PRE_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_PRE_VENTA)) {
+            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración/impresora.");
+            return;
+        }
+
+        if (Session.FORMATO_IMPRESORA_PRE_VENTA.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_PRE_VENTA_ID == 0 && Tools.isText(Session.TICKET_PRE_VENTA_RUTA)) {
+                Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+            } else {
+                executeProcessPrinterPreVenta(Session.NOMBRE_IMPRESORA_PRE_VENTA, Session.CORTAPAPEL_IMPRESORA_PRE_VENTA);
+            }
+        } else if (Session.FORMATO_IMPRESORA_PRE_VENTA.equalsIgnoreCase("a4")) {
+//            executeProcessPrinterPreVenta(Session.NOMBRE_IMPRESORA_PRE_VENTA);
+        } else {
+            Tools.AlertMessageWarning(window, "Venta", "Error al validar el formato de impresión, configure en la sección configuración/impresora.");
+
+        }
+    }
+
+    private void executeProcessPrinterPreVenta(String printerName, boolean printerCut) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() throws PrintException {
+                try {
+                    billPrintable.loadEstructuraTicket(Session.TICKET_PRE_VENTA_ID, Session.TICKET_PRE_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+
+                    for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                        HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                        billPrintable.hbEncebezado(box,
+                                "PRE VENTA",
+                                "-------",
+                                txtNumeroDocumento.getText().trim().toUpperCase(),
+                                txtDatosCliente.getText().trim().toUpperCase(),
+                                txtCelularCliente.getText().trim().toUpperCase(),
+                                txtDireccionCliente.getText().trim().toUpperCase(),
+                                "00000000");
+                    }
+
+                    AnchorPane hbDetalle = new AnchorPane();
+                    for (int m = 0; m < tvList.getItems().size(); m++) {
+                        for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                            HBox hBox = new HBox();
+                            hBox.setId("dc_" + m + "" + i);
+                            HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                            billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
+                            hbDetalle.getChildren().add(hBox);
+                        }
+                    }
+
+                    for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                        HBox box = ((HBox) hbPie.getChildren().get(i));
+                        billPrintable.hbPie(box, monedaSimbolo,
+                                Tools.roundingValue(subTotal, 2),
+                                "-" + Tools.roundingValue(descuento, 2),
+                                Tools.roundingValue(subTotalImporte, 2),
+                                Tools.roundingValue(total, 2),
+                                "EFECTIVO",
+                                "VUELTO",
+                                txtNumeroDocumento.getText(),
+                                txtDatosCliente.getText(), "CODIGO DE VENTA", txtCelularCliente.getText().trim());
+                    }
+
+                    billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+                    DocPrintJob job = billPrintable.findPrintService(printerName, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                    if (job != null) {
+                        PrinterJob pj = PrinterJob.getPrinterJob();
+                        pj.setPrintService(job.getPrintService());
+                        pj.setJobName(printerName);
+                        Book book = new Book();
+                        book.append(billPrintable, billPrintable.getPageFormat(pj));
+                        pj.setPageable(book);
+                        pj.print();
+                        if (printerCut) {
+                            billPrintable.printCortarPapel(printerName);
+                        }
+                        return "completed";
+                    } else {
+                        return "error_name";
+                    }
+
+                } catch (PrinterException | IOException | PrintException ex) {
+                    return "Error en imprimir: " + ex.getLocalizedMessage();
+                }
+            }
+        };
+
+        task.setOnSucceeded(w -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("completed")) {
+                Tools.showAlertNotification("/view/image/information_large.png",
+                        "Envío de impresión",
+                        "Se completo el proceso de impresión correctamente.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+            } else if (result.equalsIgnoreCase("error_name")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("no_config")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error al validar el tipo de impresión, cofigure nuevamente la impresora.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("empty")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "No hay registros para mostrar en el reporte.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else {
+                Tools.showAlertNotification("/view/image/error_large.png",
+                        "Envío de impresión",
+                         "Se producto un problema por problemas de la impresora\n" + result,
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            }
+        });
+
+        task.setOnFailed(w -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
+                    "Envío de impresión",
+                    "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.BOTTOM_RIGHT);
+        });
+
+        task.setOnScheduled(w -> {
+            Tools.showAlertNotification("/view/image/print.png",
+                    "Envío de impresión",
+                    "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                    Duration.seconds(5),
+                    Pos.BOTTOM_RIGHT);
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
     public void onExecuteCliente(short opcion, String search) {
 
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
@@ -1124,21 +1527,110 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-    public void imprimirVenta(String serieNumeracion, String codigoVenta, String efectivo, String vuelto, boolean ticket) {
-        if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
-            if (ticket) {
-                resetVenta();
+    private void getApiSunat() {
+        ApiPeru apiSunat = new ApiPeru();
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim());
             }
-            return;
-        }
-        if (!Session.ESTADO_IMPRESORA && Session.NOMBRE_IMPRESORA.equalsIgnoreCase("")) {
-            Tools.AlertMessageWarning(window, "Venta", "No hay ruta de impresión, presione F8 o has un click en la opción impresora del mismo formulario actual, para configurar la ruta de impresión..");
-            if (ticket) {
-                resetVenta();
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtDireccionCliente.setText("");
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente por su número de ruc.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("200")) {
+                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Hubo un problema en obtener los datos\n del cliente intente nuvemante",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
+                } else {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Buscando clíente",
+                                "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        clearDataClient();
+                    } else {
+                        Tools.showAlertNotification("/view/image/succes_large.png",
+                                "Buscando clíente",
+                                "Se completo la busqueda con exito.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        txtNumeroDocumento.setDisable(false);
+                        txtDatosCliente.setDisable(false);
+                        txtCelularCliente.setDisable(false);
+                        txtDireccionCliente.setDisable(false);
+                        btnBuscarCliente.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        if (sONObject.get("ruc") != null) {
+                            txtNumeroDocumento.setText(sONObject.get("ruc").toString());
+                        }
+                        if (sONObject.get("razonSocial") != null) {
+                            txtDatosCliente.setText(sONObject.get("razonSocial").toString());
+                        }
+                        if (sONObject.get("direccion") != null) {
+                            txtDireccionCliente.setText(sONObject.get("direccion").toString());
+                        }
+                        txtCelularCliente.setText("");
+                    }
+                }
+            } else {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Paso un problema en trear la información por\n problemas de conexión o error el número del ruc.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
             }
-            return;
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
         }
+
+    }
+
+    private void getApiReniec() {
+        ApiPeru apiSunat = new ApiPeru();
 
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -1146,179 +1638,108 @@ public class FxVentaEstructuraController implements Initializable {
             return t;
         });
 
-        try {
-            Task<String> task = new Task<String>() {
-                @Override
-                public String call() {
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim());
+            }
+        };
 
-                    try {
-                        billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
 
-                        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-                            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-                            billPrintable.hbEncebezado(box,
-                                    ticket ? cbComprobante.getSelectionModel().getSelectedItem().getNombre() : "PRE VENTA",
-                                    serieNumeracion,
-                                    txtNumeroDocumento.getText().trim().toUpperCase(),
-                                    txtDatosCliente.getText().trim().toUpperCase(),
-                                    txtCelularCliente.getText().trim().toUpperCase(),
-                                    txtDireccionCliente.getText().trim().toUpperCase(),
-                                    codigoVenta);
-                        }
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtDireccionCliente.setText("");
 
-                        AnchorPane hbDetalle = new AnchorPane();
-                        for (int m = 0; m < tvList.getItems().size(); m++) {
-                            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                                HBox hBox = new HBox();
-                                hBox.setId("dc_" + m + "" + i);
-                                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                                billPrintable.hbDetalle(hBox, box, tvList.getItems(), m);
-                                hbDetalle.getChildren().add(hBox);
-                            }
-                        }
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente por su número de dni.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
 
-                        for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                            HBox box = ((HBox) hbPie.getChildren().get(i));
-                            billPrintable.hbPie(box, monedaSimbolo,
-                                    Tools.roundingValue(subTotal, 2),
-                                    "-" + Tools.roundingValue(descuento, 2),
-                                    Tools.roundingValue(subTotalImporte, 2),
-                                    Tools.roundingValue(total, 2),
-                                    efectivo,
-                                    vuelto,
-                                    txtNumeroDocumento.getText(),
-                                    txtDatosCliente.getText(), codigoVenta, txtCelularCliente.getText().trim());
-                        }
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
 
-                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
-
-                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA, PrinterJob.lookupPrintServices()).createPrintJob();
-
-                        if (job != null) {
-                            PrinterJob pj = PrinterJob.getPrinterJob();
-                            pj.setPrintService(job.getPrintService());
-                            pj.setJobName(Session.NOMBRE_IMPRESORA);
-                            Book book = new Book();
-                            book.append(billPrintable, billPrintable.getPageFormat(pj));
-                            pj.setPageable(book);
-                            pj.print();
-                            if (Session.CORTAPAPEL_IMPRESORA) {
-                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA);
-                            }
-                            return "completed";
-                        } else {
-                            return "error_name";
-                        }
-
-                    } catch (PrinterException | IOException | PrintException ex) {
-                        return "Error en imprimir: " + ex.getLocalizedMessage();
-                    }
-                }
-            };
-
-            task.setOnSucceeded(w -> {
-//                if (!task.isRunning()) {
-//                    if (alert != null) {
-//                        ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
-//                    }
-//                }
-                String result = task.getValue();
-                if (result.equalsIgnoreCase("completed")) {
-//                    Tools.AlertMessageInformation(window, "Ventas", "Se completo el proceso de impresión correctamente.");
-//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                    Image image = new Image("/view/image/information_large.png");
-                    Notifications notifications = Notifications.create()
-                            .title("Envío de impresión")
-                            .text("Se completo el proceso de impresión correctamente.")
-                            .graphic(new ImageView(image))
-                            .hideAfter(Duration.seconds(5))
-                            .position(Pos.BOTTOM_RIGHT)
-                            .onAction(n -> {
-                            });
-                    notifications.darkStyle();
-                    notifications.show();
-                    if (ticket) {
-                        resetVenta();
-                    }
-                } else if (result.equalsIgnoreCase("error_name")) {
-                    Image image = new Image("/view/image/warning_large.png");
-                    Notifications notifications = Notifications.create()
-                            .title("Envío de impresión")
-                            .text("Error en encontrar el nombre de la impresión por problemas de puerto o driver.")
-                            .graphic(new ImageView(image))
-                            .hideAfter(Duration.seconds(10))
-                            .position(Pos.CENTER)
-                            .onAction(n -> {
-                            });
-                    notifications.darkStyle();
-                    notifications.show();
-                    if (ticket) {
-                        resetVenta();
-                    }
+        task.setOnSucceeded(e -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("200")) {
+                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Hubo un problema en obtener los datos\n del cliente intente nuvemante",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
                 } else {
-//                    Tools.AlertMessageError(window, "Ventas", result);
-//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                    Image image = new Image("/view/image/error_large.png");
-                    Notifications notifications = Notifications.create()
-                            .title("Envío de impresión")
-                            .text("Error en la configuración de su impresora: " + result)
-                            .graphic(new ImageView(image))
-                            .hideAfter(Duration.seconds(10))
-                            .position(Pos.CENTER)
-                            .onAction(n -> {
-                            });
-                    notifications.darkStyle();
-                    notifications.show();
-                    if (ticket) {
-                        resetVenta();
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Buscando clíente",
+                                "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        clearDataClient();
+                    } else {
+                        Tools.showAlertNotification("/view/image/succes_large.png",
+                                "Buscando clíente",
+                                "Se completo la busqueda con exito.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        txtNumeroDocumento.setDisable(false);
+                        txtDatosCliente.setDisable(false);
+                        txtCelularCliente.setDisable(false);
+                        txtDireccionCliente.setDisable(false);
+                        btnBuscarCliente.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        if (sONObject.get("dni") != null) {
+                            txtNumeroDocumento.setText(sONObject.get("dni").toString());
+                        }
+                        if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
+                            txtDatosCliente.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
+                        }
                     }
                 }
-            });
-            task.setOnFailed(w -> {
-//                if (alert != null) {
-//                    ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
-//                }
-//                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema en el proceso de envío, intente nuevamente.");
-//                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                Image image = new Image("/view/image/warning_large.png");
-                Notifications notifications = Notifications.create()
-                        .title("Envío de impresión")
-                        .text("Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.")
-                        .graphic(new ImageView(image))
-                        .hideAfter(Duration.seconds(10))
-                        .position(Pos.BOTTOM_RIGHT)
-                        .onAction(n -> {
-                        });
-                notifications.darkStyle();
-                notifications.show();
-                if (ticket) {
-                    resetVenta();
-                }
+            } else {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Paso un problema en trear la información por\n problemas de conexión o error el número del dni.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
+            }
+        });
 
-            });
-
-            task.setOnScheduled(w -> {
-                Image image = new Image("/view/image/print.png");
-                Notifications notifications = Notifications.create()
-                        .title("Envío de impresión")
-                        .text("Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.")
-                        .graphic(new ImageView(image))
-                        .hideAfter(Duration.seconds(5))
-                        .position(Pos.BOTTOM_RIGHT)
-                        .onAction(n -> {
-                        });
-                notifications.darkStyle();
-                notifications.show();
-
-//                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-//                alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Se envió la impresión a la cola, este proceso puede tomar unos segundos.");
-            });
-            exec.execute(task);
-
-        } finally {
+        exec.execute(task);
+        if (!exec.isShutdown()) {
             exec.shutdown();
         }
+    }
 
+    private void clearDataClient() {
+        txtNumeroDocumento.setDisable(false);
+        txtDatosCliente.setDisable(false);
+        txtCelularCliente.setDisable(false);
+        txtDireccionCliente.setDisable(false);
+        btnBuscarCliente.setDisable(false);
+        btnBuscarSunat.setDisable(false);
+
+        txtNumeroDocumento.setText("");
+        txtDatosCliente.setText("");
+        txtCelularCliente.setText("");
+        txtDireccionCliente.setText("");
     }
 
     @FXML
@@ -1532,18 +1953,6 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedImprimir(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowImpresora();
-        }
-    }
-
-    @FXML
-    private void onActionImprimir(ActionEvent event) {
-        openWindowImpresora();
-    }
-
-    @FXML
     private void onKeyPressedCancelar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             cancelarVenta();
@@ -1582,13 +1991,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
+            imprimirPreVenta();
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-        imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
+        imprimirPreVenta();
     }
 
     @FXML
@@ -1602,13 +2011,23 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedSunat(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            getApiSunat();
         }
     }
 
     @FXML
     private void onActionSunat(ActionEvent event) {
+        getApiSunat();
+    }
 
+    @FXML
+    private void onKeyPressedReniec(KeyEvent event) {
+        getApiReniec();
+    }
+
+    @FXML
+    private void onActionReniec(ActionEvent event) {
+        getApiReniec();
     }
 
     public int getIdTipoComprobante() {

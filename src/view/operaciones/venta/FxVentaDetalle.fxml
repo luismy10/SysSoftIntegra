@@ -79,11 +79,11 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnAbonos" mnemonicParsing="false" onAction="#onActionHistorialPagos" onKeyPressed="#onKeyPressedHistorialPagos" styleClass="buttonLight" text="Abonos">
+                  <Button fx:id="btnGuiaRemision" mnemonicParsing="false" onAction="#onActionGuiaRemision" onKeyPressed="#onKeyPressedGuiaRemision" styleClass="buttonLight" text="Guia de Remisión">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/historial-de-pagos.png" />
+                              <Image url="@../../image/reports.png" />
                            </image>
                         </ImageView>
                      </graphic>

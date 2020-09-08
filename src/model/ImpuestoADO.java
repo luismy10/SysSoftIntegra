@@ -291,7 +291,7 @@ public class ImpuestoADO {
         if (DBUtil.getConnection() != null) {
             PreparedStatement statement = null;
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT Operacion,Nombre,Valor,Codigo,Numeracion,NombreImpuesto,Letra,Categoria, FROM ImpuestoTB WHERE IdImpuesto = ?");
+                statement = DBUtil.getConnection().prepareStatement("SELECT Operacion,Nombre,Valor,Codigo,Numeracion,NombreImpuesto,Letra,Categoria FROM ImpuestoTB WHERE IdImpuesto = ?");
                 statement.setInt(1, idImpuesto);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {

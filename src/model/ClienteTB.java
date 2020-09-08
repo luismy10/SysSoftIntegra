@@ -20,14 +20,14 @@ public class ClienteTB {
     private String representante;
     private boolean predeterminado;
     private boolean sistema;
-     private ImageView imagePredeterminado;
+    private ImageView imagePredeterminado;
 
     public ClienteTB() {
 
     }
 
-    public ClienteTB(String idCliente,String numeroDocumento,String informacion,String celular,String direccion){
-        this.idCliente=idCliente;
+    public ClienteTB(String idCliente, String numeroDocumento, String informacion, String celular, String direccion) {
+        this.idCliente = idCliente;
         this.numeroDocumento = numeroDocumento;
         this.informacion = informacion;
         this.celular = celular;
@@ -87,7 +87,7 @@ public class ClienteTB {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        this.telefono = telefono == null ? "" : telefono;
     }
 
     public String getCelular() {
@@ -95,7 +95,7 @@ public class ClienteTB {
     }
 
     public void setCelular(String celular) {
-        this.celular = celular;
+        this.celular = celular == null ? "" : celular;
     }
 
     public String getEmail() {
@@ -103,7 +103,7 @@ public class ClienteTB {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? "" : email;
     }
 
     public String getDireccion() {
@@ -164,9 +164,7 @@ public class ClienteTB {
 
     @Override
     public String toString() {
-        return informacion ;
+        return informacion;
     }
 
-    
-    
 }

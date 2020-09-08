@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -237,25 +236,25 @@ public class FxEmpleadosProcesoController implements Initializable {
 
     private void onActionProcessCrud() throws ParseException {
         if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Empleado", "Seleccione el tipo de documento del empleado", false);
+            Tools.AlertMessageWarning(window, "Empleado", "Seleccione el tipo de documento del empleado");
             cbTipoDocumento.requestFocus();
         } else if (Tools.isText(txtNumeroDocumento.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Empleado", "Ingrese el número del documento del empleado", false);
+            Tools.AlertMessageWarning(window, "Empleado", "Ingrese el número del documento del empleado");
             txtNumeroDocumento.requestFocus();
         } else if (Tools.isText(txtApellidos.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Empleado", "Ingrese los apellidos del empleado", false);
+            Tools.AlertMessageWarning(window, "Empleado", "Ingrese los apellidos del empleado");
             txtApellidos.requestFocus();
         } else if (Tools.isText(txtNombres.getText())) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Empleado", "Ingrese los nombres del empleado", false);
+            Tools.AlertMessageWarning(window, "Empleado", "Ingrese los nombres del empleado");
             txtNombres.requestFocus();
         } else if (cbPuesto.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Empleado", "Seleccione el puesto del empleado", false);
+            Tools.AlertMessageWarning(window, "Empleado", "Seleccione el puesto del empleado");
             cbPuesto.requestFocus();
         } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Empleado", "Seleccione el estado del empleado", false);
+            Tools.AlertMessageWarning(window, "Empleado", "Seleccione el estado del empleado");
             cbEstado.requestFocus();
         } else {
-            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Empleado", "¿Esta seguro de continuar?", true);
+            short confirmation = Tools.AlertMessageConfirmation(window, "Empleado", "¿Esta seguro de continuar?");
             if (confirmation == 1) {
                 EmpleadoTB empleadoTB = new EmpleadoTB();
                 empleadoTB.setIdEmpleado(idEmpleado);
@@ -306,22 +305,22 @@ public class FxEmpleadosProcesoController implements Initializable {
                     String result = EmpleadoADO.InsertEmpleado(empleadoTB);
                     switch (result) {
                         case "register":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Empleado", "Registrado correctamente el empleado.", false);
+                            Tools.AlertMessageInformation(window, "Empleado", "Registrado correctamente el empleado.");
                             Tools.Dispose(window);
                             break;
                         default:
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Empleado", result, false);
+                            Tools.AlertMessageError(window, "Empleado", result);
                             break;
                     }
                 } else {
                     String result = EmpleadoADO.UpdateEmpleado(empleadoTB);
                     switch (result) {
                         case "update":
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Empleado", "Actualizado correctamente el empleado.", false);
+                            Tools.AlertMessageInformation(window, "Empleado", "Actualizado correctamente el empleado.");
                             Tools.Dispose(window);
                             break;
                         default:
-                            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Empleado", result, false);
+                            Tools.AlertMessageError(window, "Empleado", result);
                             break;
                     }
                 }

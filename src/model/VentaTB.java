@@ -22,6 +22,7 @@ public class VentaTB {
     private double subTotal;
     private double descuento;
     private double subImporte;
+    private double impuesto;
     private double total;
     private String totalFormat;
     private int tipo;
@@ -182,6 +183,14 @@ public class VentaTB {
 
     public void setTipoName(String tipoName) {
         this.tipoName = tipoName;
+    }
+
+    public double getImpuesto() {
+        return impuesto;
+    }
+
+    public void setImpuesto(double impuesto) {
+        this.impuesto = impuesto;
     }
 
     public double getTotal() {

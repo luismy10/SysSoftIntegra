@@ -23,7 +23,6 @@ import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -38,33 +37,10 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.HashPrintServiceAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.PrintServiceAttributeSet;
-import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.PrinterName;
 import model.ImageADO;
 import model.ImagenTB;
 import model.SuministroTB;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.design.JRDesignBand;
-import net.sf.jasperreports.engine.design.JRDesignExpression;
-import net.sf.jasperreports.engine.design.JRDesignImage;
-import net.sf.jasperreports.engine.design.JRDesignSection;
-import net.sf.jasperreports.engine.design.JRDesignStyle;
-import net.sf.jasperreports.engine.design.JRDesignTextField;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
-import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
-import net.sf.jasperreports.engine.type.ModeEnum;
-import net.sf.jasperreports.engine.type.PositionTypeEnum;
-import net.sf.jasperreports.engine.type.ScaleImageEnum;
-import net.sf.jasperreports.engine.type.SplitTypeEnum;
-import net.sf.jasperreports.engine.type.StretchTypeEnum;
-import net.sf.jasperreports.engine.type.VerticalTextAlignEnum;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -76,8 +52,6 @@ public class BillPrintable implements Printable {
 
     private final double pointWidthSizePaper;
 
-    private final ArrayList<String> fileImages;
-
     private AnchorPane apEncabezado;
 
     private AnchorPane apDetalle;
@@ -88,7 +62,6 @@ public class BillPrintable implements Printable {
         sheetWidth = 0;
         pointWidthSizeView = 8.10;
         pointWidthSizePaper = 5.10;
-        fileImages = new ArrayList();
     }
 
     public void hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta) {
@@ -196,8 +169,7 @@ public class BillPrintable implements Printable {
         }
     }
 
-    @Deprecated
-    private void modelTicket(Node window, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent, String nombreimpresora, boolean cortar) {
+    public void modelTicket(Node window, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent, String nombreimpresora, boolean cortar) {
         int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
@@ -312,24 +284,9 @@ public class BillPrintable implements Printable {
     }
 
     public void generatePDFPrint(AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane apPie) {
-//        try {
-//            int width = (int) Math.ceil(sheetWidth * pointWidthSizePaper);
         this.apEncabezado = apEncabezado;
         this.apDetalle = apDetalle;
         this.apPie = apPie;
-//            Map param = new HashMap();
-//            JasperDesign jasperDesign = getJasperDesign(width, 20000, apEncabezado, apDetalle, apPie);
-//            JasperReport report = JasperCompileManager.compileReport(jasperDesign);
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
-//            JasperExportManager.exportReportToPdfFile(jasperPrint, "./archivos/InventarioGeneral.pdf");
-//            PrintReportToPrinter(jasperPrint, nombreImpresora, cortar);
-//        } catch (JRException /*| PrintException | IOException*/ er) {
-//            return "Error en imprimir: " + er.getLocalizedMessage();
-//        } finally {
-//            fileImages.stream().map((fileImage) -> new File(fileImage)).filter((removed) -> (removed != new File("./archivos/no-image"))).forEachOrdered((removed) -> {
-//                removed.delete();
-//            });
-//        }
     }
 
     @Override
@@ -651,7 +608,7 @@ public class BillPrintable implements Printable {
 
                         y += imageView.getFitHeight() + 3;
 
-                    } catch (Exception ex) {
+                    } catch (IOException ex) {
                         System.out.println(ex.getLocalizedMessage());
                     }
 
@@ -661,181 +618,60 @@ public class BillPrintable implements Printable {
         return y;
     }
 
-    @Deprecated
-    private JasperDesign getJasperDesign(int width, int height, AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
-
-        JasperDesign jasperDesign = new JasperDesign();
-        jasperDesign.setName("Formato de ticket");
-        jasperDesign.setPageWidth(width);
-        jasperDesign.setPageHeight(height);
-        jasperDesign.setColumnWidth(width);
-        jasperDesign.setColumnSpacing(0);
-        jasperDesign.setLeftMargin(0);
-        jasperDesign.setRightMargin(0);
-        jasperDesign.setTopMargin(0);
-        jasperDesign.setBottomMargin(0);
-
-        JRDesignStyle normalStyle = new JRDesignStyle();
-        normalStyle.setName("Consolas");
-        normalStyle.setDefault(true);
-        // normalStyle.setFontName("Monospace");
-        normalStyle.setPdfFontName("src/view/style/Consolas.ttf");
-        normalStyle.setPdfEncoding("Identity-H");
-        normalStyle.setPdfEmbedded(true);
-        jasperDesign.addStyle(normalStyle);
-        JRDesignBand band = new JRDesignBand();
-        band.setSplitType(SplitTypeEnum.STRETCH);
-        band.setHeight(height);
-
-        //font size 9f x 15 height
-        int rows = 0;
-        rows += createRow(apEncabezado, jasperDesign, band, width, rows);
-        rows = createRow(apDetalle, jasperDesign, band, width, rows);
-        createRow(pPie, jasperDesign, band, width, rows);
-
-//        jasperDesign.setTitle(band);
-        ((JRDesignSection) jasperDesign.getDetailSection()).addBand(band);
-        return jasperDesign;
-    }
-
-    @Deprecated
-    private int createRow(AnchorPane anchorPane, JasperDesign jasperDesign, JRDesignBand band, int width, int rows) {
-        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
-
-            HBox box = ((HBox) anchorPane.getChildren().get(i));
-            StringBuilder result = new StringBuilder();
-
-            if (box.getChildren().size() > 1) {
-
-                int columnI;
-                int columnF;
-                int columnA = 0;
-                float fontSize = 0;
-                for (int j = 0; j < box.getChildren().size(); j++) {
-                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(j);
-                    fontSize = field.getFontSize();
-                    columnI = columnA;
-                    columnF = columnI + field.getColumnWidth();
-                    columnA = columnF;
-
-                    int totalWidth;
-                    int length;
-
-                    if (null != field.getAlignment()) {
-                        switch (field.getAlignment()) {
-                            case CENTER_LEFT:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int posl = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= 0 && ca <= (length - 1)) {
-                                        char c = field.getText().charAt(posl);
-                                        result.append(c);
-                                        posl++;
-
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-                                break;
-                            case CENTER:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int centro = (totalWidth - length) / 2;
-                                int posc = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= centro && ca <= (centro + (length - 1))) {
-                                        char c = field.getText().charAt(posc);
-                                        result.append(c);
-                                        posc++;
-
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-
-                                break;
-                            case CENTER_RIGHT:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int right = totalWidth - length;
-                                int posr = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= right && ca <= (right + (length - 1))) {
-                                        char c = field.getText().charAt(posr);
-                                        result.append(c);
-                                        posr++;
-
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-                                break;
-                            default:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int posd = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= 0 && ca <= (length - 1)) {
-                                        char c = field.getText().charAt(posd);
-                                        result.append(c);
-                                        posd++;
-
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-
-                JRDesignTextField staticText = new JRDesignTextField();
-                staticText.setStretchWithOverflow(true);
-                staticText.setBlankWhenNull(true);
-
-                staticText.setX(0);
-                staticText.setY(rows);
-                staticText.setWidth(width);
-                staticText.setHeight((int) (fontSize + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
-                staticText.setFontSize(fontSize - 3.5f);
-                staticText.setFontName("Consola");
-
-                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-                staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
-                staticText.setPositionType(PositionTypeEnum.FLOAT);
-                staticText.setMode(ModeEnum.OPAQUE);
-
-                //TextField expression
-                JRDesignExpression expression = new JRDesignExpression();
-                expression.setValueClass(String.class);
-                expression.setText("\"" + result.toString() + "\"");
-                staticText.setExpression(expression);
-                band.addElement(staticText);
-                rows += staticText.getHeight();
-
-//                JRDesignStaticText staticText = new JRDesignStaticText();
-//                staticText.setX(0);
-//                staticText.setY(rows);
-//                staticText.setWidth(width);
-//                staticText.setHeight(15);
-//                staticText.setFontSize(9f);
-//                //staticText.setFontName(field.getFontName());
-//                staticText.setFontName("Consola");
-//                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-//                staticText.setText(result.toString());
-//                band.addElement(staticText);
-//                rows += 15;
-            } else {
-
-                if (box.getChildren().get(0) instanceof TextFieldTicket) {
-
-//                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
-//                    int columnI;
-//                    int columnF;
+//    private JasperDesign getJasperDesign(int width, int height, AnchorPane apEncabezado, AnchorPane apDetalle, AnchorPane pPie) throws JRException {
+//        /*
+//        width=595
+//        height=842
+//        top=right=bottom=left=20
+//        columnwidth=555
+//        columnspace=0
+//        columns=1
+//        */
+//        JasperDesign jasperDesign = new JasperDesign();
+//        jasperDesign.setName("Formato de ticket");
+//        jasperDesign.setPageWidth(width);
+//        jasperDesign.setPageHeight(height);
+//        jasperDesign.setColumnWidth(width);
+//        jasperDesign.setColumnSpacing(0);
+//        jasperDesign.setLeftMargin(0);
+//        jasperDesign.setRightMargin(0);
+//        jasperDesign.setTopMargin(0);
+//        jasperDesign.setBottomMargin(0);
 //
-//                    columnI = 0;
+//        JRDesignBand band = new JRDesignBand();
+//        band.setSplitType(SplitTypeEnum.STRETCH);
+//        band.setHeight(height);
+//
+//        //font size 9f x 15 height
+//        int rows = 0;
+//        rows += createRow(apEncabezado, jasperDesign, band, width, rows);
+//        rows = createRow(apDetalle, jasperDesign, band, width, rows);
+//        createRow(pPie, jasperDesign, band, width, rows);
+//
+////        jasperDesign.setTitle(band);
+//        ((JRDesignSection) jasperDesign.getDetailSection()).addBand(band);
+//        return jasperDesign;
+//    }
+//
+//    @Deprecated
+//    private int createRow(AnchorPane anchorPane, JasperDesign jasperDesign, JRDesignBand band, int width, int rows) {
+//        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+//
+//            HBox box = ((HBox) anchorPane.getChildren().get(i));
+//            StringBuilder result = new StringBuilder();
+//
+//            if (box.getChildren().size() > 1) {
+//
+//                int columnI;
+//                int columnF;
+//                int columnA = 0;
+//                float fontSize = 0;
+//                for (int j = 0; j < box.getChildren().size(); j++) {
+//                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(j);
+//                    fontSize = field.getFontSize();
+//                    columnI = columnA;
 //                    columnF = columnI + field.getColumnWidth();
+//                    columnA = columnF;
 //
 //                    int totalWidth;
 //                    int length;
@@ -851,6 +687,7 @@ public class BillPrintable implements Printable {
 //                                        char c = field.getText().charAt(posl);
 //                                        result.append(c);
 //                                        posl++;
+//
 //                                    } else {
 //                                        result.append(" ");
 //                                    }
@@ -866,6 +703,7 @@ public class BillPrintable implements Printable {
 //                                        char c = field.getText().charAt(posc);
 //                                        result.append(c);
 //                                        posc++;
+//
 //                                    } else {
 //                                        result.append(" ");
 //                                    }
@@ -882,6 +720,7 @@ public class BillPrintable implements Printable {
 //                                        char c = field.getText().charAt(posr);
 //                                        result.append(c);
 //                                        posr++;
+//
 //                                    } else {
 //                                        result.append(" ");
 //                                    }
@@ -896,6 +735,7 @@ public class BillPrintable implements Printable {
 //                                        char c = field.getText().charAt(posd);
 //                                        result.append(c);
 //                                        posd++;
+//
 //                                    } else {
 //                                        result.append(" ");
 //                                    }
@@ -903,130 +743,223 @@ public class BillPrintable implements Printable {
 //                                break;
 //                        }
 //                    }
-                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
-                    JRDesignTextField staticText = new JRDesignTextField();
-                    staticText.setStretchWithOverflow(true);
-                    staticText.setBlankWhenNull(true);
-
-                    staticText.setX(0);
-                    staticText.setY(rows);
-                    staticText.setWidth(width);
-                    staticText.setHeight((int) (field.getFontSize() + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
-                    staticText.setFontSize(field.getFontSize() - 3.5f);
-                    staticText.setFontName(
-                            field.getFontName().equalsIgnoreCase("Consola")
-                            ? "Consola"
-                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
-                            ? "RobotoRegular"
-                            : "RobotoBold");
-                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-                    staticText.setHorizontalTextAlign(
-                            field.getAlignment() == Pos.CENTER_LEFT
-                            ? HorizontalTextAlignEnum.LEFT
-                            : field.getAlignment() == Pos.CENTER
-                            ? HorizontalTextAlignEnum.CENTER
-                            : HorizontalTextAlignEnum.RIGHT);
-
-                    staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
-                    staticText.setPositionType(PositionTypeEnum.FLOAT);
-                    staticText.setMode(ModeEnum.OPAQUE);
-
-                    JRDesignExpression expression = new JRDesignExpression();
-                    expression.setValueClass(String.class);
-                    expression.setText("\"" + field.getText() + "\"");
-                    staticText.setExpression(expression);
-                    band.addElement(staticText);
-                    rows += staticText.getHeight();
-
-//                    JRDesignStaticText staticText = new JRDesignStaticText();
+//                }
+//
+//                JRDesignTextField staticText = new JRDesignTextField();
+//                staticText.setStretchWithOverflow(true);
+//                staticText.setBlankWhenNull(true);
+//
+//                staticText.setX(0);
+//                staticText.setY(rows);
+//                staticText.setWidth(width);
+//                staticText.setHeight((int) (fontSize + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
+//                staticText.setFontSize(fontSize - 3.5f);
+//                staticText.setFontName("Consola");
+//
+//                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
+//                staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
+//                staticText.setPositionType(PositionTypeEnum.FLOAT);
+//                staticText.setMode(ModeEnum.OPAQUE);
+//
+//                //TextField expression
+//                JRDesignExpression expression = new JRDesignExpression();
+//                expression.setValueClass(String.class);
+//                expression.setText("\"" + result.toString() + "\"");
+//                staticText.setExpression(expression);
+//                band.addElement(staticText);
+//                rows += staticText.getHeight();
+//
+////                JRDesignStaticText staticText = new JRDesignStaticText();
+////                staticText.setX(0);
+////                staticText.setY(rows);
+////                staticText.setWidth(width);
+////                staticText.setHeight(15);
+////                staticText.setFontSize(9f);
+////                //staticText.setFontName(field.getFontName());
+////                staticText.setFontName("Consola");
+////                staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
+////                staticText.setText(result.toString());
+////                band.addElement(staticText);
+////                rows += 15;
+//            } else {
+//
+//                if (box.getChildren().get(0) instanceof TextFieldTicket) {
+//
+////                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
+////                    int columnI;
+////                    int columnF;
+////
+////                    columnI = 0;
+////                    columnF = columnI + field.getColumnWidth();
+////
+////                    int totalWidth;
+////                    int length;
+////
+////                    if (null != field.getAlignment()) {
+////                        switch (field.getAlignment()) {
+////                            case CENTER_LEFT:
+////                                totalWidth = columnF - columnI;
+////                                length = field.getText().length();
+////                                int posl = 0;
+////                                for (int ca = 0; ca < totalWidth; ca++) {
+////                                    if (ca >= 0 && ca <= (length - 1)) {
+////                                        char c = field.getText().charAt(posl);
+////                                        result.append(c);
+////                                        posl++;
+////                                    } else {
+////                                        result.append(" ");
+////                                    }
+////                                }
+////                                break;
+////                            case CENTER:
+////                                totalWidth = columnF - columnI;
+////                                length = field.getText().length();
+////                                int centro = (totalWidth - length) / 2;
+////                                int posc = 0;
+////                                for (int ca = 0; ca < totalWidth; ca++) {
+////                                    if (ca >= centro && ca <= (centro + (length - 1))) {
+////                                        char c = field.getText().charAt(posc);
+////                                        result.append(c);
+////                                        posc++;
+////                                    } else {
+////                                        result.append(" ");
+////                                    }
+////                                }
+////
+////                                break;
+////                            case CENTER_RIGHT:
+////                                totalWidth = columnF - columnI;
+////                                length = field.getText().length();
+////                                int right = totalWidth - length;
+////                                int posr = 0;
+////                                for (int ca = 0; ca < totalWidth; ca++) {
+////                                    if (ca >= right && ca <= (right + (length - 1))) {
+////                                        char c = field.getText().charAt(posr);
+////                                        result.append(c);
+////                                        posr++;
+////                                    } else {
+////                                        result.append(" ");
+////                                    }
+////                                }
+////                                break;
+////                            default:
+////                                totalWidth = columnF - columnI;
+////                                length = field.getText().length();
+////                                int posd = 0;
+////                                for (int ca = 0; ca < totalWidth; ca++) {
+////                                    if (ca >= 0 && ca <= (length - 1)) {
+////                                        char c = field.getText().charAt(posd);
+////                                        result.append(c);
+////                                        posd++;
+////                                    } else {
+////                                        result.append(" ");
+////                                    }
+////                                }
+////                                break;
+////                        }
+////                    }
+//                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
+//                    JRDesignTextField staticText = new JRDesignTextField();
+//                    staticText.setStretchWithOverflow(true);
+//                    staticText.setBlankWhenNull(true);
+//
 //                    staticText.setX(0);
 //                    staticText.setY(rows);
 //                    staticText.setWidth(width);
-//                    staticText.setHeight((int) (field.getFontSize()+2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
-//                    staticText.setFontSize(field.getFontSize()-3.5f);
+//                    staticText.setHeight((int) (field.getFontSize() + 2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
+//                    staticText.setFontSize(field.getFontSize() - 3.5f);
 //                    staticText.setFontName(
 //                            field.getFontName().equalsIgnoreCase("Consola")
 //                            ? "Consola"
 //                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
 //                            ? "RobotoRegular"
 //                            : "RobotoBold");
+//                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
 //                    staticText.setHorizontalTextAlign(
 //                            field.getAlignment() == Pos.CENTER_LEFT
 //                            ? HorizontalTextAlignEnum.LEFT
 //                            : field.getAlignment() == Pos.CENTER
 //                            ? HorizontalTextAlignEnum.CENTER
 //                            : HorizontalTextAlignEnum.RIGHT);
-//                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
-//                    staticText.setText(field.getText());
-////                    staticText.setText(result.toString());
+//
+//                    staticText.setStretchType(StretchTypeEnum.NO_STRETCH);
+//                    staticText.setPositionType(PositionTypeEnum.FLOAT);
+//                    staticText.setMode(ModeEnum.OPAQUE);
+//
+//                    JRDesignExpression expression = new JRDesignExpression();
+//                    expression.setValueClass(String.class);
+//                    expression.setText("\"" + field.getText() + "\"");
+//                    staticText.setExpression(expression);
 //                    band.addElement(staticText);
 //                    rows += staticText.getHeight();
-                } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
-                    ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
-                    String idImage = "./archivos/no-image.png";
-                    try {
-                        ByteArrayInputStream bais = new ByteArrayInputStream(imageView.getUrl());
-                        BufferedImage bufferedImage = ImageIO.read(bais);
-                        String idGenerated = getIdGenerateImage();
-                        boolean validateImage = true;
-                        while (validateImage) {
-                            File file = new File("./archivos/" + idGenerated + ".png");
-                            if (file.exists()) {
-                                idGenerated = getIdGenerateImage();
-                            } else {
-                                validateImage = false;
-                                idGenerated = "./archivos/" + idGenerated + ".png";
-                                idImage = idGenerated;
-                            }
-                        }
-                        ImageIO.write(bufferedImage, "png", new File(idGenerated));
-                    } catch (IOException ex1) {
-                    }
-                    JRDesignImage image = new JRDesignImage(jasperDesign);
-                    image.setX(
-                            box.getAlignment() == Pos.CENTER_LEFT ? 0
-                            : box.getAlignment() == Pos.CENTER
-                            ? (int) (width - imageView.getFitWidth()) / 2
-                            : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0
-                    );
-                    image.setY(rows);
-                    image.setWidth((int) imageView.getFitWidth());
-                    image.setHeight((int) imageView.getFitHeight());
-                    image.setScaleImage(ScaleImageEnum.FILL_FRAME);
-                    JRDesignExpression expr = new JRDesignExpression();
-                    expr.setText("\"" + idImage + "\"");
-                    image.setExpression(expr);
-                    band.addElement(image);
-                    rows += imageView.getFitHeight();
-                    fileImages.add(idImage);
-                }
-            }
-        }
-        return rows;
-    }
+//
+////                    JRDesignStaticText staticText = new JRDesignStaticText();
+////                    staticText.setX(0);
+////                    staticText.setY(rows);
+////                    staticText.setWidth(width);
+////                    staticText.setHeight((int) (field.getFontSize()+2.5f));//15-9 17-11 19-13 21-15 23-17 25-19 27-21
+////                    staticText.setFontSize(field.getFontSize()-3.5f);
+////                    staticText.setFontName(
+////                            field.getFontName().equalsIgnoreCase("Consola")
+////                            ? "Consola"
+////                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
+////                            ? "RobotoRegular"
+////                            : "RobotoBold");
+////                    staticText.setHorizontalTextAlign(
+////                            field.getAlignment() == Pos.CENTER_LEFT
+////                            ? HorizontalTextAlignEnum.LEFT
+////                            : field.getAlignment() == Pos.CENTER
+////                            ? HorizontalTextAlignEnum.CENTER
+////                            : HorizontalTextAlignEnum.RIGHT);
+////                    staticText.setVerticalTextAlign(VerticalTextAlignEnum.MIDDLE);
+////                    staticText.setText(field.getText());
+//////                    staticText.setText(result.toString());
+////                    band.addElement(staticText);
+////                    rows += staticText.getHeight();
+//                } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
+//                    ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
+//                    String idImage = "./archivos/no-image.png";
+//                    try {
+//                        ByteArrayInputStream bais = new ByteArrayInputStream(imageView.getUrl());
+//                        BufferedImage bufferedImage = ImageIO.read(bais);
+//                        String idGenerated = getIdGenerateImage();
+//                        boolean validateImage = true;
+//                        while (validateImage) {
+//                            File file = new File("./archivos/" + idGenerated + ".png");
+//                            if (file.exists()) {
+//                                idGenerated = getIdGenerateImage();
+//                            } else {
+//                                validateImage = false;
+//                                idGenerated = "./archivos/" + idGenerated + ".png";
+//                                idImage = idGenerated;
+//                            }
+//                        }
+//                        ImageIO.write(bufferedImage, "png", new File(idGenerated));
+//                    } catch (IOException ex1) {
+//                    }
+//                    JRDesignImage image = new JRDesignImage(jasperDesign);
+//                    image.setX(
+//                            box.getAlignment() == Pos.CENTER_LEFT ? 0
+//                            : box.getAlignment() == Pos.CENTER
+//                            ? (int) (width - imageView.getFitWidth()) / 2
+//                            : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0
+//                    );
+//                    image.setY(rows);
+//                    image.setWidth((int) imageView.getFitWidth());
+//                    image.setHeight((int) imageView.getFitHeight());
+//                    image.setScaleImage(ScaleImageEnum.FILL_FRAME);
+//                    JRDesignExpression expr = new JRDesignExpression();
+//                    expr.setText("\"" + idImage + "\"");
+//                    image.setExpression(expr);
+//                    band.addElement(image);
+//                    rows += imageView.getFitHeight();
+//                    fileImages.add(idImage);
+//                }
+//            }
+//        }
+//        return rows;
+//    }
 
-    @Deprecated
-    private void PrintReportToPrinter(JasperPrint jp, String printName, boolean cortar) throws JRException, PrintException, IOException {
-        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-        printRequestAttributeSet.add(new Copies(1));
-
-        PrinterName printerName = new PrinterName(printName, null); //gets printer 
-
-        PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
-        printServiceAttributeSet.add(printerName);
-
-        JRPrintServiceExporter exporter = new JRPrintServiceExporter();
-
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
-        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
-        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
-        exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
-        exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
-        exporter.exportReport();
-        if (cortar) {
-            printCortarPapel(printName);
-        }
-    }
 
     public void printCortarPapel(String printerName) throws PrintException, IOException {
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
@@ -1044,14 +977,6 @@ public class BillPrintable implements Printable {
         job.print(doc, null);
     }
 
-    private String getIdGenerateImage() {
-        Random rd = new Random();
-        int dig5 = rd.nextInt(90000) + 10000;
-        return "image_" + dig5;
-
-    }
-
-    @Deprecated
     private void printDoc(String ruta, String nombreimpresora, boolean cortar) {
         File file = new File(ruta);
         FileInputStream inputStream = null;
