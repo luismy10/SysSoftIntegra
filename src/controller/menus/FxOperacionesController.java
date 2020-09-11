@@ -2,6 +2,7 @@ package controller.menus;
 
 import controller.operaciones.compras.FxComprasController;
 import controller.operaciones.cortecaja.FxCajaController;
+import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.venta.FxVentaController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -34,6 +35,8 @@ public class FxOperacionesController implements Initializable {
     private VBox btnVentas;
     @FXML
     private VBox btnCompras;
+    @FXML
+    private VBox btnGuiaRemision;
     @FXML
     private VBox btnCorteCaja;
     /*
@@ -69,6 +72,16 @@ public class FxOperacionesController implements Initializable {
     private ScrollPane nodeCompra;
 
     private FxComprasController controllerCompras;
+
+    /*
+    Controller guia remision
+     */
+    private FXMLLoader fXMLGuiaRemision;
+
+    private ScrollPane nodeGuiaRemision;
+
+    private FxGuiaRemisionController controllerGuiaRemision;
+
     /*
     Controller corte de caja
      */
@@ -76,7 +89,7 @@ public class FxOperacionesController implements Initializable {
 
     private VBox nodeCorteCaja;
 
-    private FxCajaController controllerCorteCaja; 
+    private FxCajaController controllerCorteCaja;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -84,18 +97,22 @@ public class FxOperacionesController implements Initializable {
             fXMLVentaOld = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
             nodeVentaOld = fXMLVentaOld.load();
             controllerVentaOld = fXMLVentaOld.getController();
-            controllerVentaOld.setTipoVenta((short)1);
+            controllerVentaOld.setTipoVenta((short) 1);
             controllerVentaOld.loadComponents();
 
             fXMLVentaNew = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
             nodeVentaNew = fXMLVentaNew.load();
             controllerVentaNew = fXMLVentaNew.getController();
-            controllerVentaNew.setTipoVenta((short)2);
+            controllerVentaNew.setTipoVenta((short) 2);
             controllerVentaNew.loadComponents();
 
             fXMLCompra = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS));
             nodeCompra = fXMLCompra.load();
             controllerCompras = fXMLCompra.getController();
+
+            fXMLGuiaRemision = new FXMLLoader(getClass().getResource(FilesRouters.FX_GUIA_REMISION));
+            nodeGuiaRemision = fXMLGuiaRemision.load();
+            controllerGuiaRemision = fXMLGuiaRemision.getController();
 
             fXMLCorteCaja = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA));
             nodeCorteCaja = fXMLCorteCaja.load();
@@ -152,7 +169,7 @@ public class FxOperacionesController implements Initializable {
         controllerVentaOld.loadElements();
     }
 
-    private void openWindowVentaNueva(){
+    private void openWindowVentaNueva() {
         controllerVentaNew.setContent(vbPrincipal);
         vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(nodeVentaNew, 0d);
@@ -174,7 +191,17 @@ public class FxOperacionesController implements Initializable {
         vbContent.getChildren().add(nodeCompra);
         if (!controllerCompras.isLoadData()) {
             controllerCompras.loadAllComponents();
-        } 
+        }
+    }
+
+    private void openWindowGuiaRemision() {
+        controllerGuiaRemision.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeGuiaRemision, 0d);
+        AnchorPane.setTopAnchor(nodeGuiaRemision, 0d);
+        AnchorPane.setRightAnchor(nodeGuiaRemision, 0d);
+        AnchorPane.setBottomAnchor(nodeGuiaRemision, 0d);
+        vbContent.getChildren().add(nodeGuiaRemision);
     }
 
     private void openWindowCorteCaja() {
@@ -223,6 +250,18 @@ public class FxOperacionesController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedGuiaRemision(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowGuiaRemision();
+        }
+    }
+
+    @FXML
+    private void onActionGuiaRemision(ActionEvent event) {
+        openWindowGuiaRemision();
+    }
+
+    @FXML
     private void onKeyPressedCompras(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowCompra();
@@ -233,11 +272,10 @@ public class FxOperacionesController implements Initializable {
     private void onActionCompras(ActionEvent event) {
         openWindowCompra();
     }
-    
+
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
     }
-
 
 }

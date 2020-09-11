@@ -61,6 +61,12 @@ public class FxComprasDetalleController implements Initializable {
     @FXML
     private Label lblProveedor;
     @FXML
+    private Label lblTelefonoCelular;
+    @FXML
+    private Label lblEmail;
+    @FXML
+    private Label lblDireccion;
+    @FXML
     private Label lblTipo;
     @FXML
     private Label lblEstado;
@@ -166,8 +172,10 @@ public class FxComprasDetalleController implements Initializable {
                 ObservableList<DetalleCompraTB> empList = (ObservableList<DetalleCompraTB>) objects.get(1);
                 if (compraTB != null) {
                     lblProveedor.setText(compraTB.getProveedorTB().getNumeroDocumento()
-                            + " " + compraTB.getProveedorTB().getRazonSocial().toUpperCase()
-                            + " TEL: " + compraTB.getProveedorTB().getTelefono() + " CEL: " + compraTB.getProveedorTB().getCelular());
+                            + " " + compraTB.getProveedorTB().getRazonSocial().toUpperCase() );
+                    lblTelefonoCelular.setText(compraTB.getProveedorTB().getTelefono() + "-" + compraTB.getProveedorTB().getCelular());
+                    lblEmail.setText(compraTB.getProveedorTB().getEmail());
+                    lblDireccion.setText(compraTB.getProveedorTB().getDireccion());
                     lblFechaCompra.setText(compraTB.getFechaCompra().toUpperCase() + " " + compraTB.getHoraCompra());
                     lblComprobante.setText(compraTB.getSerie() + " - N °" + compraTB.getNumeracion());
                     lblObservacion.setText(compraTB.getObservaciones().equalsIgnoreCase("") ? "NO TIENE NINGUNA OBSERVACIÓN" : compraTB.getObservaciones());

@@ -215,6 +215,8 @@ public class FxVentaEstructuraController implements Initializable {
     private double totalImpuesto;
 
     private double total;
+    @FXML
+    private TextField txtCorreoElectronico;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -630,8 +632,10 @@ public class FxVentaEstructuraController implements Initializable {
                 clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
                 clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
                 clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
-                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
                 clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
+                clienteTB.setEmail(txtCorreoElectronico.getText().trim().toUpperCase());
+                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
+                
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -1497,6 +1501,7 @@ public class FxVentaEstructuraController implements Initializable {
             txtNumeroDocumento.setDisable(true);
             txtDatosCliente.setDisable(true);
             txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
             txtDireccionCliente.setDisable(true);
             btnBuscarCliente.setDisable(true);
             btnBuscarSunat.setDisable(true);
@@ -1504,6 +1509,7 @@ public class FxVentaEstructuraController implements Initializable {
 
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
+            txtCorreoElectronico.setText("");
             txtDireccionCliente.setText("");
             Tools.showAlertNotification("/view/image/information_large.png",
                     "Buscando clíente",
@@ -1524,19 +1530,31 @@ public class FxVentaEstructuraController implements Initializable {
         task.setOnSucceeded(e -> {
             ClienteTB clienteTB = task.getValue();
             if (clienteTB != null) {
+                Tools.showAlertNotification("/view/image/succes_large.png",
+                        "Buscando clíente",
+                        "Se completo la busqueda con exito.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                txtNumeroDocumento.setDisable(false);
+                txtDatosCliente.setDisable(false);
+                txtCelularCliente.setDisable(false);
+                txtCorreoElectronico.setDisable(false);
+                txtDireccionCliente.setDisable(false);
+                btnBuscarCliente.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
+
                 idCliente = clienteTB.getIdCliente();
                 txtDatosCliente.setText(clienteTB.getInformacion());
-                txtDireccionCliente.setText(clienteTB.getDireccion());
                 txtCelularCliente.setText(clienteTB.getCelular());
+                txtCorreoElectronico.setText(clienteTB.getEmail());
+                txtDireccionCliente.setText(clienteTB.getDireccion());
                 for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
                     if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
                 }
-                btnBuscarCliente.setDisable(false);
-                btnBuscarSunat.setDisable(false);
-                btnBuscarReniec.setDisable(false);
             } else {
                 Tools.showAlertNotification("/view/image/warning_large.png",
                         "Buscando clíente",
@@ -1562,10 +1580,21 @@ public class FxVentaEstructuraController implements Initializable {
             return t;
         });
 
-        Task<String> task = new Task<String>() {
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            public String call() {
-                return apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim());
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList();
+                ClienteTB clienteTB = ClienteADO.GetSearchClienteNumeroDocumento((short) 2, txtNumeroDocumento.getText().trim());
+                if (clienteTB == null) {
+                    objects.add("client-no-exists");
+                    objects.add("");
+                    objects.add(apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim()));
+                } else {
+                    objects.add("client-exists");
+                    objects.add(clienteTB);
+                    objects.add(apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim()));
+                }
+                return objects;
             }
         };
 
@@ -1573,6 +1602,7 @@ public class FxVentaEstructuraController implements Initializable {
             txtNumeroDocumento.setDisable(true);
             txtDatosCliente.setDisable(true);
             txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
             txtDireccionCliente.setDisable(true);
             btnBuscarCliente.setDisable(true);
             btnBuscarSunat.setDisable(true);
@@ -1580,7 +1610,9 @@ public class FxVentaEstructuraController implements Initializable {
 
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
+            txtCorreoElectronico.setText("");
             txtDireccionCliente.setText("");
+            
             Tools.showAlertNotification("/view/image/information_large.png",
                     "Buscando clíente",
                     "Se inicio el proceso de busqueda\n del cliente por su número de ruc.",
@@ -1598,16 +1630,14 @@ public class FxVentaEstructuraController implements Initializable {
         });
 
         task.setOnSucceeded(e -> {
-            String result = task.getValue();
-            if (result.equalsIgnoreCase("200")) {
-                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
-                    Tools.showAlertNotification("/view/image/warning_large.png",
-                            "Buscando clíente",
-                            "Hubo un problema en obtener los datos\n del cliente intente nuvemante",
-                            Duration.seconds(5),
-                            Pos.TOP_RIGHT);
-                    clearDataClient();
-                }  else {
+
+            ArrayList<Object> result = task.getValue();
+            if (!result.isEmpty()) {
+                String stateClient = (String) result.get(0);
+                String api = (String) result.get(2);
+
+                if (api.equalsIgnoreCase("200") && !Tools.isText(apiSunat.getJsonURL())) {
+
                     JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
                     if (sONObject == null) {
                         Tools.showAlertNotification("/view/image/warning_large.png",
@@ -1625,6 +1655,7 @@ public class FxVentaEstructuraController implements Initializable {
                         txtNumeroDocumento.setDisable(false);
                         txtDatosCliente.setDisable(false);
                         txtCelularCliente.setDisable(false);
+                        txtCorreoElectronico.setDisable(false);
                         txtDireccionCliente.setDisable(false);
                         btnBuscarCliente.setDisable(false);
                         btnBuscarSunat.setDisable(false);
@@ -1638,16 +1669,30 @@ public class FxVentaEstructuraController implements Initializable {
                         if (sONObject.get("direccion") != null) {
                             txtDireccionCliente.setText(sONObject.get("direccion").toString());
                         }
-                        txtCelularCliente.setText("");
+
+                        if (stateClient.equals("client-exists")) {
+                            ClienteTB clienteTB = (ClienteTB) result.get(1);
+                            txtCelularCliente.setText(clienteTB.getCelular());
+                            txtCorreoElectronico.setText(clienteTB.getEmail());
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
                     }
+
+                } else {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Paso un problema en trear la información por\n problemas de conexión o error el número ruc.",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
                 }
             } else {
-                Tools.showAlertNotification("/view/image/warning_large.png",
-                        "Buscando clíente",
-                        "Paso un problema en trear la información por\n problemas de conexión o error el número ruc.",
-                        Duration.seconds(5),
-                        Pos.TOP_RIGHT);
-                clearDataClient();
+
             }
         });
 
@@ -1660,17 +1705,27 @@ public class FxVentaEstructuraController implements Initializable {
 
     private void getApiReniec() {
         ApiPeru apiSunat = new ApiPeru();
-
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
 
-        Task<String> task = new Task<String>() {
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            public String call() {
-                return apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim());
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList();
+                ClienteTB clienteTB = ClienteADO.GetSearchClienteNumeroDocumento((short) 2, txtNumeroDocumento.getText().trim());
+                if (clienteTB == null) {
+                    objects.add("client-no-exists");
+                    objects.add("");
+                    objects.add(apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim()));
+                } else {
+                    objects.add("client-exists");
+                    objects.add(clienteTB);
+                    objects.add(apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim()));
+                }
+                return objects;
             }
         };
 
@@ -1678,6 +1733,7 @@ public class FxVentaEstructuraController implements Initializable {
             txtNumeroDocumento.setDisable(true);
             txtDatosCliente.setDisable(true);
             txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
             txtDireccionCliente.setDisable(true);
             btnBuscarCliente.setDisable(true);
             btnBuscarSunat.setDisable(true);
@@ -1685,6 +1741,7 @@ public class FxVentaEstructuraController implements Initializable {
 
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
+            txtDireccionCliente.setText("");
             txtDireccionCliente.setText("");
 
             Tools.showAlertNotification("/view/image/information_large.png",
@@ -1704,16 +1761,12 @@ public class FxVentaEstructuraController implements Initializable {
         });
 
         task.setOnSucceeded(e -> {
-            String result = task.getValue();
-            if (result.equalsIgnoreCase("200")) {
-                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
-                    Tools.showAlertNotification("/view/image/warning_large.png",
-                            "Buscando clíente",
-                            "Hubo un problema en obtener los datos\n del cliente intente nuvemante",
-                            Duration.seconds(5),
-                            Pos.TOP_RIGHT);
-                    clearDataClient();
-                } else {
+            ArrayList<Object> result = task.getValue();
+            if (!result.isEmpty()) {
+                String stateClient = (String) result.get(0);
+                String api = (String) result.get(2);
+
+                if (api.equalsIgnoreCase("200") && !Tools.isText(apiSunat.getJsonURL())) {
                     JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
                     if (sONObject == null) {
                         Tools.showAlertNotification("/view/image/warning_large.png",
@@ -1731,6 +1784,7 @@ public class FxVentaEstructuraController implements Initializable {
                         txtNumeroDocumento.setDisable(false);
                         txtDatosCliente.setDisable(false);
                         txtCelularCliente.setDisable(false);
+                        txtCorreoElectronico.setDisable(false);
                         txtDireccionCliente.setDisable(false);
                         btnBuscarCliente.setDisable(false);
                         btnBuscarSunat.setDisable(false);
@@ -1741,12 +1795,34 @@ public class FxVentaEstructuraController implements Initializable {
                         if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
                             txtDatosCliente.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
                         }
+                        if (stateClient.equals("client-exists")) {
+                            ClienteTB clienteTB = (ClienteTB) result.get(1);
+
+                            txtCelularCliente.setText(clienteTB.getCelular());
+                            txtCorreoElectronico.setText(clienteTB.getEmail());
+                            txtDireccionCliente.setText(clienteTB.getDireccion());
+
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
                     }
+                } else {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Paso un problema en trear la información por\n problemas de conexión o error el número del dni.",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
                 }
+
             } else {
                 Tools.showAlertNotification("/view/image/warning_large.png",
                         "Buscando clíente",
-                        "Paso un problema en trear la información por\n problemas de conexión o error el número del dni.",
+                        "Hubo un problema interno, intente nuevamente.",
                         Duration.seconds(5),
                         Pos.TOP_RIGHT);
                 clearDataClient();
@@ -1763,6 +1839,7 @@ public class FxVentaEstructuraController implements Initializable {
         txtNumeroDocumento.setDisable(false);
         txtDatosCliente.setDisable(false);
         txtCelularCliente.setDisable(false);
+        txtCorreoElectronico.setDisable(false);
         txtDireccionCliente.setDisable(false);
         btnBuscarCliente.setDisable(false);
         btnBuscarSunat.setDisable(false);
@@ -1771,6 +1848,7 @@ public class FxVentaEstructuraController implements Initializable {
         txtNumeroDocumento.setText("");
         txtDatosCliente.setText("");
         txtCelularCliente.setText("");
+        txtCorreoElectronico.setText("");
         txtDireccionCliente.setText("");
     }
 
@@ -2021,6 +2099,30 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedSunat(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiSunat();
+        }
+    }
+
+    @FXML
+    private void onActionSunat(ActionEvent event) {
+        getApiSunat();
+    }
+
+    @FXML
+    private void onKeyPressedReniec(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiReniec();
+        }
+    }
+
+    @FXML
+    private void onActionReniec(ActionEvent event) {
+        getApiReniec();
+    }
+
+    @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             imprimirPreVenta();
@@ -2038,28 +2140,6 @@ public class FxVentaEstructuraController implements Initializable {
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
             event.consume();
         }
-    }
-
-    @FXML
-    private void onKeyPressedSunat(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            getApiSunat();
-        }
-    }
-
-    @FXML
-    private void onActionSunat(ActionEvent event) {
-        getApiSunat();
-    }
-
-    @FXML
-    private void onKeyPressedReniec(KeyEvent event) {
-        getApiReniec();
-    }
-
-    @FXML
-    private void onActionReniec(ActionEvent event) {
-        getApiReniec();
     }
 
     public int getIdTipoComprobante() {

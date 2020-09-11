@@ -26,6 +26,12 @@ public class ClienteTB {
 
     }
 
+    public ClienteTB(String informacion) {
+        this.informacion = informacion;
+    }
+    
+    
+
     public ClienteTB(String idCliente, String numeroDocumento, String informacion, String celular, String direccion) {
         this.idCliente = idCliente;
         this.numeroDocumento = numeroDocumento;

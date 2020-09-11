@@ -275,7 +275,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
             public ArrayList<Object> call() {
-                return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 10, 10);
+                return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 20, 20);
             }
         };
 
@@ -295,8 +295,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
-                    imageView.setFitWidth(120);
-                    imageView.setFitHeight(120);
+                    imageView.setFitWidth(130);
+                    imageView.setFitHeight(130);
                     vBox.getChildren().add(imageView);
 
                     Label lblCodigo = new Label(tvList1.getClave());
@@ -339,7 +339,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     });
                     return button;
                 }).forEachOrdered(vBox -> fpProductos.getChildren().add(vBox));
-                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
+                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 20.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
             }

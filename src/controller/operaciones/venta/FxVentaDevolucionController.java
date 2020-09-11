@@ -53,7 +53,7 @@ public class FxVentaDevolucionController implements Initializable {
     public void setLoadVentaDevolucion(String idVenta, ObservableList<SuministroTB> arrList, String comprobante, String total, double totalVenta) {
         this.idVenta = idVenta;
         this.arrList = arrList;
-        this.totalVenta = totalVenta;
+        this.totalVenta = Double.parseDouble(Tools.roundingValue(totalVenta, 1));
         lblComprobante.setText(comprobante);
         lblTotal.setText(total);
         txtEfectivo.setText(Tools.roundingValue(totalVenta, 2));

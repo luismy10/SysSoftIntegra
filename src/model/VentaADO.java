@@ -48,6 +48,16 @@ public class VentaADO {
                 ResultSet resultSet = clienteVerificar.executeQuery();
                 resultSet.next();
                 ventaTB.setCliente(resultSet.getString("IdCliente"));
+
+                cliente = DBUtil.getConnection().prepareStatement("UPDATE ClienteTB SET TipoDocumento=?,Informacion = ?,Celular=?,Email=?,Direccion=? WHERE IdCliente =  ?");
+                cliente.setInt(1, ventaTB.getClienteTB().getTipoDocumento());
+                cliente.setString(2, ventaTB.getClienteTB().getInformacion().trim().toUpperCase());
+                cliente.setString(3, ventaTB.getClienteTB().getCelular().trim());
+                cliente.setString(4, ventaTB.getClienteTB().getEmail().trim());
+                cliente.setString(5, ventaTB.getClienteTB().getDireccion().trim());
+                cliente.setString(6, resultSet.getString("IdCliente"));
+                cliente.addBatch();
+
             } else {
                 codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
                 codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
@@ -60,7 +70,7 @@ public class VentaADO {
                 cliente.setString(4, ventaTB.getClienteTB().getInformacion().trim().toUpperCase());
                 cliente.setString(5, "");
                 cliente.setString(6, ventaTB.getClienteTB().getCelular().trim());
-                cliente.setString(7, "");
+                cliente.setString(7, ventaTB.getClienteTB().getEmail().trim());
                 cliente.setString(8, ventaTB.getClienteTB().getDireccion().trim().toUpperCase());
                 cliente.setString(9, "");
                 cliente.setInt(10, 1);
@@ -258,7 +268,7 @@ public class VentaADO {
             suministro_update_granel.executeBatch();
             suministro_kardex.executeBatch();
             DBUtil.getConnection().commit();
-            return "register/"+id_venta;
+            return "register/" + id_venta;
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
@@ -313,7 +323,7 @@ public class VentaADO {
         }
     }
 
-    public static ArrayList<Object> ListVentas(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado, String usuario,int posicionPagina, int filasPorPagina) {
+    public static ArrayList<Object> ListVentas(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado, String usuario, int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         ArrayList<Object> objects = new ArrayList<>();
@@ -328,12 +338,12 @@ public class VentaADO {
             preparedStatement.setInt(5, comprobante);
             preparedStatement.setInt(6, estado);
             preparedStatement.setString(7, usuario);
-            preparedStatement.setInt(8,posicionPagina);
-            preparedStatement.setInt(9,filasPorPagina);
+            preparedStatement.setInt(8, posicionPagina);
+            preparedStatement.setInt(9, filasPorPagina);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
-                ventaTB.setId(rsEmps.getRow()+posicionPagina);
+                ventaTB.setId(rsEmps.getRow() + posicionPagina);
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
                 ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
                 ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
@@ -404,16 +414,16 @@ public class VentaADO {
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setId(rsEmps.getRow());
+                ventaTB.setClienteTB(new ClienteTB(rsEmps.getString("Cliente")));
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
                 ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
                 ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                ventaTB.setSerie(rsEmps.getString("Serie"));
+                ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
                 ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
-                ventaTB.setCodigo(rsEmps.getString("Codigo"));
-
                 empList.add(ventaTB);
             }
-
         } catch (SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
         } finally {
@@ -431,6 +441,46 @@ public class VentaADO {
         return empList;
     }
 
+    public static ObservableList<VentaTB> ListVentas10Primeras() {
+        String selectStmt = "{call Sp_Listar_Ventas_10_Primeras()}";
+        PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
+        ObservableList<VentaTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setId(rsEmps.getRow());
+                ventaTB.setClienteTB(new ClienteTB(rsEmps.getString("Cliente")));
+                ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
+                ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+                ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                ventaTB.setSerie(rsEmps.getString("Serie"));
+                ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
+                ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
+                ventaTB.setTotal(rsEmps.getDouble("Total"));
+                empList.add(ventaTB);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException e) {
+            }
+        }
+        return empList;
+    }
+
+    
     public static ArrayList<Object> ListCompletaVentasDetalle(String idVenta) {
         PreparedStatement statementVenta = null;
         PreparedStatement statementCliente = null;
@@ -455,9 +505,10 @@ public class VentaADO {
                     clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
                     clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
+                    clienteTB.setTelefono(resultSetVenta.getString("Telefono"));
+                    clienteTB.setCelular(resultSetVenta.getString("Celular"));
                     clienteTB.setEmail(resultSetVenta.getString("Email"));
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
-                    clienteTB.setCelular(resultSetVenta.getString("Celular"));
                     ventaTB.setClienteTB(clienteTB);
                     //Cliente end
                     ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
@@ -471,8 +522,8 @@ public class VentaADO {
                     ventaTB.setTarjeta(resultSetVenta.getDouble("Tarjeta"));
                     ventaTB.setSubTotal(resultSetVenta.getDouble("SubTotal"));
                     ventaTB.setDescuento(resultSetVenta.getDouble("Descuento"));
-                    ventaTB.setSubImporte(ventaTB.getSubTotal()-ventaTB.getDescuento());
-                    ventaTB.setImpuesto(resultSetVenta.getDouble("Impuesto")); 
+                    ventaTB.setSubImporte(ventaTB.getSubTotal() - ventaTB.getDescuento());
+                    ventaTB.setImpuesto(resultSetVenta.getDouble("Impuesto"));
                     ventaTB.setTotal(resultSetVenta.getDouble("Total"));
                     ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
                     //moneda start

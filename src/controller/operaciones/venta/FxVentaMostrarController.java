@@ -51,13 +51,13 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private TableColumn<VentaTB, String> tcNumero;
     @FXML
-    private TableColumn<VentaTB, String> tcCodigo;
+    private TableColumn<VentaTB, String> tcCliente;
+    @FXML
+    private TableColumn<VentaTB, String> tcDocumento;
     @FXML
     private TableColumn<VentaTB, String> tcFechaHora;
     @FXML
     private TableColumn<VentaTB, String> tcTotal;
-    @FXML
-    private Label lblFechaHora;
     @FXML
     private Label lblCliente;
     @FXML
@@ -93,8 +93,6 @@ public class FxVentaMostrarController implements Initializable {
 
     private ObservableList<SuministroTB> arrList = null;
 
-    private ArrayList<ImpuestoTB> arrayArticulos;
-
     private BillPrintable billPrintable;
 
     private String nombreTicketImpresion;
@@ -109,26 +107,28 @@ public class FxVentaMostrarController implements Initializable {
 
     private double efectivo, vuelto;
 
-    private double subImporte;
-
-    private double descuento;
-
-    private double subTotalImporte;
-
-    private double totalImporte;
-
     private VentaTB ventaTB;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
-        tcCodigo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigo()));
+        tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClienteTB().getInformacion()));
         tcFechaHora.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getFechaVenta() + "\n"
                 + cellData.getValue().getHoraVenta()
         ));
+        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getSerie() + "\n"
+                + cellData.getValue().getNumeracion()
+        ));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+
+        tcNumero.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.08));
+        tcCliente.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.24));
+        tcDocumento.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.3));
+        tcFechaHora.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.18));
+        tcTotal.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.18));
 
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2)
@@ -143,18 +143,13 @@ public class FxVentaMostrarController implements Initializable {
                 Tools.roundingValue(cellData.getValue().getDescuento(), 2) + "%"
         ));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getTotalImporte(), 2)
+                Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral()*cellData.getValue().getCantidad(), 2)
         ));
 
         billPrintable = new BillPrintable();
         hbEncabezado = new VBox();
         hbDetalleCabecera = new VBox();
         hbPie = new VBox();
-        arrayArticulos = new ArrayList<>();
-        arrayArticulos.clear();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
-        });
     }
 
     private void fillVentasTable(String value) {
@@ -167,6 +162,36 @@ public class FxVentaMostrarController implements Initializable {
             @Override
             public ObservableList<VentaTB> call() {
                 return VentaADO.ListVentasMostrar(value);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            tvVentas.setItems(task.getValue());
+            lblLoad.setVisible(false);
+        });
+        task.setOnFailed(e -> {
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled(e -> {
+            lblLoad.setVisible(true);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+    
+    private void fillVentasTable10Primeras() {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        Task<ObservableList<VentaTB>> task = new Task<ObservableList<VentaTB>>() {
+            @Override
+            public ObservableList<VentaTB> call() {
+                return VentaADO.ListVentas10Primeras();
             }
         };
 
@@ -223,7 +248,7 @@ public class FxVentaMostrarController implements Initializable {
                     EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
-                        lblFechaHora.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
+//                        lblFechaHora.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
                         lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + " " + ventaTB.getClienteTB().getInformacion());
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         nombreTicketImpresion = ventaTB.getComprobanteName();
@@ -238,8 +263,8 @@ public class FxVentaMostrarController implements Initializable {
                             btnCancelarVenta.setDisable(false);
                             hbContenidoTabla.getStyleClass().remove("hbBoxBackgroundImage");
                         }
-
-                        lblTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+                        
+                        lblTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1)), 2));
                         lblPago.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getEfectivo(), 2));
                         efectivo = ventaTB.getEfectivo();
                         vuelto = ventaTB.getVuelto();
@@ -271,8 +296,6 @@ public class FxVentaMostrarController implements Initializable {
     private void fillVentasDetalleTable(ObservableList<SuministroTB> empList) {
         arrList = empList;
         tvDetalleVenta.setItems(empList);
-        calcularTotales();
-
     }
 
     private void loadTicket() {
@@ -318,39 +341,6 @@ public class FxVentaMostrarController implements Initializable {
         }
     }
 
-    private void calcularTotales() {
-        if (arrList != null) {
-            subImporte = 0;
-            arrList.forEach(e -> subImporte += e.getSubImporte());
-
-            descuento = 0;
-            arrList.forEach(e -> descuento += e.getDescuentoSumado());
-
-            subTotalImporte = 0;
-            arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-
-            boolean addElement = false;
-            double sumaElement = 0;
-            double totalImpuestos = 0;
-            for (int k = 0; k < arrayArticulos.size(); k++) {
-                for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
-                        addElement = true;
-                        sumaElement += arrList.get(i).getImpuestoSumado();
-                    }
-                }
-                if (addElement) {
-                    totalImpuestos += sumaElement;
-                    addElement = false;
-                    sumaElement = 0;
-                }
-            }
-
-            totalImporte = 0;
-            arrList.forEach(e -> totalImporte += e.getTotalImporte());
-            totalImporte = totalImporte + totalImpuestos;
-        }
-    }
 
     private void cancelVenta() {
         try {
@@ -364,7 +354,7 @@ public class FxVentaMostrarController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaMostrar(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), lblTotal.getText(), totalImporte);
+            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), lblTotal.getText(), ventaTB.getTotal());
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", apWindow.getScene().getWindow());
             stage.setResizable(false);
@@ -375,6 +365,22 @@ public class FxVentaMostrarController implements Initializable {
             stage.show();
         } catch (IOException ex) {
 
+        }
+    }
+
+    @FXML
+    private void onKeyPressed10PrimerasVentas(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                fillVentasTable10Primeras();
+            }
+        }
+    }
+
+    @FXML
+    private void onAction10PrimerasVentas(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            fillVentasTable10Primeras();
         }
     }
 

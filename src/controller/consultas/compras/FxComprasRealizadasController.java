@@ -81,7 +81,7 @@ public class FxComprasRealizadasController implements Initializable {
                 + cellData.getValue().getHoraCompra()
         ));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getSerie().toUpperCase()+ " - N° " + cellData.getValue().getNumeracion()));
+                cellData.getValue().getSerie().toUpperCase()+ "-" + cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().toUpperCase()
         ));

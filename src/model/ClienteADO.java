@@ -315,8 +315,9 @@ public class ClienteADO {
                 clienteTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
-                clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 clienteTB.setCelular(rsEmps.getString("Celular"));
+                clienteTB.setEmail(rsEmps.getString("Email"));
+                clienteTB.setDireccion(rsEmps.getString("Direccion"));
             }
         } catch (SQLException e) {
             System.out.println("El clienteADO-> GetSearchClienteNumeroDocumento error: " + e);

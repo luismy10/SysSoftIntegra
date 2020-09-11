@@ -138,12 +138,12 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Email" textFill="#020203">
+                                                      <Label styleClass="labelRoboto14" text="Teléfono" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtEmail" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                                      <TextField fx:id="txtTelefono" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
@@ -154,6 +154,20 @@
                                                          </font>
                                                       </Label>
                                                       <TextField fx:id="txtCelular" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Email" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Roboto" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="txtEmail" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -190,20 +204,6 @@
                                  <children>
                                     <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #CCCCCC; -fx-padding: 1.6666666666666667em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label styleClass="labelRoboto14" text="Teléfono" textFill="#020203">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <TextField fx:id="txtTelefono" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="paddinContainer105">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">

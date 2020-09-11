@@ -80,6 +80,10 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Text lblCliente;
     @FXML
+    private Text lbCorreoElectronico;
+    @FXML
+    private Text lbDireccion;
+    @FXML
     private Text lblTipo;
     @FXML
     private Text lblObservaciones;
@@ -159,6 +163,7 @@ public class FxVentaDetalleController implements Initializable {
     private double totalVenta;
 
     private double efectivo, tarjeta, vuelto;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -199,8 +204,10 @@ public class FxVentaDetalleController implements Initializable {
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
                         lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getClienteTB().getInformacion() + " ");
-                        lbClienteInformacion.setText(ventaTB.getClienteTB().getDireccion() + " - " + ventaTB.getClienteTB().getCelular());
+                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento()+"-"+ventaTB.getClienteTB().getInformacion());
+                        lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono()+"-"+ventaTB.getClienteTB().getCelular());
+                        lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
+                        lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
                         lblComprobante.setText(ventaTB.getComprobanteName());
                         lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                         lblObservaciones.setText(ventaTB.getObservaciones());

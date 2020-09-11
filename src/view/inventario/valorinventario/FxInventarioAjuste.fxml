@@ -36,7 +36,7 @@
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
                   <Label styleClass="labelOpenSansRegular14" text="Producto" textFill="#020203" />
-                  <Label fx:id="lblProducto" styleClass="labelOpenSansRegular14" text="--" textFill="#020203" />
+                  <Label fx:id="lblProducto" maxWidth="1.7976931348623157E308" prefWidth="100.0" styleClass="labelOpenSansRegular14" text="--" textFill="#020203" wrapText="true" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
