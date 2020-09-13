@@ -183,7 +183,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
 
         arrayArticulosImpuesto.clear();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado())));
 
         cbMoneda.getItems().clear();
         MonedaADO.GetMonedasCombBox().forEach(e -> cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado())));
@@ -507,7 +507,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         String valor = "";
         for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
             if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getNombreImpuesto();
+                valor = impuestoTB.getNombre();
                 break;
             }
         }

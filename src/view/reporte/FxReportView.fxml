@@ -83,7 +83,7 @@
                </graphic>
             </Button>
             <TextField fx:id="txtPage" alignment="CENTER" onAction="#onActionPage" onKeyTyped="#onKeyTypedPage" prefHeight="30.0" prefWidth="40.0" styleClass="text-field-normal" text="1" />
-            <Label fx:id="lblReportPages" styleClass="labelOpenSansRegular14" text="/ 0" textFill="#020203" />
+            <Label fx:id="lblReportPages" styleClass="labelRoboto13" text="/ 0" textFill="#020203" />
             <Button fx:id="btnNextPage" mnemonicParsing="false" onAction="#onActionNextPage" prefHeight="30.0" styleClass="buttonLight">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">

@@ -63,7 +63,7 @@
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Numero" textFill="#020203" />
-                        <TextField fx:id="txtNumero" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedValor" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtNumero" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.5em;">
@@ -79,7 +79,7 @@
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto14" text="Letra" textFill="#020203" />
-                        <TextField fx:id="txtLetra" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedValor" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtLetra" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.5em;">

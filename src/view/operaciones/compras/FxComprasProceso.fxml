@@ -24,8 +24,8 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                      <children>
-                        <Label styleClass="labelRobotoBold18" text="TOTAL EN EFECTIVO" textFill="#020203" />
-                        <Label fx:id="lblTotal" styleClass="labelRobotoBold18" text="M 00.00" textFill="#020203">
+                        <Label styleClass="labelRobotoBold17" text="TOTAL EN EFECTIVO" textFill="#020203" />
+                        <Label fx:id="lblTotal" styleClass="labelRobotoBold17" text="M 00.00" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -59,8 +59,8 @@
                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Cuenta:" textFill="#020203" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Valor recibido:" textFill="#020203" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cuenta:" textFill="#020203" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Valor recibido:" textFill="#020203" GridPane.rowIndex="1" />
                                     <ComboBox fx:id="cbCuentas" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" />
                                     <TextField fx:id="txtEfectivo" onKeyTyped="#onKeyTypedEfectivo" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
@@ -86,10 +86,10 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Monto Total:" textFill="#020203" />
-                                          <Label fx:id="lblMontoTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#08435e" />
-                                          <Label styleClass="labelRoboto14" text="Monto a Pagar:" textFill="#020203" />
-                                          <Label fx:id="lblMontoPagar" styleClass="labelRobotoBold14" text="0.00" textFill="#0240bc" />
+                                          <Label styleClass="labelRoboto13" text="Monto Total:" textFill="#020203" />
+                                          <Label fx:id="lblMontoTotal" styleClass="labelRobotoBold13" text="0.00" textFill="#08435e" />
+                                          <Label styleClass="labelRoboto13" text="Monto a Pagar:" textFill="#020203" />
+                                          <Label fx:id="lblMontoPagar" styleClass="labelRobotoBold13" text="0.00" textFill="#0240bc" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
@@ -113,7 +113,7 @@
                            <children>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tvListaCredito" prefHeight="240.0" prefWidth="585.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tvListaCredito" prefHeight="240.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                       <columns>
                                         <TableColumn fx:id="tcCredito" prefWidth="210.0" style="-fx-alignment: CENTER;" text="Crédito" />
                                           <TableColumn fx:id="tcFecha" prefWidth="210.0" style="-fx-alignment: CENTER;" text="Fecha" />

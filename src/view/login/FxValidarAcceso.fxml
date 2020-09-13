@@ -11,19 +11,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.login.FxValidarAccesoController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.login.FxValidarAccesoController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
                   <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../image/consultas.png" />
                      </image>
                   </ImageView>
-                  <Text fx:id="lblComprobante" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold22" text="Validar" />
+                  <Text fx:id="lblComprobante" fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Validar" />
                </children>
             </HBox>
             <HBox>
@@ -34,7 +33,7 @@
                            <children>
                               <HBox>
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Ingrese la clave única para continuar con el proceso" textFill="#1a2226" />
+                                    <Label styleClass="labelRoboto13" text="Ingrese la clave única para continuar con el proceso" textFill="#1a2226" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">

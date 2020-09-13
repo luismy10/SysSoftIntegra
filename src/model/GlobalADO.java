@@ -183,11 +183,6 @@ public class GlobalADO {
         return list;
     }
 
-    public static Object TopProducts() {
-
-        return "";
-    }
-
     public static ArrayList<Object> DashboardLoad(String fechaActual) {
         PreparedStatement preparedLista = null;
         ResultSet resultLista = null;
@@ -476,20 +471,25 @@ public class GlobalADO {
             statementEmpleado.setBoolean(21, true);
             statementEmpleado.addBatch();
 
-            statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Predeterminado,Codigo,Sistema)VALUES(?,?,?,?,?,?)");
+            statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Codigo,Numeracion,NombreImpuesto,Letra,Categoria,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?)");
             statementImpuesto.setInt(1, impuestoTB.getOperacion());
-            statementImpuesto.setString(2, impuestoTB.getNombreImpuesto());
+            statementImpuesto.setString(2, impuestoTB.getNombre());
             statementImpuesto.setDouble(3, impuestoTB.getValor());
-            statementImpuesto.setBoolean(4, impuestoTB.getPredeterminado());
-            statementImpuesto.setString(5, impuestoTB.getCodigo());
-            statementImpuesto.setBoolean(6, impuestoTB.isSistema());
+            statementImpuesto.setString(4, impuestoTB.getCodigo());
+            statementImpuesto.setString(5, impuestoTB.getNumeracion());
+            statementImpuesto.setString(6, impuestoTB.getNombreImpuesto());
+            statementImpuesto.setString(7, impuestoTB.getLetra());
+            statementImpuesto.setString(8, impuestoTB.getCategoria());
+            statementImpuesto.setBoolean(9, impuestoTB.getPredeterminado());            
+            statementImpuesto.setBoolean(10, impuestoTB.isSistema());
             statementImpuesto.addBatch();
 
-            statementTipoDocumento = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Predeterminado,Sistema)VALUES(?,?,?,?)");
+            statementTipoDocumento = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,CodigoAlterno,Predeterminado,Sistema)VALUES(?,?,?,?,?)");
             statementTipoDocumento.setString(1, tipoDocumentoTB.getNombre());
             statementTipoDocumento.setString(2, tipoDocumentoTB.getSerie());
-            statementTipoDocumento.setBoolean(3, tipoDocumentoTB.isPredeterminado());
-            statementTipoDocumento.setBoolean(4, tipoDocumentoTB.isSistema());
+            statementTipoDocumento.setString(3, tipoDocumentoTB.getCodigoAlterno());
+            statementTipoDocumento.setBoolean(4, tipoDocumentoTB.isPredeterminado());
+            statementTipoDocumento.setBoolean(5, tipoDocumentoTB.isSistema());
             statementTipoDocumento.addBatch();
 
             codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");

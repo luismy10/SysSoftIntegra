@@ -36,8 +36,6 @@ import javafx.stage.Stage;
 import model.CajaADO;
 import model.CajaTB;
 import model.MovimientoCajaTB;
-import model.SuministroTB;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -77,21 +75,21 @@ public class FxCajaConsultasController implements Initializable {
     private Label lblTotal;
 
     private CajaTB cajaTB;
-    
+
     private ArrayList<MovimientoCajaTB> arrList;
 
     private AnchorPane windowinit;
-    
+
     private double base;
-    
+
     private double ventaEfectivo;
-    
+
     private double ventasconTarjeta;
-    
+
     private double ingresosdeEfectivo;
-    
+
     private double salidasdeEfectivo;
-    
+
     private double total;
 
     @Override
@@ -125,8 +123,6 @@ public class FxCajaConsultasController implements Initializable {
                     lblFinTurno.setText(cajaTB.getFechaCierre() + " " + cajaTB.getHoraCierre());
                     lblMontoBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
                     lblBase.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(0), 2));
-                    
-                    
 
                     lblContado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
                     lblCanculado.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getCalculado(), 2));
@@ -165,7 +161,7 @@ public class FxCajaConsultasController implements Initializable {
     }
 
     private void fillVentasDetalleTable(ArrayList<MovimientoCajaTB> arrList) {
-        this.arrList=arrList;
+        this.arrList = arrList;
         for (int i = 0; i < arrList.size(); i++) {
             gpList.add(addElementGridPane("l1" + (i + 1), "" + arrList.get(i).getId(), Pos.CENTER_LEFT, "#020203"), 0, (i + 1));
             gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getFechaMovimiento() + "\n" + arrList.get(i).getHoraMovimiento(), Pos.CENTER_LEFT, "#020203"), 1, (i + 1));
@@ -199,7 +195,7 @@ public class FxCajaConsultasController implements Initializable {
         label.setId(id);
         label.setTextFill(Color.web(textFill));
         label.setStyle("-fx-background-color: #eaeaea;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
-        label.getStyleClass().add("labelRoboto14");
+        label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);
         label.setWrapText(true);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
@@ -255,15 +251,15 @@ public class FxCajaConsultasController implements Initializable {
                 map.put("CONTADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getContado(), 2));
                 map.put("CALCULADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getCalculado(), 2));
                 map.put("DIFERENCIA", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cajaTB.getDiferencia(), 2));
-                map.put("CAJEROASISTENTE", cajaTB.getEmpleadoTB().getNombres()+" "+cajaTB.getEmpleadoTB().getApellidos());
-                map.put("BASE", ""); 
+                map.put("CAJEROASISTENTE", cajaTB.getEmpleadoTB().getNombres() + " " + cajaTB.getEmpleadoTB().getApellidos());
+                map.put("BASE", "");
                 map.put("VENTASENEFECTIVO", "");
                 map.put("VENTASCONTARJETA", "");
                 map.put("INGRESOSDEEFECTIVO", "");
                 map.put("SALIDASDEEFECTIVO", "");
                 map.put("TOTAL", "");
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(arrList));
+                JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(arrList));
 //                JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
 
                 URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
@@ -278,7 +274,7 @@ public class FxCajaConsultasController implements Initializable {
                 stage.show();
                 stage.requestFocus();
             } else {
-Tools.AlertMessageWarning(window,"Reporte de Corte de Caja","No hay datos para mostrar en el reporte");
+                Tools.AlertMessageWarning(window, "Reporte de Corte de Caja", "No hay datos para mostrar en el reporte");
             }
         } catch (HeadlessException | JRException | IOException ex) {
             Tools.AlertMessageError(window, "Reporte de Corte de Caja", "Error al generar el reporte : " + ex.getLocalizedMessage());

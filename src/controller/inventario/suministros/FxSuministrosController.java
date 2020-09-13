@@ -160,7 +160,7 @@ public class FxSuministrosController implements Initializable {
             tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
 
             arrayArticulosImpuesto = new ArrayList<>();
-            ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
+            ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado())));
 
             paginacion = 1;
             opcion = 0;
@@ -491,7 +491,7 @@ public class FxSuministrosController implements Initializable {
         String valor = "";
         for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
             if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getNombreImpuesto();
+                valor = impuestoTB.getNombre();
                 break;
             }
         }

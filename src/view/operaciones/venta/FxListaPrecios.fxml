@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <Label contentDisplay="TOP" styleClass="labelRobotoBold16" text="Seleccionar Precio" textFill="#020203">
+                  <Label contentDisplay="TOP" styleClass="labelRobotoBold15" text="Seleccionar Precio" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -28,7 +28,7 @@
             </HBox>
             <HBox alignment="CENTER">
                <children>
-                  <Label fx:id="lblNombreArticulo" alignment="CENTER" prefWidth="550.0" styleClass="labelOpenSansRegular16" text="Articulo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
+                  <Label fx:id="lblNombreArticulo" alignment="CENTER" prefWidth="550.0" styleClass="labelOpenSansRegular15" text="Articulo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />

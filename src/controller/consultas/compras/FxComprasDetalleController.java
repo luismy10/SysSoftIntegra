@@ -149,7 +149,7 @@ public class FxComprasDetalleController implements Initializable {
             protected ArrayList<Object> call() throws Exception {
                 arrayArticulos.clear();
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado()));
                 });
                 ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
                 return objects;
@@ -298,8 +298,8 @@ public class FxComprasDetalleController implements Initializable {
                 }
             }
             if (addElement) {
-                gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto().substring(0, 1).toUpperCase() + ""
-                        + arrayArticulos.get(k).getNombreImpuesto().substring(1, arrayArticulos.get(k).getNombreImpuesto().length()).toLowerCase(),
+                gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombre().substring(0, 1).toUpperCase() + ""
+                        + arrayArticulos.get(k).getNombre().substring(1, arrayArticulos.get(k).getNombre().length()).toLowerCase(),
                         Pos.CENTER_LEFT), 0, k + 1);
                 gpImpuestos.add(addLabelTotal(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
                 addElement = false;
@@ -396,7 +396,7 @@ public class FxComprasDetalleController implements Initializable {
                 }
                 if (addImpuesto) {
                     SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreImpuesto() + ":");
+                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombre() + ":");
                     suministroTB.setImpuestoValor(sumaImpuesto);
                     list_totales.add(suministroTB);
                     addImpuesto = false;

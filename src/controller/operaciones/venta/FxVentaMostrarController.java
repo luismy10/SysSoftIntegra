@@ -32,8 +32,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.EmpleadoTB;
-import model.ImpuestoADO;
-import model.ImpuestoTB;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaTB;
@@ -303,6 +301,11 @@ public class FxVentaMostrarController implements Initializable {
     }
 
     private void imprimirVenta(String ticket) {
+         if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
+            Tools.AlertMessageWarning(apWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            return;
+        }
+        
         if ("".equals(idVenta) || idVenta == null) {
             return;
         }

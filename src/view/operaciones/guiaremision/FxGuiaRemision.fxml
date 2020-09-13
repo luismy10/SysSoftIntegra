@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Guía de Remisión del Remitente" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Guía de Remisión del Remitente" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -59,14 +59,14 @@
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #e5e5e5; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
                               <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="1" textFill="WHITE" />
-                              <Label styleClass="labelRobotoBold14" text="Cliente" textFill="#020203" />
+                              <Label styleClass="labelRobotoBold13" text="Cliente" textFill="#020203" />
                            </children>
                         </HBox>
                         <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Selecciona un Cliente:" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Selecciona un Cliente:" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -93,7 +93,7 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text=" Email (opcional):" textFill="#020203" />
+                                    <Label styleClass="labelRoboto13" text=" Email (opcional):" textFill="#020203" />
                                     <TextField prefHeight="30.0" prefWidth="240.0" promptText="Escribe aquí el email del cliente" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
@@ -102,14 +102,14 @@
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
                               <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="2" textFill="WHITE" />
-                              <Label styleClass="labelRobotoBold14" text="Datos de Traslado" textFill="#020203" />
+                              <Label styleClass="labelRoboto13" text="Datos de Traslado" textFill="#020203" />
                            </children>
                         </HBox>
                         <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Motivo del Traslado" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Motivo del Traslado" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -123,7 +123,7 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Modalidad de Traslado " textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Modalidad de Traslado " textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -132,12 +132,12 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione la Modalidad de Transporte" VBox.vgrow="ALWAYS" />
+                                    <ComboBox editable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione la Modalidad de Transporte" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Fecha Inicial de Traslado" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Fecha Inicial de Traslado" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -155,7 +155,7 @@
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Peso Bruto (KGM)" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Peso Bruto (KGM)" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -169,7 +169,7 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Número de Bultos" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Número de Bultos" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -183,13 +183,13 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Número de Contenedor" textFill="#020203" />
+                                    <Label styleClass="labelRoboto13" text="Número de Contenedor" textFill="#020203" />
                                     <TextField prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Código de Puerto" textFill="#020203" />
+                                    <Label styleClass="labelRoboto13" text="Código de Puerto" textFill="#020203" />
                                     <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione una Opción" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
@@ -205,7 +205,7 @@
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Tipo Doc.Ident" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Tipo Doc. Identidad" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -219,7 +219,7 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="N° de Doc. Conductor: " textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="N° de Doc. Conductor: " textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -233,7 +233,7 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Nombre Conductor:" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Nombre Conductor:" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -247,7 +247,7 @@
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="N° Placa Vehíc.:" textFill="#020203">
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="N° Placa Vehículo:" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -394,7 +394,7 @@
                                     </HBox>
                                     <HBox VBox.vgrow="ALWAYS">
                                        <children>
-                                          <TableView fx:id="tvList" prefHeight="200.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                          <TableView fx:id="tvList" prefHeight="360.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                             <columns>
                                               <TableColumn fx:id="tcNumero" prefWidth="75.0" text="Nrm" />
                                                 <TableColumn fx:id="tcCodigo" prefWidth="130.0" text="Código" />

@@ -23,8 +23,8 @@
                               <Image url="@../../image/quantities.png" />
                            </image>
                         </ImageView>
-                        <Label styleClass="labelRobotoBold18" text="Editar Cantidades" textFill="#020203" />
-                        <Label fx:id="lblArticulo" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="labelOpenSansRegular18" text="Artículo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
+                        <Label styleClass="labelRobotoBold17" text="Editar Cantidades" textFill="#020203" />
+                        <Label fx:id="lblArticulo" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="labelOpenSansRegular17" text="Artículo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
                      </children>
                   </VBox>
                </children>

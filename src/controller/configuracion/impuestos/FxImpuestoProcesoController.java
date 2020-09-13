@@ -47,7 +47,6 @@ public class FxImpuestoProcesoController implements Initializable {
     private FxImpuestoController impuestoController;
 
     private int idImpuesto;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -88,7 +87,7 @@ public class FxImpuestoProcesoController implements Initializable {
                     }
                 }
 
-                txtNombreImpuesto.setText(impuestoTB.getNombreImpuesto());
+                txtNombreImpuesto.setText(impuestoTB.getNombre());
                 txtValor.setText(Tools.roundingValue(impuestoTB.getValor(), 2));
                 txtCodigoAlterno.setText(impuestoTB.getCodigo());
             }
@@ -97,17 +96,6 @@ public class FxImpuestoProcesoController implements Initializable {
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
-        }
-    }
-
-    @FXML
-    private void onKeyTypedValor(KeyEvent event) {
-        char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-            event.consume();
-        }
-        if (c == '.' && txtValor.getText().contains(".")) {
-            event.consume();
         }
     }
 
@@ -125,8 +113,13 @@ public class FxImpuestoProcesoController implements Initializable {
             ImpuestoTB impuestoTB = new ImpuestoTB();
             impuestoTB.setIdImpuesto(idImpuesto);
             impuestoTB.setOperacion(cbOperaciones.getSelectionModel().getSelectedItem().getIdDetalle().get());
-            impuestoTB.setNombreImpuesto(txtNombreImpuesto.getText().trim());
+            impuestoTB.setNombre(txtNombreImpuesto.getText().trim());
             impuestoTB.setValor(Double.parseDouble(txtValor.getText()));
+            impuestoTB.setCodigo(txtCodigoAlterno.getText().trim());
+            impuestoTB.setNumeracion(txtNumero.getText().trim());
+            impuestoTB.setNombreImpuesto(txtNombre.getText().trim());
+            impuestoTB.setLetra(txtLetra.getText().trim());
+            impuestoTB.setCategoria(txtCategoria.getText().trim());
             impuestoTB.setPredeterminado(false);
             impuestoTB.setCodigo(txtCodigoAlterno.getText().isEmpty() ? "0" : txtCodigoAlterno.getText().trim());
             impuestoTB.setSistema(false);
@@ -145,6 +138,17 @@ public class FxImpuestoProcesoController implements Initializable {
             } else {
                 Tools.AlertMessageError(window, "Impuesto", result);
             }
+        }
+    }
+
+    @FXML
+    private void onKeyTypedValor(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+        if (c == '.' && txtValor.getText().contains(".")) {
+            event.consume();
         }
     }
 

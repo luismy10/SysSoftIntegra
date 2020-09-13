@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Registrar movimiento de caja" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Registrar movimiento de caja" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -37,7 +37,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Movimiento:" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Movimiento:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -51,7 +51,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Monto:" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Monto:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -75,7 +75,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Comentario" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Comentario" textFill="#020203" />
                         <TextField fx:id="txtComentario" onAction="#onActionAceptar" promptText="Ingrese su comentario" styleClass="text-field-normal" />
                      </children>
                   </VBox>

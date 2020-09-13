@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label fx:id="lblComprobante" styleClass="labelRobotoBold16" text="Documento" textFill="#020203">
+                  <Label fx:id="lblComprobante" styleClass="labelRobotoBold15" text="Documento" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -38,14 +38,14 @@
                            <children>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold22" text="M. 00.00" textFill="#020203" />
+                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold21" text="M. 00.00" textFill="#020203" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Realizar movimiento de salida de dinero" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Realizar movimiento de salida de dinero" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -58,7 +58,7 @@
                                     </HBox>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelRobotoBold14" text="Salida de:" textFill="#020203" />
+                                          <Label styleClass="labelRobotoBold13" text="Salida de:" textFill="#020203" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
@@ -69,11 +69,11 @@
                                               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Efectivo:" textFill="#020203">
+                                                <Label styleClass="labelOpenSansRegular13" text="Efectivo:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -83,7 +83,7 @@
                                                    </graphic>
                                                 </Label>
                                                 <TextField fx:id="txtEfectivo" disable="true" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedEfectivo" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#020203" GridPane.rowIndex="1">
+                                                <Label styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.rowIndex="1">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>

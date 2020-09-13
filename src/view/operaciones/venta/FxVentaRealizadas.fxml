@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Ventas" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Ventas" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -71,7 +71,7 @@
                                  <children>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha inicial" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Fecha inicial" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -88,7 +88,7 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha final" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Fecha final" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -105,7 +105,7 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Documento" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Documento" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -122,7 +122,7 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Estado" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Estado" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -147,7 +147,7 @@
                                  <children>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Buscar por Cliente o Serie/Numeración" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Buscar por Cliente o Serie/Numeración" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>

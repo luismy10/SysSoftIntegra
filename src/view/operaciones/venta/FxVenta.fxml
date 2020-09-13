@@ -19,7 +19,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRobotoMedium18" text="Ventas" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Ventas" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -41,7 +41,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRobotoMedium16" text="Caja Actual: PROPIA" textFill="#025379" underline="true">
+                        <Label styleClass="labelRobotoMedium15" text="Caja Actual: PROPIA" textFill="#025379" underline="true">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

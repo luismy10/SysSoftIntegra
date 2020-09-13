@@ -22,7 +22,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelRobotoBold18" text="SysSoft Integra" textFill="WHITE">
+                              <Label styleClass="labelRobotoBold17" text="SysSoft Integra" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -48,7 +48,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT">
                                        <children>
-                                          <Label fx:id="lblDatos" styleClass="labelRoboto16" text="Usuario conectado" textFill="WHITE">
+                                          <Label fx:id="lblDatos" styleClass="labelRoboto15" text="Usuario conectado" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -71,7 +71,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" onMouseClicked="#onMouseClickedCerrar" style="-fx-cursor: HAND;">
                                        <children>
-                                          <Label styleClass="labelRoboto16" text="Salir" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Salir" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -111,7 +111,7 @@
                                                 </Lighting>
                                              </effect>
                                           </ImageView>
-                                          <Label fx:id="lblPuesto" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Administrador" textFill="WHITE" />
+                                          <Label fx:id="lblPuesto" contentDisplay="TOP" styleClass="labelOpenSansRegular15" text="Administrador" textFill="WHITE" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -133,19 +133,19 @@
                                           </Lighting>
                                        </effect>
                                     </ImageView>
-                                    <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Conectado" />
+                                    <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="Conectado" />
                                  </children>
                               </HBox>
                               <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1em 0em 1em  0.8333333333333334em;">
                                  <children>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Menú principal" />
+                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Menú principal" />
                                  </children>
                               </HBox>
                               <VBox fx:id="hbMenus">
                                  <children>
                                     <HBox fx:id="btnInicio" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Dashboard" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Dashboard" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -168,7 +168,7 @@
                                     </HBox>
                                     <HBox fx:id="btnOperaciones" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Operaciones" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Operaciones" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -191,7 +191,7 @@
                                     </HBox>
                                     <HBox fx:id="btnConsultas" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Consultas" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Consultas" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -214,7 +214,7 @@
                                     </HBox>
                                     <HBox fx:id="btnProduccion" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Produccion" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Produccion" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -237,7 +237,7 @@
                                     </HBox>
                                     <HBox fx:id="btnInventario" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Inventario" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Inventario" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -260,7 +260,7 @@
                                     </HBox>
                                     <HBox fx:id="btnContactos" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Contactos" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Contactos" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -283,7 +283,7 @@
                                     </HBox>
                                     <HBox fx:id="btnReportes" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Reportes" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Reportes" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -306,7 +306,7 @@
                                     </HBox>
                                     <HBox fx:id="btnConfiguracion" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular16" text="Configuración" textFill="WHITE">
+                                          <Label styleClass="labelOpenSansRegular15" text="Configuración" textFill="WHITE">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

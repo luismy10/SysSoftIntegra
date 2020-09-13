@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Ventas realizadas" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Ventas realizadas" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -50,7 +50,7 @@
                                        <children>
                                           <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Puedes buscar por serie y/o numeración o cliente." textFill="#020203">
+                                                <Label styleClass="labelRoboto13" text="Puedes buscar por serie y/o numeración o cliente." textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -96,7 +96,7 @@
                         </HBox>
                         <HBox>
                            <children>
-                              <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Para ver el datelle de la venta tiene que hacer doble click a la tabla o enter " textFill="#020203">
+                              <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Para ver el datelle de la venta tiene que hacer doble click a la tabla o enter " textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -117,34 +117,34 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Cliente:" textFill="#020203" />
-                                          <Label fx:id="lblCliente" styleClass="labelRoboto14" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="Cliente:" textFill="#020203" />
+                                          <Label fx:id="lblCliente" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Comprobante y Numeración:" textFill="#020203" />
-                                          <Label fx:id="lblComprobante" styleClass="labelRoboto14" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="Comprobante y Numeración:" textFill="#020203" />
+                                          <Label fx:id="lblComprobante" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Tipo de venta y Estado: " textFill="#020203" />
-                                          <Label fx:id="lblTipo" styleClass="labelRoboto14" text="-" textFill="#0771d3" />
-                                          <Label styleClass="labelRoboto14" text="-" textFill="#0771d3" />
-                                          <Label fx:id="lblEstado" styleClass="labelRoboto14" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="Tipo de venta y Estado: " textFill="#020203" />
+                                          <Label fx:id="lblTipo" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="-" textFill="#0771d3" />
+                                          <Label fx:id="lblEstado" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Observación:" textFill="#020203" />
-                                          <Label fx:id="lblObservaciones" styleClass="labelRoboto14" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="Observación:" textFill="#020203" />
+                                          <Label fx:id="lblObservaciones" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Vendedor" textFill="#020203" />
-                                          <Label fx:id="lblVendedor" styleClass="labelRoboto14" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="Vendedor" textFill="#020203" />
+                                          <Label fx:id="lblVendedor" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -166,14 +166,14 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="PAGO CON:" textFill="#020203" />
-                                          <Label fx:id="lblPago" styleClass="labelRoboto14" text="0.00" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="PAGO CON:" textFill="#020203" />
+                                          <Label fx:id="lblPago" styleClass="labelRoboto13" text="0.00" textFill="#020203" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRobotoBold14" text="TOTAL:" textFill="#020203" />
-                                          <Label fx:id="lblTotal" styleClass="labelRobotoBold14" text="0.00" textFill="#020203" />
+                                          <Label styleClass="labelRobotoBold13" text="TOTAL:" textFill="#020203" />
+                                          <Label fx:id="lblTotal" styleClass="labelRobotoBold13" text="0.00" textFill="#020203" />
                                        </children>
                                     </HBox>
                                  </children>

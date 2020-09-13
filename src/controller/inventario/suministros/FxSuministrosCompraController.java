@@ -153,7 +153,7 @@ public class FxSuministrosCompraController implements Initializable {
         vbImpuestos.getChildren().clear();
         ToggleGroup toggleGroup = new ToggleGroup();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            RadioButtonModel radioButtonModel = new RadioButtonModel(e.getNombreImpuesto());
+            RadioButtonModel radioButtonModel = new RadioButtonModel(e.getNombre());
             radioButtonModel.setId(e.getIdImpuesto() + "");
             radioButtonModel.setValor(e.getValor());
             radioButtonModel.setToggleGroup(toggleGroup);
@@ -170,7 +170,7 @@ public class FxSuministrosCompraController implements Initializable {
 
         cbImpuesto.getItems().clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
         });
 
     }

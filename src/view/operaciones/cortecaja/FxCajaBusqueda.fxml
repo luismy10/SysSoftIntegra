@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Buscar cortes realizados" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Buscar cortes realizados" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -48,7 +48,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Fecha Inicial:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -57,12 +57,12 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker fx:id="dtFechaInicial" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="210.0" />
+                                          <DatePicker fx:id="dtFechaInicial" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Fecha Final:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -71,7 +71,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker fx:id="dcFechaFinal" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="210.0" />
+                                          <DatePicker fx:id="dcFechaFinal" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -104,13 +104,13 @@
                               <TableColumn fx:id="tcFechaApertura" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Apertura" />
                               <TableColumn fx:id="tcFechaCierre" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Cierre" />
                               <TableColumn fx:id="tcEstado" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                              <TableColumn fx:id="tcContado" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Contado" />
-                              <TableColumn fx:id="tcCalculado" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Calculado" />
-                              <TableColumn fx:id="tcDiferencia" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Diferencia" />
+                              <TableColumn fx:id="tcContado" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Contado" />
+                              <TableColumn fx:id="tcCalculado" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Calculado" />
+                              <TableColumn fx:id="tcDiferencia" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Diferencia" />
                               <TableColumn fx:id="tcUsuario" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Usuario" />
                            </columns>
                         </TableView>
-                        <Label styleClass="labelOpenSansRegular14" text="Seleccionar un elemento con doble click o enter" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Seleccionar un elemento con doble click o enter" textFill="#020203" />
                      </children>
                   </VBox>
                </children>

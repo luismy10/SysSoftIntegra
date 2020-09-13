@@ -162,7 +162,7 @@ public class FxComprasEditarController implements Initializable {
 
         arrayArticulosImpuesto = new ArrayList<>();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+            arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
         });
 
         cbComprobante.getItems().clear();
@@ -457,7 +457,7 @@ public class FxComprasEditarController implements Initializable {
                 }
             }
             if (addElement) {
-                addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombreImpuesto(), monedaSimbolo, Tools.roundingValue(sumaElement, 4));
+                addElementImpuesto(arrayArticulosImpuesto.get(k).getIdImpuesto() + "", arrayArticulosImpuesto.get(k).getNombre(), monedaSimbolo, Tools.roundingValue(sumaElement, 4));
                 addElement = false;
                 sumaElement = 0;
             }

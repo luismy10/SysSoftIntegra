@@ -19,7 +19,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Amortizar deuda" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Amortizar deuda" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -33,7 +33,7 @@
                      <children>
                         <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Monto:" textFill="#020203">
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Monto:" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -50,7 +50,7 @@
                      <children>
                         <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Fecha:" textFill="#020203">
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Fecha:" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -68,7 +68,7 @@
                      <children>
                         <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Banco / Caja" textFill="#020203">
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Banco / Caja" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

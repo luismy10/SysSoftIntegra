@@ -17,7 +17,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Aperturar caja" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Aperturar caja" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -34,12 +34,12 @@
                            <children>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefWidth="460.0" styleClass="labelRoboto16" text="Ahora puedes usar tu base inicial para generar transacciones." textAlignment="CENTER" textFill="#020203" wrapText="true" HBox.hgrow="ALWAYS" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefWidth="460.0" styleClass="labelRoboto15" text="Ahora puedes usar tu base inicial para generar transacciones." textAlignment="CENTER" textFill="#020203" wrapText="true" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Label styleClass="labelRoboto16" text="Ingresa tu base inicial." textFill="#020203" />
+                                    <Label styleClass="labelRoboto15" text="Ingresa tu base inicial." textFill="#020203" />
                                  </children>
                               </HBox>
                               <TextField fx:id="txtImporte" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedImporte" prefHeight="30.0" prefWidth="240.0" promptText="base inicial" styleClass="text-field-normal" />

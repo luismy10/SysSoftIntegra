@@ -323,7 +323,7 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         arrayArticulosImpuesto.clear();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado())));
 
         cbTipoDocumento.getItems().clear();
         DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
@@ -973,8 +973,8 @@ public class FxVentaEstructuraController implements Initializable {
                     }
                 }
                 if (addElement) {
-                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(0, 1).toUpperCase()
-                            + "" + arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(1, arrayArticulosImpuesto.get(k).getNombreImpuesto().length()).toLowerCase(),
+                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombre().substring(0, 1).toUpperCase()
+                            + "" + arrayArticulosImpuesto.get(k).getNombre().substring(1, arrayArticulosImpuesto.get(k).getNombre().length()).toLowerCase(),
                             Pos.CENTER_LEFT), 0, k + 1);
                     gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     totalImpuestos += sumaElement;
@@ -999,8 +999,8 @@ public class FxVentaEstructuraController implements Initializable {
 
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill:#1a2226;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
-        label.getStyleClass().add("labelRoboto14");
+        label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
+        label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
@@ -1011,8 +1011,8 @@ public class FxVentaEstructuraController implements Initializable {
 
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill:#000000;");
-        label.getStyleClass().add("labelRobotoMedium16");
+        label.setStyle("-fx-text-fill:#020203;");
+        label.getStyleClass().add("labelRobotoMedium15");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
@@ -1079,7 +1079,7 @@ public class FxVentaEstructuraController implements Initializable {
         String valor = "";
         for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
             if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getNombreImpuesto();
+                valor = impuestoTB.getNombre();
                 break;
             }
         }
@@ -1136,13 +1136,13 @@ public class FxVentaEstructuraController implements Initializable {
 
     public void imprimirVenta(String idVenta) {
         if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
-            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración/impresora.");
+            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             return;
         }
 
         if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("ticket")) {
             if (Session.TICKET_VENTA_ID == 0 && Tools.isText(Session.TICKET_VENTA_RUTA)) {
-                Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+                Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
             } else {
                 executeProcessPrinterVenta(idVenta, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA, Session.FORMATO_IMPRESORA_VENTA);
             }

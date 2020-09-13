@@ -31,12 +31,11 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Predeterminado=?,CodigoAlterno=? WHERE IdTipoDocumento = ?");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,CodigoAlterno=? WHERE IdTipoDocumento = ?");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
-                        statementUpdate.setBoolean(3, documentoTB.isPredeterminado());
-                        statementUpdate.setString(4, documentoTB.getCodigoAlterno());
-                        statementUpdate.setInt(5, documentoTB.getIdTipoDocumento());
+                        statementUpdate.setString(3, documentoTB.getCodigoAlterno());
+                        statementUpdate.setInt(4, documentoTB.getIdTipoDocumento());
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();

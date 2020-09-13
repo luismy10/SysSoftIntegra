@@ -64,7 +64,7 @@ public class FxSuministrosListaController implements Initializable {
     @FXML
     private TableColumn<SuministroTB, ImageView> tcTipoProducto;
     @FXML
-    private TableColumn<SuministroTB, String> tcCosto;
+    private TableColumn<SuministroTB, String> tcImpuesto;
     @FXML
     private TableColumn<SuministroTB, String> tcPrecio;
     @FXML
@@ -156,11 +156,11 @@ public class FxSuministrosListaController implements Initializable {
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getUnidadCompraName()));
         tcCategoriaMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName() + "\n" + cellData.getValue().getMarcaName()));
         tcTipoProducto.setCellValueFactory(new PropertyValueFactory<>("imageValorInventario"));
-        tcCosto.setCellValueFactory(cellData -> Bindings.concat(getTaxName(cellData.getValue().getImpuestoArticulo())));
+        tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(getTaxName(cellData.getValue().getImpuestoArticulo())));
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (getTaxValue(cellData.getValue().getImpuestoArticulo()) / 100.00)), 4)));
 
         arrayArticulosImpuesto = new ArrayList<>();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getOperacion(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado())));
+        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado())));
 
         paginacion = 1;
         opcion = 0;
@@ -390,7 +390,7 @@ public class FxSuministrosListaController implements Initializable {
         String valor = "";
         for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
             if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getNombreImpuesto();
+                valor = impuestoTB.getNombre();
                 break;
             }
         }

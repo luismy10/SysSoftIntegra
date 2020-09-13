@@ -8,9 +8,13 @@ public class ImpuestoTB {
     private int idImpuesto;
     private int operacion;
     private String nombreOperacion;
-    private String nombreImpuesto;
+    private String nombre;
     private double valor;
     private String codigo;
+    private String numeracion;
+    private String nombreImpuesto;
+    private String letra;
+    private String categoria;
     private boolean predeterminado;
     private boolean sistema;
     private ImageView imagePredeterminado;
@@ -18,37 +22,37 @@ public class ImpuestoTB {
     public ImpuestoTB() {
     }
 
-    public ImpuestoTB(int idImpuesto, String nombreImpuesto, Boolean predeterminado) {
+    public ImpuestoTB(int idImpuesto, String nombre, Boolean predeterminado) {
         this.idImpuesto = idImpuesto;
-        this.nombreImpuesto = nombreImpuesto;
+        this.nombre = nombre;
         this.predeterminado = predeterminado;
     }
 
     public ImpuestoTB(int idImpuesto, String nombreImpuesto, double valor) {
         this.idImpuesto = idImpuesto;
-        this.nombreImpuesto = nombreImpuesto;
+        this.nombre = nombreImpuesto;
         this.valor = valor;
     }
 
-    public ImpuestoTB(int idImpuesto, String nombreImpuesto, double valor, boolean predeterminado) {
+    public ImpuestoTB(int idImpuesto, String nombre, double valor, boolean predeterminado) {
         this.idImpuesto = idImpuesto;
-        this.nombreImpuesto = nombreImpuesto;
+        this.nombre = nombre;
         this.valor = valor;
         this.predeterminado = predeterminado;
     }
 
-    public ImpuestoTB(int idImpuesto, int operacion, String nombreImpuesto, double valor, boolean predeterminado) {
+    public ImpuestoTB(int idImpuesto, int operacion, String nombre, double valor, boolean predeterminado) {
         this.idImpuesto = idImpuesto;
         this.operacion = operacion;
-        this.nombreImpuesto = nombreImpuesto;
+        this.nombre = nombre;
         this.valor = valor;
         this.predeterminado = predeterminado;
     }
 
-    public ImpuestoTB(int idImpuesto, String nombreOperacion, String nombreImpuesto, double valor, boolean predeterminado) {
+    public ImpuestoTB(int idImpuesto, String nombreOperacion, String nombre, double valor, boolean predeterminado) {
         this.idImpuesto = idImpuesto;
         this.nombreOperacion = nombreOperacion;
-        this.nombreImpuesto = nombreImpuesto;
+        this.nombre = nombre;
         this.valor = valor;
         this.predeterminado = predeterminado;
     }
@@ -85,12 +89,12 @@ public class ImpuestoTB {
         this.nombreOperacion = nombreOperacion == null ? "" : nombreOperacion;
     }
 
-    public String getNombreImpuesto() {
-        return nombreImpuesto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreImpuesto(String nombreImpuesto) {
-        this.nombreImpuesto = nombreImpuesto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public double getValor() {
@@ -117,6 +121,38 @@ public class ImpuestoTB {
         this.codigo = codigo;
     }
 
+    public String getNumeracion() {
+        return numeracion;
+    }
+
+    public void setNumeracion(String numeracion) {
+        this.numeracion = numeracion;
+    }
+
+    public String getNombreImpuesto() {
+        return nombreImpuesto;
+    }
+
+    public void setNombreImpuesto(String nombreImpuesto) {
+        this.nombreImpuesto = nombreImpuesto;
+    }
+
+    public String getLetra() {
+        return letra;
+    }
+
+    public void setLetra(String letra) {
+        this.letra = letra;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     public ImageView getImagePredeterminado() {
         return imagePredeterminado;
     }
@@ -135,7 +171,7 @@ public class ImpuestoTB {
 
     @Override
     public String toString() {
-        return nombreImpuesto;
+        return nombre;
     }
 
 }

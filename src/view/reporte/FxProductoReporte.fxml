@@ -25,7 +25,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Reporte de Productos" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Reporte de Productos" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -65,7 +65,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Fecha Inicial:" textFill="#020203">
+                                                <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Fecha Inicial:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -79,7 +79,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Fecha Final:" textFill="#020203">
+                                                <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Fecha Final:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -108,14 +108,14 @@
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
                                                       <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Todos los Documentos" textFill="#1a2226" />
                                                       <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Todos los Clientes" textFill="#1a2226" GridPane.rowIndex="1" />
                                                       <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Todos los Vendedores" textFill="#1a2226" GridPane.rowIndex="2" />
                                                       <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Todos las Formas de Pago" textFill="#1a2226" GridPane.rowIndex="3" />
-                                                      <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Documentos" textFill="#020203" GridPane.columnIndex="1">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Documentos" textFill="#020203" GridPane.columnIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -124,7 +124,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Clientes" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Clientes" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -133,7 +133,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Vendedores" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Vendedores" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -142,7 +142,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <Label minWidth="-Infinity" styleClass="labelRoboto14" text="Formas de Pago" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Formas de Pago" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>

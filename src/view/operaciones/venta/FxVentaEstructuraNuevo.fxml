@@ -27,7 +27,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 1px 0px 1px 1px;">
                            <children>
-                              <Label style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;" styleClass="labelRoboto14" text="(F2)" textFill="#1a2226">
+                              <Label style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;" styleClass="labelRoboto13" text="(F2)" textFill="#1a2226">
                                  <graphic>
                                     <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -58,7 +58,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label maxHeight="1.7976931348623157E308" style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em; -fx-border-width: 1px 0px 1px 1px; -fx-border-color: #999999;" styleClass="labelRoboto14" text="(F3)" textFill="#1a2226">
+                              <Label maxHeight="1.7976931348623157E308" style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em; -fx-border-width: 1px 0px 1px 1px; -fx-border-color: #999999;" styleClass="labelRoboto13" text="(F3)" textFill="#1a2226">
                                  <graphic>
                                     <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -72,7 +72,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label maxHeight="1.7976931348623157E308" style="-fx-border-color: #999999; -fx-border-width: 1px 0px 1px 1px; -fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;" styleClass="labelRoboto14" text="(F4)" textFill="#1a2226">
+                              <Label maxHeight="1.7976931348623157E308" style="-fx-border-color: #999999; -fx-border-width: 1px 0px 1px 1px; -fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em;" styleClass="labelRoboto13" text="(F4)" textFill="#1a2226">
                                  <graphic>
                                     <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -115,9 +115,9 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label fx:id="lblPaginaActual" styleClass="labelOpenSansRegular14" text="0" textFill="#020203" />
-                        <Label fx:id="lblPaginaActual1" styleClass="labelOpenSansRegular14" text="/" textFill="#020203" />
-                        <Label fx:id="lblPaginaSiguiente" styleClass="labelOpenSansRegular14" text="0" textFill="#020203" />
+                        <Label fx:id="lblPaginaActual" styleClass="labelOpenSansRegular13" text="0" textFill="#020203" />
+                        <Label fx:id="lblPaginaActual1" styleClass="labelOpenSansRegular13" text="/" textFill="#020203" />
+                        <Label fx:id="lblPaginaSiguiente" styleClass="labelOpenSansRegular13" text="0" textFill="#020203" />
                         <Button mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" prefHeight="30.0" styleClass="buttonLight">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -137,7 +137,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em; -fx-border-width: 1px 0px 1px 1px; -fx-border-color: #999999;" styleClass="labelRoboto14" text="(F6)" textFill="#1a2226">
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 0px  0.16666666666666666em 0px  0.16666666666666666em; -fx-border-width: 1px 0px 1px 1px; -fx-border-color: #999999;" styleClass="labelRoboto13" text="(F6)" textFill="#1a2226">
                                  <graphic>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -153,14 +153,14 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.16666666666666666em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="SERIE:" />
-                                    <Text fx:id="lblSerie" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="0000" />
+                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="SERIE:" />
+                                    <Text fx:id="lblSerie" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="0000" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.16666666666666666em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="N° DE VENTA:" />
-                                    <Text fx:id="lblNumeracion" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="00000000" />
+                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="N° DE VENTA:" />
+                                    <Text fx:id="lblNumeracion" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="00000000" />
                                  </children>
                               </HBox>
                            </children>
@@ -180,12 +180,12 @@
                                              <children>
                                                 <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto16" text="Cobrar(F1)" textFill="WHITE" />
+                                                      <Label styleClass="labelRoboto15" text="Cobrar(F1)" textFill="WHITE" />
                                                    </children>
                                                 </VBox>
                                                 <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblTotal" styleClass="labelRobotoBold20" text="M. 0.00" textFill="WHITE" />
+                                                      <Label fx:id="lblTotal" styleClass="labelRobotoBold19" text="M. 0.00" textFill="WHITE" />
                                                    </children>
                                                 </VBox>
                                              </children>

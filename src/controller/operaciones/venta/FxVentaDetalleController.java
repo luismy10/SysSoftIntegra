@@ -104,8 +104,6 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Button btnCancelarVenta;
     @FXML
-    private Text lblValorVentaLetra;
-    @FXML
     private GridPane gpOperaciones;
     @FXML
     private GridPane gpImpuestos;
@@ -190,7 +188,7 @@ public class FxVentaDetalleController implements Initializable {
                 protected ArrayList<Object> call() {
                     arrayArticulos.clear();
                     ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                        arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+                        arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado()));
                     });
                     ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
                     return objects;
@@ -218,7 +216,6 @@ public class FxVentaDetalleController implements Initializable {
                         tarjeta = ventaTB.getTarjeta();
                         vuelto = ventaTB.getVuelto();
                         totalVenta = ventaTB.getTotal();
-                        lblValorVentaLetra.setText(monedaCadena.Convertir(Tools.roundingValue(totalVenta, 2), true, ventaTB.getMonedaTB().getNombre()));
 
                         lblEfectivo.setText(Tools.roundingValue(efectivo, 2));
                         lblTarjeta.setText(Tools.roundingValue(tarjeta, 2));
@@ -373,7 +370,7 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addImpuesto) {
-                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombreImpuesto(), Pos.CENTER_LEFT), 0, k + 1);
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombre(), Pos.CENTER_LEFT), 0, k + 1);
                     gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     totalImpuestos += sumaImpuesto;
                     addImpuesto = false;
@@ -394,7 +391,7 @@ public class FxVentaDetalleController implements Initializable {
         Label label = new Label(nombre);
         label.setId(id);
         label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
-        label.getStyleClass().add("labelRoboto14");
+        label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);
         label.setWrapText(true);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
@@ -407,7 +404,7 @@ public class FxVentaDetalleController implements Initializable {
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#000000;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
-        label.getStyleClass().add("labelRoboto14");
+        label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
@@ -419,7 +416,7 @@ public class FxVentaDetalleController implements Initializable {
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#0771d3;");
-        label.getStyleClass().add("labelRobotoMedium16");
+        label.getStyleClass().add("labelRobotoMedium15");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
@@ -556,20 +553,20 @@ public class FxVentaDetalleController implements Initializable {
 
     private void onEventImprimirVenta() {
         if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
-            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión, ve a la sección configuración/impresora.");
+            Tools.AlertMessageWarning(window, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             return;
         }
 
         if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("ticket")) {
             if (Session.TICKET_VENTA_ID == 0 && Session.TICKET_VENTA_RUTA.equalsIgnoreCase("")) {
-                Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
+                Tools.AlertMessageWarning(window, "Venta", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
             } else {
                 executeProcessPrinter(Session.FORMATO_IMPRESORA_VENTA);
             }
         } else if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("a4")) {
             executeProcessPrinter(Session.FORMATO_IMPRESORA_VENTA);
         } else {
-            Tools.AlertMessageWarning(window, "Venta", "Error al validar el formato de impresión, configure en la sección configuración/impresora.");
+            Tools.AlertMessageWarning(window, "Venta", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
         }
     }
 

@@ -59,7 +59,7 @@ public class FxImpuestoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcOperacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreOperacion()));
-        tcNombre.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreImpuesto()));
+        tcNombre.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
         tcValor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getValor()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
         tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigo()));

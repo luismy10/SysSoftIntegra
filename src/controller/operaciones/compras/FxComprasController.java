@@ -242,7 +242,7 @@ public class FxComprasController implements Initializable {
             @Override
             public Void call() {
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                    arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreImpuesto(), e.getValor(), e.getPredeterminado()));
+                    arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
                 });
                 return null;
             }
@@ -618,8 +618,8 @@ public class FxComprasController implements Initializable {
                 }
             }
             if (addElement) {
-                gpImpuestos.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(0, 1).toUpperCase() + ""
-                        + arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(1, arrayArticulosImpuesto.get(k).getNombreImpuesto().length()).toLowerCase(),
+                gpImpuestos.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombre().substring(0, 1).toUpperCase() + ""
+                        + arrayArticulosImpuesto.get(k).getNombre().substring(1, arrayArticulosImpuesto.get(k).getNombre().length()).toLowerCase(),
                         Pos.CENTER_LEFT), 0, k + 1);
                 gpImpuestos.add(addLabelTotal(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(sumaElement, 4), Pos.CENTER_RIGHT), 1, k + 1);
                 addElement = false;
@@ -639,7 +639,7 @@ public class FxComprasController implements Initializable {
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
-        label.getStyleClass().add("labelRoboto14");
+        label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
@@ -651,7 +651,7 @@ public class FxComprasController implements Initializable {
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#0771d3;");
-        label.getStyleClass().add("labelRobotoMedium16");
+        label.getStyleClass().add("labelRobotoMedium15");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);

@@ -15,8 +15,8 @@
                   <Image url="@../image/logo.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" styleClass="labelRoboto16" text="Iniciando la aplicación!" textFill="WHITE" />
-            <Label styleClass="labelRoboto16" text="Cargando, por favor espere..." textFill="WHITE" />
+            <Label alignment="CENTER" styleClass="labelRoboto15" text="Iniciando la aplicación!" textFill="WHITE" />
+            <Label styleClass="labelRoboto15" text="Cargando, por favor espere..." textFill="WHITE" />
          </children>
       </VBox>
    </children>

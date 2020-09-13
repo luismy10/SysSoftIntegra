@@ -40,7 +40,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em 0em; -fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Buscar(F1):" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Buscar(F1):" textFill="#020203">
                                  <font>
                                     <Font name="Roboto" size="14.0" />
                                  </font>
@@ -70,25 +70,25 @@
                            <children>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Categoria(F2)" textFill="#020203" />
+                                    <Label styleClass="labelRoboto13" text="Categoria(F2)" textFill="#020203" />
                                     <TextField fx:id="txtCategoria" onKeyPressed="#onKeyPressedToCategoria" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Marca(F3)" textFill="#020203" />
+                                    <Label styleClass="labelRoboto13" text="Marca(F3)" textFill="#020203" />
                                     <TextField fx:id="txtMarca" onKeyPressed="#onKeyPressedToMarca" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Presentación(F4)" textFill="#020203" />
+                                    <Label styleClass="labelRoboto13" text="Presentación(F4)" textFill="#020203" />
                                     <TextField fx:id="txtPresentacion" onKeyPressed="#onKeyPressedToPresentacion" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Unidad de Medida(F5)" textFill="#020203" />
+                                    <Label styleClass="labelRoboto13" text="Unidad de Medida(F5)" textFill="#020203" />
                                     <TextField fx:id="txtMedida" onKeyPressed="#onKeyPressedToMedida" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
@@ -109,7 +109,7 @@
                               <TableColumn fx:id="tcCategoriaMarca" prefWidth="180.0" style="fx-alignment: CENTER-LEFT;" text="Categoria/Marca" />
                               <TableColumn fx:id="tcTipoProducto" prefWidth="40.0" style="-fx-alignment: CENTER;" text="TP" />
                               <TableColumn fx:id="tcCantidad" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
-                              <TableColumn fx:id="tcCosto" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Impuesto" />
+                              <TableColumn fx:id="tcImpuesto" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Impuesto" />
                               <TableColumn fx:id="tcPrecio" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Precio" />
                            </columns>
                         </TableView>

@@ -23,8 +23,8 @@
                      <children>
                         <VBox alignment="CENTER" style="-fx-spacing: 0.3333333333333333em; -fx-padding: 0.5em;">
                            <children>
-                              <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold20" text="TOTAL A PAGAR M. 00.00" textFill="#020203" />
-                              <Label fx:id="lblMonedaLetras" styleClass="labelRoboto16" text="( CIEN/ 100 SOLES )" textFill="#020203" />
+                              <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold19" text="TOTAL A PAGAR M. 00.00" textFill="#020203" />
+                              <Label fx:id="lblMonedaLetras" styleClass="labelRoboto15" text="( CIEN/ 100 SOLES )" textFill="#020203" />
                            </children>
                         </VBox>
                         <HBox alignment="CENTER">
@@ -38,7 +38,7 @@
                            <children>
                               <VBox fx:id="vbEfectivo" alignment="CENTER" onMouseClicked="#onMouseClickedEfectivo" style="-fx-cursor: hand; -fx-background-color: #265B7C;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="lblEfectivo" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Al contado" textFill="WHITE">
+                                    <Label fx:id="lblEfectivo" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelOpenSansRegular15" text="Al contado" textFill="WHITE">
                                        <graphic>
                                           <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -54,7 +54,7 @@
                               </VBox>
                               <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" style="-fx-cursor: hand;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular16" text="Crédito" textFill="#020203">
+                                    <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular15" text="Crédito" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -79,9 +79,9 @@
                                        <children>
                                           <VBox alignment="CENTER_LEFT" prefHeight="100.0">
                                              <children>
-                                                <Label alignment="CENTER" styleClass="labelOpenSansRegular14" text="Efectivo" textFill="#020203">
+                                                <Label alignment="CENTER" styleClass="labelOpenSansRegular13" text="Efectivo" textFill="#020203">
                                                    <graphic>
-                                                      <ImageView fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/efectivo_1.png" />
                                                          </image>
@@ -93,9 +93,9 @@
                                           </VBox>
                                           <VBox alignment="CENTER_LEFT">
                                              <children>
-                                                <Label alignment="CENTER" styleClass="labelOpenSansRegular14" text="Tarjeta" textFill="#020203">
+                                                <Label alignment="CENTER" styleClass="labelOpenSansRegular13" text="Tarjeta" textFill="#020203">
                                                    <graphic>
-                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/visa.png" />
                                                          </image>
@@ -107,7 +107,7 @@
                                           </VBox>
                                           <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
-                                                <Label fx:id="lblVueltoNombre" styleClass="labelOpenSansRegular22" text="n.v." textFill="#020203">
+                                                <Label fx:id="lblVueltoNombre" styleClass="labelOpenSansRegular21" text="n.v." textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -116,14 +116,14 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold24" text="M. 00.00" textFill="#0754b9" />
+                                                <Label fx:id="lblVuelto" alignment="CENTER" contentDisplay="CENTER" styleClass="labelRobotoBold21" text="M. 00.00" textFill="#0754b9" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
                                     <VBox fx:id="vbViewCredito" alignment="TOP_CENTER" style="-fx-spacing: 0.5em; -fx-padding: 0.5em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <TableView fx:id="tvPlazos" prefHeight="240.0" prefWidth="600.0" styleClass="table-view-principal">
+                                          <TableView fx:id="tvPlazos" prefHeight="240.0" styleClass="table-view-principal">
                                              <columns>
                                                 <TableColumn fx:id="tcMonto" prefWidth="180.0" resizable="false" text="Monto" />
                                                 <TableColumn fx:id="tcFecha" prefWidth="180.0" resizable="false" text="Fecha" />
@@ -135,13 +135,13 @@
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Button mnemonicParsing="false" onAction="#onActionAgregarPlazos" onKeyPressed="#onKeyPressedPlazos" style="-fx-background-color: WHITE; -fx-cursor: hand;" styleClass="labelOpenSansRegular14" text="+ Añadir más plazos" textFill="#1a8000" underline="true" />
+                                                      <Button mnemonicParsing="false" onAction="#onActionAgregarPlazos" onKeyPressed="#onKeyPressedPlazos" style="-fx-background-color: WHITE; -fx-cursor: hand;" styleClass="labelOpenSansRegular13" text="+ Añadir más plazos" textFill="#1a8000" underline="true" />
                                                    </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblMontoTotal" styleClass="labelOpenSansRegular14" text="MONTO TOTAL: 0.00" textFill="#020203" />
-                                                      <Label fx:id="lblMontoPagar" styleClass="labelOpenSansRegular14" text="MONTO A PAGAR: 0.00" textFill="#020203" />
+                                                      <Label fx:id="lblMontoTotal" styleClass="labelOpenSansRegular13" text="MONTO TOTAL: 0.00" textFill="#020203" />
+                                                      <Label fx:id="lblMontoPagar" styleClass="labelOpenSansRegular13" text="MONTO A PAGAR: 0.00" textFill="#020203" />
                                                    </children>
                                                 </HBox>
                                              </children>

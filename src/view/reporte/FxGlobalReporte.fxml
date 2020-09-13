@@ -16,7 +16,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
          <children>
-            <Label styleClass="labelRobotoBold16" text="Reporte de Compras" textFill="#020203">
+            <Label styleClass="labelRobotoBold15" text="Reporte de Compras" textFill="#020203">
                <graphic>
                   <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -53,7 +53,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Inicial:" textFill="#020203">
+                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular13" text="Fecha Inicial:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -67,7 +67,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular14" text="Fecha Final:" textFill="#020203">
+                                          <Label minWidth="-Infinity" styleClass="labelOpenSansRegular13" text="Fecha Final:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

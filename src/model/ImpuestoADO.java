@@ -24,17 +24,21 @@ public class ImpuestoADO {
 
                     statementValidate = DBUtil.getConnection().prepareStatement("SELECT Nombre FROM ImpuestoTB WHERE IdImpuesto <> ? AND Nombre = ?");
                     statementValidate.setInt(1, impuestoTB.getIdImpuesto());
-                    statementValidate.setString(2, impuestoTB.getNombreImpuesto());
+                    statementValidate.setString(2, impuestoTB.getNombre());
                     if (statementValidate.executeQuery().next()) {
                         DBUtil.getConnection().rollback();
                         result = "duplicated";
                     } else {
-                        statementImpuesto = DBUtil.getConnection().prepareStatement("UPDATE ImpuestoTB SET Operacion=?,Nombre=?,Valor=?,Codigo=? WHERE IdImpuesto = ?");
+                        statementImpuesto = DBUtil.getConnection().prepareStatement("UPDATE ImpuestoTB SET Operacion=?,Nombre=?,Valor=?,Codigo=?,Numeracion=?,NombreImpuesto=?,Letra=?,Categoria=? WHERE IdImpuesto = ?");
                         statementImpuesto.setInt(1, impuestoTB.getOperacion());
-                        statementImpuesto.setString(2, impuestoTB.getNombreImpuesto());
+                        statementImpuesto.setString(2, impuestoTB.getNombre());
                         statementImpuesto.setDouble(3, impuestoTB.getValor());
                         statementImpuesto.setString(4, impuestoTB.getCodigo());
-                        statementImpuesto.setInt(5, impuestoTB.getIdImpuesto());
+                        statementImpuesto.setString(5, impuestoTB.getNumeracion());
+                        statementImpuesto.setString(6, impuestoTB.getNombreImpuesto());
+                        statementImpuesto.setString(7, impuestoTB.getLetra());
+                        statementImpuesto.setString(8, impuestoTB.getCategoria());
+                        statementImpuesto.setInt(9, impuestoTB.getIdImpuesto());
                         statementImpuesto.addBatch();
                         statementImpuesto.executeBatch();
                         DBUtil.getConnection().commit();
@@ -44,18 +48,22 @@ public class ImpuestoADO {
                 } else {
 
                     statementValidate = DBUtil.getConnection().prepareStatement("SELECT Nombre FROM ImpuestoTB WHERE Nombre = ?");
-                    statementValidate.setString(1, impuestoTB.getNombreImpuesto());
+                    statementValidate.setString(1, impuestoTB.getNombre());
                     if (statementValidate.executeQuery().next()) {
                         DBUtil.getConnection().rollback();
                         result = "duplicated";
                     } else {
-                        statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Predeterminado,Codigo,Sistema) values(?,?,?,?,?,?)");
+                        statementImpuesto = DBUtil.getConnection().prepareStatement("INSERT INTO ImpuestoTB(Operacion,Nombre,Valor,Codigo,Numeracion,NombreImpuesto,Letra,Categoria,Predeterminado,Sistema) values(?,?,?,?,?,?,?,?,?,?)");
                         statementImpuesto.setInt(1, impuestoTB.getOperacion());
-                        statementImpuesto.setString(2, impuestoTB.getNombreImpuesto());
+                        statementImpuesto.setString(2, impuestoTB.getNombre());
                         statementImpuesto.setDouble(3, impuestoTB.getValor());
-                        statementImpuesto.setBoolean(4, impuestoTB.getPredeterminado());
-                        statementImpuesto.setString(5, impuestoTB.getCodigo());
-                        statementImpuesto.setBoolean(6, impuestoTB.isSistema());
+                        statementImpuesto.setString(4, impuestoTB.getCodigo());
+                        statementImpuesto.setString(5, impuestoTB.getNumeracion());
+                        statementImpuesto.setString(6, impuestoTB.getNombreImpuesto());
+                        statementImpuesto.setString(7, impuestoTB.getLetra());
+                        statementImpuesto.setString(8, impuestoTB.getCategoria());
+                        statementImpuesto.setBoolean(9, impuestoTB.getPredeterminado());
+                        statementImpuesto.setBoolean(10, impuestoTB.isSistema());
                         statementImpuesto.addBatch();
                         statementImpuesto.executeBatch();
                         DBUtil.getConnection().commit();
@@ -99,7 +107,7 @@ public class ImpuestoADO {
                         impuestoTB.setId(resultSet.getRow());
                         impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
                         impuestoTB.setNombreOperacion(resultSet.getString("Operacion"));
-                        impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
+                        impuestoTB.setNombre(resultSet.getString("Nombre"));
                         impuestoTB.setValor(resultSet.getDouble("Valor"));
                         impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                         impuestoTB.setCodigo(resultSet.getString("Codigo"));
@@ -141,7 +149,7 @@ public class ImpuestoADO {
                     impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
                     impuestoTB.setOperacion(resultSet.getInt("Operacion"));
                     impuestoTB.setNombreOperacion(resultSet.getString("OperacionNombre"));
-                    impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
+                    impuestoTB.setNombre(resultSet.getString("Nombre"));
                     impuestoTB.setValor(resultSet.getDouble("Valor"));
                     impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                     impuestoTB.setSistema(resultSet.getBoolean("Sistema"));
@@ -297,7 +305,7 @@ public class ImpuestoADO {
                     if (resultSet.next()) {
                         impuestoTB = new ImpuestoTB();
                         impuestoTB.setOperacion(resultSet.getInt("Operacion"));
-                        impuestoTB.setNombreImpuesto(resultSet.getString("Nombre"));
+                        impuestoTB.setNombre(resultSet.getString("Nombre"));
                         impuestoTB.setValor(resultSet.getDouble("Valor"));
                         impuestoTB.setCodigo(resultSet.getString("Codigo"));
                     }
