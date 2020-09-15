@@ -31,7 +31,7 @@
                   <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearch" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionProceso" onKeyPressed="#onKeyPressedProceso" styleClass="buttonLight">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
                            </image></ImageView>
@@ -39,7 +39,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressedEditar" styleClass="buttonLight">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image></ImageView>
@@ -56,7 +56,7 @@
                <children>
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Label styleClass="labelOpenSansRegular16" text="Seleccione un elemento de la lista con doble click o enter." textFill="#020203" />
+                        <Label styleClass="labelOpenSansRegular15" text="Seleccione un elemento de la lista con doble click o enter." textFill="#020203" />
                      </children>
                   </HBox>
                </children>

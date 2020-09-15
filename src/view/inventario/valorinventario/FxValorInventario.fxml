@@ -18,9 +18,9 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <Label styleClass="labelRobotoBold16" text="Inventario" textFill="#020203">
+            <Label styleClass="labelRobotoBold15" text="Inventario" textFill="#020203">
                <graphic>
-                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/almacen.png" />
                      </image>
@@ -82,8 +82,8 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Valor del inventario (PEN S/)" textFill="#006cf8" />
-                        <Label fx:id="lblValoTotal" styleClass="labelRoboto16" text="M 00.0000" textFill="#020203" />
+                        <Label styleClass="labelRobotoBold15" text="Valor del inventario (PEN S/)" textFill="#006cf8" />
+                        <Label fx:id="lblValoTotal" styleClass="labelRoboto15" text="M 00.0000" textFill="#020203" />
                      </children>
                   </HBox>
                </children>
@@ -98,7 +98,7 @@
                      <children>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Codigo" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Codigo" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -107,12 +107,12 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefHeight="30.0" prefWidth="260.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
+                              <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefHeight="30.0" prefWidth="240.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Producto" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Producto" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -121,12 +121,12 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtNameProduct" onKeyReleased="#onKeyReleasedNameProduct" prefHeight="30.0" prefWidth="260.0" promptText="Nombre de articulo" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                              <TextField fx:id="txtNameProduct" onKeyReleased="#onKeyReleasedNameProduct" prefHeight="30.0" prefWidth="240.0" promptText="Nombre de articulo" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Opciones de cantidades" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Opciones de cantidades" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -135,12 +135,12 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbExistencia" prefHeight="30.0" prefWidth="260.0" promptText="-- Seleccione --" />
+                              <ComboBox fx:id="cbExistencia" prefHeight="30.0" prefWidth="240.0" promptText="-- Seleccione --" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Categoria" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Categoria" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -149,12 +149,12 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbCategoria" prefWidth="260.0" promptText="-- Seleccione --" />
+                              <ComboBox fx:id="cbCategoria" prefHeight="30.0" prefWidth="240.0" promptText="-- Seleccione --" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Marca" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Marca" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -163,7 +163,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <ComboBox fx:id="cbMarca" prefWidth="260.0" promptText="-- Seleccione --" />
+                              <ComboBox fx:id="cbMarca" prefHeight="30.0" prefWidth="240.0" promptText="-- Seleccione --" />
                            </children>
                         </VBox>
                      </children>
@@ -173,7 +173,7 @@
                      <children>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Negativas: son cantidades menores que cero" textFill="RED">
+                              <Label styleClass="labelRoboto13" text="Negativas: son cantidades menores que cero" textFill="RED">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -182,7 +182,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <Label styleClass="labelOpenSansRegular14" text="Intermedias: son cantidades mayores que cero y menores que el stock mínimo" textFill="ORANGE">
+                              <Label styleClass="labelRoboto13" text="Intermedias: son cantidades mayores que cero y menores que el stock mínimo" textFill="ORANGE">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -195,7 +195,7 @@
                         </VBox>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Label prefHeight="28.0" styleClass="labelOpenSansRegular14" text="Necesarias: son cantidades mayores que el stock mínimo y menores que el stock máximo" textFill="GREEN">
+                              <Label prefHeight="28.0" styleClass="labelRoboto13" text="Necesarias: son cantidades mayores que el stock mínimo y menores que el stock máximo" textFill="GREEN">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -204,7 +204,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <Label styleClass="labelOpenSansRegular14" text="Excedentes: son cantidades mayores que el stock máximo" textFill="#02539a">
+                              <Label styleClass="labelRoboto13" text="Excedentes: son cantidades mayores que el stock máximo" textFill="#02539a">
                                  <graphic>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

@@ -125,7 +125,7 @@ public class EmpresaADO {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement("select * from EmpresaTB");
             rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
+            if (rsEmps.next()) {
                 empresaTB = new EmpresaTB();
                 empresaTB.setIdEmpresa(rsEmps.getInt("IdEmpresa"));
                 empresaTB.setGiroComerial(rsEmps.getInt("GiroComercial"));

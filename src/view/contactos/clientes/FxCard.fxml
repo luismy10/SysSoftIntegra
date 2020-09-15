@@ -28,7 +28,7 @@
                            </image></ImageView>
                      </children>
                   </HBox>
-                  <Text fx:id="lblTitle" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" wrappingWidth="356.0">
+                  <Text fx:id="lblTitle" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" wrappingWidth="356.0">
                      <font>
                         <Font name="Roboto" size="16.0" />
                      </font>

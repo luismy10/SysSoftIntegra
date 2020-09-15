@@ -17,18 +17,21 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-color: #3c8dbc; -fx-border-width: 0  0 1px 0; -fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em;">
                <children>
-                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/etiquetasedit.png" />
-                     </image></ImageView>
-                  <Label styleClass="labelRobotoBold16" text="Editar Etiqueta" textFill="#020203" />
+                  <Label styleClass="labelRobotoBold15" text="Editar Etiqueta" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/etiquetasedit.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Label>
                </children>
             </HBox>
             <HBox>
                <children>
                   <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Nombre:" textFill="#020203" />
+                        <Label styleClass="labelOpenSansRegular13" text="Nombre:" textFill="#020203" />
                         <TextField fx:id="txtNombre" onAction="#onActionEditar" prefHeight="30.0" promptText="Ingrese el Nombre de la Etiqueta" styleClass="text-field-normal" />
                      </children>
                   </VBox>
@@ -38,7 +41,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Ingrese el tamaño(Debe ser en milímetros mm)" textFill="#020203">
+                        <Label styleClass="labelOpenSansRegular13" text="Ingrese el tamaño(Debe ser en milímetros mm)" textFill="#020203">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -47,13 +50,13 @@
                            <children>
                               <VBox style="-fx-spacing: 0.4166666666666667em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Ancho" textFill="#020203" />
+                                    <Label styleClass="labelOpenSansRegular13" text="Ancho" textFill="#020203" />
                                     <TextField fx:id="txtAncho" onAction="#onActionEditar" onKeyTyped="#onKeyTypedAncho" prefHeight="30.0" prefWidth="220.0" promptText="0 mm" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.4166666666666667em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Alto" textFill="#020203" />
+                                    <Label styleClass="labelOpenSansRegular13" text="Alto" textFill="#020203" />
                                     <TextField fx:id="txtAlto" onAction="#onActionEditar" onKeyTyped="#onKeyTypedAlto" prefHeight="30.0" prefWidth="220.0" promptText="0 mm" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
@@ -67,7 +70,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Orientación:" textFill="#020203" />
+                        <Label styleClass="labelOpenSansRegular13" text="Orientación:" textFill="#020203" />
                         <HBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>
                               <RadioButton fx:id="rbVertical" mnemonicParsing="false" selected="true" styleClass="labelOpenSansRegular14" text="Vertical" />

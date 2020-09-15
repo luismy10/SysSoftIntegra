@@ -87,7 +87,7 @@ public class FxMiEmpresaController implements Initializable {
         PaisADO.ListPais().forEach(e -> {
             cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
         });
-        DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
+        DetalleADO.GetDetailIdName("3", "0003", "").forEach(e -> {
             cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         EmpresaTB empresaTb = EmpresaADO.GetEmpresa();

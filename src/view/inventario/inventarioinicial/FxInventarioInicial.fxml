@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Inventario inicial" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Inventario inicial" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -84,10 +84,17 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Buscar artículo:" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Buscar artículo:" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="15.0" />
                                  </font>
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
                               </Label>
                               <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" prefWidth="763.0" promptText="Buscar...." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                            </children>

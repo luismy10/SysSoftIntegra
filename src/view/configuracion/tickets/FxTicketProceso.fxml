@@ -16,9 +16,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Formato de ticket" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Formato de ticket" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/ticket.png" />
                            </image>
@@ -30,7 +30,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Nombre:" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Nombre:" textFill="#020203" />
                         <TextField fx:id="txtNombre" onAction="#onActionAdd" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                      </children>
                   </VBox>
@@ -40,7 +40,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Puntos:" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Puntos:" textFill="#020203" />
                         <TextField fx:id="txtColumnas" onAction="#onActionAdd" onKeyTyped="#onKeyTypedColumnas" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                      </children>
                   </VBox>
@@ -50,7 +50,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Tipo:" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Tipo:" textFill="#020203" />
                         <ComboBox fx:id="cbTpo" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" />
                      </children>
                   </VBox>

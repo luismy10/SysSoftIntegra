@@ -20,9 +20,9 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Moneda" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Moneda" textFill="#020203">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/cantidad.png" />
                                  </image>
@@ -85,8 +85,8 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Moneda Predeterminada:" textFill="#020203" />
-                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" text="Moneda" />
+                                    <Label styleClass="labelOpenSansRegular13" text="Moneda Predeterminada:" textFill="#020203" />
+                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold13" text="Moneda" />
                                  </children>
                               </HBox>
                               <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="320.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">

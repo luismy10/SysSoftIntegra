@@ -15,9 +15,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;" VBox.vgrow="ALWAYS">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Moneda" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Moneda" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/moneda.png" />
                            </image>
@@ -29,14 +29,14 @@
                <children>
                   <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Nombre" textFill="#020203" />
-                        <TextField fx:id="txtNombre" onAction="#onActionGuardar" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <Label styleClass="labelRoboto13" text="Nombre" textFill="#020203" />
+                        <TextField fx:id="txtNombre" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Abreviatura" textFill="#020203" />
-                        <TextField fx:id="txtAbreviatura" onAction="#onActionGuardar" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <Label styleClass="labelRoboto13" text="Abreviatura" textFill="#020203" />
+                        <TextField fx:id="txtAbreviatura" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
@@ -45,14 +45,14 @@
                <children>
                   <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Simbolo" textFill="#020203" />
-                        <TextField fx:id="txtSimbolo" onAction="#onActionGuardar" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                        <Label styleClass="labelRoboto13" text="Simbolo" textFill="#020203" />
+                        <TextField fx:id="txtSimbolo" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <VBox style="-fx-spacing: 0.6666666666666666em;">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Tipo de cambio" textFill="#020203" />
-                        <TextField fx:id="txtTipoCambio" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedTipoCambio" prefWidth="220.0" styleClass="text-field-normal" />
+                        <Label styleClass="labelRoboto13" text="Tipo de cambio" textFill="#020203" />
+                        <TextField fx:id="txtTipoCambio" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedTipoCambio" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>

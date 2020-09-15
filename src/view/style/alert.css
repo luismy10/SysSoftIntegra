@@ -98,7 +98,7 @@
 
     -shrink-animate-on-press: true;
 
-    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+     -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
 
     -fx-border-color: transparent;
     -fx-border-width: 1;

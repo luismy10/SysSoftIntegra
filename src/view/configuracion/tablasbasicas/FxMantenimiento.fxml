@@ -17,12 +17,12 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Mantenimiento" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Mantenimiento" textFill="#020203">
                      <font>
                         <Font name="Calibri" size="19.0" />
                      </font>
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/table.png" />
                            </image>
@@ -35,12 +35,12 @@
                <children>
                   <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Codigo" textFill="#020203">
+                        <Label styleClass="labelRoboto13" text="Codigo" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtCode" disable="true" onAction="#onActionToRegister" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
+                        <TextField fx:id="txtCode" disable="true" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -48,12 +48,12 @@
                               <Insets />
                            </VBox.margin>
                         </TextField>
-                        <Label styleClass="labelRoboto14" text="Nombre" textFill="#020203">
+                        <Label styleClass="labelRoboto13" text="Nombre" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtName" onAction="#onActionToRegister" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
+                        <TextField fx:id="txtName" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>

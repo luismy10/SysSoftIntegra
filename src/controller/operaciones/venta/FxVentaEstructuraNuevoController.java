@@ -72,7 +72,6 @@ import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
 import model.ClienteADO;
-import model.EmpleadoTB;
 import model.VentaADO;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -248,7 +247,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         });
 
         if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
-            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
+            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", "", Session.CLIENTE_DIRECCION));
             cbCliente.getSelectionModel().select(0);
         }
 
@@ -291,28 +290,28 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setMinWidth(Control.USE_PREF_SIZE);
                     vBox.setPrefWidth(200);
                     vBox.maxWidth(Control.USE_PREF_SIZE);
-                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color:  #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
+                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
                     vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
-                    imageView.setFitWidth(130);
-                    imageView.setFitHeight(130);
+                    imageView.setFitWidth(120);
+                    imageView.setFitHeight(120);
                     vBox.getChildren().add(imageView);
 
                     Label lblCodigo = new Label(tvList1.getClave());
-                    lblCodigo.getStyleClass().add("labelOpenSansRegular14");
+                    lblCodigo.getStyleClass().add("labelOpenSansRegular13");
                     lblCodigo.setTextFill(Color.web("#020203"));
                     vBox.getChildren().add(lblCodigo);
 
                     Label lblProducto = new Label(tvList1.getNombreMarca());
-                    lblProducto.getStyleClass().add("labelRobotoBold14");
+                    lblProducto.getStyleClass().add("labelRobotoBold13");
                     lblProducto.setTextFill(Color.web("#020203"));
                     lblProducto.setWrapText(true);
                     lblProducto.setTextAlignment(TextAlignment.CENTER);
                     vBox.getChildren().add(lblProducto);
 
                     Label lblMarca = new Label(tvList1.getMarcaName());
-                    lblMarca.getStyleClass().add("labelOpenSansRegular14");
+                    lblMarca.getStyleClass().add("labelOpenSansRegular13");
                     lblMarca.setTextFill(Color.web("#1a2226"));
                     vBox.getChildren().add(lblMarca);
 
@@ -321,7 +320,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     double precioventa = tvList1.getPrecioVentaGeneral() + impuestototal;
 
                     Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(precioventa, 2));
-                    lblTotalProducto.getStyleClass().add("labelRobotoBold18");
+                    lblTotalProducto.getStyleClass().add("labelRobotoBold17");
                     lblTotalProducto.setTextFill(Color.web("#0478b2"));
                     lblTotalProducto.maxWidth(Double.MAX_VALUE);
                     vBox.getChildren().add(lblTotalProducto);
@@ -351,7 +350,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             fpProductos.getChildren().clear();
             fpProductos.setAlignment(Pos.CENTER);
             Label lblLoad = new Label("Cargando productos para su venta");
-            lblLoad.getStyleClass().add("labelRoboto16");
+            lblLoad.getStyleClass().add("labelRoboto15");
             lblLoad.setTextFill(Color.web("#1a2226"));
             ProgressIndicator progressIndicator = new ProgressIndicator();
             progressIndicator.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
@@ -576,7 +575,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
         cbCliente.getItems().clear();
         if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
-            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", Session.CLIENTE_DIRECCION));
+            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", "", Session.CLIENTE_DIRECCION));
             cbCliente.getSelectionModel().select(0);
         }
 
@@ -869,6 +868,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     String numeroDocumento = "";
                     String informacion = "";
                     String celular = "";
+                    String email = "";
                     String direccion = "";
 
                     if (cbCliente.getSelectionModel().getSelectedIndex() >= 0) {
@@ -876,6 +876,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                         numeroDocumento = clienteTB.getNumeroDocumento() == null ? "" : clienteTB.getNumeroDocumento().toUpperCase();
                         informacion = clienteTB.getInformacion() == null ? "" : clienteTB.getInformacion().toUpperCase();
                         celular = clienteTB.getCelular() == null ? "" : clienteTB.getCelular().toUpperCase();
+                        email = clienteTB.getEmail() == null ? "" : clienteTB.getEmail();
                         direccion = clienteTB.getDireccion() == null ? "" : clienteTB.getDireccion().toUpperCase();
                     }
 
@@ -1067,8 +1068,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 clienteTB.setTipoDocumento(cbCliente.getSelectionModel().getSelectedItem().getTipoDocumento());
                 clienteTB.setNumeroDocumento(cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento());
                 clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
-                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
                 clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
+                clienteTB.setEmail(cbCliente.getSelectionModel().getSelectedItem().getEmail());
+                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());                
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);

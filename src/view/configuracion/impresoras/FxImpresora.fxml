@@ -17,12 +17,12 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../image/print.png" />
                </image>
             </ImageView>
-            <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Impresora" />
+            <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Impresora" />
             <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                <font>
                   <Font name="Roboto" size="14.0" />
@@ -56,8 +56,8 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label alignment="CENTER" styleClass="labelRobotoBold14" text="Información procesada" textFill="#0084f7" underline="true" wrapText="true" />
-                                    <Label fx:id="lblEstado" styleClass="labelRobotoBold14" text="Estado">
+                                    <Label alignment="CENTER" styleClass="labelRobotoBold13" text="Información procesada" textFill="#0084f7" underline="true" wrapText="true" />
+                                    <Label fx:id="lblEstado" styleClass="labelRobotoBold13" text="Estado">
                                        <graphic>
                                           <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -70,12 +70,12 @@
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                                  <children>
-                                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="355.0" styleClass="labelRobotoBold14" text="Para que funcione correctamente la impresora debe estar conectado siempre al mismo puesto USB." textFill="#f80000" wrapText="true" HBox.hgrow="ALWAYS" />
+                                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="355.0" styleClass="labelRobotoBold13" text="Para que funcione correctamente la impresora debe estar conectado siempre al mismo puesto USB." textFill="#f80000" wrapText="true" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Formato de impresión" textFill="#020203" />
+                                    <Label styleClass="labelOpenSansRegular13" text="Formato de impresión" textFill="#020203" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
@@ -90,7 +90,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT">
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Impresoras disponibles:" textFill="#020203" />
+                                                <Label styleClass="labelOpenSansRegular13" text="Impresoras disponibles:" textFill="#020203" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
@@ -105,7 +105,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT">
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Tipo de impresión:" textFill="#020203" />
+                                                <Label styleClass="labelOpenSansRegular13" text="Tipo de impresión:" textFill="#020203" />
                                              </children>
                                           </HBox>
                                           <HBox>

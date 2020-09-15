@@ -20,9 +20,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Nuevo ingreso" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Nuevo ingreso" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/bankmove.png" />
                            </image>
@@ -43,7 +43,7 @@
                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Monto:" textFill="#020203">
+                        <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Monto:" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -52,8 +52,8 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <TextField fx:id="txtMonto" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMonto" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                        <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Descripción:" textFill="#020203" GridPane.rowIndex="1">
+                        <TextField fx:id="txtMonto" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMonto" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
+                        <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Descripción:" textFill="#020203" GridPane.rowIndex="1">
                            <graphic>
                               <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -62,7 +62,7 @@
                               </ImageView>
                            </graphic>
                         </Label>
-                        <TextField fx:id="txtDescripcion" onAction="#onActionGuardar" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtDescripcion" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -70,7 +70,7 @@
             <Separator prefWidth="200.0" />
             <HBox alignment="CENTER">
                <children>
-                  <Text fill="#ab0000" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular12" text="Los campos marcados con * son obligatorios" />
+                  <Text fill="#ab0000" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular11" text="Los campos marcados con * son obligatorios" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">

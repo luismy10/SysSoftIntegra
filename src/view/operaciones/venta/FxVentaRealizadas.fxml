@@ -178,10 +178,10 @@
                                           </Label>
                                           <HBox fx:id="hbVendedor">
                                              <children>
-                                                <TextField fx:id="txtVendedor" disable="true" prefWidth="240.0" styleClass="text-field-normal" />
+                                                <TextField fx:id="txtVendedor" disable="true" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                                 <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionVendedor" onKeyPressed="#onKeyPressedVendedor" styleClass="buttonBorder">
                                                    <graphic>
-                                                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../image/search.png" />
                                                          </image>

@@ -268,7 +268,7 @@ public class FxBienvenidaController implements Initializable {
             monedaTB.setSistema(true);
 
             EmpleadoTB empleadoTB = new EmpleadoTB();
-            empleadoTB.setTipoDocumento(0);
+            empleadoTB.setTipoDocumento(338);
             empleadoTB.setNumeroDocumento("00000000");
             empleadoTB.setApellidos("ADMINISTRADOR");
             empleadoTB.setNombres("GENERAL");
@@ -295,7 +295,7 @@ public class FxBienvenidaController implements Initializable {
             tipoDocumentoTB.setSistema(true);
 
             ClienteTB clienteTB = new ClienteTB();
-            clienteTB.setTipoDocumento(1);
+            clienteTB.setTipoDocumento(338);
             clienteTB.setNumeroDocumento("00000000");
             clienteTB.setInformacion("PUBLICO GENERAL");
             clienteTB.setTelefono("");

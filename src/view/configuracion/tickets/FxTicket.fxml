@@ -17,9 +17,9 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <Label styleClass="labelRobotoBold16" text="Tickets" textFill="#020203">
+            <Label styleClass="labelRobotoBold15" text="Tickets" textFill="#020203">
                <graphic>
-                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/ticket.png" />
                      </image>
@@ -116,7 +116,7 @@
                                  <children>
                                     <HBox alignment="CENTER" style="-fx-border-width: 1 0 1 0; -fx-border-color: #999999; -fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0;">
                                        <children>
-                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto16" text="Imagen" />
+                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="Imagen" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER">
@@ -134,13 +134,13 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Ancho:" textFill="#020203" HBox.hgrow="ALWAYS" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="Ancho:" textFill="#020203" HBox.hgrow="ALWAYS" />
                                           <TextField fx:id="txtAncho" onAction="#onActionAncho" onKeyTyped="#onKeyTypedAncho" prefHeight="30.0" prefWidth="100.0" promptText="0" styleClass="text-field-normal" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Alto:" textFill="#020203" HBox.hgrow="ALWAYS" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="Alto:" textFill="#020203" HBox.hgrow="ALWAYS" />
                                           <TextField fx:id="txtAlto" onAction="#onActionAlto" onKeyTyped="#onKeyTypedAlto" prefHeight="30.0" prefWidth="100.0" promptText="0" styleClass="text-field-normal" />
                                        </children>
                                     </HBox>
@@ -260,30 +260,30 @@
                                  <children>
                                     <HBox alignment="CENTER" style="-fx-padding: 0.4166666666666667em  0 0.4166666666666667em 0; -fx-border-color: #999999; -fx-border-width: 1 0 1 0;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Característica de las letras" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="Característica de las letras" textFill="#020203" />
                                        </children>
                                     </HBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Ancho en columnas" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="Ancho en columnas" textFill="#020203" />
                                           <TextField fx:id="txtAnchoColumna" onAction="#onActionAnchoColumna" onKeyTyped="#onKeyTypedAnchoColumna" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Fuente" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="Fuente" textFill="#020203" />
                                           <ComboBox fx:id="cbFuente" maxWidth="1.7976931348623157E308" onAction="#onActionFuente" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Tamaño" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="Tamaño" textFill="#020203" />
                                           <ComboBox fx:id="cbSize" maxWidth="1.7976931348623157E308" onAction="#onSize" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Alineación" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="Alineación" textFill="#020203" />
                                           <ComboBox fx:id="cbAlignment" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </VBox>
@@ -293,13 +293,13 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Multilinea" textFill="#020203" />
+                                                      <Label styleClass="labelRoboto13" text="Multilinea" textFill="#020203" />
                                                       <CheckBox fx:id="cbMultilinea" mnemonicParsing="false" onAction="#onActionMultilinea" styleClass="check-box-contenido" text="No" />
                                                    </children>
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Editable" textFill="#020203" />
+                                                      <Label styleClass="labelRoboto13" text="Editable" textFill="#020203" />
                                                       <CheckBox fx:id="cbEditable" disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="No" />
                                                    </children>
                                                 </VBox>
@@ -309,7 +309,7 @@
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Variable" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="Variable" textFill="#020203" />
                                           <TextField fx:id="txtVariable" disable="true" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
@@ -323,25 +323,25 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Nombre del ticket" textFill="#020203" />
-                              <Label fx:id="lblNombre" styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
+                              <Label styleClass="labelRoboto13" text="Nombre del ticket" textFill="#020203" />
+                              <Label fx:id="lblNombre" styleClass="labelRobotoBold15" text="--" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Formato de ticket" textFill="#020203" />
-                              <Label fx:id="formatoTicket" styleClass="labelRobotoBold16" text="--" textFill="#0f67a1" />
+                              <Label styleClass="labelRoboto13" text="Formato de ticket" textFill="#020203" />
+                              <Label fx:id="formatoTicket" styleClass="labelRobotoBold15" text="--" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-border-color: #999999; -fx-border-width: 0 1px 0 0; -fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Tamaño" textFill="#020203" />
-                              <Label fx:id="lblColumnas" styleClass="labelRobotoBold16" text="0" textFill="#0f67a1" />
+                              <Label styleClass="labelRoboto13" text="Tamaño" textFill="#020203" />
+                              <Label fx:id="lblColumnas" styleClass="labelRobotoBold15" text="0" textFill="#0f67a1" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" style="-fx-padding: 0 10px 0 0; -fx-spacing: 0.25em;">
                            <children>
-                              <Label styleClass="labelRoboto14" text="Predeterminado" textFill="#020203" />
+                              <Label styleClass="labelRoboto13" text="Predeterminado" textFill="#020203" />
                               <CheckBox fx:id="cbPredeterminado" disable="true" mnemonicParsing="false" styleClass="check-box-ticket" text="No" />
                            </children>
                         </VBox>

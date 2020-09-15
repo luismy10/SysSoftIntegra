@@ -21,7 +21,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Registro de lotes" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Registro de lotes" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -38,8 +38,8 @@
                      <children>
                         <HBox spacing="10.0">
                            <children>
-                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Descripción:" />
-                              <Text fx:id="lblDescripcion" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" wrappingWidth="562.0" />
+                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Descripción:" />
+                              <Text fx:id="lblDescripcion" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="-" wrappingWidth="562.0" />
                            </children>
                         </HBox>
                      </children>
@@ -52,7 +52,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Agregar o generar un lote para el artículo" />
+                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Agregar o generar un lote para el artículo" />
                               <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLight" text="Agregar">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -92,9 +92,9 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Text fx:id="lblCantidad" fill="#0852a6" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Cantidad" />
-                              <Text fx:id="lblDiferencia" fill="#1d6102" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Diferencia" />
-                              <Text fx:id="lblTotal" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Entrada total" />
+                              <Text fx:id="lblCantidad" fill="#0852a6" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Cantidad" />
+                              <Text fx:id="lblDiferencia" fill="#1d6102" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Diferencia" />
+                              <Text fx:id="lblTotal" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Entrada total" />
                            </children>
                            <padding>
                               <Insets bottom="5.0" top="5.0" />

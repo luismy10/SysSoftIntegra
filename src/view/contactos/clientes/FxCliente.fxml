@@ -18,11 +18,11 @@
          <children>
             <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
+                  <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Clientes" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Clientes" textFill="#020203">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/clients.png" />
                                  </image>
@@ -103,7 +103,7 @@
                                                       <Image url="@../../image/note.png" />
                                                    </image>
                                                 </ImageView>
-                                                <Label styleClass="labelRoboto14" text="Buscar por número del documento o datos de la persona(Para realizar la busqueda precione enter)" textFill="#020203">
+                                                <Label styleClass="labelRoboto13" text="Buscar por número del documento o datos de la persona(Para realizar la busqueda precione enter)" textFill="#020203">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -121,7 +121,7 @@
                               </HBox>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" prefWidth="961.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tvList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                           <TableColumn fx:id="tcDocumento" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />

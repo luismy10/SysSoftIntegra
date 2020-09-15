@@ -28,12 +28,12 @@
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelRobotoBold16" text="Ventana de impresión" textFill="#020203" />
+                              <Label styleClass="labelRobotoBold15" text="Ventana de impresión" textFill="#020203" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                            <children>
-                              <Label prefWidth="478.0" styleClass="labelRobotoBold14" text="Para que funcione correctamente la impresora debe estar conectado siempre al mismo puesto USB." textFill="#f80000" wrapText="true" />
+                              <Label prefWidth="478.0" styleClass="labelRobotoBold13" text="Para que funcione correctamente la impresora debe estar conectado siempre al mismo puesto USB." textFill="#f80000" wrapText="true" />
                            </children>
                         </HBox>
                      </children>
@@ -46,14 +46,14 @@
                      <children>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label styleClass="labelOpenSansRegular14" text="Impresoras disponibles:" textFill="#020203" />
+                              <Label styleClass="labelOpenSansRegular13" text="Impresoras disponibles:" textFill="#020203" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                            <children>
                               <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Nombre:" textFill="#020203" />
+                                    <Label styleClass="labelOpenSansRegular13" text="Nombre:" textFill="#020203" />
                                     <ComboBox fx:id="cbImpresoras" maxWidth="1.7976931348623157E308" prefWidth="260.0" />
                                  </children>
                               </VBox>
@@ -63,7 +63,7 @@
                            <children>
                               <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Copias:" textFill="#020203" />
+                                    <Label styleClass="labelOpenSansRegular13" text="Copias:" textFill="#020203" />
                                     <Spinner fx:id="spCopias" maxWidth="1.7976931348623157E308" />
                                  </children>
                               </VBox>

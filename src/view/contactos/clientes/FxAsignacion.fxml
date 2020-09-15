@@ -19,7 +19,7 @@
          <children>
             <HBox style="-fx-background-color: #1a2226; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Agregar información para el directorio">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Agregar información para el directorio">
                      <font>
                         <Font name="Roboto" size="18.0" />
                      </font>
@@ -30,10 +30,10 @@
                <children>
                   <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Atributo" textFill="#020203" />
-                        <ComboBox fx:id="cbAtributo" prefWidth="501.0" promptText="Ejemplo: Teléfono, Celular, Dirección, Email etc." styleClass="comboBox" />
-                        <Label styleClass="labelRoboto14" text="Valor" textFill="#020203" />
-                        <TextField fx:id="txtValor" promptText="Ejemplo: 966750883, av.las flores n°1, www.somos.com" styleClass="text-field-normal" />
+                        <Label styleClass="labelRoboto13" text="Atributo" textFill="#020203" />
+                        <ComboBox fx:id="cbAtributo" prefHeight="30.0" prefWidth="300.0" promptText="Ejemplo: Teléfono, Celular, Dirección, Email etc." styleClass="comboBox" />
+                        <Label styleClass="labelRoboto13" text="Valor" textFill="#020203" />
+                        <TextField fx:id="txtValor" prefHeight="30.0" prefWidth="300.0" promptText="Ejemplo: 966750883, av.las flores n°1, www.somos.com" styleClass="text-field-normal" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

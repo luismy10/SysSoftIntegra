@@ -15,9 +15,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Abrir Formatos de Etiquetas" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Abrir Formatos de Etiquetas" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/search.png" />
                            </image>
@@ -46,7 +46,7 @@
                               </ScrollPane>
                            </children>
                         </VBox>
-                        <Label styleClass="labelOpenSansRegular14" text="Seleccione una etiqueta con el mouse." textFill="#020203" />
+                        <Label styleClass="labelOpenSansRegular13" text="Seleccione una etiqueta con el mouse." textFill="#020203" />
                      </children>
                   </VBox>
                </children>

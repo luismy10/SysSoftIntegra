@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Agregar Rol" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Agregar Rol" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -29,8 +29,8 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Nombre del rol:" />
-                  <TextField fx:id="txtNombre" onAction="#onActionRegistrar" prefWidth="220.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Nombre del rol:" />
+                  <TextField fx:id="txtNombre" onAction="#onActionRegistrar" prefWidth="240.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 1 0 0 0; -fx-border-color: #CCCCCC; -fx-background-color: white;">

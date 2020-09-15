@@ -16,7 +16,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Auto Generar Código" textFill="#020203" />
+                        <Label styleClass="labelRobotoBold15" text="Auto Generar Código" textFill="#020203" />
                         <HBox style="-fx-border-color: #666666;">
                            <children>
                               <ImageView fx:id="ivCodigo" fitHeight="200.0" fitWidth="349.0" pickOnBounds="true" preserveRatio="true" />
@@ -26,7 +26,7 @@
                   </VBox>
                   <VBox alignment="CENTER" style="-fx-spacing: 1.25em; -fx-padding: 1.25em;">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Tipo de Codificación" textFill="#020203" />
+                        <Label styleClass="labelOpenSansRegular13" text="Tipo de Codificación" textFill="#020203" />
                         <ComboBox fx:id="cbCodificacion" prefHeight="28.0" prefWidth="200.0" promptText="--Seleccionar--" />
                         <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                            <children>

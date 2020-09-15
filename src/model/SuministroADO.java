@@ -534,7 +534,7 @@ public class SuministroADO {
                 suministroTB.setImagenTB(rsEmps.getString("Imagen"));
 
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
-                label.getStyleClass().add("labelRoboto14");
+                label.getStyleClass().add("labelRoboto13");
                 label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
                 suministroTB.setLblCantidad(label);
 

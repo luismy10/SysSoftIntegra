@@ -14,7 +14,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <Label styleClass="labelRobotoBold16" text="Roles" textFill="#020203">
+            <Label styleClass="labelRobotoBold15" text="Roles" textFill="#020203">
                <graphic>
                   <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -69,7 +69,7 @@
          <children>
             <VBox alignment="TOP_CENTER" style="-fx-background-color: #666666;" HBox.hgrow="SOMETIMES">
                <children>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto18" text="Rol">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto17" text="Rol">
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
@@ -86,7 +86,7 @@
                      <children>
                         <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Menús">
+                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="Menús">
                                  <VBox.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </VBox.margin>
@@ -99,7 +99,7 @@
                         </VBox>
                         <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Submenús">
+                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="Submenús">
                                  <VBox.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </VBox.margin>
@@ -113,7 +113,7 @@
                      <children>
                         <VBox alignment="CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="SOMETIMES">
                            <children>
-                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Privilegios">
+                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="Privilegios">
                                  <VBox.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </VBox.margin>

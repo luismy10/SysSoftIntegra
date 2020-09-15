@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inventario.movimientos.FxMovimientosController">
    <children>
@@ -20,12 +19,15 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/ajuste-inventario.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Movimiento o ajuste de inventario" />
+                  <Label styleClass="labelRobotoBold15" text="Movimiento o ajuste de inventario" textFill="#020203">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/ajuste-inventario.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -68,7 +70,7 @@
                                  <children>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Buscar por  tipo de movimiento(F1)" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Buscar por  tipo de movimiento(F1)" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -89,7 +91,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Fecha de Inicio" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Fecha de Inicio" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -110,7 +112,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Fecha de Final" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Fecha de Final" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -139,7 +141,7 @@
                                  <children>
                                     <HBox>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Mostrar todos los movimientos realizados de inventario" textFill="#020203" />
+                                          <Label styleClass="labelRoboto13" text="Mostrar todos los movimientos realizados de inventario" textFill="#020203" />
                                        </children>
                                     </HBox>
                                     <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="327.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
@@ -150,7 +152,7 @@
                                           <TableColumn fx:id="tcObservacion" prefWidth="291.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
                                           <TableColumn fx:id="tcInformacion" prefWidth="148.0" style="-fx-alignment: CENTER-LEFT;" text="Información" />
                                           <TableColumn fx:id="tcEstado" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                                          <TableColumn fx:id="tcOpcion" prefWidth="130.0" style="-fx-alignment: CENTER;" />
+                                          <TableColumn fx:id="tcOpcion" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Opción" />
                                        </columns>
                                     </TableView>
                                  </children>

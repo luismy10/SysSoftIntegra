@@ -15,9 +15,9 @@
          <children>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Formato del reporte" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Formato del reporte" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reports.png" />
                            </image>
@@ -28,7 +28,7 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 1.25em;">
                <children>
-                  <RadioButton fx:id="rbOpcionUno" mnemonicParsing="false" selected="true" styleClass="labelOpenSansRegular14" text="Reporte Inventario General">
+                  <RadioButton fx:id="rbOpcionUno" mnemonicParsing="false" selected="true" styleClass="labelRoboto13" text="Reporte Inventario General">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -37,7 +37,7 @@
                         </ImageView>
                      </graphic>
                   </RadioButton>
-                  <RadioButton fx:id="rbOpcionDos" mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="Reporte Inventario para Ajuste">
+                  <RadioButton fx:id="rbOpcionDos" mnemonicParsing="false" styleClass="labelRoboto13" text="Reporte Inventario para Ajuste">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

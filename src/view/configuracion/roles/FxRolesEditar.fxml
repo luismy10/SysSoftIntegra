@@ -18,9 +18,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Editar Rol" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Editar Rol" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/privileges.png" />
                            </image>
@@ -31,11 +31,11 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;" VBox.vgrow="SOMETIMES">
                <children>
-                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="Nombre del rol:" />
+                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Nombre del rol:" />
                   <TextField fx:id="txtNombre" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionEditarNombre" onKeyPressed="#onKeyPressedEditarNombre" styleClass="buttonLight" text="Editar nombre">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image>
@@ -44,7 +44,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cerrar Ventana">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image></ImageView>
@@ -56,7 +56,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Menús">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="Menús">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
@@ -66,7 +66,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Submenús">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="Submenús">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
@@ -80,7 +80,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" style="-fx-background-color: #cccccc;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular16" text="Privilegios">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="Privilegios">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>

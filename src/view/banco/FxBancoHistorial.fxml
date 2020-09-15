@@ -19,16 +19,16 @@
                <children>
                   <Label onMouseClicked="#onMouseClickedBehind" style="-fx-cursor: hand;">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                            <image>
                               <Image url="@../image/right.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Label>
-                  <Label styleClass="labelRobotoBold16" text="Historial de la cuenta" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Historial de la cuenta" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/bank.png" />
                            </image>
@@ -93,8 +93,8 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelRobotoBold16" text="Saldo Total" textFill="#0777ae" />
-                                    <Label fx:id="lblSaldoTotal" styleClass="labelRoboto16" text="M 0000.0000" textFill="#020203" />
+                                    <Label styleClass="labelRobotoBold15" text="Saldo Total" textFill="#0777ae" />
+                                    <Label fx:id="lblSaldoTotal" styleClass="labelRoboto15" text="M 0000.0000" textFill="#020203" />
                                  </children>
                               </HBox>
                            </children>

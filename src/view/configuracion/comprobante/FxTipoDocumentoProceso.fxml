@@ -15,9 +15,9 @@
          <children>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;" VBox.vgrow="ALWAYS">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Comprobante" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Comprobante" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/tipodocumento.png" />
                            </image>
@@ -29,7 +29,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Nombre del Comprobante" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Nombre del Comprobante" textFill="#020203" />
                         <TextField fx:id="txtNombre" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
@@ -39,7 +39,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Serie" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Serie" textFill="#020203" />
                         <TextField fx:id="txtSerie" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
@@ -49,7 +49,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Codigo Alterno" textFill="#020203" />
+                        <Label styleClass="labelRoboto13" text="Codigo Alterno" textFill="#020203" />
                         <TextField fx:id="txtCodigoAlterno" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>

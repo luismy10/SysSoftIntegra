@@ -58,7 +58,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #e5e5e5; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="1" textFill="WHITE" />
+                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="1" textFill="WHITE" />
                               <Label styleClass="labelRobotoBold13" text="Cliente" textFill="#020203" />
                            </children>
                         </HBox>
@@ -80,7 +80,7 @@
                                           <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Escribe el número de RUC O Razón Social" HBox.hgrow="ALWAYS" />
                                           <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLight" text="Agregar Nuevo Cliente">
                                              <graphic>
-                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../image/client.png" />
                                                    </image>
@@ -101,7 +101,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="2" textFill="WHITE" />
+                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="2" textFill="WHITE" />
                               <Label styleClass="labelRoboto13" text="Datos de Traslado" textFill="#020203" />
                            </children>
                         </HBox>
@@ -197,7 +197,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="3" textFill="WHITE" />
+                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="3" textFill="WHITE" />
                               <Label styleClass="labelRobotoBold14" text="Datos del Transporte Privado" textFill="#020203" />
                            </children>
                         </HBox>
@@ -267,7 +267,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                                        <children>
-                                          <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="4" textFill="WHITE" />
+                                          <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="4" textFill="WHITE" />
                                           <Label styleClass="labelRobotoBold14" text="Punto de partida" textFill="#020203" />
                                        </children>
                                     </HBox>
@@ -305,7 +305,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                                        <children>
-                                          <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="5" textFill="WHITE" />
+                                          <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="5" textFill="WHITE" />
                                           <Label styleClass="labelRobotoBold14" text="Punto de llegada" textFill="#020203" />
                                        </children>
                                     </HBox>
@@ -343,7 +343,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="6" textFill="WHITE" />
+                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="6" textFill="WHITE" />
                               <Label styleClass="labelRobotoBold14" text="Documento de Referencia" textFill="#020203" />
                            </children>
                         </HBox>
@@ -371,7 +371,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold14" text="7" textFill="WHITE" />
+                              <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 11px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="7" textFill="WHITE" />
                               <Label styleClass="labelRobotoBold14" text="Detalle de GuÍa de Remisión" textFill="#020203" />
                            </children>
                         </HBox>

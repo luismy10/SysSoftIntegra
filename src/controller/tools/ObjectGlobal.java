@@ -44,7 +44,7 @@ public class ObjectGlobal {
         PANE_PRINCIPAL.setPrefHeight(Session.HEIGHT_WINDOW);
 
         Label label = new Label("Cargando menus \n Espere por favor...");
-        label.getStyleClass().add("labelRobotoBold18");
+        label.getStyleClass().add("labelRobotoBold17");
         label.setTextAlignment(TextAlignment.CENTER);
         label.setTextFill(Color.BLACK);
         label.setAlignment(Pos.CENTER);

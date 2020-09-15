@@ -20,9 +20,9 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Impuestos" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Impuestos" textFill="#020203">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/impuestos.png" />
                                  </image>
@@ -94,7 +94,7 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <Label styleClass="labelOpenSansRegular14" text="Tipo de impuesto Predeterminado:" textFill="#020203" />
+                                    <Label styleClass="labelOpenSansRegular13" text="Tipo de impuesto Predeterminado:" textFill="#020203" />
                                     <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" />
                                  </children>
                               </HBox>

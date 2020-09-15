@@ -24,9 +24,9 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #020203;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Datos del cliente" textFill="WHITE">
+                        <Label styleClass="labelRobotoBold15" text="Datos del cliente" textFill="WHITE">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/client.png" />
                                  </image>
@@ -53,7 +53,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Tipo documento" textFill="#020203">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Tipo documento" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -74,7 +74,7 @@
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="N° Documento" textFill="#020203">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="N° Documento" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -91,7 +91,7 @@
                                                             <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
                                                             <Button fx:id="btnBuscarSunat" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSunat" onKeyPressed="#onKeyPressedSunat" prefHeight="30.0" styleClass="buttonLight">
                                                                <graphic>
-                                                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                                  <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
                                                                         <Image url="@../../image/sunat_logo.png" />
                                                                      </image>
@@ -100,7 +100,7 @@
                                                             </Button>
                                                             <Button fx:id="btnBuscarReniec" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionReniec" onKeyPressed="#onKeyPressedReniec" prefHeight="30.0" styleClass="buttonLight">
                                                                <graphic>
-                                                                  <ImageView fitHeight="20.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                  <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
                                                                         <Image url="@../../image/reniec.png" />
                                                                      </image>
@@ -117,7 +117,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Razón social/Datos de la persona" textFill="#020203">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Razón social/Datos de la persona" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -138,7 +138,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Teléfono" textFill="#020203">
+                                                      <Label styleClass="labelRoboto13" text="Teléfono" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -148,7 +148,7 @@
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Celular" textFill="#020203">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Celular" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -162,7 +162,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Email" textFill="#020203">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Email" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -176,7 +176,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Dirección" textFill="#020203">
+                                                      <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Dirección" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -208,7 +208,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Representante" textFill="#020203">
+                                                      <Label styleClass="labelRoboto13" text="Representante" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -222,7 +222,7 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label styleClass="labelRoboto14" text="Estado" textFill="#020203">
+                                                      <Label styleClass="labelRoboto13" text="Estado" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -257,7 +257,7 @@
                <children>
                   <HBox alignment="CENTER">
                      <children>
-                        <Text fill="#ab0000" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular12" text="Los campos marcados con * son obligatorios" />
+                        <Text fill="#ab0000" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular11" text="Los campos marcados con * son obligatorios" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">

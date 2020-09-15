@@ -20,9 +20,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Kardex" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Kardex" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/kardex.png" />
                            </image>
@@ -82,7 +82,7 @@
                            <children>
                               <VBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Buscar por clave o clave alterna(F1)" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Buscar por clave o clave alterna(F1)" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
@@ -113,7 +113,7 @@
                               <Separator orientation="VERTICAL" />
                               <VBox>
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Periodo" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Periodo" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
@@ -129,7 +129,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Fecha Inicial:" textFill="#020203">
+                                                <Label styleClass="labelRoboto13" text="Fecha Inicial:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -143,7 +143,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label styleClass="labelRoboto14" text="Fecha Final:" textFill="#020203">
+                                                <Label styleClass="labelRoboto13" text="Fecha Final:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -180,14 +180,14 @@
                                     </Label>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="lblProducto" styleClass="labelRoboto16" text="Producto" textFill="#006cf8" wrapText="true" HBox.hgrow="ALWAYS" />
+                                          <Label fx:id="lblProducto" styleClass="labelRoboto15" text="Producto" textFill="#006cf8" wrapText="true" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Metodo" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Metodo" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -198,14 +198,14 @@
                                     </Label>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto16" text="Promedio ponderado" textFill="#006cf8" />
+                                          <Label styleClass="labelRoboto15" text="Promedio ponderado" textFill="#006cf8" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Cantidad Actual" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Cantidad Actual" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -216,14 +216,14 @@
                                     </Label>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="lblCantidadActual" styleClass="labelRoboto16" text="0.0" textFill="#0e7ee5" />
+                                          <Label fx:id="lblCantidadActual" styleClass="labelRoboto15" text="0.0" textFill="#0e7ee5" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Valor Actual" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Valor Actual" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -234,7 +234,7 @@
                                     </Label>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="lblValorActual" styleClass="labelRoboto16" text="0.0" textFill="#0e7ee5" />
+                                          <Label fx:id="lblValorActual" styleClass="labelRoboto15" text="0.0" textFill="#0e7ee5" />
                                        </children>
                                     </HBox>
                                  </children>

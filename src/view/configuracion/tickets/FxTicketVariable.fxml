@@ -16,9 +16,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Agregar variable" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Agregar variable" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/ticket.png" />
                            </image>
@@ -30,7 +30,7 @@
                <children>
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelOpenSansRegular14" text="Doble click para agregar a la lista" textFill="#020203" />
+                        <Label styleClass="labelOpenSansRegular15" text="Doble click para agregar a la lista" textFill="#020203" />
                         <ListView fx:id="lvLista" onMouseClicked="#onMouseClickedList" prefHeight="280.0" prefWidth="320.0" />
                         <TextField fx:id="txtContenido" disable="true" prefHeight="30.0" styleClass="text-field-normal" />
                      </children>

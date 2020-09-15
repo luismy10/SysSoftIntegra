@@ -136,12 +136,12 @@
                                     <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="Conectado" />
                                  </children>
                               </HBox>
-                              <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1em 0em 1em  0.8333333333333334em;">
+                              <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1.25em;">
                                  <children>
                                     <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Menú principal" />
                                  </children>
                               </HBox>
-                              <VBox fx:id="hbMenus">
+                              <VBox fx:id="hbMenus" minWidth="-Infinity">
                                  <children>
                                     <HBox fx:id="btnInicio" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>

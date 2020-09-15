@@ -17,12 +17,12 @@
    <children>
       <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
          <children>
-            <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../image/employees.png" />
                </image>
             </ImageView>
-            <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold16" text="Empleados" />
+            <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Empleados" />
             <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                <font>
                   <Font name="Roboto" size="14.0" />
@@ -83,7 +83,7 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 10;">
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Datos del empleados a buscar ejemplo(dni o apellido y nombres)" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Datos del empleados a buscar ejemplo(dni o apellido y nombres)" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>

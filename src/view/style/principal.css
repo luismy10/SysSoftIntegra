@@ -122,6 +122,11 @@
     -fx-font-family:"Roboto Medium"; 
     -fx-font-smoothing-type: lcd;
 }
+.labelRobotoMedium13{
+    -fx-font-size:1.0833333333333333em; /*13px*/
+    -fx-font-family:"Roboto Medium"; 
+    -fx-font-smoothing-type: lcd;
+}
 .labelRobotoMedium14{
     -fx-font-size:1.1666666666666667em; /*14px*/
     -fx-font-family:"Roboto Medium"; 
@@ -391,7 +396,7 @@
  *                                                                             *
  ******************************************************************************/
 .buttonMenu {
-    -fx-padding: 0.8333333333333334em 1.25em 0.8333333333333334em 1.25em;
+    -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
     -fx-spacing: 0.8333333333333334em;
     -fx-opacity: 0.5;
 
@@ -406,7 +411,7 @@
     -fx-opacity: 1;
 }
 .buttonMenuActivate{
-    -fx-padding: 0.8333333333333334em 1.25em 0.8333333333333334em 1.25em;
+    -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
     -fx-background-color: white;
     -fx-spacing:0.8333333333333334em;
     -fx-opacity: 1;
@@ -1379,7 +1384,7 @@
 
 .table-view-secundario .column-header .label{
     -fx-text-fill: #1a2226;
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-size: 1.0833333333333333em;/*13px*/   
     -fx-alignment: center;
     -fx-padding: 0.75em 0.3333333333333333em 0.75em 0.3333333333333333em;      
@@ -1820,6 +1825,7 @@
     -fx-text-fill: #020203;
     -fx-font-size: 1.0833333333333333em;/*13px*/ 
     -fx-font-family: "Roboto"; 
+    -fx-text-fill: #020203;
 }
 
 .radio-button > .radio  {

@@ -30,7 +30,7 @@
                         </Label>
                         <Button fx:id="btnAgregarVenta" mnemonicParsing="false" onAction="#onActionAgregarVenta" onKeyPressed="#onKeyPressedAgregarVenta" styleClass="buttonLightWarning" text="Agregar Venta">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/plus.png" />
                                  </image>
@@ -43,7 +43,7 @@
                      <children>
                         <Label styleClass="labelRobotoMedium15" text="Caja Actual: PROPIA" textFill="#025379" underline="true">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/caja_registradora.png" />
                                  </image>

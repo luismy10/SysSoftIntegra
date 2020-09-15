@@ -84,8 +84,8 @@
                         </TableView>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
-                              <Label styleClass="labelOpenSansRegular16" text="Total de Artículos importados:" textFill="#020203" />
-                              <Label fx:id="lblTotaImportadas" styleClass="labelOpenSansRegular16" text="0" textFill="#020203" />
+                              <Label styleClass="labelRoboto15" text="Total de Artículos importados:" textFill="#020203" />
+                              <Label fx:id="lblTotaImportadas" styleClass="labelOpenSansRegular15" text="0" textFill="#020203" />
                            </children>
                         </HBox>
                      </children>

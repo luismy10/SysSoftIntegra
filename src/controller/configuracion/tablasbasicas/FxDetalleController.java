@@ -34,10 +34,10 @@ public class FxDetalleController implements Initializable {
     private Button btnToAction;
     @FXML
     private TextField txtCodigoAuxiliar;
-    
-    private int idDetalle;
 
     private FxDetalleMantenimientoController detalleMantenimientoController;
+
+    private int idDetalle;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -101,11 +101,9 @@ public class FxDetalleController implements Initializable {
                 if (result.equalsIgnoreCase("inserted")) {
                     Tools.AlertMessageInformation(window, "Detalle", "Registrado correctamente.");
                     Tools.Dispose(window);
-
                 } else if (result.equalsIgnoreCase("updated")) {
                     Tools.AlertMessageInformation(window, "Detalle", "Actualizado correctamente.");
                     Tools.Dispose(window);
-                    detalleMantenimientoController.initDetail(txtCode.getText(),"");
                 } else if (result.equalsIgnoreCase("duplicate")) {
                     Tools.AlertMessageWarning(window, "Detalle", "No se puede haber 2 detalles con el mismo nombre.");
                     txtName.requestFocus();

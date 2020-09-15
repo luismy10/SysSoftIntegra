@@ -20,9 +20,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
                <children>
-                  <Label styleClass="labelRobotoBold16" text="Anular compra" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Anular compra" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/cancel.png" />
                            </image>
@@ -35,11 +35,11 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox style="-fx-border-color: #cccccc;">
+                        <VBox style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
                               <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
                                  <children>
-                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold22" text="M. 00.00" textFill="#020203" />
+                                    <Label fx:id="lblTotal" contentDisplay="RIGHT" styleClass="labelRobotoBold21" text="M. 00.00" textFill="#020203" />
                                  </children>
                               </VBox>
                            </children>
@@ -48,7 +48,7 @@
                            <children>
                               <HBox>
                                  <children>
-                                    <Label styleClass="labelRoboto14" text="Retirar cantidad de productos ingresados" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Retirar cantidad de productos ingresados" textFill="#020203">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -77,7 +77,7 @@
                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Efectivo:" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Efectivo:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -87,7 +87,7 @@
                                              </graphic>
                                           </Label>
                                           <TextField fx:id="txtEfectivo" disable="true" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                          <Label styleClass="labelOpenSansRegular14" text="Cuenta:" textFill="#020203" GridPane.rowIndex="1">
+                                          <Label styleClass="labelOpenSansRegular13" text="Cuenta:" textFill="#020203" GridPane.rowIndex="1">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -97,7 +97,7 @@
                                              </graphic>
                                           </Label>
                                           <ComboBox fx:id="cbCuentas" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label styleClass="labelOpenSansRegular14" text="Observación:" textFill="#020203" GridPane.rowIndex="2">
+                                          <Label styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.rowIndex="2">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

@@ -22,9 +22,9 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Compras realizadas" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Compras realizadas" textFill="#020203">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/purchases.png" />
                                  </image>
@@ -73,7 +73,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Fecha inicial:" textFill="#020203">
+                                                <Label styleClass="labelRoboto13" text="Fecha inicial:" textFill="#020203">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -85,12 +85,12 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="200.0" />
+                                                <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Fecha final:" textFill="#020203">
+                                                <Label styleClass="labelRoboto13" text="Fecha final:" textFill="#020203">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -102,12 +102,12 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
+                                                <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
                                              <children>
-                                                <Label styleClass="labelOpenSansRegular14" text="Estado:" textFill="#020203">
+                                                <Label styleClass="labelRoboto13" text="Estado:" textFill="#020203">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
@@ -119,14 +119,14 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <ComboBox fx:id="cbEstadoCompra" onAction="#OnActionEstadoCompra" prefHeight="30.0" prefWidth="200.0" />
+                                                <ComboBox fx:id="cbEstadoCompra" onAction="#OnActionEstadoCompra" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </HBox>
                                     <VBox style="-fx-spacing: 0.5em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular14" text="Buscar por Proveedor o Serie/Numeración" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Buscar por Proveedor o Serie/Numeración" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>

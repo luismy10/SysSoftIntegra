@@ -20,14 +20,14 @@
                <children>
                   <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRobotoMedium18" text="Perfil" textFill="WHITE" />
+                        <Label styleClass="labelRobotoBold15" text="Perfil" textFill="WHITE" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionToReload" onKeyPressed="#onKeyPressedToReload" styleClass="buttonBorder">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/reload.png" />
                                  </image>
@@ -42,7 +42,7 @@
                <children>
                   <HBox alignment="CENTER">
                      <children>
-                        <ImageView fx:id="ivPerfil" fitHeight="187.0" fitWidth="401.0" onMouseClicked="#onMouseClickedImage" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" HBox.hgrow="ALWAYS">
+                        <ImageView fx:id="ivPerfil" fitHeight="176.0" fitWidth="384.0" onMouseClicked="#onMouseClickedImage" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" HBox.hgrow="ALWAYS">
                            <image>
                               <Image url="@../../image/perfil.jpg" />
                            </image></ImageView>

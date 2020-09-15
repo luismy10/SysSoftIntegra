@@ -62,6 +62,30 @@ public class FxConfiguracionController implements Initializable {
 
     private AnchorPane vbContent;
     /*
+    Controller empresa
+     */
+    private FXMLLoader fXMLEmpresa;
+
+    private ScrollPane nodeMiEmpresa;
+
+    private FxMiEmpresaController controllerMiEmpresa;
+    /*
+    Controller tablas básicas
+     */
+    private FXMLLoader fXMLTablasBasicas;
+
+    private VBox nodeTablasBasicas;
+
+    private FxDetalleMantenimientoController controllerTablasBasicas;
+    /*
+    Controller privilegios
+     */
+    private FXMLLoader fXMLTablasRoles;
+
+    private VBox nodeRoles;
+
+    private FxRolesController controllerRoles;
+    /*
     Controller ticket
      */
     private FXMLLoader fXMLTicket;
@@ -89,6 +113,18 @@ public class FxConfiguracionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            fXMLEmpresa = new FXMLLoader(getClass().getResource(FilesRouters.FX_MI_EMPRESA));
+            nodeMiEmpresa = fXMLEmpresa.load();
+            controllerMiEmpresa = fXMLEmpresa.getController();
+
+            fXMLTablasBasicas = new FXMLLoader(getClass().getResource(FilesRouters.FX_DETALLE_MANTENIMIENTO));
+            nodeTablasBasicas = fXMLTablasBasicas.load();
+            controllerTablasBasicas = fXMLTablasBasicas.getController();
+
+            fXMLTablasRoles = new FXMLLoader(getClass().getResource(FilesRouters.FX_ROLES));
+            nodeRoles = fXMLTablasRoles.load();
+            controllerRoles = fXMLTablasRoles.getController();
+
             fXMLTicket = new FXMLLoader(getClass().getResource(FilesRouters.FX_TICKET));
             nodeTicketa = fXMLTicket.load();
             controllerTicket = fXMLTicket.getController();
@@ -154,55 +190,34 @@ public class FxConfiguracionController implements Initializable {
     }
 
     private void openWindowTablasBasicas() {
-        try {
-            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_DETALLE_MANTENIMIENTO));
-            VBox node = fXMLPrincipal.load();
-            FxDetalleMantenimientoController controller = fXMLPrincipal.getController();
-            controller.setContent(vbPrincipal);
-            vbContent.getChildren().clear();
-            AnchorPane.setLeftAnchor(node, 0d);
-            AnchorPane.setTopAnchor(node, 0d);
-            AnchorPane.setRightAnchor(node, 0d);
-            AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
-            controller.reloadListView();
-        } catch (IOException ex) {
-            System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
-        }
+        controllerTablasBasicas.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeTablasBasicas, 0d);
+        AnchorPane.setTopAnchor(nodeTablasBasicas, 0d);
+        AnchorPane.setRightAnchor(nodeTablasBasicas, 0d);
+        AnchorPane.setBottomAnchor(nodeTablasBasicas, 0d);
+        vbContent.getChildren().add(nodeTablasBasicas);
+        controllerTablasBasicas.reloadListView();
     }
 
     private void openWindowCompany() {
-        try {
-            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_MI_EMPRESA));
-            ScrollPane node = fXMLPrincipal.load();
-            FxMiEmpresaController controller = fXMLPrincipal.getController();
-            controller.setContent(vbPrincipal);
-            vbContent.getChildren().clear();
-            AnchorPane.setLeftAnchor(node, 0d);
-            AnchorPane.setTopAnchor(node, 0d);
-            AnchorPane.setRightAnchor(node, 0d);
-            AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
-        } catch (IOException ex) {
-            System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
-        }
+        controllerMiEmpresa.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeMiEmpresa, 0d);
+        AnchorPane.setTopAnchor(nodeMiEmpresa, 0d);
+        AnchorPane.setRightAnchor(nodeMiEmpresa, 0d);
+        AnchorPane.setBottomAnchor(nodeMiEmpresa, 0d);
+        vbContent.getChildren().add(nodeMiEmpresa);
     }
 
     private void openWindowPrivileges() {
-        try {
-            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_ROLES));
-            VBox node = fXMLPrincipal.load();
-            FxRolesController controller = fXMLPrincipal.getController();
-            controller.setContent(vbPrincipal);
-            vbContent.getChildren().clear();
-            AnchorPane.setLeftAnchor(node, 0d);
-            AnchorPane.setTopAnchor(node, 0d);
-            AnchorPane.setRightAnchor(node, 0d);
-            AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
-        } catch (IOException ex) {
-            System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
-        }
+        controllerRoles.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeRoles, 0d);
+        AnchorPane.setTopAnchor(nodeRoles, 0d);
+        AnchorPane.setRightAnchor(nodeRoles, 0d);
+        AnchorPane.setBottomAnchor(nodeRoles, 0d);
+        vbContent.getChildren().add(nodeRoles);
     }
 
     private void openWindowEmployes() {

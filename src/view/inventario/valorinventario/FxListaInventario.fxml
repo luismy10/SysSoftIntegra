@@ -19,9 +19,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #3c8dbc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Label fx:id="lblTitle" styleClass="labelRobotoBold16" text="Lista de productos" textFill="#020203">
+                  <Label fx:id="lblTitle" styleClass="labelRobotoBold15" text="Lista de productos" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/almacen.png" />
                            </image>
@@ -40,19 +40,19 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0px 0.8333333333333334em 0px  0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRoboto14" text="Buscar:" textFill="#020203">
+                  <Label styleClass="labelRoboto13" text="Buscar:" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/search.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Label>
-                  <TextField fx:id="txtSearch" onKeyReleased="#onKeyPressedReleased" promptText="Buscar..." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" onKeyReleased="#onKeyPressedReleased" prefHeight="30.0" promptText="Buscar..." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
@@ -63,9 +63,9 @@
             </HBox>
             <HBox style="-fx-padding: 0px  0.8333333333333334em 0px  0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvLista" prefHeight="400.0" prefWidth="900.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvLista" prefHeight="360.0" prefWidth="870.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="tcNumero" prefWidth="60.0" text="N°" />
+                      <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                       <TableColumn fx:id="tcDescripcion" prefWidth="300.0" text="Descripción" />
                         <TableColumn fx:id="tcCategoria" prefWidth="120.0" text="Categoría" />
                         <TableColumn fx:id="tcMarca" prefWidth="120.0" text="Marca" />
@@ -83,7 +83,7 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/left.png" />
                                        </image>
@@ -95,7 +95,7 @@
                               <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203" />
                               <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/right.png" />
                                        </image>

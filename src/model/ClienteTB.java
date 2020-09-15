@@ -29,14 +29,13 @@ public class ClienteTB {
     public ClienteTB(String informacion) {
         this.informacion = informacion;
     }
-    
-    
 
-    public ClienteTB(String idCliente, String numeroDocumento, String informacion, String celular, String direccion) {
+    public ClienteTB(String idCliente, String numeroDocumento, String informacion, String celular, String email, String direccion) {
         this.idCliente = idCliente;
         this.numeroDocumento = numeroDocumento;
         this.informacion = informacion;
         this.celular = celular;
+        this.email = email;
         this.direccion = direccion;
     }
 
