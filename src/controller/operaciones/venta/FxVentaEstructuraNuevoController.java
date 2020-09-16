@@ -277,17 +277,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             if (!objects.isEmpty()) {
                 fpProductos.setAlignment(Pos.TOP_CENTER);
                 listSuministros.addAll((ObservableList<SuministroTB>) objects.get(0));
-                listSuministros.stream().map(tvList1 -> {
+                for (SuministroTB tvList1 : listSuministros) {
                     VBox vBox = new VBox();
-                    vBox.setMinWidth(Control.USE_PREF_SIZE);
-                    vBox.setPrefWidth(200);
-                    vBox.maxWidth(Control.USE_PREF_SIZE);
-                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
-                    vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
-                    imageView.setFitWidth(1.5*Screen.getPrimary().getDpi());
-                    imageView.setFitHeight(1.5*Screen.getPrimary().getDpi());
+                    imageView.setFitWidth(1.5 * Screen.getPrimary().getDpi());
+                    imageView.setFitHeight(1.5 * Screen.getPrimary().getDpi());
                     vBox.getChildren().add(imageView);
 
                     Label lblCodigo = new Label(tvList1.getClave());
@@ -317,6 +312,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     lblTotalProducto.maxWidth(Double.MAX_VALUE);
                     vBox.getChildren().add(lblTotalProducto);
 
+                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
+                    vBox.setAlignment(Pos.TOP_CENTER);
+                    vBox.setMinWidth(Control.USE_COMPUTED_SIZE);
+                    vBox.setPrefWidth((1.5*2) * Screen.getPrimary().getDpi());
+                    vBox.maxWidth(Control.USE_COMPUTED_SIZE);
+
                     Button button = new Button();
                     button.getStyleClass().add("buttonView");
                     button.setGraphic(vBox);
@@ -328,8 +329,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             addElementListView(tvList1);
                         }
                     });
-                    return button;
-                }).forEachOrdered(vBox -> fpProductos.getChildren().add(vBox));
+
+                    fpProductos.getChildren().add(button);
+
+                }
                 totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 20.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
