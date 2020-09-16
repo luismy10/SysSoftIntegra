@@ -284,7 +284,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     Rectangle2D screenBounds = Screen.getPrimary().getBounds();
                     PPI display = new PPI("" + screenBounds.getWidth(), "" + screenBounds.getHeight(), "" + 96);
                     double resultNumber = display.calc();
-                    double dpi = resultNumber * 8.5;
+                    double dpi = resultNumber * 8;
 
                     VBox vBox = new VBox();
                     File fileImage = new File(tvList1.getImagenTB());
