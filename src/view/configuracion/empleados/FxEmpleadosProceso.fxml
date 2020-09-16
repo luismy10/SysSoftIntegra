@@ -122,11 +122,11 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefWidth="120.0" style="-fx-spacing: 0.8333333333333334em;">
+                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>
                                                 <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="Puesto:" textFill="#020203">
+                                                      <Label styleClass="labelRoboto13" text="Puesto:" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>

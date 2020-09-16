@@ -83,13 +83,13 @@
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvVentas" onKeyPressed="#onKeyPressedTvVentas" onMouseClicked="#onMouseClickedTvVentas" prefHeight="280.0" prefWidth="620.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvVentas" onKeyPressed="#onKeyPressedTvVentas" onMouseClicked="#onMouseClickedTvVentas" prefHeight="280.0" prefWidth="570.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                   <TableColumn fx:id="tcCliente" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
-                                    <TableColumn fx:id="tcDocumento" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
+                                    <TableColumn fx:id="tcDocumento" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="Comprobante" />
                                     <TableColumn fx:id="tcFechaHora" prefWidth="139.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha y Hora" />
-                                    <TableColumn fx:id="tcTotal" prefWidth="138.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
+                                    <TableColumn fx:id="tcTotal" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                 </columns>
                               </TableView>
                            </children>
@@ -137,45 +137,27 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Observación:" textFill="#020203" />
-                                          <Label fx:id="lblObservaciones" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="Vendedor:" textFill="#020203" />
+                                          <Label fx:id="lblVendedor" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Vendedor" textFill="#020203" />
-                                          <Label fx:id="lblVendedor" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
+                                          <Label styleClass="labelRoboto13" text="Total:" textFill="#020203" />
+                                          <Label fx:id="lblTotal" styleClass="labelRoboto13" text="-" textFill="#0771d3" />
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                               <HBox fx:id="hbContenidoTabla" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tvDetalleVenta" prefHeight="300.0" prefWidth="560.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tvDetalleVenta" prefHeight="300.0" prefWidth="500.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
                                       <columns>
-                                        <TableColumn fx:id="tcCantidad" prefWidth="90.0" style="-fx-alignment: CENTER-LEFT;" text="Cant." />
-                                        <TableColumn fx:id="tcDescripcion" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                                          <TableColumn fx:id="tcPrecio" prefWidth="115.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio" />
-                                          <TableColumn fx:id="tcDescuento" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Desc." />
-                                          <TableColumn fx:id="tcImporte" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
+                                        <TableColumn fx:id="tcCantidad" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Cant." />
+                                        <TableColumn fx:id="tcDescripcion" prefWidth="278.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                                          <TableColumn fx:id="tcImporte" prefWidth="121.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
                                       </columns>
                                     </TableView>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="labelRoboto13" text="PAGO CON:" textFill="#020203" />
-                                          <Label fx:id="lblPago" styleClass="labelRoboto13" text="0.00" textFill="#020203" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="labelRobotoBold13" text="TOTAL:" textFill="#020203" />
-                                          <Label fx:id="lblTotal" styleClass="labelRobotoBold15" text="0.00" textFill="#020203" />
-                                       </children>
-                                    </HBox>
                                  </children>
                               </HBox>
                               <HBox>

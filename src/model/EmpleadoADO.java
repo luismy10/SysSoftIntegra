@@ -27,7 +27,7 @@ public class EmpleadoADO {
             String id_empleado = codigo_empleado.getString(1);
 
             empleado = DBUtil.getConnection().prepareStatement("INSERT INTO EmpleadoTB(IdEmpleado,TipoDocumento,NumeroDocumento,Apellidos,Nombres,Sexo,FechaNacimiento,Puesto,Rol,Estado,Telefono,Celular,Email,Direccion,Usuario,Clave)\n"
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             empleado.setString(1, id_empleado);
             empleado.setInt(2, empleadoTB.getTipoDocumento());
