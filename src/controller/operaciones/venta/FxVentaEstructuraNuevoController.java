@@ -315,7 +315,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
                     vBox.setAlignment(Pos.TOP_CENTER);
                     vBox.setMinWidth(Control.USE_COMPUTED_SIZE);
-                    vBox.setPrefWidth((1.5*2) * Screen.getPrimary().getDpi());
+                    vBox.setPrefWidth((1.5*1.5) * Screen.getPrimary().getDpi());
                     vBox.maxWidth(Control.USE_COMPUTED_SIZE);
 
                     Button button = new Button();
