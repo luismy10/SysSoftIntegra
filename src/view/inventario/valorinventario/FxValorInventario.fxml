@@ -78,8 +78,14 @@
                      </graphic>
                   </Button>
                </children></HBox>
-            <HBox>
+            <HBox style="-fx-spacing: 0.8333333333333334em;">
                <children>
+                  <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Label styleClass="labelRobotoBold15" text="Cantidad de Items" textFill="#006cf8" />
+                        <Label fx:id="lblCantidadTotal" styleClass="labelRoboto15" text="00.00" textFill="#020203" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #d6d5d5; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
                         <Label styleClass="labelRobotoBold15" text="Valor del inventario (PEN S/)" textFill="#006cf8" />

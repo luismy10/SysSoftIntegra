@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,6 +30,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
@@ -129,7 +131,8 @@ public class FxLoginController implements Initializable {
                                 controller.initInicioController();
                                 controller.initWindowSize();
                                 controller.initUserSession((Session.USER_PUESTO.substring(0, 1).toUpperCase() + Session.USER_PUESTO.substring(1).toLowerCase()));
-
+                   
+                              
                                 Session.WIDTH_WINDOW = scene.getWidth();
                                 Session.HEIGHT_WINDOW = scene.getHeight();
                             } catch (IOException exception) {

@@ -74,7 +74,7 @@
                                     <TextField fx:id="txtCategoria" onKeyPressed="#onKeyPressedToCategoria" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
-                              <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
+                              <VBox prefHeight="30.0" style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto13" text="Marca(F3)" textFill="#020203" />
                                     <TextField fx:id="txtMarca" onKeyPressed="#onKeyPressedToMarca" prefHeight="30.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />

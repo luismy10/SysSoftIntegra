@@ -452,9 +452,9 @@ public class SuministroADO {
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 suministroTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion")); 
+                suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion"));
                 suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
-                suministroTB.setImpuestoNombre(rsEmps.getString("ImpuestoNombre")); 
+                suministroTB.setImpuestoNombre(rsEmps.getString("ImpuestoNombre"));
                 suministroTB.setImpuestoValor(rsEmps.getDouble("Valor"));
                 suministroTB.setLote(rsEmps.getBoolean("Lote"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
@@ -699,6 +699,7 @@ public class SuministroADO {
     public static ArrayList<Object> ListInventario(String producto, short tipoExistencia, String nameProduct, short opcion, int categoria, int marca, int posicionPaginacion, int filasPorPagina) {
         PreparedStatement preparedStatementSuministros = null;
         PreparedStatement preparedStatementTotales = null;
+        PreparedStatement preparedStatementCantidad = null;
         ResultSet rsEmps = null;
         ArrayList<Object> objects = new ArrayList<>();
         ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
@@ -761,6 +762,15 @@ public class SuministroADO {
                 integer = rsEmps.getInt("Total");
             }
             objects.add(integer);
+
+            preparedStatementCantidad = DBUtil.getConnection().prepareStatement("SELECT COUNT(*) AS Total FROM SuministroTB WHERE Inventario = 1");
+            rsEmps = preparedStatementCantidad.executeQuery();
+            if (rsEmps.next()) {
+                objects.add(rsEmps.getInt("Total"));
+            } else {
+                objects.add(0);
+            }
+
         } catch (SQLException e) {
             System.out.println("Error en SuministroADO->ListInventario: " + e);
         } finally {
@@ -1160,7 +1170,7 @@ public class SuministroADO {
                 suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion"));
                 suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
                 suministroTB.setImpuestoNombre(rsEmps.getString("ImpuestoNombre"));
-                suministroTB.setImpuestoValor(rsEmps.getDouble("Valor")); 
+                suministroTB.setImpuestoValor(rsEmps.getDouble("Valor"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
             }

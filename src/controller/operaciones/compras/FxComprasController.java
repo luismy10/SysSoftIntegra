@@ -189,8 +189,7 @@ public class FxComprasController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {       
             searchComboBox.getComboBox().getItems().clear();
             List<ProveedorTB> proveedorTBs = ProveedorADO.getSearchComboBoxProveedores(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-            proveedorTBs.forEach(p->cbProveedor.getItems().add(p));
-           
+            proveedorTBs.forEach(p->cbProveedor.getItems().add(p));           
         });
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
             switch (t.getCode()) {
