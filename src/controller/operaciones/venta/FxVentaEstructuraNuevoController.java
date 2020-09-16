@@ -28,6 +28,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -279,11 +280,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 fpProductos.setAlignment(Pos.TOP_CENTER);
                 listSuministros.addAll((ObservableList<SuministroTB>) objects.get(0));
                 for (SuministroTB tvList1 : listSuministros) {
+                    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+                    double dpi = (screenBounds.getWidth() / screenBounds.getHeight()) * 70;
                     VBox vBox = new VBox();
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
-                    imageView.setFitWidth(1.5 * Screen.getPrimary().getDpi());
-                    imageView.setFitHeight(1.5 * Screen.getPrimary().getDpi());
+                    imageView.setFitWidth(dpi);
+                    imageView.setFitHeight(dpi);
                     vBox.getChildren().add(imageView);
 
                     Label lblCodigo = new Label(tvList1.getClave());
@@ -316,7 +319,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
                     vBox.setAlignment(Pos.TOP_CENTER);
                     vBox.setMinWidth(Control.USE_COMPUTED_SIZE);
-                    vBox.setPrefWidth((1.5 * 1.5) * Screen.getPrimary().getDpi());
+                    vBox.setPrefWidth(dpi * 1.5);
                     vBox.maxWidth(Control.USE_COMPUTED_SIZE);
 
                     Button button = new Button();
