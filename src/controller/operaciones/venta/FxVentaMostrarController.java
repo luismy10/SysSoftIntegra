@@ -2,7 +2,6 @@ package controller.operaciones.venta;
 
 import controller.tools.BillPrintable;
 import controller.tools.FilesRouters;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -296,54 +295,54 @@ public class FxVentaMostrarController implements Initializable {
         tvDetalleVenta.setItems(empList);
     }
 
-    private void loadTicket() {
-//        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
-    }
+//    private void loadTicket() {
+////        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
+//    }
 
-    private void imprimirVenta(String ticket) {
-         if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
-            Tools.AlertMessageWarning(apWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
-            return;
-        }
-        
-        if ("".equals(idVenta) || idVenta == null) {
-            return;
-        }
-        if (Session.ESTADO_IMPRESORA_VENTA && Session.NOMBRE_IMPRESORA_VENTA != null) {
-            loadTicket();
-            ArrayList<HBox> object = new ArrayList<>();
-            int rows = 0;
-            int lines = 0;
-            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-                object.add((HBox) hbEncabezado.getChildren().get(i));
-                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-                rows++;
-                //lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
-            }
-
-            for (int m = 0; m < arrList.size(); m++) {
-                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                    HBox hBox = new HBox();
-                    hBox.setId("dc_" + m + "" + i);
-                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                    rows++;
-                    //lines += billPrintable.hbDetalle(hBox, box, arrList, m);
-                    object.add(hBox);
-                }
-            }
-
-            for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                object.add((HBox) hbPie.getChildren().get(i));
-                HBox box = ((HBox) hbPie.getChildren().get(i));
-                rows++;
-//                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getNumeroDocumento());
-            }
-//            billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
-        } else {
-            Tools.AlertMessageWarning(apWindow, "Detalle de venta", "No esta configurado la impresora :D");
-        }
-    }
-
+//    private void imprimirVenta(String ticket) {
+//         if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
+//            Tools.AlertMessageWarning(apWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+//            return;
+//        }
+//        
+//        if ("".equals(idVenta) || idVenta == null) {
+//            return;
+//        }
+//        if (Session.ESTADO_IMPRESORA_VENTA && Session.NOMBRE_IMPRESORA_VENTA != null) {
+//            loadTicket();
+//            ArrayList<HBox> object = new ArrayList<>();
+//            int rows = 0;
+//            int lines = 0;
+//            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+//                object.add((HBox) hbEncabezado.getChildren().get(i));
+//                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+//                rows++;
+//                //lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
+//            }
+//
+//            for (int m = 0; m < arrList.size(); m++) {
+//                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+//                    HBox hBox = new HBox();
+//                    hBox.setId("dc_" + m + "" + i);
+//                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+//                    rows++;
+//                    //lines += billPrintable.hbDetalle(hBox, box, arrList, m);
+//                    object.add(hBox);
+//                }
+//            }
+//
+//            for (int i = 0; i < hbPie.getChildren().size(); i++) {
+//                object.add((HBox) hbPie.getChildren().get(i));
+//                HBox box = ((HBox) hbPie.getChildren().get(i));
+//                rows++;
+////                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getNumeroDocumento());
+//            }
+////            billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
+//        } else {
+//            Tools.AlertMessageWarning(apWindow, "Detalle de venta", "No esta configurado la impresora :D");
+//        }
+//    }
+//
 
     private void cancelVenta() {
         try {
@@ -466,13 +465,13 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onKeyPressedImprimir(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            imprimirVenta(lblComprobante.getText());
+     
         }
     }
 
     @FXML
     private void onActionImprimir(ActionEvent event) {
-        imprimirVenta(lblComprobante.getText());
+      
     }
 
 }

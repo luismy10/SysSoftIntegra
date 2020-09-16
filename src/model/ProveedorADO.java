@@ -68,7 +68,7 @@ public class ProveedorADO {
                         String idProveedor = codigoProveedor.getString(1);
 
                         preparedProveedor = DBUtil.getConnection().prepareCall("INSERT INTO ProveedorTB(IdProveedor,TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial,Ambito,Estado,Telefono,Celular,Email,PaginaWeb,Direccion,UsuarioRegistro,FechaRegistro,representante)"
-                                + "values(?,?,?,UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                                + "values(?,?,?,UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?)");
                         preparedProveedor.setString(1, idProveedor);
                         preparedProveedor.setInt(2, proveedorTB.getTipoDocumento());
                         preparedProveedor.setString(3, proveedorTB.getNumeroDocumento());

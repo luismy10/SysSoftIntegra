@@ -223,16 +223,7 @@ public class FxVentaEstructuraController implements Initializable {
 
         window.setOnKeyReleased((KeyEvent event) -> {
             if (null != event.getCode()) {
-                if (event.getCode() == KeyCode.F5) {
-                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F6) {
-                    openWindowDescuento();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F7) {
-                    openWindowCambiarPrecio("Sumar precio al Artículo", true);
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F1) {
+                if (event.getCode() == KeyCode.F1) {
                     openWindowVentaProceso();
                     event.consume();
                 } else if (event.getCode() == KeyCode.F2) {
@@ -241,11 +232,23 @@ public class FxVentaEstructuraController implements Initializable {
                 } else if (event.getCode() == KeyCode.F3) {
                     openWindowListaPrecios();
                     event.consume();
+                } else if (event.getCode() == KeyCode.F4) {
+                    openWindowCantidad();
+                    event.consume();
+                } else if (event.getCode() == KeyCode.F5) {
+                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+                    event.consume();
+                } else if (event.getCode() == KeyCode.F6) {
+                    openWindowDescuento();
+                    event.consume();
+                } else if (event.getCode() == KeyCode.F7) {
+                    openWindowCambiarPrecio("Sumar precio al Artículo", true);
+                    event.consume();
                 } else if (event.getCode() == KeyCode.F8) {
                     openWindowCashMovement();
                     event.consume();
                 } else if (event.getCode() == KeyCode.F9) {
-//                    imprimirVenta("LISTA DE PEDIDO", "000000000", "00", "00", false);
+                    imprimirPreVenta();
                     event.consume();
                 } else if (event.getCode() == KeyCode.F10) {
                     short value = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de limpiar la venta?");
@@ -270,9 +273,6 @@ public class FxVentaEstructuraController implements Initializable {
                     if (!tvList.getItems().isEmpty()) {
                         tvList.getSelectionModel().select(0);
                     }
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F4) {
-                    openWindowCantidad();
                     event.consume();
                 }
 

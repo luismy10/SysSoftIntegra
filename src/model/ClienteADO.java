@@ -279,7 +279,7 @@ public class ClienteADO {
                 clienteTBs.add(clienteTB);
             }
         } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado en GetSearchComboBoxCliente(): " + e);
+            System.out.println("Error en GetSearchComboBoxCliente(): " + e);
         } finally {
             try {
                 if (preparedStatement != null) {
