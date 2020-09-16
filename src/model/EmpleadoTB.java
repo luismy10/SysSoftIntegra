@@ -42,14 +42,6 @@ public class EmpleadoTB implements Serializable {
     private String email;
  
     private String direccion;
-
-    private String pais;
-
-    private Integer ciudad;
-  
-    private Integer provincia;
-  
-    private Integer distrito;
     
     private String usuario;
   
@@ -217,38 +209,6 @@ public class EmpleadoTB implements Serializable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
-    public Integer getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(Integer ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public Integer getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(Integer provincia) {
-        this.provincia = provincia;
-    }
-
-    public Integer getDistrito() {
-        return distrito;
-    }
-
-    public void setDistrito(Integer distrito) {
-        this.distrito = distrito;
     }
 
     public String getUsuario() {

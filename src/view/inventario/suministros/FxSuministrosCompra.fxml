@@ -42,7 +42,7 @@
             </HBox>
             <HBox>
                <children>
-                  <ScrollPane fitToWidth="true" prefHeight="480.0" style="-fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
+                  <ScrollPane fitToWidth="true" prefHeight="460.0" style="-fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">
                      <content>
                         <AnchorPane style="-fx-background-color: white;">
                            <children>

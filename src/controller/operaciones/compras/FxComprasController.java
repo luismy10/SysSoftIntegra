@@ -486,7 +486,7 @@ public class FxComprasController implements Initializable {
                     suministrosTB.setPrecioVentaGeneral(e.getSuministroTB().getPrecioVentaGeneral());
                     suministrosTB.setPrecioMargenGeneral(e.getSuministroTB().getPrecioMargenGeneral());
                     suministrosTB.setPrecioUtilidadGeneral(e.getSuministroTB().getPrecioUtilidadGeneral());
-                    suministrosTB.setImpuestoArticulo(e.getSuministroTB().getImpuestoArticulo());
+                    suministrosTB.setImpuestoId(e.getSuministroTB().getImpuestoId());
                     suministrosTB.setTipoPrecio(e.getSuministroTB().isTipoPrecio());
                     detalleCompraTB.setSuministroTB(suministrosTB);
                     //
@@ -618,9 +618,7 @@ public class FxComprasController implements Initializable {
                 }
             }
             if (addElement) {
-                gpImpuestos.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombre().substring(0, 1).toUpperCase() + ""
-                        + arrayArticulosImpuesto.get(k).getNombre().substring(1, arrayArticulosImpuesto.get(k).getNombre().length()).toLowerCase(),
-                        Pos.CENTER_LEFT), 0, k + 1);
+                gpImpuestos.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombre(),Pos.CENTER_LEFT), 0, k + 1);
                 gpImpuestos.add(addLabelTotal(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(sumaElement, 4), Pos.CENTER_RIGHT), 1, k + 1);
                 addElement = false;
                 sumaElement = 0;

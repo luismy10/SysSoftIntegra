@@ -590,7 +590,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             suministroTB.setLote(cbLote.isSelected());
             suministroTB.setInventario(cbInventario.isSelected());
             suministroTB.setValorInventario(rbValorUnidad.isSelected() ? (short) 1 : rbValorCosto.isSelected() ? (short) 2 : (short) 3);
-            suministroTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto() : 0);
+            suministroTB.setImpuestoId(cbImpuesto.getSelectionModel().getSelectedIndex() >= 0 ? cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto() : 0);
             suministroTB.setClaveSat(txtClaveSat.getText().trim());
             suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());
 

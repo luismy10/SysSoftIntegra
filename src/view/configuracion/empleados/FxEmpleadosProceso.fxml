@@ -216,54 +216,6 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="País:" textFill="#020203">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbPais" maxWidth="1.7976931348623157E308" onAction="#onActionPais" prefWidth="210.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                                <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="Departamento:" textFill="#020203">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbCiudad" maxWidth="1.7976931348623157E308" onAction="#onActionCiudad" prefWidth="210.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="Provincia:" textFill="#020203">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbProvincia" maxWidth="1.7976931348623157E308" onAction="#onActionProvincia" prefWidth="210.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                                <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="Distrito:" textFill="#020203">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbDistrito" maxWidth="1.7976931348623157E308" prefWidth="210.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
                                        </children>
                                        <padding>
                                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

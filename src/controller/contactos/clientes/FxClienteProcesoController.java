@@ -2,6 +2,7 @@ package controller.contactos.clientes;
 
 import controller.tools.ApiPeru;
 import controller.tools.Json;
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.text.ParseException;
@@ -93,7 +94,6 @@ public class FxClienteProcesoController implements Initializable {
             }
 
             txtDocumentNumber.setText(clienteTB.getNumeroDocumento());
-            txtDocumentNumber.setDisable(clienteTB.getNumeroDocumento().equals("00000000"));
             txtInformacion.setText(clienteTB.getInformacion());
 
             if (clienteTB.getEstado() == 1) {
@@ -106,64 +106,6 @@ public class FxClienteProcesoController implements Initializable {
             txtCelular.setText(clienteTB.getCelular());
             txtEmail.setText(clienteTB.getEmail());
             txtDireccion.setText(clienteTB.getDireccion());
-
-//            if (clienteTB.getFacturacionTB().getTipoDocumentoFacturacion() != 0) {
-//                ObservableList<DetalleTB> lstypefacturacion = cbDocumentTypeFactura.getItems();
-//                for (int i = 0; i < lstypefacturacion.size(); i++) {
-//                    if (clienteTB.getFacturacionTB().getTipoDocumentoFacturacion() == lstypefacturacion.get(i).getIdDetalle().get()) {
-//                        cbDocumentTypeFactura.getSelectionModel().select(i);
-//                        break;
-//                    }
-//                }
-//            }
-//            txtDocumentNumberFactura.setText(clienteTB.getFacturacionTB().getNumeroDocumentoFacturacion());
-//            txtBusinessName.setText(clienteTB.getFacturacionTB().getRazonSocial());
-//            txtTradename.setText(clienteTB.getFacturacionTB().getNombreComercial());
-//            if (clienteTB.getFacturacionTB().getPais() != null) {
-//                ObservableList<PaisTB> lspais = cbPais.getItems();
-//                for (int i = 0; i < lspais.size(); i++) {
-//                    if (clienteTB.getFacturacionTB().getPais().equals(lspais.get(i).getPaisCodigo())) {
-//                        cbPais.getSelectionModel().select(i);
-//                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-//                            cbDepartamento.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-//                        });
-//                        break;
-//                    }
-//                }
-//            }
-//            if (clienteTB.getFacturacionTB().getDepartamento() != 0) {
-//                ObservableList<CiudadTB> lsciudad = cbDepartamento.getItems();
-//                for (int i = 0; i < lsciudad.size(); i++) {
-//                    if (clienteTB.getFacturacionTB().getDepartamento() == lsciudad.get(i).getIdCiudad()) {
-//                        cbDepartamento.getSelectionModel().select(i);
-//                        ProvinciaADO.ListProvincia(cbDepartamento.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-//                            cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-//                        });
-//                        break;
-//                    }
-//                }
-//            }
-//            if (clienteTB.getFacturacionTB().getProvincia() != 0) {
-//                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-//                for (int i = 0; i < lsprovin.size(); i++) {
-//                    if (clienteTB.getFacturacionTB().getProvincia() == lsprovin.get(i).getIdProvincia()) {
-//                        cbProvincia.getSelectionModel().select(i);
-//                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-//                            cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-//                        });
-//                        break;
-//                    }
-//                }
-//            }
-//            if (clienteTB.getFacturacionTB().getDistrito() != 0) {
-//                ObservableList<DistritoTB> lsdistrito = cbDistrito.getItems();
-//                for (int i = 0; i < lsdistrito.size(); i++) {
-//                    if (clienteTB.getFacturacionTB().getDistrito() == lsdistrito.get(i).getIdDistrito()) {
-//                        cbDistrito.getSelectionModel().select(i);
-//                        break;
-//                    }
-//                }
-//            }
         }
 
     }
@@ -363,7 +305,7 @@ public class FxClienteProcesoController implements Initializable {
                             txtDocumentNumber.setText(sONObject.get("dni").toString());
                         }
                         if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
-                            txtInformacion.setText(sONObject.get("apellidoPaterno").toString()+" "+sONObject.get("apellidoMaterno").toString()+" "+sONObject.get("nombres").toString());
+                            txtInformacion.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
                         }
                     }
                 }

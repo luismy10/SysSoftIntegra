@@ -247,56 +247,6 @@
                                              <children>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="País" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbPais" maxWidth="1.7976931348623157E308" onAction="#onActionPais" prefWidth="280.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                                <Separator orientation="VERTICAL" />
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="Departamento" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbCiudad" maxWidth="1.7976931348623157E308" onAction="#onActionCiudad" prefWidth="280.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="Provincia" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbProvincia" maxWidth="1.7976931348623157E308" onAction="#onActionProvincia" prefWidth="280.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                                <Separator orientation="VERTICAL" />
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label prefHeight="18.0" styleClass="labelRoboto13" text="Distrito" textFill="#23283a">
-                                                         <font>
-                                                            <Font name="Roboto" size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbDistrito" maxWidth="1.7976931348623157E308" prefWidth="280.0" styleClass="comboBox" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
-                                                   <children>
                                                       <Label prefHeight="18.0" styleClass="labelRoboto13" text="Ámbito" textFill="#23283a">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />

@@ -23,25 +23,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.CiudadADO;
-import model.CiudadTB;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.DistritoADO;
-import model.DistritoTB;
-import model.PaisADO;
-import model.PaisTB;
 import model.ProveedorADO;
 import model.ProveedorTB;
-import model.ProvinciaADO;
-import model.ProvinciaTB;
 
 public class FxProveedorProcesoController implements Initializable {
 
     @FXML
     private AnchorPane window;
-    @FXML
-    private ComboBox<PaisTB> cbPais;
     @FXML
     private Label lblDirectory;
     @FXML
@@ -54,12 +44,6 @@ public class FxProveedorProcesoController implements Initializable {
     private TextField txtBusinessName;
     @FXML
     private TextField txtTradename;
-    @FXML
-    private ComboBox<CiudadTB> cbCiudad;
-    @FXML
-    private ComboBox<ProvinciaTB> cbProvincia;
-    @FXML
-    private ComboBox<DistritoTB> cbDistrito;
     @FXML
     private TextField txtDocumentNumberFactura;
     @FXML
@@ -93,9 +77,6 @@ public class FxProveedorProcesoController implements Initializable {
         idProveedor = "";
         DetalleADO.GetDetailIdName("2", "0003", "").forEach(e -> {
             cbDocumentTypeFactura.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
-        PaisADO.ListPais().forEach(e -> {
-            cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
         });
         DetalleADO.GetDetailIdName("2", "0005", "").forEach(e -> {
             cbAmbito.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
@@ -133,52 +114,6 @@ public class FxProveedorProcesoController implements Initializable {
             }
             txtBusinessName.setText(proveedorTB.getRazonSocial());
             txtTradename.setText(proveedorTB.getNombreComercial());
-
-            if (proveedorTB.getPais() != null || !proveedorTB.getPais().equals("")) {
-                ObservableList<PaisTB> lspais = cbPais.getItems();
-                for (int i = 0; i < lspais.size(); i++) {
-                    if (proveedorTB.getPais().equals(lspais.get(i).getPaisCodigo())) {
-                        cbPais.getSelectionModel().select(i);
-                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                            cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (proveedorTB.getCiudad() != 0) {
-                ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
-                for (int i = 0; i < lsciudad.size(); i++) {
-                    if (proveedorTB.getCiudad() == lsciudad.get(i).getIdCiudad()) {
-                        cbCiudad.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
-
-            if (proveedorTB.getProvincia() != 0) {
-                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-                for (int i = 0; i < lsprovin.size(); i++) {
-                    if (proveedorTB.getProvincia() == lsprovin.get(i).getIdProvincia()) {
-                        cbProvincia.getSelectionModel().select(i);
-                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                            cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (proveedorTB.getDistrito() != 0) {
-                ObservableList<DistritoTB> lsdistrito = cbDistrito.getItems();
-                for (int i = 0; i < lsdistrito.size(); i++) {
-                    if (proveedorTB.getDistrito() == lsdistrito.get(i).getIdDistrito()) {
-                        cbDistrito.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
 
             if (proveedorTB.getAmbito() != 0) {
                 ObservableList<DetalleTB> lstamb = cbAmbito.getItems();
@@ -234,17 +169,6 @@ public class FxProveedorProcesoController implements Initializable {
                 proveedorTB.setNumeroDocumento(txtDocumentNumberFactura.getText().trim());
                 proveedorTB.setRazonSocial(txtBusinessName.getText().trim());
                 proveedorTB.setNombreComercial(txtTradename.getText().trim());
-                proveedorTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
-                        : "");
-                proveedorTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
-                        : 0);
-                proveedorTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
-                proveedorTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
-
                 proveedorTB.setAmbito(cbAmbito.getSelectionModel().getSelectedIndex() >= 0
                         ? cbAmbito.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
@@ -329,36 +253,6 @@ public class FxProveedorProcesoController implements Initializable {
     @FXML
     private void onActionToCancel(ActionEvent event) {
         Tools.Dispose(window);
-    }
-
-    @FXML
-    private void onActionPais(ActionEvent event) {
-        if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
-            cbCiudad.getItems().clear();
-            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionCiudad(ActionEvent event) {
-        if (cbCiudad.getSelectionModel().getSelectedIndex() >= 0) {
-            cbProvincia.getItems().clear();
-            ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionProvincia(ActionEvent event) {
-        if (cbProvincia.getSelectionModel().getSelectedIndex() >= 0) {
-            cbDistrito.getItems().clear();
-            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-            });
-        }
     }
 
 }

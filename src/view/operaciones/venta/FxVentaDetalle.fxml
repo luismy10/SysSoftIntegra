@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -83,7 +84,7 @@
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/reports.png" />
+                              <Image url="@../../image/guia_remision.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -200,14 +201,14 @@
                                              <children>
                                                 <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold13" text="Metodo De Pago" />
                                                 <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold13" text="Valor" textFill="#020203" GridPane.columnIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular13" text="Efectivo" textFill="#020203" GridPane.rowIndex="1" />
+                                                <Label styleClass="labelOpenSansRegular13" text="EFECTIVO" textFill="#020203" GridPane.rowIndex="1" />
                                                 <Label fx:id="lblEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label styleClass="labelOpenSansRegular13" text="Tarjeta" textFill="#020203" GridPane.rowIndex="2" />
+                                                <Label styleClass="labelOpenSansRegular13" text="TARJETA" textFill="#020203" GridPane.rowIndex="2" />
                                                 <Label fx:id="lblTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Label styleClass="labelOpenSansRegular13" text="Total" textFill="#020203" GridPane.rowIndex="3" />
+                                                <Label styleClass="labelOpenSansRegular13" text="TOTAL" textFill="#020203" GridPane.rowIndex="3" />
                                                 <Label fx:id="lblValor" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <Separator GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                <Label styleClass="labelOpenSansRegular13" text="Vuelto" textFill="#0673b1" GridPane.rowIndex="5" />
+                                                <Label styleClass="labelOpenSansRegular13" text="VUELTO" textFill="#0673b1" GridPane.rowIndex="5" />
                                                 <Label fx:id="lblVuelto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="0.00" textFill="#0673b1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                              </children>
                                           </GridPane>
@@ -217,48 +218,49 @@
                               </VBox>
                               <VBox>
                                  <children>
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                    <GridPane style="-fx-hgap: 0.8333333333333334em;">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                       </columnConstraints>
                                       <rowConstraints>
-                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                        <RowConstraints vgrow="SOMETIMES" />
+                                        <RowConstraints vgrow="SOMETIMES" />
+                                        <RowConstraints vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #020203;" styleClass="labelRoboto13" text="Valor Venta:" />
+                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #020203;" styleClass="labelRoboto13" text="IMPORTE BRUTO:" />
                                           <Label fx:id="lblValorVenta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
-                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #020203;" styleClass="labelRoboto13" text="Descuento:" GridPane.rowIndex="1" />
+                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #020203;" styleClass="labelRoboto13" text="DESCUENTO TOTAL:" GridPane.rowIndex="1" />
                                           <Label fx:id="lblDescuento" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #020203;" styleClass="labelRoboto13" text="Sub Importe:" GridPane.rowIndex="2" />
+                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #020203;" styleClass="labelRoboto13" text="SUB IMPORTE:" GridPane.rowIndex="2" />
                                           <Label fx:id="lblSubTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
-                                    <GridPane fx:id="gpOperaciones" style="-fx-hgap: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                    <Pane minHeight="1.0" prefHeight="1.0" style="-fx-border-color: #999999; -fx-border-width: 1px;" />
+                                    <GridPane fx:id="gpOperaciones" style="-fx-hgap: 0.8333333333333334em;">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                        </columnConstraints>
                                     </GridPane>
-                                    <GridPane fx:id="gpImpuestos" style="-fx-hgap: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                    <GridPane fx:id="gpImpuestos" style="-fx-hgap: 0.8333333333333334em;">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                        </columnConstraints>
                                     </GridPane>
-                                    <Separator />
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                    <Pane minHeight="1.0" prefHeight="1.0" style="-fx-border-color: #999999; -fx-border-width: 1px;" />
+                                    <GridPane style="-fx-hgap: 0.8333333333333334em;">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                       </columnConstraints>
                                       <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em; -fx-text-fill: #020203;" styleClass="labelRoboto13" text="Total Importe:" />
+                                          <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: #020203;" styleClass="labelRoboto13" text="IMPORTE NETO:" />
                                           <Label fx:id="lblTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
                                        </children>
                                     </GridPane>

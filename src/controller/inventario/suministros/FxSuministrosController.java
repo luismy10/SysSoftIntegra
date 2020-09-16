@@ -508,14 +508,14 @@ public class FxSuministrosController implements Initializable {
             lblName.setText(suministroTB.getNombreMarca());
             lblPrice.setText(
                     Session.MONEDA_SIMBOLO + " "
-                    + Tools.roundingValue(suministroTB.getPrecioVentaGeneral() + (suministroTB.getPrecioVentaGeneral() * (getTaxValue(suministroTB.getImpuestoArticulo()) / 100.00)),
+                    + Tools.roundingValue(suministroTB.getPrecioVentaGeneral() + (suministroTB.getPrecioVentaGeneral() * (getTaxValue(suministroTB.getImpuestoId()) / 100.00)),
                             2)
             );
             lblPriceBruto.setText(
                     "Precio Bruto: "
                     + Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 2));
             lblImpuesto.setText(
-                    "Impuesto: " + getTaxName(suministroTB.getImpuestoArticulo())
+                    "Impuesto: " + getTaxName(suministroTB.getImpuestoId())
             );
             lblQuantity.setText(Tools.roundingValue(suministroTB.getCantidad(), 2) + " " + suministroTB.getUnidadCompraName());
         }

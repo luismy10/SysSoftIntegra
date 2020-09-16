@@ -21,18 +21,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import model.CiudadADO;
-import model.CiudadTB;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.DistritoADO;
-import model.DistritoTB;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
-import model.PaisADO;
-import model.PaisTB;
-import model.ProvinciaADO;
-import model.ProvinciaTB;
 import model.RolADO;
 import model.RolTB;
 
@@ -65,14 +57,6 @@ public class FxEmpleadosProcesoController implements Initializable {
     @FXML
     private TextField txtDireccion;
     @FXML
-    private ComboBox<PaisTB> cbPais;
-    @FXML
-    private ComboBox<CiudadTB> cbCiudad;
-    @FXML
-    private ComboBox<ProvinciaTB> cbProvincia;
-    @FXML
-    private ComboBox<DistritoTB> cbDistrito;
-    @FXML
     private TextField txtUsuario;
     @FXML
     private TextField txtClave;
@@ -98,15 +82,12 @@ public class FxEmpleadosProcesoController implements Initializable {
             cbPuesto.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         RolADO.RolList().forEach(e -> {
-            cbRol.getItems().add(new RolTB(e.getIdRol(), e.getNombre(),e.isSistema()));
+            cbRol.getItems().add(new RolTB(e.getIdRol(), e.getNombre(), e.isSistema()));
         });
         DetalleADO.GetDetailIdName("2", "0001", "").forEach(e -> {
             cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
         });
         cbEstado.getSelectionModel().select(0);
-        PaisADO.ListPais().forEach(e -> {
-            cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
-        });
         idEmpleado = "";
     }
 
@@ -169,55 +150,6 @@ public class FxEmpleadosProcesoController implements Initializable {
             txtEmail.setText(empleadoTB.getEmail());
             txtDireccion.setText(empleadoTB.getDireccion());
 
-            if (empleadoTB.getPais() != null) {
-                ObservableList<PaisTB> lspais = cbPais.getItems();
-                for (int i = 0; i < lspais.size(); i++) {
-                    if (empleadoTB.getPais().equals(lspais.get(i).getPaisCodigo())) {
-                        cbPais.getSelectionModel().select(i);
-                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                            cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (empleadoTB.getCiudad() != 0) {
-                ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
-                for (int i = 0; i < lsciudad.size(); i++) {
-                    if (empleadoTB.getCiudad() == lsciudad.get(i).getIdCiudad()) {
-                        cbCiudad.getSelectionModel().select(i);
-                        ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                            cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (empleadoTB.getProvincia() != 0) {
-                ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-                for (int i = 0; i < lsprovin.size(); i++) {
-                    if (empleadoTB.getProvincia() == lsprovin.get(i).getIdProvincia()) {
-                        cbProvincia.getSelectionModel().select(i);
-                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                            cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            if (empleadoTB.getDistrito() != 0) {
-                ObservableList<DistritoTB> lsdistrito = cbDistrito.getItems();
-                for (int i = 0; i < lsdistrito.size(); i++) {
-                    if (empleadoTB.getDistrito() == lsdistrito.get(i).getIdDistrito()) {
-                        cbDistrito.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
-
             txtUsuario.setText(empleadoTB.getUsuario());
             txtClave.setText(empleadoTB.getClave());
 
@@ -230,7 +162,7 @@ public class FxEmpleadosProcesoController implements Initializable {
                     }
                 }
             }
-            
+
         }
     }
 
@@ -284,18 +216,6 @@ public class FxEmpleadosProcesoController implements Initializable {
                 empleadoTB.setCelular(txtCelular.getText().trim());
                 empleadoTB.setEmail(txtEmail.getText().trim().toUpperCase());
                 empleadoTB.setDireccion(txtDireccion.getText().trim().toUpperCase());
-                empleadoTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
-                        : "");
-                empleadoTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
-                        : 0);
-                empleadoTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()
-                        : 0);
-                empleadoTB.setDistrito(cbDistrito.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbDistrito.getSelectionModel().getSelectedItem().getIdDistrito()
-                        : 0);
                 empleadoTB.setUsuario(txtUsuario.getText().trim());
                 empleadoTB.setClave(txtClave.getText().trim());
                 empleadoTB.setRol(cbRol.getSelectionModel().getSelectedIndex() >= 0
@@ -330,36 +250,6 @@ public class FxEmpleadosProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionPais(ActionEvent event) {
-        if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
-            cbCiudad.getItems().clear();
-            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionCiudad(ActionEvent event) {
-        if (cbCiudad.getSelectionModel().getSelectedIndex() >= 0) {
-            cbProvincia.getItems().clear();
-            ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionProvincia(ActionEvent event) {
-        if (cbProvincia.getSelectionModel().getSelectedIndex() >= 0) {
-            cbDistrito.getItems().clear();
-            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                cbDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-            });
-        }
-    }
-
-    @FXML
     private void onKeyPressedToRegister(KeyEvent event) throws ParseException {
         if (event.getCode() == KeyCode.ENTER) {
             onActionProcessCrud();
@@ -380,11 +270,6 @@ public class FxEmpleadosProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionToCancel(ActionEvent event) {
-        Tools.Dispose(window);
-    }
-
-    @FXML
     private void onMouseClickedImage(MouseEvent event) {
         if (event.getClickCount() == 2) {
             FileChooser fileChooser = new FileChooser();
@@ -399,6 +284,11 @@ public class FxEmpleadosProcesoController implements Initializable {
                 }
             }
         }
+    }
+
+    @FXML
+    private void onActionToCancel(ActionEvent event) {
+        Tools.Dispose(window);
     }
 
 }

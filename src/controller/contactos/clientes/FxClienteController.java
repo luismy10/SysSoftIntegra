@@ -167,8 +167,9 @@ public class FxClienteController implements Initializable {
             if (!lblLoad.isVisible()) {
                 String result = ClienteADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdCliente());
                 if (result.equalsIgnoreCase("updated")) {
-                    Tools.AlertMessageInformation(window, "Cliente", "Se cambio el cliente predeterminado.");
+                    Tools.AlertMessageInformation(window, "Cliente", "Se cambió el cliente a predeterminado.");
                     fillCustomersTable("");
+                    
                 } else {
                     Tools.AlertMessageError(window, "Cliente", "Error: " + result);
                 }

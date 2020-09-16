@@ -26,7 +26,7 @@ public class EmpleadoADO {
             codigo_empleado.execute();
             String id_empleado = codigo_empleado.getString(1);
 
-            empleado = DBUtil.getConnection().prepareStatement("INSERT INTO EmpleadoTB(IdEmpleado,TipoDocumento,NumeroDocumento,Apellidos,Nombres,Sexo,FechaNacimiento,Puesto,Rol,Estado,Telefono,Celular,Email,Direccion,Pais,Ciudad,Provincia,Distrito,Usuario,Clave)\n"
+            empleado = DBUtil.getConnection().prepareStatement("INSERT INTO EmpleadoTB(IdEmpleado,TipoDocumento,NumeroDocumento,Apellidos,Nombres,Sexo,FechaNacimiento,Puesto,Rol,Estado,Telefono,Celular,Email,Direccion,Usuario,Clave)\n"
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             empleado.setString(1, id_empleado);
@@ -43,12 +43,8 @@ public class EmpleadoADO {
             empleado.setString(12, empleadoTB.getCelular());
             empleado.setString(13, empleadoTB.getEmail());
             empleado.setString(14, empleadoTB.getDireccion());
-            empleado.setString(15, empleadoTB.getPais());
-            empleado.setInt(16, empleadoTB.getCiudad());
-            empleado.setInt(17, empleadoTB.getProvincia());
-            empleado.setInt(18, empleadoTB.getDistrito());
-            empleado.setString(19, empleadoTB.getUsuario());
-            empleado.setString(20, empleadoTB.getClave());
+            empleado.setString(15, empleadoTB.getUsuario());
+            empleado.setString(16, empleadoTB.getClave());
             empleado.addBatch();
 
             empleado.executeBatch();
@@ -84,7 +80,7 @@ public class EmpleadoADO {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            empleado = DBUtil.getConnection().prepareStatement("UPDATE EmpleadoTB SET TipoDocumento = ?,NumeroDocumento = ?,Apellidos = ?,Nombres = ?,Sexo = ?,FechaNacimiento = ?,Puesto = ?,Rol = ?,Estado = ?,Telefono = ?,Celular = ?,Email = ?,Direccion = ?,Pais = ?,Ciudad = ?,Provincia = ?,Distrito = ?,Usuario = ?,Clave  = ? WHERE IdEmpleado = ?");
+            empleado = DBUtil.getConnection().prepareStatement("UPDATE EmpleadoTB SET TipoDocumento = ?,NumeroDocumento = ?,Apellidos = ?,Nombres = ?,Sexo = ?,FechaNacimiento = ?,Puesto = ?,Rol = ?,Estado = ?,Telefono = ?,Celular = ?,Email = ?,Direccion = ?,Usuario = ?,Clave  = ? WHERE IdEmpleado = ?");
 
             empleado.setInt(1, empleadoTB.getTipoDocumento());
             empleado.setString(2, empleadoTB.getNumeroDocumento());
@@ -99,13 +95,9 @@ public class EmpleadoADO {
             empleado.setString(11, empleadoTB.getCelular());
             empleado.setString(12, empleadoTB.getEmail());
             empleado.setString(13, empleadoTB.getDireccion());
-            empleado.setString(14, empleadoTB.getPais());
-            empleado.setInt(15, empleadoTB.getCiudad());
-            empleado.setInt(16, empleadoTB.getProvincia());
-            empleado.setInt(17, empleadoTB.getDistrito());
-            empleado.setString(18, empleadoTB.getUsuario());
-            empleado.setString(19, empleadoTB.getClave());
-            empleado.setString(20, empleadoTB.getIdEmpleado());
+            empleado.setString(14, empleadoTB.getUsuario());
+            empleado.setString(15, empleadoTB.getClave());
+            empleado.setString(16, empleadoTB.getIdEmpleado());
             empleado.addBatch();
 
             empleado.executeBatch();
@@ -200,10 +192,6 @@ public class EmpleadoADO {
                 empleadoTB.setCelular(rsEmps.getString("Celular"));
                 empleadoTB.setEmail(rsEmps.getString("Email"));
                 empleadoTB.setDireccion(rsEmps.getString("Direccion"));
-                empleadoTB.setPais(rsEmps.getString("Pais"));
-                empleadoTB.setCiudad(rsEmps.getInt("Ciudad"));
-                empleadoTB.setProvincia(rsEmps.getInt("Provincia"));
-                empleadoTB.setDistrito(rsEmps.getInt("Distrito"));
                 empleadoTB.setUsuario(rsEmps.getString("Usuario"));
                 empleadoTB.setClave(rsEmps.getString("Clave"));
                 empleadoTB.setRol(rsEmps.getInt("Rol"));

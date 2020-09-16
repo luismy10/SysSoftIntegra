@@ -262,7 +262,7 @@ public class FxVentaDetalleController implements Initializable {
             gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
             gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
             gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
-            gpList.add(addElementGridPane("l5" + (i + 1), arrList.get(i).getImpuestoArticuloName(), Pos.CENTER_RIGHT), 4, (i + 1));
+            gpList.add(addElementGridPane("l5" + (i + 1), arrList.get(i).getImpuestoNombre(), Pos.CENTER_RIGHT), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), ventaTB.getMonedaTB().getSimbolo() + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
             gpList.add(addElementGridPane("l7" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 6, (i + 1));
             gpList.add(addElementGridPane("l8" + (i + 1), ventaTB.getMonedaTB().getSimbolo() + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral() * arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
@@ -347,15 +347,13 @@ public class FxVentaDetalleController implements Initializable {
 
             for (int k = 0; k < arrayArticulos.size(); k++) {
                 for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
+                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
                         addOperacion = true;
                         sumaOperacion += arrList.get(i).getSubImporteDescuento();
                     }
                 }
                 if (addOperacion) {
-                    gpOperaciones.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase()
-                            + "" + arrayArticulos.get(k).getNombreOperacion().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase(),
-                            Pos.CENTER_LEFT), 0, k + 1);
+                    gpOperaciones.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion(),Pos.CENTER_LEFT), 0, k + 1);
                     gpOperaciones.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     addOperacion = false;
                     sumaOperacion = 0;
@@ -364,7 +362,7 @@ public class FxVentaDetalleController implements Initializable {
 
             for (int k = 0; k < arrayArticulos.size(); k++) {
                 for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
+                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
                         addImpuesto = true;
                         sumaImpuesto += arrList.get(i).getImpuestoSumado();
                     }
@@ -450,14 +448,14 @@ public class FxVentaDetalleController implements Initializable {
 //            ArrayList<SuministroTB> list_totales = new ArrayList();
 //            for (int k = 0; k < arrayArticulos.size(); k++) {
 //                for (int i = 0; i < arrList.size(); i++) {
-//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
+//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
 //                        addOperacion = true;
 //                        sumaOperacion += arrList.get(i).getSubImporteDescuento();
 //                    }
 //                }
 //                if (addOperacion) {
 //                    SuministroTB suministroTB = new SuministroTB();
-//                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
+//                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
 //                    suministroTB.setImpuestoValor(sumaOperacion);
 //                    list_totales.add(suministroTB);
 //                    addOperacion = false;
@@ -466,14 +464,14 @@ public class FxVentaDetalleController implements Initializable {
 //            }
 //            for (int k = 0; k < arrayArticulos.size(); k++) {
 //                for (int i = 0; i < arrList.size(); i++) {
-//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoArticulo()) {
+//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
 //                        addImpuesto = true;
 //                        sumaImpuesto += arrList.get(i).getImpuestoSumado();
 //                    }
 //                }
 //                if (addImpuesto) {
 //                    SuministroTB suministroTB = new SuministroTB();
-//                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreImpuesto() + ":");
+//                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombreImpuesto() + ":");
 //                    suministroTB.setImpuestoValor(sumaImpuesto);
 //                    list_totales.add(suministroTB);
 //                    addImpuesto = false;

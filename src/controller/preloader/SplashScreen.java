@@ -104,7 +104,7 @@ public class SplashScreen extends Preloader {
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA_VENTA = false;
                         }
-                        
+
                         String rutaPreVenta = "./archivos/PRE VENTA.properties";
                         try (InputStream input = new FileInputStream(rutaPreVenta)) {
                             Properties prop = new Properties();
@@ -117,15 +117,15 @@ public class SplashScreen extends Preloader {
                             Session.ESTADO_IMPRESORA_PRE_VENTA = false;
                         }
 
-                        LoadFont loadFont = new LoadFont(); 
+                        LoadFont loadFont = new LoadFont();
                         loadFont.loadFont();
 
                         TicketTB ticketTB = TicketADO.GetTicketRuta();
                         if (ticketTB != null) {
                             Session.TICKET_VENTA_ID = ticketTB.getId();
                             Session.TICKET_VENTA_RUTA = ticketTB.getRuta();
-                        }else{
-                             Session.TICKET_VENTA_ID = 0;
+                        } else {
+                            Session.TICKET_VENTA_ID = 0;
                             Session.TICKET_VENTA_RUTA = "";
                         }
 
@@ -151,12 +151,16 @@ public class SplashScreen extends Preloader {
                             Session.CLIENTE_TIPO_DOCUMENTO = clienteTB.getTipoDocumento();
                             Session.CLIENTE_DATOS = clienteTB.getInformacion();
                             Session.CLIENTE_NUMERO_DOCUMENTO = clienteTB.getNumeroDocumento();
+                            Session.CLIENTE_CELULAR = clienteTB.getCelular();
+                            Session.CLIENTE_EMAIL = clienteTB.getEmail();
                             Session.CLIENTE_DIRECCION = clienteTB.getDireccion();
                         } else {
                             Session.CLIENTE_ID = "";
                             Session.CLIENTE_TIPO_DOCUMENTO = 0;
                             Session.CLIENTE_DATOS = "";
                             Session.CLIENTE_NUMERO_DOCUMENTO = "";
+                            Session.CLIENTE_CELULAR = "";
+                            Session.CLIENTE_EMAIL = "";
                             Session.CLIENTE_DIRECCION = "";
                         }
 

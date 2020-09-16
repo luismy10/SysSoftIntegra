@@ -43,7 +43,7 @@
                      <children>
                         <VBox fx:id="btnVentas" alignment="CENTER">
                            <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonTransparent" text="Ventas" textFill="#020203">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonTransparent" text="Pos Terminal 1" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -60,7 +60,7 @@
                         </VBox>
                         <VBox alignment="CENTER">
                            <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasNueva" onKeyPressed="#onKeyPressedVentasNueva" styleClass="buttonTransparent" text="Ventas" textFill="#020203">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasNueva" onKeyPressed="#onKeyPressedVentasNueva" styleClass="buttonTransparent" text="Pos Terminal 2" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

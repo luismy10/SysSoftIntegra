@@ -34,25 +34,21 @@ public class ProveedorADO {
                         DBUtil.getConnection().rollback();
                         return "duplicate";
                     } else {
-                        preparedProveedor = DBUtil.getConnection().prepareCall("UPDATE ProveedorTB SET TipoDocumento=?,NumeroDocumento=?,RazonSocial=UPPER(?),NombreComercial=UPPER(?),Pais=?,Ciudad=?,Provincia=?,Distrito=?,Ambito=?,Estado=?,Telefono=?,Celular=?,Email=?,PaginaWeb=?,Direccion=?, Representante=? WHERE IdProveedor=?");
+                        preparedProveedor = DBUtil.getConnection().prepareCall("UPDATE ProveedorTB SET TipoDocumento=?,NumeroDocumento=?,RazonSocial=UPPER(?),NombreComercial=UPPER(?),Ambito=?,Estado=?,Telefono=?,Celular=?,Email=?,PaginaWeb=?,Direccion=?, Representante=? WHERE IdProveedor=?");
 
                         preparedProveedor.setInt(1, proveedorTB.getTipoDocumento());
                         preparedProveedor.setString(2, proveedorTB.getNumeroDocumento());
                         preparedProveedor.setString(3, proveedorTB.getRazonSocial());
                         preparedProveedor.setString(4, proveedorTB.getNombreComercial());
-                        preparedProveedor.setString(5, proveedorTB.getPais());
-                        preparedProveedor.setInt(6, proveedorTB.getCiudad());
-                        preparedProveedor.setInt(7, proveedorTB.getProvincia());
-                        preparedProveedor.setInt(8, proveedorTB.getDistrito());
-                        preparedProveedor.setInt(9, proveedorTB.getAmbito());
-                        preparedProveedor.setInt(10, proveedorTB.getEstado());
-                        preparedProveedor.setString(11, proveedorTB.getTelefono());
-                        preparedProveedor.setString(12, proveedorTB.getCelular());
-                        preparedProveedor.setString(13, proveedorTB.getEmail());
-                        preparedProveedor.setString(14, proveedorTB.getPaginaWeb());
-                        preparedProveedor.setString(15, proveedorTB.getDireccion());
-                        preparedProveedor.setString(16, proveedorTB.getRepresentante());
-                        preparedProveedor.setString(17, proveedorTB.getIdProveedor());
+                        preparedProveedor.setInt(5, proveedorTB.getAmbito());
+                        preparedProveedor.setInt(6, proveedorTB.getEstado());
+                        preparedProveedor.setString(7, proveedorTB.getTelefono());
+                        preparedProveedor.setString(8, proveedorTB.getCelular());
+                        preparedProveedor.setString(9, proveedorTB.getEmail());
+                        preparedProveedor.setString(10, proveedorTB.getPaginaWeb());
+                        preparedProveedor.setString(11, proveedorTB.getDireccion());
+                        preparedProveedor.setString(12, proveedorTB.getRepresentante());
+                        preparedProveedor.setString(13, proveedorTB.getIdProveedor());
                         preparedProveedor.addBatch();
 
                         preparedProveedor.executeBatch();
@@ -71,27 +67,23 @@ public class ProveedorADO {
                         codigoProveedor.execute();
                         String idProveedor = codigoProveedor.getString(1);
 
-                        preparedProveedor = DBUtil.getConnection().prepareCall("INSERT INTO ProveedorTB(IdProveedor,TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial,Pais,Ciudad,Provincia,Distrito,Ambito,Estado,Telefono,Celular,Email,PaginaWeb,Direccion,UsuarioRegistro,FechaRegistro,representante)"
+                        preparedProveedor = DBUtil.getConnection().prepareCall("INSERT INTO ProveedorTB(IdProveedor,TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial,Ambito,Estado,Telefono,Celular,Email,PaginaWeb,Direccion,UsuarioRegistro,FechaRegistro,representante)"
                                 + "values(?,?,?,UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                         preparedProveedor.setString(1, idProveedor);
                         preparedProveedor.setInt(2, proveedorTB.getTipoDocumento());
                         preparedProveedor.setString(3, proveedorTB.getNumeroDocumento());
                         preparedProveedor.setString(4, proveedorTB.getRazonSocial());
                         preparedProveedor.setString(5, proveedorTB.getNombreComercial());
-                        preparedProveedor.setString(6, proveedorTB.getPais());
-                        preparedProveedor.setInt(7, proveedorTB.getCiudad());
-                        preparedProveedor.setInt(8, proveedorTB.getProvincia());
-                        preparedProveedor.setInt(9, proveedorTB.getDistrito());
-                        preparedProveedor.setInt(10, proveedorTB.getAmbito());
-                        preparedProveedor.setInt(11, proveedorTB.getEstado());
-                        preparedProveedor.setString(12, proveedorTB.getTelefono());
-                        preparedProveedor.setString(13, proveedorTB.getCelular());
-                        preparedProveedor.setString(14, proveedorTB.getEmail());
-                        preparedProveedor.setString(15, proveedorTB.getPaginaWeb());
-                        preparedProveedor.setString(16, proveedorTB.getDireccion());
-                        preparedProveedor.setString(17, Session.USER_ID);
-                        preparedProveedor.setTimestamp(18, Timestamp.valueOf(LocalDateTime.now()));
-                        preparedProveedor.setString(19, proveedorTB.getRepresentante());
+                        preparedProveedor.setInt(6, proveedorTB.getAmbito());
+                        preparedProveedor.setInt(7, proveedorTB.getEstado());
+                        preparedProveedor.setString(8, proveedorTB.getTelefono());
+                        preparedProveedor.setString(9, proveedorTB.getCelular());
+                        preparedProveedor.setString(10, proveedorTB.getEmail());
+                        preparedProveedor.setString(11, proveedorTB.getPaginaWeb());
+                        preparedProveedor.setString(12, proveedorTB.getDireccion());
+                        preparedProveedor.setString(13, Session.USER_ID);
+                        preparedProveedor.setTimestamp(14, Timestamp.valueOf(LocalDateTime.now()));
+                        preparedProveedor.setString(15,proveedorTB.getRepresentante());
                         preparedProveedor.addBatch();
                         
                         preparedProveedor.executeBatch();                       
@@ -234,10 +226,6 @@ public class ProveedorADO {
                     proveedorTB.setTipoDocumento(rsEmps.getInt("TipoDocumento"));
                     proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
                     proveedorTB.setNombreComercial(rsEmps.getString("NombreComercial"));
-                    proveedorTB.setPais(rsEmps.getString("Pais"));
-                    proveedorTB.setCiudad(rsEmps.getInt("Ciudad"));
-                    proveedorTB.setProvincia(rsEmps.getInt("Provincia"));
-                    proveedorTB.setDistrito(rsEmps.getInt("Distrito"));
                     proveedorTB.setAmbito(rsEmps.getInt("Ambito"));
                     proveedorTB.setEstado(rsEmps.getInt("Estado"));
                     proveedorTB.setTelefono(rsEmps.getString("Telefono"));

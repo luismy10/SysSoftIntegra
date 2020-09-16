@@ -63,6 +63,8 @@ public class Session {
     public static int CLIENTE_TIPO_DOCUMENTO;
     public static String CLIENTE_DATOS;
     public static String CLIENTE_NUMERO_DOCUMENTO;
+    public static String CLIENTE_CELULAR;
+    public static String CLIENTE_EMAIL;
     public static String CLIENTE_DIRECCION;
 
     /*

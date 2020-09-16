@@ -40,7 +40,7 @@ public class ClienteADO {
                             DBUtil.getConnection().rollback();
                             result = "duplicatename";
                         } else {
-                            preparedCliente = DBUtil.getConnection().prepareStatement("update ClienteTB set TipoDocumento=?,NumeroDocumento=?,Informacion=UPPER(?),Telefono=?,Celular=?,Email=?,Direccion=?,Representante=?,Estado=?,Predeterminado=? where IdCliente = ?");
+                            preparedCliente = DBUtil.getConnection().prepareStatement("update ClienteTB set TipoDocumento=?,NumeroDocumento=?,Informacion=UPPER(?),Telefono=?,Celular=?,Email=?,Direccion=?,Representante=?,Estado=? where IdCliente = ?");
 
                             preparedCliente.setInt(1, clienteTB.getTipoDocumento());
                             preparedCliente.setString(2, clienteTB.getNumeroDocumento());
@@ -51,8 +51,7 @@ public class ClienteADO {
                             preparedCliente.setString(7, clienteTB.getDireccion());
                             preparedCliente.setString(8, clienteTB.getRepresentante());
                             preparedCliente.setInt(9, clienteTB.getEstado());
-                            preparedCliente.setBoolean(10, clienteTB.isPredeterminado());
-                            preparedCliente.setString(11, clienteTB.getIdCliente());
+                            preparedCliente.setString(10, clienteTB.getIdCliente());
 
                             preparedCliente.addBatch();
                             preparedCliente.executeBatch();
@@ -239,7 +238,6 @@ public class ClienteADO {
                 clienteTB.setEmail(rsEmps.getString("Email"));
                 clienteTB.setDireccion(rsEmps.getString("Direccion"));
                 clienteTB.setEstado(rsEmps.getInt("Estado"));
-
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
@@ -342,7 +340,7 @@ public class ClienteADO {
         ClienteTB clienteTB = null;
         try {
             DBUtil.dbConnect();
-            statement = DBUtil.getConnection().prepareStatement("SELECT ci.IdCliente,ci.TipoDocumento,ci.Informacion, ci.NumeroDocumento, ci.Direccion FROM ClienteTB AS ci WHERE Predeterminado = 1");
+            statement = DBUtil.getConnection().prepareStatement("SELECT ci.IdCliente,ci.TipoDocumento,ci.Informacion, ci.NumeroDocumento, ci.Celular,ci.Email,ci.Direccion FROM ClienteTB AS ci WHERE Predeterminado = 1");
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 clienteTB = new ClienteTB();
@@ -350,6 +348,8 @@ public class ClienteADO {
                 clienteTB.setTipoDocumento(resultSet.getInt("TipoDocumento"));
                 clienteTB.setInformacion(resultSet.getString("Informacion"));
                 clienteTB.setNumeroDocumento(resultSet.getString("NumeroDocumento"));
+                clienteTB.setCelular(resultSet.getString("Celular"));
+                clienteTB.setEmail(resultSet.getString("Email"));
                 clienteTB.setDireccion(resultSet.getString("Direccion"));
             }
         } catch (SQLException ex) {
@@ -475,13 +475,19 @@ public class ClienteADO {
                     ClienteTB clienteTB = ClienteADO.GetClientePredetermined();
                     if (clienteTB != null) {
                         Session.CLIENTE_ID = clienteTB.getIdCliente();
+                        Session.CLIENTE_TIPO_DOCUMENTO = clienteTB.getTipoDocumento();
                         Session.CLIENTE_DATOS = clienteTB.getInformacion();
                         Session.CLIENTE_NUMERO_DOCUMENTO = clienteTB.getNumeroDocumento();
+                        Session.CLIENTE_CELULAR = clienteTB.getCelular();
+                        Session.CLIENTE_EMAIL = clienteTB.getEmail();
                         Session.CLIENTE_DIRECCION = clienteTB.getDireccion();
                     } else {
                         Session.CLIENTE_ID = "";
+                        Session.CLIENTE_TIPO_DOCUMENTO = 0;
                         Session.CLIENTE_DATOS = "";
                         Session.CLIENTE_NUMERO_DOCUMENTO = "";
+                        Session.CLIENTE_CELULAR = "";
+                        Session.CLIENTE_EMAIL = "";
                         Session.CLIENTE_DIRECCION = "";
                     }
                 } catch (SQLException ex) {
