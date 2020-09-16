@@ -1124,8 +1124,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Tools.println("Venta estructura nuevo onEventMovimientoCaja:" + ex.getLocalizedMessage());
         }
     }
-    
-     public void openWindowMostrarVentas() {
+
+    public void openWindowMostrarVentas() {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_VENTA_MOSTRAR);
@@ -1145,40 +1145,42 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-
     @FXML
-    private void onKeyPressedWindow(KeyEvent event) {
-        if (null != event.getCode()) {
-            switch (event.getCode()) {
-                case F1:
-                    onEventCobrar();
-                    break;
-                case F2:
-                    txtSearch.selectAll();
-                    txtSearch.requestFocus();
-                    break;
-                case F3:
-                    cbMoneda.requestFocus();
-                    break;
-                case F4:
-                    onEventCliente();
-                    break;
-                case F5:
-                    if (!state) {
-                        paginacion = 1;
-                        fillSuministrosTable((short) 0, "");
-                        opcion = 0;
-                    }
-                    break;
-                case F6:
-                    cbComprobante.requestFocus();
-                    break;
-                case F7:
-                    onEventMovimientoCaja();
-                    break;
-                default:
-                    break;
-            }
+    private void onKeyReleasedWindow(KeyEvent event) {
+        switch (event.getCode()) {
+            case F1:
+                onEventCobrar();
+                break;
+            case F2:
+                txtSearch.selectAll();
+                txtSearch.requestFocus();
+                break;
+            case F3:
+                cbMoneda.requestFocus();
+                break;
+            case F4:
+                cbCliente.requestFocus();
+                break;
+            case F5:
+
+                break;
+            case F6:
+                cbComprobante.requestFocus();
+                break;
+            case F7:
+                onEventMovimientoCaja();
+                break;
+            case F8:
+                openWindowMostrarVentas();
+                break;
+            case F9:
+                imprimirPreVenta();
+                break;
+            case F10:
+                cancelarVenta();
+                break;
+            default:
+                break;
         }
     }
 
@@ -1373,13 +1375,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onKeyPressedVentasPorDia(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            openWindowMostrarVentas();
         }
     }
 
     @FXML
     private void onActionVentasPorDia(ActionEvent event) {
-
+        openWindowMostrarVentas();
     }
 
     public TextField getTxtSearch() {

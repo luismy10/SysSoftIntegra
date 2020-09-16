@@ -89,6 +89,8 @@ public class FxValorInventarioController implements Initializable {
     private Label lblPaginaActual;
     @FXML
     private Label lblPaginaSiguiente;
+    @FXML
+    private Label lblCantidadTotal;
 
     private AnchorPane vbPrincipal;
 
@@ -167,6 +169,8 @@ public class FxValorInventarioController implements Initializable {
                 totalPaginacion = integer;
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
+                int cantidad = (Integer) objects.get(2);
+                lblCantidadTotal.setText(cantidad + "");
             }
             lblLoad.setVisible(false);
         });

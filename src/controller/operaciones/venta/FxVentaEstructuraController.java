@@ -220,64 +220,6 @@ public class FxVentaEstructuraController implements Initializable {
         hbEncabezado = new AnchorPane();
         hbDetalleCabecera = new AnchorPane();
         hbPie = new AnchorPane();
-
-        window.setOnKeyReleased((KeyEvent event) -> {
-            if (null != event.getCode()) {
-                if (event.getCode() == KeyCode.F1) {
-                    openWindowVentaProceso();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F2) {
-                    openWindowArticulos();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F3) {
-                    openWindowListaPrecios();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F4) {
-                    openWindowCantidad();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F5) {
-                    openWindowCambiarPrecio("Cambiar precio al Artículo", false);
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F6) {
-                    openWindowDescuento();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F7) {
-                    openWindowCambiarPrecio("Sumar precio al Artículo", true);
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F8) {
-                    openWindowCashMovement();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F9) {
-                    imprimirPreVenta();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.F10) {
-                    short value = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de limpiar la venta?");
-                    if (value == 1) {
-                        resetVenta();
-                        event.consume();
-                    } else {
-                        event.consume();
-                    }
-                } else if (event.getCode() == KeyCode.F11) {
-                    openWindowMostrarVentas();
-                    event.consume();
-                } else if (event.getCode() == KeyCode.DELETE) {
-                    removeArticulo();
-                    event.consume();
-                } else if (event.isControlDown() && event.getCode() == KeyCode.D) {
-                    txtSearch.requestFocus();
-                    txtSearch.selectAll();
-                    event.consume();
-                } else if (event.isControlDown() && event.getCode() == KeyCode.W) {
-                    tvList.requestFocus();
-                    if (!tvList.getItems().isEmpty()) {
-                        tvList.getSelectionModel().select(0);
-                    }
-                    event.consume();
-                }
-
-            }
-        });
         billPrintable = new BillPrintable();
         monedaCadena = new ConvertMonedaCadena();
         monedaSimbolo = "M";
@@ -2095,6 +2037,62 @@ public class FxVentaEstructuraController implements Initializable {
     private void onKeyTypedNumeroDocumento(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            event.consume();
+        } 
+    }
+
+    @FXML
+    private void onKeyReleasedWindow(KeyEvent event) {
+        if (event.getCode() == KeyCode.F1) {
+            openWindowVentaProceso();
+            event.consume();
+        } else if (event.getCode() == KeyCode.F2) {
+            openWindowArticulos();
+            event.consume();
+        } else if (event.getCode() == KeyCode.F3) {
+            openWindowListaPrecios();
+            event.consume();
+        } else if (event.getCode() == KeyCode.F4) {
+            openWindowCantidad();
+            event.consume();
+        } else if (event.getCode() == KeyCode.F5) {
+            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+            event.consume();
+        } else if (event.getCode() == KeyCode.F6) {
+            openWindowDescuento();
+            event.consume();
+        } else if (event.getCode() == KeyCode.F7) {
+            openWindowCambiarPrecio("Sumar precio al Artículo", true);
+            event.consume();
+        } else if (event.getCode() == KeyCode.F8) {
+            openWindowCashMovement();
+            event.consume();
+        } else if (event.getCode() == KeyCode.F9) {
+            imprimirPreVenta();
+            event.consume();
+        } else if (event.getCode() == KeyCode.F10) {
+            short value = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de limpiar la venta?");
+            if (value == 1) {
+                resetVenta();
+                event.consume();
+            } else {
+                event.consume();
+            }
+        } else if (event.getCode() == KeyCode.F11) {
+            openWindowMostrarVentas();
+            event.consume();
+        } else if (event.getCode() == KeyCode.DELETE) {
+            removeArticulo();
+            event.consume();
+        } else if (event.isControlDown() && event.getCode() == KeyCode.D) {
+            txtSearch.requestFocus();
+            txtSearch.selectAll();
+            event.consume();
+        } else if (event.isControlDown() && event.getCode() == KeyCode.W) {
+            tvList.requestFocus();
+            if (!tvList.getItems().isEmpty()) {
+                tvList.getSelectionModel().select(0);
+            }
             event.consume();
         }
     }
