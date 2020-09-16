@@ -14,16 +14,16 @@ public class EmpresaTB {
     private String numeroDocumento;
     private String razonSocial;
     private String nombreComercial;
-    private String pais;
-    private int ciudad;
-    private int distrito;
-    private int provincia;
     private byte[] image;
+    private String usuarioSol;
+    private String claveSol;
+    private String certificadoRuta;
+    private String certificadoClave;
 
     public EmpresaTB() {
     }
 
-    public EmpresaTB(int idEmpresa, String nombre, String telefono, String celular, String paginaWeb, String email, String domicilio, int tipoDocumento, String numeroDocumento, String razonSocial, String nombreComercial, String pais, int ciudad) {
+    public EmpresaTB(int idEmpresa, String nombre, String telefono, String celular, String paginaWeb, String email, String domicilio, int tipoDocumento, String numeroDocumento, String razonSocial, String nombreComercial) {
         this.idEmpresa = idEmpresa;
         this.nombre = nombre;
         this.telefono = telefono;
@@ -35,8 +35,6 @@ public class EmpresaTB {
         this.numeroDocumento = numeroDocumento;
         this.razonSocial = razonSocial;
         this.nombreComercial = nombreComercial;
-        this.pais = pais;
-        this.ciudad = ciudad;
     }
 
     public int getIdEmpresa() {
@@ -135,38 +133,6 @@ public class EmpresaTB {
         this.nombreComercial = nombreComercial == null ? "" : nombreComercial;
     }
 
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
-    public int getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(int ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public int getDistrito() {
-        return distrito;
-    }
-
-    public void setDistrito(int distrito) {
-        this.distrito = distrito;
-    }
-
-    public int getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(int provincia) {
-        this.provincia = provincia;
-    }
-
     public byte[] getImage() {
         return image;
     }
@@ -174,5 +140,39 @@ public class EmpresaTB {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public String getUsuarioSol() {
+        return usuarioSol;
+    }
+
+    public void setUsuarioSol(String usuarioSol) {
+        this.usuarioSol = usuarioSol;
+    }
+
+    public String getClaveSol() {
+        return claveSol;
+    }
+
+    public void setClaveSol(String claveSol) {
+        this.claveSol = claveSol;
+    }
+
+    public String getCertificadoRuta() {
+        return certificadoRuta;
+    }
+
+    public void setCertificadoRuta(String certificadoRuta) {
+        this.certificadoRuta = certificadoRuta;
+    }
+
+    public String getCertificadoClave() {
+        return certificadoClave;
+    }
+
+    public void setCertificadoClave(String certificadoClave) {
+        this.certificadoClave = certificadoClave;
+    }
+    
+    
 
 }

@@ -50,12 +50,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.ClienteTB;
 import model.ComprobanteADO;
-import model.ImpuestoADO;
-import model.ImpuestoTB;
 import model.MonedaADO;
 import model.MonedaTB;
 import model.SuministroADO;
@@ -116,8 +115,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private ObservableList<SuministroTB> listSuministros;
 
-    private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
-
     private AnchorPane hbEncabezado;
 
     private AnchorPane hbDetalleCabecera;
@@ -148,7 +145,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        arrayArticulosImpuesto = new ArrayList<>();
         listSuministros = FXCollections.observableArrayList();
         billPrintable = new BillPrintable();
         monedaCadena = new ConvertMonedaCadena();
@@ -181,9 +177,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             }
         }
 
-        arrayArticulosImpuesto.clear();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado())));
-
         cbMoneda.getItems().clear();
         MonedaADO.GetMonedasCombBox().forEach(e -> cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado())));
 
@@ -198,7 +191,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
 
         SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
-//        searchComboBoxClientes.getComboBox().getItems().addAll(ClienteADO.GetSearchComboBoxCliente((short) 1, ""));
         searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
@@ -294,8 +286,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.setAlignment(Pos.TOP_CENTER);
                     File fileImage = new File(tvList1.getImagenTB());
                     ImageView imageView = new ImageView(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
-                    imageView.setFitWidth(120);
-                    imageView.setFitHeight(120);
+                    imageView.setFitWidth(1.5*Screen.getPrimary().getDpi());
+                    imageView.setFitHeight(1.5*Screen.getPrimary().getDpi());
                     vBox.getChildren().add(imageView);
 
                     Label lblCodigo = new Label(tvList1.getClave());
@@ -315,7 +307,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     lblMarca.setTextFill(Color.web("#1a2226"));
                     vBox.getChildren().add(lblMarca);
 
-                    double impuestoimpuesto = getTaxValue(tvList1.getImpuestoArticulo());
+                    double impuestoimpuesto = tvList1.getImpuestoValor();
                     double impuestototal = Tools.calculateTax(impuestoimpuesto, tvList1.getPrecioVentaGeneral());
                     double precioventa = tvList1.getPrecioVentaGeneral() + impuestototal;
 
@@ -381,10 +373,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         suministroTB.setPrecioVentaGeneralReal(tvList1.getPrecioVentaGeneral());
         suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
 
-        suministroTB.setImpuestoOperacion(getTaxValueOperacion(tvList1.getImpuestoArticulo()));
-        suministroTB.setImpuestoArticulo(tvList1.getImpuestoArticulo());
-        suministroTB.setImpuestoArticuloName(getTaxName(tvList1.getImpuestoArticulo()));
-        suministroTB.setImpuestoValor(getTaxValue(tvList1.getImpuestoArticulo()));
+        suministroTB.setImpuestoOperacion(tvList1.getImpuestoOperacion());
+        suministroTB.setImpuestoId(tvList1.getImpuestoId());
+        suministroTB.setImpuestoNombre(tvList1.getImpuestoNombre());
+        suministroTB.setImpuestoValor(tvList1.getImpuestoValor());
         suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
 
         suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
@@ -480,39 +472,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-    public int getTaxValueOperacion(int impuesto) {
-        int valor = 0;
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getOperacion();
-                break;
-            }
-        }
-        return valor;
-    }
-
-    public double getTaxValue(int impuesto) {
-        double valor = 0;
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getValor();
-                break;
-            }
-        }
-        return valor;
-    }
-
-    public String getTaxName(int impuesto) {
-        String valor = "";
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getNombre();
-                break;
-            }
-        }
-        return valor;
-    }
-
     public void calculateTotales() {
 
         subTotal = 0;
@@ -529,27 +488,34 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
 //        gpTotales.getChildren().clear();
 //
-        boolean addElement = false;
-        double sumaElement = 0;
+//        boolean addElement = false;
+//        double sumaElement = 0;
+//        double totalImpuestos = 0;
+//        if (!lvProductoAgregados.getItems().isEmpty()) {
+//            for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
+//                for (int i = 0; i < lvProductoAgregados.getItems().size(); i++) {
+//                    if (impuestoTB.getIdImpuesto() == lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoId()) {
+//                        addElement = true;
+//                        sumaElement += lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoSumado();
+//                    }
+//                }
+//                if (addElement) {
+////                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(0, 1).toUpperCase()
+////                            + "" + arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(1, arrayArticulosImpuesto.get(k).getNombreImpuesto().length()).toLowerCase(),
+////                            Pos.CENTER_LEFT), 0, k + 1);
+////                    gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
+//                    totalImpuestos += sumaElement;
+//
+//                    addElement = false;
+//                    sumaElement = 0;
+//                }
+//            }
+//        }
         double totalImpuestos = 0;
-        if (!lvProductoAgregados.getItems().isEmpty()) {
-            for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-                for (int i = 0; i < lvProductoAgregados.getItems().size(); i++) {
-                    if (impuestoTB.getIdImpuesto() == lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoArticulo()) {
-                        addElement = true;
-                        sumaElement += lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoSumado();
-                    }
-                }
-                if (addElement) {
-//                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(0, 1).toUpperCase()
-//                            + "" + arrayArticulosImpuesto.get(k).getNombreImpuesto().substring(1, arrayArticulosImpuesto.get(k).getNombreImpuesto().length()).toLowerCase(),
-//                            Pos.CENTER_LEFT), 0, k + 1);
-//                    gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
-                    totalImpuestos += sumaElement;
 
-                    addElement = false;
-                    sumaElement = 0;
-                }
+        if (!lvProductoAgregados.getItems().isEmpty()) {
+            for (int i = 0; i < lvProductoAgregados.getItems().size(); i++) {
+                totalImpuestos += lvProductoAgregados.getItems().get(i).getSuministroTB().getImpuestoSumado();
             }
         }
 
@@ -1070,7 +1036,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
                 clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
                 clienteTB.setEmail(cbCliente.getSelectionModel().getSelectedItem().getEmail());
-                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());                
+                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);

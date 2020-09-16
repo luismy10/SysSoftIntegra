@@ -198,8 +198,8 @@ public class VentaADO {
                 detalle_venta.setDouble(7, tvList.get(i).getDescuento());
                 detalle_venta.setDouble(8, tvList.get(i).getDescuentoCalculado());
                 detalle_venta.setDouble(9, tvList.get(i).getImpuestoOperacion());
-                detalle_venta.setDouble(10, tvList.get(i).getImpuestoArticulo());
-                detalle_venta.setString(11, tvList.get(i).getImpuestoArticuloName());
+                detalle_venta.setDouble(10, tvList.get(i).getImpuestoId());
+                detalle_venta.setString(11, tvList.get(i).getImpuestoNombre());
                 detalle_venta.setDouble(12, tvList.get(i).getImpuestoValor());
                 detalle_venta.setDouble(13, tvList.get(i).getTotalImporte());
                 detalle_venta.addBatch();
@@ -580,8 +580,8 @@ public class VentaADO {
                     double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-                    suministroTB.setImpuestoArticuloName(resultSetLista.getString("NombreImpuesto"));
-                    suministroTB.setImpuestoArticulo(resultSetLista.getInt("IdImpuesto"));
+                    suministroTB.setImpuestoNombre(resultSetLista.getString("NombreImpuesto"));
+                    suministroTB.setImpuestoId(resultSetLista.getInt("IdImpuesto"));
                     suministroTB.setImpuestoValor(resultSetLista.getDouble("ValorImpuesto"));
 
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());

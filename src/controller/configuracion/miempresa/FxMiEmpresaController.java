@@ -5,12 +5,17 @@ import controller.tools.Tools;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -19,23 +24,17 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import model.CiudadADO;
-import model.CiudadTB;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.DistritoADO;
-import model.DistritoTB;
 import model.EmpresaADO;
 import model.EmpresaTB;
-import model.PaisADO;
-import model.PaisTB;
-import model.ProvinciaADO;
-import model.ProvinciaTB;
 
 public class FxMiEmpresaController implements Initializable {
 
     @FXML
     private ScrollPane window;
+    @FXML
+    private Label lblLoad;
     @FXML
     private ComboBox<DetalleTB> cbGiroComercial;
     @FXML
@@ -59,14 +58,6 @@ public class FxMiEmpresaController implements Initializable {
     @FXML
     private TextField txtNombreComercial;
     @FXML
-    private ComboBox<PaisTB> cbPais;
-    @FXML
-    private ComboBox<CiudadTB> cbCiudad;
-    @FXML
-    private ComboBox<ProvinciaTB> cbProvincia;
-    @FXML
-    private ComboBox<DistritoTB> cbCiudadDistrito;
-    @FXML
     private ImageView lnPrincipal;
 
     private AnchorPane vbPrincipal;
@@ -81,110 +72,109 @@ public class FxMiEmpresaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        DetalleADO.GetDetailIdName("3", "0011", "").forEach(e -> {
-            cbGiroComercial.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        loadMiEmpresa();
+    }
+
+    private void loadMiEmpresa() {
+
+        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
         });
-        PaisADO.ListPais().forEach(e -> {
-            cbPais.getItems().add(new PaisTB(e.getPaisCodigo(), e.getPaisNombre()));
-        });
-        DetalleADO.GetDetailIdName("3", "0003", "").forEach(e -> {
-            cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
-        EmpresaTB empresaTb = EmpresaADO.GetEmpresa();
-        if (empresaTb != null) {
-            validate = true;
-            idEmpresa = empresaTb.getIdEmpresa();
 
-            ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
-            if (empresaTb.getGiroComerial() != 0) {
-                for (int i = 0; i < lsgiro.size(); i++) {
-                    if (empresaTb.getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
-                        cbGiroComercial.getSelectionModel().select(i);
-                        break;
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList<>();
+
+                objects.add(DetalleADO.GetDetailIdName("3", "0011", ""));
+                objects.add(DetalleADO.GetDetailIdName("3", "0003", ""));
+                objects.add(EmpresaADO.GetEmpresa());
+
+                return objects;
+            }
+        };
+        task.setOnSucceeded(t -> {
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                if (objects.get(0) != null) {
+                    ObservableList<DetalleTB> gc = (ObservableList<DetalleTB>) objects.get(0);
+                    gc.forEach(e -> {
+                        cbGiroComercial.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+                    });
+                }
+                if (objects.get(1) != null) {
+                    ObservableList<DetalleTB> tp = (ObservableList<DetalleTB>) objects.get(1);
+                    tp.forEach(e -> {
+                        cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+                    });
+                }
+                if (objects.get(2) != null) {
+                    EmpresaTB empresaTb = (EmpresaTB) objects.get(2);
+                    if (empresaTb != null) {
+                        validate = true;
+                        idEmpresa = empresaTb.getIdEmpresa();
+
+                        ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
+                        if (empresaTb.getGiroComerial() != 0) {
+                            for (int i = 0; i < lsgiro.size(); i++) {
+                                if (empresaTb.getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
+                                    cbGiroComercial.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
+
+                        txtRepresentante.setText(empresaTb.getNombre());
+                        txtTelefono.setText(empresaTb.getTelefono());
+                        txtCelular.setText(empresaTb.getCelular());
+                        txtPaginasWeb.setText(empresaTb.getPaginaWeb());
+                        txtEmail.setText(empresaTb.getEmail());
+                        txtDomicilio.setText(empresaTb.getDomicilio());
+
+                        ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
+                        if (empresaTb.getTipoDocumento() != 0) {
+                            for (int i = 0; i < lsdoc.size(); i++) {
+                                if (empresaTb.getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
+
+                        txtNumeroDocumento.setText(empresaTb.getNumeroDocumento());
+                        txtRazonSocial.setText(empresaTb.getRazonSocial());
+                        txtNombreComercial.setText(empresaTb.getNombreComercial());
+
+                        if (empresaTb.getImage() != null) {
+                            imageBytes = empresaTb.getImage();
+                            lnPrincipal.setImage(new Image(new ByteArrayInputStream(empresaTb.getImage())));
+                        } else {
+                            imageBytes = null;
+                            lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+                        }
+
+                    } else {
+                        validate = false;
                     }
                 }
-            }
-
-            txtRepresentante.setText(empresaTb.getNombre());
-            txtTelefono.setText(empresaTb.getTelefono());
-            txtCelular.setText(empresaTb.getCelular());
-            txtPaginasWeb.setText(empresaTb.getPaginaWeb());
-            txtEmail.setText(empresaTb.getEmail());
-            txtDomicilio.setText(empresaTb.getDomicilio());
-
-            ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
-            if (empresaTb.getTipoDocumento() != 0) {
-                for (int i = 0; i < lsdoc.size(); i++) {
-                    if (empresaTb.getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
-                        cbTipoDocumento.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
-
-            txtNumeroDocumento.setText(empresaTb.getNumeroDocumento());
-            txtRazonSocial.setText(empresaTb.getRazonSocial());
-            txtNombreComercial.setText(empresaTb.getNombreComercial());
-
-            ObservableList<PaisTB> lspais = cbPais.getItems();
-            if (empresaTb.getPais() != null || !empresaTb.getPais().equals("")) {
-                for (int i = 0; i < lspais.size(); i++) {
-                    if (empresaTb.getPais().equals(lspais.get(i).getPaisCodigo())) {
-                        cbPais.getSelectionModel().select(i);
-                        CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                            cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            ObservableList<CiudadTB> lsciudad = cbCiudad.getItems();
-            if (empresaTb.getCiudad() != 0) {
-                for (int i = 0; i < lsciudad.size(); i++) {
-                    if (empresaTb.getCiudad() == lsciudad.get(i).getIdCiudad()) {
-                        cbCiudad.getSelectionModel().select(i);
-                        ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                            cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            ObservableList<ProvinciaTB> lsprovin = cbProvincia.getItems();
-            if (empresaTb.getProvincia() != 0) {
-                for (int i = 0; i < lsprovin.size(); i++) {
-                    if (empresaTb.getProvincia() == lsprovin.get(i).getIdProvincia()) {
-                        cbProvincia.getSelectionModel().select(i);
-                        DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                            cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-                        });
-                        break;
-                    }
-                }
-            }
-
-            ObservableList<DistritoTB> lsdistrito = cbCiudadDistrito.getItems();
-            if (empresaTb.getDistrito() != 0) {
-                for (int i = 0; i < lsdistrito.size(); i++) {
-                    if (empresaTb.getDistrito() == lsdistrito.get(i).getIdDistrito()) {
-                        cbCiudadDistrito.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-            }
-
-            if (empresaTb.getImage() != null) {
-                imageBytes = empresaTb.getImage();
-                lnPrincipal.setImage(new Image(new ByteArrayInputStream(empresaTb.getImage())));
+                lblLoad.setVisible(false);
             } else {
-                imageBytes = null;
-                lnPrincipal.setImage(new Image("/view/image/no-image.png"));
+                lblLoad.setVisible(false);
             }
 
-        } else {
-            validate = false;
+        });
+        task.setOnFailed(e -> {
+            lblLoad.setVisible(false);
+        });
+
+        task.setOnScheduled(e -> {
+            lblLoad.setVisible(true);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
         }
 
     }
@@ -251,16 +241,6 @@ public class FxMiEmpresaController implements Initializable {
                 empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "000000000000" : txtNumeroDocumento.getText().trim());
                 empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtRepresentante.getText().trim() : txtRazonSocial.getText().trim());
                 empresaTB.setNombreComercial(txtNombreComercial.getText().trim());
-                empresaTB.setPais(cbPais.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()
-                        : "");
-                empresaTB.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()
-                        : 0);
-                empresaTB.setProvincia(cbProvincia.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia() : 0);
-                empresaTB.setDistrito(cbCiudadDistrito.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbCiudadDistrito.getSelectionModel().getSelectedItem().getIdDistrito() : 0);
 
                 empresaTB.setImage(
                         imageBytes != null ? imageBytes
@@ -323,40 +303,6 @@ public class FxMiEmpresaController implements Initializable {
     }
 
     @FXML
-    private void onActionPais(ActionEvent event) {
-        if (cbPais.getSelectionModel().getSelectedIndex() >= 0) {
-            cbCiudad.getItems().clear();
-            CiudadADO.ListCiudad(cbPais.getSelectionModel().getSelectedItem().getPaisCodigo()).forEach(e -> {
-                cbCiudad.getItems().add(new CiudadTB(e.getIdCiudad(), e.getCiudadDistrito()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionDepartamento(ActionEvent event) {
-        if (cbCiudad.getSelectionModel().getSelectedIndex() >= 0) {
-            cbProvincia.getItems().clear();
-            ProvinciaADO.ListProvincia(cbCiudad.getSelectionModel().getSelectedItem().getIdCiudad()).forEach(e -> {
-                cbProvincia.getItems().add(new ProvinciaTB(e.getIdProvincia(), e.getProvincia()));
-            });
-        }
-    }
-
-    @FXML
-    private void onActionProvincia(ActionEvent event) {
-        if (cbProvincia.getSelectionModel().getSelectedIndex() >= 0) {
-            cbCiudadDistrito.getItems().clear();
-            DistritoADO.ListDistrito(cbProvincia.getSelectionModel().getSelectedItem().getIdProvincia()).forEach(e -> {
-                cbCiudadDistrito.getItems().add(new DistritoTB(e.getIdDistrito(), e.getDistrito()));
-            });
-        }
-    }
-
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
-    }
-
-    @FXML
     private void onKeyPressedPhoto(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowFile();
@@ -377,8 +323,29 @@ public class FxMiEmpresaController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedToRecargar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                loadMiEmpresa();
+            }
+        }
+    }
+
+    @FXML
+    private void onActionToRecargar(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            loadMiEmpresa();
+        }
+
+    }
+
+    @FXML
     private void onActionRemovePhoto(ActionEvent event) {
         clearImage();
+    }
+
+    public void setContent(AnchorPane vbPrincipal) {
+        this.vbPrincipal = vbPrincipal;
     }
 
 }

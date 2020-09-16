@@ -169,7 +169,7 @@ public class CompraADO extends DBUtil {
 
                     suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
+                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoId());
                     suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
                     suministro_update.setShort(5, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
                     suministro_update.setDouble(6, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
@@ -413,7 +413,7 @@ public class CompraADO extends DBUtil {
 
                     suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoArticulo());
+                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoId());
                     suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
                     suministro_update.setShort(5, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
                     suministro_update.setDouble(6, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
@@ -1142,8 +1142,8 @@ public class CompraADO extends DBUtil {
                 suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getCostoCompraReal());
                 suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getCostoCompra());
 
-                suministroTB.setImpuestoArticulo(resultSet1.getInt("IdImpuesto"));
-                suministroTB.setImpuestoArticuloName(resultSet1.getString("NombreImpuesto"));
+                suministroTB.setImpuestoId(resultSet1.getInt("IdImpuesto"));
+                suministroTB.setImpuestoNombre(resultSet1.getString("NombreImpuesto"));
                 suministroTB.setImpuestoValor(resultSet1.getDouble("ValorImpuesto"));
                 suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getCostoCompra() * (suministroTB.getImpuestoValor() / 100.00)));
 

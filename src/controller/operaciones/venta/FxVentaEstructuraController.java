@@ -63,8 +63,6 @@ import model.ClienteTB;
 import model.ComprobanteADO;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.ImpuestoADO;
-import model.ImpuestoTB;
 import model.MonedaADO;
 import model.MonedaTB;
 import model.PrivilegioTB;
@@ -165,14 +163,14 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnBuscarSunat;
     @FXML
     private Button btnBuscarReniec;
+    @FXML
+    private TextField txtCorreoElectronico;
 
     private AnchorPane vbPrincipal;
 
     private String monedaSimbolo;
 
     private String idCliente;
-
-    private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
 
     private BillPrintable billPrintable;
 
@@ -215,8 +213,6 @@ public class FxVentaEstructuraController implements Initializable {
     private double totalImpuesto;
 
     private double total;
-    @FXML
-    private TextField txtCorreoElectronico;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -284,7 +280,6 @@ public class FxVentaEstructuraController implements Initializable {
         });
         billPrintable = new BillPrintable();
         monedaCadena = new ConvertMonedaCadena();
-        arrayArticulosImpuesto = new ArrayList<>();
         monedaSimbolo = "M";
         idCliente = "";
         stateSearch = false;
@@ -322,17 +317,15 @@ public class FxVentaEstructuraController implements Initializable {
             }
         }
 
-        arrayArticulosImpuesto.clear();
-        ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado())));
-
         cbTipoDocumento.getItems().clear();
         DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
 
         idCliente = Session.CLIENTE_ID;
         txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
         txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtCelularCliente.setText(Session.CLIENTE_CELULAR);
+        txtCorreoElectronico.setText(Session.CLIENTE_EMAIL);
         txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
-        txtCelularCliente.setText("");
 
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
@@ -355,7 +348,7 @@ public class FxVentaEstructuraController implements Initializable {
                 Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%"));
-        tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoArticuloName()));
+        tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoNombre()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() * cellData.getValue().getCantidad(), 2)));
 
@@ -536,9 +529,9 @@ public class FxVentaEstructuraController implements Initializable {
             suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
 
             suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
-            suministroTB.setImpuestoArticulo(a.getImpuestoArticulo());
-            suministroTB.setImpuestoArticuloName(getTaxName(a.getImpuestoArticulo()));
-            suministroTB.setImpuestoValor(getTaxValue(a.getImpuestoArticulo()));
+            suministroTB.setImpuestoId(a.getImpuestoId());
+            suministroTB.setImpuestoNombre(a.getImpuestoNombre());
+            suministroTB.setImpuestoValor(a.getImpuestoValor());
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
 
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
@@ -598,15 +591,18 @@ public class FxVentaEstructuraController implements Initializable {
         try {
             if (tvList.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(window, "Ventas", "Debes agregar artículos a la venta");
+            } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de comprobante");
+                cbComprobante.requestFocus();
+            } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento del cliente.");
+                cbTipoDocumento.requestFocus();
             } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(window, "Ventas", "Ingrese el número del documento del cliente.");
                 txtNumeroDocumento.requestFocus();
             } else if (txtDatosCliente.getText().trim().equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(window, "Ventas", "Ingrese los datos del cliente.");
                 txtDatosCliente.requestFocus();
-            } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento");
-                cbComprobante.requestFocus();
             } else if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "Seleccione un moneda.");
                 cbMoneda.requestFocus();
@@ -635,7 +631,6 @@ public class FxVentaEstructuraController implements Initializable {
                 clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
                 clienteTB.setEmail(txtCorreoElectronico.getText().trim().toUpperCase());
                 clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
-                
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -961,29 +956,16 @@ public class FxVentaEstructuraController implements Initializable {
 
         gpTotales.getChildren().clear();
 
-        boolean addElement = false;
-        double sumaElement = 0;
         double totalImpuestos = 0;
-        if (!tvList.getItems().isEmpty()) {
-            for (int k = 0; k < arrayArticulosImpuesto.size(); k++) {
-                for (int i = 0; i < tvList.getItems().size(); i++) {
-                    if (arrayArticulosImpuesto.get(k).getIdImpuesto() == tvList.getItems().get(i).getImpuestoArticulo()) {
-                        addElement = true;
-                        sumaElement += tvList.getItems().get(i).getImpuestoSumado();
-                    }
-                }
-                if (addElement) {
-                    gpTotales.add(addLabelTitle(arrayArticulosImpuesto.get(k).getNombre().substring(0, 1).toUpperCase()
-                            + "" + arrayArticulosImpuesto.get(k).getNombre().substring(1, arrayArticulosImpuesto.get(k).getNombre().length()).toLowerCase(),
-                            Pos.CENTER_LEFT), 0, k + 1);
-                    gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
-                    totalImpuestos += sumaElement;
 
-                    addElement = false;
-                    sumaElement = 0;
-                }
+        if (!tvList.getItems().isEmpty()) {
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                totalImpuestos += tvList.getItems().get(i).getImpuestoSumado();
             }
         }
+
+        gpTotales.add(addLabelTitle("IMPUESTO GENERADO:", Pos.CENTER_LEFT), 0, 0 + 1);
+        gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(totalImpuestos, 2), Pos.CENTER_RIGHT), 1, 0 + 1);
 
         totalImporte = 0;
         totalImpuesto = 0;
@@ -997,6 +979,14 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
+//    private boolean validateImpuesto(ArrayList<SuministroTB> stb, String idSuministro) {
+//        for (SuministroTB stb1 : stb) {
+//            if (stb1.getIdSuministro().equals(idSuministro)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
@@ -1051,39 +1041,6 @@ public class FxVentaEstructuraController implements Initializable {
         } else {
             Tools.AlertMessageWarning(window, "Venta", "Seleccione un artículo para quitarlo");
         }
-    }
-
-    public int getTaxValueOperacion(int impuesto) {
-        int valor = 0;
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getOperacion();
-                break;
-            }
-        }
-        return valor;
-    }
-
-    public double getTaxValue(int impuesto) {
-        double valor = 0;
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getValor();
-                break;
-            }
-        }
-        return valor;
-    }
-
-    public String getTaxName(int impuesto) {
-        String valor = "";
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getNombre();
-                break;
-            }
-        }
-        return valor;
     }
 
     private JasperPrint reportA4(VentaTB ventaTB, ArrayList<SuministroTB> list) throws JRException {
@@ -1612,7 +1569,7 @@ public class FxVentaEstructuraController implements Initializable {
             txtCelularCliente.setText("");
             txtCorreoElectronico.setText("");
             txtDireccionCliente.setText("");
-            
+
             Tools.showAlertNotification("/view/image/information_large.png",
                     "Buscando clíente",
                     "Se inicio el proceso de busqueda\n del cliente por su número de ruc.",

@@ -376,7 +376,7 @@ public class FxComprasDetalleController implements Initializable {
                 }
                 if (addOperacion) {
                     SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
+                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
                     suministroTB.setImpuestoValor(sumaOperacion);
                     list_totales.add(suministroTB);
                     addOperacion = false;
@@ -393,7 +393,7 @@ public class FxComprasDetalleController implements Initializable {
                 }
                 if (addImpuesto) {
                     SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setImpuestoArticuloName(arrayArticulos.get(k).getNombre() + ":");
+                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombre() + ":");
                     suministroTB.setImpuestoValor(sumaImpuesto);
                     list_totales.add(suministroTB);
                     addImpuesto = false;

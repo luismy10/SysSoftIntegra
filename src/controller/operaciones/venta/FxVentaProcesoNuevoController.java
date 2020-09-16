@@ -390,8 +390,8 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private void onMouseClickedEfectivo(MouseEvent event) {
         if (state_view_pago) {
-            vbCredito.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
-            vbEfectivo.setStyle("-fx-background-color: #265B7C;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
+            vbCredito.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbEfectivo.setStyle("-fx-background-color:  #007bff;-fx-cursor:hand;-fx-padding:  0.5em;");
 
             lblCredito.setStyle("-fx-text-fill:#1a2226;");
             lblEfectivo.setStyle("-fx-text-fill:white;");
@@ -408,8 +408,8 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private void onMouseClickedCredito(MouseEvent event) {
         if (!state_view_pago) {
-            vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
-            vbCredito.setStyle("-fx-background-color: #265B7C;-fx-cursor:hand;-fx-padding: 0.8333333333333334em;");
+            vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbCredito.setStyle("-fx-background-color: #007bff;-fx-cursor:hand;-fx-padding:  0.5em;");
 
             lblEfectivo.setStyle("-fx-text-fill:#1a2226;");
             lblCredito.setStyle("-fx-text-fill:white;");

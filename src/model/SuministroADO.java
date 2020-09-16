@@ -96,7 +96,7 @@ public class SuministroADO {
                                     ? selectFileImage("./img/" + suministroTB.getIdSuministro() + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
                                     : suministroTB.getImagenTB());
                             //
-                            preparedSuministro.setInt(21, suministroTB.getImpuestoArticulo());
+                            preparedSuministro.setInt(21, suministroTB.getImpuestoId());
                             preparedSuministro.setShort(22, suministroTB.getValorInventario());
                             preparedSuministro.setString(23, suministroTB.getClaveSat());
                             preparedSuministro.setBoolean(24, suministroTB.isTipoPrecio());
@@ -138,7 +138,7 @@ public class SuministroADO {
 //                                        preparedArticulo.setBoolean(18, suministroTB.isLote());
 //                                        preparedArticulo.setBoolean(19, suministroTB.isInventario());
 //                                        preparedArticulo.setString(20, suministroTB.getImagenTB());
-//                                        preparedArticulo.setInt(21, suministroTB.getImpuestoArticulo());
+//                                        preparedArticulo.setInt(21, suministroTB.getImpuestoId());
 //                                        preparedArticulo.setBoolean(22, suministroTB.isValorInventario());
 //                                        preparedArticulo.setString(23, suministroTB.getClaveSat());
 //                                        preparedArticulo.setBoolean(24, suministroTB.isTipoPrecio());
@@ -248,7 +248,7 @@ public class SuministroADO {
                                     : selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(new File(suministroTB.getImagenTB())), new File(suministroTB.getImagenTB())))
                             );
                             //
-                            preparedSuministro.setInt(23, suministroTB.getImpuestoArticulo());
+                            preparedSuministro.setInt(23, suministroTB.getImpuestoId());
                             preparedSuministro.setShort(24, suministroTB.getValorInventario());
                             preparedSuministro.setString(25, suministroTB.getClaveSat());
                             preparedSuministro.setBoolean(26, suministroTB.isTipoPrecio());
@@ -317,7 +317,7 @@ public class SuministroADO {
 //                                preparedArticulo.setBoolean(20, suministroTB.isLote());
 //                                preparedArticulo.setBoolean(21, suministroTB.isInventario());
 //                                preparedArticulo.setString(22, suministroTB.getImagenTB());
-//                                preparedArticulo.setInt(23, suministroTB.getImpuestoArticulo());
+//                                preparedArticulo.setInt(23, suministroTB.getImpuestoId());
 //                                preparedArticulo.setBoolean(24, suministroTB.isValorInventario());
 //                                preparedArticulo.setString(25, suministroTB.getClaveSat());
 //                                preparedArticulo.setString(26, idSuministro);
@@ -452,7 +452,10 @@ public class SuministroADO {
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 suministroTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
-                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
+                suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion")); 
+                suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
+                suministroTB.setImpuestoNombre(rsEmps.getString("ImpuestoNombre")); 
+                suministroTB.setImpuestoValor(rsEmps.getDouble("Valor"));
                 suministroTB.setLote(rsEmps.getBoolean("Lote"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 ImageView image = new ImageView(new Image(suministroTB.getValorInventario() == 1 ? "/view/image/unidad.png" : "/view/image/balanza.png"));
@@ -524,7 +527,7 @@ public class SuministroADO {
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
-                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
+                suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
                 suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
                 suministroTB.setMarcaName(rsEmps.getString("Marca"));
@@ -669,8 +672,8 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setImagenTB(rsEmps.getString("Imagen"));
-                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
-                suministroTB.setImpuestoArticuloName(rsEmps.getString("ImpuestoNombre"));
+                suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
+                suministroTB.setImpuestoNombre(rsEmps.getString("ImpuestoNombre"));
                 suministroTB.setClaveSat(rsEmps.getString("ClaveSat"));
                 suministroTB.setTipoPrecio(rsEmps.getBoolean("TipoPrecio"));
             }
@@ -1155,7 +1158,9 @@ public class SuministroADO {
                 suministroTB.setLote(rsEmps.getBoolean("Lote"));
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setImpuestoOperacion(rsEmps.getInt("Operacion"));
-                suministroTB.setImpuestoArticulo(rsEmps.getInt("Impuesto"));
+                suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
+                suministroTB.setImpuestoNombre(rsEmps.getString("ImpuestoNombre"));
+                suministroTB.setImpuestoValor(rsEmps.getDouble("Valor")); 
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
             }

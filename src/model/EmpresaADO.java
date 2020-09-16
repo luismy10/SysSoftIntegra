@@ -21,7 +21,7 @@ public class EmpresaADO {
                 statementEmpresa = DBUtil.getConnection().prepareStatement("UPDATE EmpresaTB\n"
                         + "SET GiroComercial=?,Nombre = ?,Telefono=?,Celular=?,PaginaWeb=?,Email=?,Domicilio=?,\n"
                         + "TipoDocumento=?,NumeroDocumento=?,\n"
-                        + "RazonSocial=?,NombreComercial=?,Pais=?,Ciudad=?,Provincia=?,Distrito=?,Image=?\n"
+                        + "RazonSocial=?,NombreComercial=?,Image=?\n"
                         + "WHERE IdEmpresa=?");
                 statementEmpresa.setInt(1, empresaTB.getGiroComerial());
                 statementEmpresa.setString(2, empresaTB.getNombre());
@@ -34,12 +34,8 @@ public class EmpresaADO {
                 statementEmpresa.setString(9, empresaTB.getNumeroDocumento());
                 statementEmpresa.setString(10, empresaTB.getRazonSocial());
                 statementEmpresa.setString(11, empresaTB.getNombreComercial());
-                statementEmpresa.setString(12, empresaTB.getPais());
-                statementEmpresa.setInt(13, empresaTB.getCiudad());
-                statementEmpresa.setInt(14, empresaTB.getProvincia());
-                statementEmpresa.setInt(15, empresaTB.getDistrito());
-                statementEmpresa.setBytes(16, empresaTB.getImage());
-                statementEmpresa.setInt(17, empresaTB.getIdEmpresa());
+                statementEmpresa.setBytes(12, empresaTB.getImage());
+                statementEmpresa.setInt(13, empresaTB.getIdEmpresa());
                 statementEmpresa.addBatch();
                 
 
@@ -49,7 +45,7 @@ public class EmpresaADO {
             } else {
                 statementEmpresa = DBUtil.getConnection().prepareStatement("INSERT INTO EmpresaTB"
                         + "(GiroComercial,Nombre,Telefono,Celular,PaginaWeb,Email,Domicilio,\n"
-                        + "TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial,Pais,Ciudad,Provincia,Distrito)\n"
+                        + "TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial)\n"
                         + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 statementEmpresa.setInt(1, empresaTB.getGiroComerial());
                 statementEmpresa.setString(2, empresaTB.getNombre());
@@ -62,10 +58,6 @@ public class EmpresaADO {
                 statementEmpresa.setString(9, empresaTB.getNumeroDocumento());
                 statementEmpresa.setString(10, empresaTB.getRazonSocial());
                 statementEmpresa.setString(11, empresaTB.getNombreComercial());
-                statementEmpresa.setString(12, empresaTB.getPais());
-                statementEmpresa.setInt(13, empresaTB.getCiudad());
-                statementEmpresa.setInt(14, empresaTB.getProvincia());
-                statementEmpresa.setInt(15, empresaTB.getDistrito());
                 statementEmpresa.addBatch();
 
                 statementEmpresa.executeBatch();
@@ -140,10 +132,6 @@ public class EmpresaADO {
                 empresaTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 empresaTB.setRazonSocial(rsEmps.getString("RazonSocial"));
                 empresaTB.setNombreComercial(rsEmps.getString("NombreComercial"));
-                empresaTB.setPais(rsEmps.getString("Pais"));
-                empresaTB.setCiudad(rsEmps.getInt("Ciudad"));
-                empresaTB.setProvincia(rsEmps.getInt("Provincia"));
-                empresaTB.setDistrito(rsEmps.getInt("Distrito"));
                 empresaTB.setImage(rsEmps.getBytes("Image"));
             }
         } catch (SQLException e) {

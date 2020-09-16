@@ -12,10 +12,6 @@ public class ProveedorTB {
     private String numeroDocumento;
     private String razonSocial;
     private String nombreComercial;
-    private String pais;
-    private int ciudad;
-    private int provincia;
-    private int distrito;
     private int ambito;
     private int estado;
     private String telefono;
@@ -85,38 +81,6 @@ public class ProveedorTB {
 
     public void setNombreComercial(String nombreComercial) {
         this.nombreComercial = nombreComercial != null ? nombreComercial : "";
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
-    public int getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(int ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public int getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(int provincia) {
-        this.provincia = provincia;
-    }
-
-    public int getDistrito() {
-        return distrito;
-    }
-
-    public void setDistrito(int distrito) {
-        this.distrito = distrito;
     }
 
     public int getAmbito() {

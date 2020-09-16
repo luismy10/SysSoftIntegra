@@ -69,8 +69,8 @@ public class SuministroTB {
     private boolean tipoPrecio;
 
     private int impuestoOperacion;
-    private int impuestoArticulo;
-    private String impuestoArticuloName;
+    private int impuestoId;
+    private String impuestoNombre;
     private double impuestoSumado;
     private double impuestoValor;
 
@@ -479,20 +479,20 @@ public class SuministroTB {
         this.impuestoOperacion = impuestoOperacion;
     }
 
-    public int getImpuestoArticulo() {
-        return impuestoArticulo;
+    public int getImpuestoId() {
+        return impuestoId;
     }
 
-    public void setImpuestoArticulo(int impuestoArticulo) {
-        this.impuestoArticulo = impuestoArticulo;
+    public void setImpuestoId(int impuestoId) {
+        this.impuestoId = impuestoId;
     }
 
-    public String getImpuestoArticuloName() {
-        return impuestoArticuloName;
+    public String getImpuestoNombre() {
+        return impuestoNombre;
     }
 
-    public void setImpuestoArticuloName(String impuestoArticuloName) {
-        this.impuestoArticuloName = impuestoArticuloName == null ? "" : impuestoArticuloName;
+    public void setImpuestoNombre(String impuestoNombre) {
+        this.impuestoNombre = impuestoNombre == null ? "" : impuestoNombre;
     }
 
     public double getImpuestoSumado() {

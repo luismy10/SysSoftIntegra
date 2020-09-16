@@ -34,43 +34,42 @@
                               <Separator HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <HBox style="-fx-padding: 0px 0px  0.4166666666666667em 0px;">
+                        <HBox style="-fx-padding: 0px 0px  0.4166666666666667em 0px; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <VBox fx:id="vbEfectivo" alignment="CENTER" onMouseClicked="#onMouseClickedEfectivo" style="-fx-cursor: hand; -fx-background-color: #265B7C;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbEfectivo" alignment="CENTER" onMouseClicked="#onMouseClickedEfectivo" style="-fx-cursor: hand; -fx-background-color: #007bff; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="lblEfectivo" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelOpenSansRegular15" text="Al contado" textFill="WHITE">
                                        <graphic>
-                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/efectivo.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                        <VBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                          <Insets />
                                        </VBox.margin>
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" style="-fx-cursor: hand;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbCredito" alignment="CENTER" onMouseClicked="#onMouseClickedCredito" style="-fx-cursor: hand; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelOpenSansRegular15" text="Crédito" textFill="#020203">
                                        <graphic>
-                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../image/client.png" />
+                                                <Image url="@../../image/generar.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                        <VBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                          <Insets />
                                        </VBox.margin>
                                     </Label>
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
-                        <Separator prefWidth="200.0" />
                         <HBox alignment="TOP_CENTER">
                            <children>
                               <AnchorPane>
@@ -152,12 +151,11 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <Separator prefWidth="200.0" />
-                        <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                        <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Aceptar">
+                              <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Completar Venta">
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/save.png" />
                                        </image>

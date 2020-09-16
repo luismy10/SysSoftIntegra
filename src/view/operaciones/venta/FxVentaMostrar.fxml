@@ -21,7 +21,7 @@
                <children>
                   <Label styleClass="labelRobotoBold15" text="Ventas realizadas" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/sales.png" />
                            </image>
@@ -173,7 +173,7 @@
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label styleClass="labelRobotoBold13" text="TOTAL:" textFill="#020203" />
-                                          <Label fx:id="lblTotal" styleClass="labelRobotoBold13" text="0.00" textFill="#020203" />
+                                          <Label fx:id="lblTotal" styleClass="labelRobotoBold15" text="0.00" textFill="#020203" />
                                        </children>
                                     </HBox>
                                  </children>

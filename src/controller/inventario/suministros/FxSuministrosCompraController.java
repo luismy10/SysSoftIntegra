@@ -186,7 +186,7 @@ public class FxSuministrosCompraController implements Initializable {
         onActionImpuesto();
         loteSuministro = lote;
         for (ImpuestoTB impuestoTB : cbImpuesto.getItems()) {
-            if (suministroTB.getImpuestoArticulo() == impuestoTB.getIdImpuesto()) {
+            if (suministroTB.getImpuestoId() == impuestoTB.getIdImpuesto()) {
                 cbImpuesto.getSelectionModel().select(impuestoTB);
                 break;
             }
@@ -262,7 +262,7 @@ public class FxSuministrosCompraController implements Initializable {
         this.loteTBs = loteTBs;
 
         for (ImpuestoTB impuestoTB : cbImpuesto.getItems()) {
-            if (detalleCompraTB.getSuministroTB().getImpuestoArticulo() == impuestoTB.getIdImpuesto()) {
+            if (detalleCompraTB.getSuministroTB().getImpuestoId() == impuestoTB.getIdImpuesto()) {
                 cbImpuesto.getSelectionModel().select(impuestoTB);
                 break;
             }
@@ -395,7 +395,7 @@ public class FxSuministrosCompraController implements Initializable {
         suministrosTB.setPrecioMargenGeneral((short) recalculado);
         suministrosTB.setPrecioUtilidadGeneral(suministrosTB.getPrecioVentaGeneral() - Double.parseDouble(txtCosto.getText()));
 
-        suministrosTB.setImpuestoArticulo(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
+        suministrosTB.setImpuestoId(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
         suministrosTB.setTipoPrecio(rbPrecioNormal.isSelected());
         //      
         detalleCompraTB.setSuministroTB(suministrosTB);
