@@ -489,19 +489,18 @@ public class VentaADO {
         ArrayList<Object> objects = new ArrayList<>();
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
-
             try {
-
                 statementVenta = DBUtil.getConnection().prepareStatement("{call Sp_Obtener_Venta_ById(?)}");
                 statementVenta.setString(1, idVenta);
                 ResultSet resultSetVenta = statementVenta.executeQuery();
                 VentaTB ventaTB = null;
                 if (resultSetVenta.next()) {
                     ventaTB = new VentaTB();
-                    ventaTB.setFechaVenta(resultSetVenta.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+                    ventaTB.setFechaVenta(resultSetVenta.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")));
                     ventaTB.setHoraVenta(resultSetVenta.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     //Cliente start
                     ClienteTB clienteTB = new ClienteTB();
+                    clienteTB.setIdAuxiliar(resultSetVenta.getString("IdAuxiliar")); 
                     clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
                     clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
@@ -511,6 +510,7 @@ public class VentaADO {
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
                     ventaTB.setClienteTB(clienteTB);
                     //Cliente end
+                    ventaTB.setCodigoAlterno(resultSetVenta.getString("CodigoAlterno")); 
                     ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
                     ventaTB.setSerie(resultSetVenta.getString("Serie"));
                     ventaTB.setNumeracion(resultSetVenta.getString("Numeracion"));

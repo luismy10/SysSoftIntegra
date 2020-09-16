@@ -161,7 +161,6 @@ public class FxVentaDetalleController implements Initializable {
     private double totalVenta;
 
     private double efectivo, tarjeta, vuelto;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -202,8 +201,8 @@ public class FxVentaDetalleController implements Initializable {
                     ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
                     if (ventaTB != null) {
                         lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento()+"-"+ventaTB.getClienteTB().getInformacion());
-                        lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono()+"-"+ventaTB.getClienteTB().getCelular());
+                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + "-" + ventaTB.getClienteTB().getInformacion());
+                        lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
                         lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
                         lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
                         lblComprobante.setText(ventaTB.getComprobanteName());
@@ -353,7 +352,7 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addOperacion) {
-                    gpOperaciones.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion(),Pos.CENTER_LEFT), 0, k + 1);
+                    gpOperaciones.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion(), Pos.CENTER_LEFT), 0, k + 1);
                     gpOperaciones.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, k + 1);
                     addOperacion = false;
                     sumaOperacion = 0;
@@ -543,6 +542,7 @@ public class FxVentaDetalleController implements Initializable {
         map.put("SUB_IMPORTE", lblSubTotal.getText());
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", lblTotal.getText());
+        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO+"|"+ventaTB.getCodigoAlterno()+"|"+ventaTB.getSerie()+"|"+ventaTB.getNumeracion()+"|"+Tools.roundingValue(ventaTB.getImpuesto(), 2)+"|"+Tools.roundingValue(total, 2)+"|"+ventaTB.getFechaVenta()+"|"+ventaTB.getClienteTB().getIdAuxiliar()+"|"+ventaTB.getClienteTB().getNumeroDocumento()+"|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
 //            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
@@ -711,7 +711,7 @@ public class FxVentaDetalleController implements Initializable {
             } else {
                 Tools.showAlertNotification("/view/image/error_large.png",
                         "Envío de impresión",
-                         "Se producto un problema por problemas de la impresora\n" + result,
+                        "Se producto un problema por problemas de la impresora\n" + result,
                         Duration.seconds(10),
                         Pos.CENTER);
             }

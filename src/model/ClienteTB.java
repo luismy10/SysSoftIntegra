@@ -21,6 +21,7 @@ public class ClienteTB {
     private boolean predeterminado;
     private boolean sistema;
     private ImageView imagePredeterminado;
+    private String idAuxiliar;
 
     public ClienteTB() {
 
@@ -165,6 +166,14 @@ public class ClienteTB {
 
     public void setImagePredeterminado(ImageView imagePredeterminado) {
         this.imagePredeterminado = imagePredeterminado;
+    }
+
+    public String getIdAuxiliar() {
+        return idAuxiliar;
+    }
+
+    public void setIdAuxiliar(String idAuxiliar) {
+        this.idAuxiliar = idAuxiliar;
     }
 
     @Override
