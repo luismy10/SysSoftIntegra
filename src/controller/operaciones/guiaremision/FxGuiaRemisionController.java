@@ -498,4 +498,12 @@ public class FxGuiaRemisionController implements Initializable {
         this.vbPrincipal = vbPrincipal;
     }
 
+    @FXML
+    private void onKeyPressedAgregar(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionAgregar(ActionEvent event) {
+    }
+
 }
