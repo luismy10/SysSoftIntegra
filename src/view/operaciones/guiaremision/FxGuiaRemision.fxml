@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -12,6 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <ScrollPane fx:id="spWindow" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.guiaremision.FxGuiaRemisionController">
    <content>
@@ -28,6 +30,14 @@
                         </ImageView>
                      </graphic>
                   </Label>
+                  <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Roboto" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ProgressIndicator prefHeight="30.0" prefWidth="30.0" style="-fx-progress-color: #23283a;" />
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
@@ -41,11 +51,20 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionToReload" onKeyPressed="#onKeyPressedToReload" styleClass="buttonLight" text="Recargar">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/reload.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button mnemonicParsing="false" onAction="#onActionPrevisualizar" onKeyPressed="#onKeyPressedPrevisualizar" styleClass="buttonLight" text="Previsualizar">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/search_caja.png" />
+                              <Image url="@../../image/sumisnistro.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -77,8 +96,8 @@
                                     </Label>
                                     <HBox VBox.vgrow="ALWAYS">
                                        <children>
-                                          <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Escribe el número de RUC O Razón Social" HBox.hgrow="ALWAYS" />
-                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLight" text="Agregar Nuevo Cliente">
+                                          <ComboBox fx:id="cbCliente" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese el Cliente" HBox.hgrow="ALWAYS" />
+                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionToClient" onKeyPressed="#onKeyPressedToClient" styleClass="buttonLight" text="Agregar Nuevo Cliente">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -94,7 +113,7 @@
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto13" text=" Email (opcional):" textFill="#020203" />
-                                    <TextField prefHeight="30.0" prefWidth="240.0" promptText="Escribe aquí el email del cliente" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtEmail" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Escribe aquí el email del cliente" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -118,7 +137,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione el Motivo" VBox.vgrow="ALWAYS" />
+                                    <ComboBox fx:id="cbMotivoTraslado" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione el Motivo" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -132,7 +151,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox editable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione la Modalidad de Transporte" VBox.vgrow="ALWAYS" />
+                                    <ComboBox fx:id="cbModalidadTraslado" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione la Modalidad de Transporte" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -146,7 +165,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <DatePicker editable="false" maxWidth="1.7976931348623157E308" promptText="00/00/0000" VBox.vgrow="ALWAYS" />
+                                    <DatePicker fx:id="dtFechaTraslado" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="240.0" promptText="00/00/0000" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -164,7 +183,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField prefHeight="30.0" prefWidth="240.0" promptText="Ingrese en Kilogramos" styleClass="text-field-normal" />
+                                    <TextField fx:id="txtPesoBruto" maxHeight="1.7976931348623157E308" onKeyTyped="#onKeyTypedPesoBruto" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese en Kilogramos" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -178,19 +197,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField prefHeight="30.0" prefWidth="240.0" promptText="Escriba la cantidad de Bultos" styleClass="text-field-normal" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="labelRoboto13" text="Número de Contenedor" textFill="#020203" />
-                                    <TextField prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
-                                 </children>
-                              </VBox>
-                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="labelRoboto13" text="Código de Puerto" textFill="#020203" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione una Opción" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtNumeroBultos" maxHeight="1.7976931348623157E308" onKeyTyped="#onKeyTypedNumeroBultos" prefHeight="30.0" prefWidth="240.0" promptText="Escriba la cantidad de Bultos" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                            </children>
@@ -214,7 +221,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione el Tipo de Documento" />
+                                    <ComboBox fx:id="cbTipoDocumento" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione el Tipo de Documento" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -228,7 +235,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField prefHeight="30.0" prefWidth="240.0" promptText="Número de documento" styleClass="text-field-normal" />
+                                    <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="240.0" promptText="Número de documento" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -242,7 +249,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField prefHeight="30.0" prefWidth="240.0" promptText="Nombre o Razón Social" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtNombreConducto" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Nombre o Razón Social" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -256,7 +263,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Número de Placa del Transaporte" VBox.vgrow="ALWAYS" />
+                                    <TextField fx:id="txtNumeroPlacaVehiculo" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Nombre o Razón Social" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                            </children>
@@ -282,7 +289,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Dirección de Partida" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="txtDireccionPartida" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese la Dirección de Partida" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
@@ -296,7 +303,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione una Opción" VBox.vgrow="ALWAYS" />
+                                          <ComboBox fx:id="cbUbigeoPartida" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese el Ubigeo de Partida" VBox.vgrow="ALWAYS" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -320,7 +327,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Dirección de Llegada" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="txtDireccionLlegada" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese la Dirección de Llegada" styleClass="text-field-normal" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
@@ -334,7 +341,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione una Opción" VBox.vgrow="ALWAYS" />
+                                          <ComboBox fx:id="cbUbigeoLlegada" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese el Ubigeo de Llegada" VBox.vgrow="ALWAYS" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -352,19 +359,32 @@
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Tipo de Comprobante:" textFill="#020203" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccion el Tipo de Comprobante" VBox.vgrow="ALWAYS" />
+                                    <ComboBox fx:id="cbTipoComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccion el Tipo de Comprobante" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Serie:" textFill="#020203" />
-                                    <TextField prefHeight="30.0" prefWidth="240.0" promptText="xxxx" styleClass="text-field-normal" />
+                                    <TextField fx:id="txtSerie" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="xxxx" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label contentDisplay="RIGHT" styleClass="labelRoboto14" text="Número:" textFill="#020203" />
-                                    <TextField prefHeight="30.0" prefWidth="240.0" promptText="xxxxxxxx" styleClass="text-field-normal" />
+                                    <TextField fx:id="txtNumeracion" maxHeight="1.7976931348623157E308" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" prefWidth="240.0" promptText="xxxxxxxx" styleClass="text-field-normal" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="BOTTOM_CENTER" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBuscarVenta" onKeyPressed="#onKeyPressedBuscarVenta" styleClass="buttonLight" text="Buscar Venta">
+                                       <graphic>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/search_caja.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
                                  </children>
                               </VBox>
                            </children>
@@ -381,9 +401,9 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT">
                                        <children>
-                                          <Button mnemonicParsing="false" styleClass="buttonLightSuccess" text="Agregar">
+                                          <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLight" text="Agregar">
                                              <graphic>
-                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../image/plus.png" />
                                                    </image>

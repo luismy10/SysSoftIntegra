@@ -50,7 +50,7 @@ public class FxDetalleProcesoController implements Initializable {
         } else if (Tools.isText(txtDetalle.getText())) {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle", "Ingrese el nombre del detalle", false);
         } else {
-            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
+            short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Detalle", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
                 DetalleTB detalleTB = new DetalleTB();
                 detalleTB.setIdDetalle(idDetalle);

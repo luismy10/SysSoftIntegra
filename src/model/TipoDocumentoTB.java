@@ -8,6 +8,7 @@ public class TipoDocumentoTB {
     private int idTipoDocumento;
     private String nombre;
     private String serie;
+    private int numeracion;
     private boolean predeterminado;
     private boolean sistema;
     private String codigoAlterno;
@@ -66,6 +67,14 @@ public class TipoDocumentoTB {
 
     public void setSerie(String serie) {
         this.serie = serie;
+    }
+
+    public int getNumeracion() {
+        return numeracion;
+    }
+
+    public void setNumeracion(int numeracion) {
+        this.numeracion = numeracion;
     }
 
     public boolean isPredeterminado() {

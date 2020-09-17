@@ -47,26 +47,29 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableColumn<TipoDocumentoTB, String> tcSerie;
     @FXML
+    private TableColumn<TipoDocumentoTB, String> tcNumeracion;
+    @FXML
     private TableColumn<TipoDocumentoTB, String> tcCodigoAlterno;
     @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
 
     private AnchorPane vbPrincipal;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcTipoComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie()));
+        tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
         tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigoAlterno()));
         tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
-        tcTipoComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
-        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcTipoComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.26));
+        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
     }
 
     public void fillTabletTipoDocumento() {
@@ -131,6 +134,7 @@ public class FxTipoDocumentoController implements Initializable {
             controller.initUpdate(tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                     tvList.getSelectionModel().getSelectedItem().getNombre(),
                     tvList.getSelectionModel().getSelectedItem().getSerie(),
+                    tvList.getSelectionModel().getSelectedItem().getNumeracion(),
                     tvList.getSelectionModel().getSelectedItem().getCodigoAlterno());
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());
@@ -165,15 +169,14 @@ public class FxTipoDocumentoController implements Initializable {
             if (value == 1) {
                 String result = TipoDocumentoADO.EliminarTipoDocumento(tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 if (result.equalsIgnoreCase("removed")) {
-                    Tools.AlertMessageInformation(window,  "Tipo de comprobante", "Se elimino correctamente el tipo de documento.");
+                    Tools.AlertMessageInformation(window, "Tipo de comprobante", "Se elimino correctamente el tipo de documento.");
                     fillTabletTipoDocumento();
                 } else if (result.equalsIgnoreCase("venta")) {
-                    Tools.AlertMessageWarning(window,  "Tipo de comprobante", "El tipo de documento esta ligado a una venta.");
-                } else if(result.equalsIgnoreCase("sistema")){
-                    Tools.AlertMessageWarning(window,  "Tipo de comprobante", "El tipo de documento no se puede eliminar porque es del sistema.");                    
-                } 
-                else {
-                    Tools.AlertMessageError(window,  "Tipo de comprobante", result);
+                    Tools.AlertMessageWarning(window, "Tipo de comprobante", "El tipo de documento esta ligado a una venta.");
+                } else if (result.equalsIgnoreCase("sistema")) {
+                    Tools.AlertMessageWarning(window, "Tipo de comprobante", "El tipo de documento no se puede eliminar porque es del sistema.");
+                } else {
+                    Tools.AlertMessageError(window, "Tipo de comprobante", result);
                 }
             }
         } else {
@@ -231,7 +234,7 @@ public class FxTipoDocumentoController implements Initializable {
 
     @FXML
     private void onMouseClickedList(MouseEvent event) throws IOException {
-        if(event.getClickCount() == 2){
+        if (event.getClickCount() == 2) {
             openWindowEdit();
         }
     }

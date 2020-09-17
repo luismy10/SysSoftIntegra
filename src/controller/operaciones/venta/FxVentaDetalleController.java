@@ -174,83 +174,75 @@ public class FxVentaDetalleController implements Initializable {
 
     public void setInitComponents(String idVenta) {
         this.idVenta = idVenta;
-        try {
 
-            ExecutorService executor = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
+        ExecutorService executor = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
-            Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
-                @Override
-                protected ArrayList<Object> call() {
-                    arrayArticulos.clear();
-                    ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                        arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado()));
-                    });
-                    ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
-                    return objects;
-                }
-            };
-            task.setOnSucceeded(e -> {
-                ArrayList<Object> objects = task.getValue();
-                if (!objects.isEmpty()) {
-                    ventaTB = (VentaTB) objects.get(0);
-                    EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
-                    ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
-                    if (ventaTB != null) {
-                        lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + "-" + ventaTB.getClienteTB().getInformacion());
-                        lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
-                        lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
-                        lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
-                        lblComprobante.setText(ventaTB.getComprobanteName());
-                        lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
-                        lblObservaciones.setText(ventaTB.getObservaciones());
-                        lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
-                        btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
-                        lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
-                        efectivo = ventaTB.getEfectivo();
-                        tarjeta = ventaTB.getTarjeta();
-                        vuelto = ventaTB.getVuelto();
-                        totalVenta = ventaTB.getTotal();
-
-                        lblEfectivo.setText(Tools.roundingValue(efectivo, 2));
-                        lblTarjeta.setText(Tools.roundingValue(tarjeta, 2));
-                        lblValor.setText(Tools.roundingValue(totalVenta, 2));
-                        lblVuelto.setText(Tools.roundingValue(vuelto, 2));
-                    }
-                    if (empleadoTB != null) {
-                        lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
-                    }
-                    fillVentasDetalleTable(empList);
-                    lblLoad.setVisible(false);
-                } else {
-                    btnReporte.setDisable(true);
-                    btnCancelarVenta.setDisable(true);
-                    btnImprimir.setDisable(true);
-                    btnGuiaRemision.setDisable(true);
-                    lblLoad.setVisible(false);
-                }
-
-            });
-            task.setOnScheduled(e -> {
-                lblLoad.setVisible(true);
-            });
-            task.setOnRunning(e -> {
-                lblLoad.setVisible(true);
-            });
-            task.setOnFailed(e -> {
-                lblLoad.setVisible(false);
-            });
-            executor.execute(task);
-            if (!executor.isShutdown()) {
-                executor.shutdown();
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            protected ArrayList<Object> call() {
+                arrayArticulos.clear();
+                ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
+                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+                });
+                ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
+                return objects;
             }
-        } catch (Exception ex) {
-            System.out.println(ex.getLocalizedMessage());
+        };
+        task.setOnSucceeded(e -> {
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                ventaTB = (VentaTB) objects.get(0);
+                EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
+                ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
+                if (ventaTB != null) {
+                    lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
+                    lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + "-" + ventaTB.getClienteTB().getInformacion());
+                    lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
+                    lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
+                    lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
+                    lblComprobante.setText(ventaTB.getComprobanteName());
+                    lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+                    lblObservaciones.setText(ventaTB.getObservaciones());
+                    lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
+                    btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
+                    lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+                    efectivo = ventaTB.getEfectivo();
+                    tarjeta = ventaTB.getTarjeta();
+                    vuelto = ventaTB.getVuelto();
+                    totalVenta = ventaTB.getTotal();
+
+                    lblEfectivo.setText(Tools.roundingValue(efectivo, 2));
+                    lblTarjeta.setText(Tools.roundingValue(tarjeta, 2));
+                    lblValor.setText(Tools.roundingValue(totalVenta, 2));
+                    lblVuelto.setText(Tools.roundingValue(vuelto, 2));
+                }
+                if (empleadoTB != null) {
+                    lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
+                }
+                fillVentasDetalleTable(empList);
+                lblLoad.setVisible(false);
+            } else {
+                btnReporte.setDisable(true);
+                btnCancelarVenta.setDisable(true);
+                btnImprimir.setDisable(true);
+                btnGuiaRemision.setDisable(true);
+                lblLoad.setVisible(false);
+            }
+
+        });
+        task.setOnScheduled(e -> {
+            lblLoad.setVisible(true);
+        });
+        task.setOnFailed(e -> {
             lblLoad.setVisible(false);
+        });
+        executor.execute(task);
+        if (!executor.isShutdown()) {
+            executor.shutdown();
         }
     }
 
@@ -542,7 +534,7 @@ public class FxVentaDetalleController implements Initializable {
         map.put("SUB_IMPORTE", lblSubTotal.getText());
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", lblTotal.getText());
-        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO+"|"+ventaTB.getCodigoAlterno()+"|"+ventaTB.getSerie()+"|"+ventaTB.getNumeracion()+"|"+Tools.roundingValue(ventaTB.getImpuesto(), 2)+"|"+Tools.roundingValue(total, 2)+"|"+ventaTB.getFechaVenta()+"|"+ventaTB.getClienteTB().getIdAuxiliar()+"|"+ventaTB.getClienteTB().getNumeroDocumento()+"|");
+        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(total, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
 //            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());

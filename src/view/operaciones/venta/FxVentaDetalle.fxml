@@ -218,7 +218,7 @@
                               </VBox>
                               <VBox>
                                  <children>
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;">
+                                    <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
@@ -238,20 +238,20 @@
                                        </children>
                                     </GridPane>
                                     <Pane minHeight="1.0" prefHeight="1.0" style="-fx-border-color: #999999; -fx-border-width: 1px;" />
-                                    <GridPane fx:id="gpOperaciones" style="-fx-hgap: 0.8333333333333334em;">
+                                    <GridPane fx:id="gpOperaciones" style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                        </columnConstraints>
                                     </GridPane>
-                                    <GridPane fx:id="gpImpuestos" style="-fx-hgap: 0.8333333333333334em;">
+                                    <GridPane fx:id="gpImpuestos" style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                        </columnConstraints>
                                     </GridPane>
                                     <Pane minHeight="1.0" prefHeight="1.0" style="-fx-border-color: #999999; -fx-border-width: 1px;" />
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;">
+                                    <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />

@@ -282,7 +282,7 @@ public class FxBienvenidaController implements Initializable {
             ImpuestoTB impuestoTB = new ImpuestoTB();
             impuestoTB.setOperacion(2);
             impuestoTB.setNombre("NINGUNO(%)");
-            impuestoTB.setValor(0);
+            impuestoTB.setValor(1);
             impuestoTB.setCodigo("");
             impuestoTB.setNumeracion("");
             impuestoTB.setNombreImpuesto("");
@@ -294,6 +294,7 @@ public class FxBienvenidaController implements Initializable {
             TipoDocumentoTB tipoDocumentoTB = new TipoDocumentoTB();
             tipoDocumentoTB.setNombre("TICKET");
             tipoDocumentoTB.setSerie("T001");
+            tipoDocumentoTB.setNumeracion(0);
             tipoDocumentoTB.setCodigoAlterno("");
             tipoDocumentoTB.setPredeterminado(true);
             tipoDocumentoTB.setSistema(true);

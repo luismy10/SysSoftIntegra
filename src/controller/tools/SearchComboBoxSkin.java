@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Skin;
@@ -34,6 +35,7 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         });
 
         itemView = new ListView<>();
+        itemView.setPrefHeight(260);
         itemView.setItems(searchComboBox.getFilterList());
 
         // administrar la seleccion de un nuevo item
@@ -103,7 +105,7 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         box.setStyle("-fx-background-color:white;-fx-border-color:#999;-fx-border-width:1px;");
         box.setMinWidth(getSkinnable().getWidth());
         box.setPrefWidth(getSkinnable().getWidth());
-        box.setMaxWidth(Double.MAX_VALUE);
+        box.setMaxWidth(Control.USE_COMPUTED_SIZE);
         VBox.setVgrow(box, Priority.ALWAYS);
         return box;
     }
