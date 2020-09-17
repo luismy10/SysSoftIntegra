@@ -55,7 +55,7 @@ public class UbigeoTB {
 
     @Override
     public String toString() {
-        return departamento + "-" + provincia + "-" + distrito + '}';
+        return departamento + " - " + provincia + " - " + distrito + '}';
     }
    
    

@@ -83,11 +83,11 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private TextField txtDireccionPartida;
     @FXML
-    private ComboBox<?> cbUbigeoPartida;
+    private ComboBox<UbigeoTB> cbUbigeoPartida;
     @FXML
     private TextField txtDireccionLlegada;
     @FXML
-    private ComboBox<?> cbUbigeoLlegada;
+    private ComboBox<UbigeoTB> cbUbigeoLlegada;
     @FXML
     private ComboBox<TipoDocumentoTB> cbTipoComprobante;
     @FXML
@@ -174,10 +174,11 @@ public class FxGuiaRemisionController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaTraslado);
         loadUbigeoPartida();
         loadUbigeoLlegada();
+        loadComponents();
     }
 
     private void loadUbigeoPartida() {
-        SearchComboBox<ClienteTB> searchComboBoxUbigeoPartida = new SearchComboBox<>(cbUbigeoPartida, false);
+        SearchComboBox<UbigeoTB> searchComboBoxUbigeoPartida = new SearchComboBox<>(cbUbigeoPartida, false);
         searchComboBoxUbigeoPartida.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBoxUbigeoPartida.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
@@ -229,7 +230,7 @@ public class FxGuiaRemisionController implements Initializable {
     }
 
     private void loadUbigeoLlegada() {
-        SearchComboBox<ClienteTB> searchComboBoxUbigeoLlegada = new SearchComboBox<>(cbUbigeoLlegada, false);
+        SearchComboBox<UbigeoTB> searchComboBoxUbigeoLlegada = new SearchComboBox<>(cbUbigeoLlegada, false);
         searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
@@ -338,9 +339,15 @@ public class FxGuiaRemisionController implements Initializable {
                     List<TipoDocumentoTB> tipoComprobante = (List<TipoDocumentoTB>) objects.get(3);
                     tipoComprobante.forEach(cbTipoComprobante.getItems()::add);
                 }
-
+                lblLoad.setVisible(false);
+            } else {
+                lblLoad.setVisible(false);
             }
         });
+        executor.execute(task);
+        if (!executor.isShutdown()) {
+            executor.shutdown();
+        }
     }
 
     private void reportGuiaRemision() {
@@ -429,7 +436,7 @@ public class FxGuiaRemisionController implements Initializable {
             event.consume();
         }
     }
-    
+
     @FXML
     private void onKeyTypedNumeracion(KeyEvent event) {
         char c = event.getCharacter().charAt(0);

@@ -151,7 +151,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox fx:id="cbModalidadTraslado" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione la Modalidad de Transporte" VBox.vgrow="ALWAYS" />
+                                    <ComboBox fx:id="cbModalidadTraslado" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione la Modalidad de Transporte" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
