@@ -307,7 +307,6 @@ public class FxSuministrosListaController implements Initializable {
                 if (!validateDuplicate(movimientosProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
                     movimientosProcesoController.addSuministroLista(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
                     Tools.Dispose(apWindow);
-
                 } else {
                     Tools.AlertMessageWarning(apWindow, "Movimiento", "Ya hay un producto con las mismas características.");
                 }
