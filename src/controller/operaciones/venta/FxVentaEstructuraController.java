@@ -393,6 +393,7 @@ public class FxVentaEstructuraController implements Initializable {
                 final Double value = Tools.isNumeric(data.getNewValue())
                         ? (Double.parseDouble(data.getNewValue()) <= 0 ? Double.parseDouble(data.getOldValue()) : Double.parseDouble(data.getNewValue()))
                         : Double.parseDouble(data.getOldValue());
+                                
                 SuministroTB suministroTB = data.getTableView().getItems().get(data.getTablePosition().getRow());
 
                 if (!unidades_cambio_precio && suministroTB.getUnidadVenta() == 1
@@ -407,13 +408,16 @@ public class FxVentaEstructuraController implements Initializable {
                     suministroTB.setDescuentoCalculado(porcentajeRestante);
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-                    suministroTB.setPrecioVentaGeneralUnico(value);
-                    suministroTB.setPrecioVentaGeneralReal(preciocalculado);
+                    double valor_sin_impuesto = preciocalculado/((suministroTB.getImpuestoValor()/100.00)+1);
+                    double impuesto_generado = valor_sin_impuesto * (suministroTB.getImpuestoValor()/100.00);
+                    double nuevo_valor = valor_sin_impuesto + impuesto_generado;
+                    
+                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+                    suministroTB.setPrecioVentaGeneralReal(valor_sin_impuesto);
 
-                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
 
-                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
-                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto_generado);
+                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto_generado);
 
                     suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
                     suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
