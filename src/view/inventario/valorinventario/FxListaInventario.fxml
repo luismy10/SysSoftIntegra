@@ -63,14 +63,14 @@
             </HBox>
             <HBox style="-fx-padding: 0px  0.8333333333333334em 0px  0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvLista" prefHeight="360.0" prefWidth="870.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvLista" prefHeight="360.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                      <TableColumn fx:id="tcDescripcion" prefWidth="300.0" text="Descripción" />
+                      <TableColumn fx:id="tcDescripcion" prefWidth="280.0" text="Descripción" />
                         <TableColumn fx:id="tcCategoria" prefWidth="120.0" text="Categoría" />
                         <TableColumn fx:id="tcMarca" prefWidth="120.0" text="Marca" />
                         <TableColumn fx:id="tcCantidad" prefWidth="120.0" text="Cantidad" />
-                        <TableColumn fx:id="tcStock" prefWidth="140.0" text="Stock Mín./Máx." />
+                        <TableColumn fx:id="tcStock" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Stock Mín./Máx." />
                     </columns>
                   </TableView>
                </children>

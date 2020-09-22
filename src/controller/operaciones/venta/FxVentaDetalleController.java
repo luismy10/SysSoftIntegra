@@ -104,8 +104,6 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Button btnCancelarVenta;
     @FXML
-    private GridPane gpOperaciones;
-    @FXML
     private GridPane gpImpuestos;
     @FXML
     private Button btnReporte;
@@ -326,30 +324,30 @@ public class FxVentaDetalleController implements Initializable {
             arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
             lblSubTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subTotalImporte, 2));
 
-            gpOperaciones.getChildren().clear();
+//            gpOperaciones.getChildren().clear();
             gpImpuestos.getChildren().clear();
 
-            boolean addOperacion = false;
-            double sumaOperacion = 0;
+//            boolean addOperacion = false;
+//            double sumaOperacion = 0;
 
             boolean addImpuesto = false;
             double sumaImpuesto = 0;
             double totalImpuestos = 0;
 
-            for (int k = 0; k < arrayArticulos.size(); k++) {
-                for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
-                        addOperacion = true;
-                        sumaOperacion += arrList.get(i).getSubImporteDescuento();
-                    }
-                }
-                if (addOperacion) {
-                    gpOperaciones.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion(), Pos.CENTER_LEFT), 0, k + 1);
-                    gpOperaciones.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, k + 1);
-                    addOperacion = false;
-                    sumaOperacion = 0;
-                }
-            }
+//            for (int k = 0; k < arrayArticulos.size(); k++) {
+//                for (int i = 0; i < arrList.size(); i++) {
+//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
+//                        addOperacion = true;
+//                        sumaOperacion += arrList.get(i).getSubImporteDescuento();
+//                    }
+//                }
+//                if (addOperacion) {
+//                    gpOperaciones.add(addLabelTitle(arrayArticulos.get(k).getNombreOperacion(), Pos.CENTER_LEFT), 0, k + 1);
+//                    gpOperaciones.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaOperacion, 2), Pos.CENTER_RIGHT), 1, k + 1);
+//                    addOperacion = false;
+//                    sumaOperacion = 0;
+//                }
+//            }
 
             for (int k = 0; k < arrayArticulos.size(); k++) {
                 for (int i = 0; i < arrList.size(); i++) {
@@ -359,8 +357,8 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addImpuesto) {
-                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombre(), Pos.CENTER_LEFT), 0, k + 1);
-                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, k + 1);
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombre(), Pos.CENTER_LEFT), 0, (k + 1)-1);
+                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, (k + 1)-1);
                     totalImpuestos += sumaImpuesto;
                     addImpuesto = false;
                     sumaImpuesto = 0;
@@ -392,9 +390,11 @@ public class FxVentaDetalleController implements Initializable {
 
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill:#000000;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
+        label.setStyle("-fx-text-fill: #020203;-fx-padding:  0.4166666666666667em 0em  0.4166666666666667em 0em");
         label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);
+        label.setMinWidth(Control.USE_COMPUTED_SIZE);
+        label.setMinHeight(Control.USE_COMPUTED_SIZE);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
         label.setMaxWidth(Double.MAX_VALUE);
@@ -407,6 +407,8 @@ public class FxVentaDetalleController implements Initializable {
         label.setStyle("-fx-text-fill:#0771d3;");
         label.getStyleClass().add("labelRobotoMedium15");
         label.setAlignment(pos);
+        label.setMinWidth(Control.USE_COMPUTED_SIZE);
+        label.setMinHeight(Control.USE_COMPUTED_SIZE);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
         label.setMaxWidth(Double.MAX_VALUE);

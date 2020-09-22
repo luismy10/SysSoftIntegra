@@ -44,7 +44,7 @@ public class FxVentaController implements Initializable {
     private FxVentaEstructuraController ventaEstructuraController;
 
     private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
-    
+
     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private AnchorPane vbPrincipal;
@@ -58,10 +58,10 @@ public class FxVentaController implements Initializable {
         aperturaCaja = false;
     }
 
-    public void loadComponents(){
-        if(tipoVenta == 1){
+    public void loadComponents() {
+        if (tipoVenta == 1) {
             ventaEstructuraController = (FxVentaEstructuraController) addEstructura(tbVentaUno);
-        }else{
+        } else {
             ventaEstructuraNuevoController = (FxVentaEstructuraNuevoController) addEstructura(tbVentaUno);
         }
     }
@@ -71,8 +71,10 @@ public class FxVentaController implements Initializable {
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             btnAgregarVenta.setDisable(true);
         }
-        if(tipoVenta == 1){
+        if (tipoVenta == 1) {
             ventaEstructuraController.loadPrivilegios(privilegioTBs);
+        } else {
+            ventaEstructuraNuevoController.loadPrivilegios(privilegioTBs);
         }
     }
 
@@ -91,10 +93,10 @@ public class FxVentaController implements Initializable {
     }
 
     public void loadElements() {
-        if(tipoVenta == 1){
+        if (tipoVenta == 1) {
             ventaEstructuraController.setContent(vbPrincipal);
             ventaEstructuraController.getTxtSearch().requestFocus();
-        }else{
+        } else {
             ventaEstructuraNuevoController.setContent(vbPrincipal);
         }
     }
@@ -102,16 +104,16 @@ public class FxVentaController implements Initializable {
     private void addTabVentaEstructura() {
         Tab tab = new Tab("Venta " + (tbContenedor.getTabs().size() + 1));
         tbContenedor.getTabs().add(tab);
-        if(tipoVenta == 1){
+        if (tipoVenta == 1) {
             FxVentaEstructuraController controller = (FxVentaEstructuraController) addEstructura(tab);
             controller.setContent(vbPrincipal);
             controller.getTxtSearch().requestFocus();
             controller.loadPrivilegios(privilegioTBs);
-        }else{
+        } else {
             FxVentaEstructuraNuevoController controller = (FxVentaEstructuraNuevoController) addEstructura(tab);
             controller.setContent(vbPrincipal);
             controller.getTxtSearch().requestFocus();
-            //controller.loadPrivilegios(privilegioTBs);
+            controller.loadPrivilegios(privilegioTBs);
         }
     }
 
@@ -263,6 +265,8 @@ public class FxVentaController implements Initializable {
         this.vbPrincipal = vbPrincipal;
     }
 
-    public void setTipoVenta(short tipoVenta){ this.tipoVenta = tipoVenta; }
+    public void setTipoVenta(short tipoVenta) {
+        this.tipoVenta = tipoVenta;
+    }
 
 }

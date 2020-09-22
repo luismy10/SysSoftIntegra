@@ -32,7 +32,7 @@
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;" VBox.vgrow="SOMETIMES">
                <children>
                   <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Nombre del rol:" />
-                  <TextField fx:id="txtNombre" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtNombre" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionEditarNombre" onKeyPressed="#onKeyPressedEditarNombre" styleClass="buttonLight" text="Editar nombre">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">

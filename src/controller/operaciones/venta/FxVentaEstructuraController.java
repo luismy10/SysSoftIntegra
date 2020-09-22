@@ -200,6 +200,8 @@ public class FxVentaEstructuraController implements Initializable {
 
     private boolean medida_cambio_decuento;
 
+    private boolean vender_con_cantidades_negativas;
+
     private boolean stateSearch;
 
     private double subTotal;
@@ -341,7 +343,7 @@ public class FxVentaEstructuraController implements Initializable {
             cbMoneda.setDisable(true);
         }
         if (privilegioTBs.get(15).getIdPrivilegio() != 0 && !privilegioTBs.get(15).isEstado()) {
-            //hbBotonesInferior.getChildren().remove(btnVentasPorDia);
+            hbBotonesSuperior.getChildren().remove(btnVentasPorDia);
         }
         if (privilegioTBs.get(16).getIdPrivilegio() != 0 && !privilegioTBs.get(16).isEstado()) {
 
@@ -442,6 +444,8 @@ public class FxVentaEstructuraController implements Initializable {
         tcDescuento.setVisible(!(privilegioTBs.get(32).getIdPrivilegio() != 0 && !privilegioTBs.get(32).isEstado()));
         tcImporte.setVisible(!(privilegioTBs.get(33).getIdPrivilegio() != 0 && !privilegioTBs.get(33).isEstado()));
 
+        vender_con_cantidades_negativas = privilegioTBs.get(34).getIdPrivilegio() != 0 && !privilegioTBs.get(34).isEstado();
+
         tcOpcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
         tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
         tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
@@ -449,12 +453,18 @@ public class FxVentaEstructuraController implements Initializable {
         tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+
     }
 
     private void filterSuministro(String search) {
 
         SuministroTB a = SuministroADO.Get_Suministro_By_Search(search);
         if (a != null) {
+            if (vender_con_cantidades_negativas && a.getCantidad() <= 0) {
+                Tools.AlertMessageWarning(window, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+
+                return;
+            }
             SuministroTB suministroTB = new SuministroTB();
             suministroTB.setIdSuministro(a.getIdSuministro());
             suministroTB.setClave(a.getClave());
@@ -1803,13 +1813,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedPrecio(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+            openWindowCambiarPrecio("Cambiar precio al Producto", false);
         }
     }
 
     @FXML
     private void onActionPrecio(ActionEvent event) {
-        openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+        openWindowCambiarPrecio("Cambiar precio al Producto", false);
     }
 
     @FXML
@@ -1827,13 +1837,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedPrecioSumar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCambiarPrecio("Sumar precio al Artículo", true);
+            openWindowCambiarPrecio("Sumar precio al Producto", true);
         }
     }
 
     @FXML
     private void onActionPrecioSumar(ActionEvent event) {
-        openWindowCambiarPrecio("Sumar precio al Artículo", true);
+        openWindowCambiarPrecio("Sumar precio al Producto", true);
     }
 
     @FXML
@@ -2039,7 +2049,7 @@ public class FxVentaEstructuraController implements Initializable {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
             event.consume();
-        } 
+        }
     }
 
     @FXML
@@ -2109,9 +2119,9 @@ public class FxVentaEstructuraController implements Initializable {
     public TableView<SuministroTB> getTvList() {
         return tvList;
     }
-
-    public String getMonedaNombre() {
-        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
+    
+    public boolean isVender_con_cantidades_negativas() {
+        return vender_con_cantidades_negativas;
     }
 
     public void setContent(AnchorPane vbPrincipal) {

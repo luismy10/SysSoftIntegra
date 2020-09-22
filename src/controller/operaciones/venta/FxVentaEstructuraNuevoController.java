@@ -72,6 +72,7 @@ import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
 import model.ClienteADO;
+import model.PrivilegioTB;
 import model.VentaADO;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -123,6 +124,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private AnchorPane hbPie;
 
     private String monedaSimbolo;
+
+    private boolean vender_con_cantidades_negativas;
 
     private int totalPaginacion;
 
@@ -247,6 +250,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
+    public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
+        vender_con_cantidades_negativas = privilegioTBs.get(34).getIdPrivilegio() != 0 && !privilegioTBs.get(34).isEstado();
+    }
+
     public void onEventPaginacion() {
         switch (opcion) {
             case 0:
@@ -369,6 +376,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     }
 
     private void addElementListView(SuministroTB tvList1) {
+        if (vender_con_cantidades_negativas && tvList1.getCantidad() <= 0) {
+            Tools.AlertMessageWarning(vbWindow, "Producto", "No puede agregar el producto ya que tiene la cantidad menor que 0.");
+            return;
+        }
         SuministroTB suministroTB = new SuministroTB();
         suministroTB.setIdSuministro(tvList1.getIdSuministro());
         suministroTB.setClave(tvList1.getClave());
@@ -1402,10 +1413,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     public ListView<BbItemProducto> getLvProductoAgregados() {
         return lvProductoAgregados;
-    }
-
-    public String getMonedaNombre() {
-        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
     }
 
     public int getIdTipoComprobante() {

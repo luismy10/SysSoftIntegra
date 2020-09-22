@@ -15,7 +15,7 @@ public class UbigeoADO {
         String selectStmt = "{call Sp_Obtener_Ubigeo_BySearch(?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        List<UbigeoTB> clienteTBs = new ArrayList<>();
+        List<UbigeoTB> ubigeoTBs = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
@@ -24,10 +24,11 @@ public class UbigeoADO {
             while (rsEmps.next()) {
                 UbigeoTB ubigeoTB = new UbigeoTB();
                 ubigeoTB.setIdUbigeo(rsEmps.getInt("IdUbigeo"));
+                ubigeoTB.setUbigeo(rsEmps.getString("Ubigeo"));
                 ubigeoTB.setDepartamento(rsEmps.getString("Departamento"));
                 ubigeoTB.setProvincia(rsEmps.getString("Provincia"));
                 ubigeoTB.setDistrito(rsEmps.getString("Distrito"));
-                clienteTBs.add(ubigeoTB);
+                ubigeoTBs.add(ubigeoTB);
             }
         } catch (SQLException e) {
             System.out.println("Error en GetSearchComboBoxUbigeo(): " + e);
@@ -44,7 +45,7 @@ public class UbigeoADO {
 
             }
         }
-        return clienteTBs;
+        return ubigeoTBs;
     }
 
 }

@@ -68,7 +68,7 @@ public class SuministroADO {
 //                                }
 //                            } else {
 
-                            preparedSuministro = DBUtil.getConnection().prepareStatement("update SuministroTB set Origen=?,Clave=?,ClaveAlterna=UPPER(?), NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?,PrecioVentaGeneral=?,PrecioMargenGeneral=?,PrecioUtilidadGeneral=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,Imagen=?,Impuesto=?, ValorInventario = ?,ClaveSat = ?,TipoPrecio=? where IdSuministro = ? ");
+                            preparedSuministro = DBUtil.getConnection().prepareStatement("update SuministroTB set Origen=?,Clave=?,ClaveAlterna=UPPER(?), NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?,PrecioVentaGeneral=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,Imagen=?,Impuesto=?, ValorInventario = ?,ClaveSat = ?,TipoPrecio=? where IdSuministro = ? ");
 
                             preparedSuministro.setInt(1, suministroTB.getOrigen());
                             preparedSuministro.setString(2, suministroTB.getClave());
@@ -83,24 +83,22 @@ public class SuministroADO {
                             preparedSuministro.setDouble(11, suministroTB.getCostoCompra());
 
                             preparedSuministro.setDouble(12, suministroTB.getPrecioVentaGeneral());
-                            preparedSuministro.setShort(13, suministroTB.getPrecioMargenGeneral());
-                            preparedSuministro.setDouble(14, suministroTB.getPrecioUtilidadGeneral());
 
-                            preparedSuministro.setInt(15, suministroTB.getUnidadCompra());
-                            preparedSuministro.setInt(16, suministroTB.getUnidadVenta());
-                            preparedSuministro.setInt(17, suministroTB.getEstado());
-                            preparedSuministro.setBoolean(18, suministroTB.isLote());
-                            preparedSuministro.setBoolean(19, suministroTB.isInventario());
+                            preparedSuministro.setInt(13, suministroTB.getUnidadCompra());
+                            preparedSuministro.setInt(14, suministroTB.getUnidadVenta());
+                            preparedSuministro.setInt(15, suministroTB.getEstado());
+                            preparedSuministro.setBoolean(16, suministroTB.isLote());
+                            preparedSuministro.setBoolean(17, suministroTB.isInventario());
                             //------------------------------------------------------------
-                            preparedSuministro.setString(20, suministroTB.getImagenFile() != null
+                            preparedSuministro.setString(18, suministroTB.getImagenFile() != null
                                     ? selectFileImage("./img/" + suministroTB.getIdSuministro() + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
                                     : suministroTB.getImagenTB());
                             //
-                            preparedSuministro.setInt(21, suministroTB.getImpuestoId());
-                            preparedSuministro.setShort(22, suministroTB.getValorInventario());
-                            preparedSuministro.setString(23, suministroTB.getClaveSat());
-                            preparedSuministro.setBoolean(24, suministroTB.isTipoPrecio());
-                            preparedSuministro.setString(25, suministroTB.getIdSuministro());
+                            preparedSuministro.setInt(19, suministroTB.getImpuestoId());
+                            preparedSuministro.setShort(20, suministroTB.getValorInventario());
+                            preparedSuministro.setString(21, suministroTB.getClaveSat());
+                            preparedSuministro.setBoolean(22, suministroTB.isTipoPrecio());
+                            preparedSuministro.setString(23, suministroTB.getIdSuministro());
 
                             preparedSuministro.addBatch();
                             preparedSuministro.executeBatch();
@@ -204,8 +202,6 @@ public class SuministroADO {
                                     + "StockMaximo,"
                                     + "PrecioCompra,"
                                     + "PrecioVentaGeneral,"
-                                    + "PrecioMargenGeneral,"
-                                    + "PrecioUtilidadGeneral,"
                                     + "Cantidad,"
                                     + "UnidadCompra,"
                                     + "UnidadVenta,"
@@ -216,7 +212,7 @@ public class SuministroADO {
                                     + "Impuesto,"
                                     + "ValorInventario,"
                                     + "ClaveSat,TipoPrecio)"
-                                    + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                                    + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                             preparedSuministro.setString(1, idSuministro);
                             preparedSuministro.setInt(2, suministroTB.getOrigen());
@@ -232,26 +228,24 @@ public class SuministroADO {
                             preparedSuministro.setDouble(12, suministroTB.getCostoCompra());
 
                             preparedSuministro.setDouble(13, suministroTB.getPrecioVentaGeneral());
-                            preparedSuministro.setShort(14, suministroTB.getPrecioMargenGeneral());
-                            preparedSuministro.setDouble(15, suministroTB.getPrecioUtilidadGeneral());
 
-                            preparedSuministro.setDouble(16, 0);
-                            preparedSuministro.setInt(17, suministroTB.getUnidadCompra());
-                            preparedSuministro.setInt(18, suministroTB.getUnidadVenta());
-                            preparedSuministro.setInt(19, suministroTB.getEstado());
-                            preparedSuministro.setBoolean(20, suministroTB.isLote());
-                            preparedSuministro.setBoolean(21, suministroTB.isInventario());
+                            preparedSuministro.setDouble(14, 0);
+                            preparedSuministro.setInt(15, suministroTB.getUnidadCompra());
+                            preparedSuministro.setInt(16, suministroTB.getUnidadVenta());
+                            preparedSuministro.setInt(17, suministroTB.getEstado());
+                            preparedSuministro.setBoolean(18, suministroTB.isLote());
+                            preparedSuministro.setBoolean(19, suministroTB.isInventario());
                             //------------------------------------------------------------
-                            preparedSuministro.setString(22, suministroTB.getImagenFile() != null
+                            preparedSuministro.setString(20, suministroTB.getImagenFile() != null
                                     ? selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
                                     : (suministroTB.getImagenTB().equalsIgnoreCase("") ? ""
                                     : selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(new File(suministroTB.getImagenTB())), new File(suministroTB.getImagenTB())))
                             );
                             //
-                            preparedSuministro.setInt(23, suministroTB.getImpuestoId());
-                            preparedSuministro.setShort(24, suministroTB.getValorInventario());
-                            preparedSuministro.setString(25, suministroTB.getClaveSat());
-                            preparedSuministro.setBoolean(26, suministroTB.isTipoPrecio());
+                            preparedSuministro.setInt(21, suministroTB.getImpuestoId());
+                            preparedSuministro.setShort(22, suministroTB.getValorInventario());
+                            preparedSuministro.setString(23, suministroTB.getClaveSat());
+                            preparedSuministro.setBoolean(24, suministroTB.isTipoPrecio());
 
                             preparedSuministro.addBatch();
                             preparedSuministro.executeBatch();
@@ -446,8 +440,6 @@ public class SuministroADO {
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
 
                 suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                suministroTB.setPrecioMargenGeneral(rsEmps.getShort("PrecioMargenGeneral"));
-                suministroTB.setPrecioUtilidadGeneral(rsEmps.getDouble("PrecioUtilidadGeneral"));
 
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 suministroTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
@@ -664,8 +656,6 @@ public class SuministroADO {
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
 
                 suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
-                suministroTB.setPrecioMargenGeneral(rsEmps.getShort("PrecioMargenGeneral"));
-                suministroTB.setPrecioUtilidadGeneral(rsEmps.getDouble("PrecioUtilidadGeneral"));
 
                 suministroTB.setEstado(rsEmps.getInt("Estado"));
                 suministroTB.setLote(rsEmps.getBoolean("Lote"));

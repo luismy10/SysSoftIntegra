@@ -21,7 +21,7 @@ public class EmpresaADO {
                 statementEmpresa = DBUtil.getConnection().prepareStatement("UPDATE EmpresaTB\n"
                         + "SET GiroComercial=?,Nombre = ?,Telefono=?,Celular=?,PaginaWeb=?,Email=?,Domicilio=?,\n"
                         + "TipoDocumento=?,NumeroDocumento=?,\n"
-                        + "RazonSocial=?,NombreComercial=?,Image=?\n"
+                        + "RazonSocial=?,NombreComercial=?,Image=?,Ubigeo=?\n"
                         + "WHERE IdEmpresa=?");
                 statementEmpresa.setInt(1, empresaTB.getGiroComerial());
                 statementEmpresa.setString(2, empresaTB.getNombre());
@@ -35,9 +35,9 @@ public class EmpresaADO {
                 statementEmpresa.setString(10, empresaTB.getRazonSocial());
                 statementEmpresa.setString(11, empresaTB.getNombreComercial());
                 statementEmpresa.setBytes(12, empresaTB.getImage());
-                statementEmpresa.setInt(13, empresaTB.getIdEmpresa());
+                statementEmpresa.setInt(13, empresaTB.getIdUbigeo());
+                statementEmpresa.setInt(14, empresaTB.getIdEmpresa());
                 statementEmpresa.addBatch();
-                
 
                 statementEmpresa.executeBatch();
                 DBUtil.getConnection().commit();
@@ -45,8 +45,8 @@ public class EmpresaADO {
             } else {
                 statementEmpresa = DBUtil.getConnection().prepareStatement("INSERT INTO EmpresaTB"
                         + "(GiroComercial,Nombre,Telefono,Celular,PaginaWeb,Email,Domicilio,\n"
-                        + "TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial)\n"
-                        + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial,Image,Ubigeo)\n"
+                        + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 statementEmpresa.setInt(1, empresaTB.getGiroComerial());
                 statementEmpresa.setString(2, empresaTB.getNombre());
                 statementEmpresa.setString(3, empresaTB.getTelefono());
@@ -58,6 +58,8 @@ public class EmpresaADO {
                 statementEmpresa.setString(9, empresaTB.getNumeroDocumento());
                 statementEmpresa.setString(10, empresaTB.getRazonSocial());
                 statementEmpresa.setString(11, empresaTB.getNombreComercial());
+                statementEmpresa.setBytes(12, empresaTB.getImage());
+                statementEmpresa.setInt(13, empresaTB.getIdUbigeo());
                 statementEmpresa.addBatch();
 
                 statementEmpresa.executeBatch();
@@ -115,7 +117,7 @@ public class EmpresaADO {
         EmpresaTB empresaTB = null;
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement("select * from EmpresaTB");
+            preparedStatement = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Empresa()}");
             rsEmps = preparedStatement.executeQuery();
             if (rsEmps.next()) {
                 empresaTB = new EmpresaTB();
@@ -133,6 +135,7 @@ public class EmpresaADO {
                 empresaTB.setRazonSocial(rsEmps.getString("RazonSocial"));
                 empresaTB.setNombreComercial(rsEmps.getString("NombreComercial"));
                 empresaTB.setImage(rsEmps.getBytes("Image"));
+                empresaTB.setUbigeoTB(new UbigeoTB(rsEmps.getInt("IdUbigeo"), rsEmps.getString("CodigoUbigeo"), rsEmps.getString("Departamento"), rsEmps.getString("Provincia"), rsEmps.getString("Distrito")));
             }
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);

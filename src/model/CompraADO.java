@@ -90,7 +90,7 @@ public class CompraADO extends DBUtil {
 
                 suministro_precios_insertar = getConnection().prepareStatement("INSERT INTO PreciosTB(IdArticulo, IdSuministro, Nombre, Valor, Factor,Estado) VALUES(?,?,?,?,?,?)");
 
-                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ?,Impuesto=?,PrecioVentaGeneral=?,PrecioMargenGeneral=?,PrecioUtilidadGeneral=? WHERE IdSuministro = ?");
+                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ?,Impuesto=?,PrecioVentaGeneral=? WHERE IdSuministro = ?");
 
                 suministro_kardex = getConnection().prepareStatement("INSERT INTO "
                         + "KardexSuministroTB("
@@ -171,9 +171,7 @@ public class CompraADO extends DBUtil {
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
                     suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoId());
                     suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
-                    suministro_update.setShort(5, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
-                    suministro_update.setDouble(6, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
-                    suministro_update.setString(7, tableView.getItems().get(i).getIdArticulo());
+                    suministro_update.setString(5, tableView.getItems().get(i).getIdArticulo());
                     suministro_update.addBatch();
 
                     suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
@@ -341,7 +339,7 @@ public class CompraADO extends DBUtil {
 
                 suministro_precios_insertar = getConnection().prepareStatement("INSERT INTO PreciosTB(IdArticulo, IdSuministro, Nombre, Valor, Factor,Estado) VALUES(?,?,?,?,?,?)");
 
-                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ?,Impuesto=?,PrecioVentaGeneral=?,PrecioMargenGeneral=?,PrecioUtilidadGeneral=? WHERE IdSuministro = ?");
+                suministro_update = getConnection().prepareStatement("UPDATE SuministroTB SET Cantidad = Cantidad + ?,PrecioCompra = ?,Impuesto=?,PrecioVentaGeneral=? WHERE IdSuministro = ?");
 
                 suministro_kardex = getConnection().prepareStatement("INSERT INTO "
                         + "KardexSuministroTB("
@@ -415,9 +413,7 @@ public class CompraADO extends DBUtil {
                     suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
                     suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoId());
                     suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
-                    suministro_update.setShort(5, tableView.getItems().get(i).getSuministroTB().getPrecioMargenGeneral());
-                    suministro_update.setDouble(6, tableView.getItems().get(i).getSuministroTB().getPrecioUtilidadGeneral());
-                    suministro_update.setString(7, tableView.getItems().get(i).getIdArticulo());
+                    suministro_update.setString(5, tableView.getItems().get(i).getIdArticulo());
                     suministro_update.addBatch();
 
                     suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
@@ -665,7 +661,7 @@ public class CompraADO extends DBUtil {
                 compraTB.setTipo(rsEmps.getInt("TipoCompra"));
                 compraTB.setTipoName(rsEmps.getString("Tipo"));
                 Label lblTipo = new Label(compraTB.getTipoName());
-                lblTipo.getStyleClass().add("labelRobotoBold14");
+                lblTipo.getStyleClass().add("labelRobotoBold13");
                 lblTipo.setStyle("-fx-text-fill:" + (compraTB.getTipo() == 2 ? "#ff0202" : "#020203"));
                 compraTB.setTipoLabel(lblTipo);
 

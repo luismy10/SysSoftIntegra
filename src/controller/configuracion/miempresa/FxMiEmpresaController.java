@@ -1,11 +1,13 @@
 package controller.configuracion.miempresa;
 
+import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +30,8 @@ import model.DetalleADO;
 import model.DetalleTB;
 import model.EmpresaADO;
 import model.EmpresaTB;
+import model.UbigeoADO;
+import model.UbigeoTB;
 
 public class FxMiEmpresaController implements Initializable {
 
@@ -59,6 +63,8 @@ public class FxMiEmpresaController implements Initializable {
     private TextField txtNombreComercial;
     @FXML
     private ImageView lnPrincipal;
+    @FXML
+    private ComboBox<UbigeoTB> cbUbigeo;
 
     private AnchorPane vbPrincipal;
 
@@ -73,6 +79,7 @@ public class FxMiEmpresaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadMiEmpresa();
+        loadUbigeo();
     }
 
     private void loadMiEmpresa() {
@@ -87,11 +94,9 @@ public class FxMiEmpresaController implements Initializable {
             @Override
             public ArrayList<Object> call() {
                 ArrayList<Object> objects = new ArrayList<>();
-
                 objects.add(DetalleADO.GetDetailIdName("3", "0011", ""));
                 objects.add(DetalleADO.GetDetailIdName("3", "0003", ""));
                 objects.add(EmpresaADO.GetEmpresa());
-
                 return objects;
             }
         };
@@ -155,6 +160,14 @@ public class FxMiEmpresaController implements Initializable {
                             lnPrincipal.setImage(new Image("/view/image/no-image.png"));
                         }
 
+                        cbUbigeo.getItems().clear();
+                        if (empresaTb.getUbigeoTB().getIdUbigeo() > 0) {
+                            cbUbigeo.getItems().add(empresaTb.getUbigeoTB());
+                            if (!cbUbigeo.getItems().isEmpty()) {
+                                cbUbigeo.getSelectionModel().select(0);
+                            }
+                        }
+
                     } else {
                         validate = false;
                     }
@@ -177,6 +190,58 @@ public class FxMiEmpresaController implements Initializable {
             exec.shutdown();
         }
 
+    }
+
+    private void loadUbigeo() {
+        SearchComboBox<UbigeoTB> searchComboBoxUbigeoLlegada = new SearchComboBox<>(cbUbigeo, false);
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBoxUbigeoLlegada.getComboBox().hide();
+            }
+        });
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            searchComboBoxUbigeoLlegada.getComboBox().getItems().clear();
+            List<UbigeoTB> ubigeoTBs = UbigeoADO.GetSearchComboBoxUbigeo(searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().getText().trim());
+            ubigeoTBs.forEach(e -> {
+                searchComboBoxUbigeoLlegada.getComboBox().getItems().add(e);
+            });
+        });
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            if (null == t.getCode()) {
+                searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().selectAll();
+            } else {
+                switch (t.getCode()) {
+                    case ENTER:
+                    case SPACE:
+                    case ESCAPE:
+                        searchComboBoxUbigeoLlegada.getComboBox().hide();
+                        break;
+                    case UP:
+                    case DOWN:
+                    case LEFT:
+                    case RIGHT:
+                        break;
+                    default:
+                        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().selectAll();
+                        break;
+                }
+            }
+        });
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxUbigeoLlegada.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBoxUbigeoLlegada.getComboBox().hide();
+                }
+            }
+        });
     }
 
     private void openWindowFile() {
@@ -230,15 +295,15 @@ public class FxMiEmpresaController implements Initializable {
                 empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
                 empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
                 empresaTB.setNombre(txtRepresentante.getText().trim());
-                empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "0000000" : txtTelefono.getText().trim());
-                empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "000000000" : txtCelular.getText().trim());
+                empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "" : txtTelefono.getText().trim());
+                empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "" : txtCelular.getText().trim());
                 empresaTB.setPaginaWeb(txtPaginasWeb.getText().trim());
                 empresaTB.setEmail(txtEmail.getText().trim());
                 empresaTB.setDomicilio(txtDomicilio.getText().trim());
                 empresaTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedIndex() >= 0
                         ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
                         : 0);
-                empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "000000000000" : txtNumeroDocumento.getText().trim());
+                empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "" : txtNumeroDocumento.getText().trim());
                 empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtRepresentante.getText().trim() : txtRazonSocial.getText().trim());
                 empresaTB.setNombreComercial(txtNombreComercial.getText().trim());
 
@@ -248,6 +313,10 @@ public class FxMiEmpresaController implements Initializable {
                                         ? null
                                         : Tools.getImageBytes(selectFile)
                 );
+                empresaTB.setIdUbigeo(cbUbigeo.getSelectionModel().getSelectedIndex() >= 0
+                        ? cbUbigeo.getSelectionModel().getSelectedItem().getIdUbigeo()
+                        : 0);
+
 
                 String result = EmpresaADO.CrudEntity(empresaTB);
                 switch (result) {

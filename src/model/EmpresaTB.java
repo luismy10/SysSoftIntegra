@@ -15,6 +15,8 @@ public class EmpresaTB {
     private String razonSocial;
     private String nombreComercial;
     private byte[] image;
+    private int idUbigeo;
+    private UbigeoTB ubigeoTB;
     private String usuarioSol;
     private String claveSol;
     private String certificadoRuta;
@@ -139,6 +141,22 @@ public class EmpresaTB {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public int getIdUbigeo() {
+        return idUbigeo;
+    }
+
+    public void setIdUbigeo(int idUbigeo) {
+        this.idUbigeo = idUbigeo;
+    }
+
+    public UbigeoTB getUbigeoTB() {
+        return ubigeoTB;
+    }
+
+    public void setUbigeoTB(UbigeoTB ubigeoTB) {
+        this.ubigeoTB = ubigeoTB;
     }
 
     public String getUsuarioSol() {

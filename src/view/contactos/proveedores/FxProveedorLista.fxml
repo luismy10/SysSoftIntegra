@@ -50,12 +50,12 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox style="-fx-spacing: 0.8333333333333334em;">
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" styleClass="table-view-principal">
+                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="360.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="61.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcDocument" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
+                              <TableColumn fx:id="tcDocument" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
                               <TableColumn fx:id="tcRepresentative" prefWidth="400.0" style="-fx-alignment: CENTER-LEFT;" text="Datos personales/Razón social " />
                               <TableColumn fx:id="tcMovil" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Tel/Cel" />
                            </columns>
@@ -72,7 +72,7 @@
                            <children>
                               <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/left.png" />
                                        </image>
@@ -84,7 +84,7 @@
                               <Label styleClass="labelBorder" text="0" textFill="#020203" />
                               <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/right.png" />
                                        </image>
@@ -99,7 +99,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Aceptar">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/accept.png" />
                                  </image>

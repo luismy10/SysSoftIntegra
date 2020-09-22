@@ -114,7 +114,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(tota_venta, 2));
         lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(tota_venta, 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ventaEstructuraNuevoController.getMonedaNombre()));
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, moneda_simbolo));
         hbContenido.setDisable(false);
     }
 

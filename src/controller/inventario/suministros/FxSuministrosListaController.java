@@ -153,7 +153,7 @@ public class FxSuministrosListaController implements Initializable {
         tcCategoriaMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName() + "\n" + cellData.getValue().getMarcaName()));
         tcTipoProducto.setCellValueFactory(new PropertyValueFactory<>("imageValorInventario"));
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoNombre()));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (cellData.getValue().getImpuestoValor() / 100.00)), 4)));
+        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (cellData.getValue().getImpuestoValor() / 100.00)), 2)));
 
         paginacion = 1;
         opcion = 0;
@@ -162,7 +162,6 @@ public class FxSuministrosListaController implements Initializable {
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filterTextInput(1, (short) 1, (short) 1, oldValue, newValue);
         });
-
         txtCategoria.textProperty().addListener((observable, oldValue, newValue) -> {
             filterTextInput(1, (short) 2, (short) 2, oldValue, newValue);
         });
@@ -358,6 +357,10 @@ public class FxSuministrosListaController implements Initializable {
 
     private void addArticuloToList() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (ventaEstructuraController.isVender_con_cantidades_negativas() && tvList.getSelectionModel().getSelectedItem().getCantidad() <= 0) {
+                Tools.AlertMessageWarning(apWindow, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+                return;
+            }
             SuministroTB suministroTB = new SuministroTB();
             suministroTB.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
             suministroTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());

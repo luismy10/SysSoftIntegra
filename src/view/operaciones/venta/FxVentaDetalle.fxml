@@ -181,7 +181,7 @@
                         </HBox>
                         <HBox style="-fx-padding: 0em 0.8333333333333334em;">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="453.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <HBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
@@ -238,12 +238,6 @@
                                        </children>
                                     </GridPane>
                                     <Pane minHeight="1.0" prefHeight="1.0" style="-fx-border-color: #999999; -fx-border-width: 1px;" />
-                                    <GridPane fx:id="gpOperaciones" style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                       </columnConstraints>
-                                    </GridPane>
                                     <GridPane fx:id="gpImpuestos" style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />

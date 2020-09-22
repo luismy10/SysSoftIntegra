@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -82,7 +83,6 @@
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
                                           <Label styleClass="labelRoboto13" text="Giro comercial:" textFill="#020203">
@@ -90,43 +90,37 @@
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="cbGiroComercial" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                                          <ComboBox fx:id="cbGiroComercial" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione su Giro Comercial" GridPane.columnIndex="1" />
                                           <Label styleClass="labelRoboto13" text="Representante" textFill="#020203" GridPane.rowIndex="1">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtRepresentante" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="txtRepresentante" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese un Representante" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label styleClass="labelRoboto13" text="Teléfono:" textFill="#020203" GridPane.rowIndex="2">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtTelefono" onAction="#onActionToRegister" prefHeight="30.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label prefWidth="60.0" styleClass="labelRoboto13" text="Celular:" textFill="#020203" GridPane.rowIndex="3">
+                                          <TextField fx:id="txtTelefono" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su Teléfono" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label styleClass="labelRoboto13" text="Celular:" textFill="#020203" GridPane.rowIndex="3">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtCelular" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <TextField fx:id="txtCelular" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su Celular" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label styleClass="labelRoboto13" text="Página web:" textFill="#020203" GridPane.rowIndex="4">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtPaginasWeb" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label prefWidth="60.0" styleClass="labelRoboto13" text="Email:" textFill="#020203" GridPane.rowIndex="5">
+                                          <TextField fx:id="txtPaginasWeb" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su Página Web" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label styleClass="labelRoboto13" text="Email:" textFill="#020203" GridPane.rowIndex="5">
                                              <font>
                                                 <Font name="Roboto" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtEmail" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                          <Label styleClass="labelRoboto13" text="Domicilio:" textFill="#020203" GridPane.rowIndex="6">
-                                             <font>
-                                                <Font name="Roboto" size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="txtDomicilio" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <TextField fx:id="txtEmail" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese el Email" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -180,6 +174,7 @@
                               </HBox>
                            </children>
                         </HBox>
+                        <Separator prefWidth="200.0" />
                         <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                            <children>
                               <Label styleClass="labelRobotoBold15" text="Datos fiscales" textFill="#020203">
@@ -189,6 +184,7 @@
                               </Label>
                            </children>
                         </HBox>
+                        <Separator prefWidth="200.0" />
                         <HBox style="-fx-padding: 0.8333333333333334em;">
                            <children>
                               <GridPane style="-fx-vgap: 0.8333333333333334em; -fx-hgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
@@ -201,6 +197,7 @@
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <Label styleClass="labelRoboto13" text="Tipo documento:" textFill="#020203">
@@ -208,25 +205,37 @@
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="cbTipoDocumento" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="166.0" styleClass="comboBox" GridPane.columnIndex="1" />
+                                    <ComboBox fx:id="cbTipoDocumento" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Seleccione el Tipo Documento" styleClass="comboBox" GridPane.columnIndex="1" />
                                     <Label prefWidth="119.0" styleClass="labelRoboto13" text="N° Documento:" textFill="#020203" GridPane.columnIndex="2">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtNumeroDocumento" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="3" />
+                                    <TextField fx:id="txtNumeroDocumento" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese el Número del documento" styleClass="text-field-normal" GridPane.columnIndex="3" />
                                     <Label prefWidth="106.0" styleClass="labelRoboto13" text="Razón social:" textFill="#020203" GridPane.rowIndex="1">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtRazonSocial" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtRazonSocial" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese la Razón Social" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label styleClass="labelRoboto13" text="Nombre comercial:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <font>
                                           <Font name="Roboto" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtNombreComercial" onAction="#onActionToRegister" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtNombreComercial" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese el Nombre Comercial" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label styleClass="labelRoboto13" text="Domicilio:" textFill="#020203" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtDomicilio" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su domicilio" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label styleClass="labelRoboto13" text="Ubigeo:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font name="Roboto" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cbUbigeo" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su Ubigeo" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                  </children>
                               </GridPane>
                            </children>

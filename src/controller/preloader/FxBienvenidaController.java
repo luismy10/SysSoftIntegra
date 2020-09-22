@@ -1,8 +1,10 @@
 package controller.preloader;
 
+import controller.tools.SearchComboBox;
 import controller.tools.Tools;
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +31,8 @@ import model.GlobalADO;
 import model.ImpuestoTB;
 import model.MonedaTB;
 import model.TipoDocumentoTB;
+import model.UbigeoADO;
+import model.UbigeoTB;
 
 public class FxBienvenidaController implements Initializable {
 
@@ -82,8 +86,12 @@ public class FxBienvenidaController implements Initializable {
     private TextField txtClave;
     @FXML
     private ImageView lnPrincipal;
+    @FXML
+    private ComboBox<UbigeoTB> cbUbigeo;
 
     private File selectFile;
+
+    private byte[] imageBytes;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,6 +101,60 @@ public class FxBienvenidaController implements Initializable {
 
         DetalleADO.GetDetailIdName("0", "0003", "RUC").forEach(e -> {
             cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
+        });
+
+        loadUbigeo();
+    }
+
+    private void loadUbigeo() {
+        SearchComboBox<UbigeoTB> searchComboBoxUbigeoLlegada = new SearchComboBox<>(cbUbigeo, false);
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBoxUbigeoLlegada.getComboBox().hide();
+            }
+        });
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            searchComboBoxUbigeoLlegada.getComboBox().getItems().clear();
+            List<UbigeoTB> ubigeoTBs = UbigeoADO.GetSearchComboBoxUbigeo(searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().getText().trim());
+            ubigeoTBs.forEach(e -> {
+                searchComboBoxUbigeoLlegada.getComboBox().getItems().add(e);
+            });
+        });
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            if (null == t.getCode()) {
+                searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().selectAll();
+            } else {
+                switch (t.getCode()) {
+                    case ENTER:
+                    case SPACE:
+                    case ESCAPE:
+                        searchComboBoxUbigeoLlegada.getComboBox().hide();
+                        break;
+                    case UP:
+                    case DOWN:
+                    case LEFT:
+                    case RIGHT:
+                        break;
+                    default:
+                        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getSearchBox().selectAll();
+                        break;
+                }
+            }
+        });
+        searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxUbigeoLlegada.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxUbigeoLlegada.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBoxUbigeoLlegada.getComboBox().hide();
+                }
+            }
         });
     }
 
@@ -108,7 +170,7 @@ public class FxBienvenidaController implements Initializable {
                 lnPrincipal.setSmooth(true);
                 lnPrincipal.setPreserveRatio(false);
                 lnPrincipal.setImage(image);
-
+                imageBytes = null;
             } else {
                 Tools.AlertMessageWarning(apWindow, "SysSoft Integra", "No seleccionó un formato correcto de imagen.");
             }
@@ -118,6 +180,7 @@ public class FxBienvenidaController implements Initializable {
     private void clearImage() {
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
         selectFile = null;
+        imageBytes = null;
     }
 
     private void openWindowNextVisible() {
@@ -258,6 +321,15 @@ public class FxBienvenidaController implements Initializable {
             empresaTB.setNumeroDocumento(txtNumeroDocumento.getText());
             empresaTB.setRazonSocial(txtRazonSocial.getText());
             empresaTB.setNombreComercial(txtNombreComercial.getText());
+            empresaTB.setImage(
+                    imageBytes != null ? imageBytes
+                            : selectFile == null
+                                    ? null
+                                    : Tools.getImageBytes(selectFile)
+            );
+            empresaTB.setIdUbigeo(cbUbigeo.getSelectionModel().getSelectedIndex() >= 0
+                    ? cbUbigeo.getSelectionModel().getSelectedItem().getIdUbigeo()
+                    : 0);
             empresaTB.setUsuarioSol("");
             empresaTB.setClaveSol("");
             empresaTB.setCertificadoRuta("");
@@ -289,7 +361,7 @@ public class FxBienvenidaController implements Initializable {
             impuestoTB.setLetra("");
             impuestoTB.setCategoria("");
             impuestoTB.setPredeterminado(true);
-            impuestoTB.setSistema(true);            
+            impuestoTB.setSistema(true);
 
             TipoDocumentoTB tipoDocumentoTB = new TipoDocumentoTB();
             tipoDocumentoTB.setNombre("TICKET");

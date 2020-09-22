@@ -281,7 +281,7 @@ public class GlobalADO {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setNombreMarca(resultLista.getString("NombreMarca"));
                     suministroTB.setCantidad(resultLista.getDouble("Cantidad"));
-                    listaProductos.add(suministroTB);                    
+                    listaProductos.add(suministroTB);
                 }
 
                 preparedLista = DBUtil.getConnection().prepareStatement("select COUNT(*) as VentasCobrar from VentaTB where Tipo = 2 and Estado = 2");
@@ -384,6 +384,8 @@ public class GlobalADO {
                     + "NumeroDocumento,"
                     + "RazonSocial,"
                     + "NombreComercial,"
+                    + "Image,"
+                    + "Ubigeo,"
                     + "UsuarioSol,"
                     + "ClaveSol,"
                     + "CertificadoRuta,"
@@ -399,10 +401,12 @@ public class GlobalADO {
             statementEmpresa.setString(9, empresaTB.getNumeroDocumento());
             statementEmpresa.setString(10, empresaTB.getRazonSocial());
             statementEmpresa.setString(11, empresaTB.getNombreComercial());
-            statementEmpresa.setString(12, empresaTB.getUsuarioSol());
-            statementEmpresa.setString(13, empresaTB.getClaveSol());
-            statementEmpresa.setString(14, empresaTB.getCertificadoRuta());
-            statementEmpresa.setString(15, empresaTB.getCertificadoClave());
+            statementEmpresa.setBytes(12, empresaTB.getImage());
+            statementEmpresa.setInt(13, empresaTB.getIdUbigeo());
+            statementEmpresa.setString(13, empresaTB.getUsuarioSol());
+            statementEmpresa.setString(14, empresaTB.getClaveSol());
+            statementEmpresa.setString(15, empresaTB.getCertificadoRuta());
+            statementEmpresa.setString(16, empresaTB.getCertificadoClave());
             statementEmpresa.addBatch();
 
             statementMoneda = DBUtil.getConnection().prepareStatement("INSERT INTO MonedaTB("
@@ -480,7 +484,7 @@ public class GlobalADO {
             statementImpuesto.setString(6, impuestoTB.getNombreImpuesto());
             statementImpuesto.setString(7, impuestoTB.getLetra());
             statementImpuesto.setString(8, impuestoTB.getCategoria());
-            statementImpuesto.setBoolean(9, impuestoTB.getPredeterminado());            
+            statementImpuesto.setBoolean(9, impuestoTB.getPredeterminado());
             statementImpuesto.setBoolean(10, impuestoTB.isSistema());
             statementImpuesto.addBatch();
 

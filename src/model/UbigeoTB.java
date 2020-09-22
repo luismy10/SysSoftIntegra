@@ -11,7 +11,18 @@ public class UbigeoTB {
    private String distrito;
 
     public UbigeoTB() {
+        
     }
+
+    public UbigeoTB(int idUbigeo, String ubigeo, String departamento, String provincia, String distrito) {
+        this.idUbigeo = idUbigeo;
+        this.ubigeo = ubigeo;
+        this.departamento = departamento;
+        this.provincia = provincia;
+        this.distrito = distrito;
+    }
+    
+    
 
     public int getIdUbigeo() {
         return idUbigeo;
@@ -55,7 +66,7 @@ public class UbigeoTB {
 
     @Override
     public String toString() {
-        return departamento + " - " + provincia + " - " + distrito + '}';
+        return departamento + " - " + provincia + " - " + distrito+ " ("+ubigeo+")";
     }
    
    
