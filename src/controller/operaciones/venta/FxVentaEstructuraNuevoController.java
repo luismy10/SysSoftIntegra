@@ -47,6 +47,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -306,10 +307,15 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.getChildren().add(lblCodigo);
 
                     Label lblProducto = new Label(tvList1.getNombreMarca());
-                    lblProducto.getStyleClass().add("labelRobotoBold13");
+                    lblProducto.getStyleClass().add("labelRobotoBold15");
                     lblProducto.setTextFill(Color.web("#020203"));
                     lblProducto.setWrapText(true);
                     lblProducto.setTextAlignment(TextAlignment.CENTER);
+                    lblProducto.setAlignment(Pos.CENTER); 
+                    lblProducto.setMinWidth(Control.USE_PREF_SIZE);
+                    lblProducto.setPrefWidth(dpi);
+                    lblProducto.setMaxWidth(Double.MAX_VALUE);
+                    VBox.setVgrow(lblProducto, Priority.ALWAYS); 
                     vBox.getChildren().add(lblProducto);
 
                     Label lblMarca = new Label(tvList1.getMarcaName());

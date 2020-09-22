@@ -129,8 +129,7 @@ public class FxLoginController implements Initializable {
                                 controller.initInicioController();
                                 controller.initWindowSize();
                                 controller.initUserSession((Session.USER_PUESTO.substring(0, 1).toUpperCase() + Session.USER_PUESTO.substring(1).toLowerCase()));
-                   
-                              
+
                                 Session.WIDTH_WINDOW = scene.getWidth();
                                 Session.HEIGHT_WINDOW = scene.getHeight();
                             } catch (IOException exception) {
@@ -171,6 +170,16 @@ public class FxLoginController implements Initializable {
         try {
             Desktop d = Desktop.getDesktop();
             d.browse(new URI("www.syssoftintegra.com"));
+        } catch (IOException | URISyntaxException ex) {
+            Tools.println(ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void onActionWhatsApp(ActionEvent event) {
+        try {
+            Desktop d = Desktop.getDesktop();
+            d.browse(new URI("https://wa.link/64zbb1"));
         } catch (IOException | URISyntaxException ex) {
             Tools.println(ex.getMessage());
         }
