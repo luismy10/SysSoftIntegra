@@ -42,7 +42,7 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <GridPane style="-fx-vgap: 0.16666666666666666em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
+                  <GridPane style="-fx-vgap: 0.8333333333333334em; -fx-hgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints minWidth="10.0" />
                       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
@@ -50,9 +50,9 @@
                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" />
                     </rowConstraints>
                      <children>
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo de Movimiento:" textFill="#020203" />
@@ -62,11 +62,9 @@
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.rowIndex="2" />
                         <Label fx:id="lblObservacion" styleClass="labelRoboto13" text="--" textFill="#0239a8" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Proveedor:" textFill="#020203" GridPane.columnIndex="2" />
-                        <Label fx:id="lblProveedor" styleClass="labelRoboto13" text="--" textFill="#0239a8" GridPane.columnIndex="3" />
+                        <Label fx:id="lblProveedor" styleClass="labelRoboto13" text="---" textFill="#0239a8" GridPane.columnIndex="3" />
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado del mivimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="lblEstado" styleClass="labelRoboto13" text="--" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Verificación del mivimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label fx:id="lblVerificar" styleClass="labelRobotoBold13" text="--" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label fx:id="lblEstado" styleClass="labelRoboto13" text="---" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -77,6 +75,15 @@
                      <children>
                         <HBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>
+                              <Button fx:id="btnRegistrar" disable="true" mnemonicParsing="false" onAction="#onActionRegistrar" onKeyPressed="#onKeyPressedRegistrar" styleClass="buttonLightDefault" text="Registrar">
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/save.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                               <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -86,31 +93,13 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button fx:id="btnRegistrar" disable="true" mnemonicParsing="false" onAction="#onActionRegistrar" onKeyPressed="#onKeyPressedRegistrar" styleClass="buttonLightDefault" text="Registrar" visible="false">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/save.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button fx:id="btnVerificar" disable="true" mnemonicParsing="false" onAction="#onActionVerificar" onKeyPressed="#onKeyPressedVerificar" styleClass="buttonLight" text="Verificar" visible="false">
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/cash_movement.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" editable="true" prefHeight="260.0" styleClass="table-view-principal">
+                        <TableView fx:id="tvList" editable="true" prefHeight="280.0" styleClass="table-view-principal">
                           <columns>
                             <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: TOP-CENTER;" text="N°" />
-                            <TableColumn fx:id="tcDescripcion" prefWidth="440.0" style="-fx-alignment: TOP-LEFT;" text="Descripción" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="190.0" style="-fx-alignment: TOP-RIGHT;" text="Cantidad" />
+                            <TableColumn fx:id="tcDescripcion" prefWidth="360.0" style="-fx-alignment: TOP-LEFT;" text="Descripción" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="160.0" style="-fx-alignment: TOP-RIGHT;" text="Cantidad" />
                               <TableColumn fx:id="tcVerificar" prefWidth="29.0" style="-fx-alignment: CENTER;" text="Verificar" visible="false" />
                               <TableColumn fx:id="tcPrecio" prefWidth="28.0" style="-fx-alignment: CENTER;" text="Precio" visible="false" />
                           </columns>

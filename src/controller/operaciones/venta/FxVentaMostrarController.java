@@ -389,19 +389,18 @@ public class FxVentaMostrarController implements Initializable {
 
                         if (format.equalsIgnoreCase("a4")) {
                             ArrayList<SuministroTB> list = new ArrayList();
-                            suministroTBs.stream().map((suministroTB) -> {
+                            for (int i = 0; i < suministroTBs.size(); i++) {
                                 SuministroTB stb = new SuministroTB();
-                                stb.setClave(suministroTB.getClave());
-                                stb.setNombreMarca(suministroTB.getNombreMarca());
-                                stb.setCantidad(suministroTB.getCantidad());
-                                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                                stb.setDescuento(suministroTB.getDescuento());
-                                stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
-                                return stb;
-                            }).forEachOrdered((stb) -> {
+                                stb.setId(i + 1);
+                                stb.setClave(suministroTBs.get(i).getClave());
+                                stb.setNombreMarca(suministroTBs.get(i).getNombreMarca());
+                                stb.setCantidad(suministroTBs.get(i).getCantidad());
+                                stb.setUnidadCompraName(suministroTBs.get(i).getUnidadCompraName());
+                                stb.setPrecioVentaGeneral(suministroTBs.get(i).getPrecioVentaGeneral());
+                                stb.setDescuento(suministroTBs.get(i).getDescuento());
+                                stb.setTotalImporte(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
                                 list.add(stb);
-                            });
+                            }
 
                             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
                             printRequestAttributeSet.add(new Copies(1));

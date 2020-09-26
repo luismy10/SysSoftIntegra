@@ -81,8 +81,6 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private TableColumn<SuministroTB, String> tcDiferencia;
     @FXML
-    private TableColumn<SuministroTB, CheckBox> tcOpcion;
-    @FXML
     private RadioButton rbIncremento;
     @FXML
     private RadioButton rbDecremento;
@@ -91,13 +89,11 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private TextField txtProveedor;
     @FXML
-    private RadioButton rbCompletado;
-    @FXML
-    private RadioButton rbProceso;
-    @FXML
     private HBox hbBotones;
     @FXML
     private CheckBox cbCaja;
+    @FXML
+    private CheckBox cbEstadoMovimiento;
 
     private AnchorPane vbPrincipal;
 
@@ -134,22 +130,18 @@ public class FxMovimientosProcesoController implements Initializable {
         tcDiferencia.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDiferencia(), 2)));
 //        tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
 //        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
-        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("validar"));
+//        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("validar"));
 
         tcAccion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.29));
-        tcNuevaExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-        tcExistenciaActual.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-        tcDiferencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-        tcOpcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.31));
+        tcNuevaExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
+        tcExistenciaActual.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
+        tcDiferencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
+//        tcOpcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
 
         ToggleGroup groupAjuste = new ToggleGroup();
         rbIncremento.setToggleGroup(groupAjuste);
         rbDecremento.setToggleGroup(groupAjuste);
-
-        ToggleGroup groupEstado = new ToggleGroup();
-        rbCompletado.setToggleGroup(groupEstado);
-        rbProceso.setToggleGroup(groupEstado);
 
         TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
             cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
@@ -186,9 +178,9 @@ public class FxMovimientosProcesoController implements Initializable {
                 inventarioTB.setSuministro(true);
                 inventarioTB.setArticulo(cbConfirmar.isSelected());
                 inventarioTB.setProveedor(idProveedor);
-                inventarioTB.setEstado(rbCompletado.isSelected() ? (short) 1 : (short) 0);
+                inventarioTB.setEstado(cbEstadoMovimiento.isSelected() ? (short) 1 : (short) 0);
                 if (cbCaja.isSelected()) {
-                    openWindowMovimientoCaja(rbIncremento.isSelected(),inventarioTB, tvList);
+                    openWindowMovimientoCaja(rbIncremento.isSelected(), inventarioTB, tvList);
                 } else {
                     ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                     short validate = Tools.AlertMessageConfirmation(hbWindow, "Movimiento", "¿Está seguro de continuar?");
@@ -249,7 +241,7 @@ public class FxMovimientosProcesoController implements Initializable {
     }
      */
     private void ejecutarConsulta(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
-        
+
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -413,7 +405,7 @@ public class FxMovimientosProcesoController implements Initializable {
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             });
             stage.show();
-            controller.fillSuministrosTable((short)0,"");
+            controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
@@ -465,7 +457,7 @@ public class FxMovimientosProcesoController implements Initializable {
         }
     }
 
-    private void openWindowMovimientoCaja(boolean tipoMovimiento,MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+    private void openWindowMovimientoCaja(boolean tipoMovimiento, MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_MOVIMIENTO_CAJA);
@@ -473,7 +465,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxMovimientoCajaController controller = fXMLLoader.getController();
-            controller.loadData(tipoMovimiento,inventarioTB, tableView);
+            controller.loadData(tipoMovimiento, inventarioTB, tableView);
             controller.setInitMovimientoProcesoController(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento caja", hbWindow.getScene().getWindow());
@@ -629,9 +621,7 @@ public class FxMovimientosProcesoController implements Initializable {
                 cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
             });
             cbAjuste.getSelectionModel().select(0);
-            rbCompletado.setDisable(true);
-            rbProceso.setDisable(true);
-            rbProceso.setSelected(true);
+            cbEstadoMovimiento.setDisable(true);
             txtObservacion.setText("Envío directo para venta");
         } else {
             rbIncremento.setSelected(true);
@@ -642,9 +632,7 @@ public class FxMovimientosProcesoController implements Initializable {
             TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
                 cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
             });
-            rbCompletado.setDisable(false);
-            rbProceso.setDisable(false);
-            rbCompletado.setSelected(true);
+            cbEstadoMovimiento.setDisable(false);
             txtObservacion.setText("");
         }
     }
@@ -717,6 +705,11 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private void onActionCaja(ActionEvent event) {
         cbCaja.setText(cbCaja.isSelected() ? "Si" : "No");
+    }
+
+    @FXML
+    private void onActionEstadoMoviminento(ActionEvent event) {
+        cbEstadoMovimiento.setText(cbEstadoMovimiento.isSelected() ? "Validado" : "Por validar");
     }
 
     public TableView<SuministroTB> getTvList() {

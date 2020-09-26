@@ -51,7 +51,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnCambiarPrecio" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrecio" onKeyPressed="#onKeyPressedPrecio" styleClass="buttonLight" text="Cambiar Precio(F5)">
+                  <Button fx:id="btnCambiarPrecio" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPrecio" onKeyPressed="#onKeyPressedPrecio" styleClass="buttonLight" text="Cambiar(F5)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -110,6 +110,15 @@
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/view.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnContizaciones" contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCotizaciones" onKeyPressed="#onKeyPressedCotizaciones" styleClass="buttonLight" text="Cotizaciones(F12)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/cotizacion.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -209,7 +218,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="220.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="cbComprobante" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onActionComprobante" prefHeight="30.0" prefWidth="220.0" promptText="Tipo de comprobante" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" style="-fx-padding: 0em  0.4166666666666667em  0.4166666666666667em  0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
@@ -223,7 +232,7 @@
                                     <HBox alignment="CENTER" style="-fx-spacing: 0.16666666666666666em;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="N° DE VENTA:" />
-                                          <Text fx:id="lblNumeracion" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="00000000" />
+                                          <Text fx:id="lblNumeracion" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="0" />
                                        </children>
                                     </HBox>
                                  </children>

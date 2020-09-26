@@ -392,7 +392,6 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
         });
 
         exec.execute(task);
-        exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
         }

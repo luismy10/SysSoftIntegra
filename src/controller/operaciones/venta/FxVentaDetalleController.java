@@ -329,7 +329,6 @@ public class FxVentaDetalleController implements Initializable {
 
 //            boolean addOperacion = false;
 //            double sumaOperacion = 0;
-
             boolean addImpuesto = false;
             double sumaImpuesto = 0;
             double totalImpuestos = 0;
@@ -348,7 +347,6 @@ public class FxVentaDetalleController implements Initializable {
 //                    sumaOperacion = 0;
 //                }
 //            }
-
             for (int k = 0; k < arrayArticulos.size(); k++) {
                 for (int i = 0; i < arrList.size(); i++) {
                     if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
@@ -357,8 +355,8 @@ public class FxVentaDetalleController implements Initializable {
                     }
                 }
                 if (addImpuesto) {
-                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombre(), Pos.CENTER_LEFT), 0, (k + 1)-1);
-                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, (k + 1)-1);
+                    gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombre(), Pos.CENTER_LEFT), 0, (k + 1) - 1);
+                    gpImpuestos.add(addLabelTotal(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaImpuesto, 2), Pos.CENTER_RIGHT), 1, (k + 1) - 1);
                     totalImpuestos += sumaImpuesto;
                     addImpuesto = false;
                     sumaImpuesto = 0;
@@ -419,58 +417,18 @@ public class FxVentaDetalleController implements Initializable {
     private void openWindowReporte() {
         try {
             ArrayList<SuministroTB> list = new ArrayList();
-            arrList.stream().map((suministroTB) -> {
+            for (int i = 0; i < arrList.size(); i++) {
                 SuministroTB stb = new SuministroTB();
-                stb.setClave(suministroTB.getClave());
-                stb.setNombreMarca(suministroTB.getNombreMarca());
-                stb.setCantidad(suministroTB.getCantidad());
-                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                stb.setDescuento(suministroTB.getDescuento());
-                stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
-                return stb;
-            }).forEachOrdered((stb) -> {
+                stb.setId(i + 1);
+                stb.setClave(arrList.get(i).getClave());
+                stb.setNombreMarca(arrList.get(i).getNombreMarca());
+                stb.setCantidad(arrList.get(i).getCantidad());
+                stb.setUnidadCompraName(arrList.get(i).getUnidadCompraName());
+                stb.setPrecioVentaGeneral(arrList.get(i).getPrecioVentaGeneral());
+                stb.setDescuento(arrList.get(i).getDescuento());
+                stb.setTotalImporte(arrList.get(i).getCantidad() * +arrList.get(i).getPrecioVentaGeneral());
                 list.add(stb);
-            });
-
-//            boolean addOperacion = false;
-//            double sumaOperacion = 0;
-//
-//            boolean addImpuesto = false;
-//            double sumaImpuesto = 0;
-//            ArrayList<SuministroTB> list_totales = new ArrayList();
-//            for (int k = 0; k < arrayArticulos.size(); k++) {
-//                for (int i = 0; i < arrList.size(); i++) {
-//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
-//                        addOperacion = true;
-//                        sumaOperacion += arrList.get(i).getSubImporteDescuento();
-//                    }
-//                }
-//                if (addOperacion) {
-//                    SuministroTB suministroTB = new SuministroTB();
-//                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
-//                    suministroTB.setImpuestoValor(sumaOperacion);
-//                    list_totales.add(suministroTB);
-//                    addOperacion = false;
-//                    sumaOperacion = 0;
-//                }
-//            }
-//            for (int k = 0; k < arrayArticulos.size(); k++) {
-//                for (int i = 0; i < arrList.size(); i++) {
-//                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getImpuestoId()) {
-//                        addImpuesto = true;
-//                        sumaImpuesto += arrList.get(i).getImpuestoSumado();
-//                    }
-//                }
-//                if (addImpuesto) {
-//                    SuministroTB suministroTB = new SuministroTB();
-//                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombreImpuesto() + ":");
-//                    suministroTB.setImpuestoValor(sumaImpuesto);
-//                    list_totales.add(suministroTB);
-//                    addImpuesto = false;
-//                    sumaImpuesto = 0;
-//                }
-//            }
+            }
             if (list.isEmpty()) {
                 Tools.AlertMessageWarning(window, "Venta realizada", "No hay registros para mostrar en el reporte.");
                 return;
@@ -518,7 +476,7 @@ public class FxVentaDetalleController implements Initializable {
         map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
 
         map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
-        map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName() + " N°:");
+        map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName().substring(0, 1).toUpperCase() + ventaTB.getClienteTB().getTipoDocumentoName().substring(1).toLowerCase() + ":");
         map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
         map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular().equals("") ? "---" : ventaTB.getClienteTB().getCelular());
         map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail().equals("") ? "---" : ventaTB.getClienteTB().getEmail());
@@ -577,19 +535,18 @@ public class FxVentaDetalleController implements Initializable {
                     if (format.equalsIgnoreCase("a4")) {
 
                         ArrayList<SuministroTB> list = new ArrayList();
-                        arrList.stream().map((suministroTB) -> {
+                        for (int i = 0; i < arrList.size(); i++) {
                             SuministroTB stb = new SuministroTB();
-                            stb.setClave(suministroTB.getClave());
-                            stb.setNombreMarca(suministroTB.getNombreMarca());
-                            stb.setCantidad(suministroTB.getCantidad());
-                            stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                            stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                            stb.setDescuento(suministroTB.getDescuento());
-                            stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
-                            return stb;
-                        }).forEachOrdered((stb) -> {
+                            stb.setId(i + 1);
+                            stb.setClave(arrList.get(i).getClave());
+                            stb.setNombreMarca(arrList.get(i).getNombreMarca());
+                            stb.setCantidad(arrList.get(i).getCantidad());
+                            stb.setUnidadCompraName(arrList.get(i).getUnidadCompraName());
+                            stb.setPrecioVentaGeneral(arrList.get(i).getPrecioVentaGeneral());
+                            stb.setDescuento(arrList.get(i).getDescuento());
+                            stb.setTotalImporte(arrList.get(i).getCantidad() * +arrList.get(i).getPrecioVentaGeneral());
                             list.add(stb);
-                        });
+                        }
 
                         if (list.isEmpty()) {
                             return "empty";

@@ -85,6 +85,8 @@ public class FxVentaRealizadasController implements Initializable {
     private Label lblPaginaActual;
     @FXML
     private Label lblPaginaSiguiente;
+    @FXML
+    private Label lblTotal;
 
     private AnchorPane vbPrincipal;
 
@@ -129,7 +131,7 @@ public class FxVentaRealizadasController implements Initializable {
 
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
-        
+
         idEmpleado = Session.USER_ID;
         txtVendedor.setText(Session.USER_NAME.toUpperCase());
 
@@ -178,29 +180,33 @@ public class FxVentaRealizadasController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ArrayList<Object>>  task = new Task<ArrayList<Object>>() {
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
             public ArrayList<Object> call() {
-                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario,(paginacion - 1) * 20, 20);
+                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
             }
         };
         task.setOnSucceeded(w -> {
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
-                tvList.setItems((ObservableList<VentaTB>)objects.get(0));
-                if(tvList.getItems().isEmpty()){
+                tvList.setItems((ObservableList<VentaTB>) objects.get(0));
+                if (tvList.getItems().isEmpty()) {
                     tvList.getSelectionModel().select(0);
                 }
                 totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 20.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
+                
+                double ventaTotal = (int) objects.get(2);
+                lblTotal.setText(Tools.roundingValue(ventaTotal, 2));
                 lblLoad.setVisible(false);
-            }else{
+            } else {
                 lblLoad.setVisible(false);
+                lblTotal.setText(Tools.roundingValue(0, 2));
             }
         });
         task.setOnFailed(w -> lblLoad.setVisible(false));
-        task.setOnScheduled(w-> lblLoad.setVisible(true));
+        task.setOnScheduled(w -> lblLoad.setVisible(true));
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -250,7 +256,7 @@ public class FxVentaRealizadasController implements Initializable {
 
     public void onEventPaginacion() {
         switch (opcion) {
-            case 0 :
+            case 0:
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
@@ -308,9 +314,9 @@ public class FxVentaRealizadasController implements Initializable {
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
             if (!lblLoad.isVisible()) {
-                paginacion=1;
+                paginacion = 1;
                 fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
-                opcion=1;
+                opcion = 1;
             }
         }
     }
@@ -323,7 +329,7 @@ public class FxVentaRealizadasController implements Initializable {
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
-                opcion=0;
+                opcion = 0;
             }
         }
     }
@@ -381,11 +387,11 @@ public class FxVentaRealizadasController implements Initializable {
                 Tools.actualDate(Tools.getDate(), dtFechaInicial);
                 Tools.actualDate(Tools.getDate(), dtFechaFinal);
                 if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-                    paginacion=1;
+                    paginacion = 1;
                     fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                             cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                             cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
-                    opcion=0;
+                    opcion = 0;
                 }
             }
         }
@@ -398,11 +404,11 @@ public class FxVentaRealizadasController implements Initializable {
             Tools.actualDate(Tools.getDate(), dtFechaInicial);
             Tools.actualDate(Tools.getDate(), dtFechaFinal);
             if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-                paginacion=1;
+                paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
-                opcion=0;
+                opcion = 0;
             }
         }
     }
@@ -411,11 +417,11 @@ public class FxVentaRealizadasController implements Initializable {
     private void onActionComprobante(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
-                paginacion=1;
+                paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
-                opcion=0;
+                opcion = 0;
             }
         }
     }
@@ -424,11 +430,11 @@ public class FxVentaRealizadasController implements Initializable {
     private void onActionEstado(ActionEvent event) {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
-                paginacion=1;
+                paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
-                opcion=0;
+                opcion = 0;
             }
         }
     }
@@ -447,7 +453,7 @@ public class FxVentaRealizadasController implements Initializable {
 
     @FXML
     private void onKeyPressedAnterior(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
                 if (paginacion > 1) {
                     paginacion--;
@@ -469,7 +475,7 @@ public class FxVentaRealizadasController implements Initializable {
 
     @FXML
     private void onKeyPressedSiguiente(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
                 if (paginacion < totalPaginacion) {
                     paginacion++;
@@ -496,7 +502,7 @@ public class FxVentaRealizadasController implements Initializable {
     public TableView<VentaTB> getTvList() {
         return tvList;
     }
-    
+
     public TextField getTxtVendedor() {
         return txtVendedor;
     }
@@ -509,6 +515,5 @@ public class FxVentaRealizadasController implements Initializable {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
     }
-
 
 }

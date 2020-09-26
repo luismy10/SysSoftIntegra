@@ -77,6 +77,24 @@
                         </Text>
                      </children>
                   </VBox>
+                  <VBox fx:id="btnCotizaciones" alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCotizaciones" onKeyPressed="#onKeyPressedCotizaciones" styleClass="buttonTransparent" text="Cotizaciones" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/cotizacion.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documentos">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
                   <VBox fx:id="btnCorteCaja" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCorteCaja" onKeyPressed="#onKeyPressedCorteCaja" styleClass="buttonTransparent" text="Cortes Realizados" textFill="#020203">

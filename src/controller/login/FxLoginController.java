@@ -179,7 +179,7 @@ public class FxLoginController implements Initializable {
     private void onActionWhatsApp(ActionEvent event) {
         try {
             Desktop d = Desktop.getDesktop();
-            d.browse(new URI("https://wa.link/64zbb1"));
+            d.browse(new URI("https://api.whatsapp.com/send?phone=51966750883"));
         } catch (IOException | URISyntaxException ex) {
             Tools.println(ex.getMessage());
         }

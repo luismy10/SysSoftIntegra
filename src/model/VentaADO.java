@@ -379,11 +379,22 @@ public class VentaADO {
             preparedStatement.setInt(6, estado);
             preparedStatement.setString(7, usuario);
             rsEmps = preparedStatement.executeQuery();
-            Integer integer = 0;
+            Integer cantidadTotal = 0;
             if (rsEmps.next()) {
-                integer = rsEmps.getInt("Total");
+                cantidadTotal = rsEmps.getInt("Total");
             }
-            objects.add(integer);
+            objects.add(cantidadTotal);
+
+            preparedStatement = DBUtil.getConnection().prepareStatement("select sum(Total) as Total from VentaTB where FechaVenta between ? and ? and Vendedor = ? and Estado = 1");
+            preparedStatement.setString(1, fechaInicial);
+            preparedStatement.setString(2, fechaFinal);
+            preparedStatement.setString(3, usuario);
+            rsEmps = preparedStatement.executeQuery();
+            double ventalTotal = 0;
+            if (rsEmps.next()) {
+                ventalTotal = rsEmps.getDouble("Total");
+            }
+            objects.add(ventalTotal);
         } catch (SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
         } finally {
@@ -480,7 +491,6 @@ public class VentaADO {
         return empList;
     }
 
-    
     public static ArrayList<Object> ListCompletaVentasDetalle(String idVenta) {
         PreparedStatement statementVenta = null;
         PreparedStatement statementCliente = null;
@@ -500,7 +510,7 @@ public class VentaADO {
                     ventaTB.setHoraVenta(resultSetVenta.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     //Cliente start
                     ClienteTB clienteTB = new ClienteTB();
-                    clienteTB.setIdAuxiliar(resultSetVenta.getString("IdAuxiliar")); 
+                    clienteTB.setIdAuxiliar(resultSetVenta.getString("IdAuxiliar"));
                     clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
                     clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
                     clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
@@ -510,7 +520,7 @@ public class VentaADO {
                     clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
                     ventaTB.setClienteTB(clienteTB);
                     //Cliente end
-                    ventaTB.setCodigoAlterno(resultSetVenta.getString("CodigoAlterno")); 
+                    ventaTB.setCodigoAlterno(resultSetVenta.getString("CodigoAlterno"));
                     ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
                     ventaTB.setSerie(resultSetVenta.getString("Serie"));
                     ventaTB.setNumeracion(resultSetVenta.getString("Numeracion"));
@@ -586,7 +596,7 @@ public class VentaADO {
 
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
-        
+
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
                     suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
