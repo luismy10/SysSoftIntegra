@@ -99,7 +99,6 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Giro comercial:" textFill="#020203">
@@ -159,19 +158,6 @@
                                        </font>
                                     </Label>
                                     <TextField fx:id="txtEmail" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Domicilio:" textFill="#020203" GridPane.rowIndex="6">
-                                       <font>
-                                          <Font name="Roboto" size="14.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../image/asterisk.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Label>
-                                    <TextField fx:id="txtDomicilio" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                  </children>
                               </GridPane>
                            </children>
@@ -247,6 +233,7 @@
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Tipo documento:" textFill="#020203">
@@ -294,6 +281,25 @@
                                  </font>
                               </Label>
                               <TextField fx:id="txtNombreComercial" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Domicilio:" textFill="#020203" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="Roboto" size="14.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../image/asterisk.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <TextField fx:id="txtDomicilio" onAction="#onActionTerminar" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label styleClass="labelRoboto13" text="Ubigeo:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="Roboto" size="14.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cbUbigeo" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese su Ubigeo" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children>

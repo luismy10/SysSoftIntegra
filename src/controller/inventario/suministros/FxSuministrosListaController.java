@@ -7,6 +7,7 @@ import controller.reporte.FxVentaUtilidadesController;
 import controller.produccion.asignacion.FxAsignacionController;
 import controller.produccion.asignacion.FxAsignacionProcesoController;
 import controller.inventario.movimientos.FxMovimientosProcesoController;
+import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.produccion.producir.FxProducirProcesoController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -98,6 +99,8 @@ public class FxSuministrosListaController implements Initializable {
 
     private FxVentaUtilidadesController ventaUtilidadesController;
 
+    private FxCotizacionController cotizacionController;
+
     private boolean status;
 
     private int paginacion;
@@ -153,7 +156,7 @@ public class FxSuministrosListaController implements Initializable {
         tcCategoriaMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName() + "\n" + cellData.getValue().getMarcaName()));
         tcTipoProducto.setCellValueFactory(new PropertyValueFactory<>("imageValorInventario"));
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoNombre()));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (cellData.getValue().getImpuestoValor() / 100.00)), 4)));
+        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() + (cellData.getValue().getPrecioVentaGeneral() * (cellData.getValue().getImpuestoValor() / 100.00)), 2)));
 
         paginacion = 1;
         opcion = 0;
@@ -162,7 +165,6 @@ public class FxSuministrosListaController implements Initializable {
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filterTextInput(1, (short) 1, (short) 1, oldValue, newValue);
         });
-
         txtCategoria.textProperty().addListener((observable, oldValue, newValue) -> {
             filterTextInput(1, (short) 2, (short) 2, oldValue, newValue);
         });
@@ -301,13 +303,13 @@ public class FxSuministrosListaController implements Initializable {
     private void executeEvent() {
         if (ventaEstructuraController != null) {
             addArticuloToList();
-//            txtSearch.requestFocus();
+        } else if (cotizacionController != null) {
+             addSuministroCotizacion();
         } else if (movimientosProcesoController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!validateDuplicate(movimientosProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
                     movimientosProcesoController.addSuministroLista(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
                     Tools.Dispose(apWindow);
-
                 } else {
                     Tools.AlertMessageWarning(apWindow, "Movimiento", "Ya hay un producto con las mismas características.");
                 }
@@ -359,6 +361,10 @@ public class FxSuministrosListaController implements Initializable {
 
     private void addArticuloToList() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (ventaEstructuraController.isVender_con_cantidades_negativas() && tvList.getSelectionModel().getSelectedItem().getCantidad() <= 0) {
+                Tools.AlertMessageWarning(apWindow, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+                return;
+            }
             SuministroTB suministroTB = new SuministroTB();
             suministroTB.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
             suministroTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
@@ -427,47 +433,6 @@ public class FxSuministrosListaController implements Initializable {
         }
     }
 
-    private void searchTable(KeyEvent event, short tipo, String value) {
-        if (event.getCode() != KeyCode.ESCAPE
-                && event.getCode() != KeyCode.F1
-                && event.getCode() != KeyCode.F2
-                && event.getCode() != KeyCode.F3
-                && event.getCode() != KeyCode.F4
-                && event.getCode() != KeyCode.F5
-                && event.getCode() != KeyCode.F6
-                && event.getCode() != KeyCode.F7
-                && event.getCode() != KeyCode.F8
-                && event.getCode() != KeyCode.F9
-                && event.getCode() != KeyCode.F10
-                && event.getCode() != KeyCode.F11
-                && event.getCode() != KeyCode.F12
-                && event.getCode() != KeyCode.ALT
-                && event.getCode() != KeyCode.CONTROL
-                && event.getCode() != KeyCode.UP
-                && event.getCode() != KeyCode.DOWN
-                && event.getCode() != KeyCode.RIGHT
-                && event.getCode() != KeyCode.LEFT
-                && event.getCode() != KeyCode.TAB
-                && event.getCode() != KeyCode.CAPS
-                && event.getCode() != KeyCode.SHIFT
-                && event.getCode() != KeyCode.HOME
-                && event.getCode() != KeyCode.WINDOWS
-                && event.getCode() != KeyCode.ALT_GRAPH
-                && event.getCode() != KeyCode.CONTEXT_MENU
-                && event.getCode() != KeyCode.END
-                && event.getCode() != KeyCode.INSERT
-                && event.getCode() != KeyCode.PAGE_UP
-                && event.getCode() != KeyCode.PAGE_DOWN
-                && event.getCode() != KeyCode.NUM_LOCK
-                && event.getCode() != KeyCode.PRINTSCREEN
-                && event.getCode() != KeyCode.SCROLL_LOCK
-                && event.getCode() != KeyCode.PAUSE) {
-            if (!status) {
-                fillSuministrosTable(tipo, value);
-            }
-        }
-    }
-
     private void selectTable(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!tvList.getItems().isEmpty()) {
@@ -484,6 +449,58 @@ public class FxSuministrosListaController implements Initializable {
             ivPrincipal.setImage(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
         }
     }
+    
+     private void addSuministroCotizacion() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            SuministroTB suministroTB = new SuministroTB();
+            suministroTB.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
+            suministroTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
+            suministroTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+            suministroTB.setCantidad(1);
+            suministroTB.setCostoCompra(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
+
+            suministroTB.setDescuento(0);
+            suministroTB.setDescuentoCalculado(0);
+            suministroTB.setDescuentoSumado(0);
+
+            suministroTB.setPrecioVentaGeneralUnico(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
+            suministroTB.setPrecioVentaGeneralReal(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
+            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
+
+            suministroTB.setImpuestoOperacion(tvList.getSelectionModel().getSelectedItem().getImpuestoOperacion());
+            suministroTB.setImpuestoId(tvList.getSelectionModel().getSelectedItem().getImpuestoId());
+            suministroTB.setImpuestoNombre(tvList.getSelectionModel().getSelectedItem().getImpuestoNombre());
+            suministroTB.setImpuestoValor(tvList.getSelectionModel().getSelectedItem().getImpuestoValor());
+            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
+
+            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
+
+            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+
+            suministroTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
+            suministroTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
+            suministroTB.setValorInventario(tvList.getSelectionModel().getSelectedItem().getValorInventario());
+
+            Button button = new Button("X");
+            button.getStyleClass().add("buttonDark");
+            button.setOnAction(e -> {
+                cotizacionController.getTvList().getItems().remove(suministroTB);
+                cotizacionController.calculateTotales();
+            });
+            button.setOnKeyPressed(e -> {
+                if (e.getCode() == KeyCode.ENTER) {
+                    cotizacionController.getTvList().getItems().remove(suministroTB);
+                    cotizacionController.calculateTotales();
+                }
+            });
+            suministroTB.setRemover(button);
+            Tools.Dispose(apWindow);
+            cotizacionController.getAddArticulo(suministroTB);
+        }
+    }
+
 
     @FXML
     private void onKeyPressedAdd(KeyEvent event) {
@@ -571,39 +588,7 @@ public class FxSuministrosListaController implements Initializable {
     private void onKeyPressedToSearh(KeyEvent event) {
         selectTable(event);
     }
-
-//    @FXML
-//    private void onKeyReleasedToCategoria(KeyEvent event) {
-//        if (!txtCategoria.getText().trim().equalsIgnoreCase("")) {
-//            paginacion = 1;
-//            searchTable(event, (short) 2, txtCategoria.getText().trim());
-//            opcion = 2;
-//        }
-//    }
-//    @FXML
-//    private void onKeyReleasedToMarca(KeyEvent event) {
-//        if (!txtMarca.getText().trim().equalsIgnoreCase("")) {
-//            paginacion = 1;
-//            searchTable(event, (short) 3, txtMarca.getText().trim());
-//            opcion = 3;
-//        }
-//    }
-//    @FXML
-//    private void onKeyReleasedToPresentacion(KeyEvent event) {
-//        if (!txtPresentacion.getText().trim().equalsIgnoreCase("")) {
-//            paginacion = 1;
-//            searchTable(event, (short) 4, txtPresentacion.getText().trim());
-//            opcion = 4;
-//        }
-//    }
-//    @FXML
-//    private void onKeyReleasedToMedida(KeyEvent event) {
-//        if (!txtMedida.getText().trim().equalsIgnoreCase("")) {
-//            paginacion = 1;
-//            searchTable(event, (short) 5, txtMedida.getText().trim());
-//            opcion = 5;
-//        }
-//    }
+    
     @FXML
     private void onKeyPressedToCategoria(KeyEvent event) {
         selectTable(event);
@@ -702,6 +687,10 @@ public class FxSuministrosListaController implements Initializable {
 
     public void setInitVentaUtilidadesController(FxVentaUtilidadesController ventaUtilidadesController) {
         this.ventaUtilidadesController = ventaUtilidadesController;
+    }
+    
+     public void setInitCotizacionEstructuraController(FxCotizacionController cotizacionController) {
+        this.cotizacionController = cotizacionController;
     }
 
 }

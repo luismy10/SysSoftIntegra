@@ -361,13 +361,14 @@ public class FxVentaMostrarController implements Initializable {
         map.put("SUB_IMPORTE", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getSubImporte(), 2));
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(ventaTB.getTotal(), 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
         return jasperPrint;
     }
 
     private void executeProcessPrinterVenta(String idVenta, String printerName, boolean printerCut, String format) {
-        if(Tools.isText(idVenta)){
+        if (Tools.isText(idVenta)) {
             return;
         }
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
@@ -388,19 +389,18 @@ public class FxVentaMostrarController implements Initializable {
 
                         if (format.equalsIgnoreCase("a4")) {
                             ArrayList<SuministroTB> list = new ArrayList();
-                            suministroTBs.stream().map((suministroTB) -> {
+                            for (int i = 0; i < suministroTBs.size(); i++) {
                                 SuministroTB stb = new SuministroTB();
-                                stb.setClave(suministroTB.getClave());
-                                stb.setNombreMarca(suministroTB.getNombreMarca());
-                                stb.setCantidad(suministroTB.getCantidad());
-                                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                                stb.setDescuento(suministroTB.getDescuento());
-                                stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
-                                return stb;
-                            }).forEachOrdered((stb) -> {
+                                stb.setId(i + 1);
+                                stb.setClave(suministroTBs.get(i).getClave());
+                                stb.setNombreMarca(suministroTBs.get(i).getNombreMarca());
+                                stb.setCantidad(suministroTBs.get(i).getCantidad());
+                                stb.setUnidadCompraName(suministroTBs.get(i).getUnidadCompraName());
+                                stb.setPrecioVentaGeneral(suministroTBs.get(i).getPrecioVentaGeneral());
+                                stb.setDescuento(suministroTBs.get(i).getDescuento());
+                                stb.setTotalImporte(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
                                 list.add(stb);
-                            });
+                            }
 
                             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
                             printRequestAttributeSet.add(new Copies(1));

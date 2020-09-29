@@ -21,6 +21,7 @@ public class ClienteTB {
     private boolean predeterminado;
     private boolean sistema;
     private ImageView imagePredeterminado;
+    private String idAuxiliar;
 
     public ClienteTB() {
 
@@ -35,6 +36,27 @@ public class ClienteTB {
         this.numeroDocumento = numeroDocumento;
         this.informacion = informacion;
         this.celular = celular;
+        this.email = email;
+        this.direccion = direccion;
+    }
+
+    public ClienteTB(String idCliente, int tipoDocumento, String numeroDocumento, String informacion, String celular, String email, String direccion) {
+        this.idCliente = idCliente;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroDocumento = numeroDocumento;
+        this.informacion = informacion;
+        this.celular = celular;
+        this.email = email;
+        this.direccion = direccion;
+    }
+    
+    public ClienteTB(String idCliente, int tipoDocumento, String numeroDocumento, String informacion, String telefono,String celular, String email, String direccion) {
+        this.idCliente = idCliente;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroDocumento = numeroDocumento;
+        this.informacion = informacion;
+        this.celular = celular;
+        this.telefono=telefono;
         this.email = email;
         this.direccion = direccion;
     }
@@ -165,6 +187,14 @@ public class ClienteTB {
 
     public void setImagePredeterminado(ImageView imagePredeterminado) {
         this.imagePredeterminado = imagePredeterminado;
+    }
+
+    public String getIdAuxiliar() {
+        return idAuxiliar;
+    }
+
+    public void setIdAuxiliar(String idAuxiliar) {
+        this.idAuxiliar = idAuxiliar;
     }
 
     @Override

@@ -36,10 +36,10 @@
                <children>
                   <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="240.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="tcNumero" prefWidth="70.0" text="N°" />
-                      <TableColumn fx:id="tcNombre" prefWidth="216.0" text="Nombre" />
-                        <TableColumn fx:id="tcValor" prefWidth="123.0" text="Valor" />
-                        <TableColumn fx:id="tcFactor" prefWidth="137.0" text="Factor" />
+                      <TableColumn fx:id="tcNumero" prefWidth="50.0" text="N°" />
+                      <TableColumn fx:id="tcNombre" prefWidth="230.0" text="Nombre" />
+                        <TableColumn fx:id="tcValor" prefWidth="130.0" text="Precio del Monto" />
+                        <TableColumn fx:id="tcFactor" prefWidth="130.0" text="Cantidad del Monto" />
                     </columns>
                   </TableView>
                </children>

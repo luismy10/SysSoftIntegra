@@ -1,6 +1,7 @@
 
 package model;
 
+import controller.tools.Tools;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -145,6 +146,6 @@ public class PreciosTB {
 
     @Override
     public String toString() {
-        return nombre +"= P: "+valor+" F: "+factor;
+        return nombre +"= Precio: "+Tools.roundingValue(valor, 2)+" Cant.: "+Tools.roundingValue(factor,2);
     }
 }

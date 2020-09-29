@@ -38,6 +38,7 @@ public class VentaTB {
     private ClienteTB clienteTB;
     private MonedaTB monedaTB;
     private boolean tipopago;
+    private String codigoAlterno;
     
     public VentaTB() {
 
@@ -295,6 +296,14 @@ public class VentaTB {
 
     public void setTipopago(boolean tipopago) {
         this.tipopago = tipopago;
+    }
+
+    public String getCodigoAlterno() {
+        return codigoAlterno;
+    }
+
+    public void setCodigoAlterno(String codigoAlterno) {
+        this.codigoAlterno = codigoAlterno;
     }
 
 }

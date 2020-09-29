@@ -1,6 +1,7 @@
 package controller.operaciones.venta;
 
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.operaciones.cotizacion.FxCotizacionListaController;
 import controller.tools.ApiPeru;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
@@ -32,6 +33,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -61,6 +63,8 @@ import javax.print.attribute.standard.PrinterName;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.ComprobanteADO;
+import model.CotizacionADO;
+import model.CotizacionTB;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.MonedaADO;
@@ -154,6 +158,8 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private Button btnVentasPorDia;
     @FXML
+    private Button btnContizaciones;
+    @FXML
     private GridPane gpTotales;
     @FXML
     private Button btnBuscarCliente;
@@ -200,11 +206,13 @@ public class FxVentaEstructuraController implements Initializable {
 
     private boolean medida_cambio_decuento;
 
+    private boolean vender_con_cantidades_negativas;
+
     private boolean stateSearch;
 
     private double subTotal;
 
-    private double descuento;
+    private double descuentoTotal;
 
     private double subTotalImporte;
 
@@ -213,6 +221,8 @@ public class FxVentaEstructuraController implements Initializable {
     private double totalImpuesto;
 
     private double total;
+
+    private Alert alert = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -341,7 +351,7 @@ public class FxVentaEstructuraController implements Initializable {
             cbMoneda.setDisable(true);
         }
         if (privilegioTBs.get(15).getIdPrivilegio() != 0 && !privilegioTBs.get(15).isEstado()) {
-            //hbBotonesInferior.getChildren().remove(btnVentasPorDia);
+            hbBotonesSuperior.getChildren().remove(btnVentasPorDia);
         }
         if (privilegioTBs.get(16).getIdPrivilegio() != 0 && !privilegioTBs.get(16).isEstado()) {
 
@@ -399,13 +409,18 @@ public class FxVentaEstructuraController implements Initializable {
                     tvList.refresh();
                     calculateTotales();
                 } else {
-                    double porcentajeRestante = value * (suministroTB.getDescuento() / 100.00);
-                    double preciocalculado = value - porcentajeRestante;
+                    double valor_sin_impuesto = value / ((suministroTB.getImpuestoValor() / 100.00) + 1);
+                    double impuesto_generado = valor_sin_impuesto * (suministroTB.getImpuestoValor() / 100.00);
 
+                    double descuento = suministroTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                    suministroTB.setDescuento(descuento);
                     suministroTB.setDescuentoCalculado(porcentajeRestante);
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-                    suministroTB.setPrecioVentaGeneralUnico(value);
+                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
                     suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
@@ -442,6 +457,8 @@ public class FxVentaEstructuraController implements Initializable {
         tcDescuento.setVisible(!(privilegioTBs.get(32).getIdPrivilegio() != 0 && !privilegioTBs.get(32).isEstado()));
         tcImporte.setVisible(!(privilegioTBs.get(33).getIdPrivilegio() != 0 && !privilegioTBs.get(33).isEstado()));
 
+        vender_con_cantidades_negativas = privilegioTBs.get(34).getIdPrivilegio() != 0 && !privilegioTBs.get(34).isEstado();
+
         tcOpcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
         tcArticulo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
         tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
@@ -449,12 +466,18 @@ public class FxVentaEstructuraController implements Initializable {
         tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+
     }
 
     private void filterSuministro(String search) {
 
         SuministroTB a = SuministroADO.Get_Suministro_By_Search(search);
         if (a != null) {
+            if (vender_con_cantidades_negativas && a.getCantidad() <= 0) {
+                Tools.AlertMessageWarning(window, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+
+                return;
+            }
             SuministroTB suministroTB = new SuministroTB();
             suministroTB.setIdSuministro(a.getIdSuministro());
             suministroTB.setClave(a.getClave());
@@ -589,7 +612,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setFechaVenta(Tools.getDate());
                 ventaTB.setHoraVenta(Tools.getHour());
                 ventaTB.setSubTotal(subTotal);
-                ventaTB.setDescuento(descuento);
+                ventaTB.setDescuento(descuentoTotal);
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setImpuesto(totalImpuesto);
                 ventaTB.setTotal(total);
@@ -797,6 +820,27 @@ public class FxVentaEstructuraController implements Initializable {
         }
     }
 
+    public void openWindowCotizaciones() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_COTIZACION_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxCotizacionListaController controller = fXMLLoader.getController();
+            controller.setInitVentaEstructuraController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar Cotizaciones", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+            controller.loadTable((short) 1, "", Tools.getDate(), Tools.getDate());
+        } catch (IOException ex) {
+            Tools.println("Error en la funcioón openWindowCotizaciones():" + ex.getLocalizedMessage());
+        }
+    }
+
     public void getAddArticulo(SuministroTB suministro) {
         if (validateDuplicateArticulo(tvList, suministro)) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
@@ -888,9 +932,9 @@ public class FxVentaEstructuraController implements Initializable {
         tvList.getItems().forEach(e -> subTotal += e.getSubImporte());
         lblValorVenta.setText(monedaSimbolo + " " + Tools.roundingValue(subTotal, 2));
 
-        descuento = 0;
-        tvList.getItems().forEach(e -> descuento += e.getDescuentoSumado());
-        lblDescuento.setText(monedaSimbolo + " " + (Tools.roundingValue(descuento * (-1), 2)));
+        descuentoTotal = 0;
+        tvList.getItems().forEach(e -> descuentoTotal += e.getDescuentoSumado());
+        lblDescuento.setText(monedaSimbolo + " " + (Tools.roundingValue(descuentoTotal * (-1), 2)));
 
         subTotalImporte = 0;
         tvList.getItems().forEach(e -> subTotalImporte += e.getSubImporteDescuento());
@@ -955,19 +999,98 @@ public class FxVentaEstructuraController implements Initializable {
 
     public void resetVenta() {
         tvList.getItems().clear();
-
         loadDataComponent();
-
-        lblTotal.setText(monedaSimbolo + " " + "0.00");
-        lblValorVenta.setText(monedaSimbolo + " " + "0.00");
-        lblDescuento.setText(monedaSimbolo + " " + "0.00");
-        lblSubImporte.setText(monedaSimbolo + " " + "0.00");
-        lblImporteTotal.setText(monedaSimbolo + " " + "0.00");
-        lblTotalPagar.setText(monedaSimbolo + " " + "0.00");
-
-        txtSearch.requestFocus();
-
         calculateTotales();
+        txtSearch.requestFocus();
+    }
+
+    public void loadCotizacion(String idCotizacion) {
+        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                return CotizacionADO.CargarCotizacionVenta(idCotizacion);
+            }
+        };
+        task.setOnSucceeded(w -> {
+            if (!task.isRunning()) {
+                if (alert != null) {
+                    ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+                }
+            }
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                if (objects.get(0) != null) {
+                    CotizacionTB cotizacionTB = (CotizacionTB) objects.get(0);
+
+                    for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
+                        if (detalleTB.getIdDetalle().get() == cotizacionTB.getClienteTB().getTipoDocumento()) {
+                            cbTipoDocumento.getSelectionModel().select(detalleTB);
+                            break;
+                        }
+                    }
+
+                    for (MonedaTB monedaTB : cbMoneda.getItems()) {
+                        if (monedaTB.getIdMoneda() == cotizacionTB.getIdMoneda()) {
+                            cbMoneda.getSelectionModel().select(monedaTB);
+                            monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
+                            break;
+                        }
+                    }
+
+                    txtNumeroDocumento.setText(cotizacionTB.getClienteTB().getNumeroDocumento());
+                    txtDatosCliente.setText(cotizacionTB.getClienteTB().getInformacion());
+                    txtCelularCliente.setText(cotizacionTB.getClienteTB().getCelular());
+                    txtCorreoElectronico.setText(cotizacionTB.getClienteTB().getEmail());
+                    txtDireccionCliente.setText(cotizacionTB.getClienteTB().getDireccion());
+
+                }
+                if (objects.get(1) != null) {
+                    ObservableList<SuministroTB> cotizacionTBs = (ObservableList<SuministroTB>) objects.get(1);
+                    for (int i = 0; i < cotizacionTBs.size(); i++) {
+                        SuministroTB suministroTB = cotizacionTBs.get(i);
+                        suministroTB.getRemover().setOnAction(e -> {
+                            tvList.getItems().remove(suministroTB);
+                            calculateTotales();
+                        });
+                        suministroTB.getRemover().setOnKeyPressed(e -> {
+                            if (e.getCode() == KeyCode.ENTER) {
+                                tvList.getItems().remove(suministroTB);
+                                calculateTotales();
+                            }
+                        });
+                    }
+                    tvList.setItems(cotizacionTBs);
+                    calculateTotales();
+                }
+                Tools.AlertMessageInformation(window, "Ventas", "Los datos se cargaron correctamente.");
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            } else {
+                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema intente nuevamente.");
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            }
+
+        });
+        task.setOnFailed(w -> {
+            if (alert != null) {
+                ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+            }
+            Tools.AlertMessageError(window, "Venta", "Error en la ejecución, intente nuevamente.");
+            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        });
+        task.setOnScheduled(w -> {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Procesando Información...");
+
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     private void removeArticulo() {
@@ -1028,6 +1151,7 @@ public class FxVentaEstructuraController implements Initializable {
         map.put("SUB_IMPORTE", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getSubImporte(), 2));
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(total, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
         return jasperPrint;
@@ -1071,19 +1195,19 @@ public class FxVentaEstructuraController implements Initializable {
 
                         if (format.equalsIgnoreCase("a4")) {
                             ArrayList<SuministroTB> list = new ArrayList();
-                            suministroTBs.stream().map((suministroTB) -> {
+
+                            for (int i = 0; i < suministroTBs.size(); i++) {
                                 SuministroTB stb = new SuministroTB();
-                                stb.setClave(suministroTB.getClave());
-                                stb.setNombreMarca(suministroTB.getNombreMarca());
-                                stb.setCantidad(suministroTB.getCantidad());
-                                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                                stb.setDescuento(suministroTB.getDescuento());
-                                stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
-                                return stb;
-                            }).forEachOrdered((stb) -> {
+                                stb.setId(i + 1);
+                                stb.setClave(suministroTBs.get(i).getClave());
+                                stb.setNombreMarca(suministroTBs.get(i).getNombreMarca());
+                                stb.setCantidad(suministroTBs.get(i).getCantidad());
+                                stb.setUnidadCompraName(suministroTBs.get(i).getUnidadCompraName());
+                                stb.setPrecioVentaGeneral(suministroTBs.get(i).getPrecioVentaGeneral());
+                                stb.setDescuento(suministroTBs.get(i).getDescuento());
+                                stb.setTotalImporte(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
                                 list.add(stb);
-                            });
+                            }
 
                             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
                             printRequestAttributeSet.add(new Copies(1));
@@ -1289,7 +1413,7 @@ public class FxVentaEstructuraController implements Initializable {
                         HBox box = ((HBox) hbPie.getChildren().get(i));
                         billPrintable.hbPie(box, monedaSimbolo,
                                 Tools.roundingValue(subTotal, 2),
-                                "-" + Tools.roundingValue(descuento, 2),
+                                "-" + Tools.roundingValue(descuentoTotal, 2),
                                 Tools.roundingValue(subTotalImporte, 2),
                                 Tools.roundingValue(total, 2),
                                 "EFECTIVO",
@@ -1802,13 +1926,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedPrecio(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+            openWindowCambiarPrecio("Cambiar precio al Producto", false);
         }
     }
 
     @FXML
     private void onActionPrecio(ActionEvent event) {
-        openWindowCambiarPrecio("Cambiar precio al Artículo", false);
+        openWindowCambiarPrecio("Cambiar precio al Producto", false);
     }
 
     @FXML
@@ -1826,13 +1950,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedPrecioSumar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCambiarPrecio("Sumar precio al Artículo", true);
+            openWindowCambiarPrecio("Sumar precio al Producto", true);
         }
     }
 
     @FXML
     private void onActionPrecioSumar(ActionEvent event) {
-        openWindowCambiarPrecio("Sumar precio al Artículo", true);
+        openWindowCambiarPrecio("Sumar precio al Producto", true);
     }
 
     @FXML
@@ -2038,7 +2162,19 @@ public class FxVentaEstructuraController implements Initializable {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
             event.consume();
-        } 
+        }
+    }
+
+    @FXML
+    private void onKeyPressedCotizaciones(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCotizaciones();
+        }
+    }
+
+    @FXML
+    private void onActionCotizaciones(ActionEvent event) {
+        openWindowCotizaciones();
     }
 
     @FXML
@@ -2081,6 +2217,9 @@ public class FxVentaEstructuraController implements Initializable {
         } else if (event.getCode() == KeyCode.F11) {
             openWindowMostrarVentas();
             event.consume();
+        } else if (event.getCode() == KeyCode.F12) {
+            openWindowCotizaciones();
+            event.consume();
         } else if (event.getCode() == KeyCode.DELETE) {
             removeArticulo();
             event.consume();
@@ -2109,8 +2248,8 @@ public class FxVentaEstructuraController implements Initializable {
         return tvList;
     }
 
-    public String getMonedaNombre() {
-        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
+    public boolean isVender_con_cantidades_negativas() {
+        return vender_con_cantidades_negativas;
     }
 
     public void setContent(AnchorPane vbPrincipal) {

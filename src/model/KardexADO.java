@@ -51,35 +51,35 @@ public class KardexADO {
 
                 cantidad = cantidad + (kardexTB.getTipo() == 1 ? kardexTB.getCantidad() : -kardexTB.getCantidad());
 
-                Label lblCantidadEntrada = new Label(kardexTB.getTipo() == 1 ? Tools.roundingValue(kardexTB.getCantidad(), 4) : "");
+                Label lblCantidadEntrada = new Label(kardexTB.getTipo() == 1 ? Tools.roundingValue(kardexTB.getCantidad(), 2) : "");
                 lblCantidadEntrada.getStyleClass().add("labelRobotoBold13");
                 lblCantidadEntrada.setStyle("-fx-max-width:Infinity;-fx-max-height:Infinity;-fx-background-color:#c6efd0;-fx-text-fill:#297521;-fx-alignment:center-right;");
 
-                Label lblCantidadSalida = new Label(kardexTB.getTipo() == 2 ? "-" + Tools.roundingValue(kardexTB.getCantidad(), 4) : "");
+                Label lblCantidadSalida = new Label(kardexTB.getTipo() == 2 ? "-" + Tools.roundingValue(kardexTB.getCantidad(), 2) : "");
                 lblCantidadSalida.getStyleClass().add("labelRobotoBold13");
                 lblCantidadSalida.setStyle("-fx-max-width:Infinity;-fx-max-height:Infinity;-fx-background-color:#ffc6d1;-fx-text-fill:#890d15;-fx-alignment:center-right;");
 
-                Label lblExistencia = new Label(Tools.roundingValue(cantidad, 4));
+                Label lblExistencia = new Label(Tools.roundingValue(cantidad, 2));
                 lblExistencia.getStyleClass().add("labelRoboto13");
-                lblExistencia.setStyle("-fx-text-fill:#020203;-fx-font-weight:bold;");
+                lblExistencia.setStyle("-fx-text-fill:#020203;");
 
-                Label lblCosto = new Label(Tools.roundingValue(kardexTB.getCosto(), 4));
+                Label lblCosto = new Label(Tools.roundingValue(kardexTB.getCosto(), 2));
                 lblCosto.getStyleClass().add("labelRoboto13");
-                lblCosto.setStyle("-fx-text-fill:#020203;-fx-font-weight:bold;");
+                lblCosto.setStyle("-fx-text-fill:#020203;");
 
-                Label lblDebe = new Label(kardexTB.getTipo() == 1 ? Tools.roundingValue(kardexTB.getTotal(), 4) : "");
+                Label lblDebe = new Label(kardexTB.getTipo() == 1 ? Tools.roundingValue(kardexTB.getTotal(), 2) : "");
                 lblDebe.getStyleClass().add("labelRoboto13");
-                lblDebe.setStyle("-fx-text-fill:#020203;-fx-font-weight:bold;");
+                lblDebe.setStyle("-fx-text-fill:#020203;");
 
-                Label lblHaber = new Label(kardexTB.getTipo() == 2 ? "-" + Tools.roundingValue(kardexTB.getTotal(), 4) : "");
+                Label lblHaber = new Label(kardexTB.getTipo() == 2 ? "-" + Tools.roundingValue(kardexTB.getTotal(), 2) : "");
                 lblHaber.getStyleClass().add("labelRoboto13");
-                lblHaber.setStyle("-fx-text-fill:#020203;-fx-font-weight:bold;");
+                lblHaber.setStyle("-fx-text-fill:#020203;");
 
                 saldo = saldo + (kardexTB.getTipo() == 1 ? kardexTB.getTotal() : -kardexTB.getTotal());
 
-                Label lblSaldo = new Label(Tools.roundingValue(saldo, 4));
+                Label lblSaldo = new Label(Tools.roundingValue(saldo, 2));
                 lblSaldo.getStyleClass().add("labelRoboto13");
-                lblSaldo.setStyle("-fx-text-fill:#020203;-fx-font-weight:bold;");
+                lblSaldo.setStyle("-fx-text-fill:#020203;");
 
                 kardexTB.setLblEntreda(lblCantidadEntrada);
                 kardexTB.setLblSalida(lblCantidadSalida);

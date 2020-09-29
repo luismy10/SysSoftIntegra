@@ -31,11 +31,12 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,CodigoAlterno=? WHERE IdTipoDocumento = ?");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Numeracion=?,CodigoAlterno=? WHERE IdTipoDocumento = ?");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
-                        statementUpdate.setString(3, documentoTB.getCodigoAlterno());
-                        statementUpdate.setInt(4, documentoTB.getIdTipoDocumento());
+                        statementUpdate.setInt(3, documentoTB.getNumeracion());
+                        statementUpdate.setString(4, documentoTB.getCodigoAlterno());
+                        statementUpdate.setInt(5, documentoTB.getIdTipoDocumento());
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -50,12 +51,13 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Predeterminado,Sistema,CodigoAlterno) VALUES(?,?,?,?,?)");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Numeracion,Predeterminado,Sistema,CodigoAlterno) VALUES(?,?,?,?,?,?)");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
-                        statementUpdate.setBoolean(3, documentoTB.isPredeterminado());
-                        statementUpdate.setBoolean(4, false);
-                        statementUpdate.setString(5, documentoTB.getCodigoAlterno());
+                        statementUpdate.setInt(3, documentoTB.getNumeracion());
+                        statementUpdate.setBoolean(4, documentoTB.isPredeterminado());
+                        statementUpdate.setBoolean(5, false);
+                        statementUpdate.setString(6, documentoTB.getCodigoAlterno());
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -106,6 +108,7 @@ public class TipoDocumentoADO {
                 tipoDocumentoTB.setIdTipoDocumento(resultSet.getInt("IdTipoDocumento"));
                 tipoDocumentoTB.setNombre(resultSet.getString("Nombre"));
                 tipoDocumentoTB.setSerie(resultSet.getString("Serie"));
+                tipoDocumentoTB.setNumeracion(resultSet.getInt("Numeracion"));
                 tipoDocumentoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
                 tipoDocumentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                 ImageView imageView = new ImageView(new Image(tipoDocumentoTB.isPredeterminado() ? "/view/image/checked.png" : "/view/image/unchecked.png"));

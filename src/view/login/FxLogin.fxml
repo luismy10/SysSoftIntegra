@@ -42,7 +42,7 @@
                         <VBox style="-fx-padding: 1.6666666666666667em; -fx-spacing: 1.6666666666666667em;">
                            <children>
                               <Hyperlink onAction="#onActionUrlPrincipal" styleClass="labelRobotoMedium17" text="www.syssoftintegra.com" textFill="WHITE" />
-                              <Hyperlink styleClass="labelOpenSansRegular13" text="Comunícate con soporte al +51 966750883 o +51 931341082" textFill="WHITE" />
+                              <Hyperlink onAction="#onActionWhatsApp" styleClass="labelOpenSansRegular13" text="Comunícate con soporte al +51 966750883 o +51 924903546" textFill="WHITE" />
                            </children>
                         </VBox>
                      </children>

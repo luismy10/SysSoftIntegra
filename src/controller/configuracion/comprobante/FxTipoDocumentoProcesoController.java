@@ -24,6 +24,8 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     @FXML
     private TextField txtSerie;
     @FXML
+    private TextField txtNumeracion;
+    @FXML
     private TextField txtCodigoAlterno;
     @FXML
     private Button btnGuardar;
@@ -37,10 +39,11 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo, String nombre, String serie,String codigoAlterno) {
+    public void initUpdate(int codigo, String nombre, String serie, int numeracion, String codigoAlterno) {
         idTipoDocumento = codigo;
         txtNombre.setText(nombre);
         txtSerie.setText(serie);
+        txtNumeracion.setText(""+numeracion);
         txtCodigoAlterno.setText(codigoAlterno);
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
@@ -51,13 +54,20 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese el nombre del comprobante.");
             txtNombre.requestFocus();
         } else if (txtSerie.getText().trim().isEmpty()) {
-            Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese serie del comprobante.");
+            Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese la serie del comprobante.");
             txtSerie.requestFocus();
+        } else if (!Tools.isNumericInteger(txtNumeracion.getText())) {
+            Tools.AlertMessageWarning(window, "Tipo de documento", "Ingrese la numeración del comprobante.");
+            txtNumeracion.requestFocus();
+        } else if (Integer.parseInt(txtNumeracion.getText().trim()) <= 0) {
+            Tools.AlertMessageWarning(window, "Tipo de documento", "La numeración no puede ser menor que 1.");
+            txtNumeracion.requestFocus();
         } else {
             TipoDocumentoTB documentoTB = new TipoDocumentoTB();
             documentoTB.setIdTipoDocumento(idTipoDocumento);
             documentoTB.setNombre(txtNombre.getText().toUpperCase().trim());
             documentoTB.setSerie(txtSerie.getText().trim());
+            documentoTB.setNumeracion(Integer.parseInt(txtNumeracion.getText().trim()));
             documentoTB.setCodigoAlterno(txtCodigoAlterno.getText().trim());
             documentoTB.setPredeterminado(false);
 
@@ -76,6 +86,15 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Tipo de documento", result, false);
             }
+
+        }
+    }
+
+    @FXML
+    private void onKeyTypedNumeracion(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
         }
     }
 

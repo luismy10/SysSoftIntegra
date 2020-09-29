@@ -2,6 +2,7 @@ package controller.menus;
 
 import controller.operaciones.compras.FxComprasController;
 import controller.operaciones.cortecaja.FxCajaController;
+import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.venta.FxVentaController;
 import controller.tools.FilesRouters;
@@ -35,6 +36,8 @@ public class FxOperacionesController implements Initializable {
     private VBox btnVentas;
     @FXML
     private VBox btnCompras;
+    @FXML
+    private VBox btnCotizacion;
     @FXML
     private VBox btnGuiaRemision;
     @FXML
@@ -74,6 +77,15 @@ public class FxOperacionesController implements Initializable {
     private FxComprasController controllerCompras;
 
     /*
+    Controller compra
+     */
+    private FXMLLoader fXMLCotizacion;
+
+    private HBox nodeCotizacion;
+
+    private FxCotizacionController controllerCotizacion;
+
+    /*
     Controller guia remision
      */
     private FXMLLoader fXMLGuiaRemision;
@@ -109,6 +121,10 @@ public class FxOperacionesController implements Initializable {
             fXMLCompra = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS));
             nodeCompra = fXMLCompra.load();
             controllerCompras = fXMLCompra.getController();
+
+            fXMLCotizacion = new FXMLLoader(getClass().getResource(FilesRouters.FX_COTIZACION));
+            nodeCotizacion = fXMLCotizacion.load();
+            controllerCotizacion = fXMLCotizacion.getController();
 
             fXMLGuiaRemision = new FXMLLoader(getClass().getResource(FilesRouters.FX_GUIA_REMISION));
             nodeGuiaRemision = fXMLGuiaRemision.load();
@@ -194,6 +210,16 @@ public class FxOperacionesController implements Initializable {
         }
     }
 
+    private void openWindowCotizacion() {
+        controllerCotizacion.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeCotizacion, 0d);
+        AnchorPane.setTopAnchor(nodeCotizacion, 0d);
+        AnchorPane.setRightAnchor(nodeCotizacion, 0d);
+        AnchorPane.setBottomAnchor(nodeCotizacion, 0d);
+        vbContent.getChildren().add(nodeCotizacion);
+    }
+
     private void openWindowGuiaRemision() {
         controllerGuiaRemision.setContent(vbPrincipal);
         vbContent.getChildren().clear();
@@ -271,6 +297,18 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActionCompras(ActionEvent event) {
         openWindowCompra();
+    }
+
+    @FXML
+    private void onKeyPressedCotizacion(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCotizacion();
+        }
+    }
+
+    @FXML
+    private void onActionCotizacion(ActionEvent event) {
+        openWindowCotizacion();
     }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {

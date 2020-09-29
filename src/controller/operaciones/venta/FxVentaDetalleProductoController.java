@@ -69,6 +69,7 @@ public class FxVentaDetalleProductoController implements Initializable {
         tvListPrecios.setOnMouseClicked(n->{
             if(tvListPrecios.getSelectionModel().getSelectedIndex()>=0){
                 if (Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
+                    txtCantidad.setText(""+tvListPrecios.getSelectionModel().getSelectedItem().getFactor());
                     double importe = tvListPrecios.getSelectionModel().getSelectedItem().getValor();
 
                     double porcentajeRestante = importe * (Double.parseDouble(txtDescuento.getText()) / 100.00);

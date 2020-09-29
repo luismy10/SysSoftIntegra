@@ -17,6 +17,15 @@ public class MonedaTB {
     public MonedaTB() {
     }
 
+    public MonedaTB(String simbolo) {
+        this.simbolo = simbolo;
+    }
+
+    public MonedaTB(String nombre, String simbolo) {
+        this.nombre = nombre;
+        this.simbolo = simbolo;
+    }
+
     public MonedaTB(int idMoneda, String nombre) {
         this.idMoneda = idMoneda;
         this.nombre = nombre;

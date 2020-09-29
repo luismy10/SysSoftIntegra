@@ -36,7 +36,7 @@ public class FxVentaDescuentoController implements Initializable {
     }
 
     private void executeDescuento() {
-        if (Tools.isNumeric(txtPrecioVenta.getText()) && Tools.isNumeric(txtPorcentajeDescuento.getText())) {
+        if (Tools.isNumeric(txtPorcentajeDescuento.getText())) {
 
             double precio = suministroTB.getPrecioVentaGeneralUnico();
 

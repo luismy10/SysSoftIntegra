@@ -162,14 +162,14 @@
                                        </children>
                                     </HBox>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del Movimiento:" textFill="#1a2226" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Movimiento con caja:" textFill="#020203" GridPane.columnIndex="2" />
+                                    <CheckBox fx:id="cbCaja" mnemonicParsing="false" onAction="#onActionCaja" styleClass="check-box-contenido" text="No" GridPane.columnIndex="3" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado del movimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                        <children>
-                                          <RadioButton fx:id="rbCompletado" mnemonicParsing="false" selected="true" styleClass="labelOpenSansRegular14" text="Completado" textFill="#1a2226" />
-                                          <RadioButton fx:id="rbProceso" mnemonicParsing="false" styleClass="labelOpenSansRegular14" text="En Proceso" textFill="#1a2226" />
+                                          <CheckBox fx:id="cbEstadoMovimiento" mnemonicParsing="false" onAction="#onActionEstadoMoviminento" selected="true" styleClass="check-box-contenido" text="Validado" />
                                        </children>
                                     </HBox>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Movimiento de caja:" textFill="#020203" GridPane.columnIndex="2" />
-                                    <CheckBox fx:id="cbCaja" mnemonicParsing="false" onAction="#onActionCaja" styleClass="check-box-contenido" text="No" GridPane.columnIndex="3" />
                                  </children>
                               </GridPane>
                            </children>
@@ -207,7 +207,6 @@
                                           <TableColumn fx:id="tcNuevaExistencia" prefWidth="169.0" style="-fx-alignment: CENTER;" text="Nueva Existencia" />
                                           <TableColumn fx:id="tcExistenciaActual" prefWidth="169.0" style="-fx-alignment: CENTER;" text="Existencia Actual" />
                                           <TableColumn fx:id="tcDiferencia" prefWidth="169.0" style="-fx-alignment: CENTER;" text="Diferencia" />
-                                          <TableColumn fx:id="tcOpcion" prefWidth="160.0" style="-fx-alignment: CENTER;" text="Opcion" />
                                        </columns>
                                     </TableView>
                                  </children>

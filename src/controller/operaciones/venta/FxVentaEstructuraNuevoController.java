@@ -72,6 +72,7 @@ import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
 import model.ClienteADO;
+import model.PrivilegioTB;
 import model.VentaADO;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -123,6 +124,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private AnchorPane hbPie;
 
     private String monedaSimbolo;
+
+    private boolean vender_con_cantidades_negativas;
 
     private int totalPaginacion;
 
@@ -247,6 +250,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
+    public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
+        vender_con_cantidades_negativas = privilegioTBs.get(34).getIdPrivilegio() != 0 && !privilegioTBs.get(34).isEstado();
+    }
+
     public void onEventPaginacion() {
         switch (opcion) {
             case 0:
@@ -299,10 +306,15 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     vBox.getChildren().add(lblCodigo);
 
                     Label lblProducto = new Label(tvList1.getNombreMarca());
-                    lblProducto.getStyleClass().add("labelRobotoBold13");
+                    lblProducto.getStyleClass().add("labelRobotoBold15");
                     lblProducto.setTextFill(Color.web("#020203"));
                     lblProducto.setWrapText(true);
                     lblProducto.setTextAlignment(TextAlignment.CENTER);
+                    lblProducto.setAlignment(Pos.CENTER);
+                    lblProducto.setMinWidth(Control.USE_PREF_SIZE);
+//                    lblProducto.setPrefWidth(dpi);
+//                    lblProducto.setMaxWidth(Double.MAX_VALUE);
+//                    VBox.setVgrow(lblProducto, Priority.ALWAYS);
                     vBox.getChildren().add(lblProducto);
 
                     Label lblMarca = new Label(tvList1.getMarcaName());
@@ -369,6 +381,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     }
 
     private void addElementListView(SuministroTB tvList1) {
+        if (vender_con_cantidades_negativas && tvList1.getCantidad() <= 0) {
+            Tools.AlertMessageWarning(vbWindow, "Producto", "No puede agregar el producto ya que tiene la cantidad menor que 0.");
+            return;
+        }
         SuministroTB suministroTB = new SuministroTB();
         suministroTB.setIdSuministro(tvList1.getIdSuministro());
         suministroTB.setClave(tvList1.getClave());
@@ -602,6 +618,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         map.put("SUB_IMPORTE", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getSubImporte(), 2));
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(total, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
         return jasperPrint;
@@ -645,19 +662,19 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
                         if (format.equalsIgnoreCase("a4")) {
                             ArrayList<SuministroTB> list = new ArrayList();
-                            suministroTBs.stream().map((suministroTB) -> {
+                            
+                            for (int i = 0; i < suministroTBs.size(); i++) {
                                 SuministroTB stb = new SuministroTB();
-                                stb.setClave(suministroTB.getClave());
-                                stb.setNombreMarca(suministroTB.getNombreMarca());
-                                stb.setCantidad(suministroTB.getCantidad());
-                                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                                stb.setDescuento(suministroTB.getDescuento());
-                                stb.setTotalImporte(suministroTB.getCantidad() * +suministroTB.getPrecioVentaGeneral());
-                                return stb;
-                            }).forEachOrdered((stb) -> {
+                                stb.setId(i + 1);
+                                stb.setClave(suministroTBs.get(i).getClave());
+                                stb.setNombreMarca(suministroTBs.get(i).getNombreMarca());
+                                stb.setCantidad(suministroTBs.get(i).getCantidad());
+                                stb.setUnidadCompraName(suministroTBs.get(i).getUnidadCompraName());
+                                stb.setPrecioVentaGeneral(suministroTBs.get(i).getPrecioVentaGeneral());
+                                stb.setDescuento(suministroTBs.get(i).getDescuento());
+                                stb.setTotalImporte(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
                                 list.add(stb);
-                            });
+                            }
 
                             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
                             printRequestAttributeSet.add(new Copies(1));
@@ -1401,10 +1418,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     public ListView<BbItemProducto> getLvProductoAgregados() {
         return lvProductoAgregados;
-    }
-
-    public String getMonedaNombre() {
-        return cbMoneda.getSelectionModel().getSelectedItem().getNombre();
     }
 
     public int getIdTipoComprobante() {
