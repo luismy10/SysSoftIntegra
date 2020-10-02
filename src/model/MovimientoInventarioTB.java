@@ -19,6 +19,7 @@ public class MovimientoInventarioTB {
     private short estado;
     private String estadoName;
     private String proveedor;
+    private String codigoVerificacion;
 
     private Button validar;
     private Label lblEstado;
@@ -136,6 +137,14 @@ public class MovimientoInventarioTB {
 
     public void setProveedor(String proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public String getCodigoVerificacion() {
+        return codigoVerificacion;
+    }
+
+    public void setCodigoVerificacion(String codigoVerificacion) {
+        this.codigoVerificacion = codigoVerificacion;
     }
 
     public Button getValidar() {

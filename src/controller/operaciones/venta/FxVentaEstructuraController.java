@@ -256,6 +256,7 @@ public class FxVentaEstructuraController implements Initializable {
                 lblNumeracion.setText(array[1]);
             }
         }
+        
         cbMoneda.getItems().clear();
         MonedaADO.GetMonedasCombBox().forEach(e -> cbMoneda.getItems().add(new MonedaTB(e.getIdMoneda(), e.getNombre(), e.getSimbolo(), e.getPredeterminado())));
 
@@ -303,7 +304,6 @@ public class FxVentaEstructuraController implements Initializable {
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoNombre()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() * cellData.getValue().getCantidad(), 2)));
-
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {

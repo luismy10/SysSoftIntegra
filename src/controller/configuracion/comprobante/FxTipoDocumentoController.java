@@ -49,6 +49,8 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private TableColumn<TipoDocumentoTB, String> tcNumeracion;
     @FXML
+    private TableColumn<TipoDocumentoTB, Label> tcDestino;
+    @FXML
     private TableColumn<TipoDocumentoTB, String> tcCodigoAlterno;
     @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
@@ -61,15 +63,17 @@ public class FxTipoDocumentoController implements Initializable {
         tcTipoComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie()));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeracion()));
+        tcDestino.setCellValueFactory(new PropertyValueFactory<>("lblDestino"));
         tcCodigoAlterno.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCodigoAlterno()));
-        tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("imagePredeterminado"));
+        tcPredeterminado.setCellValueFactory(new PropertyValueFactory<>("ivPredeterminado"));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.07));
         tcTipoComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.26));
-        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
-        tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
-        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
-        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcNumeracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcDestino.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
     }
 
     public void fillTabletTipoDocumento() {
@@ -135,7 +139,9 @@ public class FxTipoDocumentoController implements Initializable {
                     tvList.getSelectionModel().getSelectedItem().getNombre(),
                     tvList.getSelectionModel().getSelectedItem().getSerie(),
                     tvList.getSelectionModel().getSelectedItem().getNumeracion(),
-                    tvList.getSelectionModel().getSelectedItem().getCodigoAlterno());
+                    tvList.getSelectionModel().getSelectedItem().getCodigoAlterno(),
+                    tvList.getSelectionModel().getSelectedItem().isGuia()
+            );
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());
             stage.setResizable(false);

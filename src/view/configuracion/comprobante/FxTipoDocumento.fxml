@@ -89,18 +89,19 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Label styleClass="labelOpenSansRegular13" text="Tipo de documento Predeterminada:" textFill="#020203" />
+                              <Label styleClass="labelRoboto13" text="Tipo de documento Predeterminada:" textFill="#020203" />
                               <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold14" />
                            </children>
                         </HBox>
                         <HBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="332.0" prefWidth="652.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="332.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcTipoComprobante" prefWidth="168.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de comprobante" />
                                     <TableColumn fx:id="tcSerie" prefWidth="103.0" style="-fx-alignment: CENTER-LEFT;" text="Serie" />
                                     <TableColumn fx:id="tcNumeracion" prefWidth="103.0" style="-fx-alignment: CENTER-LEFT;" text="Numeración" />
+                                    <TableColumn fx:id="tcDestino" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Destino" />
                                     <TableColumn fx:id="tcCodigoAlterno" prefWidth="103.0" style="-fx-alignment: CENTER-LEFT;" text="Codigo Alterno" />
                                     <TableColumn fx:id="tcPredeterminado" prefWidth="119.0" style="-fx-alignment: CENTER;" text="Predeterminado" />
                                  </columns>

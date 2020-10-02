@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public class TipoDocumentoADO {
 
@@ -31,12 +34,13 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Numeracion=?,CodigoAlterno=? WHERE IdTipoDocumento = ?");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Numeracion=?,CodigoAlterno=?,Guia = ? WHERE IdTipoDocumento = ?");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
                         statementUpdate.setInt(3, documentoTB.getNumeracion());
                         statementUpdate.setString(4, documentoTB.getCodigoAlterno());
-                        statementUpdate.setInt(5, documentoTB.getIdTipoDocumento());
+                        statementUpdate.setBoolean(5, documentoTB.isGuia());
+                        statementUpdate.setInt(6, documentoTB.getIdTipoDocumento());                     
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -51,13 +55,14 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Numeracion,Predeterminado,Sistema,CodigoAlterno) VALUES(?,?,?,?,?,?)");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Numeracion,Predeterminado,Sistema,CodigoAlterno,Guia) VALUES(?,?,?,?,?,?,?)");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
                         statementUpdate.setInt(3, documentoTB.getNumeracion());
                         statementUpdate.setBoolean(4, documentoTB.isPredeterminado());
                         statementUpdate.setBoolean(5, false);
                         statementUpdate.setString(6, documentoTB.getCodigoAlterno());
+                        statementUpdate.setBoolean(7, documentoTB.isGuia());
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -111,10 +116,23 @@ public class TipoDocumentoADO {
                 tipoDocumentoTB.setNumeracion(resultSet.getInt("Numeracion"));
                 tipoDocumentoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
                 tipoDocumentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                tipoDocumentoTB.setGuia(resultSet.getBoolean("Guia"));
+
+                Label lblDestino = new Label(tipoDocumentoTB.isGuia()?"Guía Remisión":"Ventas");
+                lblDestino.getStyleClass().add("labelRoboto13");
+                lblDestino.setTextFill(Color.web("#020203"));
+                lblDestino.setContentDisplay(ContentDisplay.TOP);
+                ImageView ivDestino = new ImageView(new Image(tipoDocumentoTB.isGuia()? "/view/image/guia_remision.png" : "/view/image/sales.png"));
+                ivDestino.setFitWidth(22);
+                ivDestino.setFitHeight(22);
+                lblDestino.setGraphic(ivDestino);
+                tipoDocumentoTB.setLblDestino(lblDestino);
+
                 ImageView imageView = new ImageView(new Image(tipoDocumentoTB.isPredeterminado() ? "/view/image/checked.png" : "/view/image/unchecked.png"));
                 imageView.setFitWidth(22);
                 imageView.setFitHeight(22);
-                tipoDocumentoTB.setImagePredeterminado(imageView);
+                tipoDocumentoTB.setIvPredeterminado(imageView);
+
                 observableList.add(tipoDocumentoTB);
             }
         } catch (SQLException ex) {
@@ -205,7 +223,7 @@ public class TipoDocumentoADO {
             PreparedStatement statement = null;
             ResultSet resultSet = null;
             try {
-                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Serie, Predeterminado FROM TipoDocumentoTB");
+                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre,Serie, Predeterminado FROM TipoDocumentoTB WHERE Guia <> 1");
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     TipoDocumentoTB documentoTB = new TipoDocumentoTB();
@@ -232,7 +250,39 @@ public class TipoDocumentoADO {
             }
         }
         return list;
-    }//para que sirve esto
+    }
+
+    public static TipoDocumentoTB GetTipoDocumentoGuiaRemision() {
+        TipoDocumentoTB documentoTB = null;
+        DBUtil.dbConnect();
+        if (DBUtil.getConnection() != null) {
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+            try {
+                statement = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento FROM TipoDocumentoTB WHERE Guia = 1");
+                resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    documentoTB = new TipoDocumentoTB();
+                    documentoTB.setIdTipoDocumento(resultSet.getInt("IdTipoDocumento"));
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error Tipo de documento: " + ex.getLocalizedMessage());
+            } finally {
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    DBUtil.dbDisconnect();
+                } catch (SQLException ex) {
+                    System.out.println("Error Tipo de documento: " + ex.getLocalizedMessage());
+                }
+            }
+        }
+        return documentoTB;
+    }
 
     public static String EliminarTipoDocumento(int idTipoDocumento) {
         PreparedStatement statementValidate = null;

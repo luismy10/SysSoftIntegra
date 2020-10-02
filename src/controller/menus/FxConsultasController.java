@@ -5,6 +5,7 @@ import controller.consultas.compras.FxComprasRealizadasController;
 import controller.consultas.pagar.FxCuentasPorPagarController;
 import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.cotizacion.FxCotizacionRealizadasController;
+import controller.operaciones.guiaremision.FxGuiaRemisionRealizadasController;
 import controller.operaciones.venta.FxVentaRealizadasController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -50,6 +51,8 @@ public class FxConsultasController implements Initializable {
     private VBox btnBancos;
     @FXML
     private VBox btnCotizaciones;
+    @FXML
+    private VBox btnGuiaRemision;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -83,6 +86,15 @@ public class FxConsultasController implements Initializable {
     private VBox nodeCotizaciones;
 
     private FxCotizacionRealizadasController controllerCotizaciones;
+
+    /*
+    Controller guia remision realizadas
+     */
+    private FXMLLoader fXMLGuiaRemision;
+
+    private VBox nodeGuiaRemision;
+
+    private FxGuiaRemisionRealizadasController controllerGuiaRemision;
 
     /*
     Controller caja consultas
@@ -125,6 +137,10 @@ public class FxConsultasController implements Initializable {
             fXMLCotizaciones = new FXMLLoader(getClass().getResource(FilesRouters.FX_COTIZACION_REALIZADAS));
             nodeCotizaciones = fXMLCotizaciones.load();
             controllerCotizaciones = fXMLCotizaciones.getController();
+
+            fXMLGuiaRemision = new FXMLLoader(getClass().getResource(FilesRouters.FX_GUIA_REMISION_REALIZADAS));
+            nodeGuiaRemision = fXMLGuiaRemision.load();
+            controllerGuiaRemision = fXMLGuiaRemision.getController();
 
             fXMLCajaConsultas = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA_CONSULTA));
             nodeCajaConsultas = fXMLCajaConsultas.load();
@@ -192,6 +208,17 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setBottomAnchor(nodeCotizaciones, 0d);
         vbContent.getChildren().add(nodeCotizaciones);
         controllerCotizaciones.loadInit();
+    }
+
+    private void openWindowGuiaRemision() {
+        controllerGuiaRemision.setContent(vbPrincipal, vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeGuiaRemision, 0d);
+        AnchorPane.setTopAnchor(nodeGuiaRemision, 0d);
+        AnchorPane.setRightAnchor(nodeGuiaRemision, 0d);
+        AnchorPane.setBottomAnchor(nodeGuiaRemision, 0d);
+        vbContent.getChildren().add(nodeGuiaRemision);
+        controllerGuiaRemision.loadInit();
     }
 
     private void openWindowPurchasesMade() {
@@ -285,6 +312,18 @@ public class FxConsultasController implements Initializable {
     @FXML
     private void onActionCotizaciones(ActionEvent event) {
         openWindowCotizaciones();
+    }
+
+    @FXML
+    private void onKeyPressedGuiaRemision(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowGuiaRemision();
+        }
+    }
+
+    @FXML
+    private void onActionGuiaRemision(ActionEvent event) {
+        openWindowGuiaRemision();
     }
 
     @FXML

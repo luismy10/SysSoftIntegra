@@ -71,7 +71,7 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private TableView<SuministroTB> tvList;
     @FXML
-    private TableColumn<String, Button> tcAccion;
+    private TableColumn<SuministroTB, Button> tcAccion;
     @FXML
     private TableColumn<SuministroTB, String> tcClave;
     @FXML
@@ -241,51 +241,43 @@ public class FxMovimientosProcesoController implements Initializable {
     }
      */
     private void ejecutarConsulta(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
-
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
-        try {
-            Task<String> task = new Task<String>() {
-                @Override
-                public String call() {
-                    return MovimientoInventarioADO.Crud_Movimiento_Inventario(inventarioTB, tableView);
-                }
-            };
-            task.setOnScheduled(t -> {
-                alert = Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.NONE, "Procesando Información...");
-            });
-            task.setOnFailed(t -> {
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return MovimientoInventarioADO.Crud_Movimiento_Inventario(inventarioTB, tableView);
+            }
+        };
+        task.setOnScheduled(t -> {
+            alert = Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.NONE, "Procesando Información...");
+        });
+        task.setOnFailed(t -> {
+            if (alert != null) {
+                ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
+            }
+            openAlertMessageWarning("Error en la ejecución, intente nuevamente.");
+        });
+        task.setOnSucceeded(t -> {
+            if (!task.isRunning()) {
                 if (alert != null) {
                     ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
                 }
-                openAlertMessageWarning("Error en la ejecución, intente nuevamente.");
-            });
-            task.setOnSucceeded(t -> {
-                if (!task.isRunning()) {
-                    if (alert != null) {
-                        ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
-                    }
-                }
-                String result = task.getValue();
-                if (result.equalsIgnoreCase("registered")) {
-                    Tools.AlertMessageInformation(hbWindow, "Proceso", "Se completo el registro correctamente.");
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                    clearComponents();
-                } else {
-                    Tools.AlertMessageError(hbWindow, "Proceso", result);
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                }
-            });
-
-            exec.execute(task);
-
-        } catch (Exception ex) {
-        } finally {
-            exec.shutdown();
-        }
+            }
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("registered")) {
+                Tools.AlertMessageInformation(hbWindow, "Proceso", "Se completo el registro correctamente.");
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                clearComponents();
+            } else {
+                Tools.AlertMessageError(hbWindow, "Proceso", result);
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            }
+        });
+        exec.execute(task);
     }
 
     public void clearComponents() {
@@ -309,83 +301,68 @@ public class FxMovimientosProcesoController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-
-        try {
-            Task<SuministroTB> task = new Task<SuministroTB>() {
-                @Override
-                public SuministroTB call() {
-                    return SuministroADO.List_Suministros_Movimiento(idSuministro);
-                }
-            };
-
-            task.setOnScheduled(t -> {
-                hbBotones.setDisable(true);
-                lblLoad.setVisible(true);
-            });
-
-            task.setOnFailed(t -> {
-                hbBotones.setDisable(false);
-                lblLoad.setVisible(false);
-            });
-
-            task.setOnSucceeded(t -> {
-                SuministroTB suministroTB = task.getValue();
-                if (suministroTB != null) {
-                    suministroTB.setId(tvList.getItems().size() + 1);
-                    suministroTB.getRemover().setOnAction(event -> {
+        Task<SuministroTB> task = new Task<SuministroTB>() {
+            @Override
+            public SuministroTB call() {
+                return SuministroADO.List_Suministros_Movimiento(idSuministro);
+            }
+        };
+        task.setOnScheduled(t -> {
+            hbBotones.setDisable(true);
+            lblLoad.setVisible(true);
+        });
+        task.setOnFailed(t -> {
+            hbBotones.setDisable(false);
+            lblLoad.setVisible(false);
+        });
+        task.setOnSucceeded(t -> {
+            SuministroTB suministroTB = task.getValue();
+            if (suministroTB != null) {
+                suministroTB.setId(tvList.getItems().size() + 1);
+                suministroTB.getRemover().setOnAction(event -> {
+                    tvList.getItems().remove(suministroTB);
+                });
+                suministroTB.getRemover().setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
                         tvList.getItems().remove(suministroTB);
-                    });
-                    suministroTB.getRemover().setOnKeyPressed(event -> {
-                        if (event.getCode() == KeyCode.ENTER) {
-                            tvList.getItems().remove(suministroTB);
-                        }
-                    });
-
-                    suministroTB.getTxtMovimiento().setOnAction(event -> {
-                        if (Tools.isNumeric(suministroTB.getTxtMovimiento().getText().trim())) {
-                            if (rbIncremento.isSelected()) {
-                                double newDiferencia = suministroTB.getCantidad() + Double.parseDouble(suministroTB.getTxtMovimiento().getText());
-                                suministroTB.setMovimiento(Double.parseDouble(suministroTB.getTxtMovimiento().getText()));
-                                suministroTB.setDiferencia(newDiferencia);
-                                suministroTB.setCambios(true);
-                            } else {
-                                double newDiferencia = suministroTB.getCantidad() - Double.parseDouble(suministroTB.getTxtMovimiento().getText());
-                                suministroTB.setMovimiento(Double.parseDouble(suministroTB.getTxtMovimiento().getText()));
-                                suministroTB.setDiferencia(newDiferencia);
-                                suministroTB.setCambios(true);
-                            }
+                    }
+                });
+                suministroTB.getTxtMovimiento().setOnAction(event -> {
+                    if (Tools.isNumeric(suministroTB.getTxtMovimiento().getText().trim())) {
+                        if (rbIncremento.isSelected()) {
+                            double newDiferencia = suministroTB.getCantidad() + Double.parseDouble(suministroTB.getTxtMovimiento().getText());
+                            suministroTB.setMovimiento(Double.parseDouble(suministroTB.getTxtMovimiento().getText()));
+                            suministroTB.setDiferencia(newDiferencia);
+                            suministroTB.setCambios(true);
                         } else {
-                            suministroTB.setMovimiento(0);
-                            suministroTB.getTxtMovimiento().setText("0");
+                            double newDiferencia = suministroTB.getCantidad() - Double.parseDouble(suministroTB.getTxtMovimiento().getText());
+                            suministroTB.setMovimiento(Double.parseDouble(suministroTB.getTxtMovimiento().getText()));
+                            suministroTB.setDiferencia(newDiferencia);
                             suministroTB.setCambios(true);
                         }
-                        tvList.refresh();
-                    });
-
-                    suministroTB.getTxtMovimiento().focusedProperty().addListener((obs, oldVal, newVal) -> {
-                        if (!newVal) {
-                            if (!suministroTB.isCambios()) {
-                                suministroTB.getTxtMovimiento().setText(suministroTB.getMovimiento() + "");
-                            }
-                            tvList.refresh();
-                        } else {
-                            suministroTB.setCambios(false);
+                    } else {
+                        suministroTB.setMovimiento(0);
+                        suministroTB.getTxtMovimiento().setText("0");
+                        suministroTB.setCambios(true);
+                    }
+                    tvList.refresh();
+                });
+                suministroTB.getTxtMovimiento().focusedProperty().addListener((obs, oldVal, newVal) -> {
+                    if (!newVal) {
+                        if (!suministroTB.isCambios()) {
+                            suministroTB.getTxtMovimiento().setText(suministroTB.getMovimiento() + "");
                         }
-                    });
-
-                    tvList.getItems().add(suministroTB);
-                }
-                hbBotones.setDisable(false);
-                lblLoad.setVisible(false);
-            });
-
-            exec.execute(task);
-
-        } catch (Exception ex) {
-        } finally {
-            exec.shutdown();
-        }
-
+                        tvList.refresh();
+                    } else {
+                        suministroTB.setCambios(false);
+                    }
+                });
+                tvList.getItems().add(suministroTB);
+            }
+            hbBotones.setDisable(false);
+            lblLoad.setVisible(false);
+        });
+        exec.execute(task);
     }
 
     private void openWindowSuministros() {
@@ -401,9 +378,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
@@ -424,9 +399,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
             controller.fillCustomersTable("");
         } catch (IOException ex) {
@@ -447,9 +420,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Compra", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
             controller.loadListCompras("", "", (short) 0);
         } catch (IOException ex) {
@@ -471,9 +442,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento caja", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
@@ -488,7 +457,6 @@ public class FxMovimientosProcesoController implements Initializable {
                 allArticulos = tvList.getItems();
                 articuloSelect = tvList.getSelectionModel().getSelectedItems();
                 articuloSelect.forEach(allArticulos::remove);
-
                 if (!tvList.getItems().isEmpty()) {
                     int count = 0;
                     for (int i = 0; i < tvList.getItems().size(); i++) {

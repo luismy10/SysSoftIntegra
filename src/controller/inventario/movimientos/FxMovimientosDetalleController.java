@@ -18,6 +18,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -43,8 +44,6 @@ public class FxMovimientosDetalleController implements Initializable {
     @FXML
     private Label lblEstado;
     @FXML
-    private Label lblVerificar;
-    @FXML
     private TableView<MovimientoInventarioDetalleTB> tvList;
     @FXML
     private TableColumn<MovimientoInventarioDetalleTB, Integer> tcNumero;
@@ -59,13 +58,13 @@ public class FxMovimientosDetalleController implements Initializable {
     @FXML
     private Button btnRegistrar;
     @FXML
-    private Button btnVerificar;
-
-    private int countVerificar;
+    private TextField txtCofigoVerificacion;
 
     private String idMovimientoInventario;
-    
-    private short tipo;
+
+    private MovimientoInventarioTB inventarioTB;
+
+    private ObservableList<MovimientoInventarioDetalleTB> detalleTBs;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -80,8 +79,7 @@ public class FxMovimientosDetalleController implements Initializable {
         tcPrecio.setCellValueFactory(new PropertyValueFactory<>("actualizarPrecio"));
     }
 
-    public void setIniciarCarga(short type,String value) {
-        tipo = type;
+    public void setIniciarCarga(String value) {
         idMovimientoInventario = value;
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -92,7 +90,7 @@ public class FxMovimientosDetalleController implements Initializable {
         Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
             public ArrayList<Object> call() {
-                return MovimientoInventarioADO.Obtener_Movimiento_Inventario_By_Id(type,value);
+                return MovimientoInventarioADO.Obtener_Movimiento_Inventario_By_Id(value);
             }
         };
 
@@ -108,8 +106,8 @@ public class FxMovimientosDetalleController implements Initializable {
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
 
-                MovimientoInventarioTB inventarioTB = (MovimientoInventarioTB) objects.get(0);
-                ObservableList<MovimientoInventarioDetalleTB> detalleTBs = (ObservableList<MovimientoInventarioDetalleTB>) objects.get(1);
+                inventarioTB = (MovimientoInventarioTB) objects.get(0);
+                detalleTBs = (ObservableList<MovimientoInventarioDetalleTB>) objects.get(1);
 
                 if (inventarioTB != null) {
                     lblTIpoMovimiento.setText(inventarioTB.getTipoMovimientoName());
@@ -119,12 +117,14 @@ public class FxMovimientosDetalleController implements Initializable {
                     lblEstado.setText(inventarioTB.getEstadoName());
                     if (inventarioTB.getEstadoName().equalsIgnoreCase("COMPLETADO")) {
                         btnRegistrar.setDisable(true);
-                        btnVerificar.setDisable(true);
+                        lblEstado.getStyleClass().add("label-asignacion");
                     } else if (inventarioTB.getEstadoName().equalsIgnoreCase("EN PROCESO")) {
-
+                        lblEstado.getStyleClass().add("label-medio");
                     } else if (inventarioTB.getEstadoName().equalsIgnoreCase("CANCELADO")) {
                         btnRegistrar.setDisable(true);
-                        btnVerificar.setDisable(true);
+                        lblEstado.getStyleClass().add("label-proceso");
+                    } else {
+                        lblEstado.getStyleClass().add("label-asignacion");
                     }
                 }
                 tvList.setItems(detalleTBs);
@@ -138,92 +138,31 @@ public class FxMovimientosDetalleController implements Initializable {
         }
     }
 
-    private void executeVerificar() {
-//        for (int i = 0; i < tvList.getItems().size(); i++) {
-//            ArticuloTB atb = ArticuloADO.Get_Articulo_Verificar_Movimiento(tvList.getItems().get(i).getSuministroTB().getClave());
-//            if (atb != null) {
-//                tvList.getItems().get(i).getVerificar().setSelected(true);
-//                tvList.getItems().get(i).getActualizarPrecio().setSelected(true);
-//                countVerificar++;
-//            }
-//        }
-//        if (countVerificar == tvList.getItems().size()) {
-//            lblVerificar.setTextFill(Paint.valueOf("#1880ee"));
-//            lblVerificar.setText("Se verificó con satisfacción");
-//            btnRegistrar.setDisable(false);
-//        } else {
-//            lblVerificar.setTextFill(Paint.valueOf("#ed3d1a"));
-//            lblVerificar.setText("Hay un artículo que no coincide con la lista");
-//        }
-    }
-
     private void executeRegistrar() {
-//        short option = Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Movimiento", "¿Esta seguro de continuar?", true);
-//        if (option == 1) {
-//
-//            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-//                Thread t = new Thread(runnable);
-//                t.setDaemon(true);
-//                return t;
-//            });
-//
-//            Task<String> task = new Task<String>() {
-//                @Override
-//                public String call() {
-//                    return ArticuloADO.Registrar_Articulo_Movimiento(idMovimientoInventario, lblObservacion.getText(), tvList);
-//                }
-//            };
-//
-//            task.setOnScheduled((e) -> {
-//                btnRegistrar.setDisable(true);
-//            });
-//
-//            task.setOnFailed((e) -> {
-//                btnRegistrar.setDisable(false);
-//            });
-//
-//            task.setOnSucceeded((e) -> {
-//                String result = task.getValue();
-//                if (result.equalsIgnoreCase("registrado")) {
-//                    Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.INFORMATION, "Movimiento", "Se registraron los cambios correctamente.", false);
-//                    Tools.Dispose(apWindow);
-//                } else if (result.equalsIgnoreCase("error")) {
-//                    Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.INFORMATION, "Movimiento", "La verificación de los artículos no se completo.", false);
-//                } else {
-//                    Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.ERROR, "Movimiento", result, false);
-//                }
-//            });
-//
-//            exec.execute(task);
-//            if (!exec.isShutdown()) {
-//                exec.shutdown();
-//            }
-//
-//        }
-    }
-
-    @FXML
-    private void onKeyPressedReporte(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-
+        if (inventarioTB != null && detalleTBs != null && !detalleTBs.isEmpty()) {
+            inventarioTB.setIdMovimientoInventario(idMovimientoInventario);
+            inventarioTB.setCodigoVerificacion(txtCofigoVerificacion.getText().trim());
+            short option = Tools.AlertMessageConfirmation(apWindow, "Movimiento", "¿Esta seguro de continuar?");
+            if (option == 1) {
+                btnRegistrar.setDisable(true);
+                String result = MovimientoInventarioADO.RegistrarMovimientoSuministro(inventarioTB, detalleTBs);
+                if (result.equalsIgnoreCase("updated")) {
+                    Tools.AlertMessageInformation(apWindow, "Movimiento", "Se registraron los cambios correctamente.");
+                    Tools.Dispose(apWindow);
+                } else if (result.equalsIgnoreCase("inserted")) {
+                    Tools.AlertMessageWarning(apWindow, "Movimiento", "El movimiento ya está con estado 1 no se puede relizar el proceso.");
+                    btnRegistrar.setDisable(false);
+                } else if (result.equalsIgnoreCase("nocde")) {
+                    Tools.AlertMessageWarning(apWindow, "Movimiento", "No se pudo completar la operación por error de código de verificación.");
+                    btnRegistrar.setDisable(false);
+                } else {
+                    Tools.AlertMessageError(apWindow, "Movimiento", result);
+                    btnRegistrar.setDisable(false);
+                }
+            }
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Movimiento", "No se puede continuar por problemas al cargar la información intente nuevamente.");
         }
-    }
-
-    @FXML
-    private void onActionReporte(ActionEvent event) {
-
-    }
-
-    @FXML
-    private void onKeyPressedVerificar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            executeVerificar();
-        }
-    }
-
-    @FXML
-    private void onActionVerificar(ActionEvent event) {
-        executeVerificar();
     }
 
     @FXML
@@ -236,6 +175,18 @@ public class FxMovimientosDetalleController implements Initializable {
     @FXML
     private void onActionRegistrar(ActionEvent event) {
         executeRegistrar();
+    }
+
+    @FXML
+    private void onKeyPressedReporte(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionReporte(ActionEvent event) {
+
     }
 
 }

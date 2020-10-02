@@ -1,6 +1,7 @@
 package controller.inventario.movimientos;
 
 import controller.tools.FilesRouters;
+import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -27,8 +29,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import model.MovimientoInventarioADO;
 import model.MovimientoInventarioTB;
+import model.PrivilegioTB;
 import model.TipoMovimientoADO;
 import model.TipoMovimientoTB;
 
@@ -60,12 +64,16 @@ public class FxMovimientosController implements Initializable {
     private DatePicker dtFechaInicio;
     @FXML
     private DatePicker dtFechaFinal;
+    @FXML
+    private Button btnRealizarMovimiento;
 
-    private FXMLLoader fXMLLoader;
+    private FXMLLoader fXMLLoaderMovimientoDetalle;
 
-    private HBox node;
-    //Controlller here
-    private FxMovimientosProcesoController controller;
+    private HBox nodeMovimientoDetalle;
+
+    private FxMovimientosProcesoController controllerMovimientoDetalle;
+
+    private ObservableList<PrivilegioTB> privilegioTBs;
 
     private AnchorPane vbPrincipal;
 
@@ -100,11 +108,18 @@ public class FxMovimientosController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaInicio);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
         try {
-            fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_MOVIMIENTOS_PROCESO));
-            node = fXMLLoader.load();
-            controller = fXMLLoader.getController();
+            fXMLLoaderMovimientoDetalle = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_MOVIMIENTOS_PROCESO));
+            nodeMovimientoDetalle = fXMLLoaderMovimientoDetalle.load();
+            controllerMovimientoDetalle = fXMLLoaderMovimientoDetalle.getController();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
+        this.privilegioTBs = privilegioTBs;
+        if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
+            btnRealizarMovimiento.setDisable(!privilegioTBs.get(0).isEstado());
         }
     }
 
@@ -118,8 +133,7 @@ public class FxMovimientosController implements Initializable {
         Task<ObservableList<MovimientoInventarioTB>> task = new Task<ObservableList<MovimientoInventarioTB>>() {
             @Override
             public ObservableList<MovimientoInventarioTB> call() {
-                return MovimientoInventarioADO.ListMovimientoInventario(init, opcion, movimiento, fechaInicial, fechaFinal, vbPrincipal, hbWindow
-                );
+                return MovimientoInventarioADO.ListMovimientoInventario(init, opcion, movimiento, fechaInicial, fechaFinal);
             }
         };
 
@@ -127,7 +141,18 @@ public class FxMovimientosController implements Initializable {
             lblLoad.setVisible(true);
         });
         task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems(task.getValue());
+            ObservableList<MovimientoInventarioTB> inventarioTBs = task.getValue();
+            for (MovimientoInventarioTB mi : inventarioTBs) {
+                mi.getValidar().setOnAction(event -> {
+                    openWindowMovimientoDetalle(mi.getIdMovimientoInventario());
+                });
+                mi.getValidar().setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        openWindowMovimientoDetalle(mi.getIdMovimientoInventario());
+                    }
+                });
+            }
+            tvList.setItems(inventarioTBs);
             lblLoad.setVisible(false);
         });
         task.setOnFailed((WorkerStateEvent e) -> {
@@ -163,7 +188,7 @@ public class FxMovimientosController implements Initializable {
                 return MovimientoInventarioADO.ListMovimientoInventario(false, opcion,
                         cbMovimiento.getSelectionModel().getSelectedIndex() >= 0
                         ? cbMovimiento.getSelectionModel().getSelectedItem().getIdTipoMovimiento()
-                        : 0, Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal), vbPrincipal, hbWindow
+                        : 0, Tools.getDatePicker(dtFechaInicio), Tools.getDatePicker(dtFechaFinal)
                 );
             }
         };
@@ -172,10 +197,18 @@ public class FxMovimientosController implements Initializable {
             lblLoad.setVisible(true);
         });
         task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems(task.getValue());
-            if (!cbMovimiento.getItems().isEmpty()) {
-                cbMovimiento.getSelectionModel().select(0);
+            ObservableList<MovimientoInventarioTB> inventarioTBs = task.getValue();
+            for (MovimientoInventarioTB mi : inventarioTBs) {
+                mi.getValidar().setOnAction(event -> {
+                    openWindowMovimientoDetalle(mi.getIdMovimientoInventario());
+                });
+                mi.getValidar().setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        openWindowMovimientoDetalle(mi.getIdMovimientoInventario());
+                    }
+                });
             }
+            tvList.setItems(inventarioTBs);
             lblLoad.setVisible(false);
         });
         task.setOnFailed((WorkerStateEvent e) -> {
@@ -187,18 +220,38 @@ public class FxMovimientosController implements Initializable {
         }
     }
 
-    private void openWindowRealizarMovimientoProducto() {
-        controller.setContent(this, vbPrincipal, vbContent);
-        //
-        vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);
-        //
-        //controller.setInitArticulo();
+    private void openWindowMovimientoDetalle(String idMovimiento) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = FxMovimientosController.class.getClassLoader().getClass().getResource(FilesRouters.FX_MOVIMIENTOS_DETALLE);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxMovimientosDetalleController controller = fXMLLoader.getController();
+            controller.setIniciarCarga(idMovimiento);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Detalle del movimiento", hbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding((w) -> {
+                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            });
+            stage.show();
 
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowRealizarMovimientoProducto() {
+        controllerMovimientoDetalle.setContent(this, vbPrincipal, vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeMovimientoDetalle, 0d);
+        AnchorPane.setTopAnchor(nodeMovimientoDetalle, 0d);
+        AnchorPane.setRightAnchor(nodeMovimientoDetalle, 0d);
+        AnchorPane.setBottomAnchor(nodeMovimientoDetalle, 0d);
+        vbContent.getChildren().add(nodeMovimientoDetalle);
+        //controller.setInitArticulo();
     }
 
     private void openWindowRealizarMovimientoArticulo() {

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -29,6 +30,8 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     private TextField txtCodigoAlterno;
     @FXML
     private Button btnGuardar;
+    @FXML
+    private CheckBox cbGuia;
 
     private FxTipoDocumentoController tipoDocumentoController;
 
@@ -39,14 +42,15 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo, String nombre, String serie, int numeracion, String codigoAlterno) {
+    public void initUpdate(int codigo, String nombre, String serie, int numeracion, String codigoAlterno, boolean guia) {
         idTipoDocumento = codigo;
         txtNombre.setText(nombre);
         txtSerie.setText(serie);
-        txtNumeracion.setText(""+numeracion);
+        txtNumeracion.setText("" + numeracion);
         txtCodigoAlterno.setText(codigoAlterno);
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
+        cbGuia.setSelected(guia);
     }
 
     private void saveTipoImpuesto() {
@@ -70,6 +74,7 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             documentoTB.setNumeracion(Integer.parseInt(txtNumeracion.getText().trim()));
             documentoTB.setCodigoAlterno(txtCodigoAlterno.getText().trim());
             documentoTB.setPredeterminado(false);
+            documentoTB.setGuia(cbGuia.isSelected());
 
             String result = TipoDocumentoADO.CrudTipoDocumento(documentoTB);
             if (result.equalsIgnoreCase("updated")) {
@@ -120,6 +125,11 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     @FXML
     private void onActionCancelar(ActionEvent event) {
         Tools.Dispose(window);
+    }
+
+    @FXML
+    private void onActionGuia(ActionEvent event) {
+        cbGuia.setText(cbGuia.isSelected() ? "Si" : "No");
     }
 
     public void setTipoDocumentoController(FxTipoDocumentoController tipoDocumentoController) {

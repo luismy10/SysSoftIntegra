@@ -51,7 +51,7 @@
             </HBox>
             <HBox fx:id="hbBotones" alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionRelizarMovimiento" styleClass="buttonLight" text="Realizar proceso (F1)">
+                  <Button mnemonicParsing="false" onAction="#onActionRelizarMovimiento" styleClass="buttonLightDefault" text="Realizar proceso (F1)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>

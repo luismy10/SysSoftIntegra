@@ -327,9 +327,13 @@ public final class FilesRouters {
     public static final String FX_COTIZACION = "/view/operaciones/cotizacion/FxCotizacion.fxml";
 
     public static final String FX_COTIZACION_LISTA = "/view/operaciones/cotizacion/FxCotizacionLista.fxml";
-    
+
     public static final String FX_COTIZACION_DETALLE = "/view/operaciones/cotizacion/FxCotizacionDetalle.fxml";
-    
+
     public static final String FX_COTIZACION_REALIZADAS = "/view/operaciones/cotizacion/FxCotizacionRealizadas.fxml";
+
+    public static final String FX_GUIA_REMISION_DETALLE = "/view/operaciones/guiaremision/FxGuiaRemisionDetalle.fxml";
+
+    public static final String FX_GUIA_REMISION_REALIZADAS = "/view/operaciones/guiaremision/FxGuiaRemisionRealizadas.fxml";
 
 }

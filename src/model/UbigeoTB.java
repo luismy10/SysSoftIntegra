@@ -1,17 +1,15 @@
-
-
 package model;
 
 public class UbigeoTB {
-    
-   private int idUbigeo;
-   private String ubigeo;
-   private String departamento;
-   private String provincia;
-   private String distrito;
+
+    private int idUbigeo;
+    private String ubigeo;
+    private String departamento;
+    private String provincia;
+    private String distrito;
 
     public UbigeoTB() {
-        
+
     }
 
     public UbigeoTB(int idUbigeo, String ubigeo, String departamento, String provincia, String distrito) {
@@ -21,8 +19,6 @@ public class UbigeoTB {
         this.provincia = provincia;
         this.distrito = distrito;
     }
-    
-    
 
     public int getIdUbigeo() {
         return idUbigeo;
@@ -66,9 +62,11 @@ public class UbigeoTB {
 
     @Override
     public String toString() {
-        return departamento + " - " + provincia + " - " + distrito+ " ("+ubigeo+")";
+        return departamento + " - " + provincia + " - " + distrito + " (" + ubigeo + ")";
     }
-   
-   
+
+    public String toFormatPrint() {
+        return departamento + " - " + provincia + " - " + distrito;
+    }
 
 }

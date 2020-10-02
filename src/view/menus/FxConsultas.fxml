@@ -44,7 +44,7 @@
                <children>
                   <VBox fx:id="btnVentas" alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasRealizadas" onKeyPressed="#onKeyPressedVentasRealizadas" styleClass="buttonTransparent" text="Ventas Realizadas" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasRealizadas" onKeyPressed="#onKeyPressedVentasRealizadas" styleClass="buttonTransparent" text="Ventas Echas" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -62,7 +62,7 @@
                   </VBox>
                   <VBox fx:id="btnCompras" alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionComprasRealizadas" onKeyPressed="#onKeyPressedComprasRealizadas" styleClass="buttonTransparent" text="Compras Realizadas" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionComprasRealizadas" onKeyPressed="#onKeyPressedComprasRealizadas" styleClass="buttonTransparent" text="Compras Echas" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -84,6 +84,24 @@
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../image/cotizacion.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documentos">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="btnGuiaRemision" alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGuiaRemision" onKeyPressed="#onKeyPressedGuiaRemision" styleClass="buttonTransparent" text="Guía Remisión" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/guia_remision.png" />
                                  </image>
                               </ImageView>
                            </graphic>

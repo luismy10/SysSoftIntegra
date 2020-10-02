@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 public class TipoDocumentoTB {
@@ -11,8 +12,10 @@ public class TipoDocumentoTB {
     private int numeracion;
     private boolean predeterminado;
     private boolean sistema;
+    private boolean guia;
     private String codigoAlterno;
-    private ImageView imagePredeterminado;
+    private Label lblDestino;
+    private ImageView ivPredeterminado;
 
     public TipoDocumentoTB() {
         
@@ -29,13 +32,20 @@ public class TipoDocumentoTB {
         this.predeterminado = predeterminado;
     }
 
-    public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado, ImageView imagePredeterminado) {
+    public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado, ImageView ivPredeterminado) {
         this.idTipoDocumento = idTipoDocumento;
         this.nombre = nombre;
         this.predeterminado = predeterminado;
-        this.imagePredeterminado = imagePredeterminado;
+        this.ivPredeterminado = ivPredeterminado;
     }
 
+    public TipoDocumentoTB(int idTipoDocumento, String nombre, boolean predeterminado, Label lblDestino, ImageView ivPredeterminado) {
+        this.idTipoDocumento = idTipoDocumento;
+        this.nombre = nombre;
+        this.predeterminado = predeterminado;
+        this.lblDestino = lblDestino;
+        this.ivPredeterminado = ivPredeterminado;
+    }    
 
     public int getId() {
         return id;
@@ -93,6 +103,14 @@ public class TipoDocumentoTB {
         this.sistema = sistema;
     }
 
+    public boolean isGuia() {
+        return guia;
+    }
+
+    public void setGuia(boolean guia) {
+        this.guia = guia;
+    }
+
     public String getCodigoAlterno() {
         return codigoAlterno;
     }
@@ -101,14 +119,23 @@ public class TipoDocumentoTB {
         this.codigoAlterno = codigoAlterno == null ? "":codigoAlterno;
     }
 
-    public ImageView getImagePredeterminado() {
-        return imagePredeterminado;
+    public Label getLblDestino() {
+        return lblDestino;
     }
 
-    public void setImagePredeterminado(ImageView imagePredeterminado) {
-        this.imagePredeterminado = imagePredeterminado;
+    public void setLblDestino(Label lblDestino) {
+        this.lblDestino = lblDestino;
     }
 
+    public ImageView getIvPredeterminado() {
+        return ivPredeterminado;
+    }
+
+    public void setIvPredeterminado(ImageView ivPredeterminado) {
+        this.ivPredeterminado = ivPredeterminado;
+    }
+
+  
     @Override
     public String toString() {
         return nombre;

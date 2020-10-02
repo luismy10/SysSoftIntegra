@@ -359,12 +359,13 @@ public class GlobalADO {
         return arrayList;
     }
 
-    public static String RegistrarInicioPrograma(EmpresaTB empresaTB, MonedaTB monedaTB, EmpleadoTB empleadoTB, ImpuestoTB impuestoTB, TipoDocumentoTB tipoDocumentoTB, ClienteTB clienteTB) {
+    public static String RegistrarInicioPrograma(EmpresaTB empresaTB, MonedaTB monedaTB, EmpleadoTB empleadoTB, ImpuestoTB impuestoTB, TipoDocumentoTB tipoDocumentoTicket, TipoDocumentoTB tipoDocumentoGuiaRemision, ClienteTB clienteTB) {
         PreparedStatement statementEmpresa = null;
         PreparedStatement statementMoneda = null;
         PreparedStatement statementEmpleado = null;
         PreparedStatement statementImpuesto = null;
-        PreparedStatement statementTipoDocumento = null;
+        PreparedStatement statementTipoDocumentoTicket = null;
+        PreparedStatement statementTipoDocumentoGuiaRemision = null;
         PreparedStatement statementCliente = null;
         CallableStatement codigoEmpleado = null;
         CallableStatement codigoCliente = null;
@@ -488,14 +489,25 @@ public class GlobalADO {
             statementImpuesto.setBoolean(10, impuestoTB.isSistema());
             statementImpuesto.addBatch();
 
-            statementTipoDocumento = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Numeracion,CodigoAlterno,Predeterminado,Sistema)VALUES(?,?,?,?,?,?)");
-            statementTipoDocumento.setString(1, tipoDocumentoTB.getNombre());
-            statementTipoDocumento.setString(2, tipoDocumentoTB.getSerie());
-            statementTipoDocumento.setInt(3, tipoDocumentoTB.getNumeracion());
-            statementTipoDocumento.setString(4, tipoDocumentoTB.getCodigoAlterno());
-            statementTipoDocumento.setBoolean(5, tipoDocumentoTB.isPredeterminado());
-            statementTipoDocumento.setBoolean(6, tipoDocumentoTB.isSistema());
-            statementTipoDocumento.addBatch();
+            statementTipoDocumentoTicket = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Numeracion,CodigoAlterno,Predeterminado,Sistema,Guia)VALUES(?,?,?,?,?,?,?)");
+            statementTipoDocumentoTicket.setString(1, tipoDocumentoTicket.getNombre());
+            statementTipoDocumentoTicket.setString(2, tipoDocumentoTicket.getSerie());
+            statementTipoDocumentoTicket.setInt(3, tipoDocumentoTicket.getNumeracion());
+            statementTipoDocumentoTicket.setString(4, tipoDocumentoTicket.getCodigoAlterno());
+            statementTipoDocumentoTicket.setBoolean(5, tipoDocumentoTicket.isPredeterminado());
+            statementTipoDocumentoTicket.setBoolean(6, tipoDocumentoTicket.isSistema());
+            statementTipoDocumentoTicket.setBoolean(7, tipoDocumentoTicket.isSistema());
+            statementTipoDocumentoTicket.addBatch();
+
+            statementTipoDocumentoGuiaRemision = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Numeracion,CodigoAlterno,Predeterminado,Sistema,Guia)VALUES(?,?,?,?,?,?,?)");
+            statementTipoDocumentoGuiaRemision.setString(1, tipoDocumentoGuiaRemision.getNombre());
+            statementTipoDocumentoGuiaRemision.setString(2, tipoDocumentoGuiaRemision.getSerie());
+            statementTipoDocumentoGuiaRemision.setInt(3, tipoDocumentoGuiaRemision.getNumeracion());
+            statementTipoDocumentoGuiaRemision.setString(4, tipoDocumentoGuiaRemision.getCodigoAlterno());
+            statementTipoDocumentoGuiaRemision.setBoolean(5, tipoDocumentoGuiaRemision.isPredeterminado());
+            statementTipoDocumentoGuiaRemision.setBoolean(6, tipoDocumentoGuiaRemision.isSistema());
+            statementTipoDocumentoGuiaRemision.setBoolean(7, tipoDocumentoGuiaRemision.isSistema());
+            statementTipoDocumentoGuiaRemision.addBatch();
 
             codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
             codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
@@ -521,7 +533,8 @@ public class GlobalADO {
             statementMoneda.executeBatch();
             statementEmpleado.executeBatch();
             statementImpuesto.executeBatch();
-            statementTipoDocumento.executeBatch();
+            statementTipoDocumentoTicket.executeBatch();
+            statementTipoDocumentoGuiaRemision.executeBatch();
             statementCliente.executeBatch();
             DBUtil.getConnection().commit();
             result = "inserted";
@@ -546,8 +559,11 @@ public class GlobalADO {
                 if (statementImpuesto != null) {
                     statementImpuesto.close();
                 }
-                if (statementTipoDocumento != null) {
-                    statementTipoDocumento.close();
+                if (statementTipoDocumentoTicket != null) {
+                    statementTipoDocumentoTicket.close();
+                }
+                if (statementTipoDocumentoGuiaRemision != null) {
+                    statementTipoDocumentoGuiaRemision.close();
                 }
                 if (codigoEmpleado != null) {
                     codigoEmpleado.close();

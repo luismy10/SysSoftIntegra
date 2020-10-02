@@ -183,7 +183,8 @@ public class FxInventarioController implements Initializable {
         if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnMovimiento);
         } else {
-
+            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(4).getIdSubMenu());
+            controllerMovimiento.loadPrivilegios(privilegioTBs);
         }
 
         if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
@@ -227,7 +228,7 @@ public class FxInventarioController implements Initializable {
         AnchorPane.setRightAnchor(nodeValorInventario, 0d);
         AnchorPane.setBottomAnchor(nodeValorInventario, 0d);
         vbContent.getChildren().add(nodeValorInventario);
-        controllerValorInventario.fillInventarioTable("",(short)0,"",(short)0,0,0);
+        controllerValorInventario.fillInventarioTable("", (short) 0, "", (short) 0, 0, 0);
     }
 
     private void openWindowSuministros() {

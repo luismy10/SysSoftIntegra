@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -46,7 +47,7 @@
                     <columnConstraints>
                       <ColumnConstraints minWidth="10.0" />
                       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints minWidth="10.0" />
                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
@@ -56,15 +57,15 @@
                     </rowConstraints>
                      <children>
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo de Movimiento:" textFill="#020203" />
-                        <Label fx:id="lblTIpoMovimiento" styleClass="labelRoboto13" text="--" textFill="#0239a8" GridPane.columnIndex="1" />
+                        <Label fx:id="lblTIpoMovimiento" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="1" />
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Fecha y Hora" textFill="#020203" GridPane.rowIndex="1" />
-                        <Label fx:id="lblHoraFecha" styleClass="labelRoboto13" text="--" textFill="#0239a8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblHoraFecha" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.rowIndex="2" />
-                        <Label fx:id="lblObservacion" styleClass="labelRoboto13" text="--" textFill="#0239a8" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lblObservacion" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Proveedor:" textFill="#020203" GridPane.columnIndex="2" />
-                        <Label fx:id="lblProveedor" styleClass="labelRoboto13" text="---" textFill="#0239a8" GridPane.columnIndex="3" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado del mivimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="lblEstado" styleClass="labelRoboto13" text="---" textFill="#0239a8" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label fx:id="lblProveedor" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="3" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado del Movimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="lblEstado" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -73,35 +74,44 @@
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox style="-fx-spacing: 0.8333333333333334em;">
+                        <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Button fx:id="btnRegistrar" disable="true" mnemonicParsing="false" onAction="#onActionRegistrar" onKeyPressed="#onKeyPressedRegistrar" styleClass="buttonLightDefault" text="Registrar">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/save.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/reports.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
+                              <HBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="btnRegistrar" mnemonicParsing="false" onAction="#onActionRegistrar" onKeyPressed="#onKeyPressedRegistrar" styleClass="buttonLightDefault" text="Registrar">
+                                       <graphic>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/save.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
+                                       <graphic>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/reports.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <TextField fx:id="txtCofigoVerificacion" prefHeight="30.0" promptText="Código de verificación" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
                            </children>
                         </HBox>
-                        <TableView fx:id="tvList" editable="true" prefHeight="280.0" styleClass="table-view-principal">
+                        <TableView fx:id="tvList" editable="true" prefHeight="280.0" prefWidth="640.0" styleClass="table-view-principal">
                           <columns>
-                            <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: TOP-CENTER;" text="N°" />
-                            <TableColumn fx:id="tcDescripcion" prefWidth="360.0" style="-fx-alignment: TOP-LEFT;" text="Descripción" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="160.0" style="-fx-alignment: TOP-RIGHT;" text="Cantidad" />
-                              <TableColumn fx:id="tcVerificar" prefWidth="29.0" style="-fx-alignment: CENTER;" text="Verificar" visible="false" />
-                              <TableColumn fx:id="tcPrecio" prefWidth="28.0" style="-fx-alignment: CENTER;" text="Precio" visible="false" />
+                            <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: TOP-CENTER;" text="N°" />
+                            <TableColumn fx:id="tcDescripcion" prefWidth="387.0" style="-fx-alignment: TOP-LEFT;" text="Descripción" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="165.0" style="-fx-alignment: TOP-RIGHT;" text="Cantidad" />
+                              <TableColumn fx:id="tcVerificar" minWidth="0.0" prefWidth="37.0" style="-fx-alignment: CENTER;" text="Verificar" visible="false" />
+                              <TableColumn fx:id="tcPrecio" minWidth="0.0" prefWidth="0.0" style="-fx-alignment: CENTER;" text="Precio" visible="false" />
                           </columns>
                         </TableView>
                      </children>

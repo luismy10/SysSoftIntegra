@@ -363,13 +363,23 @@ public class FxBienvenidaController implements Initializable {
             impuestoTB.setPredeterminado(true);
             impuestoTB.setSistema(true);
 
-            TipoDocumentoTB tipoDocumentoTB = new TipoDocumentoTB();
-            tipoDocumentoTB.setNombre("TICKET");
-            tipoDocumentoTB.setSerie("T001");
-            tipoDocumentoTB.setNumeracion(0);
-            tipoDocumentoTB.setCodigoAlterno("");
-            tipoDocumentoTB.setPredeterminado(true);
-            tipoDocumentoTB.setSistema(true);
+            TipoDocumentoTB tipoDocumentoTicket= new TipoDocumentoTB();
+            tipoDocumentoTicket.setNombre("TICKET");
+            tipoDocumentoTicket.setSerie("T001");
+            tipoDocumentoTicket.setNumeracion(1);
+            tipoDocumentoTicket.setCodigoAlterno("");
+            tipoDocumentoTicket.setPredeterminado(true);
+            tipoDocumentoTicket.setSistema(true);
+            tipoDocumentoTicket.setGuia(false);
+            
+            TipoDocumentoTB tipoDocumentoGuiaRemision = new TipoDocumentoTB();
+            tipoDocumentoGuiaRemision.setNombre("GUIA REMISION");
+            tipoDocumentoGuiaRemision.setSerie("G001");
+            tipoDocumentoGuiaRemision.setNumeracion(1);
+            tipoDocumentoGuiaRemision.setCodigoAlterno("");
+            tipoDocumentoGuiaRemision.setPredeterminado(true);
+            tipoDocumentoGuiaRemision.setSistema(true);
+            tipoDocumentoGuiaRemision.setGuia(true);
 
             ClienteTB clienteTB = new ClienteTB();
             clienteTB.setTipoDocumento(338);
@@ -392,7 +402,7 @@ public class FxBienvenidaController implements Initializable {
             Task<String> task = new Task<String>() {
                 @Override
                 public String call() {
-                    return GlobalADO.RegistrarInicioPrograma(empresaTB, monedaTB, empleadoTB, impuestoTB, tipoDocumentoTB, clienteTB);
+                    return GlobalADO.RegistrarInicioPrograma(empresaTB, monedaTB, empleadoTB, impuestoTB, tipoDocumentoTicket, tipoDocumentoGuiaRemision,clienteTB);
                 }
             };
             task.setOnScheduled(w -> {

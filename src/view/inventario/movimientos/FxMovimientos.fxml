@@ -19,9 +19,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <Label styleClass="labelRobotoBold15" text="Movimiento o ajuste de inventario" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Movimientos Realizados" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/ajuste-inventario.png" />
                            </image>
@@ -40,7 +40,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionRelizarMovimiento" onKeyPressed="#onKeyPressedRealizarMovimiento" styleClass="buttonLightDefault" text="Realizar M o A">
+                  <Button fx:id="btnRealizarMovimiento" mnemonicParsing="false" onAction="#onActionRelizarMovimiento" onKeyPressed="#onKeyPressedRealizarMovimiento" styleClass="buttonLightDefault" text="Realizar M o A">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -70,7 +70,7 @@
                                  <children>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Buscar por  tipo de movimiento(F1)" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Buscar por  Tipo de Movimiento(F1)" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -112,7 +112,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Fecha de Final" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Fecha de Término" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -139,17 +139,12 @@
                            <children>
                               <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <HBox>
-                                       <children>
-                                          <Label styleClass="labelRoboto13" text="Mostrar todos los movimientos realizados de inventario" textFill="#020203" />
-                                       </children>
-                                    </HBox>
                                     <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="327.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                                        <columns>
-                                          <TableColumn fx:id="tcNumero" prefWidth="93.0" style="-fx-alignment: CENTER;" text="N°" />
-                                          <TableColumn fx:id="tcTipoMovimiento" prefWidth="257.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de Movimiento" />
-                                          <TableColumn fx:id="tcFecha" prefWidth="173.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha y Hora" />
-                                          <TableColumn fx:id="tcObservacion" prefWidth="291.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
+                                          <TableColumn fx:id="tcNumero" prefWidth="70.0" style="-fx-alignment: CENTER;" text="N°" />
+                                          <TableColumn fx:id="tcTipoMovimiento" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de Movimiento" />
+                                          <TableColumn fx:id="tcFecha" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha y Hora" />
+                                          <TableColumn fx:id="tcObservacion" prefWidth="220.0" style="-fx-alignment: CENTER-LEFT;" text="Observación" />
                                           <TableColumn fx:id="tcInformacion" prefWidth="148.0" style="-fx-alignment: CENTER-LEFT;" text="Información" />
                                           <TableColumn fx:id="tcEstado" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
                                           <TableColumn fx:id="tcOpcion" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Opción" />
@@ -161,6 +156,53 @@
                         </HBox>
                      </children>
                   </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;">
+               <children>
+                  <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/left.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Label styleClass="labelBorder" text="0" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="labelForm" text="de" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="labelBorder" text="0" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                        </Label>
+                        <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/right.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
          </children>

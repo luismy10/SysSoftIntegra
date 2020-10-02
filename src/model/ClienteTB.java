@@ -31,6 +31,19 @@ public class ClienteTB {
         this.informacion = informacion;
     }
 
+    public ClienteTB(String numeroDocumento, String informacion) {
+        this.numeroDocumento = numeroDocumento;
+        this.informacion = informacion;
+    }
+
+    public ClienteTB(String numeroDocumento, String informacion, String celular, String email, String direccion) {
+        this.numeroDocumento = numeroDocumento;
+        this.informacion = informacion;
+        this.celular = celular;
+        this.email = email;
+        this.direccion = direccion;
+    }
+
     public ClienteTB(String idCliente, String numeroDocumento, String informacion, String celular, String email, String direccion) {
         this.idCliente = idCliente;
         this.numeroDocumento = numeroDocumento;
@@ -49,14 +62,14 @@ public class ClienteTB {
         this.email = email;
         this.direccion = direccion;
     }
-    
-    public ClienteTB(String idCliente, int tipoDocumento, String numeroDocumento, String informacion, String telefono,String celular, String email, String direccion) {
+
+    public ClienteTB(String idCliente, int tipoDocumento, String numeroDocumento, String informacion, String telefono, String celular, String email, String direccion) {
         this.idCliente = idCliente;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = numeroDocumento;
         this.informacion = informacion;
         this.celular = celular;
-        this.telefono=telefono;
+        this.telefono = telefono;
         this.email = email;
         this.direccion = direccion;
     }

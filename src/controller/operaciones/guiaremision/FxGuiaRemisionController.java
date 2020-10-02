@@ -1,6 +1,7 @@
 package controller.operaciones.guiaremision;
 
 import controller.contactos.clientes.FxClienteProcesoController;
+import controller.inventario.suministros.FxSuministrosListaController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -25,7 +26,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -33,24 +36,31 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.DetalleADO;
 import model.DetalleTB;
+import model.GuiaRemisionADO;
+import model.GuiaRemisionDetalleTB;
 import model.GuiaRemisionTB;
+import model.SuministroTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.UbigeoADO;
 import model.UbigeoTB;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class FxGuiaRemisionController implements Initializable {
 
@@ -58,6 +68,8 @@ public class FxGuiaRemisionController implements Initializable {
     private ScrollPane spWindow;
     @FXML
     private Label lblLoad;
+    @FXML
+    private Label lblEstadoComprobante;
     @FXML
     private ComboBox<ClienteTB> cbCliente;
     @FXML
@@ -79,7 +91,11 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private TextField txtNombreConducto;
     @FXML
+    private TextField txtTelefonoCelular;
+    @FXML
     private TextField txtNumeroPlacaVehiculo;
+    @FXML
+    private TextField txtMarcaVehiculo;
     @FXML
     private TextField txtDireccionPartida;
     @FXML
@@ -91,37 +107,43 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private ComboBox<TipoDocumentoTB> cbTipoComprobante;
     @FXML
-    private TextField txtSerie;
+    private TextField txtSerieFactura;
     @FXML
-    private TextField txtNumeracion;
+    private TextField txtNumeracionFactura;
     @FXML
-    private TableView<GuiaRemisionTB> tvList;
+    private TableView<GuiaRemisionDetalleTB> tvList;
     @FXML
-    private TableColumn<GuiaRemisionTB, String> tcNumero;
+    private TableColumn<GuiaRemisionDetalleTB, TextField> tcCodigo;
     @FXML
-    private TableColumn<GuiaRemisionTB, String> tcCodigo;
+    private TableColumn<GuiaRemisionDetalleTB, TextField> tcDescripcion;
     @FXML
-    private TableColumn<GuiaRemisionTB, String> tcDescripcion;
+    private TableColumn<GuiaRemisionDetalleTB, TextField> tcMedida;
     @FXML
-    private TableColumn<GuiaRemisionTB, String> tcMedida;
+    private TableColumn<GuiaRemisionDetalleTB, TextField> tcCantidad;
     @FXML
-    private TableColumn<GuiaRemisionTB, String> tcCantidad;
+    private TableColumn<GuiaRemisionDetalleTB, TextField> tcPeso;
     @FXML
-    private TableColumn<GuiaRemisionTB, String> tcPeso;
-    @FXML
-    private TableColumn<GuiaRemisionTB, HBox> tcOpcion;
+    private TableColumn<GuiaRemisionDetalleTB, Button> tcOpcion;
 
     private AnchorPane vbPrincipal;
 
+    private int idComprobante;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+        tcCodigo.setCellValueFactory(new PropertyValueFactory<>("txtCodigo"));
+        tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("txtDescripcion"));
+        tcMedida.setCellValueFactory(new PropertyValueFactory<>("txtUnidad"));
+        tcCantidad.setCellValueFactory(new PropertyValueFactory<>("txtCantidad"));
+        tcPeso.setCellValueFactory(new PropertyValueFactory<>("txtPeso"));
+        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnRemover"));
+
         tcCodigo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
-        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
-        tcMedida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcPeso.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcOpcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
+        tcMedida.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcPeso.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcOpcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
 
         SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
         searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
@@ -171,6 +193,7 @@ public class FxGuiaRemisionController implements Initializable {
             }
         });
 
+        idComprobante = 0;
         Tools.actualDate(Tools.getDate(), dtFechaTraslado);
         loadUbigeoPartida();
         loadUbigeoLlegada();
@@ -296,7 +319,7 @@ public class FxGuiaRemisionController implements Initializable {
                 objects.add(DetalleADO.GetDetailId("0018"));
                 objects.add(DetalleADO.GetDetailId("0003"));
                 objects.add(TipoDocumentoADO.GetDocumentoCombBox());
-
+                objects.add(TipoDocumentoADO.GetTipoDocumentoGuiaRemision());
                 return objects;
             }
         };
@@ -339,6 +362,20 @@ public class FxGuiaRemisionController implements Initializable {
                     List<TipoDocumentoTB> tipoComprobante = (List<TipoDocumentoTB>) objects.get(3);
                     tipoComprobante.forEach(cbTipoComprobante.getItems()::add);
                 }
+                if (objects.get(4) != null) {
+                    TipoDocumentoTB documentoTB = (TipoDocumentoTB) objects.get(4);
+                    if (documentoTB != null) {
+                        idComprobante = documentoTB.getIdTipoDocumento();
+                        lblEstadoComprobante.setText("Comprobante activo.");
+                        lblEstadoComprobante.setTextFill(Color.web("#008922"));
+                    } else {
+                        lblEstadoComprobante.setText("Comprobante inactivo.");
+                        lblEstadoComprobante.setTextFill(Color.web("#c20202"));
+                    }
+                } else {
+                    lblEstadoComprobante.setText("Comprobante inactivo.");
+                    lblEstadoComprobante.setTextFill(Color.web("#c20202"));
+                }
                 lblLoad.setVisible(false);
             } else {
                 lblLoad.setVisible(false);
@@ -350,8 +387,74 @@ public class FxGuiaRemisionController implements Initializable {
         }
     }
 
-    private void reportGuiaRemision() {
+    public void eventAgregar(SuministroTB suministroTB) {
+        GuiaRemisionDetalleTB guiaRemisionDetalleTB = new GuiaRemisionDetalleTB();
+        guiaRemisionDetalleTB.setIdSuministro(suministroTB.getIdSuministro());
+        guiaRemisionDetalleTB.setCodigo(suministroTB.getClave());
+        guiaRemisionDetalleTB.setCantidad(1);
+        guiaRemisionDetalleTB.setDescripcion(suministroTB.getNombreMarca());
+        guiaRemisionDetalleTB.setUnidad(suministroTB.getUnidadCompraName());
+        guiaRemisionDetalleTB.setPeso(0);
+
+        TextField txtCodigo = new TextField(guiaRemisionDetalleTB.getCodigo());
+        txtCodigo.getStyleClass().add("text-field-normal");
+
+        TextField txtDescripcion = new TextField(guiaRemisionDetalleTB.getDescripcion());
+        txtDescripcion.getStyleClass().add("text-field-normal");
+
+        TextField txtUnidad = new TextField(guiaRemisionDetalleTB.getUnidad());
+        txtUnidad.getStyleClass().add("text-field-normal");
+
+        TextField txtCantidad = new TextField(Tools.roundingValue(guiaRemisionDetalleTB.getCantidad(), 0));
+        txtCantidad.getStyleClass().add("text-field-normal");
+        txtCantidad.setOnKeyTyped(event -> {
+            char c = event.getCharacter().charAt(0);
+            if ((c < '0' || c > '9') && (c != '\b')) {
+                event.consume();
+            }
+        });
+
+        TextField txtPeso = new TextField(Tools.roundingValue(guiaRemisionDetalleTB.getPeso(), 2));
+        txtPeso.getStyleClass().add("text-field-normal");
+        txtPeso.setOnKeyTyped(event -> {
+            char c = event.getCharacter().charAt(0);
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                event.consume();
+            }
+            if (c == '.' && txtPeso.getText().contains(".")) {
+                event.consume();
+            }
+        });
+
+        Button btnRemover = new Button();
+        btnRemover.getStyleClass().add("buttonBorder");
+        ImageView view = new ImageView(new Image("/view/image/remove-black.png"));
+        view.setFitWidth(18);
+        view.setFitHeight(18);
+        btnRemover.setGraphic(view);
+        btnRemover.setOnAction(event -> {
+            tvList.getItems().remove(guiaRemisionDetalleTB);
+        });
+        btnRemover.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                tvList.getItems().remove(guiaRemisionDetalleTB);
+            }
+        });
+
+        guiaRemisionDetalleTB.setTxtCodigo(txtCodigo);
+        guiaRemisionDetalleTB.setTxtDescripcion(txtDescripcion);
+        guiaRemisionDetalleTB.setTxtUnidad(txtUnidad);
+        guiaRemisionDetalleTB.setTxtCantidad(txtCantidad);
+        guiaRemisionDetalleTB.setTxtPeso(txtPeso);
+        guiaRemisionDetalleTB.setBtnRemover(btnRemover);
+
+        tvList.getItems().add(guiaRemisionDetalleTB);
+
+    }
+
+    private void reportGuiaRemision(GuiaRemisionTB guiaRemisionTB) {
         try {
+
             InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
             InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
@@ -370,7 +473,30 @@ public class FxGuiaRemisionController implements Initializable {
             map.put("CELULAR_EMPRESA", Session.COMPANY_CELULAR);
             map.put("EMAIL_EMPRESA", Session.COMPANY_EMAIL);
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
+            map.put("NUMERACION_GUIA_REMISION", guiaRemisionTB.getSerie() + "-" + guiaRemisionTB.getNumeracion());
+            map.put("FECHA_TRASLADO", guiaRemisionTB.getFechaTraslado());
+            map.put("NUMERO_FACTURA", guiaRemisionTB.getSerieFactura() + "-" + guiaRemisionTB.getNumeracionFactura());
+
+            map.put("DIRECCION_PARTIDA", guiaRemisionTB.getDireccionPartida());
+            map.put("UBIGEO_PARTIDA", guiaRemisionTB.getUbigeoPartidaDescripcion());
+
+            map.put("DIRECCION_LLEGAGA", guiaRemisionTB.getDireccionLlegada());
+            map.put("UBIGEO_LLEGADA", guiaRemisionTB.getUbigeoLlegadaDescripcion());
+
+            map.put("NOMBRE_COMERCIAL", Session.COMPANY_NOMBRE_COMERCIAL);
+            map.put("RUC_EMPRESA", Session.COMPANY_NUMERO_DOCUMENTO);
+
+            map.put("NOMBRE_CLIENTE", guiaRemisionTB.getClienteTB().getInformacion());
+            map.put("RUC_CLIENTE", guiaRemisionTB.getClienteTB().getNumeroDocumento());
+
+            map.put("DATOS_TRANSPORTISTA", guiaRemisionTB.getNombreConductor());
+            map.put("DOCUMENTO_TRANSPORTISTA", guiaRemisionTB.getNumeroConductor());
+            map.put("MARCA_VEHICULO", guiaRemisionTB.getMarcaVehiculo());
+            map.put("NUMERO_PLACA", guiaRemisionTB.getNumeroPlaca());
+
+            map.put("MOTIVO_TRANSPORTE", guiaRemisionTB.getMotivoTrasladoDescripcion());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(guiaRemisionTB.getListGuiaRemisionDetalle()));
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -405,6 +531,200 @@ public class FxGuiaRemisionController implements Initializable {
         } catch (IOException ex) {
             System.out.println("Cliente controller en openWindowAddCliente()" + ex.getLocalizedMessage());
         }
+    }
+
+    private void openWindowSuministro() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxSuministrosListaController controller = fXMLLoader.getController();
+            controller.setInitGuiaRemisionController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", spWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+            controller.fillSuministrosTable((short) 0, "");
+        } catch (IOException ex) {
+            System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void onExecuteImpresion(String idGuiaRemision) {
+        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        Task<GuiaRemisionTB> task = new Task<GuiaRemisionTB>() {
+            @Override
+            public GuiaRemisionTB call() {
+                return GuiaRemisionADO.CargarGuiaRemisionReporte(idGuiaRemision);
+            }
+        };
+        task.setOnScheduled(w -> {
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Generando reporte",
+                    "Se envió los datos para generar\n el reporte.",
+                    Duration.seconds(5),
+                    Pos.BOTTOM_RIGHT);
+        });
+        task.setOnFailed(w -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
+                    "Generando reporte",
+                    "Se produjo un problema al generar.",
+                    Duration.seconds(10),
+                    Pos.BOTTOM_RIGHT);
+        });
+        task.setOnSucceeded(w -> {
+            GuiaRemisionTB remisionTB = task.getValue();
+            if (remisionTB != null) {
+                reportGuiaRemision(remisionTB);
+                Tools.showAlertNotification("/view/image/succes_large.png",
+                        "Generando reporte",
+                        "Se genero correctamente el reporte.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+
+            } else {
+                Tools.println("dentroo..");
+                Tools.showAlertNotification("/view/image/error_large.png",
+                        "Generando reporte",
+                        "Se produjo al obtenener los datos.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            }
+        }
+        );
+        exec.execute(task);
+
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void onExecuteGuardar() {
+        if (idComprobante <= 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "No se puedo completar el procreso por problemas en obtener el tipo de documento.");
+        } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione un cliente.");
+            cbCliente.requestFocus();
+        } else if (cbMotivoTraslado.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione el motivo del traslado.");
+            cbMotivoTraslado.requestFocus();
+        } else if (cbModalidadTraslado.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione la modalidad de traslado.");
+            cbModalidadTraslado.requestFocus();
+        } else if (dtFechaTraslado.getValue() == null) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese la fecha de traslado.");
+            dtFechaTraslado.requestFocus();
+        } else if (Tools.isText(txtPesoBruto.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese el peso de los bultos a trasaladar.");
+            txtPesoBruto.requestFocus();
+        } else if (Tools.isText(txtNumeroBultos.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese el número de bultos a trasladar.");
+            txtNumeroBultos.requestFocus();
+        } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione el tipo de documento del conducto.");
+            cbTipoDocumento.requestFocus();
+        } else if (Tools.isText(txtNumeroDocumento.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese el número de documento del conductor.");
+            txtNumeroDocumento.requestFocus();
+        } else if (Tools.isText(txtNombreConducto.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese los datos completos del conducto");
+            txtNombreConducto.requestFocus();
+        } else if (Tools.isText(txtTelefonoCelular.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese el teléfono o celular del conducto");
+            txtTelefonoCelular.requestFocus();
+        } else if (Tools.isText(txtNumeroPlacaVehiculo.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese el número de placa del vehículo");
+            txtNumeroPlacaVehiculo.requestFocus();
+        } else if (Tools.isText(txtMarcaVehiculo.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese la marca del vehículo.");
+            txtMarcaVehiculo.requestFocus();
+        } else if (Tools.isText(txtDireccionPartida.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese la dirección de partida.");
+            txtDireccionPartida.requestFocus();
+        } else if (cbUbigeoPartida.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione el ubigeo de partida.");
+            cbUbigeoPartida.requestFocus();
+        } else if (Tools.isText(txtDireccionLlegada.getText())) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Ingrese la dirección de llegada.");
+            txtDireccionLlegada.requestFocus();
+        } else if (cbUbigeoLlegada.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione el ubigeo de llegada.");
+            cbUbigeoLlegada.requestFocus();
+        } else if (tvList.getItems().isEmpty()) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Agregar productos a lista.");
+            tvList.requestFocus();
+        } else {
+
+            short value = Tools.AlertMessageConfirmation(spWindow, "Guia Remisión", "¿Está seguro de continuar?");
+            if (value == 1) {
+                GuiaRemisionTB guiaRemisionTB = new GuiaRemisionTB();
+                guiaRemisionTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
+                guiaRemisionTB.setIdVendedor(Session.USER_ID);
+                guiaRemisionTB.setIdComprobante(idComprobante);
+                guiaRemisionTB.setEmail(txtEmail.getText().trim());
+                guiaRemisionTB.setIdMotivoTraslado(cbMotivoTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                guiaRemisionTB.setIdModalidadTraslado(cbModalidadTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                guiaRemisionTB.setFechaTraslado(Tools.getDatePicker(dtFechaTraslado));
+                guiaRemisionTB.setPesoBruto(Double.parseDouble(txtPesoBruto.getText()));
+                guiaRemisionTB.setNumeroBultos(Integer.parseInt(txtNumeroBultos.getText()));
+                guiaRemisionTB.setTipoDocumentoConducto(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                guiaRemisionTB.setNumeroConductor(txtNumeroDocumento.getText().trim());
+                guiaRemisionTB.setNombreConductor(txtNombreConducto.getText().trim());
+                guiaRemisionTB.setTelefonoCelularConducto(txtTelefonoCelular.getText());
+                guiaRemisionTB.setNumeroPlaca(txtNumeroPlacaVehiculo.getText().trim());
+                guiaRemisionTB.setMarcaVehiculo(txtMarcaVehiculo.getText().trim());
+                guiaRemisionTB.setDireccionPartida(txtDireccionPartida.getText().trim());
+                guiaRemisionTB.setIdUbigeoPartida(cbUbigeoPartida.getSelectionModel().getSelectedItem().getIdUbigeo());
+                guiaRemisionTB.setDireccionLlegada(txtDireccionLlegada.getText().trim());
+                guiaRemisionTB.setIdUbigeoLlegada(cbUbigeoLlegada.getSelectionModel().getSelectedItem().getIdUbigeo());
+                guiaRemisionTB.setIdTipoComprobanteFactura(cbTipoComprobante.getSelectionModel().getSelectedIndex() >= 0 ? cbTipoComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento() : 0);
+                guiaRemisionTB.setSerieFactura(txtSerieFactura.getText().trim());
+                guiaRemisionTB.setNumeracionFactura(txtNumeracionFactura.getText().trim());
+                guiaRemisionTB.setListGuiaRemisionDetalle(tvList.getItems());
+
+                String[] result = GuiaRemisionADO.InsertarGuiaRemision(guiaRemisionTB).split("/");
+                if (result[0].equalsIgnoreCase("register")) {
+                    Tools.AlertMessageInformation(spWindow, "Guia Remisión", "Se registro correctamente la guía de remesión.");
+                    reset();
+                    onExecuteImpresion(result[1]);
+                } else {
+                    Tools.AlertMessageError(spWindow, "Guia Remisión", result[0]);
+                }
+            }
+
+        }
+    }
+
+    private void reset() {
+        cbCliente.getItems().clear();
+        txtEmail.clear();
+        cbMotivoTraslado.getSelectionModel().select(null);
+        cbModalidadTraslado.getSelectionModel().select(null);
+        Tools.actualDate(Tools.getDate(), dtFechaTraslado);
+        txtPesoBruto.clear();
+        txtNumeroBultos.clear();
+        cbTipoDocumento.getSelectionModel().select(null);
+        txtNumeroDocumento.clear();
+        txtNombreConducto.clear();
+        txtTelefonoCelular.clear();
+        txtNumeroPlacaVehiculo.clear();
+        txtMarcaVehiculo.clear();
+        txtDireccionPartida.clear();
+        cbUbigeoPartida.getSelectionModel().select(null);
+        txtDireccionLlegada.clear();
+        cbUbigeoLlegada.getSelectionModel().select(null);
+        cbTipoComprobante.getSelectionModel().select(null);
+        txtSerieFactura.clear();
+        txtNumeracionFactura.clear();
+        tvList.getItems().clear();
     }
 
     @FXML
@@ -448,25 +768,13 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private void onKeyPressedToRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            onExecuteGuardar();
         }
     }
 
     @FXML
     private void onActionToRegister(ActionEvent event) {
-
-    }
-
-    @FXML
-    private void onKeyPressedPrevisualizar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            reportGuiaRemision();
-        }
-    }
-
-    @FXML
-    private void onActionPrevisualizar(ActionEvent event) {
-        reportGuiaRemision();
+        onExecuteGuardar();
     }
 
     @FXML
@@ -482,14 +790,6 @@ public class FxGuiaRemisionController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedBuscarVenta(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionBuscarVenta(ActionEvent event) {
-    }
-
-    @FXML
     private void onKeyPressedToReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             loadComponents();
@@ -501,16 +801,24 @@ public class FxGuiaRemisionController implements Initializable {
         loadComponents();
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
-    }
-
     @FXML
     private void onKeyPressedAgregar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowSuministro();
+        }
     }
 
     @FXML
     private void onActionAgregar(ActionEvent event) {
+        openWindowSuministro();
+    }
+
+    public TableView<GuiaRemisionDetalleTB> getTvList() {
+        return tvList;
+    }
+
+    public void setContent(AnchorPane vbPrincipal) {
+        this.vbPrincipal = vbPrincipal;
     }
 
 }

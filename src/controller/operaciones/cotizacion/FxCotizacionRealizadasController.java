@@ -1,6 +1,5 @@
 package controller.operaciones.cotizacion;
 
-import controller.operaciones.venta.FxVentaDetalleController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -128,13 +126,13 @@ public class FxCotizacionRealizadasController implements Initializable {
         }
     }
 
-    private void openWindowDetalleVenta() throws IOException {
+    private void openWindowDetalleCotizacion() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_COTIZACION_DETALLE));
             ScrollPane node = fXMLLoader.load();
             //Controlller here
             FxCotizacionDetalleController controller = fXMLLoader.getController();  
-            controller.setInitVentasController(this, vbPrincipal, vbContent);
+            controller.setInitCotizacionesRealizadasController(this, vbPrincipal, vbContent);
             //
             vbContent.getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
@@ -151,13 +149,13 @@ public class FxCotizacionRealizadasController implements Initializable {
     @FXML
     private void onKeyPressedMostar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowDetalleVenta();
+            openWindowDetalleCotizacion();
         }
     }
 
     @FXML
     private void onActionMostrar(ActionEvent event) throws IOException {
-        openWindowDetalleVenta();
+        openWindowDetalleCotizacion();
     }
 
     @FXML
@@ -221,7 +219,7 @@ public class FxCotizacionRealizadasController implements Initializable {
     private void onKeyPressedList(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             if (!tvList.getItems().isEmpty()) {
-                openWindowDetalleVenta(); 
+                openWindowDetalleCotizacion(); 
             }
         }
     }
@@ -230,7 +228,7 @@ public class FxCotizacionRealizadasController implements Initializable {
     private void onMouseClickedList(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
             if (!tvList.getItems().isEmpty()) {
-                openWindowDetalleVenta();
+                openWindowDetalleCotizacion();
             }
         }
     }

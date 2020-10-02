@@ -8,6 +8,7 @@ import controller.produccion.asignacion.FxAsignacionController;
 import controller.produccion.asignacion.FxAsignacionProcesoController;
 import controller.inventario.movimientos.FxMovimientosProcesoController;
 import controller.operaciones.cotizacion.FxCotizacionController;
+import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.produccion.producir.FxProducirProcesoController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -41,6 +42,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.GuiaRemisionDetalleTB;
 import model.SuministroADO;
 import model.SuministroTB;
 
@@ -100,6 +102,8 @@ public class FxSuministrosListaController implements Initializable {
     private FxVentaUtilidadesController ventaUtilidadesController;
 
     private FxCotizacionController cotizacionController;
+
+    private FxGuiaRemisionController guiaRemisionController;
 
     private boolean status;
 
@@ -304,7 +308,16 @@ public class FxSuministrosListaController implements Initializable {
         if (ventaEstructuraController != null) {
             addArticuloToList();
         } else if (cotizacionController != null) {
-             addSuministroCotizacion();
+            addSuministroCotizacion();
+        } else if (guiaRemisionController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                if (!validateDuplicateGuiaRemision(guiaRemisionController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
+                    guiaRemisionController.eventAgregar(tvList.getSelectionModel().getSelectedItem());
+                    Tools.Dispose(apWindow);
+                } else {
+                    Tools.AlertMessageWarning(apWindow, "Guía de remisión", "Ya hay un producto con las mismas características.");
+                }
+            }
         } else if (movimientosProcesoController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 if (!validateDuplicate(movimientosProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
@@ -349,6 +362,17 @@ public class FxSuministrosListaController implements Initializable {
     }
 
     private boolean validateDuplicate(TableView<SuministroTB> view, SuministroTB suministroTB) {
+        boolean ret = false;
+        for (int i = 0; i < view.getItems().size(); i++) {
+            if (view.getItems().get(i).getIdSuministro().equals(suministroTB.getIdSuministro())) {
+                ret = true;
+                break;
+            }
+        }
+        return ret;
+    }
+
+    private boolean validateDuplicateGuiaRemision(TableView<GuiaRemisionDetalleTB> view, SuministroTB suministroTB) {
         boolean ret = false;
         for (int i = 0; i < view.getItems().size(); i++) {
             if (view.getItems().get(i).getIdSuministro().equals(suministroTB.getIdSuministro())) {
@@ -449,8 +473,8 @@ public class FxSuministrosListaController implements Initializable {
             ivPrincipal.setImage(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
         }
     }
-    
-     private void addSuministroCotizacion() {
+
+    private void addSuministroCotizacion() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             SuministroTB suministroTB = new SuministroTB();
             suministroTB.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
@@ -500,7 +524,6 @@ public class FxSuministrosListaController implements Initializable {
             cotizacionController.getAddArticulo(suministroTB);
         }
     }
-
 
     @FXML
     private void onKeyPressedAdd(KeyEvent event) {
@@ -588,7 +611,7 @@ public class FxSuministrosListaController implements Initializable {
     private void onKeyPressedToSearh(KeyEvent event) {
         selectTable(event);
     }
-    
+
     @FXML
     private void onKeyPressedToCategoria(KeyEvent event) {
         selectTable(event);
@@ -688,9 +711,13 @@ public class FxSuministrosListaController implements Initializable {
     public void setInitVentaUtilidadesController(FxVentaUtilidadesController ventaUtilidadesController) {
         this.ventaUtilidadesController = ventaUtilidadesController;
     }
-    
-     public void setInitCotizacionEstructuraController(FxCotizacionController cotizacionController) {
+
+    public void setInitCotizacionEstructuraController(FxCotizacionController cotizacionController) {
         this.cotizacionController = cotizacionController;
+    }
+
+    public void setInitGuiaRemisionController(FxGuiaRemisionController guiaRemisionController) {
+        this.guiaRemisionController = guiaRemisionController;
     }
 
 }

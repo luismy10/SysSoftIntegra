@@ -360,7 +360,7 @@ public class FxCotizacionDetalleController implements Initializable {
         reportA4(cotizacionTB);
     }
 
-    public void setInitVentasController(FxCotizacionRealizadasController cotizacionRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitCotizacionesRealizadasController(FxCotizacionRealizadasController cotizacionRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.cotizacionRealizadasController = cotizacionRealizadasController;
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;

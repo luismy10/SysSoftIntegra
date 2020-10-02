@@ -197,7 +197,7 @@ public class FxVentaRealizadasController implements Initializable {
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
                 
-                double ventaTotal = (int) objects.get(2);
+                double ventaTotal = (double) objects.get(2);
                 lblTotal.setText(Tools.roundingValue(ventaTotal, 2));
                 lblLoad.setVisible(false);
             } else {
