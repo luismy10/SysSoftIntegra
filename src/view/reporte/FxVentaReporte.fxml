@@ -74,7 +74,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dpFechaInicial" prefWidth="220.0" />
+                                                <DatePicker fx:id="dpFechaInicial" prefHeight="30.0" prefWidth="220.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
@@ -88,7 +88,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dpFechaFinal" minWidth="-Infinity" prefWidth="220.0" />
+                                                <DatePicker fx:id="dpFechaFinal" minWidth="-Infinity" prefHeight="30.0" prefWidth="220.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -157,7 +157,7 @@
                                                             <TextField fx:id="txtClientes" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
                                                             <Button fx:id="btnClientes" disable="true" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionClientes" onKeyPressed="#onKeyPressedClientes" styleClass="buttonBorder">
                                                                <graphic>
-                                                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                                  <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
                                                                         <Image url="@../image/search.png" />
                                                                      </image>
@@ -166,12 +166,12 @@
                                                             </Button>
                                                          </children>
                                                       </HBox>
-                                                      <HBox style="-fx-spacing: 0.5em;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                      <HBox GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                          <children>
                                                             <TextField fx:id="txtVendedores" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
                                                             <Button fx:id="btnVendedor" disable="true" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionVendedor" onKeyPressed="#onKeyPressedVendedor" styleClass="buttonBorder">
                                                                <graphic>
-                                                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                                  <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
                                                                         <Image url="@../image/search.png" />
                                                                      </image>
