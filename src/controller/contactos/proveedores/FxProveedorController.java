@@ -219,8 +219,55 @@ public class FxProveedorController implements Initializable {
     }
 
     @FXML
-    private void onActionSearch(ActionEvent event) {
-        fillCustomersTable(txtSearch.getText());
+    private void onKeyPressedSearch(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!tvList.getItems().isEmpty()) {
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(0);
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSearch(KeyEvent event) {
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE) {
+            if (!lblLoad.isVisible()) {
+                fillCustomersTable(txtSearch.getText());
+            }
+        }
     }
 
     @FXML

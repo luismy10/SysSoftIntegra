@@ -13,6 +13,7 @@ import controller.produccion.producir.FxProducirProcesoController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -91,9 +92,9 @@ public class FxSuministrosListaController implements Initializable {
 
     private FxSuministrosKardexController suministrosKardexController;
 
-    public FxProducirProcesoController producirProcesoController;
+    private FxProducirProcesoController producirProcesoController;
 
-    public FxAsignacionController asignacionController;
+    private FxAsignacionController asignacionController;
 
     private FxAsignacionProcesoController asignacionProcesoController;
 
@@ -469,8 +470,13 @@ public class FxSuministrosListaController implements Initializable {
 
     private void selectImage() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            File fileImage = new File(tvList.getSelectionModel().getSelectedItem().getImagenTB());
-            ivPrincipal.setImage(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
+            if (tvList.getSelectionModel().getSelectedItem().getNuevaImagen() == null) {
+                // File fileImage = new File(tvList.getSelectionModel().getSelectedItem().getImagenTB());
+                ivPrincipal.setImage(new Image("/view/image/no-image.png"));
+            } else {
+                ivPrincipal.setImage(new Image(new ByteArrayInputStream(tvList.getSelectionModel().getSelectedItem().getNuevaImagen())));
+            }
+
         }
     }
 

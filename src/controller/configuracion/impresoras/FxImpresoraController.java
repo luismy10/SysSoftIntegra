@@ -87,6 +87,10 @@ public class FxImpresoraController implements Initializable {
     private ComboBox<TicketTB> cbTipo;
     @FXML
     private Label lblEstado;
+    @FXML
+    private RadioButton rbTicketWithDesing;
+    @FXML
+    private RadioButton rbTicketNoDesing;
 
     private PrinterService printerService;
 
@@ -97,6 +101,10 @@ public class FxImpresoraController implements Initializable {
         ToggleGroup group = new ToggleGroup();
         rbTicket.setToggleGroup(group);
         rbDocumentos.setToggleGroup(group);
+
+        ToggleGroup group1 = new ToggleGroup();
+        rbTicketWithDesing.setToggleGroup(group1);
+        rbTicketNoDesing.setToggleGroup(group1);
         printerService = new PrinterService();
         loadComponents();
     }
@@ -319,28 +327,34 @@ public class FxImpresoraController implements Initializable {
                 prop.setProperty("printerNameVenta", cbImpresoras.getSelectionModel().getSelectedItem());
                 prop.setProperty("printerCutPaperVenta", cbPaperCut.isSelected() + "");
                 prop.setProperty("printerTypeFormatVenta", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingVenta", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
                 prop.store(output, "Ruta de configuración de la impresora de venta");
-                
+
                 Session.ESTADO_IMPRESORA_VENTA = true;
                 Session.NOMBRE_IMPRESORA_VENTA = cbImpresoras.getSelectionModel().getSelectedItem();
                 Session.CORTAPAPEL_IMPRESORA_VENTA = cbPaperCut.isSelected();
                 Session.FORMATO_IMPRESORA_VENTA = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_VENTA = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
                 Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
             } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("PRE VENTA")) {
                 prop.setProperty("printerNamePreVenta", cbImpresoras.getSelectionModel().getSelectedItem());
                 prop.setProperty("printerCutPaperPreVenta", cbPaperCut.isSelected() + "");
                 prop.setProperty("printerTypeFormatPreVenta", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingVenta", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
                 prop.store(output, "Ruta de configuración de la impresora de pre venta");
 
                 Session.ESTADO_IMPRESORA_PRE_VENTA = true;
                 Session.NOMBRE_IMPRESORA_PRE_VENTA = cbImpresoras.getSelectionModel().getSelectedItem();
                 Session.CORTAPAPEL_IMPRESORA_PRE_VENTA = cbPaperCut.isSelected();
                 Session.FORMATO_IMPRESORA_PRE_VENTA = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_PRE_VENTA = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
                 Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            }else{
+                Tools.AlertMessageWarning(vbWindow, "Impresora", "No se puede guardar la configuración por problemas con la lista de tipo de impresora.");
             }
         } catch (IOException io) {
             Tools.AlertMessageError(vbWindow, "Impresora", "Error al crear el archivo: " + io.getLocalizedMessage());
-      
+
         }
     }
 

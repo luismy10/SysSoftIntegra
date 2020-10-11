@@ -7,6 +7,7 @@ import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -358,7 +359,7 @@ public class FxSuministrosController implements Initializable {
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
                 lblLoad.setVisible(false);
-            }else{
+            } else {
                 lblLoad.setVisible(false);
             }
         });
@@ -502,8 +503,12 @@ public class FxSuministrosController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             SuministroTB suministroTB = tvList.getSelectionModel().getSelectedItem();
 
-            File fileImage = new File(suministroTB.getImagenTB());
-            ivPrincipal.setImage(new Image(fileImage.exists() ? fileImage.toURI().toString() : "/view/image/no-image.png"));
+            //File fileImage = new File(suministroTB.getNuevaImagen());
+            if (suministroTB.getNuevaImagen() == null) {
+                ivPrincipal.setImage(new Image("/view/image/no-image.png"));
+            } else {
+                ivPrincipal.setImage(new Image(new ByteArrayInputStream(suministroTB.getNuevaImagen())));
+            }
 
             lblName.setText(suministroTB.getNombreMarca());
             lblPrice.setText(
@@ -838,7 +843,5 @@ public class FxSuministrosController implements Initializable {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
     }
-
-
 
 }

@@ -24,7 +24,7 @@
                      <children>
                         <Label style="-fx-border-color: #999999;">
                            <graphic>
-                              <ImageView fx:id="ivPrincipal" fitHeight="140.0" fitWidth="140.0" pickOnBounds="true">
+                              <ImageView fx:id="ivPrincipal" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@../../image/no-image.png" />
                                  </image>
@@ -104,13 +104,13 @@
                      <children>
                         <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="340.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                            <columns>
-                              <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcNombre" prefWidth="300.0" style="fx-alignment: CENTER-LEFT;" text="Clave/Nombre" />
-                              <TableColumn fx:id="tcCategoriaMarca" prefWidth="180.0" style="fx-alignment: CENTER-LEFT;" text="Categoria/Marca" />
+                              <TableColumn fx:id="tcId" prefWidth="50.0" style="-fx-alignment: CENTER;" text="N°" />
+                              <TableColumn fx:id="tcNombre" prefWidth="280.0" style="fx-alignment: CENTER-LEFT;" text="Clave/Nombre" />
+                              <TableColumn fx:id="tcCategoriaMarca" prefWidth="170.0" style="fx-alignment: CENTER-LEFT;" text="Categoria/Marca" />
                               <TableColumn fx:id="tcTipoProducto" prefWidth="40.0" style="-fx-alignment: CENTER;" text="TP" />
                               <TableColumn fx:id="tcCantidad" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Cantidad" />
-                              <TableColumn fx:id="tcImpuesto" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Impuesto" />
-                              <TableColumn fx:id="tcPrecio" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Precio" />
+                              <TableColumn fx:id="tcImpuesto" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Impuesto" />
+                              <TableColumn fx:id="tcPrecio" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Precio" />
                            </columns>
                         </TableView>
                      </children>

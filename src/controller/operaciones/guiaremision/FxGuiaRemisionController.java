@@ -2,6 +2,7 @@ package controller.operaciones.guiaremision;
 
 import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.operaciones.venta.FxVentaListaController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -57,6 +58,8 @@ import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.UbigeoADO;
 import model.UbigeoTB;
+import model.VentaADO;
+import model.VentaTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -195,6 +198,7 @@ public class FxGuiaRemisionController implements Initializable {
 
         idComprobante = 0;
         Tools.actualDate(Tools.getDate(), dtFechaTraslado);
+        txtDireccionPartida.setText(Session.COMPANY_DOMICILIO);
         loadUbigeoPartida();
         loadUbigeoLlegada();
         loadComponents();
@@ -391,7 +395,7 @@ public class FxGuiaRemisionController implements Initializable {
         GuiaRemisionDetalleTB guiaRemisionDetalleTB = new GuiaRemisionDetalleTB();
         guiaRemisionDetalleTB.setIdSuministro(suministroTB.getIdSuministro());
         guiaRemisionDetalleTB.setCodigo(suministroTB.getClave());
-        guiaRemisionDetalleTB.setCantidad(1);
+        guiaRemisionDetalleTB.setCantidad(suministroTB.getCantidad());
         guiaRemisionDetalleTB.setDescripcion(suministroTB.getNombreMarca());
         guiaRemisionDetalleTB.setUnidad(suministroTB.getUnidadCompraName());
         guiaRemisionDetalleTB.setPeso(0);
@@ -549,6 +553,27 @@ public class FxGuiaRemisionController implements Initializable {
             stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
+        } catch (IOException ex) {
+            System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowVentas() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaListaController controller = fXMLLoader.getController();
+            controller.setInitGuiaRemisionController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione una venta", spWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+            controller.loadInit();
         } catch (IOException ex) {
             System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }
@@ -718,6 +743,7 @@ public class FxGuiaRemisionController implements Initializable {
         txtNumeroPlacaVehiculo.clear();
         txtMarcaVehiculo.clear();
         txtDireccionPartida.clear();
+        txtDireccionPartida.setText(Session.COMPANY_DOMICILIO);
         cbUbigeoPartida.getSelectionModel().select(null);
         txtDireccionLlegada.clear();
         cbUbigeoLlegada.getSelectionModel().select(null);
@@ -725,6 +751,67 @@ public class FxGuiaRemisionController implements Initializable {
         txtSerieFactura.clear();
         txtNumeracionFactura.clear();
         tvList.getItems().clear();
+    }
+
+    public void loadVentaById(String idVenta) {
+
+        ExecutorService executor = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<VentaTB> task = new Task<VentaTB>() {
+            @Override
+            protected VentaTB call() {
+                return VentaADO.ListCompletaVentasDetalle(idVenta);
+            }
+        };
+        task.setOnSucceeded(e -> {
+            VentaTB ventaTB = task.getValue();
+            if (ventaTB != null) {
+                ArrayList<SuministroTB> empList = ventaTB.getSuministroTBs();
+
+                for (int i = 0; i < cbTipoComprobante.getItems().size(); i++) {
+                    if (cbTipoComprobante.getItems().get(i).getIdTipoDocumento() == ventaTB.getComprobante()) {
+                        cbTipoComprobante.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+                txtSerieFactura.setText(ventaTB.getSerie());
+                txtNumeracionFactura.setText(ventaTB.getNumeracion());
+                cbCliente.getItems().clear();
+                cbCliente.getItems().add(new ClienteTB(
+                        ventaTB.getClienteTB().getIdCliente(),
+                        ventaTB.getClienteTB().getNumeroDocumento(),
+                        ventaTB.getClienteTB().getInformacion(),
+                        ventaTB.getClienteTB().getCelular(),
+                        ventaTB.getClienteTB().getEmail(),
+                        ventaTB.getClienteTB().getDireccion()));
+                if (!cbCliente.getItems().isEmpty()) {
+                    cbCliente.getSelectionModel().select(0);
+                }
+
+                tvList.getItems().clear();
+                empList.forEach((suministro) -> {
+                    eventAgregar(suministro);
+                });
+                txtNumeroBultos.setText("" + empList.size());
+                lblLoad.setVisible(false);
+            } else {
+                lblLoad.setVisible(false);
+            }
+        });
+        task.setOnScheduled(e -> {
+            lblLoad.setVisible(true);
+        });
+        task.setOnFailed(e -> {
+            lblLoad.setVisible(false);
+        });
+        executor.execute(task);
+        if (!executor.isShutdown()) {
+            executor.shutdown();
+        }
     }
 
     @FXML
@@ -811,6 +898,18 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private void onActionAgregar(ActionEvent event) {
         openWindowSuministro();
+    }
+
+    @FXML
+    private void onKeyPressedVentas(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVentas();
+        }
+    }
+
+    @FXML
+    private void onActionVentas(ActionEvent event) {
+        openWindowVentas();
     }
 
     public TableView<GuiaRemisionDetalleTB> getTvList() {

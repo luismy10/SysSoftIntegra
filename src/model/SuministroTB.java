@@ -63,10 +63,11 @@ public class SuministroTB {
 
     private double subImporte;
     private double totalImporte;
-    private String imagenTB;
+    //private String imagenTB;
     private File imagenFile;
     private String claveSat;
     private boolean tipoPrecio;
+    private byte[] nuevaImagen;
 
     private int impuestoOperacion;
     private int impuestoId;
@@ -151,13 +152,13 @@ public class SuministroTB {
         this.nombreGenerico = nombreGenerico;
     }
 
-    public String getImagenTB() {
-        return imagenTB;
-    }
-
-    public void setImagenTB(String imagenTB) {
-        this.imagenTB = imagenTB == null ? "" : imagenTB;
-    }
+//    public String getImagenTB() {
+//        return imagenTB;
+//    }
+//
+//    public void setImagenTB(String imagenTB) {
+//        this.imagenTB = imagenTB == null ? "" : imagenTB;
+//    }
 
     public File getImagenFile() {
         return imagenFile;
@@ -597,6 +598,14 @@ public class SuministroTB {
 
     public void setCambios(boolean cambios) {
         this.cambios = cambios;
+    }
+
+    public byte[] getNuevaImagen() {
+        return nuevaImagen;
+    }
+
+    public void setNuevaImagen(byte[] nuevaImagen) {
+        this.nuevaImagen = nuevaImagen;
     }
 
     @Override

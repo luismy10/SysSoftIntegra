@@ -176,7 +176,6 @@ public class FxMiEmpresaController implements Initializable {
             } else {
                 lblLoad.setVisible(false);
             }
-
         });
         task.setOnFailed(e -> {
             lblLoad.setVisible(false);

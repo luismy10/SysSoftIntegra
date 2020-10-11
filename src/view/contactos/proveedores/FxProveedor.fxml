@@ -98,7 +98,7 @@
                                           </HBox>
                                           <HBox spacing="10.0">
                                              <children>
-                                                <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" promptText="Buscar...." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Buscar...." styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                        </children>

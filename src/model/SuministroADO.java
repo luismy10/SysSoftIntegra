@@ -68,7 +68,7 @@ public class SuministroADO {
 //                                }
 //                            } else {
 
-                            preparedSuministro = DBUtil.getConnection().prepareStatement("update SuministroTB set Origen=?,Clave=?,ClaveAlterna=UPPER(?), NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?,PrecioVentaGeneral=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,Imagen=?,Impuesto=?, ValorInventario = ?,ClaveSat = ?,TipoPrecio=? where IdSuministro = ? ");
+                            preparedSuministro = DBUtil.getConnection().prepareStatement("update SuministroTB set Origen=?,Clave=?,ClaveAlterna=UPPER(?), NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?,PrecioVentaGeneral=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,NuevaImagen=?,Impuesto=?, ValorInventario = ?,ClaveSat = ?,TipoPrecio=? where IdSuministro = ? ");
 
                             preparedSuministro.setInt(1, suministroTB.getOrigen());
                             preparedSuministro.setString(2, suministroTB.getClave());
@@ -90,9 +90,7 @@ public class SuministroADO {
                             preparedSuministro.setBoolean(16, suministroTB.isLote());
                             preparedSuministro.setBoolean(17, suministroTB.isInventario());
                             //------------------------------------------------------------
-                            preparedSuministro.setString(18, suministroTB.getImagenFile() != null
-                                    ? selectFileImage("./img/" + suministroTB.getIdSuministro() + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
-                                    : suministroTB.getImagenTB());
+                            preparedSuministro.setBytes(18, suministroTB.getNuevaImagen());
                             //
                             preparedSuministro.setInt(19, suministroTB.getImpuestoId());
                             preparedSuministro.setShort(20, suministroTB.getValorInventario());
@@ -208,7 +206,7 @@ public class SuministroADO {
                                     + "Estado,"
                                     + "Lote,"
                                     + "Inventario,"
-                                    + "Imagen,"
+                                    + "NuevaImagen,"
                                     + "Impuesto,"
                                     + "ValorInventario,"
                                     + "ClaveSat,TipoPrecio)"
@@ -236,11 +234,12 @@ public class SuministroADO {
                             preparedSuministro.setBoolean(18, suministroTB.isLote());
                             preparedSuministro.setBoolean(19, suministroTB.isInventario());
                             //------------------------------------------------------------
-                            preparedSuministro.setString(20, suministroTB.getImagenFile() != null
-                                    ? selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
-                                    : (suministroTB.getImagenTB().equalsIgnoreCase("") ? ""
-                                    : selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(new File(suministroTB.getImagenTB())), new File(suministroTB.getImagenTB())))
-                            );
+                             preparedSuministro.setBytes(20, suministroTB.getNuevaImagen());
+//                            preparedSuministro.setString(20, suministroTB.getImagenFile() != null
+//                                    ? selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
+//                                    : (suministroTB.getImagenTB().equalsIgnoreCase("") ? ""
+//                                    : selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(new File(suministroTB.getImagenTB())), new File(suministroTB.getImagenTB())))
+//                            );
                             //
                             preparedSuministro.setInt(21, suministroTB.getImpuestoId());
                             preparedSuministro.setShort(22, suministroTB.getValorInventario());
@@ -454,7 +453,7 @@ public class SuministroADO {
                 image.setFitWidth(32);
                 image.setFitHeight(32);
                 suministroTB.setImageValorInventario(image);
-                suministroTB.setImagenTB(rsEmps.getString("Imagen"));
+                suministroTB.setNuevaImagen(rsEmps.getBytes("NuevaImagen"));
 
                 empList.add(suministroTB);
             }
@@ -526,7 +525,7 @@ public class SuministroADO {
                 suministroTB.setEstadoName(rsEmps.getString("Estado"));
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                suministroTB.setImagenTB(rsEmps.getString("Imagen"));
+                suministroTB.setNuevaImagen(rsEmps.getBytes("NuevaImagen"));
 
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
                 label.getStyleClass().add("labelRoboto13");
@@ -661,7 +660,7 @@ public class SuministroADO {
                 suministroTB.setLote(rsEmps.getBoolean("Lote"));
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
-                suministroTB.setImagenTB(rsEmps.getString("Imagen"));
+                suministroTB.setNuevaImagen(rsEmps.getBytes("NuevaImagen"));
                 suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
                 suministroTB.setImpuestoNombre(rsEmps.getString("ImpuestoNombre"));
                 suministroTB.setClaveSat(rsEmps.getString("ClaveSat"));

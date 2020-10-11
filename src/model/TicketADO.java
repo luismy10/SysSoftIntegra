@@ -269,14 +269,15 @@ public class TicketADO {
         return list;
     }
 
-    public static TicketTB GetTicketRuta() {
+    public static TicketTB GetTicketRuta(int idTicket) {
         TicketTB ticketTB = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             PreparedStatement statementLista = null;
             ResultSet resultSet = null;
             try {
-                statementLista = DBUtil.getConnection().prepareStatement("SELECT idTicket,ruta FROM TicketTB WHERE predeterminado = 1");
+                statementLista = DBUtil.getConnection().prepareStatement("SELECT idTicket,ruta FROM TicketTB WHERE idTicket = ? and predeterminado = 1");
+                statementLista.setInt(1, idTicket);
                 resultSet = statementLista.executeQuery();
                 if (resultSet.next()) {
                     ticketTB = new TicketTB();

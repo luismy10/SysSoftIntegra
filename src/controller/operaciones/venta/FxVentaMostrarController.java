@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -230,11 +231,10 @@ public class FxVentaMostrarController implements Initializable {
                 return t;
             });
 
-            Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            Task<VentaTB> task = new Task<VentaTB>() {
                 @Override
-                protected ArrayList<Object> call() {
-                    ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
-                    return objects;
+                protected VentaTB call() {
+                    return VentaADO.ListCompletaVentasDetalle(idVenta);
                 }
             };
 
@@ -248,38 +248,28 @@ public class FxVentaMostrarController implements Initializable {
                 lblLoad.setVisible(false);
             });
             task.setOnSucceeded(e -> {
-
-                ArrayList<Object> objects = task.getValue();
-
-                if (!objects.isEmpty()) {
-                    ventaTB = (VentaTB) objects.get(0);
-                    EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
-                    ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
-                    if (ventaTB != null) {
-                        lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + " " + ventaTB.getClienteTB().getInformacion());
-                        lblComprobante.setText(ventaTB.getComprobanteName());
-                        lblComprobante.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
-                        lblTipo.setText(ventaTB.getTipoName());
-                        lblEstado.setText(ventaTB.getEstadoName());
-                        if (ventaTB.getEstadoName().equalsIgnoreCase("ANULADO")) {
-                            btnCancelarVenta.setDisable(true);
-                            hbContenidoTabla.getStyleClass().add("hbBoxBackgroundImage");
-                        } else {
-                            btnCancelarVenta.setDisable(false);
-                            hbContenidoTabla.getStyleClass().remove("hbBoxBackgroundImage");
-                        }
-                        lblTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1)), 2));
-//                        Session.TICKET_CODIGOVENTA = ventaTB.getCodigo();
-//                        Session.TICKET_SIMBOLOMONEDA = ventaTB.getMonedaTB().getSimbolo();
+                ventaTB = task.getValue();
+                if (ventaTB != null) {
+                    EmpleadoTB empleadoTB = ventaTB.getEmpleadoTB();
+                    ObservableList<SuministroTB> empList = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
+                    lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + " " + ventaTB.getClienteTB().getInformacion());
+                    lblComprobante.setText(ventaTB.getComprobanteName());
+                    lblComprobante.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+                    lblTipo.setText(ventaTB.getTipoName());
+                    lblEstado.setText(ventaTB.getEstadoName());
+                    if (ventaTB.getEstadoName().equalsIgnoreCase("ANULADO")) {
+                        btnCancelarVenta.setDisable(true);
+                        hbContenidoTabla.getStyleClass().add("hbBoxBackgroundImage");
+                    } else {
+                        btnCancelarVenta.setDisable(false);
+                        hbContenidoTabla.getStyleClass().remove("hbBoxBackgroundImage");
                     }
-
+                    lblTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1)), 2));
                     if (empleadoTB != null) {
                         lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
                     }
                     fillVentasDetalleTable(empList);
-
                 }
-
                 lblLoad.setVisible(false);
             });
 
@@ -309,10 +299,10 @@ public class FxVentaMostrarController implements Initializable {
             if (Session.TICKET_VENTA_ID == 0 && Tools.isText(Session.TICKET_VENTA_RUTA)) {
                 Tools.AlertMessageWarning(apWindow, "Venta", "No hay un diseño predeterminado para la impresión, configure su ticket en la sección configuración/tickets.");
             } else {
-                executeProcessPrinterVenta(idVenta, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA, Session.FORMATO_IMPRESORA_VENTA);
+                executeProcessPrinterVenta(idVenta, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA, Session.FORMATO_IMPRESORA_VENTA, Session.DESING_IMPRESORA_VENTA);
             }
         } else if (Session.FORMATO_IMPRESORA_VENTA.equalsIgnoreCase("a4")) {
-            executeProcessPrinterVenta(idVenta, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA, Session.FORMATO_IMPRESORA_VENTA);
+            executeProcessPrinterVenta(idVenta, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA, Session.FORMATO_IMPRESORA_VENTA, Session.DESING_IMPRESORA_VENTA);
         } else {
             Tools.AlertMessageWarning(apWindow, "Venta", "Error al validar el formato de impresión, configure en la sección configuración/impresora.");
         }
@@ -367,7 +357,7 @@ public class FxVentaMostrarController implements Initializable {
         return jasperPrint;
     }
 
-    private void executeProcessPrinterVenta(String idVenta, String printerName, boolean printerCut, String format) {
+    private void executeProcessPrinterVenta(String idVenta, String printerName, boolean printerCut, String format, String desing) {
         if (Tools.isText(idVenta)) {
             return;
         }
@@ -380,13 +370,10 @@ public class FxVentaMostrarController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
+                VentaTB ventaTB = VentaADO.ListCompletaVentasDetalle(idVenta);
                 try {
-                    if (!objects.isEmpty()) {
-                        VentaTB ventaTB = (VentaTB) objects.get(0);
-//                        EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
-                        ObservableList<SuministroTB> suministroTBs = (ObservableList<SuministroTB>) objects.get(2);
-
+                    if (ventaTB != null) {
+                        ObservableList<SuministroTB> suministroTBs = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
                         if (format.equalsIgnoreCase("a4")) {
                             ArrayList<SuministroTB> list = new ArrayList();
                             for (int i = 0; i < suministroTBs.size(); i++) {
@@ -420,64 +407,68 @@ public class FxVentaMostrarController implements Initializable {
                             exporter.exportReport();
                             return "completed";
                         } else {
+                            if (desing.equalsIgnoreCase("withdesing")) {
+                                billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
-                            billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
-
-                            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-                                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-                                billPrintable.hbEncebezado(box,
-                                        ventaTB.getComprobanteName(),
-                                        ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
-                                        ventaTB.getClienteTB().getNumeroDocumento(),
-                                        ventaTB.getClienteTB().getInformacion(),
-                                        ventaTB.getClienteTB().getCelular(),
-                                        ventaTB.getClienteTB().getDireccion(),
-                                        ventaTB.getCodigo());
-                            }
-
-                            AnchorPane hbDetalle = new AnchorPane();
-                            for (int m = 0; m < suministroTBs.size(); m++) {
-                                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                                    HBox hBox = new HBox();
-                                    hBox.setId("dc_" + m + "" + i);
-                                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                                    billPrintable.hbDetalle(hBox, box, suministroTBs, m);
-                                    hbDetalle.getChildren().add(hBox);
+                                for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                                    HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                                    billPrintable.hbEncebezado(box,
+                                            ventaTB.getComprobanteName(),
+                                            ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
+                                            ventaTB.getClienteTB().getNumeroDocumento(),
+                                            ventaTB.getClienteTB().getInformacion(),
+                                            ventaTB.getClienteTB().getCelular(),
+                                            ventaTB.getClienteTB().getDireccion(),
+                                            ventaTB.getCodigo());
                                 }
-                            }
 
-                            for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                                HBox box = ((HBox) hbPie.getChildren().get(i));
-                                billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
-                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
-                                        "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
-                                        Tools.roundingValue(ventaTB.getSubImporte(), 2),
-                                        Tools.roundingValue(ventaTB.getTotal(), 2),
-                                        Tools.roundingValue(ventaTB.getEfectivo(), 2),
-                                        Tools.roundingValue(ventaTB.getVuelto(), 2),
-                                        ventaTB.getClienteTB().getNumeroDocumento(),
-                                        ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                        ventaTB.getClienteTB().getCelular());
-                            }
-
-                            billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
-
-                            DocPrintJob job = billPrintable.findPrintService(printerName, PrinterJob.lookupPrintServices()).createPrintJob();
-
-                            if (job != null) {
-                                PrinterJob pj = PrinterJob.getPrinterJob();
-                                pj.setPrintService(job.getPrintService());
-                                pj.setJobName(printerName);
-                                Book book = new Book();
-                                book.append(billPrintable, billPrintable.getPageFormat(pj));
-                                pj.setPageable(book);
-                                pj.print();
-                                if (printerCut) {
-                                    billPrintable.printCortarPapel(printerName);
+                                AnchorPane hbDetalle = new AnchorPane();
+                                for (int m = 0; m < suministroTBs.size(); m++) {
+                                    for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                                        HBox hBox = new HBox();
+                                        hBox.setId("dc_" + m + "" + i);
+                                        HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                                        billPrintable.hbDetalle(hBox, box, suministroTBs, m);
+                                        hbDetalle.getChildren().add(hBox);
+                                    }
                                 }
-                                return "completed";
+
+                                for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                                    HBox box = ((HBox) hbPie.getChildren().get(i));
+                                    billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
+                                            Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
+                                            Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            Tools.roundingValue(ventaTB.getTotal(), 2),
+                                            Tools.roundingValue(ventaTB.getEfectivo(), 2),
+                                            Tools.roundingValue(ventaTB.getVuelto(), 2),
+                                            ventaTB.getClienteTB().getNumeroDocumento(),
+                                            ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                                            ventaTB.getClienteTB().getCelular());
+                                }
+
+                                billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+                                DocPrintJob job = billPrintable.findPrintService(printerName, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                                if (job != null) {
+                                    PrinterJob pj = PrinterJob.getPrinterJob();
+                                    pj.setPrintService(job.getPrintService());
+                                    pj.setJobName(printerName);
+                                    Book book = new Book();
+                                    book.append(billPrintable, billPrintable.getPageFormat(pj));
+                                    pj.setPageable(book);
+                                    pj.print();
+                                    if (printerCut) {
+                                        billPrintable.printCortarPapel(printerName);
+                                    }
+                                    return "completed";
+                                } else {
+                                    return "error_name";
+                                }
                             } else {
-                                return "error_name";
+                                billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                                return imprimirVenta(ventaTB, suministroTBs, printerName, printerCut);
                             }
                         }
                     } else {
@@ -546,53 +537,53 @@ public class FxVentaMostrarController implements Initializable {
         }
     }
 
-//    private void loadTicket() {
-////        billPrintable.loadEstructuraTicket(Session.RUTA_TICKET_VENTA, hbEncabezado, hbDetalleCabecera, hbPie);
-//    }
-//    private void imprimirVenta(String ticket) {
-//         if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
-//            Tools.AlertMessageWarning(apWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
-//            return;
-//        }
-//        
-//        if ("".equals(idVenta) || idVenta == null) {
-//            return;
-//        }
-//        if (Session.ESTADO_IMPRESORA_VENTA && Session.NOMBRE_IMPRESORA_VENTA != null) {
-//            loadTicket();
-//            ArrayList<HBox> object = new ArrayList<>();
-//            int rows = 0;
-//            int lines = 0;
-//            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-//                object.add((HBox) hbEncabezado.getChildren().get(i));
-//                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-//                rows++;
-//                //lines += billPrintable.hbEncebezado(box, nombreTicketImpresion, ticket, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getInformacion());
-//            }
-//
-//            for (int m = 0; m < arrList.size(); m++) {
-//                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-//                    HBox hBox = new HBox();
-//                    hBox.setId("dc_" + m + "" + i);
-//                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-//                    rows++;
-//                    //lines += billPrintable.hbDetalle(hBox, box, arrList, m);
-//                    object.add(hBox);
-//                }
-//            }
-//
-//            for (int i = 0; i < hbPie.getChildren().size(); i++) {
-//                object.add((HBox) hbPie.getChildren().get(i));
-//                HBox box = ((HBox) hbPie.getChildren().get(i));
-//                rows++;
-////                lines += billPrintable.hbPie(box, Tools.roundingValue(subImporte, 2), Tools.roundingValue(descuento, 2), Tools.roundingValue(subTotalImporte, 2), Tools.roundingValue(totalImporte, 2), efectivo, vuelto, ventaTB.getClienteTB().getNumeroDocumento(), ventaTB.getClienteTB().getNumeroDocumento());
-//            }
-////            billPrintable.modelTicket(apWindow, rows + lines + 1 + 5, lines, object, "Ticket", "Error el imprimir el ticket.", Session.NOMBRE_IMPRESORA, Session.CORTAPAPEL_IMPRESORA);
-//        } else {
-//            Tools.AlertMessageWarning(apWindow, "Detalle de venta", "No esta configurado la impresora :D");
-//        }
-//    }
-//
+    private String imprimirVenta(VentaTB ventaTB, ObservableList<SuministroTB> suministroTBs, String printerName, boolean printerCut) {
+        ArrayList<HBox> object = new ArrayList<>();
+        int rows = 0;
+        int lines = 0;
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            object.add((HBox) hbEncabezado.getChildren().get(i));
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbEncebezado(box,
+                    ventaTB.getComprobanteName(),
+                    ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getDireccion(),
+                    ventaTB.getCodigo());
+        }
+
+        for (int m = 0; m < suministroTBs.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                lines += billPrintable.hbDetalle(hBox, box, suministroTBs, m);
+                object.add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            object.add((HBox) hbPie.getChildren().get(i));
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    Tools.roundingValue(ventaTB.getTotal(), 2),
+                    Tools.roundingValue(ventaTB.getEfectivo(), 2),
+                    Tools.roundingValue(ventaTB.getVuelto(), 2),
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                    ventaTB.getClienteTB().getCelular());
+        }
+        return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
+    }
+
     private void cancelVenta() {
         try {
             if ("".equals(idVenta) || idVenta == null) {

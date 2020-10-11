@@ -3,7 +3,6 @@ package controller.configuracion.impresoras;
 import controller.configuracion.tickets.FxTicketController;
 import controller.tools.BillPrintable;
 import controller.tools.PrinterService;
-import controller.tools.Session;
 import controller.tools.Tools;
 import java.awt.print.Book;
 import java.awt.print.PrinterException;
@@ -63,7 +62,7 @@ public class FxImprimirController implements Initializable {
                         pj.setPageable(book);
                         pj.print();
                         if (cbCortarPapel.isSelected()) {
-                            billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_VENTA);
+                            billPrintable.printCortarPapel(cbImpresoras.getSelectionModel().getSelectedItem());
                         }
                     } else {
                         Tools.AlertMessageWarning(apWindow, "Imprimir", "No puedo el nombre de la impresora, intente nuevamente.");

@@ -101,6 +101,7 @@ public class SplashScreen extends Preloader {
                             Session.NOMBRE_IMPRESORA_VENTA = prop.getProperty("printerNameVenta");
                             Session.CORTAPAPEL_IMPRESORA_VENTA = Boolean.parseBoolean(prop.getProperty("printerCutPaperVenta"));
                             Session.FORMATO_IMPRESORA_VENTA = prop.getProperty("printerTypeFormatVenta");
+                            Session.DESING_IMPRESORA_VENTA = prop.getProperty("printerTypeDesingVenta");
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA_VENTA = false;
                         }
@@ -113,6 +114,7 @@ public class SplashScreen extends Preloader {
                             Session.NOMBRE_IMPRESORA_PRE_VENTA = prop.getProperty("printerNamePreVenta");
                             Session.CORTAPAPEL_IMPRESORA_PRE_VENTA = Boolean.parseBoolean(prop.getProperty("printerCutPaperPreVenta"));
                             Session.FORMATO_IMPRESORA_PRE_VENTA = prop.getProperty("printerTypeFormatPreVenta");
+                            Session.DESING_IMPRESORA_PRE_VENTA = prop.getProperty("printerTypeDesingVenta");
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA_PRE_VENTA = false;
                         }
@@ -120,13 +122,22 @@ public class SplashScreen extends Preloader {
                         LoadFont loadFont = new LoadFont();
                         loadFont.loadFont();
 
-                        TicketTB ticketTB = TicketADO.GetTicketRuta();
-                        if (ticketTB != null) {
-                            Session.TICKET_VENTA_ID = ticketTB.getId();
-                            Session.TICKET_VENTA_RUTA = ticketTB.getRuta();
+                        TicketTB ticketVentaTB = TicketADO.GetTicketRuta(1);
+                        if (ticketVentaTB != null) {
+                            Session.TICKET_VENTA_ID = ticketVentaTB.getId();
+                            Session.TICKET_VENTA_RUTA = ticketVentaTB.getRuta();
                         } else {
                             Session.TICKET_VENTA_ID = 0;
                             Session.TICKET_VENTA_RUTA = "";
+                        }
+                        
+                        TicketTB ticketPreVentaTB = TicketADO.GetTicketRuta(7);
+                        if (ticketPreVentaTB != null) {
+                            Session.TICKET_PRE_VENTA_ID = ticketPreVentaTB.getId();
+                            Session.TICKET_PRE_VENTA_RUTA = ticketPreVentaTB.getRuta();
+                        } else {
+                            Session.TICKET_PRE_VENTA_ID = 0;
+                            Session.TICKET_PRE_VENTA_RUTA = "";
                         }
 
                         EmpresaTB list = EmpresaADO.GetEmpresa();

@@ -103,6 +103,12 @@
                                                 <CheckBox fx:id="cbPaperCut" mnemonicParsing="false" styleClass="check-box-contenido" text="Cortar papel" />
                                              </children>
                                           </HBox>
+                                          <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <RadioButton fx:id="rbTicketWithDesing" mnemonicParsing="false" selected="true" text="Con Diseño" />
+                                                <RadioButton fx:id="rbTicketNoDesing" mnemonicParsing="false" text="Sin Diseño" />
+                                             </children>
+                                          </HBox>
                                           <HBox alignment="CENTER_LEFT">
                                              <children>
                                                 <Label styleClass="labelOpenSansRegular13" text="Tipo de impresión:" textFill="#020203" />

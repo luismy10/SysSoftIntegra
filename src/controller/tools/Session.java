@@ -51,11 +51,13 @@ public class Session {
     public static String NOMBRE_IMPRESORA_VENTA = "";
     public static boolean CORTAPAPEL_IMPRESORA_VENTA;
     public static String FORMATO_IMPRESORA_VENTA = "";
+    public static String DESING_IMPRESORA_VENTA = "";
     
     public static boolean ESTADO_IMPRESORA_PRE_VENTA;
     public static String NOMBRE_IMPRESORA_PRE_VENTA = "";
     public static boolean CORTAPAPEL_IMPRESORA_PRE_VENTA;
     public static String FORMATO_IMPRESORA_PRE_VENTA = "";
+    public static String DESING_IMPRESORA_PRE_VENTA = "";
     /*
     variable de cliente
      */

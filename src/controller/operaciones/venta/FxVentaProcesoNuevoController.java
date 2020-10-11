@@ -252,6 +252,9 @@ public class FxVentaProcesoNuevoController implements Initializable {
                                 Tools.Dispose(window);
                             }
                             break;
+                        case "nocantidades":
+                            Tools.AlertMessageWarning(window, "Venta", "No se puede completar la venta por que hay productos con stock inferior.");
+                            break;
                         default:
                             Tools.AlertMessageError(window, "Venta", result[0]);
                             break;

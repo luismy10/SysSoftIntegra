@@ -5,6 +5,7 @@ import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -160,8 +161,9 @@ public class FxSuministrosProcesoController implements Initializable {
 
     private File selectFile;
 
-    private String selectImage;
+    private byte[] imageBytes;
 
+    //private String selectImage;
     private int idPresentacion;
 
     private int idCategoria;
@@ -228,7 +230,7 @@ public class FxSuministrosProcesoController implements Initializable {
         idCategoria = 0;
         idMarca = 0;
         selectFile = null;
-        selectImage = "";
+        imageBytes = null;
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
         lnPrincipal.setFitWidth(160);
         lnPrincipal.setFitHeight(160);
@@ -558,15 +560,16 @@ public class FxSuministrosProcesoController implements Initializable {
                     }
                 }
 
-                if (suministroTB.getImagenTB().equalsIgnoreCase("")) {
+                if (suministroTB.getNuevaImagen() == null) {
+                    imageBytes = null;
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
                     lnPrincipal.setFitWidth(160);
                     lnPrincipal.setFitHeight(160);
                 } else {
-                    lnPrincipal.setImage(new Image(new File(suministroTB.getImagenTB()).toURI().toString()));
+                    imageBytes = suministroTB.getNuevaImagen();
+                    lnPrincipal.setImage(new Image(new ByteArrayInputStream(suministroTB.getNuevaImagen())));
                     lnPrincipal.setFitWidth(160);
                     lnPrincipal.setFitHeight(160);
-                    selectImage = suministroTB.getImagenTB();
                 }
 
                 txtClaveSat.setText(suministroTB.getClaveSat());
@@ -714,13 +717,14 @@ public class FxSuministrosProcesoController implements Initializable {
                     }
                 }
 
-                if (suministroTB.getImagenTB().equalsIgnoreCase("")) {
+                if (suministroTB.getNuevaImagen() != null) {
+                    imageBytes = null;
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
                     lnPrincipal.setFitWidth(160);
                     lnPrincipal.setFitHeight(160);
                 } else {
-                    lnPrincipal.setImage(new Image(new File(suministroTB.getImagenTB()).toURI().toString()));
-                    selectImage = suministroTB.getImagenTB();
+                    imageBytes = suministroTB.getNuevaImagen();
+                    lnPrincipal.setImage(new Image(new ByteArrayInputStream(suministroTB.getNuevaImagen())));
                     lnPrincipal.setFitWidth(160);
                     lnPrincipal.setFitHeight(160);
                 }
@@ -806,7 +810,11 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setNombreMarca(txtNombreMarca.getText().trim());
                 suministroTB.setNombreGenerico(txtNombreGenerico.getText().trim());
                 suministroTB.setImagenFile(selectFile);
-                suministroTB.setImagenTB(selectImage);
+                //  suministroTB.setImagenTB(selectImage);
+                suministroTB.setNuevaImagen(imageBytes != null ? imageBytes
+                        : selectFile == null
+                                ? null
+                                : Tools.getImageBytes(selectFile));
                 suministroTB.setCategoria(idCategoria != 0
                         ? idCategoria
                         : 0);
@@ -964,9 +972,13 @@ public class FxSuministrosProcesoController implements Initializable {
         if (selectFile != null) {
             selectFile = new File(selectFile.getAbsolutePath());
             if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
-                lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+                Image image = new Image(selectFile.toURI().toString());
+                lnPrincipal.setSmooth(true);
+                lnPrincipal.setPreserveRatio(false);
+                lnPrincipal.setImage(image);
                 lnPrincipal.setFitWidth(160);
                 lnPrincipal.setFitHeight(160);
+                imageBytes = null;
             } else {
                 Tools.AlertMessageWarning(spWindow, "Producto", "No seleccionó un formato correcto de imagen.");
             }
@@ -1050,6 +1062,7 @@ public class FxSuministrosProcesoController implements Initializable {
         lnPrincipal.setFitWidth(160);
         lnPrincipal.setFitHeight(160);
         selectFile = null;
+        imageBytes = null;
     }
 
     @FXML

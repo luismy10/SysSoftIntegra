@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -56,7 +57,6 @@ import model.ImpuestoTB;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaTB;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -109,8 +109,6 @@ public class FxVentaDetalleController implements Initializable {
     private Button btnReporte;
     @FXML
     private Button btnImprimir;
-    @FXML
-    private Button btnGuiaRemision;
     @FXML
     private Label lblEfectivo;
     @FXML
@@ -179,45 +177,43 @@ public class FxVentaDetalleController implements Initializable {
             return t;
         });
 
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<VentaTB> task = new Task<VentaTB>() {
             @Override
-            protected ArrayList<Object> call() {
+            protected VentaTB call() {
                 arrayArticulos.clear();
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
                     arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado()));
                 });
-                ArrayList<Object> objects = VentaADO.ListCompletaVentasDetalle(idVenta);
-                return objects;
+                return VentaADO.ListCompletaVentasDetalle(idVenta);
             }
         };
         task.setOnSucceeded(e -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                ventaTB = (VentaTB) objects.get(0);
-                EmpleadoTB empleadoTB = (EmpleadoTB) objects.get(1);
-                ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) objects.get(2);
-                if (ventaTB != null) {
-                    lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
-                    lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + "-" + ventaTB.getClienteTB().getInformacion());
-                    lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
-                    lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
-                    lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
-                    lblComprobante.setText(ventaTB.getComprobanteName());
-                    lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
-                    lblObservaciones.setText(ventaTB.getObservaciones());
-                    lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
-                    btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
-                    lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
-                    efectivo = ventaTB.getEfectivo();
-                    tarjeta = ventaTB.getTarjeta();
-                    vuelto = ventaTB.getVuelto();
-                    totalVenta = ventaTB.getTotal();
+            ventaTB = task.getValue();
+            if (ventaTB != null) {
+                EmpleadoTB empleadoTB = ventaTB.getEmpleadoTB();
+                ObservableList<SuministroTB> empList = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
 
-                    lblEfectivo.setText(Tools.roundingValue(efectivo, 2));
-                    lblTarjeta.setText(Tools.roundingValue(tarjeta, 2));
-                    lblValor.setText(Tools.roundingValue(totalVenta, 2));
-                    lblVuelto.setText(Tools.roundingValue(vuelto, 2));
-                }
+                lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
+                lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + "-" + ventaTB.getClienteTB().getInformacion());
+                lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
+                lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
+                lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
+                lblComprobante.setText(ventaTB.getComprobanteName());
+                lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+                lblObservaciones.setText(ventaTB.getObservaciones());
+                lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
+                btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
+                lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+                efectivo = ventaTB.getEfectivo();
+                tarjeta = ventaTB.getTarjeta();
+                vuelto = ventaTB.getVuelto();
+                totalVenta = ventaTB.getTotal();
+
+                lblEfectivo.setText(Tools.roundingValue(efectivo, 2));
+                lblTarjeta.setText(Tools.roundingValue(tarjeta, 2));
+                lblValor.setText(Tools.roundingValue(totalVenta, 2));
+                lblVuelto.setText(Tools.roundingValue(vuelto, 2));
+
                 if (empleadoTB != null) {
                     lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
                 }
@@ -227,7 +223,6 @@ public class FxVentaDetalleController implements Initializable {
                 btnReporte.setDisable(true);
                 btnCancelarVenta.setDisable(true);
                 btnImprimir.setDisable(true);
-                btnGuiaRemision.setDisable(true);
                 lblLoad.setVisible(false);
             }
 
@@ -572,64 +567,70 @@ public class FxVentaDetalleController implements Initializable {
                         }
                     } else {
 
-                        billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                        if (Session.DESING_IMPRESORA_VENTA.equalsIgnoreCase("withdesing")) {
+                            billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
-                        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-                            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-                            billPrintable.hbEncebezado(box,
-                                    ventaTB.getComprobanteName(),
-                                    lblSerie.getText(),
-                                    ventaTB.getClienteTB().getNumeroDocumento(),
-                                    ventaTB.getClienteTB().getInformacion(),
-                                    ventaTB.getClienteTB().getCelular(),
-                                    ventaTB.getClienteTB().getDireccion(),
-                                    ventaTB.getCodigo());
-                        }
-
-                        AnchorPane hbDetalle = new AnchorPane();
-                        for (int m = 0; m < arrList.size(); m++) {
-                            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                                HBox hBox = new HBox();
-                                hBox.setId("dc_" + m + "" + i);
-                                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                                billPrintable.hbDetalle(hBox, box, arrList, m);
-                                hbDetalle.getChildren().add(hBox);
+                            for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                                HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                                billPrintable.hbEncebezado(box,
+                                        ventaTB.getComprobanteName(),
+                                        lblSerie.getText(),
+                                        ventaTB.getClienteTB().getNumeroDocumento(),
+                                        ventaTB.getClienteTB().getInformacion(),
+                                        ventaTB.getClienteTB().getCelular(),
+                                        ventaTB.getClienteTB().getDireccion(),
+                                        ventaTB.getCodigo());
                             }
-                        }
 
-                        for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                            HBox box = ((HBox) hbPie.getChildren().get(i));
-                            billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
-                                    Tools.roundingValue(subImporte, 2),
-                                    "-" + Tools.roundingValue(descuento, 2),
-                                    Tools.roundingValue(subTotalImporte, 2),
-                                    Tools.roundingValue(total, 2),
-                                    Tools.roundingValue(efectivo, 2),
-                                    Tools.roundingValue(vuelto, 2),
-                                    ventaTB.getClienteTB().getNumeroDocumento(),
-                                    ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                    ventaTB.getClienteTB().getCelular());
-                        }
-
-                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
-
-                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_VENTA, PrinterJob.lookupPrintServices()).createPrintJob();
-
-                        if (job != null) {
-                            PrinterJob pj = PrinterJob.getPrinterJob();
-                            pj.setPrintService(job.getPrintService());
-                            pj.setJobName(Session.NOMBRE_IMPRESORA_VENTA);
-                            Book book = new Book();
-                            book.append(billPrintable, billPrintable.getPageFormat(pj));
-                            pj.setPageable(book);
-                            pj.print();
-                            if (Session.CORTAPAPEL_IMPRESORA_VENTA) {
-                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_VENTA);
+                            AnchorPane hbDetalle = new AnchorPane();
+                            for (int m = 0; m < arrList.size(); m++) {
+                                for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                                    HBox hBox = new HBox();
+                                    hBox.setId("dc_" + m + "" + i);
+                                    HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                                    billPrintable.hbDetalle(hBox, box, arrList, m);
+                                    hbDetalle.getChildren().add(hBox);
+                                }
                             }
-                            return "completed";
+
+                            for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                                HBox box = ((HBox) hbPie.getChildren().get(i));
+                                billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
+                                        Tools.roundingValue(subImporte, 2),
+                                        "-" + Tools.roundingValue(descuento, 2),
+                                        Tools.roundingValue(subTotalImporte, 2),
+                                        Tools.roundingValue(total, 2),
+                                        Tools.roundingValue(efectivo, 2),
+                                        Tools.roundingValue(vuelto, 2),
+                                        ventaTB.getClienteTB().getNumeroDocumento(),
+                                        ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                                        ventaTB.getClienteTB().getCelular());
+                            }
+
+                            billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+                            DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_VENTA, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                            if (job != null) {
+                                PrinterJob pj = PrinterJob.getPrinterJob();
+                                pj.setPrintService(job.getPrintService());
+                                pj.setJobName(Session.NOMBRE_IMPRESORA_VENTA);
+                                Book book = new Book();
+                                book.append(billPrintable, billPrintable.getPageFormat(pj));
+                                pj.setPageable(book);
+                                pj.print();
+                                if (Session.CORTAPAPEL_IMPRESORA_VENTA) {
+                                    billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_VENTA);
+                                }
+                                return "completed";
+                            } else {
+                                return "error_name";
+                            }
                         } else {
-                            return "error_name";
+                            billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                            return imprimirVenta(ventaTB, arrList, Session.NOMBRE_IMPRESORA_VENTA, Session.CORTAPAPEL_IMPRESORA_VENTA);
                         }
+
                     }
 
                 } catch (PrinterException | IOException | PrintException | JRException ex) {
@@ -689,41 +690,51 @@ public class FxVentaDetalleController implements Initializable {
 
     }
 
-    private void reportGuiaRemision() {
-        try {
-            InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
-            InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
-            if (Session.COMPANY_IMAGE != null) {
-                imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
-            }
-            InputStream dir = getClass().getResourceAsStream("/report/GuiadeRemision.jasper");
-            Map map = new HashMap();
-            map.put("LOGO", imgInputStream);
-            map.put("ICON", imgInputStreamIcon);
-            map.put("RUC_EMPRESA", Session.COMPANY_NUMERO_DOCUMENTO);
-            map.put("NOMBRE_EMPRESA", Session.COMPANY_RAZON_SOCIAL);
-            map.put("DIRECCION_EMPRESA", Session.COMPANY_DOMICILIO);
-            map.put("TELEFONO_EMPRESA", Session.COMPANY_TELEFONO);
-            map.put("CELULAR_EMPRESA", Session.COMPANY_CELULAR);
-            map.put("EMAIL_EMPRESA", Session.COMPANY_EMAIL);
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
-            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxReportViewController controller = fXMLLoader.getController();
-            controller.setJasperPrint(jasperPrint);
-            controller.show();
-            Stage stage = WindowStage.StageLoader(parent, "Guia de remisión");
-            stage.setResizable(true);
-            stage.show();
-            stage.requestFocus();
-        } catch (JRException | IOException ex) {
-            Tools.AlertMessageError(window, "Reporte de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
+    private String imprimirVenta(VentaTB ventaTB, ObservableList<SuministroTB> suministroTBs, String printerName, boolean printerCut) {
+        ArrayList<HBox> object = new ArrayList<>();
+        int rows = 0;
+        int lines = 0;
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            object.add((HBox) hbEncabezado.getChildren().get(i));
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbEncebezado(box,
+                    ventaTB.getComprobanteName(),
+                    ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getDireccion(),
+                    ventaTB.getCodigo());
         }
+
+        for (int m = 0; m < suministroTBs.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                lines += billPrintable.hbDetalle(hBox, box, suministroTBs, m);
+                object.add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            object.add((HBox) hbPie.getChildren().get(i));
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    Tools.roundingValue(ventaTB.getTotal(), 2),
+                    Tools.roundingValue(ventaTB.getEfectivo(), 2),
+                    Tools.roundingValue(ventaTB.getVuelto(), 2),
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                    ventaTB.getClienteTB().getCelular());
+        }
+        return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }
 
     @FXML
@@ -741,13 +752,21 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private void onKeyPressedImprimir(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            onEventImprimirVenta();
+            if (ventaTB != null) {
+                onEventImprimirVenta();
+            } else {
+                Tools.AlertMessageWarning(window, "Detalle Venta", "No se puede generar el reporte po problemas en al carga de información");
+            }
         }
     }
 
     @FXML
     private void onActionImprimir(ActionEvent event) {
-        onEventImprimirVenta();
+        if (ventaTB != null) {
+            onEventImprimirVenta();
+        } else {
+            Tools.AlertMessageWarning(window, "Detalle Venta", "No se puede generar el reporte po problemas en al carga de información");
+        }
     }
 
     @FXML
@@ -772,18 +791,6 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private void onActionReporte(ActionEvent event) {
         openWindowReporte();
-    }
-
-    @FXML
-    private void onKeyPressedGuiaRemision(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            reportGuiaRemision();
-        }
-    }
-
-    @FXML
-    private void onActionGuiaRemision(ActionEvent event) {
-        reportGuiaRemision();
     }
 
     public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {

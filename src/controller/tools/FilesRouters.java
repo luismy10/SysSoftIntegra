@@ -336,4 +336,6 @@ public final class FilesRouters {
 
     public static final String FX_GUIA_REMISION_REALIZADAS = "/view/operaciones/guiaremision/FxGuiaRemisionRealizadas.fxml";
 
+        public static final String FX_VENTA_LISTA = "/view/operaciones/venta/FxVentaLista.fxml";
+
 }

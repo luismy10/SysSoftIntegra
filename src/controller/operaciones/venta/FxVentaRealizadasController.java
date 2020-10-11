@@ -62,7 +62,7 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private TableColumn<VentaTB, String> tcTipo;
     @FXML
-    private TableColumn<Label, String> tcEstado;
+    private TableColumn<VentaTB, Label> tcEstado;
     @FXML
     private TableColumn<VentaTB, String> tcSerie;
     @FXML
@@ -107,7 +107,7 @@ public class FxVentaRealizadasController implements Initializable {
                 cellData.getValue().getFechaVenta() + "\n"
                 + cellData.getValue().getHoraVenta()
         ));
-        tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCliente()));
+        tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdCliente()));
         tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));

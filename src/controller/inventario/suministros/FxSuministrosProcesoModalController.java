@@ -153,7 +153,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     private File selectFile;
 
-    private String selectImage;
+    private byte[] imageBytes;
+    //private String selectImage;
 
     private int idPresentacion;
 
@@ -209,7 +210,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
         idCategoria = 0;
         idMarca = 0;
         selectFile = null;
-        selectImage = "";
+        imageBytes = null;
         lnPrincipal.setImage(new Image("/view/image/no-image.png"));
         lnPrincipal.setFitWidth(160);
         lnPrincipal.setFitHeight(160);
@@ -495,7 +496,11 @@ public class FxSuministrosProcesoModalController implements Initializable {
             suministroTB.setNombreMarca(txtNombreMarca.getText().trim());
             suministroTB.setNombreGenerico(txtNombreGenerico.getText().trim());
             suministroTB.setImagenFile(selectFile);
-            suministroTB.setImagenTB(selectImage);
+            suministroTB.setNuevaImagen(imageBytes != null ? imageBytes
+                    : selectFile == null
+                            ? null
+                            : Tools.getImageBytes(selectFile));
+            //suministroTB.setImagenTB(selectImage);
             suministroTB.setCategoria(idCategoria != 0
                     ? idCategoria
                     : 0);
@@ -682,9 +687,13 @@ public class FxSuministrosProcesoModalController implements Initializable {
         if (selectFile != null) {
             selectFile = new File(selectFile.getAbsolutePath());
             if (selectFile.getName().endsWith("png") || selectFile.getName().endsWith("jpg") || selectFile.getName().endsWith("jpeg") || selectFile.getName().endsWith("gif")) {
-                lnPrincipal.setImage(new Image(selectFile.toURI().toString()));
+                Image image = new Image(selectFile.toURI().toString());
+                lnPrincipal.setSmooth(true);
+                lnPrincipal.setPreserveRatio(false);
+                lnPrincipal.setImage(image);
                 lnPrincipal.setFitWidth(160);
                 lnPrincipal.setFitHeight(160);
+                imageBytes = null;
             } else {
                 Tools.AlertMessageWarning(apWindow, "Producto", "No seleccionó un formato correcto de imagen.");
             }
@@ -746,6 +755,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
         lnPrincipal.setFitWidth(160);
         lnPrincipal.setFitHeight(160);
         selectFile = null;
+        imageBytes = null;
     }
 
     @FXML

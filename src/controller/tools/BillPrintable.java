@@ -64,7 +64,8 @@ public class BillPrintable implements Printable {
         pointWidthSizePaper = 5.10;
     }
 
-    public void hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta) {
+    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta) {
+        int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -105,11 +106,14 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcliente")) {
                     fieldTicket.setText(direccion_cliente);
                 }
+                lines = fieldTicket.getLines();
             }
         }
+        return lines;
     }
 
-    public void hbDetalle(HBox hBox, HBox box, ObservableList<SuministroTB> arrList, int m) {
+    public int hbDetalle(HBox hBox, HBox box, ObservableList<SuministroTB> arrList, int m) {
+        int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -129,14 +133,17 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
                     fieldTicket.setText(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%");
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral()*arrList.get(m).getCantidad(), 2));
+                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral() * arrList.get(m).getCantidad(), 2));
                 }
                 hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
             }
         }
+        return lines;
     }
 
-    public void hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente) {
+    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente) {
+        int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
@@ -165,11 +172,13 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("celcliente")) {
                     fieldTicket.setText(celular_cliente);
                 }
+                lines = fieldTicket.getLines();
             }
         }
+        return lines;
     }
 
-    public void modelTicket(Node window, int rows, int lines, ArrayList<HBox> object, String messageClassTitle, String messageClassContent, String nombreimpresora, boolean cortar) {
+    public String modelTicket(int rows, int lines, ArrayList<HBox> object, String nombreimpresora, boolean cortar) {
         int column = sheetWidth;
         try {
             PrinterMatrix p = new PrinterMatrix();
@@ -272,14 +281,14 @@ public class BillPrintable implements Printable {
                 archivo.delete();
                 p.toFile("./archivos/modeloimpresoraticket.txt");
                 printDoc("./archivos/modeloimpresoraticket.txt", nombreimpresora, cortar);
-                Tools.AlertMessageInformation(window, "Imprimir", "Se envío correctamente la impresión");
+                return "completed";
             } else {
                 p.toFile("./archivos/modeloimpresoraticket.txt");
                 printDoc("./archivos/modeloimpresoraticket.txt", nombreimpresora, cortar);
-                Tools.AlertMessageInformation(window, "Imprimir", "Se envío correctamente la impresión");
+                return "completed";
             }
         } catch (Exception e) {
-            Tools.AlertMessageError(window, messageClassTitle, messageClassContent + " " + e.getLocalizedMessage());
+            return e.getLocalizedMessage();
         }
     }
 
@@ -312,9 +321,9 @@ public class BillPrintable implements Printable {
             gimage.setPaint(Color.black);
             g2d.setPaint(Color.black);
 
-            y = createRow(apEncabezado, g2d,gimage,width, y);
-            y = createRow(apDetalle, g2d,gimage,width, y);
-            createRow(apPie, g2d,gimage,width, y);
+            y = createRow(apEncabezado, g2d, gimage, width, y);
+            y = createRow(apDetalle, g2d, gimage, width, y);
+            createRow(apPie, g2d, gimage, width, y);
 
             graphics.dispose();
             gimage.dispose();
@@ -959,8 +968,6 @@ public class BillPrintable implements Printable {
 //        }
 //        return rows;
 //    }
-
-
     public void printCortarPapel(String printerName) throws PrintException, IOException {
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
@@ -1264,6 +1271,5 @@ public class BillPrintable implements Printable {
     public void setSheetWidth(int sheetWidth) {
         this.sheetWidth = sheetWidth;
     }
-    
-    
+
 }

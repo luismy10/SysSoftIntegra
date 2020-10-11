@@ -406,7 +406,18 @@
                                     <TextField fx:id="txtNumeracionFactura" maxHeight="1.7976931348623157E308" onKeyTyped="#onKeyTypedNumeracion" prefHeight="30.0" prefWidth="220.0" promptText="xxxxxxxx" styleClass="text-field-normal" />
                                  </children>
                               </VBox>
-                              <VBox alignment="BOTTOM_CENTER" style="-fx-spacing: 0.8333333333333334em;" />
+                              <VBox alignment="BOTTOM_CENTER" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonLight" text="Ventas">
+                                       <graphic>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/sales.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children></VBox>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #999999; -fx-border-width: 0px 0px 1px 0px;">

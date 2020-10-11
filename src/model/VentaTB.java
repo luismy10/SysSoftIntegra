@@ -1,15 +1,13 @@
 package model;
 
+import java.util.ArrayList;
 import javafx.scene.control.Label;
 
 public class VentaTB {
 
-    /*
-    Atributos para las vistas en general
-     */
     private int id;
     private String idVenta;
-    private String cliente;
+    private String idCliente;
     private String vendedor;
     private int comprobante;
     private int moneda;
@@ -35,11 +33,13 @@ public class VentaTB {
     private double vuelto;
     private double tarjeta;
     private String codigo;
-    private ClienteTB clienteTB;
-    private MonedaTB monedaTB;
     private boolean tipopago;
     private String codigoAlterno;
-    
+    private ClienteTB clienteTB;
+    private MonedaTB monedaTB;
+    private EmpleadoTB empleadoTB;
+    private ArrayList<SuministroTB> suministroTBs;
+
     public VentaTB() {
 
     }
@@ -66,12 +66,12 @@ public class VentaTB {
         this.idVenta = idVenta;
     }
 
-    public String getCliente() {
-        return cliente;
+    public String getIdCliente() {
+        return idCliente;
     }
 
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getVendedor() {
@@ -304,6 +304,22 @@ public class VentaTB {
 
     public void setCodigoAlterno(String codigoAlterno) {
         this.codigoAlterno = codigoAlterno;
+    }
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
+    }
+
+    public ArrayList<SuministroTB> getSuministroTBs() {
+        return suministroTBs;
+    }
+
+    public void setSuministroTBs(ArrayList<SuministroTB> suministroTBs) {
+        this.suministroTBs = suministroTBs;
     }
 
 }

@@ -83,13 +83,13 @@
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvVentas" onKeyPressed="#onKeyPressedTvVentas" onMouseClicked="#onMouseClickedTvVentas" prefHeight="280.0" prefWidth="570.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvVentas" onKeyPressed="#onKeyPressedTvVentas" onMouseClicked="#onMouseClickedTvVentas" prefHeight="280.0" prefWidth="540.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                   <TableColumn fx:id="tcCliente" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
                                     <TableColumn fx:id="tcDocumento" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="Comprobante" />
                                     <TableColumn fx:id="tcFechaHora" prefWidth="139.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha y Hora" />
-                                    <TableColumn fx:id="tcTotal" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
+                                    <TableColumn fx:id="tcTotal" prefWidth="110.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                 </columns>
                               </TableView>
                            </children>

@@ -80,15 +80,6 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnGuiaRemision" mnemonicParsing="false" onAction="#onActionGuiaRemision" onKeyPressed="#onKeyPressedGuiaRemision" styleClass="buttonLight" text="Guia de Remisión">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/guia_remision.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                </children>
             </HBox>
             <HBox style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
@@ -135,7 +126,7 @@
                                           <Text fx:id="lblSerie" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" />
                                        </children>
                                     </HBox>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo y estado de la venta:" textFill="#020203" GridPane.rowIndex="5" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo y Estado de la Venta:" textFill="#020203" GridPane.rowIndex="5" />
                                     <Text fx:id="lblTipo" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observaciones:" textFill="#020203" GridPane.rowIndex="6" />
                                     <Text fx:id="lblObservaciones" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
