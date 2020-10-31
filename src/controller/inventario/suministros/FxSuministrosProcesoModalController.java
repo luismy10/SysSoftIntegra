@@ -102,12 +102,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private TextField txtPrecioVentaNeto3;
     @FXML
-    private TextField txtPrecio1;
-    @FXML
-    private TextField txtPrecio2;
-    @FXML
-    private TextField txtPrecio3;
-    @FXML
     private ComboBox<ImpuestoTB> cbImpuesto;
     @FXML
     private VBox vbInventario;
@@ -144,8 +138,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     private VBox vbPrecioPersonalizado;
     @FXML
     private TextField txtPrecioVentaNetoPersonalizado;
-    @FXML
-    private TextField txtPrecioVentaBrutoPersonalizado;
     @FXML
     private TabPane tpContenedor;
 
@@ -189,8 +181,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         rbPrecioNormal.setToggleGroup(groupPrecio);
         rbPrecioPersonalizado.setToggleGroup(groupPrecio);
         tvPreciosNormal = FXCollections.observableArrayList();
-        txtPrecio2.setId("0");
-        txtPrecio3.setId("0");
         initTablePrecios();
     }
 
@@ -229,9 +219,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         txtStockMinimo.clear();
         txtStockMaximo.clear();
         cbImpuesto.getItems().clear();
-        txtPrecio1.clear();
-        txtPrecio2.clear();
-        txtPrecio3.clear();
         cbInventario.setSelected(false);
         vbInventario.setDisable(true);
         txtCosto.clear();
@@ -243,7 +230,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
         cbLote.setSelected(false);
         txtClaveSat.clear();
         txtPrecioVentaNetoPersonalizado.clear();
-        txtPrecioVentaBrutoPersonalizado.clear();
         tvPrecios.getItems().clear();
         vbContenedorPrecioNormal.getChildren().remove(hbPrecioNormal);
         vbContenedorPreciosPersonalizado.getChildren().remove(vbPrecioPersonalizado);
@@ -427,18 +413,18 @@ public class FxSuministrosProcesoModalController implements Initializable {
             }
             cbImpuesto.requestFocus();
         }//segunda validacion de lista de precio normal 
-        else if (!estadoOrigen && rbPrecioNormal.isSelected() && !Tools.isNumeric(txtPrecio1.getText())) {
+        else if (!estadoOrigen && rbPrecioNormal.isSelected() && !Tools.isNumeric(txtPrecioVentaNeto1.getText())) {
             openAlertMessageWarning("Ingrese el primer precio de venta, por favor.");
             if (!selectionModel.isSelected(1)) {
                 selectionModel.select(1);
             }
-            txtPrecio1.requestFocus();
-        } else if (!estadoOrigen && rbPrecioNormal.isSelected() && Double.parseDouble(txtPrecio1.getText()) <= 0) {
+            txtPrecioVentaNeto1.requestFocus();
+        } else if (!estadoOrigen && rbPrecioNormal.isSelected() && Double.parseDouble(txtPrecioVentaNeto1.getText()) <= 0) {
             openAlertMessageWarning("El precio de venta no puede ser menor o igual a 0, por favor.");
             if (!selectionModel.isSelected(1)) {
                 selectionModel.select(1);
             }
-            txtPrecio1.requestFocus();
+            txtPrecioVentaNeto1.requestFocus();
         }//segunda validación de lista de precios personalizado 
         else if (!estadoOrigen && rbPrecioPersonalizado.isSelected() && !Tools.isNumeric(txtPrecioVentaNetoPersonalizado.getText())) {
             openAlertMessageWarning("Ingrese el precio de venta, por favor.");
@@ -528,8 +514,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     : 0);
 
             double precioValidado = rbPrecioNormal.isSelected()
-                    ? Tools.isNumeric(txtPrecio1.getText()) ? Double.parseDouble(txtPrecio1.getText()) : 0
-                    : Tools.isNumeric(txtPrecioVentaBrutoPersonalizado.getText()) ? Double.parseDouble(txtPrecioVentaBrutoPersonalizado.getText()) : 0;
+                    ? Tools.isNumeric(txtPrecioVentaNeto1.getText()) ? Double.parseDouble(txtPrecioVentaNeto1.getText()) : 0
+                    : Tools.isNumeric(txtPrecioVentaNetoPersonalizado.getText()) ? Double.parseDouble(txtPrecioVentaNetoPersonalizado.getText()) : 0;
             suministroTB.setPrecioVentaGeneral(precioValidado);
 
             suministroTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
@@ -554,29 +540,9 @@ public class FxSuministrosProcesoModalController implements Initializable {
             suministroTB.setClaveSat(txtClaveSat.getText().trim());
             suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());
 
-            tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecio2.getId()), "Precio de Venta 1", !Tools.isNumeric(txtPrecio2.getText()) ? 0 : Double.parseDouble(txtPrecio2.getText()), 1));
-            tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecio3.getId()), "Pricio de Venta 2", !Tools.isNumeric(txtPrecio3.getText()) ? 0 : Double.parseDouble(txtPrecio3.getText()), 1));
+            tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecioVentaNeto2.getId()), "Precio de Venta 1", !Tools.isNumeric(txtPrecioVentaNeto2.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto2.getText()), 1));
+            tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecioVentaNeto3.getId()), "Pricio de Venta 2", !Tools.isNumeric(txtPrecioVentaNeto3.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto3.getText()), 1));
 
-//            if (articulo) {
-//                String result = SuministroADO.CrudSuministro_Articulo(suministroTB);
-//                switch (result) {
-//                    case "registered":
-//                        Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.INFORMATION, "Producto", "Se clono correctamente el producto a artículo.", false);
-//                        closeWindow();
-//                        break;
-//                    case "duplicate":
-//                        Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Producto", "No se puede haber 2 artículos con las misma clave.", false);
-//                        txtClave.requestFocus();
-//                        break;
-//                    case "duplicatename":
-//                        Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Producto", "No se puede haber 2 producto con el mismo nombre.", false);
-//                        txtNombreMarca.requestFocus();
-//
-//                    default:
-//                        Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.ERROR, "Producto", result, false);
-//                        break;
-//                }
-//            } else {
             String result = SuministroADO.CrudSuministro(suministroTB,
                     rbPrecioNormal.isSelected() ? tvPreciosNormal : tvPrecios.getItems());
             switch (result) {
@@ -604,7 +570,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.ERROR, "Producto", result, false);
                     break;
             }
-//            }
         }
     }
 
@@ -702,22 +667,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
 
     private void closeWindow() {
         Tools.Dispose(apWindow);
-    }
-
-    private void calculatePrecioBruto(TextField txtValorNeto, TextField txtValorBruto, ComboBox<ImpuestoTB> cbImpuesto) {
-        if (Tools.isNumeric(txtValorNeto.getText())) {
-            double valor_neto = Double.parseDouble(txtValorNeto.getText());
-            if (valor_neto <= 0) {
-                return;
-            }
-
-            double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
-                    : 0;
-            double valor_bruto = valor_neto / ((impuesto / 100.00) + 1);
-
-            txtValorBruto.setText("" + valor_bruto);
-        }
     }
 
     @FXML
@@ -920,37 +869,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     @FXML
     private void onKeyReleasedCosto(KeyEvent event) {
 
-    }
-
-    @FXML
-    private void onActionImpuesto(ActionEvent event) {
-        if (rbPrecioNormal.isSelected()) {
-            calculatePrecioBruto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
-            calculatePrecioBruto(txtPrecioVentaNeto2, txtPrecio2, cbImpuesto);
-            calculatePrecioBruto(txtPrecioVentaNeto3, txtPrecio3, cbImpuesto);
-        } else {
-            calculatePrecioBruto(txtPrecioVentaNetoPersonalizado, txtPrecioVentaBrutoPersonalizado, cbImpuesto);
-        }
-    }
-
-    @FXML
-    private void onKeyRealesedPrecioNeto1(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
-    }
-
-    @FXML
-    private void onKeyRealesedPrecioNeto2(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNeto2, txtPrecio2, cbImpuesto);
-    }
-
-    @FXML
-    private void onKeyRealesedPrecioNeto3(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNeto3, txtPrecio3, cbImpuesto);
-    }
-
-    @FXML
-    private void onKeyRealesedPrecioNetoPerzonalizado(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNetoPersonalizado, txtPrecioVentaBrutoPersonalizado, cbImpuesto);
     }
 
     @FXML

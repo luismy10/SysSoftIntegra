@@ -29,11 +29,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -153,6 +156,34 @@ public class Tools {
         alert.setContentText(value);
         alert.getDialogPane().getStylesheets().add(url.toExternalForm());
         alert.show();
+        return alert;
+    }
+
+    public static Alert AlertDialogMessage(Node node, Alert.AlertType type, String title,String value,String error) {
+        final URL url = Tools.class.getClass().getResource(FilesRouters.STYLE_ALERT);
+        Alert alert = new Alert(type);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
+        alert.setTitle(title);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.initOwner(node.getScene().getWindow());
+        alert.setHeaderText(null);
+        alert.setContentText(value);
+        alert.getDialogPane().getStylesheets().add(url.toExternalForm());
+
+        TextArea textArea = new TextArea(error);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(textArea, 0, 0);
+        alert.getDialogPane().setExpandableContent(expContent);
+
+        alert.showAndWait();
         return alert;
     }
 
@@ -276,7 +307,7 @@ public class Tools {
     }
 
     public static boolean isText(String cadena) {
-        return cadena.trim() == null || cadena.trim().isEmpty();        
+        return cadena.trim() == null || cadena.trim().isEmpty();
     }
 
     public static String getDate() {

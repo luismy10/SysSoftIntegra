@@ -201,7 +201,7 @@
                                        <children>
                                           <Label style="-fx-border-color: #999999;">
                                              <graphic>
-                                                <ImageView fx:id="ivPrincipal" fitHeight="160.0" fitWidth="160.0" pickOnBounds="true">
+                                                <ImageView fx:id="ivPrincipal" fitHeight="160.0" fitWidth="180.0" pickOnBounds="true">
                                                    <image>
                                                       <Image url="@../../image/no-image.png" />
                                                    </image>
@@ -210,7 +210,6 @@
                                           </Label>
                                           <Text fx:id="lblName" fill="#0771d3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold17" text="-" textAlignment="CENTER" wrappingWidth="300.0" />
                                           <Text fx:id="lblPrice" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold19" text="-" />
-                                          <Text fx:id="lblPriceBruto" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="-" />
                                           <Text fx:id="lblImpuesto" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="-" />
                                        </children>
                                     </VBox>

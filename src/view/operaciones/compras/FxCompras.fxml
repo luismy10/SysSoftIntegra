@@ -195,7 +195,7 @@
                                                 <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto11" text="(Visibles en el documento impreso)" textFill="#020203" wrapText="true" />
                                              </children>
                                           </VBox>
-                                          <TextArea fx:id="txtNotas" prefHeight="100.0" prefWidth="200.0" />
+                                          <TextArea fx:id="txtNotas" prefHeight="100.0" prefWidth="200.0" wrapText="true" />
                                        </children>
                                     </VBox>
                                     <VBox>
@@ -206,7 +206,7 @@
                                                 <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto11" text="(No visibles en el documento impreso)" textFill="#020203" wrapText="true" />
                                              </children>
                                           </VBox>
-                                          <TextArea fx:id="txtObservaciones" prefHeight="100.0" prefWidth="206.0" />
+                                          <TextArea fx:id="txtObservaciones" prefHeight="100.0" prefWidth="206.0" wrapText="true" />
                                        </children>
                                     </VBox>
                                  </children>

@@ -84,6 +84,7 @@ public class SuministroTB {
     private Label estadoAsignacion;
     private Button remover;
     private boolean cambios;
+    private ImpuestoTB impuestoTB;
 
     public SuministroTB() {
     }
@@ -125,7 +126,7 @@ public class SuministroTB {
     }
 
     public void setClave(String clave) {
-        this.clave = clave;
+        this.clave = clave == null ? "" : clave;
     }
 
     public String getClaveAlterna() {
@@ -159,7 +160,6 @@ public class SuministroTB {
 //    public void setImagenTB(String imagenTB) {
 //        this.imagenTB = imagenTB == null ? "" : imagenTB;
 //    }
-
     public File getImagenFile() {
         return imagenFile;
     }
@@ -608,9 +608,17 @@ public class SuministroTB {
         this.nuevaImagen = nuevaImagen;
     }
 
+    public ImpuestoTB getImpuestoTB() {
+        return impuestoTB;
+    }
+
+    public void setImpuestoTB(ImpuestoTB impuestoTB) {
+        this.impuestoTB = impuestoTB;
+    }
+
     @Override
     public String toString() {
-        return  nombreMarca ;
+        return nombreMarca;
     }
-    
+
 }

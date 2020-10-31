@@ -104,12 +104,6 @@ public class FxSuministrosProcesoController implements Initializable {
     @FXML
     private TextField txtPrecioVentaNeto3;
     @FXML
-    private TextField txtPrecio1;
-    @FXML
-    private TextField txtPrecio2;
-    @FXML
-    private TextField txtPrecio3;
-    @FXML
     private ComboBox<ImpuestoTB> cbImpuesto;
     @FXML
     private VBox vbContenedor;
@@ -152,8 +146,6 @@ public class FxSuministrosProcesoController implements Initializable {
     private VBox vbPrecioPersonalizado;
     @FXML
     private TextField txtPrecioVentaNetoPersonalizado;
-    @FXML
-    private TextField txtPrecioVentaBrutoPersonalizado;
     @FXML
     private VBox vbContenedorCosto;
 
@@ -199,8 +191,6 @@ public class FxSuministrosProcesoController implements Initializable {
         rbPrecioPersonalizado.setToggleGroup(groupPrecio);
 
         tvPreciosNormal = FXCollections.observableArrayList();
-        txtPrecio2.setId("0");
-        txtPrecio3.setId("0");
         initTablePrecios();
     }
 
@@ -253,9 +243,6 @@ public class FxSuministrosProcesoController implements Initializable {
         txtPrecioVentaNeto1.clear();
         txtPrecioVentaNeto2.clear();
         txtPrecioVentaNeto3.clear();
-        txtPrecio1.clear();
-        txtPrecio2.clear();
-        txtPrecio3.clear();
         cbInventario.setSelected(false);
         vbInventario.setDisable(true);
         txtCosto.clear();
@@ -267,7 +254,6 @@ public class FxSuministrosProcesoController implements Initializable {
         cbLote.setSelected(false);
         txtClaveSat.clear();
         txtPrecioVentaNetoPersonalizado.clear();
-        txtPrecioVentaBrutoPersonalizado.clear();
         tvPrecios.getItems().clear();
         vbContenedorPrecioNormal.getChildren().remove(hbPrecioNormal);
         vbContenedorPreciosPersonalizado.getChildren().remove(vbPrecioPersonalizado);
@@ -525,26 +511,20 @@ public class FxSuministrosProcesoController implements Initializable {
                 }
 
                 if (suministroTB.isTipoPrecio()) {
-
-                    txtPrecio1.setText("" + suministroTB.getPrecioVentaGeneral());
-                    calculatePrecioNeto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
+                    txtPrecioVentaNeto1.setText("" + suministroTB.getPrecioVentaGeneral());
                     ObservableList<PreciosTB> preciosTBs = (ObservableList<PreciosTB>) objects.get(4);
                     if (!preciosTBs.isEmpty()) {
                         if (((PreciosTB) preciosTBs.get(0)) != null) {
-                            txtPrecio2.setId("" + ((PreciosTB) preciosTBs.get(0)).getIdPrecios());
-                            txtPrecio2.setText("" + ((PreciosTB) preciosTBs.get(0)).getValor());
-                            calculatePrecioNeto(txtPrecioVentaNeto2, txtPrecio2, cbImpuesto);
+                            txtPrecioVentaNeto2.setId("" + ((PreciosTB) preciosTBs.get(0)).getIdPrecios());
+                            txtPrecioVentaNeto2.setText("" + ((PreciosTB) preciosTBs.get(0)).getValor());
                         }
                         if (((PreciosTB) preciosTBs.get(1)) != null) {
-                            txtPrecio3.setId("" + ((PreciosTB) preciosTBs.get(1)).getIdPrecios());
-                            txtPrecio3.setText("" + ((PreciosTB) preciosTBs.get(1)).getValor());
-                            calculatePrecioNeto(txtPrecioVentaNeto3, txtPrecio3, cbImpuesto);
+                            txtPrecioVentaNeto3.setId("" + ((PreciosTB) preciosTBs.get(1)).getIdPrecios());
+                            txtPrecioVentaNeto3.setText("" + ((PreciosTB) preciosTBs.get(1)).getValor());
                         }
                     }
-
                 } else {
-                    txtPrecioVentaBrutoPersonalizado.setText("" + suministroTB.getPrecioVentaGeneral());
-                    calculatePrecioNeto(txtPrecioVentaNetoPersonalizado, txtPrecioVentaBrutoPersonalizado, cbImpuesto);
+                    txtPrecioVentaNetoPersonalizado.setText("" + suministroTB.getPrecioVentaGeneral());
                     ObservableList<PreciosTB> preciosTBs = (ObservableList<PreciosTB>) objects.get(4);
                     if (!preciosTBs.isEmpty()) {
                         for (int i = 0; i < preciosTBs.size(); i++) {
@@ -683,25 +663,21 @@ public class FxSuministrosProcesoController implements Initializable {
                 }
 
                 if (suministroTB.isTipoPrecio()) {
-
-                    txtPrecio1.setText("" + suministroTB.getPrecioVentaGeneral());
-                    calculatePrecioNeto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
+                    txtPrecioVentaNeto1.setText("" + suministroTB.getPrecioVentaGeneral());
                     ObservableList<PreciosTB> preciosTBs = (ObservableList<PreciosTB>) objects.get(4);
                     if (!preciosTBs.isEmpty()) {
                         if (((PreciosTB) preciosTBs.get(0)) != null) {
-                            txtPrecio2.setId("" + ((PreciosTB) preciosTBs.get(0)).getIdPrecios());
-                            txtPrecio2.setText("" + ((PreciosTB) preciosTBs.get(0)).getValor());
-                            calculatePrecioNeto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
+                            txtPrecioVentaNeto2.setId("" + ((PreciosTB) preciosTBs.get(0)).getIdPrecios());
+                            txtPrecioVentaNeto2.setText("" + ((PreciosTB) preciosTBs.get(0)).getValor());
                         }
                         if (((PreciosTB) preciosTBs.get(1)) != null) {
-                            txtPrecio3.setId("" + ((PreciosTB) preciosTBs.get(1)).getIdPrecios());
-                            txtPrecio3.setText("" + ((PreciosTB) preciosTBs.get(1)).getValor());
-                            calculatePrecioNeto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
+                            txtPrecioVentaNeto3.setId("" + ((PreciosTB) preciosTBs.get(1)).getIdPrecios());
+                            txtPrecioVentaNeto3.setText("" + ((PreciosTB) preciosTBs.get(1)).getValor());
                         }
                     }
 
                 } else {
-                    txtPrecioVentaBrutoPersonalizado.setText(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 8));
+                    txtPrecioVentaNetoPersonalizado.setText(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 8));
                     ObservableList<PreciosTB> preciosTBs = (ObservableList<PreciosTB>) objects.get(4);
                     if (!preciosTBs.isEmpty()) {
                         for (int i = 0; i < preciosTBs.size(); i++) {
@@ -762,12 +738,12 @@ public class FxSuministrosProcesoController implements Initializable {
             openAlertMessageWarning("Seleccione el impuesto, por favor.");
             cbImpuesto.requestFocus();
         }//segunda validacion de lista de precio normal 
-        else if (!estadoOrigen && rbPrecioNormal.isSelected() && !Tools.isNumeric(txtPrecio1.getText())) {
+        else if (!estadoOrigen && rbPrecioNormal.isSelected() && !Tools.isNumeric(txtPrecioVentaNeto1.getText())) {
             openAlertMessageWarning("Ingrese el primer precio de venta 1, por favor.");
-            txtPrecio1.requestFocus();
-        } else if (!estadoOrigen && rbPrecioNormal.isSelected() && Double.parseDouble(txtPrecio1.getText()) <= 0) {
+            txtPrecioVentaNeto1.requestFocus();
+        } else if (!estadoOrigen && rbPrecioNormal.isSelected() && Double.parseDouble(txtPrecioVentaNeto1.getText()) <= 0) {
             openAlertMessageWarning("El precio de venta no puede ser menor o igual a 0, por favor.");
-            txtPrecio1.requestFocus();
+            txtPrecioVentaNeto1.requestFocus();
         } //segunda validación de lista de precios personalizado 
         else if (!estadoOrigen && rbPrecioPersonalizado.isSelected() && !Tools.isNumeric(txtPrecioVentaNetoPersonalizado.getText())) {
             openAlertMessageWarning("Ingrese el precio de venta, por favor.");
@@ -842,8 +818,8 @@ public class FxSuministrosProcesoController implements Initializable {
                         : 0);
 
                 double precioValidado = rbPrecioNormal.isSelected()
-                        ? Tools.isNumeric(txtPrecio1.getText()) ? Double.parseDouble(txtPrecio1.getText()) : 0
-                        : Tools.isNumeric(txtPrecioVentaBrutoPersonalizado.getText()) ? Double.parseDouble(txtPrecioVentaBrutoPersonalizado.getText()) : 0;
+                        ? Tools.isNumeric(txtPrecioVentaNeto1.getText()) ? Double.parseDouble(txtPrecioVentaNeto1.getText()) : 0
+                        : Tools.isNumeric(txtPrecioVentaNetoPersonalizado.getText()) ? Double.parseDouble(txtPrecioVentaNetoPersonalizado.getText()) : 0;
                 suministroTB.setPrecioVentaGeneral(precioValidado);
 
                 suministroTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
@@ -868,8 +844,8 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setClaveSat(txtClaveSat.getText().trim());
                 suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());
 
-                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecio2.getId()), "Precio de Venta 1", !Tools.isNumeric(txtPrecio2.getText()) ? 0 : Double.parseDouble(txtPrecio2.getText()), 1));
-                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecio3.getId()), "Precio de Venta 2", !Tools.isNumeric(txtPrecio3.getText()) ? 0 : Double.parseDouble(txtPrecio3.getText()), 1));
+                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecioVentaNeto2.getId()), "Precio de Venta 1", !Tools.isNumeric(txtPrecioVentaNeto2.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto2.getText()), 1));
+                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecioVentaNeto3.getId()), "Precio de Venta 2", !Tools.isNumeric(txtPrecioVentaNeto3.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto3.getText()), 1));
 
                 String result = SuministroADO.CrudSuministro(
                         suministroTB,
@@ -993,38 +969,6 @@ public class FxSuministrosProcesoController implements Initializable {
         AnchorPane.setRightAnchor(suministrosController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(suministrosController.getHbWindow(), 0d);
         vbContent.getChildren().add(suministrosController.getHbWindow());
-    }
-
-    private void calculatePrecioNeto(TextField txtValorNeto, TextField txtValorBruto, ComboBox<ImpuestoTB> cbImpuesto) {
-        if (Tools.isNumeric(txtValorBruto.getText())) {
-            double valor_bruto = Double.parseDouble(txtValorBruto.getText());
-            if (valor_bruto <= 0) {
-                return;
-            }
-
-            double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
-                    : 0;
-            double impuesto_generado = valor_bruto * (impuesto / 100.00);
-            double valor_neto = valor_bruto + impuesto_generado;
-            txtValorNeto.setText("" + valor_neto);
-        }
-    }
-
-    private void calculatePrecioBruto(TextField txtValorNeto, TextField txtValorBruto, ComboBox<ImpuestoTB> cbImpuesto) {
-        if (Tools.isNumeric(txtValorNeto.getText())) {
-            double valor_neto = Double.parseDouble(txtValorNeto.getText());
-            if (valor_neto <= 0) {
-                return;
-            }
-
-            double impuesto = cbImpuesto.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbImpuesto.getSelectionModel().getSelectedItem().getValor()
-                    : 0;
-            double valor_bruto = valor_neto / ((impuesto / 100.00) + 1);
-
-            txtValorBruto.setText("" + valor_bruto);
-        }
     }
 
     @FXML
@@ -1236,26 +1180,6 @@ public class FxSuministrosProcesoController implements Initializable {
     }
 
     @FXML
-    private void onKeyRealesedPrecioNeto1(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
-    }
-
-    @FXML
-    private void onKeyRealesedPrecioNeto2(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNeto2, txtPrecio2, cbImpuesto);
-    }
-
-    @FXML
-    private void onKeyRealesedPrecioNeto3(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNeto3, txtPrecio3, cbImpuesto);
-    }
-
-    @FXML
-    private void onKeyRealesedPrecioNetoPerzonalizado(KeyEvent event) {
-        calculatePrecioBruto(txtPrecioVentaNetoPersonalizado, txtPrecioVentaBrutoPersonalizado, cbImpuesto);
-    }
-
-    @FXML
     private void onActionInventario(ActionEvent event) {
         vbInventario.setDisable(!cbInventario.isSelected());
     }
@@ -1270,17 +1194,6 @@ public class FxSuministrosProcesoController implements Initializable {
     @FXML
     private void onActionAdd(ActionEvent event) {
         addElementsTablePrecios();
-    }
-
-    @FXML
-    private void onActionImpuesto(ActionEvent event) {
-        if (rbPrecioNormal.isSelected()) {
-            calculatePrecioBruto(txtPrecioVentaNeto1, txtPrecio1, cbImpuesto);
-            calculatePrecioBruto(txtPrecioVentaNeto2, txtPrecio2, cbImpuesto);
-            calculatePrecioBruto(txtPrecioVentaNeto3, txtPrecio3, cbImpuesto);
-        } else {
-            calculatePrecioBruto(txtPrecioVentaNetoPersonalizado, txtPrecioVentaBrutoPersonalizado, cbImpuesto);
-        }
     }
 
     @FXML

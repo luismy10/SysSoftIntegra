@@ -42,26 +42,30 @@ public class FxVentaGranelController implements Initializable {
         this.suministroTB = suministroTB;
         this.opcion = opcion;
         lblArticulo.setText(suministroTB.getNombreMarca());
+        oldPrecio = suministroTB.getPrecioVentaGeneral();
     }
 
     private void executeEventAceptar() {
-        double importe = Tools.isNumeric(txtImporte.getText())
-                ? (Double.parseDouble(txtImporte.getText()) <= 0 ? oldPrecio : Double.parseDouble(txtImporte.getText()))
+        double importe = opcion
+                ? Tools.isNumeric(txtImporte.getText()) ? (Double.parseDouble(txtImporte.getText()) <= 0 ? oldPrecio 
+                : oldPrecio + Double.parseDouble(txtImporte.getText())) : oldPrecio
+                : Tools.isNumeric(txtImporte.getText())
+                ? (Double.parseDouble(txtImporte.getText()) <= 0 
+                ? oldPrecio : Double.parseDouble(txtImporte.getText()))
                 : oldPrecio;
 
-        double value = opcion ? importe + suministroTB.getPrecioVentaGeneralUnico() : importe;
-
-        double porcentajeRestante = value * (suministroTB.getDescuento() / 100.00);
-        double preciocalculado = value - porcentajeRestante;
+        double valor_sin_impuesto = importe / ((suministroTB.getImpuestoValor() / 100.00) + 1);
+        double descuento = suministroTB.getDescuento();
+        double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+        double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
         suministroTB.setDescuentoCalculado(porcentajeRestante);
         suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-        suministroTB.setPrecioVentaGeneralUnico(value);
+        suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
         suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
         double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
-
         suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
         suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 

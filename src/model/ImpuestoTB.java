@@ -22,6 +22,11 @@ public class ImpuestoTB {
     public ImpuestoTB() {
     }
 
+    public ImpuestoTB(String nombre, double valor) {
+        this.nombre = nombre;
+        this.valor = valor;
+    }    
+
     public ImpuestoTB(int idImpuesto, String nombre, Boolean predeterminado) {
         this.idImpuesto = idImpuesto;
         this.nombre = nombre;

@@ -136,7 +136,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private double subTotal;
 
-    private double descuento;
+    private double descuentoTotal;
 
     private double subTotalImporte;
 
@@ -319,7 +319,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 //                    VBox.setVgrow(lblProducto, Priority.ALWAYS);
                     vBox.getChildren().add(lblProducto);
 
-                    Label lblMarca = new Label(Tools.isText(tvList1.getMarcaName()) ? "---" : tvList1.getMarcaName());
+                    Label lblMarca = new Label(Tools.isText(tvList1.getMarcaName()) ? "No Marca" : tvList1.getMarcaName());
                     lblMarca.getStyleClass().add("labelOpenSansRegular13");
                     lblMarca.setTextFill(Color.web("#1a2226"));
                     vBox.getChildren().add(lblMarca);
@@ -329,11 +329,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     lblCantidad.setTextFill(tvList1.getCantidad() <= 0 ? Color.web("#e40000") : Color.web("#117cee"));
                     vBox.getChildren().add(lblCantidad);
 
-                    double impuestoimpuesto = tvList1.getImpuestoValor();
-                    double impuestototal = Tools.calculateTax(impuestoimpuesto, tvList1.getPrecioVentaGeneral());
-                    double precioventa = tvList1.getPrecioVentaGeneral() + impuestototal;
-
-                    Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(precioventa, 2));
+                    Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
                     lblTotalProducto.getStyleClass().add("labelRobotoBold19");
                     lblTotalProducto.setTextFill(Color.web("#009a1e"));
                     lblTotalProducto.maxWidth(Double.MAX_VALUE);
@@ -387,42 +383,52 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-    private void addElementListView(SuministroTB tvList1) {
-        if (vender_con_cantidades_negativas && tvList1.getCantidad() <= 0) {
+    private void addElementListView(SuministroTB a) {
+        if (vender_con_cantidades_negativas && a.getCantidad() <= 0) {
             Tools.AlertMessageWarning(vbWindow, "Producto", "No puede agregar el producto ya que tiene la cantidad menor que 0.");
             return;
         }
         SuministroTB suministroTB = new SuministroTB();
-        suministroTB.setIdSuministro(tvList1.getIdSuministro());
-        suministroTB.setClave(tvList1.getClave());
-        suministroTB.setNombreMarca(tvList1.getNombreMarca());
+        suministroTB.setIdSuministro(a.getIdSuministro());
+        suministroTB.setClave(a.getClave());
+        suministroTB.setNombreMarca(a.getNombreMarca());
         suministroTB.setCantidad(1);
-        suministroTB.setCostoCompra(tvList1.getCostoCompra());
+        suministroTB.setCostoCompra(a.getCostoCompra());
+
+        double valor_sin_impuesto = a.getPrecioVentaGeneral() / ((a.getImpuestoValor() / 100.00) + 1);
+        double descuento = suministroTB.getDescuento();
+        double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+        double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
         suministroTB.setDescuento(0);
         suministroTB.setDescuentoCalculado(0);
         suministroTB.setDescuentoSumado(0);
 
-        suministroTB.setPrecioVentaGeneralUnico(tvList1.getPrecioVentaGeneral());
-        suministroTB.setPrecioVentaGeneralReal(tvList1.getPrecioVentaGeneral());
-        suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
+        suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+        suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
+        suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
-        suministroTB.setImpuestoOperacion(tvList1.getImpuestoOperacion());
-        suministroTB.setImpuestoId(tvList1.getImpuestoId());
-        suministroTB.setImpuestoNombre(tvList1.getImpuestoNombre());
-        suministroTB.setImpuestoValor(tvList1.getImpuestoValor());
-        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
+        suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
+        suministroTB.setImpuestoId(a.getImpuestoId());
+        suministroTB.setImpuestoNombre(a.getImpuestoNombre());
+        suministroTB.setImpuestoValor(a.getImpuestoValor());
 
-        suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
+        double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+        suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+        suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
         suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
         suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
         suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
-        suministroTB.setInventario(tvList1.isInventario());
-        suministroTB.setUnidadVenta(tvList1.getUnidadVenta());
-        suministroTB.setValorInventario(tvList1.getValorInventario());
+        suministroTB.setInventario(a.isInventario());
+        suministroTB.setUnidadVenta(a.getUnidadVenta());
+        suministroTB.setValorInventario(a.getValorInventario());
 
+        addProducto(suministroTB);
+    }
+
+    private void addProducto(SuministroTB suministroTB) {
         if (validateDuplicateArticulo(lvProductoAgregados, suministroTB)) {
             for (int i = 0; i < lvProductoAgregados.getItems().size(); i++) {
                 if (lvProductoAgregados.getItems().get(i).getSuministroTB().getIdSuministro().equalsIgnoreCase(suministroTB.getIdSuministro())) {
@@ -446,7 +452,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         } else {
             BbItemProducto bbItemProducto = new BbItemProducto(suministroTB, lvProductoAgregados, this);
             bbItemProducto.addElementListView();
-
             lvProductoAgregados.getItems().add(bbItemProducto);
             calculateTotales();
         }
@@ -512,8 +517,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         lvProductoAgregados.getItems().forEach(e -> subTotal += e.getSuministroTB().getSubImporte());
 //        lblValorVenta.setText(monedaSimbolo + " " + Tools.roundingValue(subTotal, 2));
 
-        descuento = 0;
-        lvProductoAgregados.getItems().forEach(e -> descuento += e.getSuministroTB().getDescuentoSumado());
+        descuentoTotal = 0;
+        lvProductoAgregados.getItems().forEach(e -> descuentoTotal += e.getSuministroTB().getDescuentoSumado());
 //        lblDescuento.setText(monedaSimbolo + " " + (Tools.roundingValue(descuento * (-1), 2)));
 
         subTotalImporte = 0;
@@ -953,7 +958,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             HBox box = ((HBox) hbPie.getChildren().get(i));
                             billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
-                                    "-" + Tools.roundingValue(descuento, 2),
+                                    "-" + Tools.roundingValue(descuentoTotal, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -1021,7 +1026,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             rows++;
                             lines += billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
-                                    "-" + Tools.roundingValue(descuento, 2),
+                                    "-" + Tools.roundingValue(descuentoTotal, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -1181,7 +1186,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setFechaVenta(Tools.getDate());
                 ventaTB.setHoraVenta(Tools.getHour());
                 ventaTB.setSubTotal(subTotal);
-                ventaTB.setDescuento(descuento);
+                ventaTB.setDescuento(descuentoTotal);
                 ventaTB.setSubImporte(subTotalImporte);
                 ventaTB.setImpuesto(totalImpuesto);
                 ventaTB.setTotal(total);

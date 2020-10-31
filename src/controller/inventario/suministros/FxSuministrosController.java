@@ -8,7 +8,6 @@ import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,8 +43,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.DetalleADO;
 import model.DetalleTB;
-import model.ImpuestoADO;
-import model.ImpuestoTB;
 import model.PrivilegioTB;
 import model.SuministroADO;
 import model.SuministroTB;
@@ -85,8 +82,6 @@ public class FxSuministrosController implements Initializable {
     @FXML
     private Text lblPrice;
     @FXML
-    private Text lblPriceBruto;
-    @FXML
     private Text lblImpuesto;
     @FXML
     private Label lblQuantity;
@@ -124,8 +119,6 @@ public class FxSuministrosController implements Initializable {
 
     private FxSuministrosProcesoController suministrosProcesoController;
 
-    private ArrayList<ImpuestoTB> arrayArticulosImpuesto;
-
     private ObservableList<PrivilegioTB> privilegioTBs;
 
     private int paginacion;
@@ -159,9 +152,6 @@ public class FxSuministrosController implements Initializable {
             tcMarcar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-
-            arrayArticulosImpuesto = new ArrayList<>();
-            ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> arrayArticulosImpuesto.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado())));
 
             paginacion = 1;
             opcion = 0;
@@ -477,28 +467,6 @@ public class FxSuministrosController implements Initializable {
         }
     }
 
-    public double getTaxValue(int impuesto) {
-        double valor = 0;
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getValor();
-                break;
-            }
-        }
-        return valor;
-    }
-
-    public String getTaxName(int impuesto) {
-        String valor = "";
-        for (ImpuestoTB impuestoTB : arrayArticulosImpuesto) {
-            if (impuestoTB.getIdImpuesto() == impuesto) {
-                valor = impuestoTB.getNombre();
-                break;
-            }
-        }
-        return valor;
-    }
-
     public void onViewDetailSuministro() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             SuministroTB suministroTB = tvList.getSelectionModel().getSelectedItem();
@@ -513,15 +481,9 @@ public class FxSuministrosController implements Initializable {
             lblName.setText(suministroTB.getNombreMarca());
             lblPrice.setText(
                     Session.MONEDA_SIMBOLO + " "
-                    + Tools.roundingValue(suministroTB.getPrecioVentaGeneral() + (suministroTB.getPrecioVentaGeneral() * (getTaxValue(suministroTB.getImpuestoId()) / 100.00)),
-                            2)
+                    + Tools.roundingValue(suministroTB.getPrecioVentaGeneral(),2)
             );
-            lblPriceBruto.setText(
-                    "Precio Bruto: "
-                    + Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 2));
-            lblImpuesto.setText(
-                    "Impuesto: " + getTaxName(suministroTB.getImpuestoId())
-            );
+            lblImpuesto.setText("Impuesto: " + suministroTB.getImpuestoTB().getNombre());
             lblQuantity.setText(Tools.roundingValue(suministroTB.getCantidad(), 2) + " " + suministroTB.getUnidadCompraName());
         }
     }

@@ -11,12 +11,6 @@
     font-family: 'Roboto', sans-serif; 
     src: url('Roboto-Regular.ttf'); 
 } 
-/*OPEN SANS FONT*/
-@font-face { 
-    font-family: 'Open Regular', sans-serif; 
-    src: url('OpenSans-Regular.ttf'); 
-} 
-
 
 
 /*******************************************************************************
@@ -149,4 +143,42 @@
 
 alert.none.dialog-pane{
     -fx-graphic: url("/view/image/accept.png");
+}
+
+
+/*******************************************************************************
+*                                                                              *
+*Text Area                                                                     *
+*                                                                              *
+*******************************************************************************/
+.text-area{
+    BORDER: #999999;
+    BORDER_HOVER: #666666;
+
+    BACKGROUND: white;
+    BACKGROUND_FOCUSED: #00aff0;
+    BACKGROUND_HOVER: white;
+}
+.text-area{
+    -fx-background-radius: 0, 0;
+
+    -fx-font-size:1.0833333333333333em;/*13px*/
+    -fx-font-family:"Roboto";
+
+    -fx-background-color: BORDER, BACKGROUND;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+}
+.text-area .content{
+    -fx-background-color: BACKGROUND_HOVER;
+}
+
+.text-area:hover{
+    -fx-background-color: BORDER_HOVER, BACKGROUND_HOVER;
+    -fx-border-color: #7a7a7a;
+}
+
+.text-area:focused{
+    -fx-border-width:1;
+    -fx-border-color: #00aff0;
 }

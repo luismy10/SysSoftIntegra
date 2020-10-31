@@ -518,7 +518,6 @@ public class SuministroADO {
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompraNombre"));
                 suministroTB.setCostoCompra(rsEmps.getDouble("PrecioCompra"));
-                suministroTB.setImpuestoId(rsEmps.getInt("Impuesto"));
                 suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
                 suministroTB.setMarcaName(rsEmps.getString("Marca"));
@@ -526,11 +525,13 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setNuevaImagen(rsEmps.getBytes("NuevaImagen"));
-
+                
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
                 label.getStyleClass().add("labelRoboto13");
                 label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
                 suministroTB.setLblCantidad(label);
+                
+                suministroTB.setImpuestoTB(new ImpuestoTB(rsEmps.getString("ImpuestoNombre"),rsEmps.getDouble("Valor")));
 
                 empList.add(suministroTB);
             }

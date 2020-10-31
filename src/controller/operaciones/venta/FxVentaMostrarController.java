@@ -112,7 +112,6 @@ public class FxVentaMostrarController implements Initializable {
 
     private ConvertMonedaCadena monedaCadena;
 
-//    private String nombreTicketImpresion;
     private AnchorPane hbEncabezado;
 
     private AnchorPane hbDetalleCabecera;

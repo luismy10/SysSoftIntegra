@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -23,6 +24,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.ResultTransaction;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaCreditoTB;
@@ -114,7 +116,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(tota_venta, 2));
         lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(tota_venta, 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, moneda_simbolo));
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ""));
         hbContenido.setDisable(false);
     }
 
@@ -239,13 +241,13 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    String result[] = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante()).split("/");
-                    switch (result[0]) {
+                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante());
+                    switch (result.getCode()) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
                             if (value == 1) {
                                 ventaEstructuraNuevoController.resetVenta();
-                                ventaEstructuraNuevoController.imprimirVenta(result[1]);
+                                ventaEstructuraNuevoController.imprimirVenta(result.getResult());
                                 Tools.Dispose(window);
                             } else {
                                 ventaEstructuraNuevoController.resetVenta();
@@ -253,10 +255,13 @@ public class FxVentaProcesoNuevoController implements Initializable {
                             }
                             break;
                         case "nocantidades":
-                            Tools.AlertMessageWarning(window, "Venta", "No se puede completar la venta por que hay productos con stock inferior.");
+                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
+                            break;
+                        case "error":
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
                             break;
                         default:
-                            Tools.AlertMessageError(window, "Venta", result[0]);
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
                             break;
                     }
                 }

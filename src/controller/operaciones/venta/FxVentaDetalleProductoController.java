@@ -30,12 +30,6 @@ public class FxVentaDetalleProductoController implements Initializable {
     @FXML
     private Label lblProducto;
     @FXML
-    private Label lblSubTotal;
-    @FXML
-    private Label lblDescuento;
-    @FXML
-    private Label lblTotal;
-    @FXML
     private ListView<PreciosTB> tvListPrecios;
 
     private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
@@ -53,36 +47,38 @@ public class FxVentaDetalleProductoController implements Initializable {
         this.index = index;
         this.bbItemProducto = bbItemProducto;
         lblProducto.setText(bbItemProducto.getSuministroTB().getNombreMarca());
-        txtPrecio.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico(), 2));
+        txtPrecio.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getPrecioVentaGeneral(), 2));
         txtCantidad.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getCantidad(), 2));
         txtDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuento(), 2));
-
-        lblSubTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporte(), 2));
-        lblDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuentoSumado(), 2));
-        lblTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getTotalImporte(), 2));
         loadDataView(bbItemProducto.getSuministroTB().getIdSuministro());
     }
 
     public void loadDataView(String idSuministro) {
         ObservableList<PreciosTB> artPrices = SuministroADO.GetItemPriceList(idSuministro);
         tvListPrecios.setItems(artPrices);
-        tvListPrecios.setOnMouseClicked(n->{
-            if(tvListPrecios.getSelectionModel().getSelectedIndex()>=0){
+        tvListPrecios.setOnMouseClicked(n -> {
+            if (tvListPrecios.getSelectionModel().getSelectedIndex() >= 0) {
                 if (Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
-                    txtCantidad.setText(""+tvListPrecios.getSelectionModel().getSelectedItem().getFactor());
-                    double importe = tvListPrecios.getSelectionModel().getSelectedItem().getValor();
+                    double valor = tvListPrecios.getSelectionModel().getSelectedItem().getValor();
+                    double factor = tvListPrecios.getSelectionModel().getSelectedItem().getFactor();
 
-                    double porcentajeRestante = importe * (Double.parseDouble(txtDescuento.getText()) / 100.00);
-                    double preciocalculado = importe - porcentajeRestante;
+                    double precio = factor <= 1 ? valor : valor / factor;
+                    txtCantidad.setText("" + (factor <= 1 ? Double.parseDouble(txtCantidad.getText()) : factor));
+                    bbItemProducto.getSuministroTB().setCantidad(Double.parseDouble(txtCantidad.getText()));
 
+                    double valor_sin_impuesto = precio / ((bbItemProducto.getSuministroTB().getImpuestoValor() / 100.00) + 1);
+                    double descuento = Double.parseDouble(txtDescuento.getText());
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                    bbItemProducto.getSuministroTB().setDescuento(descuento);
                     bbItemProducto.getSuministroTB().setDescuentoCalculado(porcentajeRestante);
                     bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * Double.parseDouble(txtCantidad.getText()));
 
-                    bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(importe);
+                    bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(valor_sin_impuesto);
                     bbItemProducto.getSuministroTB().setPrecioVentaGeneralReal(preciocalculado);
 
                     double impuesto = Tools.calculateTax(bbItemProducto.getSuministroTB().getImpuestoValor(), bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
-
                     bbItemProducto.getSuministroTB().setImpuestoSumado(Double.parseDouble(txtCantidad.getText()) * impuesto);
                     bbItemProducto.getSuministroTB().setPrecioVentaGeneral(bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() + impuesto);
 
@@ -90,10 +86,7 @@ public class FxVentaDetalleProductoController implements Initializable {
                     bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
                     bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
 
-                    txtPrecio.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico(),2));
-                    lblSubTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporte(), 2));
-                    lblDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuentoSumado(), 2));
-                    lblTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporteDescuento(), 2));
+                    txtPrecio.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getPrecioVentaGeneral(), 2));
                 }
             }
         });
@@ -102,19 +95,21 @@ public class FxVentaDetalleProductoController implements Initializable {
     @FXML
     private void onKeyReleasedPrecio(KeyEvent event) {
         if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
-            double importe = Tools.isNumeric(txtPrecio.getText()) ? Double.parseDouble(txtPrecio.getText()) : 0;
+            double precio = Double.parseDouble(txtPrecio.getText());
 
-            double porcentajeRestante = importe * (Double.parseDouble(txtDescuento.getText()) / 100.00);
-            double preciocalculado = importe - porcentajeRestante;
+            double valor_sin_impuesto = precio / ((bbItemProducto.getSuministroTB().getImpuestoValor() / 100.00) + 1);
+            double descuento = Double.parseDouble(txtDescuento.getText());
+            double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+            double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
+            bbItemProducto.getSuministroTB().setDescuento(descuento);
             bbItemProducto.getSuministroTB().setDescuentoCalculado(porcentajeRestante);
             bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * Double.parseDouble(txtCantidad.getText()));
 
-            bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(importe);
+            bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(valor_sin_impuesto);
             bbItemProducto.getSuministroTB().setPrecioVentaGeneralReal(preciocalculado);
 
             double impuesto = Tools.calculateTax(bbItemProducto.getSuministroTB().getImpuestoValor(), bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
-
             bbItemProducto.getSuministroTB().setImpuestoSumado(Double.parseDouble(txtCantidad.getText()) * impuesto);
             bbItemProducto.getSuministroTB().setPrecioVentaGeneral(bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() + impuesto);
 
@@ -122,53 +117,29 @@ public class FxVentaDetalleProductoController implements Initializable {
             bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
             bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
 
-            lblSubTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporte(), 2));
-            lblDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuentoSumado(), 2));
-            lblTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporteDescuento(), 2));
         }
     }
 
     @FXML
     private void onKeyReleasedCantidad(KeyEvent event) {
         if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
+            double precio = Double.parseDouble(txtPrecio.getText());
             double cantidad = Double.parseDouble(txtCantidad.getText());
             bbItemProducto.getSuministroTB().setCantidad(cantidad);
-            double porcentajeRestante = bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * (Double.parseDouble(txtDescuento.getText()) / 100.00);
 
-            bbItemProducto.getSuministroTB().setDescuentoCalculado(porcentajeRestante);
-            bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * Double.parseDouble(txtCantidad.getText()));
-
-            double impuesto = Tools.calculateTax(bbItemProducto.getSuministroTB().getImpuestoValor(), Double.parseDouble(txtPrecio.getText()));
-            bbItemProducto.getSuministroTB().setImpuestoSumado(Double.parseDouble(txtCantidad.getText()) * impuesto);
-
-            bbItemProducto.getSuministroTB().setSubImporte(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * Double.parseDouble(txtCantidad.getText()));
-            bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * Double.parseDouble(txtPrecio.getText()));
-            bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * Double.parseDouble(txtPrecio.getText()));
-
-            lblSubTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporte(), 2));
-            lblDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuentoSumado(), 2));
-            lblTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporteDescuento(), 2));
-        }
-    }
-
-    @FXML
-    private void onKeyReleasedDescuento(KeyEvent event) {
-        if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
-            double precio = Double.parseDouble(txtPrecio.getText());
-
+            double valor_sin_impuesto = precio / ((bbItemProducto.getSuministroTB().getImpuestoValor() / 100.00) + 1);
             double descuento = Double.parseDouble(txtDescuento.getText());
-            double porcentajeRestante = precio * (descuento / 100.00);
-            double preciocalculado = precio - porcentajeRestante;
+            double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+            double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
             bbItemProducto.getSuministroTB().setDescuento(descuento);
             bbItemProducto.getSuministroTB().setDescuentoCalculado(porcentajeRestante);
             bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * Double.parseDouble(txtCantidad.getText()));
 
-            bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(precio);
+            bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(valor_sin_impuesto);
             bbItemProducto.getSuministroTB().setPrecioVentaGeneralReal(preciocalculado);
 
             double impuesto = Tools.calculateTax(bbItemProducto.getSuministroTB().getImpuestoValor(), bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
-
             bbItemProducto.getSuministroTB().setImpuestoSumado(Double.parseDouble(txtCantidad.getText()) * impuesto);
             bbItemProducto.getSuministroTB().setPrecioVentaGeneral(bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() + impuesto);
 
@@ -176,10 +147,34 @@ public class FxVentaDetalleProductoController implements Initializable {
             bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
             bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
 
-            lblSubTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporte(), 2));
-            lblDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuentoSumado(), 2));
-            lblTotal.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getSubImporteDescuento(), 2));
         }
+    }
+
+    @FXML
+    private void onKeyReleasedDescuento(KeyEvent event) {
+//        if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
+//            double precio = Double.parseDouble(txtPrecio.getText());
+//
+//            double descuento = Double.parseDouble(txtDescuento.getText());
+//            double porcentajeRestante = precio * (descuento / 100.00);
+//            double preciocalculado = precio - porcentajeRestante;
+//
+//            bbItemProducto.getSuministroTB().setDescuento(descuento);
+//            bbItemProducto.getSuministroTB().setDescuentoCalculado(porcentajeRestante);
+//            bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * Double.parseDouble(txtCantidad.getText()));
+//
+//            bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(precio);
+//            bbItemProducto.getSuministroTB().setPrecioVentaGeneralReal(preciocalculado);
+//
+//            double impuesto = Tools.calculateTax(bbItemProducto.getSuministroTB().getImpuestoValor(), bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+//
+//            bbItemProducto.getSuministroTB().setImpuestoSumado(Double.parseDouble(txtCantidad.getText()) * impuesto);
+//            bbItemProducto.getSuministroTB().setPrecioVentaGeneral(bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() + impuesto);
+//
+//            bbItemProducto.getSuministroTB().setSubImporte(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * Double.parseDouble(txtCantidad.getText()));
+//            bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+//            bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+//        }
     }
 
     @FXML

@@ -48,53 +48,6 @@
                         <ListView fx:id="tvListPrecios" prefHeight="240.0" prefWidth="320.0" />
                      </children>
                   </VBox>
-                  <VBox prefWidth="320.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <HBox>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="labelRoboto13" text="SubTotal:" textFill="#020203" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label fx:id="lblSubTotal" styleClass="labelRoboto13" text="0.00" textFill="#020203" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </HBox>
-                        <HBox>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="labelRoboto13" text="Descuento:" textFill="#020203" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label fx:id="lblDescuento" styleClass="labelRoboto13" text="0.00" textFill="#020203" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </HBox>
-                        <HBox minHeight="1.0" prefHeight="1.0" style="-fx-background-color: #999999;" />
-                        <HBox>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label styleClass="labelRobotoBold13" text="Total:" textFill="#020203" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label fx:id="lblTotal" styleClass="labelRobotoBold13" text="0.00" textFill="#020203" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">

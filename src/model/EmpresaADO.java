@@ -44,9 +44,20 @@ public class EmpresaADO {
                 return "updated";
             } else {
                 statementEmpresa = DBUtil.getConnection().prepareStatement("INSERT INTO EmpresaTB"
-                        + "(GiroComercial,Nombre,Telefono,Celular,PaginaWeb,Email,Domicilio,\n"
-                        + "TipoDocumento,NumeroDocumento,RazonSocial,NombreComercial,Image,Ubigeo)\n"
-                        + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "(GiroComercial,\n"
+                        + "Nombre,\n"
+                        + "Telefono,\n"
+                        + "Celular,\n"
+                        + "PaginaWeb,\n"
+                        + "Email,\n"
+                        + "Domicilio,\n"
+                        + "TipoDocumento,\n"
+                        + "NumeroDocumento,\n"
+                        + "RazonSocial,\n"
+                        + "NombreComercial,\n"
+                        + "Image,\n"
+                        + "Ubigeo)\n"
+                        + "values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 statementEmpresa.setInt(1, empresaTB.getGiroComerial());
                 statementEmpresa.setString(2, empresaTB.getNombre());
                 statementEmpresa.setString(3, empresaTB.getTelefono());

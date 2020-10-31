@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 
 public class VentaADO {
 
-    public static String registrarVentaContado(VentaTB ventaTB, ArrayList<SuministroTB> tvList, int idTipoDocumento) {
+    public static ResultTransaction registrarVentaContado(VentaTB ventaTB, ArrayList<SuministroTB> tvList, int idTipoDocumento) {
 
         CallableStatement serie_numeracion = null;
         CallableStatement codigoCliente = null;
@@ -31,6 +31,8 @@ public class VentaADO {
         PreparedStatement suministro_update_granel = null;
         PreparedStatement suministro_kardex = null;
         PreparedStatement movimiento_caja = null;
+        ResultTransaction resultTransaction = new ResultTransaction();
+        resultTransaction.setResult("Error en completar la petición intente nuevamente por favor.");
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -39,6 +41,7 @@ public class VentaADO {
             int dig5 = rd.nextInt(90000) + 10000;
 
             int countValidate = 0;
+            ArrayList<String> arrayResult = new ArrayList();
             ventaVerificar = DBUtil.getConnection().prepareStatement("SELECT Cantidad FROM SuministroTB WHERE IdSuministro = ?");
             for (int i = 0; i < tvList.size(); i++) {
                 ventaVerificar.setString(1, tvList.get(i).getIdSuministro());
@@ -48,13 +51,15 @@ public class VentaADO {
                     double cb = resultValidate.getDouble("Cantidad");
                     if (ca > cb) {
                         countValidate++;
-                    } 
+                        arrayResult.add(tvList.get(i).getClave() + " - " + tvList.get(i).getNombreMarca() +" - Cantidad actual(" + Tools.roundingValue(cb, 2) +")");
+                    }
                 }
             }
 
             if (countValidate > 0) {
                 DBUtil.getConnection().rollback();
-                return "nocantidades/";
+                resultTransaction.setCode("nocantidades");
+                resultTransaction.setArrayResult(arrayResult);
             } else {
                 cliente = DBUtil.getConnection().prepareStatement("INSERT INTO ClienteTB(IdCliente,TipoDocumento,NumeroDocumento,Informacion,Telefono,Celular,Email,Direccion,Representante,Estado,Predeterminado,Sistema)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
                 ventaTB.setIdCliente(ventaTB.getClienteTB().getIdCliente());
@@ -283,14 +288,17 @@ public class VentaADO {
                 suministro_update_granel.executeBatch();
                 suministro_kardex.executeBatch();
                 DBUtil.getConnection().commit();
-                return "register/" + id_venta;
+                resultTransaction.setCode("register");
+                resultTransaction.setResult(id_venta);
             }
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
-                return ex.getLocalizedMessage() + "/";
+                resultTransaction.setCode("error");
+                resultTransaction.setResult(ex.getLocalizedMessage());
             } catch (SQLException ex1) {
-                return ex1.getLocalizedMessage() + "/";
+                resultTransaction.setCode("error");
+                resultTransaction.setResult(ex1.getLocalizedMessage());
             }
         } finally {
             try {
@@ -337,6 +345,8 @@ public class VentaADO {
             } catch (SQLException e) {
             }
         }
+
+        return resultTransaction;
     }
 
     public static ArrayList<Object> ListVentas(short opcion, String value, String fechaInicial, String fechaFinal, int comprobante, int estado, String usuario, int posicionPagina, int filasPorPagina) {

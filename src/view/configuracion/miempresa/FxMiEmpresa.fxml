@@ -131,7 +131,7 @@
                                        <children>
                                           <HBox minHeight="200.0" minWidth="200.0" style="-fx-border-color: #ccc;">
                                              <children>
-                                                <ImageView fx:id="lnPrincipal" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="lnPrincipal" fitHeight="200.0" fitWidth="220.0" pickOnBounds="true">
                                                    <image>
                                                       <Image url="@../../image/no-image.png" />
                                                    </image>
@@ -165,7 +165,7 @@
                                           </HBox>
                                           <HBox>
                                              <children>
-                                                <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="labelOpenSansRegular11" text="El tamaño máximo para el logo es de 200px por 200px" textFill="#020203" wrapText="true" HBox.hgrow="ALWAYS" />
+                                                <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="labelOpenSansRegular11" text="El tamaño máximo para el logo es de 220px por 200px" textFill="#020203" wrapText="true" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                        </children>
