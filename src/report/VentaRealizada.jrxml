@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="30"/>
-	<property name="ireport.y" value="529"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -544,9 +544,9 @@
 		</band>
 	</detail>
 	<lastPageFooter>
-		<band height="148" splitType="Stretch">
+		<band height="141" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="555" height="148" uuid="0d8f58eb-a68d-4db6-9b11-adae46872627"/>
+				<reportElement x="0" y="0" width="555" height="141" uuid="0d8f58eb-a68d-4db6-9b11-adae46872627"/>
 				<graphicElement>
 					<pen lineWidth="0.25" lineColor="#373B46"/>
 				</graphicElement>
@@ -640,7 +640,7 @@
 				<reportElement x="110" y="80" width="56" height="1" uuid="c338a9e9-17a7-4183-ad96-55889c96bbc5"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="104" width="249" height="25" uuid="b193a854-2471-4e19-b1a0-1e72572b9ada"/>
+				<reportElement x="0" y="104" width="249" height="18" uuid="b193a854-2471-4e19-b1a0-1e72572b9ada"/>
 				<textElement>
 					<font fontName="Arial" size="7"/>
 					<paragraph leftIndent="5"/>
@@ -649,19 +649,19 @@
 Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="249" y="104" width="36" height="25" backcolor="#B5B5B5" uuid="873407f0-97ab-4fdf-bf8a-2aee29299b4f"/>
+				<reportElement x="249" y="104" width="36" height="18" backcolor="#B5B5B5" uuid="873407f0-97ab-4fdf-bf8a-2aee29299b4f"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="285" y="104" width="270" height="44" backcolor="#FE3152" uuid="36837bd8-00cd-4064-af2e-a361cf7e904c"/>
+				<reportElement x="285" y="104" width="270" height="37" backcolor="#FE3152" uuid="36837bd8-00cd-4064-af2e-a361cf7e904c"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="284" y="104" width="271" height="44" forecolor="#F0F3FC" uuid="c885ce9a-ee8e-4214-b6b2-4dad818ea73e"/>
+				<reportElement x="284" y="104" width="271" height="37" forecolor="#F0F3FC" uuid="c885ce9a-ee8e-4214-b6b2-4dad818ea73e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="13"/>
 				</textElement>
@@ -785,26 +785,26 @@ Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 )]]></imageExpression>
 			</image>
 			<rectangle>
-				<reportElement x="0" y="129" width="249" height="19" backcolor="#373B46" uuid="884cf783-36a2-4245-a2ff-10f982e31dd1"/>
+				<reportElement x="0" y="122" width="249" height="19" backcolor="#373B46" uuid="884cf783-36a2-4245-a2ff-10f982e31dd1"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="249" y="129" width="36" height="19" backcolor="#576767" uuid="a0957475-42c7-465a-b7b2-819d017172a6"/>
+				<reportElement x="249" y="122" width="36" height="19" backcolor="#576767" uuid="a0957475-42c7-465a-b7b2-819d017172a6"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="129" width="249" height="19" forecolor="#F0F3FC" uuid="4f2bf4c2-debc-455a-a60d-77af24aa770a"/>
+				<reportElement x="0" y="122" width="249" height="19" forecolor="#F0F3FC" uuid="4f2bf4c2-debc-455a-a60d-77af24aa770a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<text><![CDATA[Generado por SysSoft Integra]]></text>
 			</staticText>
 			<image>
-				<reportElement x="2" y="131" width="16" height="16" uuid="77211c7b-3799-41cf-8ece-9df7a7f3da58"/>
+				<reportElement x="2" y="124" width="16" height="16" uuid="77211c7b-3799-41cf-8ece-9df7a7f3da58"/>
 				<imageExpression><![CDATA[$P{ICON}]]></imageExpression>
 			</image>
 		</band>

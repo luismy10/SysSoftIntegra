@@ -114,9 +114,9 @@ public class FxVentaRealizadasController implements Initializable {
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
-        tcFechaVenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
-        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
-        tcCliente.prefWidthProperty().bind(tvList.widthProperty().multiply(0.23));
+        tcFechaVenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcCliente.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
         tcTipo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
@@ -196,7 +196,7 @@ public class FxVentaRealizadasController implements Initializable {
                 totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 20.00));
                 lblPaginaActual.setText(paginacion + "");
                 lblPaginaSiguiente.setText(totalPaginacion + "");
-                
+
                 double ventaTotal = (double) objects.get(2);
                 lblTotal.setText(Tools.roundingValue(ventaTotal, 2));
                 lblLoad.setVisible(false);

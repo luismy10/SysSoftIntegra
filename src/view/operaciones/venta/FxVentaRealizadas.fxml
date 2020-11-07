@@ -137,9 +137,9 @@
                                           <ComboBox fx:id="cbEstado" onAction="#onActionEstado" prefHeight="30.0" prefWidth="220.0" promptText="Seleccione" />
                                        </children>
                                     </VBox>
-                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                    <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular13" text="Total de Ventas" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Total de Ventas" textFill="#020203" VBox.vgrow="ALWAYS">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -151,7 +151,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <Label fx:id="lblTotal" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold17" text="0.00" textFill="#020203" VBox.vgrow="ALWAYS" />
+                                          <Label fx:id="lblTotal" maxHeight="1.7976931348623157E308" styleClass="labelRobotoBold17" text="0.00" textFill="#020203" VBox.vgrow="ALWAYS" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -216,7 +216,7 @@
                                     <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                                          <TableColumn fx:id="tcFechaVenta" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
+                                          <TableColumn fx:id="tcFechaVenta" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de venta" />
                                           <TableColumn fx:id="tcCliente" prefWidth="190.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
                                           <TableColumn fx:id="tcSerie" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Comprobante" />
                                           <TableColumn fx:id="tcTipo" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de Venta" />

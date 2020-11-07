@@ -79,7 +79,7 @@ public class FxVentaDevolucionController implements Initializable {
                         MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
                         movimientoCajaTB.setHoraMovimiento(Tools.getHour());
-                        movimientoCajaTB.setComentario(txtObservacion.getText());
+                        movimientoCajaTB.setComentario(txtObservacion.getText().toUpperCase());
                         movimientoCajaTB.setTipoMovimiento((short) 5);
                         movimientoCajaTB.setMonto(totalVenta);
                         return VentaADO.CancelTheSale(idVenta, arrList, movimientoCajaTB);

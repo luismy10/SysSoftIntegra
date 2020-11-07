@@ -31,7 +31,7 @@
                <children>
                   <Label styleClass="labelRobotoBold15" text="Detalle de la compra" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/articles.png" />
                            </image>

@@ -51,7 +51,7 @@ public class VentaADO {
                     double cb = resultValidate.getDouble("Cantidad");
                     if (ca > cb) {
                         countValidate++;
-                        arrayResult.add(tvList.get(i).getClave() + " - " + tvList.get(i).getNombreMarca() +" - Cantidad actual(" + Tools.roundingValue(cb, 2) +")");
+                        arrayResult.add(tvList.get(i).getClave() + " - " + tvList.get(i).getNombreMarca() + " - Cantidad actual(" + Tools.roundingValue(cb, 2) + ")");
                     }
                 }
             }
@@ -211,18 +211,18 @@ public class VentaADO {
                     detalle_venta.setDouble(3, tvList.get(i).getCantidad());
 
                     double cantidadGranel = tvList.get(i).getPrecioVentaGeneralAuxiliar() <= 0 ? 0
-                            : tvList.get(i).getPrecioVentaGeneralReal() / tvList.get(i).getPrecioVentaGeneralAuxiliar();
+                            : tvList.get(i).getPrecioVentaGeneral() / tvList.get(i).getPrecioVentaGeneralAuxiliar();
 
                     detalle_venta.setDouble(4, cantidadGranel);
                     detalle_venta.setDouble(5, tvList.get(i).getCostoCompra());
-                    detalle_venta.setDouble(6, tvList.get(i).getPrecioVentaGeneralReal());
+                    detalle_venta.setDouble(6, tvList.get(i).getPrecioVentaGeneral());
                     detalle_venta.setDouble(7, tvList.get(i).getDescuento());
                     detalle_venta.setDouble(8, tvList.get(i).getDescuentoCalculado());
                     detalle_venta.setDouble(9, tvList.get(i).getImpuestoOperacion());
                     detalle_venta.setDouble(10, tvList.get(i).getImpuestoId());
                     detalle_venta.setString(11, tvList.get(i).getImpuestoNombre());
                     detalle_venta.setDouble(12, tvList.get(i).getImpuestoValor());
-                    detalle_venta.setDouble(13, tvList.get(i).getTotalImporte());
+                    detalle_venta.setDouble(13, tvList.get(i).getPrecioVentaGeneral() * tvList.get(i).getCantidad());
                     detalle_venta.addBatch();
 
                     if (tvList.get(i).isInventario() && tvList.get(i).getValorInventario() == 1) {
@@ -371,7 +371,7 @@ public class VentaADO {
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setId(rsEmps.getRow() + posicionPagina);
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
-                ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+                ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 ventaTB.setIdCliente(rsEmps.getString("Cliente"));
                 ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
@@ -606,27 +606,50 @@ public class VentaADO {
                                 suministroTB.setCantidadGranel(resultSetLista.getDouble("CantidadGranel"));
                                 suministroTB.setCostoCompra(resultSetLista.getDouble("CostoVenta"));
 
-                                suministroTB.setDescuento(resultSetLista.getDouble("Descuento"));
-
-                                suministroTB.setPrecioVentaGeneralUnico(resultSetLista.getDouble("PrecioVenta") + resultSetLista.getDouble("DescuentoCalculado"));
-                                suministroTB.setPrecioVentaGeneralReal(resultSetLista.getDouble("PrecioVenta"));
-
-                                double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
-                                suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-
                                 suministroTB.setImpuestoNombre(resultSetLista.getString("NombreImpuesto"));
                                 suministroTB.setImpuestoId(resultSetLista.getInt("IdImpuesto"));
                                 suministroTB.setImpuestoValor(resultSetLista.getDouble("ValorImpuesto"));
 
+                                double valor_sin_impuesto = resultSetLista.getDouble("PrecioVenta") / ((suministroTB.getImpuestoValor() / 100.00) + 1);
+                                double descuento = suministroTB.getDescuento();
+                                double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                                double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                                suministroTB.setDescuento(descuento);
+                                suministroTB.setDescuentoCalculado(porcentajeRestante);
+                                suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+
+                                suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+                                suministroTB.setPrecioVentaGeneralReal(preciocalculado);
+
                                 double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
                                 suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
-
                                 suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
                                 suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
                                 suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
                                 suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
+//                                suministroTB.setDescuento(resultSetLista.getDouble("Descuento"));
+//
+//                                suministroTB.setPrecioVentaGeneralUnico(resultSetLista.getDouble("PrecioVenta") + resultSetLista.getDouble("DescuentoCalculado"));
+//                                suministroTB.setPrecioVentaGeneralReal(resultSetLista.getDouble("PrecioVenta"));
+//
+//                                double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
+//                                suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+//
+//                                suministroTB.setImpuestoNombre(resultSetLista.getString("NombreImpuesto"));
+//                                suministroTB.setImpuestoId(resultSetLista.getInt("IdImpuesto"));
+//                                suministroTB.setImpuestoValor(resultSetLista.getDouble("ValorImpuesto"));
+//
+//                                double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+//                                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+//
+//                                suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+//
+//                                suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+//                                suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+//                                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
                                 empList.add(suministroTB);
                             }
                             ventaTB.setSuministroTBs(empList);

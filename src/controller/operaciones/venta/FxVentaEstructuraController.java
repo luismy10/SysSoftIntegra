@@ -468,7 +468,6 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     private void filterSuministro(String search) {
-
         SuministroTB a = SuministroADO.Get_Suministro_By_Search(search);
         if (a != null) {
             if (vender_con_cantidades_negativas && a.getCantidad() <= 0) {

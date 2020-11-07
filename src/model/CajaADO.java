@@ -558,9 +558,9 @@ public class CajaADO {
             while (result.next()) {
                 CajaTB cajaTB = new CajaTB();
                 cajaTB.setIdCaja(result.getString("IdCaja"));
-                cajaTB.setFechaApertura(result.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+                cajaTB.setFechaApertura(result.getDate("FechaApertura").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 cajaTB.setHoraApertura(result.getTime("HoraApertura").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                cajaTB.setFechaCierre(result.getDate("FechaCierre").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+                cajaTB.setFechaCierre(result.getDate("FechaCierre").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 cajaTB.setHoraCierre(result.getTime("HoraCierre").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 cajaTB.setEstado(result.getBoolean("Estado"));
                 cajaTB.setContado(result.getDouble("Contado"));
@@ -568,8 +568,8 @@ public class CajaADO {
                 cajaTB.setDiferencia(result.getDouble("Diferencia"));
                 cajaTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
                 Label label = new Label(cajaTB.isEstado() ? "APERTURADO" : "CERRADO");
-                label.getStyleClass().add("labelRoboto14");
-                label.setTextFill(Color.web(cajaTB.isEstado() ? "#016e29" : "#1a2226"));
+                label.getStyleClass().add("labelRoboto13");
+                label.setTextFill(Color.web(cajaTB.isEstado() ? "#008c1e" : "#bb0202"));
                 cajaTB.setLabelEstado(label);
                 empList.add(cajaTB);
             }

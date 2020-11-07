@@ -18,7 +18,7 @@
                <children>
                   <Label styleClass="labelRobotoBold15" text="Registrar movimiento de caja" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/caja_registradora.png" />
                            </image>
@@ -46,7 +46,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <ComboBox fx:id="cbMovimiento" prefWidth="210.0" promptText="Seleccione" />
+                                          <ComboBox fx:id="cbMovimiento" prefHeight="30.0" prefWidth="200.0" promptText="Seleccione" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
@@ -60,7 +60,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtMonto" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedMonto" prefWidth="210.0" promptText="0.00" styleClass="text-field-normal" />
+                                          <TextField fx:id="txtMonto" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedMonto" prefHeight="30.0" prefWidth="200.0" promptText="0.00" styleClass="text-field-normal" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -76,7 +76,7 @@
                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRoboto13" text="Comentario" textFill="#020203" />
-                        <TextField fx:id="txtComentario" onAction="#onActionAceptar" promptText="Ingrese su comentario" styleClass="text-field-normal" />
+                        <TextField fx:id="txtComentario" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="200.0" promptText="Ingrese su comentario" styleClass="text-field-normal" />
                      </children>
                   </VBox>
                </children>
@@ -85,7 +85,7 @@
                <children>
                   <Button fx:id="btnEjecutar" mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightSuccess" text="Ejecutar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image>
@@ -94,7 +94,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>
