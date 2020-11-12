@@ -94,6 +94,7 @@ public class FxVentaProcesoController implements Initializable {
 
     private boolean state_view_pago;
 
+    private boolean provilegios;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
@@ -108,7 +109,7 @@ public class FxVentaProcesoController implements Initializable {
         tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
     }
 
-    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList) {
+    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList,boolean provilegios) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
@@ -118,6 +119,7 @@ public class FxVentaProcesoController implements Initializable {
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
         lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ""));
         hbContenido.setDisable(false);
+        this.provilegios=provilegios;
     }
 
     private void TotalAPagar() {
@@ -239,7 +241,7 @@ public class FxVentaProcesoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante());
+                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(),provilegios);
                     switch (result.getCode()) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");

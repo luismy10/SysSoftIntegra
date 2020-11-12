@@ -137,7 +137,7 @@
                                           <ComboBox fx:id="cbEstado" onAction="#onActionEstado" prefHeight="30.0" prefWidth="220.0" promptText="Seleccione" />
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
+                                    <VBox fx:id="vbTotalVenta" alignment="CENTER_RIGHT" style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label styleClass="labelOpenSansRegular13" text="Total de Ventas" textFill="#020203" VBox.vgrow="ALWAYS">
                                              <font>

@@ -193,7 +193,6 @@ public class FxVentaReporteController implements Initializable {
                 stage.setResizable(true);
                 stage.show();
                 stage.requestFocus();
-
             }
 
         } catch (HeadlessException | JRException | IOException ex) {

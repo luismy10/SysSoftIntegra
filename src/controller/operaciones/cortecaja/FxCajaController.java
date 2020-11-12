@@ -57,7 +57,9 @@ public class FxCajaController implements Initializable {
     private Label lblIngresosEfectivo;
     @FXML
     private Label lblRetirosEfectivo;
-
+    @FXML
+    private VBox vbVentas;
+    
     private AnchorPane vbPrincipal;
 
     private double totalDineroCaja;
@@ -65,6 +67,7 @@ public class FxCajaController implements Initializable {
     private double totalTarjeta;
 
     private String idActual;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -75,9 +78,14 @@ public class FxCajaController implements Initializable {
         if (privilegioTBs.get(0).getIdPrivilegio() != 0 && !privilegioTBs.get(0).isEstado()) {
             btnRealizarCorte.setDisable(true);
         }
-
         if (privilegioTBs.get(1).getIdPrivilegio() != 0 && !privilegioTBs.get(1).isEstado()) {
             btnTerminarTurno.setDisable(true);
+        }
+        if(privilegioTBs.get(2).getIdPrivilegio() != 0 && !privilegioTBs.get(2).isEstado()){
+            lblTotalVentas.setVisible(false);
+            lblVentaEfectivo.setVisible(false);
+            lblVentaTarjeta.setVisible(false);
+            lblTotal.setVisible(false);
         }
     }
 
