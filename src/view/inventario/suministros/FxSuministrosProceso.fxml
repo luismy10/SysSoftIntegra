@@ -379,7 +379,6 @@
                                                 <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                                   <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                   </columnConstraints>
@@ -388,13 +387,12 @@
                                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <Label styleClass="labelRoboto13" text="Precio de Venta Neto" textFill="#020203" GridPane.rowIndex="1" />
-                                                      <Label styleClass="labelRoboto13" text="Precio de Venta 1" GridPane.columnIndex="1" />
-                                                      <TextField fx:id="txtPrecioVentaNeto1" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioNeto1" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                      <Label styleClass="labelRoboto13" text="Precio de Venta 2" textFill="#23283a" GridPane.columnIndex="2" />
-                                                      <TextField fx:id="txtPrecioVentaNeto2" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioNeto2" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                      <Label styleClass="labelRoboto13" text="Precio de Venta 3" textFill="#23283a" GridPane.columnIndex="3" />
-                                                      <TextField fx:id="txtPrecioVentaNeto3" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioNeto3" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <Label styleClass="labelRoboto13" text="Precio General" />
+                                                      <TextField fx:id="txtPrecioVentaNeto1" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioNeto1" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.rowIndex="1" />
+                                                      <Label styleClass="labelRoboto13" text="Precio de Venta 2" textFill="#23283a" GridPane.columnIndex="1" />
+                                                      <TextField fx:id="txtPrecioVentaNeto2" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioNeto2" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <Label styleClass="labelRoboto13" text="Precio de Venta 3" textFill="#23283a" GridPane.columnIndex="2" />
+                                                      <TextField fx:id="txtPrecioVentaNeto3" onAction="#onActionToRegister" onKeyTyped="#onKeyTypedPrecioNeto3" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                    </children>
                                                 </GridPane>
                                              </children>

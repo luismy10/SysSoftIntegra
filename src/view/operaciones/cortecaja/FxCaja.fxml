@@ -80,7 +80,7 @@
                                  </children>
                               </VBox>
                               <Separator orientation="VERTICAL" />
-                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbVentas" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRobotoBold15" text="Ventas:" textFill="#020203" />
                                     <Label fx:id="lblTotalVentas" styleClass="labelRoboto15" text="M 00.00" textFill="#020203" />

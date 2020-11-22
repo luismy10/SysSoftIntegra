@@ -187,6 +187,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
     public void setInitArticulo() {
         clearElements();
         rbPrecioNormal.setSelected(true);
+        txtPrecioVentaNeto2.setId(""+0);
+        txtPrecioVentaNeto3.setId(""+0);
         vbContenedorPrecioNormal.getChildren().add(hbPrecioNormal);
         setIniciarCarga();
         txtClave.requestFocus();

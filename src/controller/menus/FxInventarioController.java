@@ -254,7 +254,7 @@ public class FxInventarioController implements Initializable {
         vbContent.getChildren().add(nodeMovimiento);
         if (controllerMovimiento.getTvList().getItems().isEmpty()) {
             controllerMovimiento.setOpcion((short) 1);
-            controllerMovimiento.fillTableMovimiento(false, (short) 1, 0, Tools.getDate(), Tools.getDate());
+            controllerMovimiento.loadInitTable();
         }
     }
 

@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 
 public class VentaADO {
 
-    public static ResultTransaction registrarVentaContado(VentaTB ventaTB, ArrayList<SuministroTB> tvList, int idTipoDocumento) {
+    public static ResultTransaction registrarVentaContado(VentaTB ventaTB, ArrayList<SuministroTB> tvList, int idTipoDocumento,boolean privilegio) {
 
         CallableStatement serie_numeracion = null;
         CallableStatement codigoCliente = null;
@@ -56,7 +56,7 @@ public class VentaADO {
                 }
             }
 
-            if (countValidate > 0) {
+            if (privilegio && countValidate > 0) {
                 DBUtil.getConnection().rollback();
                 resultTransaction.setCode("nocantidades");
                 resultTransaction.setArrayResult(arrayResult);
@@ -310,6 +310,9 @@ public class VentaADO {
                 }
                 if (venta != null) {
                     venta.close();
+                }
+                if(ventaVerificar != null){
+                    ventaVerificar.close();
                 }
                 if (clienteVerificar != null) {
                     clienteVerificar.close();
@@ -883,14 +886,14 @@ public class VentaADO {
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setComprobanteName(resultSet.getString("Nombre"));
                 ventaTB.setFechaVenta(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                ventaTB.setIdCliente(resultSet.getString("Cliente"));
+                ventaTB.setIdCliente(resultSet.getString("NumeroDocumento")+"\n"+resultSet.getString("Cliente"));
                 ventaTB.setSerie(resultSet.getString("Serie") + "-" + resultSet.getString("Numeracion"));
                 ventaTB.setTipoName(resultSet.getString("Tipo"));
                 ventaTB.setEstado(resultSet.getInt("Estado"));
                 ventaTB.setEstadoName(resultSet.getString("EstadoName"));
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                 ventaTB.setTotal(resultSet.getDouble("Total"));
-                ventaTB.setTotalFormat(ventaTB.getMonedaName() + " " + Tools.roundingValue(
+                ventaTB.setTotalFormat( Tools.roundingValue(
                         resultSet.getInt("Estado") == 3
                         ? -resultSet.getDouble("Total") : resultSet.getDouble("Total"),
                         2));
@@ -910,7 +913,6 @@ public class VentaADO {
             } catch (SQLException ex) {
 
             }
-
         }
         return arrayList;
     }

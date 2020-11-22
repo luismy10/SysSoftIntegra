@@ -87,7 +87,9 @@ public class FxVentaRealizadasController implements Initializable {
     private Label lblPaginaSiguiente;
     @FXML
     private Label lblTotal;
-
+    @FXML
+    private VBox vbTotalVenta;
+    
     private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
@@ -99,6 +101,7 @@ public class FxVentaRealizadasController implements Initializable {
     private int totalPaginacion;
 
     private short opcion;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -160,6 +163,7 @@ public class FxVentaRealizadasController implements Initializable {
         }
         if (privilegioTBs.get(6).getIdPrivilegio() != 0 && !privilegioTBs.get(6).isEstado()) {
             hbVendedor.setDisable(true);
+            vbTotalVenta.setVisible(false);
         }
         if (privilegioTBs.get(7).getIdPrivilegio() != 0 && !privilegioTBs.get(7).isEstado()) {
             txtSearch.setDisable(true);

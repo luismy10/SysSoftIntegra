@@ -206,6 +206,8 @@ public class FxSuministrosProcesoController implements Initializable {
         clearElements();
         rbPrecioNormal.setSelected(true);
         vbContenedorPrecioNormal.getChildren().add(hbPrecioNormal);
+        txtPrecioVentaNeto2.setId("" + 0);
+        txtPrecioVentaNeto3.setId("" + 0);
         setIniciarCarga();
         txtClave.requestFocus();
         lblTitle.setText("Registrar datos del Producto");
@@ -338,7 +340,6 @@ public class FxSuministrosProcesoController implements Initializable {
         precios.setEstado(true);
 
         tvPrecios.getItems().add(precios);
-
     }
 
     private void executeEventRomeverPrice(PreciosTB preciosTB) {
@@ -352,7 +353,6 @@ public class FxSuministrosProcesoController implements Initializable {
     }
 
     private void loadEventos(ArrayList<Object> objects) {
-
         cbImpuesto.getItems().clear();
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
         list1.forEach(e -> {
@@ -886,7 +886,7 @@ public class FxSuministrosProcesoController implements Initializable {
             }
         } catch (NumberFormatException ex) {
             vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            System.out.println(ex.getLocalizedMessage());
+            System.out.println("Error view: " + ex.getLocalizedMessage());
         }
     }
 

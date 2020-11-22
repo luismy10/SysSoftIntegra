@@ -149,7 +149,7 @@ public class FxComprasController implements Initializable {
                         onViewRemove();
                         break;
                     case F5:
-                        short value = Tools.AlertMessageConfirmation(spWindow, "COmpras", "¿Está seguro de cancelar el venta?");
+                        short value = Tools.AlertMessageConfirmation(spWindow, "Compras", "¿Está seguro de cancelar el venta?");
                         if (value == 1) {
                             clearComponents();
                         }
@@ -586,7 +586,6 @@ public class FxComprasController implements Initializable {
     }
 
     public void calculateTotals() {
-
         totalBruto = 0;
         tvList.getItems().forEach(e -> {
             totalBruto += (e.getCantidad() * e.getPrecioCompra());

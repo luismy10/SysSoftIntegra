@@ -1,6 +1,5 @@
 package controller.consultas.pagar;
 
-import controller.consultas.compras.FxComprasDetalleController;
 import controller.operaciones.compras.FxAmortizarPagosController;
 import controller.reporte.FxReportViewController;
 import controller.tools.ConvertMonedaCadena;
@@ -43,7 +42,6 @@ import javafx.stage.Stage;
 import model.CompraADO;
 import model.CompraCreditoTB;
 import model.CompraTB;
-import model.ProveedorTB;
 import model.TransaccionTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -98,8 +96,6 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     private double pagado;
 
     private double diferencia;
-
-    private double monto;
 
     private Alert alert = null;
 
@@ -352,17 +348,17 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
 
                     map.put("NOMBRE_EMPRESA", Session.COMPANY_RAZON_SOCIAL);
                     map.put("NUMERODOCUMENTO_EMPRESA", Session.COMPANY_NUMERO_DOCUMENTO);
-                    map.put("DIRECCION_EMPRESA", Session.COMPANY_DOMICILIO.equalsIgnoreCase("") ? "Domicio no registrado" : Session.COMPANY_DOMICILIO);
-                    map.put("TELEFONOS_EMPRESA", (Session.COMPANY_TELEFONO.equalsIgnoreCase("") ? "Teléfono no registrado" : Session.COMPANY_TELEFONO) + " " + (Session.COMPANY_CELULAR.equalsIgnoreCase("") ? "Celular no registrado" : Session.COMPANY_CELULAR));
-                    map.put("EMAIL_EMPRESA", Session.COMPANY_EMAIL.equalsIgnoreCase("") ? "Email no registrado" : Session.COMPANY_EMAIL);
-                    map.put("PAGINAWEB_EMPRESA", Session.COMPANY_PAGINAWEB.equalsIgnoreCase("") ? "Pagina web no registrada" : Session.COMPANY_PAGINAWEB);
+                    map.put("DIRECCION_EMPRESA", Session.COMPANY_DOMICILIO.equalsIgnoreCase("") ? "- - -" : Session.COMPANY_DOMICILIO);
+                    map.put("TELEFONOS_EMPRESA", (Session.COMPANY_TELEFONO.equalsIgnoreCase("") ? "- - -" : Session.COMPANY_TELEFONO) + " " + (Session.COMPANY_CELULAR.equalsIgnoreCase("") ? "- - -" : Session.COMPANY_CELULAR));
+                    map.put("EMAIL_EMPRESA", Session.COMPANY_EMAIL.equalsIgnoreCase("") ? "- - -" : Session.COMPANY_EMAIL);
+                    map.put("PAGINAWEB_EMPRESA", Session.COMPANY_PAGINAWEB.equalsIgnoreCase("") ? "- - -" : Session.COMPANY_PAGINAWEB);
 //
                     map.put("NUMERODOCUMENTO_PROVEEDOR", compraTB.getProveedorTB().getNumeroDocumento());
                     map.put("INFORMACION_PROVEEDOR", compraTB.getProveedorTB().getRazonSocial());
-                    map.put("TELEFONO_PROVEEDOR", compraTB.getProveedorTB().getTelefono().equalsIgnoreCase("") ? "Teléfono no registrado" : compraTB.getProveedorTB().getTelefono());
-                    map.put("CELULAR_PROVEEDOR", compraTB.getProveedorTB().getCelular().equalsIgnoreCase("") ? "Celular no registrado" : compraTB.getProveedorTB().getCelular());
-                    map.put("EMAIL_PROVEEDOR", compraTB.getProveedorTB().getEmail().equalsIgnoreCase("") ? "Email no registrado" : compraTB.getProveedorTB().getEmail());
-                    map.put("DIRECCION_PROVEEDOR", compraTB.getProveedorTB().getDireccion().equalsIgnoreCase("") ? "Dirección no registrada" : compraTB.getProveedorTB().getDireccion());
+                    map.put("TELEFONO_PROVEEDOR", compraTB.getProveedorTB().getTelefono().equalsIgnoreCase("") ? "- - -" : compraTB.getProveedorTB().getTelefono());
+                    map.put("CELULAR_PROVEEDOR", compraTB.getProveedorTB().getCelular().equalsIgnoreCase("") ? "- - -" : compraTB.getProveedorTB().getCelular());
+                    map.put("EMAIL_PROVEEDOR", compraTB.getProveedorTB().getEmail().equalsIgnoreCase("") ? "- - -" : compraTB.getProveedorTB().getEmail());
+                    map.put("DIRECCION_PROVEEDOR", compraTB.getProveedorTB().getDireccion().equalsIgnoreCase("") ? "- - -" : compraTB.getProveedorTB().getDireccion());
 
                     map.put("NUM_TRANSACCION", idTransaccion);
                     map.put("FECHA_PAGO", transaccionTB.getFecha());
@@ -396,69 +392,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             exec.shutdown();
         }
     }
-
-    private void onEventReporteGeneral() {
-        try {
-            ArrayList<CompraCreditoTB> list = new ArrayList();
-            empList.stream().filter((cctb) -> (cctb.getCbSeleccion().isSelected() && cctb.getCbSeleccion().isDisable() && cctb.isEstado())).forEachOrdered((CompraCreditoTB cctb) -> {
-                CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
-                compraCreditoTB.setId(1);
-                compraCreditoTB.setIdTransaccion(cctb.getIdTransaccion());
-                compraCreditoTB.setFechaPago("Se realizó el pago de la fecha del " + cctb.getFechaRegistro() + " por el monto de " + Tools.roundingValue(cctb.getMonto(), 2));
-                compraCreditoTB.setMonto(cctb.getMonto());
-                monto += cctb.getMonto();
-                list.add(compraCreditoTB);
-            });
-
-            if (list.isEmpty()) {
-                Tools.AlertMessageWarning(spWindow, "Compra realizada", "No hay registros para mostrar en el reporte.");
-                return;
-            }
-
-            ProveedorTB proveedorTB = CompraADO.Obtener_Proveedor_Por_Id_Compra(idCompra);
-
-            InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
-            if (Session.COMPANY_IMAGE != null) {
-                imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
-            }
-
-            Map map = new HashMap();
-            map.put("LOGO", imgInputStream);
-            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
-            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
-            map.put("TELEFONOCELULAR", "TEL.: " + Session.COMPANY_TELEFONO + " CEL.: " + Session.COMPANY_CELULAR);
-            map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL);
-            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
-
-//            map.put("FECHA_EMISION", Tools.getDate("dd/MM/yyyy"));
-            map.put("PROVEEDOR", proveedorTB.getRazonSocial());
-            map.put("PROVEEDORNOMDOCUMENTO", proveedorTB.getTipoDocumentoName() + ":");
-            map.put("PROVEEDORNUMDOCUMENTO", proveedorTB.getNumeroDocumento());
-            map.put("PROVEEDORDIRECCION", proveedorTB.getDireccion().equalsIgnoreCase("") ? "Dirección no registrada" : proveedorTB.getDireccion());
-            map.put("PROVEEDORTELEFONOS", (proveedorTB.getTelefono().equalsIgnoreCase("") ? "Teléfono no registrado" : proveedorTB.getTelefono()) + " - " + (proveedorTB.getCelular().equalsIgnoreCase("") ? "Celular no registrado" : proveedorTB.getCelular()));
-            map.put("PROVEEDOREMAIL", proveedorTB.getEmail().equalsIgnoreCase("") ? "Email no registrada" : proveedorTB.getEmail());
-
-            map.put("TOTAL", Tools.roundingValue(monto, 2));
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(FxComprasDetalleController.class.getResourceAsStream("/report/CompraAmortizar.jasper"), map, new JRBeanCollectionDataSource(list));
-
-            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxReportViewController controller = fXMLLoader.getController();
-            controller.setJasperPrint(jasperPrint);
-            controller.show();
-            Stage stage = WindowStage.StageLoader(parent, "Reporte de Pago");
-            stage.setResizable(true);
-            stage.show();
-            stage.requestFocus();
-        } catch (HeadlessException | JRException | IOException ex) {
-            Tools.AlertMessageError(spWindow, "Reporte de Pago", "Error al generar el reporte : " + ex.getLocalizedMessage());
-        }
-    }
-
+    
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
         vbContent.getChildren().remove(spWindow);
@@ -480,18 +414,6 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     @FXML
     private void onActionAmortizar(ActionEvent event) {
         onEventAmortizar();
-    }
-
-    @FXML
-    private void onKeyPressedReporte(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            onEventReporteGeneral();
-        }
-    }
-
-    @FXML
-    private void onActionReporte(ActionEvent event) {
-        onEventReporteGeneral();
     }
 
     public void setInitCuentasPorPagar(AnchorPane vbPrincipal, AnchorPane vbContent, FxCuentasPorPagarController cuentasPorPagarController) {

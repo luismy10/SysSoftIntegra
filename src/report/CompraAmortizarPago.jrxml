@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5cfb5ef9-4286-4be4-bac4-94aecef59df6">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="371"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="902"/>
+	<property name="ireport.y" value="1053"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="NOMBRE_EMPRESA" class="java.lang.String"/>
 	<parameter name="NUMERODOCUMENTO_EMPRESA" class="java.lang.String"/>
@@ -24,9 +24,6 @@
 	<field name="id" class="java.lang.Integer"/>
 	<field name="fechaPago" class="java.lang.String"/>
 	<field name="monto" class="java.lang.Double"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="278" splitType="Stretch">
 			<textField>
@@ -37,7 +34,7 @@
 				<textFieldExpression><![CDATA[$P{NOMBRE_EMPRESA}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
-				<reportElement x="425" y="10" width="103" height="99" uuid="1fd8a5b2-f4d4-4862-bc04-34d5f2531c5f"/>
+				<reportElement x="428" y="16" width="103" height="99" uuid="1fd8a5b2-f4d4-4862-bc04-34d5f2531c5f"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<staticText>
@@ -399,19 +396,19 @@
 			<textField isStretchWithOverflow="true">
 				<reportElement x="18" y="39" width="130" height="20" uuid="477a7293-1d87-474a-bd46-3ac8ea31a23b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{INFORMACION_PROVEEDOR}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="182" y="39" width="130" height="20" uuid="ca8ec14b-d7bc-4a9b-aa7b-12e2f9432af9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NOMBRE_EMPRESA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="339" y="39" width="89" height="20" uuid="3cfbfe0d-d100-4987-ab97-422cca39721d"/>
+				<reportElement x="339" y="38" width="89" height="20" uuid="3cfbfe0d-d100-4987-ab97-422cca39721d"/>
 				<box>
 					<topPen lineWidth="1.0" lineColor="#CCCCCC"/>
 					<leftPen lineWidth="1.0" lineColor="#CCCCCC"/>
@@ -419,13 +416,13 @@
 					<rightPen lineWidth="1.0" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="11" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="428" y="39" width="126" height="20" backcolor="#CCCCCC" uuid="c30b19b7-4bca-40a8-9ec7-a4827d184a5e"/>
+				<reportElement mode="Opaque" x="428" y="38" width="126" height="20" backcolor="#CCCCCC" uuid="c30b19b7-4bca-40a8-9ec7-a4827d184a5e"/>
 				<box>
 					<topPen lineWidth="1.0" lineColor="#CCCCCC"/>
 					<leftPen lineWidth="1.0" lineColor="#CCCCCC"/>
@@ -433,7 +430,7 @@
 					<rightPen lineWidth="1.0" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="11" isBold="true"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{TOTAL}]]></textFieldExpression>

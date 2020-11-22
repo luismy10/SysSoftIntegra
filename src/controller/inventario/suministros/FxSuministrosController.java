@@ -130,7 +130,6 @@ public class FxSuministrosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-
             fXMLSuministrosProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_SUMINISTROS_PROCESO));
             nodeSuministrosProceso = fXMLSuministrosProceso.load();
             suministrosProcesoController = fXMLSuministrosProceso.getController();

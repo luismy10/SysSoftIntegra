@@ -390,7 +390,7 @@ public class GlobalADO {
                     + "UsuarioSol,"
                     + "ClaveSol,"
                     + "CertificadoRuta,"
-                    + "CertificadoClave)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "CertificadoClave)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             statementEmpresa.setInt(1, empresaTB.getGiroComerial());
             statementEmpresa.setString(2, empresaTB.getNombre());
             statementEmpresa.setString(3, empresaTB.getTelefono());
@@ -404,10 +404,10 @@ public class GlobalADO {
             statementEmpresa.setString(11, empresaTB.getNombreComercial());
             statementEmpresa.setBytes(12, empresaTB.getImage());
             statementEmpresa.setInt(13, empresaTB.getIdUbigeo());
-            statementEmpresa.setString(13, empresaTB.getUsuarioSol());
-            statementEmpresa.setString(14, empresaTB.getClaveSol());
-            statementEmpresa.setString(15, empresaTB.getCertificadoRuta());
-            statementEmpresa.setString(16, empresaTB.getCertificadoClave());
+            statementEmpresa.setString(14, empresaTB.getUsuarioSol());
+            statementEmpresa.setString(15, empresaTB.getClaveSol());
+            statementEmpresa.setString(16, empresaTB.getCertificadoRuta());
+            statementEmpresa.setString(17, empresaTB.getCertificadoClave());
             statementEmpresa.addBatch();
 
             statementMoneda = DBUtil.getConnection().prepareStatement("INSERT INTO MonedaTB("

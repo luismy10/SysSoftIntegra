@@ -322,10 +322,11 @@ public class MovimientoInventarioADO {
         return result;
     }
 
-    public static ObservableList<MovimientoInventarioTB> ListMovimientoInventario(boolean init, short opcion, int movimiento, String fechaInicial, String fechaFinal) {
-        String selectStmt = "{call Sp_Listar_Movimiento_Inventario(?,?,?,?,?)}";
+    public static ArrayList<Object> ListMovimientoInventario(boolean init, short opcion, int movimiento, String fechaInicial, String fechaFinal, int posicionPagina, int filasPorPagina) {
+        String selectStmt = "{call Sp_Listar_Movimiento_Inventario(?,?,?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
+        ArrayList<Object> objects = new ArrayList<>();
         ObservableList<MovimientoInventarioTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
@@ -335,10 +336,12 @@ public class MovimientoInventarioADO {
             preparedStatement.setInt(3, movimiento);
             preparedStatement.setString(4, fechaInicial);
             preparedStatement.setString(5, fechaFinal);
+            preparedStatement.setInt(6, posicionPagina);
+            preparedStatement.setInt(7, filasPorPagina);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 MovimientoInventarioTB movimientoInventarioTB = new MovimientoInventarioTB();
-                movimientoInventarioTB.setId(rsEmps.getRow());
+                movimientoInventarioTB.setId(rsEmps.getRow() + posicionPagina);
                 movimientoInventarioTB.setIdMovimientoInventario(rsEmps.getString("IdMovimientoInventario"));
                 movimientoInventarioTB.setFecha(rsEmps.getDate("Fecha").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
                 movimientoInventarioTB.setHora(rsEmps.getTime("Hora").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
@@ -363,12 +366,23 @@ public class MovimientoInventarioADO {
                 Button btn = new Button();
                 btn.getStyleClass().add("buttonLightWarning");
                 btn.setText("Ver");
-                btn.setOnAction((e) -> {
-                    //   openWindowMovimientoDetalle(movimientoInventarioTB.getIdMovimientoInventario(), vbPrincipal, hbWindow);
-                });
                 movimientoInventarioTB.setValidar(btn);
                 empList.add(movimientoInventarioTB);
             }
+            objects.add(empList);
+
+            preparedStatement = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Movimiento_Inventario_Count(?,?,?,?,?)}");
+            preparedStatement.setBoolean(1, init);
+            preparedStatement.setShort(2, opcion);
+            preparedStatement.setInt(3, movimiento);
+            preparedStatement.setString(4, fechaInicial);
+            preparedStatement.setString(5, fechaFinal);
+            rsEmps = preparedStatement.executeQuery();
+            Integer integer = 0;
+            if (rsEmps.next()) {
+                integer = rsEmps.getInt("Total");
+            }
+            objects.add(integer);
         } catch (SQLException e) {
             System.out.println("La operación de selección de SQL ha fallado: " + e);
 
@@ -385,7 +399,7 @@ public class MovimientoInventarioADO {
 
             }
         }
-        return empList;
+        return objects;
     }
 
     public static ArrayList<Object> Obtener_Movimiento_Inventario_By_Id(String idMovimiento) {

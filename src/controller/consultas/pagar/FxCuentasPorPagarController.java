@@ -189,6 +189,7 @@ public class FxCuentasPorPagarController implements Initializable {
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("LOGO", imgInputStream);
+            map.put("PERIODO", Tools.getDatePicker(dpFechaInicial)+" - "+Tools.getDatePicker(dpFechaFinal));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(tvList.getItems()));
 

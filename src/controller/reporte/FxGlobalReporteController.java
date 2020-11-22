@@ -41,7 +41,7 @@ public class FxGlobalReporteController implements Initializable {
     private DatePicker dpFechaFinal;
 
     private AnchorPane vbPrincipal;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
@@ -50,13 +50,13 @@ public class FxGlobalReporteController implements Initializable {
 
     private void openWindowReporte() {
         try {
-            
-            ArrayList<Double> arrayList = GlobalADO.ReporteGlobal(Tools.getDatePicker(dpFechaInicial),Tools.getDatePicker(dpFechaFinal));
-            if(arrayList.isEmpty()){
-               Tools.AlertMessageWarning(vbWindow, "Reporte de Inventario", "No hay datos para mostrar en el reporte.");
-               return; 
+
+            ArrayList<Double> arrayList = GlobalADO.ReporteGlobal(Tools.getDatePicker(dpFechaInicial), Tools.getDatePicker(dpFechaFinal));
+            if (arrayList.isEmpty()) {
+                Tools.AlertMessageWarning(vbWindow, "Reporte de Inventario", "No hay datos para mostrar en el reporte.");
+                return;
             }
-            
+
             double ventaContado = arrayList.get(0) == null ? 0 : arrayList.get(0);
             double ventaCredito = arrayList.get(1) == null ? 0 : arrayList.get(1);
             double ventasAnuladas = arrayList.get(2) == null ? 0 : arrayList.get(2);
@@ -66,24 +66,25 @@ public class FxGlobalReporteController implements Initializable {
             double compraCredito = arrayList.get(5) == null ? 0 : arrayList.get(5);
             double comprasanuladas = arrayList.get(6) == null ? 0 : arrayList.get(6);
 //            
-            double cuentasPorPagar = arrayList.get(7) == null ? 0 : arrayList.get(7);
-            double cuentasPorCobrar = arrayList.get(8) == null ? 0 : arrayList.get(8);
+            double cuentasPorCobrar = arrayList.get(8) == null ? 0 : arrayList.get(7);
+            double cuentasPorPagar= arrayList.get(7) == null ? 0 : arrayList.get(8);
+
 //            
-            double cantNegativas =arrayList.get(9) == null ? 0 : arrayList.get(9);
+            double cantNegativas = arrayList.get(9) == null ? 0 : arrayList.get(9);
             double cantIntermedias = arrayList.get(10) == null ? 0 : arrayList.get(10);
             double cantNecesarias = arrayList.get(11) == null ? 0 : arrayList.get(11);
             double cantExcedentes = arrayList.get(12) == null ? 0 : arrayList.get(12);
-            
+
             InputStream dir = getClass().getResourceAsStream("/report/ReporteGeneral.jasper");
 
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
-            
+
             map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
-            
+
             map.put("VENTASCONTADO", Tools.roundingValue(ventaContado, 2));
             map.put("VENTASCREDITO", Tools.roundingValue(ventaCredito, 2));
-            map.put("VENTASTOTAL", Tools.roundingValue( ventaContado + ventaCredito, 2));
+            map.put("VENTASTOTAL", Tools.roundingValue(ventaContado + ventaCredito, 2));
             map.put("VENTASANULADAS", Tools.roundingValue(ventasAnuladas, 2));
             map.put("VENTASUTILIDAD", Tools.roundingValue(ventautilidad, 2));
 //            
@@ -99,8 +100,7 @@ public class FxGlobalReporteController implements Initializable {
             map.put("CANTINTERMEDIAS", Tools.roundingValue(cantIntermedias, 2));
             map.put("CANTNECESARIAS", Tools.roundingValue(cantNecesarias, 2));
             map.put("CANTEXCEDENTES", Tools.roundingValue(cantExcedentes, 2));
-            
-            
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);

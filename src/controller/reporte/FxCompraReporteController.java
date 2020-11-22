@@ -89,12 +89,28 @@ public class FxCompraReporteController implements Initializable {
                     Tools.AlertMessageWarning(vbWindow, "Repsorte General de Compras", "No hay registros para mostrar en el reporte.");
                     return;
                 }
+                double totalContado = 0;
+                double totalCredito = 0;
+                double totalAnulados = 0;
+                for(CompraTB c : list){
+                    if(c.getEstado() == 1){
+                        totalContado+=c.getTotal();
+                    }else if(c.getEstado() == 2){
+                        totalCredito+=c.getTotal();
+                    }else if(c.getEstado() == 3){
+                        totalAnulados+=c.getTotal();
+                    }
+                }
+                
 
                 Map map = new HashMap();
                 map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("ORDEN", "TODOS");
                 map.put("PROVEEDOR", cbProveedoresSeleccionar.isSelected() ? "TODOS" : txtProveedor.getText().toUpperCase());
                 map.put("ESTADO", "TODOS");
+                map.put("COMPRACONTADO", Tools.roundingValue(totalContado, 2));
+                map.put("COMPRACREDITO", Tools.roundingValue(totalCredito, 2));
+                map.put("COMPRANULADAS", Tools.roundingValue(totalAnulados, 2));
 
                 JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/CompraGeneral.jasper"), map, new JRBeanCollectionDataSource(list));
 

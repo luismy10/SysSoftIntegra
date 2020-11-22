@@ -1,6 +1,6 @@
 {
     "body":{
-        "addres":"Aleza",
+        "addres":"localhost",
         "port":"1433",
         "dbname":"PuntoVentaSysSoftDBDesarrollo",
         "user":"sa",

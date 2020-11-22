@@ -1553,7 +1553,7 @@ public class CompraADO extends DBUtil {
             while (resultSet.next()) {
                 CompraTB compraTB = new CompraTB();
                 compraTB.setFechaCompra(resultSet.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                compraTB.setIdProveedor(resultSet.getString("Proveedor").toUpperCase());
+                compraTB.setIdProveedor(resultSet.getString("NumeroDocumento")+"\n"+resultSet.getString("Proveedor").toUpperCase());
                 compraTB.setSerie(resultSet.getString("Serie").toUpperCase());
                 compraTB.setNumeracion(resultSet.getString("Numeracion"));
                 compraTB.setTipoName(resultSet.getString("Tipo"));
@@ -1599,8 +1599,8 @@ public class CompraADO extends DBUtil {
                 CompraTB compraTB = new CompraTB();
                 compraTB.setId(rsEmps.getRow());
                 compraTB.setIdCompra(rsEmps.getString("IdCompra"));
-                compraTB.setIdProveedor(rsEmps.getString("IdProveedor"));
-                compraTB.setFechaCompra(rsEmps.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+                compraTB.setIdProveedor(rsEmps.getString("NumeroDocumento")+"\n"+rsEmps.getString("RazonSocial"));
+                compraTB.setFechaCompra(rsEmps.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 compraTB.setHoraCompra(rsEmps.getTime("HoraCompra").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 compraTB.setSerie(rsEmps.getString("Serie").toUpperCase());
                 compraTB.setNumeracion(rsEmps.getString("Numeracion").toUpperCase());

@@ -1193,7 +1193,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
                 lvProductoAgregados.getItems().forEach(e -> suministroTBs.add(e.getSuministroTB()));
-                controller.setInitComponents(ventaTB, suministroTBs);
+                controller.setInitComponents(ventaTB, suministroTBs,vender_con_cantidades_negativas);
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());

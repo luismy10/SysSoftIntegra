@@ -164,10 +164,16 @@ public class FxVentaReporteController implements Initializable {
                     return;
                 }
 
-                double totalsumado = 0;
+                double totalcontado = 0;
+                double totalcredito = 0;
+                double totalanulado = 0;
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getEstado() != 3) {
-                        totalsumado += list.get(i).getTotal();
+                    if (list.get(i).getEstado() == 1) {
+                        totalcontado += list.get(i).getTotal();
+                    }else if(list.get(i).getEstado() == 2){
+                        totalcredito += list.get(i).getTotal();
+                    }else if(list.get(i).getEstado() == 3){
+                        totalanulado += list.get(i).getTotal();
                     }
                 }
 
@@ -178,7 +184,9 @@ public class FxVentaReporteController implements Initializable {
                 map.put("CLIENTE", cbClientesSeleccionar.isSelected() ? "TODOS" : txtClientes.getText().toUpperCase());
                 map.put("ESTADO", "TODOS");
                 map.put("VENDEDOR", cbVendedoresSeleccionar.isSelected() ? "TODOS" : txtVendedores.getText().toUpperCase());
-                map.put("TOTALACUMULADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalsumado, 2));
+                map.put("TOTAANULADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalanulado, 2));
+                map.put("TOTALCREDITO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalcredito, 2));
+                map.put("TOTALCONTADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalcontado, 2));
 
                 JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneral.jasper"), map, new JRBeanCollectionDataSource(list));
 
@@ -193,7 +201,6 @@ public class FxVentaReporteController implements Initializable {
                 stage.setResizable(true);
                 stage.show();
                 stage.requestFocus();
-
             }
 
         } catch (HeadlessException | JRException | IOException ex) {
@@ -201,89 +208,88 @@ public class FxVentaReporteController implements Initializable {
         }
     }
 
-    private void openWindowReporteGlobal() {
-        try {
-//            if (cbMostar.getSelectionModel().getSelectedIndex() < 0) {
-//                Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "Seleccione la forma de mostrar el reporte.");
-//                cbMostar.requestFocus();
-//            } else 
-            if (cbOrdenar.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "Seleccione la forma de ordenar el reporte.");
-                cbOrdenar.requestFocus();
-            } else {
-                ArrayList<VentaTB> list = VentaADO.GetReporteSumaVentaPorDia(
-                        Tools.getDatePicker(dpFechaInicialGlobal),
-                        Tools.getDatePicker(dpFechaFinalGlobal),
-                        !(cbOrdenar.getSelectionModel().getSelectedIndex() == 0),
-                        !(cbOrden.getSelectionModel().getSelectedIndex() == 0));
-
-                if (list.isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "No hay registros para mostrar en el reporte.");
-                    return;
-                }
-
-                double total = 0;
-
-                for (int i = 0; i < list.size(); i++) {
-                    total = total + list.get(i).getTotal();
-                }
-
-                ArrayList<VentaTB> newList = new ArrayList<>();
-                int count = 0;
-
-                for (int i = 0; i < list.size(); i++) {
-                    if (validateDuplicateDate(newList, list.get(i))) {
-                        for (int j = 0; j < newList.size(); j++) {
-                            if (newList.get(j).getFechaVenta().equalsIgnoreCase(list.get(i).getFechaVenta())) {
-                                VentaTB newVenta = newList.get(j);
-                                newVenta.setFechaVenta(list.get(i).getFechaVenta());
-                                newVenta.setTotal(newVenta.getTotal() + list.get(i).getTotal());
-                            }
-                        }
-                    } else {
-                        count++;
-                        VentaTB newVenta = new VentaTB();
-                        newVenta.setId(count);
-                        newVenta.setFechaVenta(list.get(i).getFechaVenta());
-                        newVenta.setTotal(list.get(i).getTotal());
-                        newList.add(newVenta);
-                    }
-                }
-
-                ArrayList<VentaTB> detail_list = new ArrayList<>();
-                detail_list.add(new VentaTB(1, "campras", 00.00));
-                detail_list.add(new VentaTB(2, "ventas", 00.00));
-                detail_list.add(new VentaTB(3, "lotes", 00.00));
-                detail_list.add(new VentaTB(4, "campras", 00.00));
-                detail_list.add(new VentaTB(5, "ventas", 00.00));
-                detail_list.add(new VentaTB(6, "lotes", 00.00));
-
-                Map map = new HashMap();
-                map.put("PERIODO", dpFechaInicialGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinalGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
-                map.put("MOSTRAR", "Día");
-                map.put("ORDEN", cbOrdenar.getSelectionModel().getSelectedItem() + " - " + cbOrden.getSelectionModel().getSelectedItem());
-                map.put("TOTAL", Session.MONEDA_SIMBOLO + " " + total);
-                map.put("DETALLE_VENTA", new JRBeanCollectionDataSource(detail_list));
-
-                JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneralTotales.jasper"), map, new JRBeanCollectionDataSource(newList));
-
-                URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxReportViewController controller = fXMLLoader.getController();
-                controller.setJasperPrint(jasperPrint);
-                controller.show();
-                Stage stage = WindowStage.StageLoader(parent, "Reporte Global de Ventas");
-                stage.setResizable(true);
-                stage.show();
-                stage.requestFocus();
-            }
-        } catch (HeadlessException | JRException | IOException ex) {
-            Tools.AlertMessageError(window, "Reporte Global de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
-        }
-    }
-
+//    private void openWindowReporteGlobal() {
+//        try {
+////            if (cbMostar.getSelectionModel().getSelectedIndex() < 0) {
+////                Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "Seleccione la forma de mostrar el reporte.");
+////                cbMostar.requestFocus();
+////            } else 
+//            if (cbOrdenar.getSelectionModel().getSelectedIndex() < 0) {
+//                Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "Seleccione la forma de ordenar el reporte.");
+//                cbOrdenar.requestFocus();
+//            } else {
+//                ArrayList<VentaTB> list = VentaADO.GetReporteSumaVentaPorDia(
+//                        Tools.getDatePicker(dpFechaInicialGlobal),
+//                        Tools.getDatePicker(dpFechaFinalGlobal),
+//                        !(cbOrdenar.getSelectionModel().getSelectedIndex() == 0),
+//                        !(cbOrden.getSelectionModel().getSelectedIndex() == 0));
+//
+//                if (list.isEmpty()) {
+//                    Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "No hay registros para mostrar en el reporte.");
+//                    return;
+//                }
+//
+//                double total = 0;
+//
+//                for (int i = 0; i < list.size(); i++) {
+//                    total = total + list.get(i).getTotal();
+//                }
+//
+//                ArrayList<VentaTB> newList = new ArrayList<>();
+//                int count = 0;
+//
+//                for (int i = 0; i < list.size(); i++) {
+//                    if (validateDuplicateDate(newList, list.get(i))) {
+//                        for (int j = 0; j < newList.size(); j++) {
+//                            if (newList.get(j).getFechaVenta().equalsIgnoreCase(list.get(i).getFechaVenta())) {
+//                                VentaTB newVenta = newList.get(j);
+//                                newVenta.setFechaVenta(list.get(i).getFechaVenta());
+//                                newVenta.setTotal(newVenta.getTotal() + list.get(i).getTotal());
+//                            }
+//                        }
+//                    } else {
+//                        count++;
+//                        VentaTB newVenta = new VentaTB();
+//                        newVenta.setId(count);
+//                        newVenta.setFechaVenta(list.get(i).getFechaVenta());
+//                        newVenta.setTotal(list.get(i).getTotal());
+//                        newList.add(newVenta);
+//                    }
+//                }
+//
+//                ArrayList<VentaTB> detail_list = new ArrayList<>();
+//                detail_list.add(new VentaTB(1, "campras", 00.00));
+//                detail_list.add(new VentaTB(2, "ventas", 00.00));
+//                detail_list.add(new VentaTB(3, "lotes", 00.00));
+//                detail_list.add(new VentaTB(4, "campras", 00.00));
+//                detail_list.add(new VentaTB(5, "ventas", 00.00));
+//                detail_list.add(new VentaTB(6, "lotes", 00.00));
+//
+//                Map map = new HashMap();
+//                map.put("PERIODO", dpFechaInicialGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinalGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+//                map.put("MOSTRAR", "Día");
+//                map.put("ORDEN", cbOrdenar.getSelectionModel().getSelectedItem() + " - " + cbOrden.getSelectionModel().getSelectedItem());
+//                map.put("TOTAL", Session.MONEDA_SIMBOLO + " " + total);
+//                map.put("DETALLE_VENTA", new JRBeanCollectionDataSource(detail_list));
+//
+//                JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneralTotales.jasper"), map, new JRBeanCollectionDataSource(newList));
+//
+//                URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+//                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//                Parent parent = fXMLLoader.load(url.openStream());
+//                //Controlller here
+//                FxReportViewController controller = fXMLLoader.getController();
+//                controller.setJasperPrint(jasperPrint);
+//                controller.show();
+//                Stage stage = WindowStage.StageLoader(parent, "Reporte Global de Ventas");
+//                stage.setResizable(true);
+//                stage.show();
+//                stage.requestFocus();
+//            }
+//        } catch (HeadlessException | JRException | IOException ex) {
+//            Tools.AlertMessageError(window, "Reporte Global de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
+//        }
+//    }
     private static boolean validateDuplicateDate(ArrayList<VentaTB> view, VentaTB ventaTB) {
         boolean value = false;
         for (int i = 0; i < view.size(); i++) {
@@ -366,13 +372,13 @@ public class FxVentaReporteController implements Initializable {
     @FXML
     private void onKeyPressedPrueba(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowReporteGlobal();
+//            openWindowReporteGlobal();
         }
     }
 
     @FXML
     private void onActionPrueba(ActionEvent event) {
-        openWindowReporteGlobal();
+//        openWindowReporteGlobal();
     }
 
     public void setClienteVentaReporte(String idCliente, String datos) {
