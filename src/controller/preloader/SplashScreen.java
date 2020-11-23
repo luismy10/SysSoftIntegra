@@ -118,6 +118,19 @@ public class SplashScreen extends Preloader {
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA_PRE_VENTA = false;
                         }
+                        
+                        String rutaCotizacion = "./archivos/COTIZACION.properties";
+                        try (InputStream input = new FileInputStream(rutaCotizacion)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_COTIZACION = true;
+                            Session.NOMBRE_IMPRESORA_COTIZACION = prop.getProperty("printerNameCotizacion");
+                            Session.CORTAPAPEL_IMPRESORA_COTIZACION = Boolean.parseBoolean(prop.getProperty("printerCutPaperCotizacion"));
+                            Session.FORMATO_IMPRESORA_COTIZACION = prop.getProperty("printerTypeFormatCotizacion");
+                            Session.DESING_IMPRESORA_COTIZACION = prop.getProperty("printerTypeDesingCotizacion");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_COTIZACION = false;
+                        }
 
                         LoadFont loadFont = new LoadFont();
                         loadFont.loadFont();
@@ -130,6 +143,16 @@ public class SplashScreen extends Preloader {
                             Session.TICKET_VENTA_ID = 0;
                             Session.TICKET_VENTA_RUTA = "";
                         }
+                        
+                        TicketTB ticketCotizacionTB = TicketADO.GetTicketRuta(8);
+                        if (ticketCotizacionTB != null) {
+                            Session.TICKET_COTIZACION_ID = ticketCotizacionTB.getId();
+                            Session.TICKET_COTIZACION_RUTA = ticketCotizacionTB.getRuta();
+                        } else {
+                            Session.TICKET_COTIZACION_ID = 0;
+                            Session.TICKET_COTIZACION_RUTA = "";
+                        }
+                        
                         
                         TicketTB ticketPreVentaTB = TicketADO.GetTicketRuta(7);
                         if (ticketPreVentaTB != null) {

@@ -277,13 +277,13 @@ public class FxCotizacionDetalleController implements Initializable {
                     for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                         HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                         billPrintable.hbEncebezado(box,
-                                "comprobante nombre",
-                                "serie",
-                                "numeracion",
-                                "informacion",
-                                "celular",
-                                "direccion",
-                                "codigo");
+                                "COTIZACIÓN",
+                                "N° " + cotizacionTB.getIdCotizacion(),
+                                cotizacionTB.getClienteTB().getNumeroDocumento(),
+                                cotizacionTB.getClienteTB().getInformacion(),
+                                cotizacionTB.getClienteTB().getCelular(),
+                                cotizacionTB.getClienteTB().getDireccion(),
+                                "---");
                     }
 
                     AnchorPane hbDetalle = new AnchorPane();
@@ -300,16 +300,16 @@ public class FxCotizacionDetalleController implements Initializable {
                     for (int i = 0; i < hbPie.getChildren().size(); i++) {
                         HBox box = ((HBox) hbPie.getChildren().get(i));
                         billPrintable.hbPie(box, "s/",
-                                Tools.roundingValue(100, 2),
-                                "-" + Tools.roundingValue(0, 2),
+                                Tools.roundingValue(subTotal, 2),
+                                "-" + Tools.roundingValue(descuentoTotal, 2),
                                 Tools.roundingValue(subTotalImporte, 2),
                                 Tools.roundingValue(total, 2),
-                                Tools.roundingValue(200, 2),
-                                Tools.roundingValue(100, 2),
-                                "numero de documento",
-                                "informacion", 
-                                "codigo",
-                                "celular");
+                                Tools.roundingValue(0, 2),
+                                Tools.roundingValue(0, 2),
+                                cotizacionTB.getClienteTB().getNumeroDocumento(),
+                                cotizacionTB.getClienteTB().getInformacion(), 
+                                "---",
+                                cotizacionTB.getClienteTB().getCelular());
                     }
 
                     billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -387,8 +387,8 @@ public class FxCotizacionDetalleController implements Initializable {
             map.put("NOMBREDOCUMENTO", "COTIZACIÓN");
             map.put("NUMERODOCUMENTO", "N° " + cotizacionTB.getIdCotizacion());
 
-            map.put("DATOSCLIENTE", cotizacionTB.getClienteTB().getInformacion());
             map.put("DOCUMENTOCLIENTE", "");
+            map.put("DATOSCLIENTE", cotizacionTB.getClienteTB().getInformacion());
             map.put("NUMERODOCUMENTOCLIENTE", cotizacionTB.getClienteTB().getNumeroDocumento());
             map.put("CELULARCLIENTE", cotizacionTB.getClienteTB().getCelular());
             map.put("EMAILCLIENTE", cotizacionTB.getClienteTB().getEmail());
