@@ -282,22 +282,41 @@ public class FxCotizacionController implements Initializable {
         });
     }
 
-    private void reportA4(CotizacionTB cotizacionTB, ArrayList<SuministroTB> suministroTBs) {
+    private void reportA4(CotizacionTB cotizacionTB) {
         try {
+            double subTotalReporte = 0;
+            double descuentoTotalReporte = 0;
+            double subTotalImporteReporte = 0;
+            double totalImpuestoReporte = 0;
+            double totalImporteReporte = 0;
+            double totalReporte = 0;
+            int count = 0;
 
-            double importeBruto = 0;
-            double descuento = 0;
-            double importeDescontado = 0;
-            double impuestoGenerado = 0;
-            double importeNeto = 0;
-
-            for (SuministroTB sm : suministroTBs) {
-                importeBruto += sm.getSubImporte();
-                descuento += sm.getDescuentoSumado();
-                importeDescontado += sm.getSubImporteDescuento();
-                impuestoGenerado += sm.getImpuestoSumado();
-                importeNeto += sm.getTotalImporte() + sm.getImpuestoSumado();
+            ArrayList<SuministroTB> list = new ArrayList();
+            for (SuministroTB suministroTB : cotizacionTB.getDetalleSuministroTBs()) {
+                subTotalReporte += suministroTB.getSubImporte();
+                descuentoTotalReporte += suministroTB.getDescuentoSumado();
+                subTotalImporteReporte += suministroTB.getSubImporteDescuento();
+                totalImpuestoReporte += suministroTB.getImpuestoSumado();               
+                totalImporteReporte+=suministroTB.getTotalImporte();
+                
+                count++;
+                SuministroTB stb = new SuministroTB();
+                stb.setId(count + 1);
+                stb.setClave(suministroTB.getClave());
+                stb.setNombreMarca(suministroTB.getNombreMarca());
+                stb.setCantidad(suministroTB.getCantidad());
+                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
+                stb.setSubImporte(suministroTB.getSubImporte());
+                stb.setDescuentoSumado(suministroTB.getDescuentoSumado());
+                stb.setSubImporteDescuento(suministroTB.getSubImporteDescuento());
+                stb.setImpuestoSumado(suministroTB.getImpuestoSumado());
+                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
+                stb.setDescuento(suministroTB.getDescuento());
+                stb.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+                list.add(stb);
             }
+             totalReporte = totalImporteReporte + totalImpuestoReporte;
 
             InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
@@ -333,16 +352,16 @@ public class FxCotizacionController implements Initializable {
             map.put("CONDICIONPAGO", "");
 
             map.put("SIMBOLO", cotizacionTB.getMonedaTB().getSimbolo());
-            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, cotizacionTB.getMonedaTB().getNombre()));
+            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalReporte, 2), true, cotizacionTB.getMonedaTB().getNombre()));
 
-            map.put("VALOR_VENTA", Tools.roundingValue(importeBruto, 2));
-            map.put("DESCUENTO", Tools.roundingValue(descuento, 2));
-            map.put("SUB_IMPORTE", Tools.roundingValue(importeDescontado, 2));
-            map.put("IMPUESTO_TOTAL", Tools.roundingValue(impuestoGenerado, 2));
-            map.put("IMPORTE_TOTAL", Tools.roundingValue(importeNeto, 2));
+            map.put("VALOR_VENTA", Tools.roundingValue(subTotalReporte, 2));
+            map.put("DESCUENTO", Tools.roundingValue(descuentoTotalReporte, 2));
+            map.put("SUB_IMPORTE", Tools.roundingValue(subTotalImporteReporte, 2));
+            map.put("IMPUESTO_TOTAL", Tools.roundingValue(totalImpuestoReporte, 2));
+            map.put("IMPORTE_TOTAL", Tools.roundingValue(totalReporte, 2));
             map.put("OBSERVACION", cotizacionTB.getObservaciones());
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(suministroTBs));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -565,9 +584,9 @@ public class FxCotizacionController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<CotizacionTB> task = new Task<CotizacionTB>() {
             @Override
-            public ArrayList<Object> call() {
+            public CotizacionTB call() {
                 return CotizacionADO.CargarCotizacionReporte(idCotizacion);
             }
         };
@@ -586,19 +605,16 @@ public class FxCotizacionController implements Initializable {
                     Pos.BOTTOM_RIGHT);
         });
         task.setOnSucceeded(w -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                if (objects.get(0) != null && objects.get(1) != null) {
-                    CotizacionTB cotizacionTB = (CotizacionTB) objects.get(0);
-                    ObservableList<SuministroTB> cotizacionTBs = (ObservableList<SuministroTB>) objects.get(1);
-                    ArrayList<SuministroTB> list = new ArrayList(cotizacionTBs);
-                    reportA4(cotizacionTB, list);
-                    Tools.showAlertNotification("/view/image/succes_large.png",
-                            "Generando reporte",
-                            "Se genero correctamente el reporte.",
-                            Duration.seconds(5),
-                            Pos.BOTTOM_RIGHT);
-                }
+            CotizacionTB cotizacionTB = task.getValue();
+            if (cotizacionTB != null && !cotizacionTB.getDetalleSuministroTBs().isEmpty()) {
+                ObservableList<SuministroTB> cotizacionTBs = cotizacionTB.getDetalleSuministroTBs();
+                reportA4(cotizacionTB);
+                Tools.showAlertNotification("/view/image/succes_large.png",
+                        "Generando reporte",
+                        "Se genero correctamente el reporte.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+
             } else {
                 Tools.showAlertNotification("/view/image/error_large.png",
                         "Generando reporte",
@@ -619,9 +635,9 @@ public class FxCotizacionController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<CotizacionTB> task = new Task<CotizacionTB>() {
             @Override
-            public ArrayList<Object> call() {
+            public CotizacionTB call() {
                 return CotizacionADO.CargarCotizacionVenta(idCotizacion);
             }
         };
@@ -631,65 +647,69 @@ public class FxCotizacionController implements Initializable {
                     ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
                 }
             }
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                if (objects.get(0) != null) {
-                    CotizacionTB cotizacionTB = (CotizacionTB) objects.get(0);
-                    this.idCotizacion = idCotizacion;
-                    for (MonedaTB monedaTB : cbMoneda.getItems()) {
-                        if (monedaTB.getIdMoneda() == cotizacionTB.getIdMoneda()) {
-                            cbMoneda.getSelectionModel().select(monedaTB);
-                            monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
-                            break;
-                        }
+            CotizacionTB cotizacionTB = task.getValue();
+            if (cotizacionTB != null && !cotizacionTB.getDetalleSuministroTBs().isEmpty()) {
+
+                this.idCotizacion = idCotizacion;
+                for (MonedaTB monedaTB : cbMoneda.getItems()) {
+                    if (monedaTB.getIdMoneda() == cotizacionTB.getIdMoneda()) {
+                        cbMoneda.getSelectionModel().select(monedaTB);
+                        monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
+                        break;
                     }
-
-                    cbCliente.getItems().clear();
-                    cbCliente.getItems().add(new ClienteTB(cotizacionTB.getClienteTB().getIdCliente(), cotizacionTB.getClienteTB().getNumeroDocumento(), cotizacionTB.getClienteTB().getInformacion(), cotizacionTB.getClienteTB().getCelular(), cotizacionTB.getClienteTB().getEmail(), cotizacionTB.getClienteTB().getDireccion()));
-                    cbCliente.getSelectionModel().select(0);
-
-                    lblProceso.setText("Cotización en proceso de actualizar");
-                    lblProceso.setTextFill(Color.web("#c52700"));
                 }
-                if (objects.get(1) != null) {
-                    ObservableList<SuministroTB> cotizacionTBs = (ObservableList<SuministroTB>) objects.get(1);
-                    for (int i = 0; i < cotizacionTBs.size(); i++) {
-                        SuministroTB suministroTB = cotizacionTBs.get(i);
-                        suministroTB.getRemover().setOnAction(e -> {
+
+                cbCliente.getItems().clear();
+                cbCliente.getItems().add(new ClienteTB(cotizacionTB.getClienteTB().getIdCliente(), cotizacionTB.getClienteTB().getNumeroDocumento(), cotizacionTB.getClienteTB().getInformacion(), cotizacionTB.getClienteTB().getCelular(), cotizacionTB.getClienteTB().getEmail(), cotizacionTB.getClienteTB().getDireccion()));
+                cbCliente.getSelectionModel().select(0);
+
+                lblProceso.setText("Cotización en proceso de actualizar");
+                lblProceso.setTextFill(Color.web("#c52700"));
+
+                ObservableList<SuministroTB> cotizacionTBs = cotizacionTB.getDetalleSuministroTBs();
+                for (int i = 0; i < cotizacionTBs.size(); i++) {
+                    SuministroTB suministroTB = cotizacionTBs.get(i);
+                    suministroTB.getRemover().setOnAction(e -> {
+                        tvList.getItems().remove(suministroTB);
+                        calculateTotales();
+                    });
+                    suministroTB.getRemover().setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.ENTER) {
                             tvList.getItems().remove(suministroTB);
                             calculateTotales();
-                        });
-                        suministroTB.getRemover().setOnKeyPressed(e -> {
-                            if (e.getCode() == KeyCode.ENTER) {
-                                tvList.getItems().remove(suministroTB);
-                                calculateTotales();
-                            }
-                        });
-                    }
+                        }
+                    });
                     tvList.setItems(cotizacionTBs);
-                    calculateTotales();
                 }
+                calculateTotales();
                 Tools.AlertMessageInformation(hbWindow, "Ventas", "Los datos se cargaron correctamente.");
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+
             } else {
                 Tools.AlertMessageWarning(hbWindow, "Ventas", "Se produjo un problema intente nuevamente.");
                 vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
             }
 
-        });
-        task.setOnFailed(w -> {
+        }
+        );
+        task.setOnFailed(w
+                -> {
             if (alert != null) {
                 ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
             }
             Tools.AlertMessageError(hbWindow, "Venta", "Error en la ejecución, intente nuevamente.");
             vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
-        task.setOnScheduled(w -> {
+        }
+        );
+        task.setOnScheduled(w
+                -> {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             alert = Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.NONE, "Procesando Información...");
 
-        });
+        }
+        );
         exec.execute(task);
+
         if (!exec.isShutdown()) {
             exec.shutdown();
         }
@@ -732,7 +752,7 @@ public class FxCotizacionController implements Initializable {
                     DetalleCotizacionTB detalleCotizacionTB = new DetalleCotizacionTB();
                     detalleCotizacionTB.setIdSuministros(suministroTB.getIdSuministro());
                     detalleCotizacionTB.setCantidad(suministroTB.getCantidad());
-                    detalleCotizacionTB.setPrecio(suministroTB.getPrecioVentaGeneralUnico());
+                    detalleCotizacionTB.setPrecio(suministroTB.getPrecioVentaGeneral());
                     detalleCotizacionTB.setDescuento(suministroTB.getDescuento());
                     detalleCotizacionTB.setIdImpuesto(suministroTB.getImpuestoId());
                     return detalleCotizacionTB;

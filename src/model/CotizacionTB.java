@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 public class CotizacionTB {
 
@@ -24,6 +25,7 @@ public class CotizacionTB {
     private EmpleadoTB empleadoTB;
     private MonedaTB monedaTB;
     private ArrayList<DetalleCotizacionTB> detalleCotizacionTBs;
+    private ObservableList<SuministroTB> detalleSuministroTBs;
 
     public CotizacionTB() {
     }
@@ -178,6 +180,14 @@ public class CotizacionTB {
 
     public void setDetalleCotizacionTBs(ArrayList<DetalleCotizacionTB> detalleCotizacionTBs) {
         this.detalleCotizacionTBs = detalleCotizacionTBs;
+    }
+
+    public ObservableList<SuministroTB> getDetalleSuministroTBs() {
+        return detalleSuministroTBs;
+    }
+
+    public void setDetalleSuministroTBs(ObservableList<SuministroTB> detalleSuministroTBs) {
+        this.detalleSuministroTBs = detalleSuministroTBs;
     }
 
 }

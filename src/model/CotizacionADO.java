@@ -23,7 +23,7 @@ public class CotizacionADO {
             PreparedStatement statementDetalleCotizacion = null;
             PreparedStatement statementDetalleCotizacionBorrar = null;
             try {
-                
+
                 DBUtil.getConnection().setAutoCommit(false);
 
                 statementValidacion = DBUtil.getConnection().prepareStatement("SELECT * FROM CotizacionTB WHERE IdCotizacion = ?");
@@ -231,8 +231,7 @@ public class CotizacionADO {
         return cotizacionTBs;
     }
 
-    public static ArrayList<Object> CargarCotizacionVenta(String idCotizacion) {
-        ArrayList<Object> objects = new ArrayList();
+    public static CotizacionTB CargarCotizacionVenta(String idCotizacion) {
         CotizacionTB cotizacionTB = null;
         ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
         PreparedStatement statementCotizacione = null;
@@ -253,31 +252,31 @@ public class CotizacionADO {
                 }
             }
 
-            objects.add(cotizacionTB);
-
             statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_ById(?)}");
             statementDetalleCotizacione.setString(1, idCotizacion);
             try (ResultSet result = statementDetalleCotizacione.executeQuery()) {
                 while (result.next()) {
                     SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setId(result.getRow());
                     suministroTB.setIdSuministro(result.getString("IdSuministro"));
                     suministroTB.setClave(result.getString("Clave"));
                     suministroTB.setNombreMarca(result.getString("NombreMarca"));
+//                    suministroTB.setUnidadCompraName(result.getString("UnidadCompraNombre"));
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
                     suministroTB.setCostoCompra(result.getDouble("PrecioCompra"));
 
-                    double precio = result.getDouble("Precio");
-                    double descuento = result.getDouble("Descuento");
-                    double porcentajeRestante = precio * (descuento / 100.00);
-                    double preciocalculado = precio - porcentajeRestante;
+                    double valor_sin_impuesto = result.getDouble("Precio") / ((result.getDouble("Valor") / 100.00) + 1);
+                    double descuento = suministroTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
                     suministroTB.setDescuento(result.getDouble("Descuento"));
                     suministroTB.setDescuentoCalculado(porcentajeRestante);
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-                    suministroTB.setPrecioVentaGeneralUnico(precio);
+                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+                    suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
                     suministroTB.setPrecioVentaGeneralReal(preciocalculado);
-                    suministroTB.setPrecioVentaGeneralAuxiliar(preciocalculado);
 
                     suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
                     suministroTB.setImpuestoId(result.getInt("Impuesto"));
@@ -285,11 +284,10 @@ public class CotizacionADO {
                     suministroTB.setImpuestoValor(result.getDouble("Valor"));
 
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
-
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-                    suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                    suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
                     suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
                     suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
@@ -305,7 +303,7 @@ public class CotizacionADO {
                 }
             }
 
-            objects.add(cotizacionTBs);
+            cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
 
         } catch (SQLException ex) {
             Tools.println(ex.getLocalizedMessage());
@@ -322,11 +320,10 @@ public class CotizacionADO {
 
             }
         }
-        return objects;
+        return cotizacionTB;
     }
 
-    public static ArrayList<Object> CargarCotizacionReporte(String idCotizacion) {
-        ArrayList<Object> objects = new ArrayList();
+    public static CotizacionTB CargarCotizacionReporte(String idCotizacion) {
         CotizacionTB cotizacionTB = null;
         ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
         PreparedStatement statementCotizacione = null;
@@ -362,18 +359,18 @@ public class CotizacionADO {
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
                     suministroTB.setCostoCompra(result.getDouble("PrecioCompra"));
 
-                    double precio = result.getDouble("Precio");
-                    double descuento = result.getDouble("Descuento");
-                    double porcentajeRestante = precio * (descuento / 100.00);
-                    double preciocalculado = precio - porcentajeRestante;
+                    double valor_sin_impuesto = result.getDouble("Precio") / ((result.getDouble("Valor") / 100.00) + 1);
+                    double descuento = suministroTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
                     suministroTB.setDescuento(result.getDouble("Descuento"));
                     suministroTB.setDescuentoCalculado(porcentajeRestante);
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
-                    suministroTB.setPrecioVentaGeneralUnico(precio);
+                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+                    suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
                     suministroTB.setPrecioVentaGeneralReal(preciocalculado);
-                    suministroTB.setPrecioVentaGeneralAuxiliar(preciocalculado);
 
                     suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
                     suministroTB.setImpuestoId(result.getInt("Impuesto"));
@@ -381,11 +378,10 @@ public class CotizacionADO {
                     suministroTB.setImpuestoValor(result.getDouble("Valor"));
 
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
-
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-                    suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                    suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
                     suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
                     suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
@@ -400,10 +396,10 @@ public class CotizacionADO {
                     cotizacionTBs.add(suministroTB);
                 }
             }
-            objects.add(cotizacionTB);
-            objects.add(cotizacionTBs);
+            cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
+
         } catch (SQLException ex) {
-            Tools.println(ex.getLocalizedMessage());
+            System.out.println("Error en cotización: " + ex.getLocalizedMessage());
         } finally {
             try {
                 if (statementCotizacione != null) {
@@ -417,7 +413,7 @@ public class CotizacionADO {
 
             }
         }
-        return objects;
+        return cotizacionTB;
     }
 
 }

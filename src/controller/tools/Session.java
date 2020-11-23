@@ -46,6 +46,9 @@ public class Session {
     
     public static int TICKET_PRE_VENTA_ID = 0;
     public static String TICKET_PRE_VENTA_RUTA = "";
+    
+    public static int TICKET_COTIZACION_ID = 0;
+    public static String TICKET_COTIZACION = "";
 
     public static boolean ESTADO_IMPRESORA_VENTA;
     public static String NOMBRE_IMPRESORA_VENTA = "";

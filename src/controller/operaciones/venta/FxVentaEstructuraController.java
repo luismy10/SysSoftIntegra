@@ -618,7 +618,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setTotal(total);
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList.getItems());
-                controller.setInitComponents(ventaTB, suministroTBs,vender_con_cantidades_negativas);
+                controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas);
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
@@ -1010,9 +1010,9 @@ public class FxVentaEstructuraController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<CotizacionTB> task = new Task<CotizacionTB>() {
             @Override
-            public ArrayList<Object> call() {
+            public CotizacionTB call() {
                 return CotizacionADO.CargarCotizacionVenta(idCotizacion);
             }
         };
@@ -1022,35 +1022,32 @@ public class FxVentaEstructuraController implements Initializable {
                     ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
                 }
             }
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                if (objects.get(0) != null) {
-                    CotizacionTB cotizacionTB = (CotizacionTB) objects.get(0);
+            CotizacionTB cotizacionTB = task.getValue();
+            if (cotizacionTB != null) {
 
-                    for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
-                        if (detalleTB.getIdDetalle().get() == cotizacionTB.getClienteTB().getTipoDocumento()) {
-                            cbTipoDocumento.getSelectionModel().select(detalleTB);
-                            break;
-                        }
+                for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
+                    if (detalleTB.getIdDetalle().get() == cotizacionTB.getClienteTB().getTipoDocumento()) {
+                        cbTipoDocumento.getSelectionModel().select(detalleTB);
+                        break;
                     }
-
-                    for (MonedaTB monedaTB : cbMoneda.getItems()) {
-                        if (monedaTB.getIdMoneda() == cotizacionTB.getIdMoneda()) {
-                            cbMoneda.getSelectionModel().select(monedaTB);
-                            monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
-                            break;
-                        }
-                    }
-
-                    txtNumeroDocumento.setText(cotizacionTB.getClienteTB().getNumeroDocumento());
-                    txtDatosCliente.setText(cotizacionTB.getClienteTB().getInformacion());
-                    txtCelularCliente.setText(cotizacionTB.getClienteTB().getCelular());
-                    txtCorreoElectronico.setText(cotizacionTB.getClienteTB().getEmail());
-                    txtDireccionCliente.setText(cotizacionTB.getClienteTB().getDireccion());
-
                 }
-                if (objects.get(1) != null) {
-                    ObservableList<SuministroTB> cotizacionTBs = (ObservableList<SuministroTB>) objects.get(1);
+
+                for (MonedaTB monedaTB : cbMoneda.getItems()) {
+                    if (monedaTB.getIdMoneda() == cotizacionTB.getIdMoneda()) {
+                        cbMoneda.getSelectionModel().select(monedaTB);
+                        monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
+                        break;
+                    }
+                }
+
+                txtNumeroDocumento.setText(cotizacionTB.getClienteTB().getNumeroDocumento());
+                txtDatosCliente.setText(cotizacionTB.getClienteTB().getInformacion());
+                txtCelularCliente.setText(cotizacionTB.getClienteTB().getCelular());
+                txtCorreoElectronico.setText(cotizacionTB.getClienteTB().getEmail());
+                txtDireccionCliente.setText(cotizacionTB.getClienteTB().getDireccion());
+
+                if (!cotizacionTB.getDetalleSuministroTBs().isEmpty()) {
+                    ObservableList<SuministroTB> cotizacionTBs = cotizacionTB.getDetalleSuministroTBs();
                     for (int i = 0; i < cotizacionTBs.size(); i++) {
                         SuministroTB suministroTB = cotizacionTBs.get(i);
                         suministroTB.getRemover().setOnAction(e -> {

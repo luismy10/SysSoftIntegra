@@ -418,7 +418,7 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico() );
+            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
             suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
             suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
@@ -494,23 +494,29 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setCantidad(1);
             suministroTB.setCostoCompra(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
 
+            double valor_sin_impuesto = tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral() / ((tvList.getSelectionModel().getSelectedItem().getImpuestoValor() / 100.00) + 1);
+            double descuento = suministroTB.getDescuento();
+            double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+            double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
             suministroTB.setDescuento(0);
             suministroTB.setDescuentoCalculado(0);
             suministroTB.setDescuentoSumado(0);
 
-            suministroTB.setPrecioVentaGeneralUnico(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
-            suministroTB.setPrecioVentaGeneralReal(tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral());
-            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+            suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
+            suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
             suministroTB.setImpuestoOperacion(tvList.getSelectionModel().getSelectedItem().getImpuestoOperacion());
             suministroTB.setImpuestoId(tvList.getSelectionModel().getSelectedItem().getImpuestoId());
             suministroTB.setImpuestoNombre(tvList.getSelectionModel().getSelectedItem().getImpuestoNombre());
             suministroTB.setImpuestoValor(tvList.getSelectionModel().getSelectedItem().getImpuestoValor());
-            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
 
-            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
+            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
             suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
             suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
