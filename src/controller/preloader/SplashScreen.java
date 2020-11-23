@@ -147,8 +147,7 @@ public class SplashScreen extends Preloader {
                         TicketTB ticketCotizacionTB = TicketADO.GetTicketRuta(8);
                         if (ticketCotizacionTB != null) {
                             Session.TICKET_COTIZACION_ID = ticketCotizacionTB.getId();
-                            Session.TICKET_COTIZACION_RUTA = ticketCotizacionTB.getRuta();
-                            Tools.println(ticketCotizacionTB.getId());
+                            Session.TICKET_COTIZACION_RUTA = ticketCotizacionTB.getRuta();                           
                         } else {
                             Session.TICKET_COTIZACION_ID = 0;
                             Session.TICKET_COTIZACION_RUTA = "";

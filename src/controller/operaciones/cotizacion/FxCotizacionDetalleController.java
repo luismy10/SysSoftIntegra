@@ -40,16 +40,26 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.HashPrintServiceAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.PrintServiceAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.PrinterName;
 import model.CotizacionADO;
 import model.CotizacionTB;
 import model.SuministroTB;
 import model.VentaTB;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 
 public class FxCotizacionDetalleController implements Initializable {
 
@@ -272,77 +282,137 @@ public class FxCotizacionDetalleController implements Initializable {
             if (Session.TICKET_COTIZACION_ID == 0 && Session.TICKET_COTIZACION_RUTA.equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(spWindow, "Venta", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
             } else {
-                try {
-                    if (Session.DESING_IMPRESORA_COTIZACION.equalsIgnoreCase("withdesing")) {
-                        billPrintable.loadEstructuraTicket(Session.TICKET_COTIZACION_ID, Session.TICKET_COTIZACION_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                    Thread t = new Thread(runnable);
+                    t.setDaemon(true);
+                    return t;
+                });
 
-                        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
-                            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
-                            billPrintable.hbEncebezado(box,
-                                    "COTIZACIÓN",
-                                    "N° " + cotizacionTB.getIdCotizacion(),
-                                    cotizacionTB.getClienteTB().getNumeroDocumento(),
-                                    cotizacionTB.getClienteTB().getInformacion(),
-                                    cotizacionTB.getClienteTB().getCelular(),
-                                    cotizacionTB.getClienteTB().getDireccion(),
-                                    "---");
-                        }
+                Task<String> task = new Task<String>() {
+                    @Override
+                    public String call() {
+                        try {
+                            if (Session.DESING_IMPRESORA_COTIZACION.equalsIgnoreCase("withdesing")) {
+                                billPrintable.loadEstructuraTicket(Session.TICKET_COTIZACION_ID, Session.TICKET_COTIZACION_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
-                        AnchorPane hbDetalle = new AnchorPane();
-                        for (int m = 0; m < arrList.size(); m++) {
-                            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                                HBox hBox = new HBox();
-                                hBox.setId("dc_" + m + "" + i);
-                                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                                billPrintable.hbDetalle(hBox, box, arrList, m);
-                                hbDetalle.getChildren().add(hBox);
+                                for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                                    HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                                    billPrintable.hbEncebezado(box,
+                                            "COTIZACIÓN",
+                                            "N° " + cotizacionTB.getIdCotizacion(),
+                                            cotizacionTB.getClienteTB().getNumeroDocumento(),
+                                            cotizacionTB.getClienteTB().getInformacion(),
+                                            cotizacionTB.getClienteTB().getCelular(),
+                                            cotizacionTB.getClienteTB().getDireccion(),
+                                            "---");
+                                }
+
+                                AnchorPane hbDetalle = new AnchorPane();
+                                for (int m = 0; m < arrList.size(); m++) {
+                                    for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                                        HBox hBox = new HBox();
+                                        hBox.setId("dc_" + m + "" + i);
+                                        HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                                        billPrintable.hbDetalle(hBox, box, arrList, m);
+                                        hbDetalle.getChildren().add(hBox);
+                                    }
+                                }
+
+                                for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                                    HBox box = ((HBox) hbPie.getChildren().get(i));
+                                    billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
+                                            Tools.roundingValue(subTotal, 2),
+                                            "-" + Tools.roundingValue(descuentoTotal, 2),
+                                            Tools.roundingValue(subTotalImporte, 2),
+                                            Tools.roundingValue(total, 2),
+                                            Tools.roundingValue(0, 2),
+                                            Tools.roundingValue(0, 2),
+                                            cotizacionTB.getClienteTB().getNumeroDocumento(),
+                                            cotizacionTB.getClienteTB().getInformacion(),
+                                            "---",
+                                            cotizacionTB.getClienteTB().getCelular());
+                                }
+
+                                billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+                                DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_COTIZACION, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                                if (job != null) {
+                                    PrinterJob pj = PrinterJob.getPrinterJob();
+                                    pj.setPrintService(job.getPrintService());
+                                    pj.setJobName(Session.NOMBRE_IMPRESORA_COTIZACION);
+                                    Book book = new Book();
+                                    book.append(billPrintable, billPrintable.getPageFormat(pj));
+                                    pj.setPageable(book);
+                                    pj.print();
+                                    if (Session.CORTAPAPEL_IMPRESORA_COTIZACION) {
+                                        billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_COTIZACION);
+                                    }
+                                    return "completed";
+                                } else {
+                                    return "error_name";
+                                }
+                            } else {
+                                billPrintable.loadEstructuraTicket(Session.TICKET_COTIZACION_ID, Session.TICKET_COTIZACION_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                                return imprimirVenta(Session.NOMBRE_IMPRESORA_COTIZACION, Session.CORTAPAPEL_IMPRESORA_COTIZACION);
                             }
+
+                        } catch (PrinterException | PrintException | IOException ex) {
+                            return "Error en imprimir: " + ex.getLocalizedMessage();
                         }
-
-                        for (int i = 0; i < hbPie.getChildren().size(); i++) {
-                            HBox box = ((HBox) hbPie.getChildren().get(i));
-                            billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
-                                    Tools.roundingValue(subTotal, 2),
-                                    "-" + Tools.roundingValue(descuentoTotal, 2),
-                                    Tools.roundingValue(subTotalImporte, 2),
-                                    Tools.roundingValue(total, 2),
-                                    Tools.roundingValue(0, 2),
-                                    Tools.roundingValue(0, 2),
-                                    cotizacionTB.getClienteTB().getNumeroDocumento(),
-                                    cotizacionTB.getClienteTB().getInformacion(),
-                                    "---",
-                                    cotizacionTB.getClienteTB().getCelular());
-                        }
-
-                        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
-
-                        DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_COTIZACION, PrinterJob.lookupPrintServices()).createPrintJob();
-
-                        if (job != null) {
-                            PrinterJob pj = PrinterJob.getPrinterJob();
-                            pj.setPrintService(job.getPrintService());
-                            pj.setJobName(Session.NOMBRE_IMPRESORA_COTIZACION);
-                            Book book = new Book();
-                            book.append(billPrintable, billPrintable.getPageFormat(pj));
-                            pj.setPageable(book);
-                            pj.print();
-                            if (Session.CORTAPAPEL_IMPRESORA_COTIZACION) {
-                                billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_COTIZACION);
-                            }
-                            Tools.AlertMessageInformation(spWindow, "Cotización", "Se creo correctamente la impresión");
-                        } else {
-                            Tools.AlertMessageWarning(spWindow, "Cotización", "Se produjo un problemas intente nuevamente.");
-                        }
-                    } else {
-                        billPrintable.loadEstructuraTicket(Session.TICKET_COTIZACION_ID, Session.TICKET_COTIZACION_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
-
-                        imprimirVenta(Session.NOMBRE_IMPRESORA_COTIZACION, Session.CORTAPAPEL_IMPRESORA_COTIZACION);
-                        Tools.AlertMessageInformation(spWindow, "Cotización", "Se creo correctamente la impresión");
                     }
+                };
 
-                } catch (PrinterException | PrintException | IOException ex) {
-                    Tools.AlertMessageError(spWindow, "Cotización", "Error en imprimir: " + ex.getLocalizedMessage());
+                task.setOnSucceeded(w -> {
+
+                    String result = task.getValue();
+                    if (result.equalsIgnoreCase("completed")) {
+                        Tools.showAlertNotification("/view/image/information_large.png",
+                                "Envío de impresión",
+                                "Se completo el proceso de impresión correctamente.",
+                                Duration.seconds(5),
+                                Pos.BOTTOM_RIGHT);
+                    } else if (result.equalsIgnoreCase("error_name")) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Envío de impresión",
+                                "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                                Duration.seconds(10),
+                                Pos.CENTER);
+                    } else if (result.equalsIgnoreCase("empty")) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Envío de impresión",
+                                "No hay registros para mostrar en el reporte.",
+                                Duration.seconds(10),
+                                Pos.CENTER);
+                    } else {
+                        Tools.showAlertNotification("/view/image/error_large.png",
+                                "Envío de impresión",
+                                "Se producto un problema por problemas de la impresora\n" + result,
+                                Duration.seconds(10),
+                                Pos.CENTER);
+                    }
+                });
+                task.setOnFailed(w -> {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Envío de impresión",
+                            "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                            Duration.seconds(10),
+                            Pos.BOTTOM_RIGHT);
+                });
+
+                task.setOnScheduled(w -> {
+                    Tools.showAlertNotification("/view/image/print.png",
+                            "Envío de impresión",
+                            "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                            Duration.seconds(5),
+                            Pos.BOTTOM_RIGHT);
+                });
+
+                exec.execute(task);
+                if (!exec.isShutdown()) {
+                    exec.shutdown();
                 }
+
             }
         } else {
             Tools.AlertMessageWarning(spWindow, "Venta", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
