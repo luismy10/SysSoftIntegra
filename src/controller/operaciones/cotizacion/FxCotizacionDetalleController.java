@@ -43,23 +43,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.HashPrintServiceAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.PrintServiceAttributeSet;
-import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.PrinterName;
 import model.CotizacionADO;
 import model.CotizacionTB;
 import model.SuministroTB;
-import model.VentaTB;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 
 public class FxCotizacionDetalleController implements Initializable {
 
@@ -218,7 +208,7 @@ public class FxCotizacionDetalleController implements Initializable {
 
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
-        label.setStyle("-fx-text-fill: #020203;-fx-padding:  0.4166666666666667em 0em  0.4166666666666667em 0em");
+        label.setStyle("-fx-text-fill: #020203;-fx-padding:  0.4166666666666667em 0em  0.4166666666666667em 0em;");
         label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);
         label.setMinWidth(Control.USE_COMPUTED_SIZE);
@@ -273,7 +263,7 @@ public class FxCotizacionDetalleController implements Initializable {
     }
 
     private void ticket() {
-        if (!Session.ESTADO_IMPRESORA_VENTA && Tools.isText(Session.NOMBRE_IMPRESORA_VENTA) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
+        if (!Session.ESTADO_IMPRESORA_COTIZACION && Tools.isText(Session.NOMBRE_IMPRESORA_COTIZACION) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
             Tools.AlertMessageWarning(spWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             return;
         }

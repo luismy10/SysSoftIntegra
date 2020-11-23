@@ -1429,6 +1429,9 @@ public class FxTicketController implements Initializable {
                     } else if (tipoTicket == 7) {
                         Session.TICKET_PRE_VENTA_ID = idTicket;
                         Session.TICKET_PRE_VENTA_RUTA = ruta;
+                    } else if(tipoTicket == 8){
+                        Session.TICKET_COTIZACION_ID = idTicket;
+                        Session.TICKET_COTIZACION_RUTA = ruta;
                     }
                 } else {
                     Tools.AlertMessageError(vbWindow, "Ticket", result);
@@ -1450,6 +1453,12 @@ public class FxTicketController implements Initializable {
                     if (tipoTicket == 1) {
                         Session.TICKET_VENTA_ID = 0;
                         Session.TICKET_VENTA_RUTA = "";
+                    }else if(tipoTicket == 7){
+                        Session.TICKET_PRE_VENTA_ID = 0;
+                        Session.TICKET_PRE_VENTA_RUTA = "";
+                    }else if(tipoTicket == 8){
+                        Session.TICKET_COTIZACION_ID = 0;
+                        Session.TICKET_COTIZACION_RUTA = "";
                     }
                     clearPane();
                 } else if (result.equalsIgnoreCase("predeterminated")) {
