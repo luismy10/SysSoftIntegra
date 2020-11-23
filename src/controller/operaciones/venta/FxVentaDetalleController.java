@@ -732,7 +732,8 @@ public class FxVentaDetalleController implements Initializable {
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
-                    ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                    ventaTB.getClienteTB().getInformacion(), 
+                    ventaTB.getCodigo(),
                     ventaTB.getClienteTB().getCelular());
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);

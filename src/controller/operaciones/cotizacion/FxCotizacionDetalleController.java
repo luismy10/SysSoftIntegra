@@ -45,6 +45,7 @@ import javax.print.PrintException;
 import model.CotizacionADO;
 import model.CotizacionTB;
 import model.SuministroTB;
+import model.VentaTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -300,7 +301,7 @@ public class FxCotizacionDetalleController implements Initializable {
 
                         for (int i = 0; i < hbPie.getChildren().size(); i++) {
                             HBox box = ((HBox) hbPie.getChildren().get(i));
-                            billPrintable.hbPie(box, "s/",
+                            billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
                                     Tools.roundingValue(subTotal, 2),
                                     "-" + Tools.roundingValue(descuentoTotal, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
@@ -334,6 +335,8 @@ public class FxCotizacionDetalleController implements Initializable {
                         }
                     } else {
                         billPrintable.loadEstructuraTicket(Session.TICKET_COTIZACION_ID, Session.TICKET_COTIZACION_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+
+                        imprimirVenta(Session.NOMBRE_IMPRESORA_COTIZACION, Session.CORTAPAPEL_IMPRESORA_COTIZACION);
                         Tools.AlertMessageInformation(spWindow, "Cotización", "Se creo correctamente la impresión");
                     }
 
@@ -344,6 +347,54 @@ public class FxCotizacionDetalleController implements Initializable {
         } else {
             Tools.AlertMessageWarning(spWindow, "Venta", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
         }
+    }
+
+    private String imprimirVenta(String printerName, boolean printerCut) {
+        ArrayList<HBox> object = new ArrayList<>();
+        int rows = 0;
+        int lines = 0;
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            object.add((HBox) hbEncabezado.getChildren().get(i));
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbEncebezado(box,
+                    "COTIZACIÓN",
+                    "N° " + cotizacionTB.getIdCotizacion(),
+                    cotizacionTB.getClienteTB().getNumeroDocumento(),
+                    cotizacionTB.getClienteTB().getInformacion(),
+                    cotizacionTB.getClienteTB().getCelular(),
+                    cotizacionTB.getClienteTB().getDireccion(),
+                    "---");
+        }
+
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                lines += billPrintable.hbDetalle(hBox, box, arrList, m);
+                object.add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            object.add((HBox) hbPie.getChildren().get(i));
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
+                    Tools.roundingValue(subTotal, 2),
+                    "-" + Tools.roundingValue(descuentoTotal, 2),
+                    Tools.roundingValue(subTotalImporte, 2),
+                    Tools.roundingValue(total, 2),
+                    Tools.roundingValue(0, 2),
+                    Tools.roundingValue(0, 2),
+                    cotizacionTB.getClienteTB().getNumeroDocumento(),
+                    cotizacionTB.getClienteTB().getInformacion(),
+                    "---",
+                    cotizacionTB.getClienteTB().getCelular());
+        }
+        return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }
 
     private void reportA4() {
