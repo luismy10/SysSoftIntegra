@@ -603,7 +603,8 @@ public class FxVentaDetalleController implements Initializable {
                                         Tools.roundingValue(efectivo, 2),
                                         Tools.roundingValue(vuelto, 2),
                                         ventaTB.getClienteTB().getNumeroDocumento(),
-                                        ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
+                                        ventaTB.getClienteTB().getInformacion(), 
+                                        ventaTB.getCodigo(),
                                         ventaTB.getClienteTB().getCelular());
                             }
 

@@ -490,6 +490,9 @@ public class FxTicketController implements Initializable {
                             } else if (tipoTicket == 7) {
                                 Session.TICKET_PRE_VENTA_ID = idTicket;
                                 Session.TICKET_PRE_VENTA_RUTA = sampleObject.toJSONString();
+                            } else if (tipoTicket == 8) {
+                                Session.TICKET_COTIZACION_ID = idTicket;
+                                Session.TICKET_COTIZACION_RUTA = sampleObject.toJSONString();
                             }
                         }
                         clearPane();
@@ -1423,7 +1426,7 @@ public class FxTicketController implements Initializable {
                     if (tipoTicket == 1) {
                         Session.TICKET_VENTA_ID = idTicket;
                         Session.TICKET_VENTA_RUTA = ruta;
-                    }else if(tipoTicket == 7){
+                    } else if (tipoTicket == 7) {
                         Session.TICKET_PRE_VENTA_ID = idTicket;
                         Session.TICKET_PRE_VENTA_RUTA = ruta;
                     }

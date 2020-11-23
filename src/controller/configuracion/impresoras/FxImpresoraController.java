@@ -349,7 +349,20 @@ public class FxImpresoraController implements Initializable {
                 Session.FORMATO_IMPRESORA_PRE_VENTA = rbTicket.isSelected() ? "ticket" : "a4";
                 Session.DESING_IMPRESORA_PRE_VENTA = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
                 Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
-            }else{
+            } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("COTIZACION")) {
+                prop.setProperty("printerNameCotizacion", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperCotizacion", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatCotizacion", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingCotizacion", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
+                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+
+                Session.ESTADO_IMPRESORA_COTIZACION = true;
+                Session.NOMBRE_IMPRESORA_COTIZACION = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_COTIZACION = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_COTIZACION = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_COTIZACION = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            } else {
                 Tools.AlertMessageWarning(vbWindow, "Impresora", "No se puede guardar la configuración por problemas con la lista de tipo de impresora.");
             }
         } catch (IOException io) {

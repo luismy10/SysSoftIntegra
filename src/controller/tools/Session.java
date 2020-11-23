@@ -48,7 +48,7 @@ public class Session {
     public static String TICKET_PRE_VENTA_RUTA = "";
     
     public static int TICKET_COTIZACION_ID = 0;
-    public static String TICKET_COTIZACION = "";
+    public static String TICKET_COTIZACION_RUTA = "";
 
     public static boolean ESTADO_IMPRESORA_VENTA;
     public static String NOMBRE_IMPRESORA_VENTA = "";
@@ -61,6 +61,12 @@ public class Session {
     public static boolean CORTAPAPEL_IMPRESORA_PRE_VENTA;
     public static String FORMATO_IMPRESORA_PRE_VENTA = "";
     public static String DESING_IMPRESORA_PRE_VENTA = "";
+    
+    public static boolean ESTADO_IMPRESORA_COTIZACION;
+    public static String NOMBRE_IMPRESORA_COTIZACION = "";
+    public static boolean CORTAPAPEL_IMPRESORA_COTIZACION;
+    public static String FORMATO_IMPRESORA_COTIZACION = "";
+    public static String DESING_IMPRESORA_COTIZACION = "";
     /*
     variable de cliente
      */
