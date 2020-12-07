@@ -32,6 +32,8 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     private Button btnGuardar;
     @FXML
     private CheckBox cbGuia;
+    @FXML
+    private CheckBox cbFacturado;
 
     private FxTipoDocumentoController tipoDocumentoController;
 
@@ -42,7 +44,7 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo, String nombre, String serie, int numeracion, String codigoAlterno, boolean guia) {
+    public void initUpdate(int codigo, String nombre, String serie, int numeracion, String codigoAlterno, boolean guia, boolean factura) {
         idTipoDocumento = codigo;
         txtNombre.setText(nombre);
         txtSerie.setText(serie);
@@ -51,6 +53,9 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         btnGuardar.setText("Actualizar");
         btnGuardar.getStyleClass().add("buttonLightWarning");
         cbGuia.setSelected(guia);
+        cbGuia.setText(guia ? "Si" : "No");
+        cbFacturado.setSelected(factura);
+        cbFacturado.setText(factura ? "Si" : "No");
     }
 
     private void saveTipoImpuesto() {
@@ -75,6 +80,7 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             documentoTB.setCodigoAlterno(txtCodigoAlterno.getText().trim());
             documentoTB.setPredeterminado(false);
             documentoTB.setGuia(cbGuia.isSelected());
+            documentoTB.setFactura(cbFacturado.isSelected());
 
             String result = TipoDocumentoADO.CrudTipoDocumento(documentoTB);
             if (result.equalsIgnoreCase("updated")) {
@@ -130,6 +136,11 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     @FXML
     private void onActionGuia(ActionEvent event) {
         cbGuia.setText(cbGuia.isSelected() ? "Si" : "No");
+    }
+
+    @FXML
+    private void onActionFactura(ActionEvent event) {
+        cbFacturado.setText(cbFacturado.isSelected() ? "Si" : "No");
     }
 
     public void setTipoDocumentoController(FxTipoDocumentoController tipoDocumentoController) {

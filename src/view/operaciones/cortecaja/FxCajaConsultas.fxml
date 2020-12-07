@@ -207,7 +207,7 @@
                                           <Label fx:id="lblVentaTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label fx:id="lblIngresosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#016e29" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                           <Label fx:id="lblRetirosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#e42c0f" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                          <Label styleClass="labelOpenSansRegular15" text="Base" textFill="#025a9d" GridPane.rowIndex="1">
+                                          <Label styleClass="labelOpenSansRegular15" text="Monto Base" textFill="#025a9d" GridPane.rowIndex="1">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

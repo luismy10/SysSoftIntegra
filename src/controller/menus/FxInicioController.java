@@ -26,14 +26,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -62,8 +66,6 @@ public class FxInicioController implements Initializable {
     @FXML
     private Text lblComprasTotales;
     @FXML
-    private BarChart<String, Double> bcProductos;
-    @FXML
     private PieChart pcInventario;
     @FXML
     private Text lblVentasPagar;
@@ -77,8 +79,8 @@ public class FxInicioController implements Initializable {
     private Text lblNecesarias;
     @FXML
     private Text lblExcentes;
-
-    private final XYChart.Series productosSeries = new XYChart.Series<>();
+    @FXML
+    private VBox vbProductoMasVendidos;
 
     private ObservableList<PieChart.Data> datas = FXCollections.observableArrayList(
             new PieChart.Data("Productos Negativos", 0),
@@ -125,9 +127,9 @@ public class FxInicioController implements Initializable {
 
                     lblVentasPagar.setText(Tools.roundingValue((int) arrayList.get(11), 0));
                     lblComprasPagar.setText(Tools.roundingValue((int) arrayList.get(12), 0));
-                   // notificationState("Estado del producto","Tiene 15 dás para su prueba, despues de ello\n se va bloquear el producto, gracias por elegirnos.","warning_large.png",Pos.TOP_RIGHT);
+                    // notificationState("Estado del producto","Tiene 15 dás para su prueba, despues de ello\n se va bloquear el producto, gracias por elegirnos.","warning_large.png",Pos.TOP_RIGHT);
                     //notificationState("Estado del inventario","Tiene un total de "+((int) arrayList.get(6))+" producto negativos,\n actualize su inventario por favor.","warning_large.png",Pos.TOP_RIGHT);
-                  //  notificationState("SysSoftIntegra","Usa la AppSysSoftIntegra para realizar consular\n en tiempo real de sus tiendas.","logo.png",Pos.TOP_LEFT);
+                    //  notificationState("SysSoftIntegra","Usa la AppSysSoftIntegra para realizar consular\n en tiempo real de sus tiendas.","logo.png",Pos.TOP_LEFT);
                 });
                 count = 59;
             }
@@ -136,20 +138,6 @@ public class FxInicioController implements Initializable {
     }
 
     public void initGraphics() {
-
-        productosSeries.setName(Tools.getDate());
-        productosSeries.getData().add(new XYChart.Data("Producto 1", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 2", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 3", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 4", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 5", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 6", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 7", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 8", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 9", 0));
-        productosSeries.getData().add(new XYChart.Data("Producto 10", 0));
-        bcProductos.getData().add(productosSeries);
-
         datas = FXCollections.observableArrayList(
                 new PieChart.Data("Productos Negativos", 0),
                 new PieChart.Data("Productos Intermedios", 0),
@@ -160,26 +148,6 @@ public class FxInicioController implements Initializable {
     }
 
     private void loadGraphics(double negativas, double intermedias, double necesarias, double excedentes, ArrayList<SuministroTB> arrayList) {
-
-//        if (!arrayList.isEmpty()) {
-//
-//            productosSeries.getData().set(0, new XYChart.Data(arrayList.get(0) == null ? "Sin producto" : arrayList.get(0).getNombreMarca().length() > 10 ? arrayList.get(0).getNombreMarca().substring(0, 9) + "..." : arrayList.get(0).getNombreMarca(), arrayList.get(0) == null ? 0 : (int) arrayList.get(0).getCantidad()));
-//            productosSeries.getData().set(1, new XYChart.Data(arrayList.get(1) == null ? "Sin producto" : arrayList.get(1).getNombreMarca().length() > 10 ? arrayList.get(1).getNombreMarca().substring(0, 9) + "..." : arrayList.get(1).getNombreMarca(), arrayList.get(1) == null ? 0 : (int) arrayList.get(1).getCantidad()));
-//            productosSeries.getData().set(2, new XYChart.Data(arrayList.get(2) == null ? "Sin producto" : arrayList.get(2).getNombreMarca().length() > 10 ? arrayList.get(2).getNombreMarca().substring(0, 9) + "..." : arrayList.get(2).getNombreMarca(), arrayList.get(2) == null ? 0 : (int) arrayList.get(2).getCantidad()));
-//            productosSeries.getData().set(3, new XYChart.Data(arrayList.get(3) == null ? "Sin producto" : arrayList.get(3).getNombreMarca().length() > 10 ? arrayList.get(3).getNombreMarca().substring(0, 9) + "..." : arrayList.get(3).getNombreMarca(), arrayList.get(3) == null ? 0 : (int) arrayList.get(3).getCantidad()));
-//            productosSeries.getData().set(4, new XYChart.Data(arrayList.get(4) == null ? "Sin producto" : arrayList.get(4).getNombreMarca().length() > 10 ? arrayList.get(4).getNombreMarca().substring(0, 9) + "..." : arrayList.get(4).getNombreMarca(), arrayList.get(4) == null ? 0 : (int) arrayList.get(4).getCantidad()));
-//            productosSeries.getData().set(5, new XYChart.Data(arrayList.get(5) == null ? "Sin producto" : arrayList.get(5).getNombreMarca().length() > 10 ? arrayList.get(5).getNombreMarca().substring(0, 9) + "..." : arrayList.get(5).getNombreMarca(), arrayList.get(5) == null ? 0 : (int) arrayList.get(5).getCantidad()));
-//            productosSeries.getData().set(6, new XYChart.Data(arrayList.get(6) == null ? "Sin producto" : arrayList.get(6).getNombreMarca().length() > 10 ? arrayList.get(6).getNombreMarca().substring(0, 9) + "..." : arrayList.get(6).getNombreMarca(), arrayList.get(6) == null ? 0 : (int) arrayList.get(6).getCantidad()));
-//            productosSeries.getData().set(7, new XYChart.Data(arrayList.get(7) == null ? "Sin producto" : arrayList.get(7).getNombreMarca().length() > 10 ? arrayList.get(7).getNombreMarca().substring(0, 9) + "..." : arrayList.get(7).getNombreMarca(), arrayList.get(7) == null ? 0 : (int) arrayList.get(7).getCantidad()));
-//            productosSeries.getData().set(8, new XYChart.Data(arrayList.get(8) == null ? "Sin producto" : arrayList.get(8).getNombreMarca().length() > 10 ? arrayList.get(8).getNombreMarca().substring(0, 9) + "..." : arrayList.get(8).getNombreMarca(), arrayList.get(8) == null ? 0 : (int) arrayList.get(8).getCantidad()));
-//            productosSeries.getData().set(9, new XYChart.Data(arrayList.get(9) == null ? "Sin producto" : arrayList.get(9).getNombreMarca().length() > 10 ? arrayList.get(9).getNombreMarca().substring(0, 9) + "..." : arrayList.get(9).getNombreMarca(), arrayList.get(9) == null ? 0 : (int) arrayList.get(9).getCantidad()));
-//
-//        } else {
-//            for (int i = 0; i < 10; i++) {
-//                productosSeries.getData().set(i, new XYChart.Data("Producto " + (i + 1), 0));
-//            }
-//        }
-
         lblNegativos.setText("" + Tools.roundingValue(negativas, 0));
         lblIntermedios.setText("" + Tools.roundingValue(intermedias, 0));
         lblNecesarias.setText("" + Tools.roundingValue(necesarias, 0));
@@ -192,6 +160,66 @@ public class FxInicioController implements Initializable {
                 new PieChart.Data("Productos Excedentes", excedentes)
         );
         pcInventario.setData(datas);
+        
+        vbProductoMasVendidos.getChildren().clear();
+        arrayList.forEach(e -> {
+            productoModel(e.getNombreMarca(),Tools.roundingValue(e.getPrecioVentaGeneral(),2),Tools.roundingValue(e.getCantidad(),2));
+        });
+    }
+
+    private void productoModel(String product,String price,String quantity) {        
+
+        HBox hBoxDetail = new HBox();
+        hBoxDetail.setStyle("-fx-border-color: #cccccc;-fx-border-width: 0px 0px 1px 0px;");
+
+        HBox hBoxImage = new HBox();
+        HBox.setHgrow(hBoxImage, Priority.SOMETIMES);
+        hBoxImage.setStyle("-fx-padding: 0.6666666666666666em;");
+        ImageView imageView = new ImageView(new Image("/view/image/noimage.jpg"));
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
+        imageView.setPreserveRatio(false);
+        hBoxImage.getChildren().add(imageView);
+
+        HBox hBoxContent = new HBox();
+        HBox.setHgrow(hBoxContent, Priority.ALWAYS);
+
+        VBox vBoxProduct = new VBox();
+        HBox.setHgrow(vBoxProduct, Priority.ALWAYS);
+        vBoxProduct.setAlignment(Pos.CENTER_LEFT);
+        vBoxProduct.setStyle("-fx-padding: 0.6666666666666666em;");
+        Label lblProducto = new Label(product);
+        lblProducto.setStyle("-fx-text-fill:#020203;");
+        lblProducto.getStyleClass().add("labelRobotoBold15");
+        Label lblPrice = new Label("Precio: "+price);
+        lblPrice.setStyle("-fx-text-fill:#545050;");
+        lblPrice.getStyleClass().add("labelRoboto13");
+        lblPrice.setMinWidth(Control.USE_COMPUTED_SIZE);
+        lblPrice.setMinHeight(Control.USE_COMPUTED_SIZE);
+        lblPrice.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        lblPrice.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        lblPrice.setMaxWidth(Control.USE_COMPUTED_SIZE);
+        lblPrice.setMaxHeight(Control.USE_COMPUTED_SIZE);
+        vBoxProduct.getChildren().addAll(lblProducto, lblPrice);
+
+        VBox vBoxQuantity = new VBox();
+        HBox.setHgrow(vBoxQuantity, Priority.SOMETIMES);
+        vBoxQuantity.setAlignment(Pos.CENTER_RIGHT);
+        vBoxQuantity.setStyle("-fx-padding:0.6666666666666666em;");
+        Label lblQuantity = new Label("Cantidad: "+quantity);
+        lblQuantity.setStyle("-fx-background-color: #0766cc;-fx-text-fill: #ffffff;-fx-padding: 10px 15px;-fx-border-radius: 0.25em;-fx-border-color: #0766cc;-fx-background-radius: 0.25em;");
+        lblQuantity.getStyleClass().add("labelRoboto13");
+        lblQuantity.setMinWidth(Control.USE_COMPUTED_SIZE);
+        lblQuantity.setMinHeight(Control.USE_COMPUTED_SIZE);
+        lblQuantity.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        lblQuantity.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        lblQuantity.setMaxWidth(Control.USE_COMPUTED_SIZE);
+        lblQuantity.setMaxHeight(Control.USE_COMPUTED_SIZE);
+        vBoxQuantity.getChildren().add(lblQuantity);
+        hBoxContent.getChildren().addAll(vBoxProduct, vBoxQuantity);
+
+        hBoxDetail.getChildren().addAll(hBoxImage, hBoxContent);
+        vbProductoMasVendidos.getChildren().add(hBoxDetail);
     }
 
     private void onEventInventario(short existencia) {
@@ -213,19 +241,19 @@ public class FxInicioController implements Initializable {
         }
     }
 
-    private void notificationState(String title,String message,String url,Pos pos) {
-         Image image = new Image("/view/image/"+url);
-                Notifications notifications = Notifications.create()
-                        .title(title)
-                        .text(message)
-                        .graphic(new ImageView(image))
-                        .hideAfter(Duration.seconds(5))
-                        .position(pos)
-                        .onAction(n -> {
-                            Tools.println(n);
-                        });
-                notifications.darkStyle();
-                notifications.show();
+    private void notificationState(String title, String message, String url, Pos pos) {
+        Image image = new Image("/view/image/" + url);
+        Notifications notifications = Notifications.create()
+                .title(title)
+                .text(message)
+                .graphic(new ImageView(image))
+                .hideAfter(Duration.seconds(5))
+                .position(pos)
+                .onAction(n -> {
+                    Tools.println(n);
+                });
+        notifications.darkStyle();
+        notifications.show();
     }
 
     @FXML

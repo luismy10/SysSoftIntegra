@@ -965,14 +965,6 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-//    private boolean validateImpuesto(ArrayList<SuministroTB> stb, String idSuministro) {
-//        for (SuministroTB stb1 : stb) {
-//            if (stb1.getIdSuministro().equals(idSuministro)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");

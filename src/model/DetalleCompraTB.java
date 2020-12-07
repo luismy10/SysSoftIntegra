@@ -8,16 +8,19 @@ public class DetalleCompraTB {
     private int id;
     private String idCompra;
     private String idArticulo;
+    private String descripcion;
+    private String medida;
     private double cantidad;
+    private double precioCompraUnico;
+    private double precioCompraReal;
     private double precioCompra;
-    private double precioCompraCalculado;
+    private double descuentoSumado;
     private double descuento;
     private int idImpuesto;
     private String nombreImpuesto;
     private double valorImpuesto;
     private double impuestoSumado;
     private double importe;
-    private String descripcion;    
     private boolean lote;
     private ArrayList<LoteTB> listLote;
     private SuministroTB suministroTB;
@@ -59,6 +62,24 @@ public class DetalleCompraTB {
         this.cantidad = cantidad;
     }
 
+    public double getPrecioCompraUnico() {
+        return precioCompraUnico;
+    }
+
+    public void setPrecioCompraUnico(double precioCompraUnico) {
+        this.precioCompraUnico = precioCompraUnico;
+    }
+
+    public double getPrecioCompraReal() {
+        return precioCompraReal;
+    }
+
+    public void setPrecioCompraReal(double precioCompraReal) {
+        this.precioCompraReal = precioCompraReal;
+    }
+
+   
+
     public double getPrecioCompra() {
         return precioCompra;
     }
@@ -67,14 +88,14 @@ public class DetalleCompraTB {
         this.precioCompra = precioCompra;
     }
 
-    public double getPrecioCompraCalculado() {
-        return precioCompraCalculado;
+    public double getDescuentoSumado() {
+        return descuentoSumado;
     }
 
-    public void setPrecioCompraCalculado(double precioCompraCalculado) {
-        this.precioCompraCalculado = precioCompraCalculado;
+    public void setDescuentoSumado(double descuentoSumado) {
+        this.descuentoSumado = descuentoSumado;
     }
-
+    
     public double getDescuento() {
         return descuento;
     }
@@ -169,6 +190,14 @@ public class DetalleCompraTB {
 
     public void setRemove(Button remove) {
         this.remove = remove;
+    }
+
+    public String getMedida() {
+        return medida;
+    }
+
+    public void setMedida(String medida) {
+        this.medida = medida;
     }
 
 }

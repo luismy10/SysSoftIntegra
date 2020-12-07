@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -70,7 +69,8 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
-import model.ClienteADO;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.PrivilegioTB;
 import model.VentaADO;
 import net.sf.jasperreports.engine.JRException;
@@ -100,13 +100,29 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private ComboBox<ClienteTB> cbCliente;
-    @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
     private Text lblSerie;
     @FXML
     private Text lblNumeracion;
+    @FXML
+    private ComboBox<DetalleTB> cbTipoDocumento;
+    @FXML
+    private TextField txtNumeroDocumento;
+    @FXML
+    private Button btnBuscarCliente;
+    @FXML
+    private Button btnBuscarSunat;
+    @FXML
+    private Button btnBuscarReniec;
+    @FXML
+    private TextField txtDatosCliente;
+    @FXML
+    private TextField txtCelularCliente;
+    @FXML
+    private TextField txtCorreoElectronico;
+    @FXML
+    private TextField txtDireccionCliente;
 
     private AnchorPane vbPrincipal;
 
@@ -123,6 +139,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private AnchorPane hbPie;
 
     private String monedaSimbolo;
+
+    private String idCliente;
 
     private boolean vender_con_cantidades_negativas;
 
@@ -159,55 +177,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
-
-        SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
-                if (!searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().requestFocus();
-                }
-            } else if (t.getCode() == KeyCode.ESCAPE) {
-                searchComboBoxCliente.getComboBox().hide();
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-            searchComboBoxCliente.getComboBox().getItems().clear();
-            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 4, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
-            clienteTBs.forEach(e -> cbCliente.getItems().add(e));
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-            if (null == t.getCode()) {
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-            } else {
-                switch (t.getCode()) {
-                    case ENTER:
-                    case SPACE:
-                    case ESCAPE:
-                        searchComboBoxCliente.getComboBox().hide();
-                        break;
-                    case UP:
-                    case DOWN:
-                    case LEFT:
-                    case RIGHT:
-                        break;
-                    default:
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-                        break;
-                }
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-            if (item != null) {
-                searchComboBoxCliente.getComboBox().getSelectionModel().select(item);
-                if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
-                    searchComboBoxCliente.getComboBox().hide();
-                }
-            }
-        });
-
+        idCliente = "";
         loadDataComponent();
     }
 
@@ -242,10 +212,23 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             }
         }
 
-        cbCliente.getItems().clear();
-        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
-            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_TIPO_DOCUMENTO, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", "", Session.CLIENTE_DIRECCION));
-            cbCliente.getSelectionModel().select(0);
+        cbTipoDocumento.getItems().clear();
+        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
+
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtCelularCliente.setText(Session.CLIENTE_CELULAR);
+        txtCorreoElectronico.setText(Session.CLIENTE_EMAIL);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+
+        if (!cbTipoDocumento.getItems().isEmpty()) {
+            for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
+                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                    cbTipoDocumento.getSelectionModel().select(detalleTB);
+                    break;
+                }
+            }
         }
     }
 
@@ -918,14 +901,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     String email = "";
                     String direccion = "";
 
-                    if (cbCliente.getSelectionModel().getSelectedIndex() >= 0) {
-                        ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
-                        numeroDocumento = clienteTB.getNumeroDocumento() == null ? "" : clienteTB.getNumeroDocumento().toUpperCase();
-                        informacion = clienteTB.getInformacion() == null ? "" : clienteTB.getInformacion().toUpperCase();
-                        celular = clienteTB.getCelular() == null ? "" : clienteTB.getCelular().toUpperCase();
-                        email = clienteTB.getEmail() == null ? "" : clienteTB.getEmail();
-                        direccion = clienteTB.getDireccion() == null ? "" : clienteTB.getDireccion().toUpperCase();
-                    }
+                    numeroDocumento = txtNumeroDocumento.getText().trim().length() == 0 ? "" : txtNumeroDocumento.getText().trim().toUpperCase();
+                    informacion = txtDatosCliente.getText().trim().length() == 0 ? "" : txtDatosCliente.getText().trim().toUpperCase();
+                    celular = txtCelularCliente.getText().trim().length() == 0 ? "" : txtCelularCliente.getText().trim().toUpperCase();
+                    email = txtCorreoElectronico.getText().trim().length() == 0 ? "" : txtCorreoElectronico.getText().trim().toUpperCase();
+                    direccion = txtDireccionCliente.getText().trim().length() == 0 ? "" : txtDireccionCliente.getText().trim().toUpperCase();
+
                     if (Session.DESING_IMPRESORA_PRE_VENTA.equalsIgnoreCase("withdesing")) {
                         billPrintable.loadEstructuraTicket(Session.TICKET_PRE_VENTA_ID, Session.TICKET_PRE_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
@@ -1135,9 +1116,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione la moneda ha usar.");
                 cbMoneda.requestFocus();
-            } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione un cliente.");
-                cbCliente.requestFocus();
+            } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ventas", "Seleccione el tipo de documento del cliente.");
+                cbTipoDocumento.requestFocus();
+            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(vbWindow, "Ventas", "Ingrese el número del documento del cliente.");
+                txtNumeroDocumento.requestFocus();
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione el tipo de comprobante.");
                 cbComprobante.requestFocus();
@@ -1163,13 +1147,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 stage.show();
 
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
-                clienteTB.setTipoDocumento(cbCliente.getSelectionModel().getSelectedItem().getTipoDocumento());
-                clienteTB.setNumeroDocumento(cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento());
-                clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
-                clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
-                clienteTB.setEmail(cbCliente.getSelectionModel().getSelectedItem().getEmail());
-                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
+                clienteTB.setIdCliente(idCliente);
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
+                clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
+                clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
+                clienteTB.setEmail(txtCorreoElectronico.getText().trim().toUpperCase());
+                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -1193,7 +1177,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
                 lvProductoAgregados.getItems().forEach(e -> suministroTBs.add(e.getSuministroTB()));
-                controller.setInitComponents(ventaTB, suministroTBs,vender_con_cantidades_negativas);
+                controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas);
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
@@ -1294,7 +1278,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 cbMoneda.requestFocus();
                 break;
             case F4:
-                cbCliente.requestFocus();
+                txtNumeroDocumento.requestFocus();
                 break;
             case F5:
 
@@ -1517,6 +1501,38 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onActionVentasPorDia(ActionEvent event) {
         openWindowMostrarVentas();
+    }
+
+    @FXML
+    private void onKeyTypedNumeroDocumento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSunat(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionSunat(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void onKeyPressedReniec(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionReniec(ActionEvent event) {
+
     }
 
     public TextField getTxtSearch() {

@@ -52,31 +52,42 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Agregar o generar un lote para el artículo" />
-                              <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLight" text="Agregar">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/plus.png" />
-                                       </image></ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressedEditar" styleClass="buttonLight" text="Editar">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/edit.png" />
-                                       </image></ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#onActionQuitar" onKeyPressed="#onKeyPressedQuitar" styleClass="buttonLight" text="Quitar">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../image/remove.png" />
-                                       </image></ImageView>
-                                 </graphic>
-                              </Button>
+                              <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Agregar o generar un lote para el artículo" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLight" text="Agregar">
+                                       <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressedEditar" styleClass="buttonLight" text="Editar">
+                                       <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/edit.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#onActionQuitar" onKeyPressed="#onKeyPressedQuitar" styleClass="buttonLight" text="Quitar">
+                                       <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/remove.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">

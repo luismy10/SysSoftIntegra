@@ -1,8 +1,6 @@
 package controller.consultas.compras;
 
 import controller.contactos.proveedores.FxProveedorListaController;
-import controller.inventario.suministros.FxSuministrosCompraController;
-import controller.inventario.suministros.FxSuministrosListaController;
 import controller.operaciones.compras.FxComprasProcesoController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -48,7 +46,6 @@ import model.LoteTB;
 import model.MonedaADO;
 import model.MonedaTB;
 import model.ProveedorADO;
-import model.SuministroTB;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 
@@ -215,7 +212,7 @@ public class FxComprasEditarController implements Initializable {
         tcCosto.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getPrecioCompra(), 4)));
         tcDescuento.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getPrecioCompraCalculado(), 4) + "(" + Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%)"
+                Tools.roundingValue(cellData.getValue().getPrecioCompra(), 4) + "(" + Tools.roundingValue(cellData.getValue().getDescuento(), 0) + "%)"
         ));
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreImpuesto()));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(
@@ -316,66 +313,66 @@ public class FxComprasEditarController implements Initializable {
     }
 
     private void openWindowSuministrasAdd() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxSuministrosListaController controller = fXMLLoader.getController();
-            controller.setInitComprasEditarController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", spWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
-            stage.show();
-            controller.fillSuministrosTable((short)0,"");
-        } catch (IOException ex) {
-            System.out.println("Controller compras" + ex.getLocalizedMessage());
-        }
+//        try {
+//            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+//            URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
+//            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//            Parent parent = fXMLLoader.load(url.openStream());
+//            //Controlller here
+//            FxSuministrosListaController controller = fXMLLoader.getController();
+//            controller.setInitComprasEditarController(this);
+//            //
+//            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", spWindow.getScene().getWindow());
+//            stage.setResizable(false);
+//            stage.sizeToScene();
+//            stage.setOnHiding((w) -> {
+//                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+//            });
+//            stage.show();
+//            controller.fillSuministrosTable((short)0,"");
+//        } catch (IOException ex) {
+//            System.out.println("Controller compras" + ex.getLocalizedMessage());
+//        }
 
     }
 
     private void openWindowArticulosEdit() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            ObservableList<DetalleCompraTB> detalleCompraTBs;
-            detalleCompraTBs = tvList.getSelectionModel().getSelectedItems();
-            detalleCompraTBs.forEach(e -> {
-                try {
-                    URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
-                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                    Parent parent = fXMLLoader.load(url.openStream());
-                    //Controlller here
-                    FxSuministrosCompraController controller = fXMLLoader.getController();
-                    controller.setInitComprasEditarController(this);
-                    //
-                    Stage stage = WindowStage.StageLoaderModal(parent, "Editar suministro", spWindow.getScene().getWindow());
-                    stage.setResizable(false);
-                    stage.show();
-
-                    DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
-                    detalleCompraTB.setIdArticulo(e.getIdArticulo());
-                    //
-                    SuministroTB suministrosTB = new SuministroTB();
-                    suministrosTB.setClave(e.getSuministroTB().getClave());
-                    suministrosTB.setNombreMarca(e.getSuministroTB().getNombreMarca());
-                    detalleCompraTB.setSuministroTB(suministrosTB);
-                    detalleCompraTB.setCantidad(e.getCantidad());
-                    detalleCompraTB.setPrecioCompra(e.getPrecioCompra());
-                    detalleCompraTB.setDescuento(e.getDescuento());
-                    detalleCompraTB.setIdImpuesto(e.getIdImpuesto());
-                    detalleCompraTB.setDescripcion(e.getDescripcion());
-                    controller.setLoadEdit(detalleCompraTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
-                } catch (IOException ex) {
-                    System.out.println(ex.getLocalizedMessage());
-                }
-            });
-        } else {
-            openAlertMessageWarning("Seleccione un producto para editarlo.");
-        }
+//        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+//            ObservableList<DetalleCompraTB> detalleCompraTBs;
+//            detalleCompraTBs = tvList.getSelectionModel().getSelectedItems();
+//            detalleCompraTBs.forEach(e -> {
+//                try {
+//                    URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
+//                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//                    Parent parent = fXMLLoader.load(url.openStream());
+//                    //Controlller here
+//                    FxSuministrosCompraController controller = fXMLLoader.getController();
+//                    controller.setInitComprasEditarController(this);
+//                    //
+//                    Stage stage = WindowStage.StageLoaderModal(parent, "Editar suministro", spWindow.getScene().getWindow());
+//                    stage.setResizable(false);
+//                    stage.show();
+//
+//                    DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
+//                    detalleCompraTB.setIdArticulo(e.getIdArticulo());
+//                    //
+//                    SuministroTB suministrosTB = new SuministroTB();
+//                    suministrosTB.setClave(e.getSuministroTB().getClave());
+//                    suministrosTB.setNombreMarca(e.getSuministroTB().getNombreMarca());
+//                    detalleCompraTB.setSuministroTB(suministrosTB);
+//                    detalleCompraTB.setCantidad(e.getCantidad());
+//                    detalleCompraTB.setPrecioCompra(e.getPrecioCompra());
+//                    detalleCompraTB.setDescuento(e.getDescuento());
+//                    detalleCompraTB.setIdImpuesto(e.getIdImpuesto());
+//                    detalleCompraTB.setDescripcion(e.getDescripcion());
+//                    controller.setLoadEdit(detalleCompraTB, tvList.getSelectionModel().getSelectedIndex(), loteTBs);
+//                } catch (IOException ex) {
+//                    System.out.println(ex.getLocalizedMessage());
+//                }
+//            });
+//        } else {
+//            openAlertMessageWarning("Seleccione un producto para editarlo.");
+//        }
     }
 
     private void onViewRemove() {

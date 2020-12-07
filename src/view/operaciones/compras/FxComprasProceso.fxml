@@ -20,22 +20,26 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF;">
+            <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 1px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <VBox alignment="CENTER" style="-fx-spacing: 0.4166666666666667em; -fx-padding: 0.4166666666666667em;">
+                  <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
                         <Label styleClass="labelRobotoBold17" text="TOTAL EN EFECTIVO" textFill="#020203" />
-                        <Label fx:id="lblTotal" styleClass="labelRobotoBold17" text="M 00.00" textFill="#020203">
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="lblTotal" styleClass="labelRobotoBold19" text="M 00.00" textFill="#0060bf">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../image/money.png" />
+                                    <Image url="@../../image/efectivo_1.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Label>
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
@@ -44,7 +48,7 @@
                      <children>
                         <HBox>
                            <children>
-                              <RadioButton fx:id="rbContado" mnemonicParsing="false" onAction="#onActionRbContado" selected="true" styleClass="labelRoboto14" text="Pago con Banco / Caja" />
+                              <RadioButton fx:id="rbContado" mnemonicParsing="false" onAction="#onActionRbContado" selected="true" styleClass="labelRoboto15" text="Pago con Banco / Caja" />
                            </children>
                         </HBox>
                         <HBox fx:id="hbPagoContado" alignment="CENTER_LEFT">
@@ -79,17 +83,25 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <RadioButton fx:id="rbCredito" mnemonicParsing="false" onAction="#onActionRbCredito" styleClass="labelRoboto14" text="Crédito" />
+                                    <RadioButton fx:id="rbCredito" mnemonicParsing="false" onAction="#onActionRbCredito" styleClass="labelRoboto15" text="Crédito" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Monto Total:" textFill="#020203" />
-                                          <Label fx:id="lblMontoTotal" styleClass="labelRobotoBold13" text="0.00" textFill="#08435e" />
-                                          <Label styleClass="labelRoboto13" text="Monto a Pagar:" textFill="#020203" />
-                                          <Label fx:id="lblMontoPagar" styleClass="labelRobotoBold13" text="0.00" textFill="#0240bc" />
+                                          <VBox alignment="CENTER_RIGHT">
+                                             <children>
+                                                <Label styleClass="labelRoboto15" text="Monto Total" textFill="#020203" />
+                                                <Label fx:id="lblMontoTotal" styleClass="labelRoboto15" text="0.00" textFill="#08435e" />
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_RIGHT">
+                                             <children>
+                                                <Label styleClass="labelRoboto15" text="Monto a Pagar" textFill="#020203" />
+                                                <Label fx:id="lblMontoPagar" styleClass="labelRoboto15" text="0.00" textFill="#0240bc" />
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
@@ -113,7 +125,7 @@
                            <children>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tvListaCredito" prefHeight="240.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tvListaCredito" prefHeight="220.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                       <columns>
                                         <TableColumn fx:id="tcCredito" prefWidth="210.0" style="-fx-alignment: CENTER;" text="Crédito" />
                                           <TableColumn fx:id="tcFecha" prefWidth="210.0" style="-fx-alignment: CENTER;" text="Fecha" />

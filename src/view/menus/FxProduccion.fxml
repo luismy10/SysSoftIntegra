@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="66.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto20" text="Seleccione la consulta a realiazar">
+                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto19" text="Seleccione la consulta a realiazar">
                      <font>
                         <Font name="Roboto" size="22.0" />
                      </font>
@@ -26,7 +26,7 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-spacing: 1.25em;">
                      <children>
-                        <Text fill="#23283a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular18" text="Ingrese la opción a buscar">
+                        <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular17" text="Ingrese la opción a buscar">
                            <font>
                               <Font name="Roboto" size="16.0" />
                            </font>
@@ -40,7 +40,7 @@
                <children>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionProducir" onKeyPressed="#onKeyPressedProducir" styleClass="buttonTransparent" text="Producir">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionProducir" onKeyPressed="#onKeyPressedProducir" styleClass="buttonTransparent" text="Producir" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -48,7 +48,7 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Producción">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -57,8 +57,16 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionEquipos" onKeyPressed="#onKeyPressedEquipos" styleClass="buttonTransparent" text="Equipos" />
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionInsumos" onKeyPressed="#onKeyPressedInsumos" styleClass="buttonTransparent" text="Insumos" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/producto.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

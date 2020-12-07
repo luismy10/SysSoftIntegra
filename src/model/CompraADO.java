@@ -61,15 +61,12 @@ public class CompraADO extends DBUtil {
                         + "HoraCompra,"
                         + "FechaVencimiento,"
                         + "HoraVencimiento,"
-                        + "SubTotal,"
-                        + "Descuento,"
-                        + "Total,"
                         + "Observaciones,"
                         + "Notas,"
                         + "TipoCompra,"
                         + "EstadoCompra,"
                         + "Usuario) "
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                 detalle_compra = getConnection().prepareStatement("INSERT INTO "
                         + "DetalleCompraTB("
@@ -81,10 +78,9 @@ public class CompraADO extends DBUtil {
                         + "IdImpuesto,"
                         + "NombreImpuesto,"
                         + "ValorImpuesto,"
-                        + "ImpuestoSumado,"
                         + "Importe,"
                         + "Descripcion)"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?)");
 
                 suministro_precios_remover = getConnection().prepareStatement("DELETE FROM PreciosTB WHERE IdSuministro = ?");
 
@@ -142,55 +138,52 @@ public class CompraADO extends DBUtil {
                 compra.setString(8, compraTB.getHoraCompra());
                 compra.setString(9, compraTB.getFechaVencimiento());
                 compra.setString(10, compraTB.getHoraVencimiento());
-                compra.setDouble(11, compraTB.getSubTotal());
-                compra.setDouble(12, compraTB.getDescuento());
-                compra.setDouble(13, compraTB.getTotal());
-                compra.setString(14, compraTB.getObservaciones());
-                compra.setString(15, compraTB.getNotas());
-                compra.setInt(16, compraTB.getTipo());
-                compra.setInt(17, compraTB.getEstado());
-                compra.setString(18, compraTB.getUsuario());
+                compra.setString(11, compraTB.getObservaciones());
+                compra.setString(12, compraTB.getNotas());
+                compra.setInt(13, compraTB.getTipo());
+                compra.setInt(14, compraTB.getEstado());
+                compra.setString(15, compraTB.getUsuario());
                 compra.addBatch();
 
-                for (int i = 0; i < tableView.getItems().size(); i++) {
+                for (DetalleCompraTB dc : tableView.getItems()) {
                     detalle_compra.setString(1, id_compra);
-                    detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
-                    detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
-                    detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompra());
-                    detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
+                    detalle_compra.setString(2, dc.getIdArticulo());
+                    detalle_compra.setDouble(3, dc.getCantidad());
+                    detalle_compra.setDouble(4, dc.getPrecioCompra());
+                    detalle_compra.setDouble(5, dc.getDescuento());
 
-                    detalle_compra.setInt(6, tableView.getItems().get(i).getIdImpuesto());
-                    detalle_compra.setString(7, tableView.getItems().get(i).getNombreImpuesto());
-                    detalle_compra.setDouble(8, tableView.getItems().get(i).getValorImpuesto());
-                    detalle_compra.setDouble(9, tableView.getItems().get(i).getImpuestoSumado());
-                    detalle_compra.setDouble(10, tableView.getItems().get(i).getImporte());
-                    detalle_compra.setString(11, tableView.getItems().get(i).getDescripcion());
+                    detalle_compra.setInt(6, dc.getIdImpuesto());
+                    detalle_compra.setString(7, dc.getNombreImpuesto());
+                    detalle_compra.setDouble(8, dc.getValorImpuesto());
+                    detalle_compra.setDouble(9, dc.getImporte());
+                    detalle_compra.setString(10, dc.getDescripcion());
                     detalle_compra.addBatch();
 
-                    suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
-                    suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoId());
-                    suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
-                    suministro_update.setString(5, tableView.getItems().get(i).getIdArticulo());
+                    suministro_update.setDouble(1, dc.getCantidad());
+                    suministro_update.setDouble(2, dc.getPrecioCompra());
+
+                    suministro_update.setInt(3, dc.getSuministroTB().getImpuestoId());
+                    suministro_update.setDouble(4, dc.getSuministroTB().getPrecioVentaGeneral());
+                    suministro_update.setString(5, dc.getIdArticulo());
                     suministro_update.addBatch();
 
-                    suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
+                    suministro_kardex.setString(1, dc.getIdArticulo());
                     suministro_kardex.setString(2, Tools.getDate());
                     suministro_kardex.setString(3, Tools.getHour());
                     suministro_kardex.setShort(4, (short) 1);
                     suministro_kardex.setInt(5, 2);
                     suministro_kardex.setString(6, "COMPRA CON SERIE Y NUMERACIÓN: " + compraTB.getSerie().toUpperCase() + "-" + compraTB.getNumeracion().toUpperCase());
-                    suministro_kardex.setDouble(7, tableView.getItems().get(i).getCantidad());
-                    suministro_kardex.setDouble(8, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getPrecioCompra());
+                    suministro_kardex.setDouble(7, dc.getCantidad());
+                    suministro_kardex.setDouble(8, dc.getPrecioCompra());
+                    suministro_kardex.setDouble(9, dc.getCantidad() * dc.getPrecioCompra());
                     suministro_kardex.addBatch();
 
-                    suministro_precios_remover.setString(1, tableView.getItems().get(i).getIdArticulo());
+                    suministro_precios_remover.setString(1, dc.getIdArticulo());
                     suministro_precios_remover.addBatch();
 
-                    for (PreciosTB t : tableView.getItems().get(i).getListPrecios()) {
+                    for (PreciosTB t : dc.getListPrecios()) {
                         suministro_precios_insertar.setString(1, "");
-                        suministro_precios_insertar.setString(2, tableView.getItems().get(i).getIdArticulo());
+                        suministro_precios_insertar.setString(2, dc.getIdArticulo());
                         suministro_precios_insertar.setString(3, t.getNombre());
                         suministro_precios_insertar.setDouble(4, t.getValor());
                         suministro_precios_insertar.setDouble(5, t.getFactor() <= 0 ? 1 : t.getFactor());
@@ -292,6 +285,7 @@ public class CompraADO extends DBUtil {
                         + "CompraTB("
                         + "IdCompra,"
                         + "Proveedor,"
+                        + "Comprobante,"
                         + "Serie,"
                         + "Numeracion,"
                         + "TipoMoneda,"
@@ -299,15 +293,12 @@ public class CompraADO extends DBUtil {
                         + "HoraCompra,"
                         + "FechaVencimiento,"
                         + "HoraVencimiento,"
-                        + "SubTotal,"
-                        + "Descuento,"
-                        + "Total,"
                         + "Observaciones,"
                         + "Notas,"
                         + "TipoCompra,"
                         + "EstadoCompra,"
                         + "Usuario) "
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                 detalle_compra = getConnection().prepareStatement("INSERT INTO "
                         + "DetalleCompraTB("
@@ -319,10 +310,9 @@ public class CompraADO extends DBUtil {
                         + "IdImpuesto,"
                         + "NombreImpuesto,"
                         + "ValorImpuesto,"
-                        + "ImpuestoSumado,"
                         + "Importe,"
                         + "Descripcion)"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?)");
 
                 compra_credito = getConnection().prepareStatement("INSERT INTO "
                         + "CompraCreditoTB("
@@ -366,21 +356,19 @@ public class CompraADO extends DBUtil {
 
                 compra.setString(1, id_compra);
                 compra.setString(2, compraTB.getIdProveedor());
-                compra.setString(3, compraTB.getSerie());
-                compra.setString(4, compraTB.getNumeracion());
-                compra.setInt(5, compraTB.getIdMoneda());
-                compra.setString(6, compraTB.getFechaCompra());
-                compra.setString(7, compraTB.getHoraCompra());
-                compra.setString(8, compraTB.getFechaVencimiento());
-                compra.setString(9, compraTB.getHoraVencimiento());
-                compra.setDouble(10, compraTB.getSubTotal());
-                compra.setDouble(11, compraTB.getDescuento());
-                compra.setDouble(12, compraTB.getTotal());
-                compra.setString(13, compraTB.getObservaciones());
-                compra.setString(14, compraTB.getNotas());
-                compra.setInt(15, compraTB.getTipo());
-                compra.setInt(16, compraTB.getEstado());
-                compra.setString(17, compraTB.getUsuario());
+                compra.setInt(3, compraTB.getTipoDocumento());
+                compra.setString(4, compraTB.getSerie());
+                compra.setString(5, compraTB.getNumeracion());
+                compra.setInt(6, compraTB.getIdMoneda());
+                compra.setString(7, compraTB.getFechaCompra());
+                compra.setString(8, compraTB.getHoraCompra());
+                compra.setString(9, compraTB.getFechaVencimiento());
+                compra.setString(10, compraTB.getHoraVencimiento());
+                compra.setString(11, compraTB.getObservaciones());
+                compra.setString(12, compraTB.getNotas());
+                compra.setInt(13, compraTB.getTipo());
+                compra.setInt(14, compraTB.getEstado());
+                compra.setString(15, compraTB.getUsuario());
                 compra.addBatch();
 
                 for (CompraCreditoTB item : tvListaCredito.getItems()) {
@@ -394,45 +382,44 @@ public class CompraADO extends DBUtil {
                     compra_credito.addBatch();
                 }
 
-                for (int i = 0; i < tableView.getItems().size(); i++) {
+                for (DetalleCompraTB dc : tableView.getItems()) {
                     detalle_compra.setString(1, id_compra);
-                    detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
-                    detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
-                    detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompra());
-                    detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
+                    detalle_compra.setString(2, dc.getIdArticulo());
+                    detalle_compra.setDouble(3, dc.getCantidad());
+                    detalle_compra.setDouble(4, dc.getPrecioCompra());
+                    detalle_compra.setDouble(5, dc.getDescuento());
 
-                    detalle_compra.setInt(6, tableView.getItems().get(i).getIdImpuesto());
-                    detalle_compra.setString(7, tableView.getItems().get(i).getNombreImpuesto());
-                    detalle_compra.setDouble(8, tableView.getItems().get(i).getValorImpuesto());
-                    detalle_compra.setDouble(9, tableView.getItems().get(i).getImpuestoSumado());
-                    detalle_compra.setDouble(10, tableView.getItems().get(i).getImporte());
-                    detalle_compra.setString(11, tableView.getItems().get(i).getDescripcion());
+                    detalle_compra.setInt(6, dc.getIdImpuesto());
+                    detalle_compra.setString(7, dc.getNombreImpuesto());
+                    detalle_compra.setDouble(8, dc.getValorImpuesto());
+                    detalle_compra.setDouble(9, dc.getImporte());
+                    detalle_compra.setString(10, dc.getDescripcion());
                     detalle_compra.addBatch();
 
-                    suministro_update.setDouble(1, tableView.getItems().get(i).getCantidad());
-                    suministro_update.setDouble(2, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_update.setInt(3, tableView.getItems().get(i).getSuministroTB().getImpuestoId());
-                    suministro_update.setDouble(4, tableView.getItems().get(i).getSuministroTB().getPrecioVentaGeneral());
-                    suministro_update.setString(5, tableView.getItems().get(i).getIdArticulo());
+                    suministro_update.setDouble(1, dc.getCantidad());
+                    suministro_update.setDouble(2, dc.getPrecioCompra());
+                    suministro_update.setInt(3, dc.getSuministroTB().getImpuestoId());
+                    suministro_update.setDouble(4, dc.getSuministroTB().getPrecioVentaGeneral());
+                    suministro_update.setString(5, dc.getIdArticulo());
                     suministro_update.addBatch();
 
-                    suministro_kardex.setString(1, tableView.getItems().get(i).getIdArticulo());
+                    suministro_kardex.setString(1, dc.getIdArticulo());
                     suministro_kardex.setString(2, Tools.getDate());
                     suministro_kardex.setString(3, Tools.getHour());
                     suministro_kardex.setShort(4, (short) 1);
                     suministro_kardex.setInt(5, 2);
                     suministro_kardex.setString(6, "COMPRA CON SERIE Y NUMERACIÓN: " + compraTB.getSerie().toUpperCase() + "-" + compraTB.getNumeracion().toUpperCase());
-                    suministro_kardex.setDouble(7, tableView.getItems().get(i).getCantidad());
-                    suministro_kardex.setDouble(8, tableView.getItems().get(i).getPrecioCompra());
-                    suministro_kardex.setDouble(9, tableView.getItems().get(i).getCantidad() * tableView.getItems().get(i).getPrecioCompra());
+                    suministro_kardex.setDouble(7, dc.getCantidad());
+                    suministro_kardex.setDouble(8, dc.getPrecioCompra());
+                    suministro_kardex.setDouble(9, dc.getCantidad() * dc.getPrecioCompra());
                     suministro_kardex.addBatch();
 
-                    suministro_precios_remover.setString(1, tableView.getItems().get(i).getIdArticulo());
+                    suministro_precios_remover.setString(1, dc.getIdArticulo());
                     suministro_precios_remover.addBatch();
 
-                    for (PreciosTB t : tableView.getItems().get(i).getListPrecios()) {
+                    for (PreciosTB t : dc.getListPrecios()) {
                         suministro_precios_insertar.setString(1, "");
-                        suministro_precios_insertar.setString(2, tableView.getItems().get(i).getIdArticulo());
+                        suministro_precios_insertar.setString(2, dc.getIdArticulo());
                         suministro_precios_insertar.setString(3, t.getNombre());
                         suministro_precios_insertar.setDouble(4, t.getValor());
                         suministro_precios_insertar.setDouble(5, t.getFactor() <= 0 ? 1 : t.getFactor());
@@ -701,7 +688,6 @@ public class CompraADO extends DBUtil {
         ArrayList<Object> objects = new ArrayList<>();
         dbConnect();
         if (getConnection() != null) {
-
             try {
                 preparedCompra = getConnection().prepareStatement("{call Sp_Obtener_Compra_ById(?)}");
                 preparedCompra.setString(1, idCompra);
@@ -710,7 +696,7 @@ public class CompraADO extends DBUtil {
                 if (resultSet.next()) {
                     compraTB = new CompraTB();
                     compraTB.setIdCompra(idCompra);
-                    compraTB.setFechaCompra(resultSet.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy")));
+                    compraTB.setFechaCompra(resultSet.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                     compraTB.setHoraCompra(resultSet.getTime("HoraCompra").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     compraTB.setSerie(resultSet.getString("Serie").toUpperCase());
                     compraTB.setNumeracion(resultSet.getString("Numeracion"));
@@ -738,7 +724,6 @@ public class CompraADO extends DBUtil {
                 ProveedorTB proveedorTB = null;
                 if (resultSetProveedor.next()) {
                     proveedorTB = new ProveedorTB();
-
                     proveedorTB.setIdProveedor(resultSetProveedor.getString("IdProveedor"));
                     proveedorTB.setTipoDocumentoName(resultSetProveedor.getString("NombreDocumento"));
                     proveedorTB.setNumeroDocumento(resultSetProveedor.getString("NumeroDocumento"));
@@ -773,12 +758,23 @@ public class CompraADO extends DBUtil {
                     detalleCompraTB.setDescuento(rsEmps.getDouble("Descuento"));
                     detalleCompraTB.setIdImpuesto(rsEmps.getInt("IdImpuesto"));
                     detalleCompraTB.setValorImpuesto(rsEmps.getDouble("ValorImpuesto"));
-                    double totalDescuento = detalleCompraTB.getPrecioCompra() * (detalleCompraTB.getDescuento() / 100.00);
-                    double nuevoPrecioCompra = detalleCompraTB.getPrecioCompra() - totalDescuento;
-                    double totalImpuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), nuevoPrecioCompra);
-                    detalleCompraTB.setPrecioCompraCalculado((totalDescuento == 0 ? 0 : -1 * totalDescuento));
-                    detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * totalImpuesto);
-                    detalleCompraTB.setImporte(detalleCompraTB.getCantidad() * (nuevoPrecioCompra + totalImpuesto));
+
+                    double valor_sin_impuesto = detalleCompraTB.getPrecioCompra() / ((detalleCompraTB.getValorImpuesto() / 100.00) + 1);
+                    double descuento = detalleCompraTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                    detalleCompraTB.setDescuento(descuento);
+                    detalleCompraTB.setDescuentoSumado(descuento * detalleCompraTB.getCantidad());
+
+                    detalleCompraTB.setPrecioCompraUnico(valor_sin_impuesto);
+                    detalleCompraTB.setPrecioCompraReal(preciocalculado);
+
+                    double impuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), detalleCompraTB.getPrecioCompraReal());
+                    detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * impuesto);
+                    detalleCompraTB.setPrecioCompra(detalleCompraTB.getPrecioCompraReal() + impuesto);
+
+                    detalleCompraTB.setImporte(detalleCompraTB.getPrecioCompra() * detalleCompraTB.getCantidad());
 
                     empList.add(detalleCompraTB);
                 }
@@ -799,7 +795,7 @@ public class CompraADO extends DBUtil {
                 }
                 objects.add(listComprasCredito);
             } catch (SQLException ex) {
-
+                Tools.println("Error en listar compra: " + ex.getLocalizedMessage());
             } finally {
                 try {
                     if (preparedCompra != null) {
@@ -1553,7 +1549,7 @@ public class CompraADO extends DBUtil {
             while (resultSet.next()) {
                 CompraTB compraTB = new CompraTB();
                 compraTB.setFechaCompra(resultSet.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                compraTB.setIdProveedor(resultSet.getString("NumeroDocumento")+"\n"+resultSet.getString("Proveedor").toUpperCase());
+                compraTB.setIdProveedor(resultSet.getString("NumeroDocumento") + "\n" + resultSet.getString("Proveedor").toUpperCase());
                 compraTB.setSerie(resultSet.getString("Serie").toUpperCase());
                 compraTB.setNumeracion(resultSet.getString("Numeracion"));
                 compraTB.setTipoName(resultSet.getString("Tipo"));
@@ -1599,7 +1595,7 @@ public class CompraADO extends DBUtil {
                 CompraTB compraTB = new CompraTB();
                 compraTB.setId(rsEmps.getRow());
                 compraTB.setIdCompra(rsEmps.getString("IdCompra"));
-                compraTB.setIdProveedor(rsEmps.getString("NumeroDocumento")+"\n"+rsEmps.getString("RazonSocial"));
+                compraTB.setIdProveedor(rsEmps.getString("NumeroDocumento") + "\n" + rsEmps.getString("RazonSocial"));
                 compraTB.setFechaCompra(rsEmps.getDate("FechaCompra").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 compraTB.setHoraCompra(rsEmps.getTime("HoraCompra").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 compraTB.setSerie(rsEmps.getString("Serie").toUpperCase());

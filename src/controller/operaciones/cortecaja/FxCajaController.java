@@ -59,7 +59,7 @@ public class FxCajaController implements Initializable {
     private Label lblRetirosEfectivo;
     @FXML
     private VBox vbVentas;
-    
+
     private AnchorPane vbPrincipal;
 
     private double totalDineroCaja;
@@ -67,7 +67,8 @@ public class FxCajaController implements Initializable {
     private double totalTarjeta;
 
     private String idActual;
-    
+    @FXML
+    private Button btnReporte;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -81,7 +82,7 @@ public class FxCajaController implements Initializable {
         if (privilegioTBs.get(1).getIdPrivilegio() != 0 && !privilegioTBs.get(1).isEstado()) {
             btnTerminarTurno.setDisable(true);
         }
-        if(privilegioTBs.get(2).getIdPrivilegio() != 0 && !privilegioTBs.get(2).isEstado()){
+        if (privilegioTBs.get(2).getIdPrivilegio() != 0 && !privilegioTBs.get(2).isEstado()) {
             lblTotalVentas.setVisible(false);
             lblVentaEfectivo.setVisible(false);
             lblVentaTarjeta.setVisible(false);
@@ -343,6 +344,14 @@ public class FxCajaController implements Initializable {
         }
     }
 
+    private void openReporte() {
+
+    }
+
+    private void openTicket() {
+
+    }
+
     @FXML
     private void onActionCorte(ActionEvent event) {
         onEventCorteCaja();
@@ -365,6 +374,18 @@ public class FxCajaController implements Initializable {
     @FXML
     private void onActionTerminarTurno(ActionEvent event) {
         onEventTerminarTurno();
+    }
+
+    @FXML
+    private void onKeyPressedReporte(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openReporte();
+        }
+    }
+
+    @FXML
+    private void onActionReporte(ActionEvent event) {
+        openReporte();
     }
 
     public void setContent(AnchorPane vbPrincipal) {

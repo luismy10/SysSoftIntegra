@@ -120,8 +120,8 @@ public class FxLoteController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             ArrayList<Object> list = task.getValue();
             if (!list.isEmpty()) {
-                lblCaducados.setText("Lotes caducados -> " + list.get(0) == null ? "No hubo resultados" :(String) list.get(0));
-                lblPorCaducar.setText("Lotes proximos a caducarse a 2 semanas -> " + list.get(1) == null ? "No hubo resultados" : (String)list.get(1));
+                lblCaducados.setText("Lotes caducados -> " + list.get(0) == null ? "No hubo resultados" : (String) list.get(0));
+                lblPorCaducar.setText("Lotes proximos a caducarse a 2 semanas -> " + list.get(1) == null ? "No hubo resultados" : (String) list.get(1));
                 tvList.setItems((ObservableList<LoteTB>) list.get(2));
                 lblLoad.setVisible(false);
             }
@@ -142,7 +142,24 @@ public class FxLoteController implements Initializable {
 
     }
 
-    private void onViewEditarLote() throws IOException {
+    private void addLote() throws IOException {
+        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        URL url = getClass().getResource(FilesRouters.FX_LOTE_PROCESO);
+        FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+        Parent parent = fXMLLoader.load(url.openStream());
+        //Controlller here
+        FxLoteProcesoController controller = fXMLLoader.getController();
+        //
+        Stage stage = WindowStage.StageLoaderModal(parent, "Registro de lotes", window.getScene().getWindow());
+        stage.setResizable(false);
+        stage.sizeToScene();
+        stage.setOnHiding((WindowEvent WindowEvent) -> {
+            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        });
+        stage.show();
+    }
+
+    private void editarLote() throws IOException {
         ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
         URL url = getClass().getResource(FilesRouters.FX_LOTE_CAMBIAR);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -201,9 +218,21 @@ public class FxLoteController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedAdd(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            addLote();
+        }
+    }
+
+    @FXML
+    private void onActionAdd(ActionEvent event) throws IOException {
+        addLote();
+    }
+
+    @FXML
     private void onActionEdit(ActionEvent event) throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            onViewEditarLote();
+            editarLote();
         }
     }
 
@@ -211,7 +240,7 @@ public class FxLoteController implements Initializable {
     private void onKeyPressedEdit(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                onViewEditarLote();
+                editarLote();
             }
         }
     }

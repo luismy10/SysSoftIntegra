@@ -111,7 +111,7 @@
                                                 </Lighting>
                                              </effect>
                                           </ImageView>
-                                          <Label fx:id="lblPuesto" contentDisplay="TOP" styleClass="labelOpenSansRegular15" text="Administrador" textFill="WHITE" />
+                                          <Label fx:id="lblPuesto" contentDisplay="TOP" styleClass="labelRoboto15" text="Administrador" textFill="WHITE" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -133,7 +133,7 @@
                                           </Lighting>
                                        </effect>
                                     </ImageView>
-                                    <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="Conectado" />
+                                    <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Conectado" />
                                  </children>
                               </HBox>
                               <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1.25em;">
@@ -145,9 +145,9 @@
                                  <children>
                                     <HBox fx:id="btnInicio" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Dashboard" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Dashboard" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/home.png" />
                                                    </image>
@@ -168,9 +168,9 @@
                                     </HBox>
                                     <HBox fx:id="btnOperaciones" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Operaciones" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Operaciones" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/operaciones.png" />
                                                    </image>
@@ -191,9 +191,9 @@
                                     </HBox>
                                     <HBox fx:id="btnConsultas" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Consultas" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Consultas" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/consultas.png" />
                                                    </image>
@@ -212,34 +212,11 @@
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <HBox fx:id="btnProduccion" alignment="CENTER_LEFT" styleClass="buttonMenu">
-                                       <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Produccion" textFill="WHITE">
-                                             <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../image/produccion.png" />
-                                                   </image>
-                                                   <effect>
-                                                      <Lighting diffuseConstant="1.5" specularConstant="0.0">
-                                                         <bumpInput>
-                                                            <Shadow />
-                                                         </bumpInput>
-                                                         <light>
-                                                            <Light.Distant />
-                                                         </light>
-                                                      </Lighting>
-                                                   </effect>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                       </children>
-                                    </HBox>
                                     <HBox fx:id="btnInventario" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Inventario" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Inventario" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/almacen.png" />
                                                    </image>
@@ -258,11 +235,34 @@
                                           </Label>
                                        </children>
                                     </HBox>
+                                    <HBox fx:id="btnProduccion" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                       <children>
+                                          <Label styleClass="labelRoboto15" text="Produccion" textFill="WHITE">
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../image/produccion.png" />
+                                                   </image>
+                                                   <effect>
+                                                      <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                         <bumpInput>
+                                                            <Shadow />
+                                                         </bumpInput>
+                                                         <light>
+                                                            <Light.Distant />
+                                                         </light>
+                                                      </Lighting>
+                                                   </effect>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                     <HBox fx:id="btnContactos" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Contactos" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Contactos" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/contactos.png" />
                                                    </image>
@@ -283,9 +283,9 @@
                                     </HBox>
                                     <HBox fx:id="btnReportes" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Reportes" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Reportes" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/reporte.png" />
                                                    </image>
@@ -306,9 +306,9 @@
                                     </HBox>
                                     <HBox fx:id="btnConfiguracion" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular15" text="Configuración" textFill="WHITE">
+                                          <Label styleClass="labelRoboto15" text="Configuración" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/configuracion.png" />
                                                    </image>

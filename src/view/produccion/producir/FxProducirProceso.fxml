@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,23 +19,23 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="hbWindow" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirProcesoController">
-   <children>
-      <VBox HBox.hgrow="ALWAYS">
+<ScrollPane fx:id="spWindow" fitToWidth="true" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirProcesoController">
+   <content>
+      <VBox style="-fx-background-color: white;">
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#onMouseClickedBehind" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="28.0" fitWidth="28.0" onMouseClicked="#onMouseClickedBehind" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                      <image>
                         <Image url="@../../image/left.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/produce.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoMedium18" text="Producir" />
+                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Ingreso de Orden a Producir" />
                   <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textFill="#1a2226" textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
@@ -45,50 +46,105 @@
                   </Label>
                </children>
             </HBox>
-            <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onActionAgregar" styleClass="buttonLight" text="Agregar(F1)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Cancelar(F2)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/error.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionLimpiar" onKeyPressed="#onKeyPressedLimpiar" styleClass="buttonLight" text="Limpiar(F3)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/escoba.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em;">
                <children>
                   <VBox spacing="10.0">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Fecha Inicial" textFill="#1a2226">
+                        <Label styleClass="labelRoboto13" text="Nrm de Orden:" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="dtFechaInicial" prefWidth="200.0" />
+                        <TextField disable="true" prefHeight="30.0" prefWidth="220.0" promptText="Número de Orden" styleClass="text-field-normal" text="Número de Orden Auto Generado" />
                      </children>
                   </VBox>
                   <VBox spacing="10.0">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Fecha Final" textFill="#1a2226">
+                        <Label styleClass="labelRoboto13" text="Fecha" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="dtFechaFinal" prefWidth="200.0" />
+                        <DatePicker fx:id="txtFechaRegistro" disable="true" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="Fecha" />
                      </children>
                   </VBox>
                   <VBox spacing="10.0">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Lote" textFill="#1a2226">
+                        <Label styleClass="labelRoboto13" text="Estado:" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cbxLote" prefWidth="200.0" />
+                        <Label maxHeight="1.7976931348623157E308" styleClass="labelRobotoBold15" text="Proceso" textFill="#129703" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em;">
+               <children>
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Fecha de Inicio:" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="15.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="txtFechaInicio" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="Fecha de Inicio" />
                      </children>
                   </VBox>
                   <VBox spacing="10.0">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Agregar" textFill="#1a2226">
+                        <Label styleClass="labelRoboto13" text="Fecha Término Comprometida:" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight">
+                        <DatePicker fx:id="txtTermino" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="Fecha de Término.." />
+                     </children>
+                  </VBox>
+                  <VBox spacing="10.0" visible="false">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Agregar Muestra" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="15.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" styleClass="buttonLightDefault" text="Buscar Muestra">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../image/plus.png" />
+                                    <Image url="@../../image/mas.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -97,20 +153,20 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em  0.8333333333333334em 0; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
+            <HBox style="-fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
                <children>
                   <HBox style="-fx-background-color: linear-gradient(#E8EAEA 0%, #D1D6D6 100%); -fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRobotoBold16" text="Detalle de Produccion" />
+                        <Label styleClass="labelRobotoBold15" text="Detalle de la orden o producción" textFill="#020203" />
                      </children>
                   </HBox>
                </children>
             </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 0;" VBox.vgrow="ALWAYS">
+            <HBox style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 0;" VBox.vgrow="ALWAYS">
                <children>
                   <TabPane style="-fx-border-color: #ccc;" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
-                    <tabs>
-                      <Tab text="Empleados">
+                     <tabs>
+                        <Tab text="Información Gral. de la Orden">
                            <content>
                               <VBox>
                                  <children>
@@ -118,17 +174,17 @@
                                        <children>
                                           <VBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Buscar por clave o nombre" textFill="#1a2226">
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Producto a Fabricar:" textFill="#020203">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <HBox style="-fx-spacing: 0.4166666666666667em;">
+                                                <HBox>
                                                    <children>
-                                                      <TextField fx:id="txtSearchEmpleado" onAction="#onActionSearchEmpleado" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
-                                                      <Button mnemonicParsing="false" onAction="#onActionEmpleado" onKeyPressed="#onKeyPressedEmpleado" prefHeight="30.0" styleClass="buttonBorder">
+                                                      <TextField fx:id="txtProductoFabricar" disable="true" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
+                                                      <Button fx:id="btnProducirFabricar" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBuscarProductoFabricar" onKeyPressed="#onKeyPressedFabricar" styleClass="buttonLight">
                                                          <graphic>
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@../../image/search.png" />
                                                                </image>
@@ -139,76 +195,23 @@
                                                 </HBox>
                                              </children>
                                           </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Registros" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <ComboBox fx:id="cbxRegistroEmpleado" prefWidth="150.0" />
-                                             </children>
-                                          </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Recargar" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Button mnemonicParsing="false" onAction="#onActionReloadEmpleado" onKeyPressed="#onKeyPressedReloadEmpleado" styleClass="buttonLight">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/reload.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox prefHeight="286.0" spacing="10.0" style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <TableView fx:id="tvListEm" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
-                                             <columns>
-                                                <TableColumn fx:id="tcNumeracionEm" prefWidth="66.0" style="-fx-alignment: CENTER-LEFT;" text="N°" />
-                                                <TableColumn fx:id="tcDocumento" prefWidth="138.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
-                                                <TableColumn fx:id="tcDatosCompletos" prefWidth="290.0" style="-fx-alignment: CENTER-LEFT;" text="Datos Completos" />
-                                                <TableColumn fx:id="tcTelefonoCelular" prefWidth="205.0" style="-fx-alignment: CENTER-LEFT;" text="Telefono/Celular" />
-                                                <TableColumn fx:id="tcPuesto" prefWidth="192.0" style="-fx-alignment: CENTER-LEFT;" text="Puesto" />
-                                                <TableColumn fx:id="tcEstado" prefWidth="136.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                                                <TableColumn fx:id="tcOpcionEm" prefWidth="96.0" style="-fx-alignment: CENTER;" text="Opcion" />
-                                             </columns>
-                                          </TableView>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                      </Tab>
-                      <Tab text="Suministros">
-                           <content>
-                              <VBox>
-                                 <children>
                                     <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                                        <children>
                                           <VBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Buscar por clave o nombre" textFill="#1a2226">
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Área de producción:" textFill="#020203">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <HBox style="-fx-spacing: 0.4166666666666667em;">
+                                                <HBox>
                                                    <children>
-                                                      <TextField fx:id="txtSearchSuministro" onAction="#onActionSearchSuministro" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
-                                                      <Button mnemonicParsing="false" onAction="#onActionSuministro" onKeyPressed="#onKeyPressedSuministro" prefHeight="30.0" styleClass="buttonBorder">
+                                                      <TextField disable="true" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
+                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" styleClass="buttonLight">
                                                          <graphic>
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@../../image/search.png" />
                                                                </image>
@@ -219,75 +222,61 @@
                                                 </HBox>
                                              </children>
                                           </VBox>
-                                          <Separator orientation="VERTICAL" />
                                           <VBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Registros" textFill="#1a2226">
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Lote:" textFill="#020203">
                                                    <font>
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <ComboBox fx:id="cbxRegistroSuministro" prefWidth="150.0" />
-                                             </children>
-                                          </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Recargar" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Button mnemonicParsing="false" onAction="#onActionReloadSuministro" onKeyPressed="#onKeyPressedReloadSuministro" styleClass="buttonLight">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/reload.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                    <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <TableView fx:id="tvListS" prefHeight="60.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
-                                             <columns>
-                                                <TableColumn fx:id="tcNumeracionS" prefWidth="95.99996948242188" style="-fx-alignment: CENTER-LEFT;" text="N°" />
-                                                <TableColumn fx:id="tcClave" prefWidth="188.0" style="-fx-alignment: CENTER-LEFT;" text="Clave" />
-                                                <TableColumn fx:id="tcNombre" prefWidth="350.0" style="-fx-alignment: CENTER-LEFT;" text="Nombre" />
-                                                <TableColumn fx:id="tcCosto" prefWidth="193.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
-                                                <TableColumn fx:id="tcCantidad" prefWidth="197.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                                <TableColumn fx:id="tcOpcionS" prefWidth="94.0" style="-fx-alignment: CENTER;" text="Opcion" />
-                                             </columns>
-                                          </TableView>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                      </Tab>
-                        <Tab text="Equipos">
-                           <content>
-                              <VBox>
-                                 <children>
-                                    <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                                       <children>
-                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Buscar por clave o nombre" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <HBox style="-fx-spacing: 0.4166666666666667em;">
+                                                <HBox>
                                                    <children>
-                                                      <TextField fx:id="txtSearchEquipo" onAction="#onActionSearchEquipo" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
-                                                      <Button mnemonicParsing="false" onAction="#onActionEquipo" onKeyPressed="#onKeyPressedEquipo" prefHeight="30.0" styleClass="buttonBorder">
+                                                      <TextField prefHeight="30.0" prefWidth="320.0" promptText="Generar Lote.." styleClass="text-field-normal" />
+                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" styleClass="buttonLight">
                                                          <graphic>
-                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../image/reload.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Tipo de Orden" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <RadioButton fx:id="cbInterno" mnemonicParsing="false" selected="true" text="Interna" />
+                                                      <RadioButton fx:id="cbExterno" mnemonicParsing="false" text="Externa" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Persona Encargada" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox>
+                                                   <children>
+                                                      <TextField disable="true" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
+                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" styleClass="buttonLight">
+                                                         <graphic>
+                                                            <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@../../image/search.png" />
                                                                </image>
@@ -298,59 +287,244 @@
                                                 </HBox>
                                              </children>
                                           </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Registros" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <ComboBox fx:id="cbxRegistroEquipo" prefWidth="150.0" />
-                                             </children>
-                                          </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto14" text="Recargar" textFill="#1a2226">
-                                                   <font>
-                                                      <Font name="Calibri" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Button mnemonicParsing="false" onAction="#onActionReloadEquipo" onKeyPressed="#onKeyPressedReloadEquipo" styleClass="buttonLight">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../image/reload.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <TableView fx:id="tvListE" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
-                                             <columns>
-                                                <TableColumn fx:id="tcNumeracion2" prefWidth="75.0" style="-fx-alignment: CENTER-LEFT;" text="N°" />
-                                                <TableColumn fx:id="tcNombre2" prefWidth="218.0" style="-fx-alignment: CENTER-LEFT;" text="Descripcion" />
-                                                <TableColumn fx:id="tcCosto2" prefWidth="167.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
-                                                <TableColumn fx:id="tcCantidad2" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                             </columns>
-                                          </TableView>
+                                          <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Glosa Descriptiva de la Orden:" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <TextArea maxHeight="140.0" prefHeight="140.0" promptText="Ingrese una descripción..." HBox.hgrow="ALWAYS" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
                            </content>
                         </Tab>
-                    </tabs>
+                        <Tab text="Insumos">
+                           <content>
+                              <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="20.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto13" text="Producto" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label styleClass="labelRoboto13" text="--" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_RIGHT" spacing="10.0">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto13" text="Costo Promedio" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="lblCostoPromedio" styleClass="labelRobotoBold15" text="0.00" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_RIGHT" spacing="10.0">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto13" text="Precio Promedio(30%)" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label styleClass="labelRobotoBold15" text="0.00" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_RIGHT" spacing="10.0">
+                                                   <children>
+                                                      <Label styleClass="labelRoboto13" text="Utilidad Promedio" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label styleClass="labelRobotoBold15" text="0.00" textFill="#020203">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label styleClass="labelRoboto13" text="Detalle de los materiales primarios comprometidos para la fabricación" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#onActionBuscar" onKeyPressed="#onKeyPressedBuscar" styleClass="buttonLight" text="Buscar">
+                                                   <graphic>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/plus.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <TableView fx:id="tvListInsumos" prefHeight="200.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                             <columns>
+                                                <TableColumn fx:id="tcOpcion" prefWidth="89.0" style="-fx-alignment: center;" text="Opcion" />
+                                                <TableColumn fx:id="tcCodigo" prefWidth="137.0" style="-fx-alignment: CENTER-LEFT;" text="Código" />
+                                                <TableColumn fx:id="tcDescripcion" minWidth="0.0" prefWidth="288.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
+                                                <TableColumn fx:id="tcCantidad" minWidth="0.0" prefWidth="149.0" style="-fx-alignment: center;" text="Cantidad" />
+                                                <TableColumn fx:id="tcMedida" minWidth="0.0" prefWidth="154.0" style="-fx-alignment: CENTER-LEFT;" text="Medida" />
+                                                <TableColumn fx:id="tcCostoPromedio" minWidth="0.0" prefWidth="154.0" style="-fx-alignment: CENTER-LEFT;" text="Costo Promedio" />
+                                             </columns>
+                                          </TableView>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </Tab>
+                        <Tab text="Materiales">
+                           <content>
+                              <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label styleClass="labelRoboto13" text="Detalle de los materiales primarios comprometidos para la fabricación" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Button mnemonicParsing="false" styleClass="buttonLight" text="Buscar">
+                                                   <graphic>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/plus.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <TableView prefHeight="200.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                             <columns>
+                                                <TableColumn prefWidth="60.0" text="N°" />
+                                                <TableColumn prefWidth="140.0" text="Código" />
+                                                <TableColumn minWidth="0.0" prefWidth="314.0" text="Descripción" />
+                                                <TableColumn minWidth="0.0" prefWidth="154.0" text="Medida" />
+                                                <TableColumn minWidth="0.0" prefWidth="149.0" text="Cantidad" />
+                                             </columns>
+                                          </TableView>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </Tab>
+                        <Tab text="Manual de Proceso">
+                           <content>
+                              <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label styleClass="labelRoboto13" text="Detalle de los materiales primarios comprometidos para la fabricación" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Button mnemonicParsing="false" styleClass="buttonLight" text="Buscar">
+                                                   <graphic>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/plus.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <TableView prefHeight="200.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                             <columns>
+                                                <TableColumn prefWidth="60.0" text="N°" />
+                                                <TableColumn prefWidth="140.0" text="Código" />
+                                                <TableColumn minWidth="0.0" prefWidth="314.0" text="Descripción" />
+                                                <TableColumn minWidth="0.0" prefWidth="154.0" text="Medida" />
+                                                <TableColumn minWidth="0.0" prefWidth="149.0" text="Cantidad" />
+                                             </columns>
+                                          </TableView>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </Tab>
+                     </tabs>
                   </TabPane>
                </children>
             </HBox>
          </children>
       </VBox>
-   </children>
-</HBox>
+   </content>
+</ScrollPane>

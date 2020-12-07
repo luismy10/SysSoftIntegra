@@ -159,7 +159,7 @@ public class Tools {
         return alert;
     }
 
-    public static Alert AlertDialogMessage(Node node, Alert.AlertType type, String title,String value,String error) {
+    public static Alert AlertDialogMessage(Node node, Alert.AlertType type, String title, String value, String error) {
         final URL url = Tools.class.getClass().getResource(FilesRouters.STYLE_ALERT);
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -404,6 +404,22 @@ public class Tools {
                 });
         notifications.darkStyle();
         notifications.show();
+    }
+
+    public static String Generador0(int value) {
+        if (value > 0 && value < 10) {
+            return "00000" + value;
+        } else if (value >= 10 && value < 100) {
+            return "0000" + value;
+        } else if (value >= 100 && value < 1000) {
+            return "000" + value;
+        } else if (value >= 1000 && value < 10000) {
+            return "00" + value;
+        } else if (value >= 10000 && value < 100000) {
+            return "0" + value;
+        } else {
+            return "" + value;
+        }
     }
 
 }

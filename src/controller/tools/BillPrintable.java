@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javax.imageio.ImageIO;

@@ -148,6 +148,10 @@ public class FxSuministrosProcesoController implements Initializable {
     private TextField txtPrecioVentaNetoPersonalizado;
     @FXML
     private VBox vbContenedorCosto;
+    @FXML
+    private CheckBox cbVentaControlada;
+    @FXML
+    private CheckBox cbProductoEstrella;
 
     private String idSuministro;
 
@@ -844,8 +848,8 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setClaveSat(txtClaveSat.getText().trim());
                 suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());
 
-                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecioVentaNeto2.getId()), "Precio de Venta 1", !Tools.isNumeric(txtPrecioVentaNeto2.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto2.getText()), 2));
-                tvPreciosNormal.add(new PreciosTB(Integer.parseInt(txtPrecioVentaNeto3.getId()), "Precio de Venta 2", !Tools.isNumeric(txtPrecioVentaNeto3.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto3.getText()), 2));
+                tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 1", !Tools.isNumeric(txtPrecioVentaNeto2.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto2.getText()), 2));
+                tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 2", !Tools.isNumeric(txtPrecioVentaNeto3.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto3.getText()), 2));
 
                 String result = SuministroADO.CrudSuministro(
                         suministroTB,
@@ -915,7 +919,6 @@ public class FxSuministrosProcesoController implements Initializable {
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
-
     }
 
     private void openWindowGerarCodigoBarras() {
@@ -1160,14 +1163,14 @@ public class FxSuministrosProcesoController implements Initializable {
     @FXML
     private void onMouseClickedMedida(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            openWindowDetalle("Agregar Departamento", "0013", false);
+            openWindowDetalle("Agregar Unidade de Medida", "0013", false);
         }
     }
 
     @FXML
     private void onKeyReleasedMedida(KeyEvent event) {
         if (event.getCode() == KeyCode.SPACE) {
-            openWindowDetalle("Agregar Departamento", "0013", false);
+            openWindowDetalle("Agregar Unidade de Medida", "0013", false);
         }
     }
 

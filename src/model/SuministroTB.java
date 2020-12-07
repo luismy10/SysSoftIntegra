@@ -89,6 +89,11 @@ public class SuministroTB {
     public SuministroTB() {
     }
 
+    public SuministroTB(String clave, String nombreMarca) {
+        this.clave = clave;
+        this.nombreMarca = nombreMarca;
+    }
+        
     public int getId() {
         return id;
     }

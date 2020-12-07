@@ -42,8 +42,6 @@ import model.CompraADO;
 import model.CompraCreditoTB;
 import model.CompraTB;
 import model.DetalleCompraTB;
-import model.ImpuestoADO;
-import model.ImpuestoTB;
 import model.SuministroTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -99,7 +97,7 @@ public class FxComprasDetalleController implements Initializable {
     @FXML
     private Label lblMetodoPago;
     @FXML
-    private GridPane gpImpuestos;
+    private Label lblImpuesto;
 
     private FxComprasRealizadasController comprascontroller;
 
@@ -113,8 +111,6 @@ public class FxComprasDetalleController implements Initializable {
 
     private ArrayList<CompraCreditoTB> listComprasCredito;
 
-    private ArrayList<ImpuestoTB> arrayArticulos;
-
     private ConvertMonedaCadena monedaCadena;
 
     private CompraTB compraTB = null;
@@ -125,11 +121,12 @@ public class FxComprasDetalleController implements Initializable {
 
     private double subTotal;
 
+    private double impuestoTotal;
+
     private double totalNeto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        arrayArticulos = new ArrayList<>();
         monedaCadena = new ConvertMonedaCadena();
     }
 
@@ -144,13 +141,8 @@ public class FxComprasDetalleController implements Initializable {
 
         Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            protected ArrayList<Object> call() throws Exception {
-                arrayArticulos.clear();
-                ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado()));
-                });
-                ArrayList<Object> objects = CompraADO.ListCompletaDetalleCompra(idCompra);
-                return objects;
+            protected ArrayList<Object> call() {
+                return CompraADO.ListCompletaDetalleCompra(idCompra);
             }
         };
 
@@ -170,7 +162,7 @@ public class FxComprasDetalleController implements Initializable {
                 ObservableList<DetalleCompraTB> empList = (ObservableList<DetalleCompraTB>) objects.get(1);
                 if (compraTB != null) {
                     lblProveedor.setText(compraTB.getProveedorTB().getNumeroDocumento()
-                            + " " + compraTB.getProveedorTB().getRazonSocial().toUpperCase() );
+                            + " " + compraTB.getProveedorTB().getRazonSocial().toUpperCase());
                     lblTelefonoCelular.setText(compraTB.getProveedorTB().getTelefono() + "-" + compraTB.getProveedorTB().getCelular());
                     lblEmail.setText(compraTB.getProveedorTB().getEmail());
                     lblDireccion.setText(compraTB.getProveedorTB().getDireccion());
@@ -238,7 +230,7 @@ public class FxComprasDetalleController implements Initializable {
                 gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
                 gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getSuministroTB().getClave() + "\n" + arrList.get(i).getSuministroTB().getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
                 gpList.add(addElementGridPane("l3" + (i + 1), compraTB.getMonedaTB().getSimbolo() + "" + Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
-                gpList.add(addElementGridPane("l4" + (i + 1), Tools.roundingValue(arrList.get(i).getPrecioCompraCalculado(), 2) + "(" + Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%)", Pos.CENTER_RIGHT), 3, (i + 1));
+                gpList.add(addElementGridPane("l4" + (i + 1), Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2) + "(" + Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%)", Pos.CENTER_RIGHT), 3, (i + 1));
                 gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getValorImpuesto(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
                 gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
                 gpList.add(addElementGridPane("l7" + (i + 1), arrList.get(i).getSuministroTB().getUnidadCompraName(), Pos.CENTER_RIGHT), 6, (i + 1));
@@ -264,52 +256,26 @@ public class FxComprasDetalleController implements Initializable {
 
     private void calcularTotales() {
 
-        arrList.forEach(e -> {
-            totalBruto += (e.getCantidad() * e.getPrecioCompra());
-        });
-        lblTotalBruto.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(totalBruto, 2));
         totalBruto = 0;
+        arrList.forEach(e -> totalBruto += (e.getCantidad() * e.getPrecioCompraUnico()));
+        lblTotalBruto.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(totalBruto, 2));
 
-        arrList.forEach(e -> {
-            descuento += e.getCantidad() * (e.getPrecioCompra() * (e.getDescuento() / 100.00));
-        });
-        lblDescuento.setText(compraTB.getMonedaTB().getSimbolo() + " " + (Tools.roundingValue(descuento * (-1), 2)));
         descuento = 0;
+        arrList.forEach(e -> descuento += e.getDescuentoSumado());
+        lblDescuento.setText(compraTB.getMonedaTB().getSimbolo() + " " + (Tools.roundingValue(descuento * (-1), 2)));
 
-        arrList.forEach(e -> {
-            subTotal += (e.getCantidad() * e.getPrecioCompra()) - (e.getCantidad() * (e.getPrecioCompra() * (e.getDescuento() / 100.00)));
-        });
-        lblSubTotal.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subTotal, 2));
         subTotal = 0;
+        arrList.forEach(e -> subTotal += e.getPrecioCompraReal() * e.getCantidad());
+        lblSubTotal.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subTotal, 2));
 
-        gpImpuestos.getChildren().clear();
+        impuestoTotal = 0;
+        arrList.forEach(e -> impuestoTotal += e.getImpuestoSumado());
+        lblImpuesto.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(impuestoTotal, 2));
 
-        boolean addElement = false;
-        double sumaElement = 0;
-
-        for (int k = 0; k < arrayArticulos.size(); k++) {
-            for (int i = 0; i < arrList.size(); i++) {
-                if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getIdImpuesto()) {
-                    addElement = true;
-                    sumaElement += arrList.get(i).getImpuestoSumado();
-                }
-            }
-            if (addElement) {
-                gpImpuestos.add(addLabelTitle(arrayArticulos.get(k).getNombre().substring(0, 1).toUpperCase() + ""
-                        + arrayArticulos.get(k).getNombre().substring(1, arrayArticulos.get(k).getNombre().length()).toLowerCase(),
-                        Pos.CENTER_LEFT), 0, k + 1);
-                gpImpuestos.add(addLabelTotal(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(sumaElement, 2), Pos.CENTER_RIGHT), 1, k + 1);
-                addElement = false;
-                sumaElement = 0;
-            }
-
-        }
-
-        arrList.forEach(e -> {
-            totalNeto += e.getImporte();
-        });
-        lblTotalNeto.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue((totalNeto), 2));
         totalNeto = 0;
+        arrList.forEach(e -> totalNeto += e.getPrecioCompra() * e.getCantidad());
+        lblTotalNeto.setText(compraTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue((totalNeto), 2));
+
     }
 
     private Text adddElementCondicion(String value) {
@@ -345,72 +311,31 @@ public class FxComprasDetalleController implements Initializable {
 
     private void onEventReporte() {
         try {
-            ArrayList<SuministroTB> list = new ArrayList();
-            arrList.stream().map((DetalleCompraTB detalleCompraTB) -> {
-                SuministroTB stb = new SuministroTB();
-                stb.setCantidad(detalleCompraTB.getCantidad());
-                stb.setUnidadCompraName(detalleCompraTB.getSuministroTB().getUnidadCompraName());
-                stb.setNombreMarca(detalleCompraTB.getSuministroTB().getNombreMarca());
-                stb.setCostoCompra(detalleCompraTB.getPrecioCompra());
-                stb.setDescuento(detalleCompraTB.getDescuento());
-                stb.setTotalImporte(detalleCompraTB.getImporte());
-                return stb;
-            }).forEachOrdered((stb) -> {
-                list.add(stb);
+            ArrayList<DetalleCompraTB> list = new ArrayList();
+            arrList.forEach(e -> {
+                DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
+                detalleCompraTB.setId(e.getId());
+                detalleCompraTB.setCantidad(e.getCantidad());
+                detalleCompraTB.setMedida(e.getSuministroTB().getUnidadCompraName());
+                detalleCompraTB.setDescripcion(e.getSuministroTB().getClave() + "\n" + e.getSuministroTB().getNombreMarca());
+                detalleCompraTB.setDescuento(e.getDescuento());
+                detalleCompraTB.setPrecioCompra(e.getPrecioCompra());                
+                list.add(detalleCompraTB);
             });
-
-            boolean addOperacion = false;
-            double sumaOperacion = 0;
-
-            boolean addImpuesto = false;
-            double sumaImpuesto = 0;
-
-            ArrayList<SuministroTB> list_totales = new ArrayList();
-
-            for (int k = 0; k < arrayArticulos.size(); k++) {
-                for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getIdImpuesto()) {
-                        addOperacion = true;
-                        sumaOperacion += (arrList.get(i).getCantidad() * arrList.get(i).getPrecioCompra()) - (arrList.get(i).getCantidad() * (arrList.get(i).getPrecioCompra() * (arrList.get(i).getDescuento() / 100.00)));
-                    }
-                }
-                if (addOperacion) {
-                    SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(0, 1).toUpperCase() + arrayArticulos.get(k).getNombreOperacion().toLowerCase().substring(1, arrayArticulos.get(k).getNombreOperacion().length()).toLowerCase() + ":");
-                    suministroTB.setImpuestoValor(sumaOperacion);
-                    list_totales.add(suministroTB);
-                    addOperacion = false;
-                    sumaOperacion = 0;
-                }
-            }
-
-            for (int k = 0; k < arrayArticulos.size(); k++) {
-                for (int i = 0; i < arrList.size(); i++) {
-                    if (arrayArticulos.get(k).getIdImpuesto() == arrList.get(i).getIdImpuesto()) {
-                        addImpuesto = true;
-                        sumaImpuesto += arrList.get(i).getImpuestoSumado();
-                    }
-                }
-                if (addImpuesto) {
-                    SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setImpuestoNombre(arrayArticulos.get(k).getNombre() + ":");
-                    suministroTB.setImpuestoValor(sumaImpuesto);
-                    list_totales.add(suministroTB);
-                    addImpuesto = false;
-                    sumaImpuesto = 0;
-                }
-            }
-
             if (list.isEmpty()) {
                 Tools.AlertMessageWarning(cpWindow, "Compra realizada", "No hay registros para mostrar en el reporte.");
                 return;
             }
 
-            InputStream imgInputStream
+            InputStream logo
                     = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
+            InputStream icon
+                    = getClass().getResourceAsStream(FilesRouters.IMAGE_ICON);
+
             Map map = new HashMap();
-            map.put("LOGO", imgInputStream);
+            map.put("LOGO", logo);
+            map.put("ICON", icon);
             map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
             map.put("TELEFONOCELULAR", "TEL.: " + Session.COMPANY_TELEFONO + " CEL.: " + Session.COMPANY_CELULAR);
@@ -419,20 +344,22 @@ public class FxComprasDetalleController implements Initializable {
             map.put("NUMEROCOMPRA", idCompra);
 
             map.put("FECHAELABORACION", compraTB.getFechaCompra().toUpperCase());
-            map.put("MONEDA", compraTB.getMonedaNombre());
-            map.put("DATOSPROVEEDOR", compraTB.getProveedorTB().getNumeroDocumento() + "-" + compraTB.getProveedorTB().getRazonSocial());
-            map.put("DIRECCIONPROVEEDOR", compraTB.getProveedorTB().getDireccion());
-            map.put("PROVEEDORTELEFONOS", "TEL.: " + compraTB.getProveedorTB().getTelefono() + "  CEL.: " + compraTB.getProveedorTB().getCelular());
-            map.put("PROVEEDOREMAIL", compraTB.getProveedorTB().getEmail());
+            map.put("MONEDA", compraTB.getMonedaTB().getNombre());
+            map.put("DOCUMENTOPROVEEDOR", compraTB.getProveedorTB().getNumeroDocumento());
+            map.put("DATOSPROVEEDOR", compraTB.getProveedorTB().getRazonSocial());
+            map.put("DIRECCIONPROVEEDOR", compraTB.getProveedorTB().getDireccion().length() == 0 ? "--" : compraTB.getProveedorTB().getDireccion());
+            map.put("PROVEEDORTELEFONOS", "TEL.: " + (compraTB.getProveedorTB().getTelefono().length() == 0 ? "--" : compraTB.getProveedorTB().getTelefono().length()) + "  CEL.: " + (compraTB.getProveedorTB().getCelular().length() == 0 ? "" : compraTB.getProveedorTB().getCelular()));
+            map.put("PROVEEDOREMAIL", compraTB.getProveedorTB().getEmail().length() == 0 ? "--" : compraTB.getProveedorTB().getEmail());
 
+            map.put("NOTAS", compraTB.getNotas());
             map.put("SIMBOLO", compraTB.getMonedaNombre());
-            map.put("CALCULAR_TOTALES", new JRBeanCollectionDataSource(list_totales));
             map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(compraTB.getTotal(), 2), true, compraTB.getMonedaTB().getNombre()));
-            map.put("VALOR_COMPRA", lblTotalBruto.getText());
-            map.put("DESCUENTO", lblDescuento.getText());
-            map.put("SUB_TOTAL", lblSubTotal.getText());
-            map.put("TOTAL", lblTotalNeto.getText());
 
+            map.put("VALOR_VENTA", Tools.roundingValue(totalBruto, 2));
+            map.put("DESCUENTO", Tools.roundingValue(descuento, 2));
+            map.put("SUB_IMPORTE", Tools.roundingValue(subTotal, 2));
+            map.put("IMPUESTO_TOTAL", Tools.roundingValue(impuestoTotal, 2));
+            map.put("IMPORTE_TOTAL", Tools.roundingValue(totalNeto, 2));
             JasperPrint jasperPrint = JasperFillManager.fillReport(FxComprasDetalleController.class.getResourceAsStream("/report/CompraRealizada.jasper"), map, new JRBeanCollectionDataSource(list));
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);

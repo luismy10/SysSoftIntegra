@@ -212,6 +212,8 @@ public class FxComprasProcesoController implements Initializable {
         compraCreditoTB.setEstado(false);
 
         TextField txtCredito = new TextField("0.00");
+        txtCredito.setPrefWidth(220);
+        txtCredito.setPrefHeight(30);
         txtCredito.getStyleClass().add("text-field-normal");
         txtCredito.focusedProperty().addListener((obs, oldVal, newVal) -> {
             double sumaMontos = 0;
@@ -244,6 +246,8 @@ public class FxComprasProcesoController implements Initializable {
         compraCreditoTB.setTxtCredito(txtCredito);
 
         DatePicker dpFecha = new DatePicker();
+        dpFecha.setPrefWidth(220);
+        dpFecha.setPrefHeight(30);
         dpFecha.setEditable(false);
         dpFecha.setOnAction(event -> {
             if (dpFecha.getValue() != null) {

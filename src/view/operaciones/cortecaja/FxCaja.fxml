@@ -40,7 +40,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <Button fx:id="btnRealizarCorte" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCorte" onKeyPressed="#onKeyPressedCorte" styleClass="buttonLight" text="Realizar corte">
+                  <Button fx:id="btnRealizarCorte" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCorte" onKeyPressed="#onKeyPressedCorte" styleClass="buttonLightDefault" text="Realizar corte">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -54,6 +54,15 @@
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnReporte" disable="true" mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/reports.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -115,7 +124,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelOpenSansRegular15" text="Ventas en efectivo" textFill="#020203" GridPane.rowIndex="2">
+                                    <Label styleClass="labelRoboto15" text="Ventas en efectivo" textFill="#020203" GridPane.rowIndex="2">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -123,7 +132,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelOpenSansRegular15" text="Ventas con tarjera" textFill="#020203" GridPane.rowIndex="3">
+                                    <Label styleClass="labelRoboto15" text="Ventas con tarjera" textFill="#020203" GridPane.rowIndex="3">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -131,7 +140,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelOpenSansRegular15" text="Ingresos de efectivo" textFill="#016e29" GridPane.rowIndex="4">
+                                    <Label styleClass="labelRoboto15" text="Ingresos de efectivo" textFill="#016e29" GridPane.rowIndex="4">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -139,7 +148,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelOpenSansRegular15" text="Salidas de efectivo" textFill="#e42c0f" GridPane.rowIndex="5">
+                                    <Label styleClass="labelRoboto15" text="Salidas de efectivo" textFill="#e42c0f" GridPane.rowIndex="5">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -147,7 +156,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label styleClass="labelRobotoBold15" text="Total" textFill="#020203" GridPane.rowIndex="7">
+                                    <Label styleClass="labelRoboto15" text="Total" textFill="#020203" GridPane.rowIndex="7">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -155,13 +164,13 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Label>
-                                    <Label fx:id="lblTotal" alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                    <Label fx:id="lblBase" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#025a9d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblVentaEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblVentaTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label fx:id="lblIngresosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#016e29" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label fx:id="lblRetirosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular15" text="M 0.00" textFill="#e42c0f" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label styleClass="labelOpenSansRegular15" text="Base" textFill="#025a9d" GridPane.rowIndex="1">
+                                    <Label fx:id="lblTotal" alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <Label fx:id="lblBase" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M 0.00" textFill="#025a9d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblVentaEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblVentaTarjeta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label fx:id="lblIngresosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M 0.00" textFill="#016e29" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblRetirosEfectivo" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M 0.00" textFill="#e42c0f" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label styleClass="labelOpenSansRegular15" text="Monto Base" textFill="#025a9d" GridPane.rowIndex="1">
                                        <graphic>
                                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                              <image>

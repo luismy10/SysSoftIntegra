@@ -140,6 +140,10 @@ public class FxSuministrosProcesoModalController implements Initializable {
     private TextField txtPrecioVentaNetoPersonalizado;
     @FXML
     private TabPane tpContenedor;
+    @FXML
+    private CheckBox cbVentaControlada;
+    @FXML
+    private CheckBox cbProductoEstrella;
 
     private String idSuministro;
 
@@ -187,8 +191,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
     public void setInitArticulo() {
         clearElements();
         rbPrecioNormal.setSelected(true);
-        txtPrecioVentaNeto2.setId(""+0);
-        txtPrecioVentaNeto3.setId(""+0);
+        txtPrecioVentaNeto2.setId("" + 0);
+        txtPrecioVentaNeto3.setId("" + 0);
         vbContenedorPrecioNormal.getChildren().add(hbPrecioNormal);
         setIniciarCarga();
         txtClave.requestFocus();

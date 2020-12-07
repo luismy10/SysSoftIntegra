@@ -270,17 +270,20 @@ public class GlobalADO {
                     cantidad_excedentes = resultLista.getInt("Productos Execedentes");
                 }
 
-                preparedLista = DBUtil.getConnection().prepareStatement("select Top 10 dt.IdArticulo, s.NombreMarca, count(dt.Cantidad) as Cantidad from DetalleVentaTB as dt \n"
-                        + "inner join SuministroTB as s on dt.IdArticulo=s.IdSuministro \n"
-                        + "inner join VentaTB as v on v.IdVenta=dt.IdVenta\n"
-                        + "where v.FechaVenta = ?\n"
-                        + "group by dt.IdArticulo, s.NombreMarca  order by count(1) desc");
-                preparedLista.setString(1, Tools.getDate());
+                preparedLista = DBUtil.getConnection().prepareStatement("SELECT TOP 10 dt.IdArticulo, s.NombreMarca, s.NuevaImagen as NuevaImagen,dt.PrecioVenta, SUM(dt.Cantidad) as Cantidad\n"
+                        + "        from DetalleVentaTB as dt \n"
+                        + "        inner join VentaTB as v on v.IdVenta=dt.IdVenta\n"
+                        + "        inner join SuministroTB as s on dt.IdArticulo=s.IdSuministro \n"
+                        + "        where MONTH(v.FechaVenta) = MONTH(GETDATE()) AND YEAR(v.FechaVenta) = YEAR(GETDATE())\n"
+                        + "        group by dt.IdArticulo, s.NombreMarca, NuevaImagen,dt.PrecioVenta  \n"
+                        + "        order by Cantidad DESC");
                 resultLista = preparedLista.executeQuery();
                 while (resultLista.next()) {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setNombreMarca(resultLista.getString("NombreMarca"));
+                    suministroTB.setPrecioVentaGeneral(resultLista.getDouble("PrecioVenta"));
                     suministroTB.setCantidad(resultLista.getDouble("Cantidad"));
+                    suministroTB.setNuevaImagen(resultLista.getBytes("NuevaImagen"));
                     listaProductos.add(suministroTB);
                 }
 

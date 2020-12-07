@@ -13,6 +13,7 @@ public class TipoDocumentoTB {
     private boolean predeterminado;
     private boolean sistema;
     private boolean guia;
+    private boolean factura;
     private String codigoAlterno;
     private Label lblDestino;
     private ImageView ivPredeterminado;
@@ -109,6 +110,14 @@ public class TipoDocumentoTB {
 
     public void setGuia(boolean guia) {
         this.guia = guia;
+    }
+
+    public boolean isFactura() {
+        return factura;
+    }
+
+    public void setFactura(boolean factura) {
+        this.factura = factura;
     }
 
     public String getCodigoAlterno() {

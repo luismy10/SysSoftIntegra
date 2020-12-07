@@ -120,7 +120,7 @@ public class FxTicketController implements Initializable {
         cbAlignment.getItems().add(Pos.CENTER);
         cbAlignment.getItems().add(Pos.CENTER_RIGHT);
         cbFuente.getItems().addAll("Consola", "Roboto Regular", "Roboto Bold");
-        cbSize.getItems().addAll(12.5f, 14.5f, 16.5f, 18.5f, 20.5f, 22.5f, 24.5f);
+        cbSize.getItems().addAll(10.5f,12.5f, 14.5f, 16.5f, 18.5f, 20.5f, 22.5f, 24.5f);
     }
 
     public void loadTicket(int idTicket, int tipoTicket, String nombre, String ruta, boolean predeterminado) {

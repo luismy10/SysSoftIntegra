@@ -234,7 +234,7 @@ public class SuministroADO {
                             preparedSuministro.setBoolean(18, suministroTB.isLote());
                             preparedSuministro.setBoolean(19, suministroTB.isInventario());
                             //------------------------------------------------------------
-                             preparedSuministro.setBytes(20, suministroTB.getNuevaImagen());
+                            preparedSuministro.setBytes(20, suministroTB.getNuevaImagen());
 //                            preparedSuministro.setString(20, suministroTB.getImagenFile() != null
 //                                    ? selectFileImage("./img/" + idSuministro + "." + Tools.getFileExtension(suministroTB.getImagenFile()), suministroTB.getImagenFile())
 //                                    : (suministroTB.getImagenTB().equalsIgnoreCase("") ? ""
@@ -525,13 +525,13 @@ public class SuministroADO {
                 suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setValorInventario(rsEmps.getShort("ValorInventario"));
                 suministroTB.setNuevaImagen(rsEmps.getBytes("NuevaImagen"));
-                
+
                 Label label = new Label(Tools.roundingValue(suministroTB.getCantidad(), 2));
                 label.getStyleClass().add("labelRoboto13");
                 label.setStyle(suministroTB.getCantidad() > 0 ? "-fx-text-fill:blue;" : "-fx-text-fill:red;");
                 suministroTB.setLblCantidad(label);
-                
-                suministroTB.setImpuestoTB(new ImpuestoTB(rsEmps.getString("ImpuestoNombre"),rsEmps.getDouble("Valor")));
+
+                suministroTB.setImpuestoTB(new ImpuestoTB(rsEmps.getString("ImpuestoNombre"), rsEmps.getDouble("Valor")));
 
                 empList.add(suministroTB);
             }
@@ -633,7 +633,7 @@ public class SuministroADO {
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, value);
             rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
+            if (rsEmps.next()) {
                 suministroTB = new SuministroTB();
                 suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
                 suministroTB.setOrigen(rsEmps.getInt("Origen"));
@@ -1008,32 +1008,21 @@ public class SuministroADO {
         if (DBUtil.getConnection() != null) {
             PreparedStatement preparedValidate = null;
             PreparedStatement preparedSuministro = null;
-//            PreparedStatement preparedArticulo = null;
-//            PreparedStatement preparedBusqueda = null;
             try {
 
                 DBUtil.getConnection().setAutoCommit(false);
-
                 preparedValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM DetalleCompraTB WHERE IdArticulo = ?");
                 preparedValidate.setString(1, idSuministro);
                 if (preparedValidate.executeQuery().next()) {
                     DBUtil.getConnection().rollback();
                     result = "compra";
                 } else {
-
                     preparedValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM KardexSuministroTB WHERE IdSuministro = ?");
                     preparedValidate.setString(1, idSuministro);
                     if (preparedValidate.executeQuery().next()) {
                         DBUtil.getConnection().rollback();
                         result = "kardex_compra";
                     } else {
-
-//                        preparedBusqueda = DBUtil.getConnection().prepareStatement("SELECT IdArticulo FROM ArticuloTB WHERE IdSuministro = ?");
-//                        preparedBusqueda.setString(1, idSuministro);
-//                        if (preparedBusqueda.executeQuery().next()) {
-//                            ResultSet resultSet = preparedBusqueda.executeQuery();
-//                            if (resultSet.next()) {
-//                                String idArticulo = resultSet.getString("IdArticulo");
                         preparedValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM DetalleVentaTB WHERE IdArticulo = ?");
                         preparedValidate.setString(1, idSuministro);
                         if (preparedValidate.executeQuery().next()) {
@@ -1044,24 +1033,9 @@ public class SuministroADO {
                             preparedSuministro.setString(1, idSuministro);
                             preparedSuministro.addBatch();
                             preparedSuministro.executeBatch();
-
-//                                    preparedArticulo = DBUtil.getConnection().prepareStatement("DELETE FROM ArticuloTB WHERE IdArticulo = ?");
-//                                    preparedArticulo.setString(1, idArticulo);
-//                                    preparedArticulo.addBatch();
-//                                    preparedArticulo.executeBatch();
                             DBUtil.getConnection().commit();
                             result = "removed";
                         }
-
-//                            }
-//                        } else {
-//                            preparedSuministro = DBUtil.getConnection().prepareStatement("DELETE FROM SuministroTB WHERE IdSuministro = ?");
-//                            preparedSuministro.setString(1, idSuministro);
-//                            preparedSuministro.addBatch();
-//                            preparedSuministro.executeBatch();
-//                            DBUtil.getConnection().commit();
-//                            result = "removed";
-//                        }
                     }
                 }
 

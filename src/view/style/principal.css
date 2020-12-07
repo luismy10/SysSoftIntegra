@@ -398,7 +398,7 @@
 .buttonMenu {
     -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
     -fx-spacing: 0.8333333333333334em;
-    -fx-opacity: 0.5;
+    -fx-opacity: 0.6;
 
 }
 .buttonMenu:hover {

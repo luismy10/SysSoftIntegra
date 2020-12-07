@@ -1,114 +1,76 @@
 package controller.produccion.producir;
 
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.produccion.insumos.FxInsumosListaController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.EmpleadoADO;
-import model.EmpleadoTB;
-import model.SuministroADO;
-import model.SuministroTB;
+import model.InsumoTB;
+import report.ProduccionADO;
+import report.ProduccionTB;
 
 public class FxProducirProcesoController implements Initializable {
 
     @FXML
-    private HBox hbWindow;
+    private ScrollPane spWindow;
     @FXML
     private Label lblLoad;
     @FXML
-    private DatePicker dtFechaInicial;
+    private TableView<InsumoTB> tvListInsumos;
     @FXML
-    private DatePicker dtFechaFinal;
+    private TableColumn<InsumoTB, Button> tcOpcion;
     @FXML
-    private ComboBox<?> cbxLote;
-
-    //Empleado
+    private TableColumn<InsumoTB, String> tcCodigo;
     @FXML
-    private TextField txtSearchEmpleado;
+    private TableColumn<InsumoTB, String> tcDescripcion;
     @FXML
-    private ComboBox<?> cbxRegistroEmpleado;
+    private TableColumn<InsumoTB, TextField> tcCantidad;
     @FXML
-    private TableView<EmpleadoTB> tvListEm;
+    private TableColumn<InsumoTB, String> tcMedida;
     @FXML
-    private TableColumn<EmpleadoTB, String> tcNumeracionEm;
+    private TableColumn<InsumoTB, String> tcCostoPromedio;
     @FXML
-    private TableColumn<EmpleadoTB, String> tcDocumento;
+    private TextField txtProductoFabricar;
     @FXML
-    private TableColumn<EmpleadoTB, String> tcDatosCompletos;
+    private RadioButton cbInterno;
     @FXML
-    private TableColumn<EmpleadoTB, String> tcTelefonoCelular;
+    private RadioButton cbExterno;
     @FXML
-    private TableColumn<EmpleadoTB, String> tcPuesto;
+    private Button btnProducirFabricar;
     @FXML
-    private TableColumn<EmpleadoTB, String> tcEstado;
+    private DatePicker txtFechaRegistro;
     @FXML
-    private TableColumn<EmpleadoTB, CheckBox> tcOpcionEm;
-
-    // Suministro 
+    private DatePicker txtFechaInicio;
     @FXML
-    private TextField txtSearchSuministro;
-    @FXML
-    private ComboBox<?> cbxRegistroSuministro;
-    @FXML
-    private TableView<SuministroTB> tvListS;
-    @FXML
-    private TableColumn<SuministroTB, String> tcNumeracionS;
-    @FXML
-    private TableColumn<SuministroTB, String> tcClave;
-    @FXML
-    private TableColumn<SuministroTB, String> tcNombre;
-    @FXML
-    private TableColumn<SuministroTB, String> tcCosto;
-    @FXML
-    private TableColumn<SuministroTB, String> tcCantidad;
-    @FXML
-    private TableColumn<SuministroTB, CheckBox> tcOpcionS;
-
-    // Equipo
-    @FXML
-    private TextField txtSearchEquipo;
-    @FXML
-    private ComboBox<?> cbxRegistroEquipo;
-    @FXML
-    private TableView<?> tvListE;
-    @FXML
-    private TableColumn<?, ?> tcNumeracion2;
-    @FXML
-    private TableColumn<?, ?> tcNombre2;
-    @FXML
-    private TableColumn<?, ?> tcCosto2;
-    @FXML
-    private TableColumn<?, ?> tcCantidad2;
+    private DatePicker txtTermino;
 
     private FxProducirController producirController;
 
@@ -116,40 +78,87 @@ public class FxProducirProcesoController implements Initializable {
 
     private AnchorPane vbContent;
 
-    private boolean empleadoLoad;
+    private String idSuministro;
+    @FXML
+    private Label lblCostoPromedio;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
+        tcCodigo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave()));
+        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
+        tcCantidad.setCellValueFactory(new PropertyValueFactory<>("txtCantidad"));
+        tcMedida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMedidaName()));
+        tcCostoPromedio.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCosto()));
 
-        // Empleados
-        tcNumeracionEm.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
-        tcDocumento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroDocumento()));
-        tcDatosCompletos.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getApellidos() + " " + cellData.getValue().getNombres()));
-        tcTelefonoCelular.setCellValueFactory(cellData -> Bindings.concat(
-                !Tools.isText(cellData.getValue().getTelefono())
-                ? "TEL: " + cellData.getValue().getTelefono() + "\n" + "CEL: " + cellData.getValue().getCelular()
-                : "CEL: " + cellData.getValue().getCelular()
-        ));
-        tcPuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getPuestoName()));
-        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstadoName()));
-        tcOpcionEm.setCellValueFactory(new PropertyValueFactory<>("validarEm"));
+        ToggleGroup toggleGroup = new ToggleGroup();
+        cbInterno.setToggleGroup(toggleGroup);
+        cbExterno.setToggleGroup(toggleGroup);
 
-        // Suministros
-        tcNumeracionS.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
-        tcClave.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave()));
-        tcNombre.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreMarca()));
-        tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
-        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getUnidadCompraName()));
-        tcOpcionS.setCellValueFactory(new PropertyValueFactory<>("validarS"));
+        Tools.actualDate(Tools.getDate(), txtFechaRegistro);
+        Tools.actualDate(Tools.getDate(), txtFechaInicio);
 
-        Tools.actualDate(Tools.getDate(), dtFechaInicial);
-        Tools.actualDate(Tools.getDate(), dtFechaFinal);
+    }
 
-        empleadoLoad = false;
+    public void addElementsTableInsumo(InsumoTB ins) {
+        InsumoTB insumoTB = new InsumoTB();
+        insumoTB.setIdInsumo(ins.getIdInsumo());
+        Button button = new Button();
+        button.getStyleClass().add("buttonLightError");
+        ImageView view = new ImageView(new Image("/view/image/remove-black.png"));
+        view.setFitWidth(22);
+        view.setFitHeight(22);
+        button.setGraphic(view);
+        button.setOnAction(event -> {
+            executeEventRomeverPrice(insumoTB);
+        });
+        button.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                executeEventRomeverPrice(insumoTB);
+            }
+        });
+        insumoTB.setBtnRemove(button);
+        insumoTB.setClave(ins.getClave());
+        insumoTB.setNombreMarca(ins.getNombreMarca());
+        insumoTB.setCosto(ins.getCosto());
+
+        TextField tfCantidad = new TextField("0.00");
+        tfCantidad.setPrefWidth(220);
+        tfCantidad.setPrefHeight(30);
+        tfCantidad.getStyleClass().add("text-field-normal");
+        tfCantidad.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                double costoCreado = !Tools.isNumeric(tfCantidad.getText().trim()) ? (0 * ins.getCosto()) : (Double.parseDouble(tfCantidad.getText()) * insumoTB.getCosto());
+                insumoTB.setCosto(costoCreado);
+                tvListInsumos.refresh();
+            }
+        });
+        tfCantidad.setOnKeyTyped(event -> {
+            char c = event.getCharacter().charAt(0);
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                event.consume();
+            }
+            if (c == '.' && tfCantidad.getText().contains(".")) {
+                event.consume();
+            }
+        });
+        insumoTB.setTxtCantidad(tfCantidad);
+        insumoTB.setMedidaName(ins.getMedidaName());
+        tvListInsumos.getItems().add(insumoTB);              
+    }
+
+    private void executeEventRomeverPrice(InsumoTB insumoTB) {
+        short confirmation = Tools.AlertMessageConfirmation(spWindow, "Producir", "¿Esta seguro de quitar el insumo?");
+        if (confirmation == 1) {
+            ObservableList<InsumoTB> observableList;
+            observableList = tvListInsumos.getItems();
+            observableList.remove(insumoTB);
+            tvListInsumos.requestFocus();
+        }
     }
 
     private void closeWindow() {
-        vbContent.getChildren().remove(hbWindow);
+        vbContent.getChildren().remove(spWindow);
         vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(producirController.getWindow(), 0d);
         AnchorPane.setTopAnchor(producirController.getWindow(), 0d);
@@ -158,78 +167,24 @@ public class FxProducirProcesoController implements Initializable {
         vbContent.getChildren().add(producirController.getWindow());
     }
 
-    public void fillTablesProduccion() {
-        fillTableEmployeeInProduction("");
-        if (!empleadoLoad) {
-            fillTableSuministrosInProduction((short) 0, "", "");
-        }
-    }
-
-    public void fillTableEmployeeInProduction(String value) {
-
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<List<EmpleadoTB>> task = new Task<List<EmpleadoTB>>() {
-            @Override
-            public ObservableList<EmpleadoTB> call() {
-                return EmpleadoADO.ListEmployeeInProProduction(value);
-            }
-        };
-
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvListEm.setItems((ObservableList<EmpleadoTB>) task.getValue());
-            lblLoad.setVisible(false);
-            empleadoLoad = false;
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
-            lblLoad.setVisible(false);
-            empleadoLoad = false;
-        });
-
-        task.setOnScheduled((WorkerStateEvent event) -> {
-            lblLoad.setVisible(true);
-            empleadoLoad = true;
-        });
-        exec.execute(task);
-
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-
-    }
-
-    public void fillTableSuministrosInProduction(short opcion, String clave, String nombre) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<ObservableList<SuministroTB>> task = new Task<ObservableList<SuministroTB>>() {
-            @Override
-            public ObservableList<SuministroTB> call() {
-                return SuministroADO.List_Suministros_In_Produccion(opcion, clave, nombre);
-            }
-        };
-
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvListS.setItems(task.getValue());
-            lblLoad.setVisible(false);
-        });
-
-        task.setOnFailed((WorkerStateEvent e) -> {
-            lblLoad.setVisible(false);
-        });
-        task.setOnScheduled((WorkerStateEvent e) -> {
-            lblLoad.setVisible(true);
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
+    private void openWindowInsumos() {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_INSUMO_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxInsumosListaController controller = fXMLLoader.getController();
+            controller.setInitProducirProcesoController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", spWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+            controller.loadInitComponents();
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
         }
     }
 
@@ -243,95 +198,121 @@ public class FxProducirProcesoController implements Initializable {
             FxSuministrosListaController controller = fXMLLoader.getController();
             controller.setInitProducirProcesoController(this);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", hbWindow.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
-            controller.fillSuministrosTable((short)0,"");
+            controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }
     }
 
-    @FXML
-    private void onKeyPressedAdd(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionAdd(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionSearchEmpleado(ActionEvent event) {
-    }
-
-    @FXML
-    private void onKeyPressedEmpleado(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            fillTableEmployeeInProduction(txtSearchEmpleado.getText());
+    private void registrarProduccion() {
+        if (idSuministro == null || idSuministro.equalsIgnoreCase("")) {
+            Tools.AlertMessageWarning(spWindow, "Produccón", "Ingrese el producto a producir.");
+            btnProducirFabricar.requestFocus();
+        } else if (txtFechaInicio.getValue() == null) {
+            Tools.AlertMessageWarning(spWindow, "Produccón", "Ingrese la fecha de inicio de la producción.");
+            txtFechaInicio.requestFocus();
+        } else if (txtTermino.getValue() == null) {
+            Tools.AlertMessageWarning(spWindow, "Produccón", "Ingrese la fecha de finalización de la producción.");
+            txtTermino.requestFocus();
+        } else {
+            short value = Tools.AlertMessageConfirmation(spWindow, "Producción", "¿Está seguro de continuar?");
+            if (value == 1) {
+                ProduccionTB produccionTB = new ProduccionTB();
+                produccionTB.setFechaProduccion(Tools.getDatePicker(txtFechaRegistro));
+                produccionTB.setHoraProduccion(Tools.getHour());
+                produccionTB.setFechaInicio(Tools.getDatePicker(txtFechaInicio));
+                produccionTB.setFechaTermino(Tools.getDatePicker(txtTermino));
+                produccionTB.setIdSuministro(idSuministro);
+                produccionTB.setEstado((short) 2);
+                produccionTB.setTipoOrden(cbInterno.isSelected());
+                String result = ProduccionADO.RegistrarProduccion(produccionTB);
+                if (result.equalsIgnoreCase("registrado")) {
+                    Tools.AlertMessageInformation(spWindow, "Producción", "Se registro correctamente la orden de producción.");
+                    clearComponents();
+                } else {
+                    Tools.AlertMessageError(spWindow, "Producción", result);
+                }
+            }
         }
     }
 
-    @FXML
-    private void onActionEmpleado(ActionEvent event) {
-        fillTableEmployeeInProduction(txtSearchEmpleado.getText());
-    }
+    private void clearComponents() {
+        idSuministro = "";
+        txtProductoFabricar.clear();
 
-    @FXML
-    private void onKeyPressedReloadEmpleado(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionReloadEmpleado(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionSearchSuministro(ActionEvent event) {
-    }
-
-    @FXML
-    private void onKeyPressedSuministro(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionSuministro(ActionEvent event) {
-        openWindowSuministros();
-    }
-
-    @FXML
-    private void onKeyPressedReloadSuministro(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionReloadSuministro(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionSearchEquipo(ActionEvent event) {
-    }
-
-    @FXML
-    private void onKeyPressedEquipo(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionEquipo(ActionEvent event) {
-    }
-
-    @FXML
-    private void onKeyPressedReloadEquipo(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionReloadEquipo(ActionEvent event) {
     }
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
         closeWindow();
+    }
+
+    @FXML
+    private void onKeyPressedBuscar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowInsumos();
+        }
+    }
+
+    @FXML
+    private void onActionBuscar(ActionEvent event) {
+        openWindowInsumos();
+    }
+
+    public TableView<InsumoTB> getTvListInsumos() {
+        return tvListInsumos;
+    }
+
+    private void onKeyPressedAgregar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            registrarProduccion();
+        }
+    }
+
+    @FXML
+    private void onActionAgregar(ActionEvent event) {
+        registrarProduccion();
+    }
+
+    @FXML
+    private void onKeyPressedFabricar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowSuministros();
+        }
+    }
+
+    @FXML
+    private void onActionBuscarProductoFabricar(ActionEvent event) {
+        openWindowSuministros();
+    }
+
+    @FXML
+    private void onKeyPressedLimpiar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            clearComponents();
+        }
+    }
+
+    @FXML
+    private void onActionLimpiar(ActionEvent event) {
+        clearComponents();
+    }
+
+    public String getIdSuministro() {
+        return idSuministro;
+    }
+
+    public void setIdSuministro(String idSuministro) {
+        this.idSuministro = idSuministro;
+    }
+
+    public TextField getTxtProductoFabricar() {
+        return txtProductoFabricar;
     }
 
     public void setInitControllerProducir(FxProducirController producirController, AnchorPane vbPrincipal, AnchorPane vbContent) {

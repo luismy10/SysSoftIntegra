@@ -34,13 +34,14 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Numeracion=?,CodigoAlterno=?,Guia = ? WHERE IdTipoDocumento = ?");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TipoDocumentoTB SET Nombre = ?, Serie = ?,Numeracion=?,CodigoAlterno=?,Guia = ?,Facturacion=? WHERE IdTipoDocumento = ?");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
                         statementUpdate.setInt(3, documentoTB.getNumeracion());
                         statementUpdate.setString(4, documentoTB.getCodigoAlterno());
                         statementUpdate.setBoolean(5, documentoTB.isGuia());
-                        statementUpdate.setInt(6, documentoTB.getIdTipoDocumento());                     
+                        statementUpdate.setBoolean(6, documentoTB.isFactura());
+                        statementUpdate.setInt(7, documentoTB.getIdTipoDocumento());
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -55,7 +56,7 @@ public class TipoDocumentoADO {
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     } else {
-                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Numeracion,Predeterminado,Sistema,CodigoAlterno,Guia) VALUES(?,?,?,?,?,?,?)");
+                        statementUpdate = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB (Nombre,Serie,Numeracion,Predeterminado,Sistema,CodigoAlterno,Guia,Facturacion) VALUES(?,?,?,?,?,?,?,?)");
                         statementUpdate.setString(1, documentoTB.getNombre());
                         statementUpdate.setString(2, documentoTB.getSerie());
                         statementUpdate.setInt(3, documentoTB.getNumeracion());
@@ -63,6 +64,7 @@ public class TipoDocumentoADO {
                         statementUpdate.setBoolean(5, false);
                         statementUpdate.setString(6, documentoTB.getCodigoAlterno());
                         statementUpdate.setBoolean(7, documentoTB.isGuia());
+                        statementUpdate.setBoolean(8, documentoTB.isFactura());
                         statementUpdate.addBatch();
 
                         statementUpdate.executeBatch();
@@ -117,12 +119,13 @@ public class TipoDocumentoADO {
                 tipoDocumentoTB.setCodigoAlterno(resultSet.getString("CodigoAlterno"));
                 tipoDocumentoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
                 tipoDocumentoTB.setGuia(resultSet.getBoolean("Guia"));
+                tipoDocumentoTB.setFactura(resultSet.getBoolean("Facturacion"));
 
-                Label lblDestino = new Label(tipoDocumentoTB.isGuia()?"Guía Remisión":"Ventas");
+                Label lblDestino = new Label(tipoDocumentoTB.isGuia() ? "Guía Remisión" : "Ventas");
                 lblDestino.getStyleClass().add("labelRoboto13");
                 lblDestino.setTextFill(Color.web("#020203"));
                 lblDestino.setContentDisplay(ContentDisplay.TOP);
-                ImageView ivDestino = new ImageView(new Image(tipoDocumentoTB.isGuia()? "/view/image/guia_remision.png" : "/view/image/sales.png"));
+                ImageView ivDestino = new ImageView(new Image(tipoDocumentoTB.isGuia() ? "/view/image/guia_remision.png" : "/view/image/sales.png"));
                 ivDestino.setFitWidth(22);
                 ivDestino.setFitHeight(22);
                 lblDestino.setGraphic(ivDestino);
