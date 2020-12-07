@@ -71,6 +71,12 @@ public class FxProducirProcesoController implements Initializable {
     private DatePicker txtFechaInicio;
     @FXML
     private DatePicker txtTermino;
+    @FXML
+    private Label lblCostoPromedio;
+    @FXML
+    private Label lblPrecioPromedio;
+    @FXML
+    private Label lblUtilidadPromedio;
 
     private FxProducirController producirController;
 
@@ -79,8 +85,6 @@ public class FxProducirProcesoController implements Initializable {
     private AnchorPane vbContent;
 
     private String idSuministro;
-    @FXML
-    private Label lblCostoPromedio;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -128,9 +132,10 @@ public class FxProducirProcesoController implements Initializable {
         tfCantidad.getStyleClass().add("text-field-normal");
         tfCantidad.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                double costoCreado = !Tools.isNumeric(tfCantidad.getText().trim()) ? (0 * ins.getCosto()) : (Double.parseDouble(tfCantidad.getText()) * insumoTB.getCosto());
+                double costoCreado = !Tools.isNumeric(tfCantidad.getText().trim()) ? (0 * ins.getCosto()) : (Double.parseDouble(tfCantidad.getText()) * ins.getCosto());
                 insumoTB.setCosto(costoCreado);
                 tvListInsumos.refresh();
+                calcularTotales();
             }
         });
         tfCantidad.setOnKeyTyped(event -> {
@@ -144,7 +149,7 @@ public class FxProducirProcesoController implements Initializable {
         });
         insumoTB.setTxtCantidad(tfCantidad);
         insumoTB.setMedidaName(ins.getMedidaName());
-        tvListInsumos.getItems().add(insumoTB);              
+        tvListInsumos.getItems().add(insumoTB);
     }
 
     private void executeEventRomeverPrice(InsumoTB insumoTB) {
@@ -245,6 +250,21 @@ public class FxProducirProcesoController implements Initializable {
         idSuministro = "";
         txtProductoFabricar.clear();
 
+    }
+
+    private void calcularTotales() {
+        double sumarCostos = 0;
+        double sumarPrecios = 0;
+        double sumarUtilidades = 0;
+
+        for (InsumoTB e : tvListInsumos.getItems()) {
+            sumarCostos += e.getCosto();
+        }
+        sumarPrecios = (sumarCostos * 0.30) + sumarCostos;
+        sumarUtilidades = sumarPrecios - sumarCostos;
+        lblCostoPromedio.setText(Tools.roundingValue(sumarCostos, 2));
+        lblPrecioPromedio.setText(Tools.roundingValue(sumarPrecios, 2));
+        lblUtilidadPromedio.setText(Tools.roundingValue(sumarUtilidades, 2));
     }
 
     @FXML

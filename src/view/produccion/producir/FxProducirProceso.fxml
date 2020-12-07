@@ -354,7 +354,7 @@
                                                             <Font name="Calibri" size="15.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label styleClass="labelRobotoBold15" text="0.00" textFill="#020203">
+                                                      <Label fx:id="lblPrecioPromedio" styleClass="labelRobotoBold15" text="0.00" textFill="#020203">
                                                          <font>
                                                             <Font name="Calibri" size="15.0" />
                                                          </font>
@@ -368,7 +368,7 @@
                                                             <Font name="Calibri" size="15.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label styleClass="labelRobotoBold15" text="0.00" textFill="#020203">
+                                                      <Label fx:id="lblUtilidadPromedio" styleClass="labelRobotoBold15" text="0.00" textFill="#020203">
                                                          <font>
                                                             <Font name="Calibri" size="15.0" />
                                                          </font>
