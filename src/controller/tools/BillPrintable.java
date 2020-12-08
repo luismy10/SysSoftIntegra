@@ -306,38 +306,38 @@ public class BillPrintable implements Printable {
             //RobotoRegular"
             //"RobotoBold
 
-            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D gimage = image.createGraphics();
+//            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
+//            Graphics2D gimage = image.createGraphics();
             Graphics2D g2d = (Graphics2D) graphics;
 
             double width = pageFormat.getImageableWidth();
 
             g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-            gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+//            gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
 
-            gimage.setColor(Color.white);
-            gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
-            gimage.setPaint(Color.black);
+//            gimage.setColor(Color.white);
+//            gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
+//            gimage.setPaint(Color.black);
             g2d.setPaint(Color.black);
 
-            y = createRow(apEncabezado, g2d, gimage, width, y);
-            y = createRow(apDetalle, g2d, gimage, width, y);
-            createRow(apPie, g2d, gimage, width, y);
+            y = createRow(apEncabezado, g2d, width, y);
+            y = createRow(apDetalle, g2d, width, y);
+            createRow(apPie, g2d, width, y);
 
             graphics.dispose();
-            gimage.dispose();
-            try {
-                ImageIO.write(image, "png", new File("yourImageName.png"));
-            } catch (IOException ex) {
-                System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
-            }
+//            gimage.dispose();
+//            try {
+//                ImageIO.write(image, "png", new File("yourImageName.png"));
+//            } catch (IOException ex) {
+//                System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
+//            }
             return PAGE_EXISTS;
         } else {
             return NO_SUCH_PAGE;
         }
     }
 
-    private int createRow(AnchorPane anchorPane, Graphics2D g2d, Graphics2D gimage, double width, int y) {
+    private int createRow(AnchorPane anchorPane, Graphics2D g2d ,double width, int y) {
         for (int i = 0; i < anchorPane.getChildren().size(); i++) {
             HBox box = ((HBox) anchorPane.getChildren().get(i));
             StringBuilder result = new StringBuilder();
@@ -439,101 +439,11 @@ public class BillPrintable implements Printable {
                     TextLayout layout = lineBreakMeasurer.nextLayout((float) width);
                     y += layout.getAscent() + 3;
                     layout.draw(g2d, 0, y);
-                    layout.draw(gimage, 0, y);
+//                    layout.draw(gimage, 0, y);
                     y += layout.getDescent() + layout.getLeading();
                 }
-
-//                Font font = new Font("Consolas", Font.PLAIN, (int) (fontSize - 3.5f));
-//                gimage.setFont(font);
-//                g2d.setFont(font);
-//
-//                FontMetrics metrics = g2d.getFontMetrics(font);
-//
-//                y += metrics.getAscent();
-//
-//                g2d.drawString(result.toString(), 0, y);
-//                gimage.drawString(result.toString(), 0, y);
-//
-//                y += metrics.getDescent() + metrics.getLeading();
-//                g2d.drawString(result.toString(), 0, y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//                gimage.drawString(result.toString(), 0, y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//                y += (fontSize + 1.5f);
             } else {
                 if (box.getChildren().get(0) instanceof TextFieldTicket) {
-
-//                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
-//                    int columnI;
-//                    int columnF;
-//
-//                    columnI = 0;
-//                    columnF = columnI + field.getColumnWidth();
-//
-//                    int totalWidth;
-//                    int length;
-//
-//                    if (null != field.getAlignment()) {
-//                        switch (field.getAlignment()) {
-//                            case CENTER_LEFT:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int posl = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= 0 && ca <= (length - 1)) {
-//                                        char c = field.getText().charAt(posl);
-//                                        result.append(c);
-//                                        posl++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//                                break;
-//                            case CENTER:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int centro = (totalWidth - length) / 2;
-//                                int posc = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= centro && ca <= (centro + (length - 1))) {
-//                                        char c = field.getText().charAt(posc);
-//                                        result.append(c);
-//                                        posc++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//
-//                                break;
-//                            case CENTER_RIGHT:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int right = totalWidth - length;
-//                                int posr = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= right && ca <= (right + (length - 1))) {
-//                                        char c = field.getText().charAt(posr);
-//                                        result.append(c);
-//                                        posr++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//                                break;
-//                            default:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int posd = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= 0 && ca <= (length - 1)) {
-//                                        char c = field.getText().charAt(posd);
-//                                        result.append(c);
-//                                        posd++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//                                break;
-//                        }
-//                    }
                     TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
                     Font font = new Font(field.getFontName().equalsIgnoreCase("Consola")
                             ? FontsPersonalize.FONT_CONSOLAS
@@ -546,14 +456,6 @@ public class BillPrintable implements Printable {
                             ? Font.PLAIN
                             : Font.BOLD,
                             (int) (field.getFontSize() - 3.5f));
-//                    gimage.setFont(font);
-//                    g2d.setFont(font);
-
-// field.getFontName().equalsIgnoreCase("Consola")
-//                            ? "Consola"
-//                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
-//                            ? "RobotoRegular"
-//                            : "RobotoBold"
                     AttributedString attributedString = new AttributedString(field.getText());
                     attributedString.addAttribute(TextAttribute.FONT, font);
 
@@ -569,31 +471,9 @@ public class BillPrintable implements Printable {
                                 ? (int) (width - layout.getAdvance()) / 2
                                 : (int) (width - layout.getAdvance());
                         layout.draw(g2d, x, y);
-                        layout.draw(gimage, x, y);
+//                        layout.draw(gimage, x, y);
                         y += layout.getDescent() + layout.getLeading();
                     }
-//                    FontMetrics metrics = g2d.getFontMetrics(font);
-//
-//                    y += metrics.getAscent();
-//
-//                    g2d.drawString(field.getText(), 0, y);
-//                    gimage.drawString(field.getText(), 0, y);
-//
-//                    y += metrics.getDescent() + metrics.getLeading();
-
-//                    g2d.drawString(field.getText(), field.getAlignment() == Pos.CENTER_LEFT
-//                            ? 0
-//                            : field.getAlignment() == Pos.CENTER
-//                            ? (int) (width - metrics.stringWidth(field.getText())) / 2
-//                            : (int) (width - metrics.stringWidth(field.getText())), y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//
-//                    gimage.drawString(field.getText(), field.getAlignment() == Pos.CENTER_LEFT
-//                            ? 0
-//                            : field.getAlignment() == Pos.CENTER
-//                            ? (int) (width - metrics.stringWidth(field.getText())) / 2
-//                            : (int) (width - metrics.stringWidth(field.getText())), y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//
-//                    y += (field.getFontSize() + 1.5f);
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
 
@@ -604,11 +484,11 @@ public class BillPrintable implements Printable {
                             ByteArrayInputStream bais = new ByteArrayInputStream(imageView.getUrl());
                             image = ImageIO.read(bais);
                         }
-
-                        gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
-                                : box.getAlignment() == Pos.CENTER
-                                ? (int) (width - imageView.getFitWidth()) / 2
-                                : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+//
+//                        gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
+//                                : box.getAlignment() == Pos.CENTER
+//                                ? (int) (width - imageView.getFitWidth()) / 2
+//                                : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
                         g2d.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
                                 : box.getAlignment() == Pos.CENTER
                                 ? (int) (width - imageView.getFitWidth()) / 2

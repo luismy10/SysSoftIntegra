@@ -1957,7 +1957,6 @@ public class FxVentaEstructuraController implements Initializable {
         btnBuscarSunat.setDisable(false);
         btnBuscarReniec.setDisable(false);
 
-        txtNumeroDocumento.setText("");
         txtDatosCliente.setText("");
         txtCelularCliente.setText("");
         txtCorreoElectronico.setText("");

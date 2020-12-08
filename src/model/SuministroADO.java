@@ -68,7 +68,7 @@ public class SuministroADO {
 //                                }
 //                            } else {
 
-                            preparedSuministro = DBUtil.getConnection().prepareStatement("update SuministroTB set Origen=?,Clave=?,ClaveAlterna=UPPER(?), NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?,PrecioVentaGeneral=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,NuevaImagen=?,Impuesto=?, ValorInventario = ?,ClaveSat = ?,TipoPrecio=? where IdSuministro = ? ");
+                            preparedSuministro = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET Origen=?,Clave=?,ClaveAlterna=UPPER(?), NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?,PrecioVentaGeneral=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,NuevaImagen=?,Impuesto=?, ValorInventario = ?,ClaveSat = ?,TipoPrecio=? WHERE IdSuministro = ? ");
 
                             preparedSuministro.setInt(1, suministroTB.getOrigen());
                             preparedSuministro.setString(2, suministroTB.getClave());
@@ -146,7 +146,7 @@ public class SuministroADO {
 //                                }
 //                            }
                             preparedPrecios = DBUtil.getConnection().prepareStatement("DELETE FROM PreciosTB WHERE IdSuministro = ?");
-                            preparedPrecios.setString(1, suministroTB.getIdSuministro());
+                            preparedPrecios.setString(1, suministroTB.getIdSuministro());                            
                             preparedPrecios.addBatch();
                             preparedPrecios.executeBatch();
 
@@ -154,7 +154,7 @@ public class SuministroADO {
                             for (int i = 0; i < tvPrecios.size(); i++) {
                                 preparedPrecios.setString(1, "");
                                 preparedPrecios.setString(2, suministroTB.getIdSuministro());
-                                preparedPrecios.setString(3, tvPrecios.get(i).getNombre());
+                                preparedPrecios.setString(3, tvPrecios.get(i).getNombre().toUpperCase());
                                 preparedPrecios.setDouble(4, tvPrecios.get(i).getValor());
                                 preparedPrecios.setDouble(5, tvPrecios.get(i).getFactor() <= 0 ? 1 : tvPrecios.get(i).getFactor());
                                 preparedPrecios.setBoolean(6, true);
@@ -324,7 +324,7 @@ public class SuministroADO {
                             for (int i = 0; i < tvPrecios.size(); i++) {
                                 preparedPrecios.setString(1, "");
                                 preparedPrecios.setString(2, idSuministro);
-                                preparedPrecios.setString(3, tvPrecios.get(i).getNombre());
+                                preparedPrecios.setString(3, tvPrecios.get(i).getNombre().toUpperCase());
                                 preparedPrecios.setDouble(4, tvPrecios.get(i).getValor());
                                 preparedPrecios.setDouble(5, tvPrecios.get(i).getFactor() <= 0 ? 1 : tvPrecios.get(i).getFactor());
                                 preparedPrecios.setBoolean(6, true);
@@ -1076,14 +1076,14 @@ public class SuministroADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             try {
-                statementVendedor = DBUtil.getConnection().prepareStatement("SELECT IdPrecios,Nombre,Valor,Factor FROM PreciosTB WHERE IdSuministro = ?");
+                statementVendedor = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Precios_By_IdSuministro(?)}");
                 statementVendedor.setString(1, idSuministro);
                 try (ResultSet resultSet = statementVendedor.executeQuery()) {
                     while (resultSet.next()) {
                         PreciosTB preciosTB = new PreciosTB();
                         preciosTB.setId(resultSet.getRow());
                         preciosTB.setIdPrecios(resultSet.getInt("IdPrecios"));
-                        preciosTB.setNombre(resultSet.getString("Nombre"));
+                        preciosTB.setNombre(resultSet.getString("Nombre").toUpperCase());
                         preciosTB.setValor(resultSet.getDouble("Valor"));
                         preciosTB.setFactor(resultSet.getDouble("Factor") <= 0 ? 1 : resultSet.getDouble("Factor"));
                         empList.add(preciosTB);

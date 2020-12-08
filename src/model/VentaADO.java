@@ -376,8 +376,8 @@ public class VentaADO {
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
                 ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                ventaTB.setIdCliente(rsEmps.getString("Cliente"));
-                ventaTB.setComprobanteName(rsEmps.getString("Comprobante"));
+                ventaTB.setClienteTB(new ClienteTB(rsEmps.getString("DocumentoCliente"), rsEmps.getString("Cliente")));
+                ventaTB.setComprobanteName(rsEmps.getString("Comprobante")); 
                 ventaTB.setSerie(rsEmps.getString("Serie"));
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
                 ventaTB.setTipoName(rsEmps.getString("Tipo"));
