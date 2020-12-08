@@ -848,8 +848,8 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setClaveSat(txtClaveSat.getText().trim());
                 suministroTB.setTipoPrecio(rbPrecioNormal.isSelected());
 
-                tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 1", !Tools.isNumeric(txtPrecioVentaNeto2.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto2.getText()), 2));
-                tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 2", !Tools.isNumeric(txtPrecioVentaNeto3.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto3.getText()), 2));
+                tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 1", !Tools.isNumeric(txtPrecioVentaNeto2.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto2.getText()), 1));
+                tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 2", !Tools.isNumeric(txtPrecioVentaNeto3.getText()) ? 0 : Double.parseDouble(txtPrecioVentaNeto3.getText()), 1));
 
                 String result = SuministroADO.CrudSuministro(
                         suministroTB,

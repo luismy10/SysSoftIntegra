@@ -69,6 +69,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
+import model.ClienteADO;
 import model.DetalleADO;
 import model.DetalleTB;
 import model.PrivilegioTB;
@@ -80,6 +81,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import org.json.simple.JSONObject;
 
 public class FxVentaEstructuraNuevoController implements Initializable {
 
@@ -1184,24 +1186,371 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-    private void onEventCliente() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_CLIENTE_PROCESO);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxClienteProcesoController controller = fXMLLoader.getController();
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-            controller.setValueAdd();
-        } catch (IOException ex) {
-            System.out.println("Cliente controller en openWindowAddCliente()" + ex.getLocalizedMessage());
+    public void onExecuteCliente(short opcion, String search) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ClienteTB> task = new Task<ClienteTB>() {
+            @Override
+            public ClienteTB call() {
+                return ClienteADO.GetSearchClienteNumeroDocumento(opcion, search);
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtCorreoElectronico.setText("");
+            txtDireccionCliente.setText("");
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente internamente.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+            ClienteTB clienteTB = task.getValue();
+            if (clienteTB != null) {
+                Tools.showAlertNotification("/view/image/succes_large.png",
+                        "Buscando clíente",
+                        "Se completo la busqueda con exito.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                txtNumeroDocumento.setDisable(false);
+                txtDatosCliente.setDisable(false);
+                txtCelularCliente.setDisable(false);
+                txtCorreoElectronico.setDisable(false);
+                txtDireccionCliente.setDisable(false);
+                btnBuscarCliente.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
+
+                idCliente = clienteTB.getIdCliente();
+                txtDatosCliente.setText(clienteTB.getInformacion());
+                txtCelularCliente.setText(clienteTB.getCelular());
+                txtCorreoElectronico.setText(clienteTB.getEmail());
+                txtDireccionCliente.setText(clienteTB.getDireccion());
+                for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                        cbTipoDocumento.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            } else {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
         }
+    }
+
+    private void getApiSunat() {
+        ApiPeru apiSunat = new ApiPeru();
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList();
+                ClienteTB clienteTB = ClienteADO.GetSearchClienteNumeroDocumento((short) 2, txtNumeroDocumento.getText().trim());
+                if (clienteTB == null) {
+                    objects.add("client-no-exists");
+                    objects.add("");
+                    objects.add(apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim()));
+                } else {
+                    objects.add("client-exists");
+                    objects.add(clienteTB);
+                    objects.add(apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim()));
+                }
+                return objects;
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtCorreoElectronico.setText("");
+            txtDireccionCliente.setText("");
+
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente por su número de ruc.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+
+            ArrayList<Object> result = task.getValue();
+            if (!result.isEmpty()) {
+                String stateClient = (String) result.get(0);
+                String api = (String) result.get(2);
+
+                if (api.equalsIgnoreCase("200") && !Tools.isText(apiSunat.getJsonURL())) {
+
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Buscando clíente",
+                                "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        clearDataClient();
+                    } else {
+                        Tools.showAlertNotification("/view/image/succes_large.png",
+                                "Buscando clíente",
+                                "Se completo la busqueda con exito.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        txtNumeroDocumento.setDisable(false);
+                        txtDatosCliente.setDisable(false);
+                        txtCelularCliente.setDisable(false);
+                        txtCorreoElectronico.setDisable(false);
+                        txtDireccionCliente.setDisable(false);
+                        btnBuscarCliente.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("ruc") != null) {
+                            txtNumeroDocumento.setText(sONObject.get("ruc").toString());
+                        }
+                        if (sONObject.get("razonSocial") != null) {
+                            txtDatosCliente.setText(sONObject.get("razonSocial").toString());
+                        }
+                        if (sONObject.get("direccion") != null) {
+                            txtDireccionCliente.setText(sONObject.get("direccion").toString());
+                        }
+
+                        if (stateClient.equals("client-exists")) {
+                            ClienteTB clienteTB = (ClienteTB) result.get(1);
+                            txtCelularCliente.setText(clienteTB.getCelular());
+                            txtCorreoElectronico.setText(clienteTB.getEmail());
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                } else {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Paso un problema en trear la información por\n problemas de conexión o error el número ruc.",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
+                }
+            } else {
+
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void getApiReniec() {
+        ApiPeru apiSunat = new ApiPeru();
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList();
+                ClienteTB clienteTB = ClienteADO.GetSearchClienteNumeroDocumento((short) 2, txtNumeroDocumento.getText().trim());
+                if (clienteTB == null) {
+                    objects.add("client-no-exists");
+                    objects.add("");
+                    objects.add(apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim()));
+                } else {
+                    objects.add("client-exists");
+                    objects.add(clienteTB);
+                    objects.add(apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim()));
+                }
+                return objects;
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtDireccionCliente.setText("");
+            txtDireccionCliente.setText("");
+
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente por su número de dni.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+            ArrayList<Object> result = task.getValue();
+            if (!result.isEmpty()) {
+                String stateClient = (String) result.get(0);
+                String api = (String) result.get(2);
+
+                if (api.equalsIgnoreCase("200") && !Tools.isText(apiSunat.getJsonURL())) {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Buscando clíente",
+                                "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        clearDataClient();
+                    } else {
+                        Tools.showAlertNotification("/view/image/succes_large.png",
+                                "Buscando clíente",
+                                "Se completo la busqueda con exito.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        txtNumeroDocumento.setDisable(false);
+                        txtDatosCliente.setDisable(false);
+                        txtCelularCliente.setDisable(false);
+                        txtCorreoElectronico.setDisable(false);
+                        txtDireccionCliente.setDisable(false);
+                        btnBuscarCliente.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("dni") != null) {
+                            txtNumeroDocumento.setText(sONObject.get("dni").toString());
+                        }
+                        if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
+                            txtDatosCliente.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
+                        }
+                        if (stateClient.equals("client-exists")) {
+                            ClienteTB clienteTB = (ClienteTB) result.get(1);
+
+                            txtCelularCliente.setText(clienteTB.getCelular());
+                            txtCorreoElectronico.setText(clienteTB.getEmail());
+                            txtDireccionCliente.setText(clienteTB.getDireccion());
+
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Paso un problema en trear la información por\n problemas de conexión o error el número del dni.",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
+                }
+
+            } else {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Hubo un problema interno, intente nuevamente.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void clearDataClient() {
+        txtNumeroDocumento.setDisable(false);
+        txtDatosCliente.setDisable(false);
+        txtCelularCliente.setDisable(false);
+        txtCorreoElectronico.setDisable(false);
+        txtDireccionCliente.setDisable(false);
+        btnBuscarCliente.setDisable(false);
+        btnBuscarSunat.setDisable(false);
+        btnBuscarReniec.setDisable(false);
+
+        txtDatosCliente.setText("");
+        txtCelularCliente.setText("");
+        txtCorreoElectronico.setText("");
+        txtDireccionCliente.setText("");
     }
 
     private void onEventProducto() {
@@ -1434,13 +1783,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onKeyPressedCliente(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            onEventCliente();
+            onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
         }
     }
 
     @FXML
     private void onActionCliente(ActionEvent event) {
-        onEventCliente();
+        onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
     }
 
     @FXML
@@ -1514,25 +1863,25 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onKeyPressedSunat(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            getApiSunat();
         }
     }
 
     @FXML
     private void onActionSunat(ActionEvent event) {
-
+        getApiSunat();
     }
 
     @FXML
     private void onKeyPressedReniec(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            getApiReniec();
         }
     }
 
     @FXML
     private void onActionReniec(ActionEvent event) {
-
+        getApiReniec();
     }
 
     public TextField getTxtSearch() {
