@@ -257,7 +257,9 @@ public class FxOperacionesController implements Initializable {
 
     @FXML
     public void onKeyPressedVentasNueva(KeyEvent keyEvent) {
-        openWindowVentaNueva();
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            openWindowVentaNueva();
+        }
     }
 
     @FXML

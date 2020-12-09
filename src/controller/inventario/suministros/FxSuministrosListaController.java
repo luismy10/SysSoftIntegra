@@ -371,6 +371,7 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             suministroTB.setCantidad(1);
             suministroTB.setCostoCompra(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
+            suministroTB.setBonificacion(0);
 
             double valor_sin_impuesto = tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral() / ((tvList.getSelectionModel().getSelectedItem().getImpuestoValor() / 100.00) + 1);
             double descuento = suministroTB.getDescuento();

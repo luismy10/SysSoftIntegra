@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1da2485e-74ba-4396-a787-1cae4b3cbf12">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="169"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="14"/>
 	<parameter name="EMPRESA" class="java.lang.String"/>
 	<parameter name="INICIODETURNO" class="java.lang.String"/>
 	<parameter name="HORAINICIO" class="java.lang.String"/>
@@ -25,14 +25,14 @@
 	<title>
 		<band height="117" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="67" width="114" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="fe61805c-d4cd-4711-97f8-ee6b380a1924"/>
+				<reportElement mode="Opaque" x="0" y="67" width="114" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="fe61805c-d4cd-4711-97f8-ee6b380a1924"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INICIO DE TURNO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="134" y="67" width="114" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="870c9496-1879-4dd1-8119-422e6def0102"/>
+				<reportElement mode="Opaque" x="134" y="67" width="114" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="870c9496-1879-4dd1-8119-422e6def0102"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
@@ -42,7 +42,7 @@
 				<reportElement x="0" y="112" width="555" height="1" forecolor="#373B46" uuid="7c8e1ea1-9bef-4fd7-af76-d9a3705b565b"/>
 			</line>
 			<rectangle>
-				<reportElement x="0" y="0" width="249" height="44" backcolor="#020203" uuid="203cb0a1-fd42-4b84-b8a1-84ed0809e156"/>
+				<reportElement x="0" y="0" width="249" height="44" backcolor="#373B46" uuid="203cb0a1-fd42-4b84-b8a1-84ed0809e156"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
@@ -95,7 +95,7 @@
 	<pageHeader>
 		<band height="179" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="29" width="100" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="13a057fe-ff4a-485b-8f4c-cae9e47f4975"/>
+				<reportElement mode="Opaque" x="0" y="29" width="100" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="13a057fe-ff4a-485b-8f4c-cae9e47f4975"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
@@ -140,14 +140,14 @@
 				<reportElement x="0" y="153" width="555" height="1" forecolor="#373B46" uuid="40fdccc0-2841-468f-a574-e9bee1a37c38"/>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="3" y="161" width="54" height="13" forecolor="#F0F3FC" backcolor="#020203" uuid="9ed7a15c-3190-4fb7-a3b8-deb8554d8858"/>
+				<reportElement mode="Opaque" x="3" y="161" width="54" height="13" forecolor="#F0F3FC" backcolor="#373B46" uuid="9ed7a15c-3190-4fb7-a3b8-deb8554d8858"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="4" width="100" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="c31a520f-9223-4295-b301-401f3e431932"/>
+				<reportElement mode="Opaque" x="0" y="4" width="100" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="c31a520f-9223-4295-b301-401f3e431932"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>

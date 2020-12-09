@@ -41,6 +41,16 @@
                   </VBox>
                </children>
             </HBox>
+            <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+               <children>
+                  <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Bonificación" textFill="#020203" />
+                        <TextField fx:id="txtBonificacion" onAction="#onActionAceptar" onKeyReleased="#onKeyReleasedBonificacion" onKeyTyped="#onKeyTypedBonificacion" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">

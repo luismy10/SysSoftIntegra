@@ -1,6 +1,5 @@
 package controller.operaciones.venta;
 
-import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosProcesoModalController;
 import controller.tools.*;
 
@@ -278,10 +277,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     double dpi = resultNumber * 8;
 
                     VBox vBox = new VBox();
-                    ImageView imageView = null;
-                    if (tvList1.getNuevaImagen() == null) {
-                        imageView = new ImageView(new Image("/view/image/no-image.png"));
-                    } else {
+                    ImageView imageView = new ImageView(new Image("/view/image/no-image.png"));
+                    if (tvList1.getNuevaImagen() != null) {
                         imageView = new ImageView(new Image(new ByteArrayInputStream(tvList1.getNuevaImagen())));
                     }
                     imageView.setFitWidth(dpi * 1.3);
@@ -379,6 +376,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         suministroTB.setNombreMarca(a.getNombreMarca());
         suministroTB.setCantidad(1);
         suministroTB.setCostoCompra(a.getCostoCompra());
+        suministroTB.setBonificacion(0);
 
         double valor_sin_impuesto = a.getPrecioVentaGeneral() / ((a.getImpuestoValor() / 100.00) + 1);
         double descuento = suministroTB.getDescuento();
@@ -1133,7 +1131,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             } else if (total <= 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "El total de la venta no puede ser menor que 0.");
             } else {
-
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO_NUEVO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);

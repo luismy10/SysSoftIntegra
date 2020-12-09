@@ -85,6 +85,7 @@ public class SuministroTB {
     private Button remover;
     private boolean cambios;
     private ImpuestoTB impuestoTB;
+    private double bonificacion;
 
     public SuministroTB() {
     }
@@ -619,6 +620,14 @@ public class SuministroTB {
 
     public void setImpuestoTB(ImpuestoTB impuestoTB) {
         this.impuestoTB = impuestoTB;
+    }
+
+    public double getBonificacion() {
+        return bonificacion;
+    }
+
+    public void setBonificacion(double bonificacion) {
+        this.bonificacion = bonificacion;
     }
 
     @Override

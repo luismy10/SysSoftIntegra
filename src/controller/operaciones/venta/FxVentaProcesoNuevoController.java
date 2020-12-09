@@ -95,7 +95,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
     private boolean state_view_pago;
 
     private boolean provilegios;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
@@ -110,7 +110,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
     }
 
-    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList,boolean provilegios) {
+    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList, boolean provilegios) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
@@ -120,7 +120,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
         lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ""));
         hbContenido.setDisable(false);
-        this.provilegios=provilegios;
+        this.provilegios = provilegios;
     }
 
     private void TotalAPagar() {
@@ -189,16 +189,38 @@ public class FxVentaProcesoNuevoController implements Initializable {
                 Tools.AlertMessageWarning(window, "Venta", "El monto total y el monto a pagar no son iguales.");
                 tvPlazos.requestFocus();
             } else {
-
                 ventaTB.setTipo(2);
                 ventaTB.setEstado(2);
                 ventaTB.setVuelto(0);
                 ventaTB.setEfectivo(0);
                 ventaTB.setTarjeta(0);
                 ventaTB.setObservaciones("");
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
-                if (confirmation == 1) {
 
+                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de continuar?");
+                if (confirmation == 1) {
+                    ResultTransaction result = VentaADO.registrarVentaCredito(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante(), provilegios,tvPlazos);
+                    switch (result.getCode()) {
+                        case "register":
+                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
+                            if (value == 1) {
+                                ventaEstructuraNuevoController.resetVenta();
+                                ventaEstructuraNuevoController.imprimirVenta(result.getResult());
+                                Tools.Dispose(window);
+                            } else {
+                                ventaEstructuraNuevoController.resetVenta();
+                                Tools.Dispose(window);
+                            }
+                            break;
+                        case "nocantidades":
+                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
+                            break;
+                        case "error":
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
+                            break;
+                        default:
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
+                            break;
+                    }
                 }
 
             }
@@ -244,7 +266,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante(),provilegios);
+                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante(), provilegios);
                     switch (result.getCode()) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");

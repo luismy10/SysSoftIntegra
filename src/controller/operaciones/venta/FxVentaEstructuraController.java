@@ -480,6 +480,7 @@ public class FxVentaEstructuraController implements Initializable {
             suministroTB.setNombreMarca(a.getNombreMarca());
             suministroTB.setCantidad(1);
             suministroTB.setCostoCompra(a.getCostoCompra());
+            suministroTB.setBonificacion(0);
 
             suministroTB.setDescuento(0);
             suministroTB.setDescuentoCalculado(0);
@@ -910,8 +911,8 @@ public class FxVentaEstructuraController implements Initializable {
 
     private boolean validateDuplicateArticulo(TableView<SuministroTB> view, SuministroTB suministroTB) {
         boolean ret = false;
-        for (int i = 0; i < view.getItems().size(); i++) {
-            if (view.getItems().get(i).getClave().equals(suministroTB.getClave())) {
+        for (SuministroTB sm : view.getItems()) {
+            if (sm.getClave().equals(suministroTB.getClave())) {
                 ret = true;
                 break;
             }

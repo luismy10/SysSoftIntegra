@@ -44,6 +44,9 @@ public class Session {
     public static int TICKET_VENTA_ID = 0;
     public static String TICKET_VENTA_RUTA = "";
     
+    public static int TICKET_CORTE_CAJA_ID = 0;
+    public static String TICKET_CORTE_CAJA_RUTA = "";
+    
     public static int TICKET_PRE_VENTA_ID = 0;
     public static String TICKET_PRE_VENTA_RUTA = "";
     
