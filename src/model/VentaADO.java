@@ -661,6 +661,9 @@ public class VentaADO {
                 if (venta != null) {
                     venta.close();
                 }
+                if(venta_credito != null){
+                    venta_credito.close();
+                }
                 if (ventaVerificar != null) {
                     ventaVerificar.close();
                 }

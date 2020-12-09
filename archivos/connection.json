@@ -1,6 +1,6 @@
 {
     "body":{
-        "addres":"localhost",
+        "addres":"DESKTOP-UOEEGFI",
         "port":"1433",
         "dbname":"PuntoVentaSysSoftDBDesarrollo",
         "user":"sa",

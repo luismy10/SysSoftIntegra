@@ -66,8 +66,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
     private TableColumn<VentaCreditoTB, TextField> tcMonto;
     @FXML
     private TableColumn<VentaCreditoTB, DatePicker> tcFecha;
-    @FXML
-    private TableColumn<VentaCreditoTB, CheckBox> tcMontoInicial;
+//    private TableColumn<VentaCreditoTB, CheckBox> tcMontoInicial;
     @FXML
     private TableColumn<VentaCreditoTB, Button> tcOpcion;
     //    private TextField txtObservacion;
@@ -106,7 +105,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         lblVueltoNombre.setText("Su cambio: ");
         tcMonto.setCellValueFactory(new PropertyValueFactory<>("tfMonto"));
         tcFecha.setCellValueFactory(new PropertyValueFactory<>("dpFecha"));
-        tcMontoInicial.setCellValueFactory(new PropertyValueFactory<>("cbMontoInicial"));
+//        tcMontoInicial.setCellValueFactory(new PropertyValueFactory<>("cbMontoInicial"));
         tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
     }
 
@@ -297,7 +296,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
     private void addElementPlazos() {
         VentaCreditoTB vc = new VentaCreditoTB();
-
+        vc.setEstado(false);
         TextField textField = new TextField();
         textField.setPromptText("0.00");
         textField.setAlignment(Pos.CENTER);
@@ -342,9 +341,9 @@ public class FxVentaProcesoNuevoController implements Initializable {
         });
         vc.setDpFecha(datePicker);
 
-        CheckBox checkBox = new CheckBox();
-        checkBox.getStyleClass().add("check-box-contenido");
-        vc.setCbMontoInicial(checkBox);
+//        CheckBox checkBox = new CheckBox();
+//        checkBox.getStyleClass().add("check-box-contenido");
+//        vc.setCbMontoInicial(checkBox);
 
         Button button = new Button("X");
         button.getStyleClass().add("buttonDark");

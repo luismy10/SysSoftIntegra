@@ -113,7 +113,7 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox fx:id="vbViewCredito" alignment="TOP_CENTER" style="-fx-spacing: 0.5em; -fx-padding: 0.5em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbViewCredito" alignment="TOP_CENTER" style="-fx-spacing: 0.5em; -fx-padding: 0.5em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <TableView fx:id="tvPlazos" prefHeight="220.0" prefWidth="580.0" styleClass="table-view-principal">
                                              <columns>
