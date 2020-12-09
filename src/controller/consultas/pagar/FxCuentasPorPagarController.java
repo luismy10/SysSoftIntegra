@@ -102,6 +102,11 @@ public class FxCuentasPorPagarController implements Initializable {
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
         Tools.actualDate(Tools.getDate(), dpFechaFinal);
     }
+    
+        
+    public void loadTableCuentasPorPagar(){
+        fillPurchasesTable("", "", "", (short) 0);
+    }
 
     public void fillPurchasesTable(String search, String fechaInicio, String fechaFinal, short opcion) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {

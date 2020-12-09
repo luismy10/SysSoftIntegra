@@ -8,15 +8,16 @@ import javafx.scene.control.TextField;
 
 
 public class VentaCreditoTB {
-    
+        
+    private int id;
     private String idVenta;
     private int idVentaCredito;
     private double monto;
-    private String fechaRegistro ;
-    private String horaRegistro;
     private String fechaPago;
     private String horaPago;
-    private boolean estado;
+    private short estado;
+    private String observacion;
+    private EmpleadoTB empleadoTB;
     
     private TextField tfMonto;
     private DatePicker dpFecha;
@@ -25,6 +26,14 @@ public class VentaCreditoTB {
     
     public VentaCreditoTB(){
         
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getIdVenta() {
@@ -51,22 +60,6 @@ public class VentaCreditoTB {
         this.monto = monto;
     }
 
-    public String getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(String fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getHoraRegistro() {
-        return horaRegistro;
-    }
-
-    public void setHoraRegistro(String horaRegistro) {
-        this.horaRegistro = horaRegistro;
-    }
-
     public String getFechaPago() {
         return fechaPago;
     }
@@ -83,12 +76,28 @@ public class VentaCreditoTB {
         this.horaPago = horaPago;
     }
 
-    public boolean isEstado() {
+    public short getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(short estado) {
         this.estado = estado;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
     }
 
     public TextField getTfMonto() {
@@ -122,5 +131,5 @@ public class VentaCreditoTB {
     public void setBtnQuitar(Button btnQuitar) {
         this.btnQuitar = btnQuitar;
     }
-    
+
 }

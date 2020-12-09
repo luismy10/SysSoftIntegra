@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 public class VentaTB {
 
@@ -17,6 +18,8 @@ public class VentaTB {
     private String numeracion;
     private String fechaVenta;
     private String horaVenta;
+    private String fechaVencimiento;
+    private String horaVencimiento;
     private double subTotal;
     private double descuento;
     private double subImporte;
@@ -39,6 +42,8 @@ public class VentaTB {
     private MonedaTB monedaTB;
     private EmpleadoTB empleadoTB;
     private ArrayList<SuministroTB> suministroTBs;
+    private HBox hbOpciones;
+    private ArrayList<VentaCreditoTB> ventaCreditoTBs;
 
     public VentaTB() {
 
@@ -144,6 +149,22 @@ public class VentaTB {
 
     public void setHoraVenta(String horaVenta) {
         this.horaVenta = horaVenta;
+    }
+
+    public String getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(String fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public String getHoraVencimiento() {
+        return horaVencimiento;
+    }
+
+    public void setHoraVencimiento(String horaVencimiento) {
+        this.horaVencimiento = horaVencimiento;
     }
 
     public double getSubTotal() {
@@ -322,4 +343,21 @@ public class VentaTB {
         this.suministroTBs = suministroTBs;
     }
 
+    public HBox getHbOpciones() {
+        return hbOpciones;
+    }
+
+    public void setHbOpciones(HBox hbOpciones) {
+        this.hbOpciones = hbOpciones;
+    }
+
+    public ArrayList<VentaCreditoTB> getVentaCreditoTBs() {
+        return ventaCreditoTBs;
+    }
+
+    public void setVentaCreditoTBs(ArrayList<VentaCreditoTB> ventaCreditoTBs) {
+        this.ventaCreditoTBs = ventaCreditoTBs;
+    }
+
+   
 }

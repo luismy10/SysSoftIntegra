@@ -12,8 +12,12 @@ import java.util.ArrayList;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 public class VentaADO {
 
@@ -49,7 +53,7 @@ public class VentaADO {
                 if (resultValidate.next()) {
                     double ca = tvList.get(i).getValorInventario() == 1 ? tvList.get(i).getCantidad() + tvList.get(i).getBonificacion() : tvList.get(i).getCantidad();
                     double cb = resultValidate.getDouble("Cantidad");
-                    if (ca > cb) { 
+                    if (ca > cb) {
                         countValidate++;
                         arrayResult.add(tvList.get(i).getClave() + " - " + tvList.get(i).getNombreMarca() + " - Cantidad actual(" + Tools.roundingValue(cb, 2) + ")");
                     }
@@ -252,7 +256,7 @@ public class VentaADO {
                     suministro_kardex.setString(3, Tools.getHour());
                     suministro_kardex.setShort(4, (short) 2);
                     suministro_kardex.setInt(5, 1);
-                    suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1] + (sm.getBonificacion() <= 0 ? "" : "(BONIFICACIÓN: " + sm.getBonificacion()+")"));
+                    suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1] + (sm.getBonificacion() <= 0 ? "" : "(BONIFICACIÓN: " + sm.getBonificacion() + ")"));
                     suministro_kardex.setDouble(7, cantidadKardex);
                     suministro_kardex.setDouble(8, sm.getCostoCompra());
                     suministro_kardex.setDouble(9, cantidadKardex * sm.getCostoCompra());
@@ -351,8 +355,8 @@ public class VentaADO {
         }
         return resultTransaction;
     }
-    
-    public static ResultTransaction registrarVentaCredito(VentaTB ventaTB, ArrayList<SuministroTB> tvList, int idTipoDocumento, boolean privilegio,TableView<VentaCreditoTB> tvPlazos) {
+
+    public static ResultTransaction registrarVentaCredito(VentaTB ventaTB, ArrayList<SuministroTB> tvList, int idTipoDocumento, boolean privilegio) {
         CallableStatement serie_numeracion = null;
         CallableStatement codigoCliente = null;
         CallableStatement codigo_venta = null;
@@ -366,7 +370,7 @@ public class VentaADO {
         PreparedStatement suministro_update_granel = null;
         PreparedStatement suministro_kardex = null;
         PreparedStatement movimiento_caja = null;
-        PreparedStatement venta_credito = null;
+//        PreparedStatement venta_credito = null;
         ResultTransaction resultTransaction = new ResultTransaction();
         resultTransaction.setResult("Error en completar la petición intente nuevamente por favor.");
         try {
@@ -385,7 +389,7 @@ public class VentaADO {
                 if (resultValidate.next()) {
                     double ca = tvList.get(i).getValorInventario() == 1 ? tvList.get(i).getCantidad() + tvList.get(i).getBonificacion() : tvList.get(i).getCantidad();
                     double cb = resultValidate.getDouble("Cantidad");
-                    if (ca > cb) { 
+                    if (ca > cb) {
                         countValidate++;
                         arrayResult.add(tvList.get(i).getClave() + " - " + tvList.get(i).getNombreMarca() + " - Cantidad actual(" + Tools.roundingValue(cb, 2) + ")");
                     }
@@ -521,8 +525,8 @@ public class VentaADO {
                 venta.setString(7, id_comprabante[1]);
                 venta.setString(8, ventaTB.getFechaVenta());
                 venta.setString(9, ventaTB.getHoraVenta());
-                venta.setString(10, ventaTB.getFechaVenta());
-                venta.setString(11, ventaTB.getHoraVenta());
+                venta.setString(10, ventaTB.getFechaVencimiento());
+                venta.setString(11, ventaTB.getHoraVencimiento());
                 venta.setDouble(12, ventaTB.getSubTotal());
                 venta.setDouble(13, ventaTB.getDescuento());
                 venta.setDouble(14, ventaTB.getImpuesto());
@@ -588,7 +592,7 @@ public class VentaADO {
                     suministro_kardex.setString(3, Tools.getHour());
                     suministro_kardex.setShort(4, (short) 2);
                     suministro_kardex.setInt(5, 1);
-                    suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1] + (sm.getBonificacion() <= 0 ? "" : "(BONIFICACIÓN: " + sm.getBonificacion()+")"));
+                    suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1] + (sm.getBonificacion() <= 0 ? "" : "(BONIFICACIÓN: " + sm.getBonificacion() + ")"));
                     suministro_kardex.setDouble(7, cantidadKardex);
                     suministro_kardex.setDouble(8, sm.getCostoCompra());
                     suministro_kardex.setDouble(9, cantidadKardex * sm.getCostoCompra());
@@ -615,19 +619,18 @@ public class VentaADO {
                     movimiento_caja.setDouble(6, ventaTB.getTarjeta());
                     movimiento_caja.addBatch();
                 }
-                
-                venta_credito = DBUtil.getConnection().prepareStatement("INSERT INTO VentaCreditoTB(IdVentaCredito,Monto,FechaRegistro,HoraRegistro,FechaPago,HoraPago,Estado) VALUES(?,?,?,?,?,?,?)");
-                for(VentaCreditoTB creditoTB:tvPlazos.getItems()){
-                    venta_credito.setString(1, id_venta);
-                    venta_credito.setDouble(2, Double.parseDouble(creditoTB.getTfMonto().getText()));
-                    venta_credito.setString(3, Tools.getDatePicker(creditoTB.getDpFecha()));
-                    venta_credito.setString(4, Tools.getHour());
-                    venta_credito.setString(5, "");
-                    venta_credito.setString(6, "");
-                    venta_credito.setBoolean(7, creditoTB.isEstado());
-                    venta_credito.addBatch();
-                }
 
+//                venta_credito = DBUtil.getConnection().prepareStatement("INSERT INTO VentaCreditoTB(IdVenta,Monto,FechaRegistro,HoraRegistro,FechaPago,HoraPago,Estado) VALUES(?,?,?,?,?,?,?)");
+//                for (VentaCreditoTB creditoTB : tvPlazos.getItems()) {
+//                    venta_credito.setString(1, id_venta);
+//                    venta_credito.setDouble(2, Double.parseDouble(creditoTB.getTfMonto().getText()));
+//                    venta_credito.setString(3, Tools.getDatePicker(creditoTB.getDpFecha()));
+//                    venta_credito.setString(4, Tools.getHour());
+//                    venta_credito.setString(5, "");
+//                    venta_credito.setString(6, "");
+//                    venta_credito.setBoolean(7, creditoTB.isEstado());
+//                    venta_credito.addBatch();
+//                }
                 cliente.executeBatch();
                 venta.executeBatch();
                 movimiento_caja.executeBatch();
@@ -636,7 +639,7 @@ public class VentaADO {
                 suministro_update_unidad.executeBatch();
                 suministro_update_granel.executeBatch();
                 suministro_kardex.executeBatch();
-                venta_credito.executeBatch();
+//                venta_credito.executeBatch();
                 DBUtil.getConnection().commit();
                 resultTransaction.setCode("register");
                 resultTransaction.setResult(id_venta);
@@ -661,6 +664,9 @@ public class VentaADO {
                 if (venta != null) {
                     venta.close();
                 }
+//                if (venta_credito != null) {
+//                    venta_credito.close();
+//                }
                 if (ventaVerificar != null) {
                     ventaVerificar.close();
                 }
@@ -949,7 +955,7 @@ public class VentaADO {
                                 suministroTB.setId(resultSetLista.getRow());
                                 suministroTB.setIdSuministro(resultSetLista.getString("IdSuministro"));
                                 suministroTB.setClave(resultSetLista.getString("Clave"));
-                                suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca")+"\n"+(resultSetLista.getDouble("Bonificacion")<=0?"":"BONIFICACIÓN: "+resultSetLista.getDouble("Bonificacion")));
+                                suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca") + "\n" + (resultSetLista.getDouble("Bonificacion") <= 0 ? "" : "BONIFICACIÓN: " + resultSetLista.getDouble("Bonificacion")));
                                 suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
                                 suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
                                 suministroTB.setUnidadCompraName(resultSetLista.getString("UnidadCompra"));
@@ -1090,7 +1096,7 @@ public class VentaADO {
                     for (SuministroTB stb : arrList) {
 
                         if (stb.isInventario() && stb.getValorInventario() == 1) {
-                            statementSuministro.setDouble(1, stb.getCantidad()+stb.getBonificacion());
+                            statementSuministro.setDouble(1, stb.getCantidad() + stb.getBonificacion());
                             statementSuministro.setString(2, stb.getIdSuministro());
                             statementSuministro.addBatch();
                         } else if (stb.isInventario() && stb.getValorInventario() == 2) {
@@ -1306,6 +1312,118 @@ public class VentaADO {
             }
         }
         return arrayList;
+    }
+
+    public static ObservableList<VentaTB> ListarVentasCredito() {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ObservableList<VentaTB> arrayList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Listar_Ventas_Credito()}");
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setId(resultSet.getRow());
+                ventaTB.setIdVenta(resultSet.getString("IdVenta"));
+                ventaTB.setSerie(resultSet.getString("Serie"));
+                ventaTB.setNumeracion(resultSet.getString("Numeracion"));
+                ventaTB.setFechaVenta(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                ventaTB.setHoraVenta(resultSet.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion")));
+                ventaTB.setEstado(resultSet.getInt("Estado"));
+                ventaTB.setMonedaName(resultSet.getString("Simbolo"));
+                ventaTB.setTotal(resultSet.getDouble("Total"));
+
+                Label label = new Label(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "PENDIENTE" : "PAGADO");
+                label.getStyleClass().add(ventaTB.getEstado() == 1 ? "label-asignacion" : ventaTB.getEstado() == 2 ? "label-medio" : ventaTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
+                ventaTB.setEstadoLabel(label);
+
+                Button btnVisualizar = new Button();
+                ImageView imageViewVisualizar = new ImageView(new Image("/view/image/search_caja.png"));
+                imageViewVisualizar.setFitWidth(24);
+                imageViewVisualizar.setFitHeight(24);
+                btnVisualizar.setGraphic(imageViewVisualizar);
+                btnVisualizar.getStyleClass().add("buttonLightWarning");
+                HBox hBox = new HBox();
+                hBox.setAlignment(Pos.CENTER);
+                hBox.setStyle(";-fx-spacing:0.8333333333333334em;");
+                hBox.getChildren().add(btnVisualizar);
+                ventaTB.setHbOpciones(hBox);
+
+                arrayList.add(ventaTB);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ListarVentasCredito:" + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return arrayList;
+    }
+
+    public static VentaTB ListarVentasDetalleCredito(String idVenta) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        VentaTB ventaTB = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Venta_ById(?)}");
+            preparedStatement.setString(1, idVenta);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ventaTB = new VentaTB();
+                ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion"), resultSet.getString("Celular"), resultSet.getString("Email"), resultSet.getString("Direccion")));
+                ventaTB.setSerie(resultSet.getString("Serie"));
+                ventaTB.setNumeracion(resultSet.getString("Numeracion"));
+                ventaTB.setEstadoName(resultSet.getString("Estado"));
+                ventaTB.setMonedaName(resultSet.getString("Simbolo"));
+                ventaTB.setTotal(resultSet.getDouble("Total"));
+
+                preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Listar_Detalle_Venta_Credito(?)}");
+                preparedStatement.setString(1, idVenta);
+                resultSet = preparedStatement.executeQuery();
+                ArrayList<VentaCreditoTB> ventaCreditoTBs = new ArrayList<>();
+                while (resultSet.next()) {
+                    VentaCreditoTB ventaCreditoTB = new VentaCreditoTB();
+                    ventaCreditoTB.setId(resultSet.getRow());
+                    ventaCreditoTB.setIdVentaCredito(resultSet.getInt("IdVentaCredito"));
+                    ventaCreditoTB.setFechaPago(resultSet.getDate("FechaPago").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    ventaCreditoTB.setHoraPago(resultSet.getTime("HoraPago").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                    ventaCreditoTB.setEstado(resultSet.getShort("Estado"));
+                    ventaCreditoTB.setObservacion(resultSet.getString("Observacion"));
+                    ventaCreditoTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Apellidos"), resultSet.getString("Nombres")));
+                    ventaCreditoTBs.add(ventaCreditoTB);
+                }
+                ventaTB.setVentaCreditoTBs(ventaCreditoTBs);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ListarVentasDetalleCredito:" + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return ventaTB;
     }
 
 }

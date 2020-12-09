@@ -182,7 +182,9 @@ public final class FilesRouters {
 
     public static final String FX_CAJA_CONSULTA = "/view/operaciones/cortecaja/FxCajaConsultas.fxml";
 
-    public static final String FX_CUENTAS_POR_COBRAR = "/view/consultas/pagar/FxCuentasPorPagar.fxml";
+    public static final String FX_CUENTAS_POR_COBRAR = "/view/consultas/pagar/FxCuentasPorCobrar.fxml";
+
+    public static final String FX_CUENTAS_POR_PAGAR = "/view/consultas/pagar/FxCuentasPorPagar.fxml";
 
     //--------------------------------------------------------------------------------------------------
     public static final String FX_IMPRIMIR = "/view/configuracion/impresoras/FxImprimir.fxml";
@@ -231,6 +233,8 @@ public final class FilesRouters {
     public static final String FX_AJUSTE_INVENTARIO = "/view/inventario/ajusteinventario/FxAjusteInventario.fxml";
 
     public static final String FX_AJUSTE_INVENTARIO_PROCESO = "/view/inventario/ajusteinventario/FxAjusteInventarioProceso.fxml";
+
+    public static final String FX_CUENTAS_POR_COBRAR_VISUALIZAR = "/view/consultas/pagar/FxCuentasPorCobrarVisualizar.fxml";
 
     //--------------------------------------------------------------------------------------------------
     //PROCESO DE ARTICULOS
@@ -337,7 +341,7 @@ public final class FilesRouters {
     public static final String FX_INSUMOS = "/view/produccion/insumos/FxInsumos.fxml";
 
     public static final String FX_INSUMO_PROCESO = "/view/produccion/insumos/FxInsumosProceso.fxml";
-    
-     public static final String FX_INSUMO_LISTA = "/view/produccion/insumos/FxInsumosLista.fxml";
+
+    public static final String FX_INSUMO_LISTA = "/view/produccion/insumos/FxInsumosLista.fxml";
 
 }
