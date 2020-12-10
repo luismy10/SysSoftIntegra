@@ -209,6 +209,10 @@ public class FxCuentasPorCobrarController implements Initializable {
     private void onMouseClickList(MouseEvent event) {
     }
 
+    public VBox getVbWindow() {
+        return vbWindow;
+    }
+
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;

@@ -1384,6 +1384,7 @@ public class VentaADO {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ventaTB = new VentaTB();
+                ventaTB.setIdVenta(idVenta);
                 ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion"), resultSet.getString("Celular"), resultSet.getString("Email"), resultSet.getString("Direccion")));
                 ventaTB.setSerie(resultSet.getString("Serie"));
                 ventaTB.setNumeracion(resultSet.getString("Numeracion"));
@@ -1399,12 +1400,21 @@ public class VentaADO {
                 while (resultSet.next()) {
                     VentaCreditoTB ventaCreditoTB = new VentaCreditoTB();
                     ventaCreditoTB.setId(resultSet.getRow());
-                    ventaCreditoTB.setIdVentaCredito(resultSet.getInt("IdVentaCredito"));
+                    ventaCreditoTB.setIdVentaCredito(resultSet.getString("IdVentaCredito"));
                     ventaCreditoTB.setFechaPago(resultSet.getDate("FechaPago").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                     ventaCreditoTB.setHoraPago(resultSet.getTime("HoraPago").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                     ventaCreditoTB.setEstado(resultSet.getShort("Estado"));
                     ventaCreditoTB.setObservacion(resultSet.getString("Observacion"));
                     ventaCreditoTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Apellidos"), resultSet.getString("Nombres")));
+                    ventaCreditoTB.setMonto(resultSet.getDouble("Monto"));
+                    
+                    Button btnImprimir = new Button();
+                    ImageView imageViewVisualizar = new ImageView(new Image("/view/image/print.png"));
+                    imageViewVisualizar.setFitWidth(24);
+                    imageViewVisualizar.setFitHeight(24);
+                    btnImprimir.setGraphic(imageViewVisualizar);
+                    btnImprimir.getStyleClass().add("buttonLightSuccess");
+                    ventaCreditoTB.setBtnImprimir(btnImprimir);
                     ventaCreditoTBs.add(ventaCreditoTB);
                 }
                 ventaTB.setVentaCreditoTBs(ventaCreditoTBs);
@@ -1425,6 +1435,54 @@ public class VentaADO {
             }
         }
         return ventaTB;
+    }
+
+    public static String RegistrarAbono(VentaCreditoTB ventaCreditoTB) {
+        PreparedStatement statementAbono = null;
+        CallableStatement statementCodigo = null;
+        try {
+            DBUtil.dbConnect();
+            DBUtil.getConnection().setAutoCommit(false);
+
+            statementCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Venta_Credito_Codigo_Alfanumerico()}");
+            statementCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
+            statementCodigo.execute();
+            String idVentaCredito = statementCodigo.getString(1);
+
+            statementAbono = DBUtil.getConnection().prepareStatement("INSERT INTO VentaCreditoTB(IdVenta,IdVentaCredito,Monto,FechaPago,HoraPago,Estado,IdUsuario,Observacion)VALUES(?,?,?,?,?,?,?,?)");
+            statementAbono.setString(1, ventaCreditoTB.getIdVenta());
+            statementAbono.setString(2, idVentaCredito);
+            statementAbono.setDouble(3, ventaCreditoTB.getMonto());
+            statementAbono.setString(4, ventaCreditoTB.getFechaPago());
+            statementAbono.setString(5, ventaCreditoTB.getHoraPago());
+            statementAbono.setShort(6, ventaCreditoTB.getEstado());
+            statementAbono.setString(7, ventaCreditoTB.getIdUsuario());
+            statementAbono.setString(8, ventaCreditoTB.getObservacion());
+            statementAbono.addBatch();
+
+            statementAbono.executeBatch();
+            DBUtil.getConnection().commit();
+            return "insert";
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException e) {
+
+            }
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementAbono != null) {
+                    statementAbono.close();
+                }
+                if (statementCodigo != null) {
+                    statementCodigo.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
     }
 
 }

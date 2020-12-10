@@ -11,17 +11,19 @@ public class VentaCreditoTB {
         
     private int id;
     private String idVenta;
-    private int idVentaCredito;
+    private String idVentaCredito;
     private double monto;
     private String fechaPago;
     private String horaPago;
     private short estado;
+    private String idUsuario;
     private String observacion;
     private EmpleadoTB empleadoTB;
     
     private TextField tfMonto;
     private DatePicker dpFecha;
     private CheckBox cbMontoInicial;
+    private Button btnImprimir;
     private Button btnQuitar;
     
     public VentaCreditoTB(){
@@ -44,11 +46,11 @@ public class VentaCreditoTB {
         this.idVenta = idVenta;
     }
 
-    public int getIdVentaCredito() {
+    public String getIdVentaCredito() {
         return idVentaCredito;
     }
 
-    public void setIdVentaCredito(int idVentaCredito) {
+    public void setIdVentaCredito(String idVentaCredito) {
         this.idVentaCredito = idVentaCredito;
     }
 
@@ -124,12 +126,28 @@ public class VentaCreditoTB {
         this.cbMontoInicial = cbMontoInicial;
     }
 
+    public Button getBtnImprimir() {
+        return btnImprimir;
+    }
+
+    public void setBtnImprimir(Button btnImprimir) {
+        this.btnImprimir = btnImprimir;
+    }
+
     public Button getBtnQuitar() {
         return btnQuitar;
     }
 
     public void setBtnQuitar(Button btnQuitar) {
         this.btnQuitar = btnQuitar;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
 }

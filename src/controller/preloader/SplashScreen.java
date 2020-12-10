@@ -132,6 +132,19 @@ public class SplashScreen extends Preloader {
                             Session.ESTADO_IMPRESORA_COTIZACION = false;
                         }
 
+                        String rutaCuentasPorCobrar = "./archivos/CUENTAS POR COBRAR.properties";
+                        try (InputStream input = new FileInputStream(rutaCuentasPorCobrar)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = true;
+                            Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR = prop.getProperty("printerNameCuentasPorCobrar");
+                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR = Boolean.parseBoolean(prop.getProperty("printerCutPaperCuentasPorCobrar"));
+                            Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR = prop.getProperty("printerTypeFormatCuentasPorCobrar");
+                            Session.DESING_IMPRESORA_CUENTA_POR_COBRAR = prop.getProperty("printerTypeDesingCuentasPorCobrar");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = false;
+                        }
+
                         LoadFont loadFont = new LoadFont();
                         loadFont.loadFont();
 
@@ -143,14 +156,14 @@ public class SplashScreen extends Preloader {
                             Session.TICKET_VENTA_ID = 0;
                             Session.TICKET_VENTA_RUTA = "";
                         }
-
-                        TicketTB ticketCotizacionTB = TicketADO.GetTicketRuta(8);
-                        if (ticketCotizacionTB != null) {
-                            Session.TICKET_COTIZACION_ID = ticketCotizacionTB.getId();
-                            Session.TICKET_COTIZACION_RUTA = ticketCotizacionTB.getRuta();                           
+                        
+                        TicketTB ticketCorteCajaTB = TicketADO.GetTicketRuta(5);
+                        if (ticketCorteCajaTB != null) {
+                            Session.TICKET_CORTE_CAJA_ID = ticketCorteCajaTB.getId();
+                            Session.TICKET_CORTE_CAJA_RUTA = ticketCorteCajaTB.getRuta();
                         } else {
-                            Session.TICKET_COTIZACION_ID = 0;
-                            Session.TICKET_COTIZACION_RUTA = "";
+                            Session.TICKET_CORTE_CAJA_ID = 0;
+                            Session.TICKET_CORTE_CAJA_RUTA = "";
                         }
 
                         TicketTB ticketPreVentaTB = TicketADO.GetTicketRuta(7);
@@ -160,6 +173,33 @@ public class SplashScreen extends Preloader {
                         } else {
                             Session.TICKET_PRE_VENTA_ID = 0;
                             Session.TICKET_PRE_VENTA_RUTA = "";
+                        }
+
+                        TicketTB ticketCotizacionTB = TicketADO.GetTicketRuta(8);
+                        if (ticketCotizacionTB != null) {
+                            Session.TICKET_COTIZACION_ID = ticketCotizacionTB.getId();
+                            Session.TICKET_COTIZACION_RUTA = ticketCotizacionTB.getRuta();
+                        } else {
+                            Session.TICKET_COTIZACION_ID = 0;
+                            Session.TICKET_COTIZACION_RUTA = "";
+                        }
+                        
+                        TicketTB ticketCuentasPorCobrarTB = TicketADO.GetTicketRuta(9);
+                        if (ticketCuentasPorCobrarTB != null) {
+                            Session.TICKET_CUENTA_POR_COBRAR_ID = ticketCuentasPorCobrarTB.getId();
+                            Session.TICKET_CUENTA_POR_COBRAR_RUTA = ticketCuentasPorCobrarTB.getRuta();
+                        } else {
+                            Session.TICKET_CUENTA_POR_COBRAR_ID = 0;
+                            Session.TICKET_CUENTA_POR_COBRAR_RUTA = "";
+                        }
+                        
+                        TicketTB ticketCuentasPorPagarTB = TicketADO.GetTicketRuta(10);
+                        if (ticketCuentasPorPagarTB != null) {
+                            Session.TICKET_CUENTA_POR_PAGAR_ID = ticketCuentasPorPagarTB.getId();
+                            Session.TICKET_CUENTA_POR_PAGAR_RUTA = ticketCuentasPorPagarTB.getRuta();
+                        } else {
+                            Session.TICKET_CUENTA_POR_PAGAR_ID = 0;
+                            Session.TICKET_CUENTA_POR_PAGAR_RUTA = "";
                         }
 
                         EmpresaTB list = EmpresaADO.GetEmpresa();

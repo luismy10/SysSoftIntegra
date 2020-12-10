@@ -1,7 +1,6 @@
 package controller.operaciones.compras;
 
 import controller.consultas.pagar.FxCuentasPorPagarVisualizarController;
-import controller.tools.ConvertMonedaCadena;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
@@ -55,9 +54,7 @@ public class FxAmortizarPagosController implements Initializable {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
         Tools.actualDate(Tools.getDate(), dtFecha);
         cbCuenta.getItems().add(new BancoTB("0", "Seleccionar..."));
-        BancoADO.GetBancoComboBox().forEach(e -> {
-            cbCuenta.getItems().add(new BancoTB(e.getIdBanco(), e.getNombreCuenta()));
-        });
+        BancoADO.GetBancoComboBox().forEach(e -> cbCuenta.getItems().add(new BancoTB(e.getIdBanco(), e.getNombreCuenta())));
         cbCuenta.getSelectionModel().select(0);
     }
 
@@ -65,9 +62,7 @@ public class FxAmortizarPagosController implements Initializable {
         this.idCompra = idCompra;
         this.comprobante = comprobante;
         this.tvList = tvList;
-        tvList.forEach((cctb) -> {
-            montoPagar += cctb.getCbSeleccion().isSelected() && !cctb.getCbSeleccion().isDisable() ? cctb.getMonto() : 0;
-        });
+        tvList.forEach((cctb) -> montoPagar += cctb.getCbSeleccion().isSelected() && !cctb.getCbSeleccion().isDisable() ? cctb.getMonto() : 0);
         txtMonto.setText(Tools.roundingValue(montoPagar, 2));
     }
 
@@ -111,13 +106,13 @@ public class FxAmortizarPagosController implements Initializable {
                 transaccionTB.setMonto(montoPagar);
                 transaccionTB.setUsuario(Session.USER_ID);
 
-                ModeloObject result = CompraADO.Registrar_Amortizacion(idCompra,tvList, bancoHistorialTB, transaccionTB);
+                ModeloObject result = CompraADO.Registrar_Amortizacion(idCompra, tvList, bancoHistorialTB, transaccionTB);
                 if (result.getState().equalsIgnoreCase("updated")) {
                     Tools.AlertMessageInformation(apWindow, "Generar Pago", "Se registro correctamente el pago.");
                     Tools.Dispose(apWindow);
                     cuentasPorPagarVisualizarController.validarEstadoCompra();
                     cuentasPorPagarVisualizarController.loadTableCompraCredito(idCompra);
-                    cuentasPorPagarVisualizarController.openWindowReport(result.getMessage());                    
+                    cuentasPorPagarVisualizarController.openWindowReport(result.getMessage());
                 } else if (result.getState().equalsIgnoreCase("pagado")) {
                     Tools.AlertMessageWarning(apWindow, "Generar Pago", "La cuota seleccionada ya está cancelada.");
                     Tools.Dispose(apWindow);

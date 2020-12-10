@@ -43,33 +43,57 @@ public class Session {
      */
     public static int TICKET_VENTA_ID = 0;
     public static String TICKET_VENTA_RUTA = "";
-    
+
     public static int TICKET_CORTE_CAJA_ID = 0;
     public static String TICKET_CORTE_CAJA_RUTA = "";
-    
+
     public static int TICKET_PRE_VENTA_ID = 0;
     public static String TICKET_PRE_VENTA_RUTA = "";
-    
+
     public static int TICKET_COTIZACION_ID = 0;
-    public static String TICKET_COTIZACION_RUTA = "";
+    public static String TICKET_COTIZACION_RUTA = "";   
+
+    public static int TICKET_CUENTA_POR_COBRAR_ID = 0;
+    public static String TICKET_CUENTA_POR_COBRAR_RUTA = "";
+
+    public static int TICKET_CUENTA_POR_PAGAR_ID = 0;
+    public static String TICKET_CUENTA_POR_PAGAR_RUTA = ""; 
 
     public static boolean ESTADO_IMPRESORA_VENTA;
     public static String NOMBRE_IMPRESORA_VENTA = "";
     public static boolean CORTAPAPEL_IMPRESORA_VENTA;
     public static String FORMATO_IMPRESORA_VENTA = "";
     public static String DESING_IMPRESORA_VENTA = "";
-    
+
     public static boolean ESTADO_IMPRESORA_PRE_VENTA;
     public static String NOMBRE_IMPRESORA_PRE_VENTA = "";
     public static boolean CORTAPAPEL_IMPRESORA_PRE_VENTA;
     public static String FORMATO_IMPRESORA_PRE_VENTA = "";
     public static String DESING_IMPRESORA_PRE_VENTA = "";
-    
+
     public static boolean ESTADO_IMPRESORA_COTIZACION;
     public static String NOMBRE_IMPRESORA_COTIZACION = "";
     public static boolean CORTAPAPEL_IMPRESORA_COTIZACION;
     public static String FORMATO_IMPRESORA_COTIZACION = "";
     public static String DESING_IMPRESORA_COTIZACION = "";
+
+    public static boolean ESTADO_IMPRESORA_CORTE_CAJA;
+    public static String NOMBRE_IMPRESORA_CORTE_CAJA = "";
+    public static boolean CORTAPAPEL_IMPRESORA_CORTE_CAJA;
+    public static String FORMATO_IMPRESORA_CORTE_CAJA = "";
+    public static String DESING_IMPRESORA_CORTE_CAJA = "";
+
+    public static boolean ESTADO_IMPRESORA_CUENTA_POR_COBRAR;
+    public static String NOMBRE_IMPRESORA_CUENTA_POR_COBRAR = "";
+    public static boolean CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR;
+    public static String FORMATO_IMPRESORA_CUENTA_POR_COBRAR = "";
+    public static String DESING_IMPRESORA_CUENTA_POR_COBRAR = "";
+
+    public static boolean ESTADO_IMPRESORA_CUENTA_POR_PAGAR;
+    public static String NOMBRE_IMPRESORA_CUENTA_POR_PAGAR = "";
+    public static boolean CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR;
+    public static String FORMATO_IMPRESORA_CUENTA_POR_PAGAR = "";
+    public static String DESING_IMPRESORA_CUENTA_POR_PAGAR = "";
     /*
     variable de cliente
      */

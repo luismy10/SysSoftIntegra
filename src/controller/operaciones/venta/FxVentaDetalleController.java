@@ -276,33 +276,7 @@ public class FxVentaDetalleController implements Initializable {
         }
     }
 
-//    private void openWindowAbonos() {
-//        if (lblTipo.getText().equalsIgnoreCase("credito")) {
-//            try {
-//                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-//                URL url = getClass().getResource(FilesRouters.FX_VENTA_ABONO);
-//                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-//                Parent parent = fXMLLoader.load(url.openStream());
-//
-//                FxVentaAbonoController controller = fXMLLoader.getController();
-//                controller.setInitVentaAbonoController(this);
-//
-//                Stage stage = WindowStage.StageLoaderModal(parent, "Historial de abonos", window.getScene().getWindow());
-//                stage.setResizable(false);
-//                stage.sizeToScene();
-//                stage.setOnHiding(w -> {
-//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-//                });
-//                stage.show();
-//                controller.loadInitData(idVenta, ventaTB.getMonedaTB().getSimbolo());
-//
-//            } catch (IOException ex) {
-//                System.out.println(ex.getLocalizedMessage());
-//            }
-//        } else {
-//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Venta", "La venta se realizó al contado.", false);
-//        }
-//    }
+
     private void calcularTotales() {
         if (arrList != null) {
 

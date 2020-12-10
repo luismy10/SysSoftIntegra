@@ -194,8 +194,6 @@ public final class FilesRouters {
 
     public static final String FX_VENTA = "/view/operaciones/venta/FxVenta.fxml";
 
-    public static final String FX_VENTA_ABONO = "/view/operaciones/venta/FxVentaAbono.fxml";
-
     public static final String FX_VENTA_ABONO_PROCESO = "/view/operaciones/venta/FxVentaAbonoProceso.fxml";
 
     public static final String FX_VENTA_DESCUENTO = "/view/operaciones/venta/FxVentaDescuento.fxml";
@@ -343,5 +341,7 @@ public final class FilesRouters {
     public static final String FX_INSUMO_PROCESO = "/view/produccion/insumos/FxInsumosProceso.fxml";
 
     public static final String FX_INSUMO_LISTA = "/view/produccion/insumos/FxInsumosLista.fxml";
+    
+    public static final String FX_OPCIONES_IMPRIMIR = "/view/configuracion/impresoras/FxOpcionesImprimir.fxml";
 
 }
