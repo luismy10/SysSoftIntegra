@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import model.VentaADO;
 import model.VentaCreditoTB;
 import model.VentaTB;
@@ -69,16 +70,17 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
                 return VentaADO.ListarVentasDetalleCredito(idVenta);
             }
         };
-        task.setOnSucceeded(w -> {     
+        task.setOnSucceeded(w -> {
             VentaTB ventaTB = task.getValue();
-            if(ventaTB != null){
-                    lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento()+" - "+ventaTB.getClienteTB().getInformacion());
-                    lblTelefonoCelular.setText(ventaTB.getClienteTB().getCelular());
-                    lblDireccion.setText(ventaTB.getClienteTB().getDireccion());
-                    lblEmail.setText(ventaTB.getClienteTB().getEmail());
-                    lblComprobante.setText(ventaTB.getSerie()+" - "+ventaTB.getNumeracion());
-                    lblEstado.setText(ventaTB.getEstadoName());
-                    lblTotal.setText(Tools.roundingValue(ventaTB.getTotal(), 2));
+            if (ventaTB != null) {
+                lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + " - " + ventaTB.getClienteTB().getInformacion());
+                lblTelefonoCelular.setText(ventaTB.getClienteTB().getCelular());
+                lblDireccion.setText(ventaTB.getClienteTB().getDireccion());
+                lblEmail.setText(ventaTB.getClienteTB().getEmail());
+                lblComprobante.setText(ventaTB.getSerie() + " - " + ventaTB.getNumeracion());
+                lblEstado.setText(ventaTB.getEstadoName());
+                lblEstado.setTextFill(ventaTB.getEstado()==3?Color.web("#F1948A"):ventaTB.getEstado()==2?Color.web("#F9E434"):Color.web("#c6e2cc"));
+                lblTotal.setText(Tools.roundingValue(ventaTB.getTotal(), 2));
             }
             lblLoad.setVisible(false);
         });
@@ -98,7 +100,6 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
     }
-
 
     public void setInitCuentasPorCobrar(AnchorPane vbPrincipal, AnchorPane vbContent, FxCuentasPorCobrarController cuentasPorCobrarController) {
         this.vbPrincipal = vbPrincipal;

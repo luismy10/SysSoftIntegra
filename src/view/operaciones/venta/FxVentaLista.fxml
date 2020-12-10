@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.operaciones.venta.FxVentaListaController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaListaController">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -54,7 +53,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtBuscar" onKeyPressed="#onKeyPressedBuscar" onKeyReleased="#onKeyReleasedBuscar" prefHeight="30.0" promptText="Buscar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                              <TextField fx:id="txtBuscar" onKeyPressed="#onKeyPressedBuscar" onKeyReleased="#onKeyReleasedBuscar" prefHeight="30.0" prefWidth="220.0" promptText="Buscar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.5em;">
@@ -68,7 +67,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <DatePicker fx:id="txtFechaInicio" editable="false" onAction="#onActionFechaInicio" prefHeight="30.0" prefWidth="200.0" />
+                              <DatePicker fx:id="txtFechaInicio" editable="false" onAction="#onActionFechaInicio" prefHeight="30.0" prefWidth="220.0" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.5em;">
@@ -82,12 +81,12 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <DatePicker fx:id="txtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="200.0" />
+                              <DatePicker fx:id="txtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="220.0" />
                            </children>
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" style="-fx-spacing: 0.5em;">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onkeyPressedRecargar" prefHeight="30.0" styleClass="buttonLight" text="Recargar">
+                              <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onkeyPressedRecargar" prefHeight="30.0" styleClass="buttonLight" text="Recargar">
                                  <graphic>
                                     <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -105,11 +104,11 @@
                         <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="320.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
-                              <TableColumn fx:id="tcFecha" prefWidth="140.0" style="-fx-alignment: center;" text="Fecha de Venta" />
-                              <TableColumn fx:id="tcComprobante" prefWidth="150.0" style="-fx-alignment: center-left;" text="Comprobante" />
-                              <TableColumn fx:id="tcCliente" prefWidth="186.0" style="-fx-alignment: center-left;" text="Cliente" />
-                              <TableColumn fx:id="tcEstado" prefWidth="130.0" style="-fx-alignment: center-left;" text="Estado" />
-                              <TableColumn fx:id="tcTotal" prefWidth="110.0" style="-fx-alignment: center-left;" text="Total" />
+                              <TableColumn fx:id="tcFecha" prefWidth="145.0" style="-fx-alignment: center;" text="Fecha de Venta" />
+                              <TableColumn fx:id="tcComprobante" prefWidth="145.0" style="-fx-alignment: center-left;" text="Comprobante" />
+                              <TableColumn fx:id="tcCliente" prefWidth="230.0" style="-fx-alignment: center-left;" text="Cliente" />
+                              <TableColumn fx:id="tcEstado" prefWidth="170.0" style="-fx-alignment: center-left;" text="Estado" />
+                              <TableColumn fx:id="tcTotal" prefWidth="150.0" style="-fx-alignment: center-left;" text="Total" />
                            </columns>
                         </TableView>
                      </children>

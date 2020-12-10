@@ -1338,7 +1338,7 @@ public class VentaADO {
                 ventaTB.setTotal(resultSet.getDouble("Total"));
 
                 Label label = new Label(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "PENDIENTE" : "PAGADO");
-                label.getStyleClass().add(ventaTB.getEstado() == 1 ? "label-asignacion" : ventaTB.getEstado() == 2 ? "label-medio" : ventaTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
+                label.getStyleClass().add(ventaTB.getEstado() == 2 ? "label-medio" : ventaTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
                 ventaTB.setEstadoLabel(label);
 
                 Button btnVisualizar = new Button();
@@ -1387,7 +1387,8 @@ public class VentaADO {
                 ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion"), resultSet.getString("Celular"), resultSet.getString("Email"), resultSet.getString("Direccion")));
                 ventaTB.setSerie(resultSet.getString("Serie"));
                 ventaTB.setNumeracion(resultSet.getString("Numeracion"));
-                ventaTB.setEstadoName(resultSet.getString("Estado"));
+                ventaTB.setEstado(resultSet.getInt("Estado"));
+                ventaTB.setEstadoName(resultSet.getString("EstadoName"));
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                 ventaTB.setTotal(resultSet.getDouble("Total"));
 
