@@ -62,7 +62,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <DatePicker fx:id="dtFecha" editable="false" prefHeight="30.0" prefWidth="280.0" />
+                  <DatePicker fx:id="dtFecha" disable="true" editable="false" prefHeight="30.0" prefWidth="280.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
@@ -113,7 +113,7 @@
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Observaciòn:" textFill="#020203" />
                      </children>
                   </VBox>
-                  <TextField fx:id="txtObservacion" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedMonto" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
+                  <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" text="N/D" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">

@@ -30,6 +30,7 @@ import model.BancoADO;
 import model.BancoTB;
 import model.CajaADO;
 import model.CajaTB;
+import model.ModeloObject;
 import model.VentaADO;
 import model.VentaCreditoTB;
 
@@ -77,6 +78,9 @@ public class FxVentaAbonoProcesoController implements Initializable {
         } else if (Double.parseDouble(txtMonto.getText().trim()) <= 0) {
             Tools.AlertMessageWarning(window, "Abonar", "El abono no puede ser menor a 0.");
             txtMonto.requestFocus();
+        } else if (Tools.isText(txtObservacion.getText())) {
+            Tools.AlertMessageWarning(window, "Abonar", "Ingrese alguna observación del abono.");
+            txtObservacion.requestFocus();
         } else {
             if (rbBancos.isSelected()) {
                 if (cbCuenta.getSelectionModel().getSelectedIndex() < 0) {
@@ -94,12 +98,15 @@ public class FxVentaAbonoProcesoController implements Initializable {
                         ventaCreditoTB.setEstado((short) 1);
                         ventaCreditoTB.setIdUsuario(Session.USER_ID);
                         ventaCreditoTB.setObservacion(txtObservacion.getText().trim());
-                        String result = VentaADO.RegistrarAbono(ventaCreditoTB);
-                        if (result.equalsIgnoreCase("insert")) {                            
-                            openModalImpresion();
+                        ModeloObject result = VentaADO.RegistrarAbono(ventaCreditoTB);
+                        if (result.getState().equalsIgnoreCase("inserted")) {
+                            Tools.Dispose(window);
+                            cuentasPorCobrarVisualizarController.openModalImpresion(idVenta, result.getIdResult());
                             cuentasPorCobrarVisualizarController.loadData(idVenta);
+                        } else if (result.getState().equalsIgnoreCase("error")) {
+                            Tools.AlertMessageWarning(window, "Abonar", result.getMessage());
                         } else {
-                            Tools.AlertMessageError(window, "Abonar", result);
+                            Tools.AlertMessageError(window, "Abonar", "No se completo el proceso por problemas de conexión.");
                             btnAceptar.setDisable(false);
                         }
                     }
@@ -138,24 +145,6 @@ public class FxVentaAbonoProcesoController implements Initializable {
 //                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", result, false);
 //                }
 
-        }
-    }
-
-    private void openModalImpresion() {
-        try {            
-            URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxOpcionesImprimirController controller = fXMLLoader.getController();
-            controller.setInitOpcionesImprimirController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.show();
-        } catch (IOException ex) {
-            System.out.println("Controller banco" + ex.getLocalizedMessage());
         }
     }
 
@@ -206,7 +195,7 @@ public class FxVentaAbonoProcesoController implements Initializable {
 
     public AnchorPane getWindow() {
         return window;
-    }    
+    }
 
     public void setInitVentaAbonarController(FxCuentasPorCobrarVisualizarController cuentasPorCobrarVisualizarController) {
         this.cuentasPorCobrarVisualizarController = cuentasPorCobrarVisualizarController;

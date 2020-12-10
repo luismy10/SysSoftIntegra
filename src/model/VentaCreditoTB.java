@@ -19,6 +19,7 @@ public class VentaCreditoTB {
     private String idUsuario;
     private String observacion;
     private EmpleadoTB empleadoTB;
+    private VentaTB ventaTB;
     
     private TextField tfMonto;
     private DatePicker dpFecha;
@@ -100,6 +101,14 @@ public class VentaCreditoTB {
 
     public void setEmpleadoTB(EmpleadoTB empleadoTB) {
         this.empleadoTB = empleadoTB;
+    }
+
+    public VentaTB getVentaTB() {
+        return ventaTB;
+    }
+
+    public void setVentaTB(VentaTB ventaTB) {
+        this.ventaTB = ventaTB;
     }
 
     public TextField getTfMonto() {

@@ -1407,7 +1407,7 @@ public class VentaADO {
                     ventaCreditoTB.setObservacion(resultSet.getString("Observacion"));
                     ventaCreditoTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Apellidos"), resultSet.getString("Nombres")));
                     ventaCreditoTB.setMonto(resultSet.getDouble("Monto"));
-                    
+
                     Button btnImprimir = new Button();
                     ImageView imageViewVisualizar = new ImageView(new Image("/view/image/print.png"));
                     imageViewVisualizar.setFitWidth(24);
@@ -1437,7 +1437,8 @@ public class VentaADO {
         return ventaTB;
     }
 
-    public static String RegistrarAbono(VentaCreditoTB ventaCreditoTB) {
+    public static ModeloObject RegistrarAbono(VentaCreditoTB ventaCreditoTB) {
+        ModeloObject result = new ModeloObject();
         PreparedStatement statementAbono = null;
         CallableStatement statementCodigo = null;
         try {
@@ -1462,14 +1463,19 @@ public class VentaADO {
 
             statementAbono.executeBatch();
             DBUtil.getConnection().commit();
-            return "insert";
+            result.setId((short) 1);
+            result.setIdResult(idVentaCredito);
+            result.setMessage("Se completo correctamente el proceso.");
+            result.setState("inserted");
         } catch (SQLException ex) {
             try {
                 DBUtil.getConnection().rollback();
             } catch (SQLException e) {
 
             }
-            return ex.getLocalizedMessage();
+            result.setId((short) 2);
+            result.setMessage(ex.getLocalizedMessage());
+            result.setState("error");
         } finally {
             try {
                 if (statementAbono != null) {
@@ -1483,6 +1489,60 @@ public class VentaADO {
 
             }
         }
+        return result;
+    }
+
+    public static VentaCreditoTB ImprimirVetanCreditoById(String idVenta, String idVentaCredito) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        VentaCreditoTB ventaCreditoTB = null;
+        VentaTB ventaTB = null;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareCall("select IdVentaCredito,Monto,FechaPago,HoraPago,Observacion from VentaCreditoTB where IdVentaCredito = ?");
+            preparedStatement.setString(1, idVentaCredito);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ventaCreditoTB = new VentaCreditoTB();
+                ventaCreditoTB.setIdVentaCredito(resultSet.getString("IdVentaCredito"));
+                ventaCreditoTB.setMonto(resultSet.getDouble("Monto"));
+                ventaCreditoTB.setFechaPago(resultSet.getDate("FechaPago").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                ventaCreditoTB.setHoraPago(resultSet.getTime("HoraPago").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                ventaCreditoTB.setObservacion(resultSet.getString("Observacion"));
+
+                preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Venta_ById(?)}");
+                preparedStatement.setString(1, idVenta);
+                resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    ventaTB = new VentaTB();
+                    ventaTB.setIdVenta(idVenta);
+                    ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion"), resultSet.getString("Celular"), resultSet.getString("Email"), resultSet.getString("Direccion")));
+                    ventaTB.setSerie(resultSet.getString("Serie"));
+                    ventaTB.setNumeracion(resultSet.getString("Numeracion"));
+                    ventaTB.setEstado(resultSet.getInt("Estado"));
+                    ventaTB.setEstadoName(resultSet.getString("EstadoName"));
+                    ventaTB.setMonedaName(resultSet.getString("Simbolo"));
+                    ventaTB.setTotal(resultSet.getDouble("Total"));
+                }
+                ventaCreditoTB.setVentaTB(ventaTB);
+            }
+
+        } catch (SQLException ex) {
+            Tools.println("ImprimirVetanCreditoById: " + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return ventaCreditoTB;
     }
 
 }

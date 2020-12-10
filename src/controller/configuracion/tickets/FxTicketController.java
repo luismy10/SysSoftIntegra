@@ -527,7 +527,7 @@ public class FxTicketController implements Initializable {
         } catch (IOException ex) {
             Tools.AlertMessageError(vbWindow, "Ticket", "No se pudo guardar la hoja con problemas de formato.");
             System.out.println(ex.getLocalizedMessage());
-            System.out.println(ex); 
+            System.out.println(ex);
         }
     }
 
@@ -1497,7 +1497,8 @@ public class FxTicketController implements Initializable {
                         Session.TICKET_CUENTA_POR_COBRAR_ID = idTicket;
                         Session.TICKET_CUENTA_POR_COBRAR_RUTA = ruta;
                     } else if (tipoTicket == 10) {
-
+                        Session.TICKET_CUENTA_POR_PAGAR_ID = idTicket;
+                        Session.TICKET_CUENTA_POR_PAGAR_RUTA = ruta;
                     }
                 } else {
                     Tools.AlertMessageError(vbWindow, "Ticket", result);
@@ -1532,7 +1533,8 @@ public class FxTicketController implements Initializable {
                         Session.TICKET_CUENTA_POR_COBRAR_ID = 0;
                         Session.TICKET_CUENTA_POR_COBRAR_RUTA = "";
                     } else if (tipoTicket == 10) {
-
+                        Session.TICKET_CUENTA_POR_PAGAR_ID = 0;
+                        Session.TICKET_CUENTA_POR_PAGAR_RUTA = "";
                     }
                     clearPane();
                 } else if (result.equalsIgnoreCase("predeterminated")) {

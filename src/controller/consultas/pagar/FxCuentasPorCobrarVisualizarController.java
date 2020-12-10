@@ -1,5 +1,6 @@
 package controller.consultas.pagar;
 
+import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.operaciones.compras.FxAmortizarPagosController;
 import controller.operaciones.venta.FxVentaAbonoProcesoController;
 import controller.tools.FilesRouters;
@@ -176,6 +177,27 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         }
     }
 
+    public void openModalImpresion(String idVenta,String idVentaCredito) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxOpcionesImprimirController controller = fXMLLoader.getController();
+            controller.loadDataCuentaPorCobrar(idVenta, idVentaCredito);
+            controller.setInitOpcionesImprimirController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", spWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Controller banco" + ex.getLocalizedMessage());
+        }
+    }
+    
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
         vbContent.getChildren().remove(spWindow);

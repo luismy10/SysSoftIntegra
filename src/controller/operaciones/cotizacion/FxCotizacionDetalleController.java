@@ -294,7 +294,8 @@ public class FxCotizacionDetalleController implements Initializable {
                                             cotizacionTB.getClienteTB().getInformacion(),
                                             cotizacionTB.getClienteTB().getCelular(),
                                             cotizacionTB.getClienteTB().getDireccion(),
-                                            "---");
+                                            "---",
+                                            "");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -320,7 +321,8 @@ public class FxCotizacionDetalleController implements Initializable {
                                             cotizacionTB.getClienteTB().getNumeroDocumento(),
                                             cotizacionTB.getClienteTB().getInformacion(),
                                             "---",
-                                            cotizacionTB.getClienteTB().getCelular());
+                                            cotizacionTB.getClienteTB().getCelular(),
+                                            "");
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -424,7 +426,8 @@ public class FxCotizacionDetalleController implements Initializable {
                     cotizacionTB.getClienteTB().getInformacion(),
                     cotizacionTB.getClienteTB().getCelular(),
                     cotizacionTB.getClienteTB().getDireccion(),
-                    "---");
+                    "---",
+                    "");
         }
 
         for (int m = 0; m < arrList.size(); m++) {
@@ -452,7 +455,8 @@ public class FxCotizacionDetalleController implements Initializable {
                     cotizacionTB.getClienteTB().getNumeroDocumento(),
                     cotizacionTB.getClienteTB().getInformacion(),
                     "---",
-                    cotizacionTB.getClienteTB().getCelular());
+                    cotizacionTB.getClienteTB().getCelular(),
+                    "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }

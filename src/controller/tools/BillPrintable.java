@@ -44,6 +44,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import model.ImageADO;
 import model.ImagenTB;
 import model.SuministroTB;
+import model.VentaCreditoTB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -67,47 +68,49 @@ public class BillPrintable implements Printable {
         pointWidthSizePaper = 5.10;
     }
 
-    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta) {
+    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
                 if (fieldTicket.getVariable().equalsIgnoreCase("repeempresa")) {
-                    fieldTicket.setText(Session.COMPANY_REPRESENTANTE);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_REPRESENTANTE));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("telempresa")) {
-                    fieldTicket.setText(Session.COMPANY_TELEFONO);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_TELEFONO));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("celempresa")) {
-                    fieldTicket.setText(Session.COMPANY_CELULAR);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_CELULAR));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("pagwempresa")) {
-                    fieldTicket.setText(Session.COMPANY_PAGINAWEB);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_PAGINAWEB));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("emailempresa")) {
-                    fieldTicket.setText(Session.COMPANY_EMAIL);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_EMAIL));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempresa")) {
-                    fieldTicket.setText(Session.COMPANY_DOMICILIO);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_DOMICILIO));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("rucempresa")) {
-                    fieldTicket.setText(Session.COMPANY_NUMERO_DOCUMENTO);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_NUMERO_DOCUMENTO));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("razoempresa")) {
-                    fieldTicket.setText(Session.COMPANY_RAZON_SOCIAL);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_RAZON_SOCIAL));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("nomcomempresa")) {
-                    fieldTicket.setText(Session.COMPANY_NOMBRE_COMERCIAL);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_NOMBRE_COMERCIAL));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
-                    fieldTicket.setText(Tools.getDate("dd/MM/yyyy"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getDate("dd/MM/yyyy")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
-                    fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("docventa")) {
-                    fieldTicket.setText(nombre_impresion_comprobante);
+                    fieldTicket.setText(Tools.AddText2Guines(nombre_impresion_comprobante));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numventa")) {
-                    fieldTicket.setText(numeracion_serie_comprobante);
+                    fieldTicket.setText(Tools.AddText2Guines(numeracion_serie_comprobante));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
-                    fieldTicket.setText(codigoVenta);
+                    fieldTicket.setText(Tools.AddText2Guines(codigoVenta));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numcliente")) {
-                    fieldTicket.setText(nummero_documento_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(nummero_documento_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
-                    fieldTicket.setText(informacion_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(informacion_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("celcliente")) {
-                    fieldTicket.setText(celular_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(celular_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcliente")) {
-                    fieldTicket.setText(direccion_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(direccion_cliente));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("importetotalletras")) {
+                    fieldTicket.setText(Tools.AddText2Guines(importe_total_letras));
                 }
                 lines = fieldTicket.getLines();
             }
@@ -121,22 +124,22 @@ public class BillPrintable implements Printable {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
                 if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
-                    fieldTicket.setText("" + (m + 1));
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
-                    fieldTicket.setText(arrList.get(m).getClaveAlterna());
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getClaveAlterna()));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
-                    fieldTicket.setText(arrList.get(m).getClave());
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getClave()));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
                     String nombreMarcaReplace = arrList.get(m).getNombreMarca().replaceAll("\"", "");
-                    fieldTicket.setText(nombreMarcaReplace);
+                    fieldTicket.setText(Tools.AddText2Guines(nombreMarcaReplace));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getCantidad(), 2));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getCantidad(), 2)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%");
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%"));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral() * arrList.get(m).getCantidad(), 2));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral() * arrList.get(m).getCantidad(), 2)));
                 }
                 hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
                 lines = fieldTicket.getLines();
@@ -145,35 +148,74 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente) {
+    public int hbDetalleCuentaCobrar(HBox hBox, HBox box, ObservableList<VentaCreditoTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 0) + "%"));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getObservacion()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fechadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFechaPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+
+    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente, String importe_total_letras) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
                 if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
-                    fieldTicket.setText(Tools.getDate("dd/MM/yyyy"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getDate("dd/MM/yyyy")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
-                    fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
-                    fieldTicket.setText(moneda + " " + valorVenta);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + valorVenta));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("dscttotal")) {
-                    fieldTicket.setText(moneda + " " + descuento);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + descuento));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
-                    fieldTicket.setText(moneda + " " + subTotal);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subTotal));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
-                    fieldTicket.setText(moneda + " " + total);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + total));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
-                    fieldTicket.setText(moneda + " " + efectivo);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + efectivo));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("vuelto")) {
-                    fieldTicket.setText(moneda + " " + vuelto);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + vuelto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
-                    fieldTicket.setText(codigoVenta);
+                    fieldTicket.setText(Tools.AddText2Guines(codigoVenta));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numcliente")) {
-                    fieldTicket.setText(numCliente);
+                    fieldTicket.setText(Tools.AddText2Guines(numCliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
-                    fieldTicket.setText(infoCliente);
+                    fieldTicket.setText(Tools.AddText2Guines(infoCliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("celcliente")) {
-                    fieldTicket.setText(celular_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(celular_cliente));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("importetotalletras")) {
+                    fieldTicket.setText(Tools.AddText2Guines(importe_total_letras));
                 }
                 lines = fieldTicket.getLines();
             }
@@ -310,24 +352,40 @@ public class BillPrintable implements Printable {
             //RobotoRegular"
             //"RobotoBold
 
+            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D gimage = image.createGraphics();
             Graphics2D g2d = (Graphics2D) graphics;
             double width = pageFormat.getImageableWidth();
 
             g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+            gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+
+            gimage.setColor(Color.white);
+            gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
+            gimage.setPaint(Color.black);
             g2d.setPaint(Color.black);
 
-            y = createRow(apEncabezado, g2d, width, y);
-            y = createRow(apDetalle, g2d, width, y);
-            createRow(apPie, g2d, width, y);
+            y = createRow(apEncabezado, g2d, gimage, width, y);
+            y = createRow(apDetalle, g2d, gimage, width, y);
+            createRow(apPie, g2d, gimage, width, y);
 
             graphics.dispose();
+            gimage.dispose();
+            try {
+                ImageIO.write(image, "png", new File("yourImageName.png"));
+            } catch (IOException ex) {
+                System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
+            }
             return PAGE_EXISTS;
         } else {
             return NO_SUCH_PAGE;
         }
     }
 
-    private int createRow(AnchorPane anchorPane, Graphics2D g2d, double width, int y) {
+    private int createRow(AnchorPane anchorPane, Graphics2D g2d, Graphics2D gimage, double width, int y) {
+        if (anchorPane == null) {
+            return y;
+        }
         for (int i = 0; i < anchorPane.getChildren().size(); i++) {
             HBox box = ((HBox) anchorPane.getChildren().get(i));
 
@@ -369,6 +427,7 @@ public class BillPrintable implements Printable {
                                 : (int) ((field.getColumnWidth() * pointWidthSizePaper) - layout.getAdvance());
 
                         layout.draw(g2d, xPos + x, yPos + yAux);
+                        layout.draw(gimage, xPos + x, yPos + yAux);
                         yAux += layout.getDescent() + layout.getLeading();
                     }
                     if (yMax < yAux) {
@@ -408,6 +467,7 @@ public class BillPrintable implements Printable {
                                 ? (int) (width - layout.getAdvance()) / 2
                                 : (int) (width - layout.getAdvance());
                         layout.draw(g2d, x, y);
+                        layout.draw(gimage, x, y);
                         y += layout.getDescent() + layout.getLeading();
                     }
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
@@ -416,6 +476,11 @@ public class BillPrintable implements Printable {
                         try {
                             BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(new QRCodeWriter().encode("20548033030||T001|142.14|14|2020-12-08|0|00000000|", BarcodeFormat.QR_CODE, 300, 300));
                             g2d.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+                         
+                            gimage.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
                                     : box.getAlignment() == Pos.CENTER
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
@@ -431,6 +496,11 @@ public class BillPrintable implements Printable {
                                 image = ImageIO.read(bais);
                             }
                             g2d.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+                            
+                            gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
                                     : box.getAlignment() == Pos.CENTER
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
@@ -899,7 +969,7 @@ public class BillPrintable implements Printable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false,object.get("type").toString());
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false, object.get("type").toString());
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -927,7 +997,7 @@ public class BillPrintable implements Printable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false,object.get("type").toString());
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false, object.get("type").toString());
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -956,7 +1026,7 @@ public class BillPrintable implements Printable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false,object.get("type").toString());
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false, object.get("type").toString());
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -1060,7 +1130,7 @@ public class BillPrintable implements Printable {
         return field;
     }
 
-    private ImageViewTicket addElementImageView(String path, short widthColumn, double width, double height, boolean newImage,String type) {
+    private ImageViewTicket addElementImageView(String path, short widthColumn, double width, double height, boolean newImage, String type) {
         ImageViewTicket imageView = new ImageViewTicket();
         imageView.setColumnWidth(widthColumn);
         imageView.setFitWidth(width);

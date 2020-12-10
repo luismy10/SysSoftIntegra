@@ -418,7 +418,8 @@ public class FxVentaMostrarController implements Initializable {
                                             ventaTB.getClienteTB().getInformacion(),
                                             ventaTB.getClienteTB().getCelular(),
                                             ventaTB.getClienteTB().getDireccion(),
-                                            ventaTB.getCodigo());
+                                            ventaTB.getCodigo(),
+                                            "");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -443,7 +444,8 @@ public class FxVentaMostrarController implements Initializable {
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                            ventaTB.getClienteTB().getCelular());
+                                            ventaTB.getClienteTB().getCelular(),
+                                            "");
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -551,7 +553,8 @@ public class FxVentaMostrarController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
-                    ventaTB.getCodigo());
+                    ventaTB.getCodigo(),
+                    "");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -578,7 +581,8 @@ public class FxVentaMostrarController implements Initializable {
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular());
+                    ventaTB.getClienteTB().getCelular(),
+                    "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }

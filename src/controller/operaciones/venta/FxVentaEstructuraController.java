@@ -1228,7 +1228,7 @@ public class FxVentaEstructuraController implements Initializable {
                                             ventaTB.getClienteTB().getInformacion(),
                                             ventaTB.getClienteTB().getCelular(),
                                             ventaTB.getClienteTB().getDireccion(),
-                                            ventaTB.getCodigo());
+                                            ventaTB.getCodigo(),"");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -1253,7 +1253,7 @@ public class FxVentaEstructuraController implements Initializable {
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                            ventaTB.getClienteTB().getCelular());
+                                            ventaTB.getClienteTB().getCelular(),"");
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -1361,7 +1361,7 @@ public class FxVentaEstructuraController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
-                    ventaTB.getCodigo());
+                    ventaTB.getCodigo(),"");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -1388,7 +1388,7 @@ public class FxVentaEstructuraController implements Initializable {
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular());
+                    ventaTB.getClienteTB().getCelular(),"");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, printerName, printerCut);
     }
@@ -1436,7 +1436,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
-                                    "00000000");
+                                    "00000000","");
                         }
 
                         AnchorPane hbDetalle = new AnchorPane();
@@ -1462,7 +1462,8 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
-                                    txtCelularCliente.getText().trim());
+                                    txtCelularCliente.getText().trim(),
+                                    "");
                         }
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -1500,7 +1501,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
-                                    "00000000");
+                                    "00000000","");
                         }
 
                         for (int m = 0; m < tvList.getItems().size(); m++) {
@@ -1528,7 +1529,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
-                                    txtCelularCliente.getText().trim());
+                                    txtCelularCliente.getText().trim(),"");
                         }
                         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
                     }

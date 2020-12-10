@@ -422,4 +422,8 @@ public class Tools {
         }
     }
 
+    public static String AddText2Guines(String value) {
+        return value.trim().isEmpty() ? "--" : value;
+    }
+
 }
