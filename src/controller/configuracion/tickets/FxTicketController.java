@@ -527,7 +527,7 @@ public class FxTicketController implements Initializable {
         } catch (IOException ex) {
             Tools.AlertMessageError(vbWindow, "Ticket", "No se pudo guardar la hoja con problemas de formato.");
             System.out.println(ex.getLocalizedMessage());
-            System.out.println(ex);
+            System.out.println(ex); 
         }
     }
 
