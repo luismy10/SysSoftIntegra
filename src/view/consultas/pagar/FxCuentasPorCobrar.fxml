@@ -100,7 +100,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="240.0" />
+                                          <DatePicker fx:id="dpFechaInicial" editable="false" prefHeight="30.0" prefWidth="220.0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
@@ -117,7 +117,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="240.0" />
+                                          <DatePicker fx:id="dpFechaFinal" editable="false" prefHeight="30.0" prefWidth="220.0" />
                                        </children>
                                     </HBox>
                                  </children>

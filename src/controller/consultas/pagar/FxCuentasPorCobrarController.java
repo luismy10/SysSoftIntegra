@@ -25,7 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,7 +37,9 @@ public class FxCuentasPorCobrarController implements Initializable {
     private VBox vbWindow;
     @FXML
     private Label lblLoad;
+    @FXML
     private DatePicker dpFechaInicial;
+    @FXML
     private DatePicker dpFechaFinal;
     @FXML
     private TextField txtSearch;
