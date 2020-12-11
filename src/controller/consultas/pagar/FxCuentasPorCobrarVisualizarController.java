@@ -1,11 +1,9 @@
 package controller.consultas.pagar;
 
 import controller.configuracion.impresoras.FxOpcionesImprimirController;
-import controller.operaciones.compras.FxAmortizarPagosController;
 import controller.operaciones.venta.FxVentaAbonoProcesoController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
-import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -13,7 +11,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +19,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -33,9 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.CompraCreditoTB;
 import model.VentaADO;
-import model.VentaCreditoTB;
 import model.VentaTB;
 
 public class FxCuentasPorCobrarVisualizarController implements Initializable {
@@ -104,6 +98,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
                 lblEstado.setText(ventaTB.getEstadoName());
                 lblEstado.setTextFill(ventaTB.getEstado() == 3 ? Color.web("#ee4637") : ventaTB.getEstado() == 2 ? Color.web("#eab120") : Color.web("#42bf59"));
                 lblMontoTotal.setText(Tools.roundingValue(ventaTB.getTotal(), 2));
+                lblObservacion.setText(ventaTB.getObservaciones());
                 fillVentasDetalleTable();
             }
             lblLoad.setVisible(false);
@@ -131,10 +126,10 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(ventaTB.getVentaCreditoTBs().get(i).getMonto(), 2), Pos.CENTER, null), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getObservacion(), Pos.CENTER, null), 5, (i + 1));
             gpList.add(addElementGridPane("l7" + (i + 1), "", Pos.CENTER, ventaTB.getVentaCreditoTBs().get(i).getBtnImprimir()), 6, (i + 1));
-            montoPagado = ventaTB.getVentaCreditoTBs().get(i).getMonto();            
-        }        
+            montoPagado = ventaTB.getVentaCreditoTBs().get(i).getMonto();
+        }
         lblMontoPagado.setText(Tools.roundingValue(montoPagado, 2));
-        lblDiferencia.setText(Tools.roundingValue(ventaTB.getTotal()-montoPagado, 2));
+        lblDiferencia.setText(Tools.roundingValue(ventaTB.getTotal() - montoPagado, 2));
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos, Node node) {
@@ -177,7 +172,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         }
     }
 
-    public void openModalImpresion(String idVenta,String idVentaCredito) {
+    public void openModalImpresion(String idVenta, String idVentaCredito) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
@@ -197,7 +192,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
             System.out.println("Controller banco" + ex.getLocalizedMessage());
         }
     }
-    
+
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
         vbContent.getChildren().remove(spWindow);
@@ -219,6 +214,26 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     @FXML
     private void onActionCobrar(ActionEvent event) {
         onEventAmortizar();
+    }
+
+    @FXML
+    private void onActionTicket(ActionEvent event) {
+        if (ventaTB != null) {
+            openModalImpresion(ventaTB.getIdVenta(), "");
+        } else {
+            Tools.AlertMessageWarning(spWindow, "Generar Cobro", "No se puede habrir el modal por error en carga de datos.");
+        }
+    }
+
+    @FXML
+    private void onKeyPressedTicket(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (ventaTB != null) {
+                openModalImpresion(ventaTB.getIdVenta(), "");
+            } else {
+                Tools.AlertMessageWarning(spWindow, "Generar Cobro", "No se puede habrir el modal por error en carga de datos.");
+            }
+        }
     }
 
     public void setInitCuentasPorCobrar(AnchorPane vbPrincipal, AnchorPane vbContent, FxCuentasPorCobrarController cuentasPorCobrarController) {

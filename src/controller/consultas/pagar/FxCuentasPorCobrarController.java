@@ -38,9 +38,7 @@ public class FxCuentasPorCobrarController implements Initializable {
     private VBox vbWindow;
     @FXML
     private Label lblLoad;
-    @FXML
     private DatePicker dpFechaInicial;
-    @FXML
     private DatePicker dpFechaFinal;
     @FXML
     private TextField txtSearch;
@@ -174,39 +172,19 @@ public class FxCuentasPorCobrarController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedReporte(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionReporte(ActionEvent event) {
-    }
-
-    @FXML
     private void onKeyPressedRecargar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Tools.actualDate(Tools.getDate(), dpFechaInicial);
+            Tools.actualDate(Tools.getDate(), dpFechaFinal);
+            loadTableCuentasPorCobrar();
+        }
     }
 
     @FXML
     private void onActionRecargar(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionFechaInicial(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionFechaFinal(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionSearch(ActionEvent event) {
-    }
-
-    @FXML
-    private void onKeyReleasedSeach(KeyEvent event) {
-    }
-
-    @FXML
-    private void onMouseClickList(MouseEvent event) {
+        Tools.actualDate(Tools.getDate(), dpFechaInicial);
+        Tools.actualDate(Tools.getDate(), dpFechaFinal);
+        loadTableCuentasPorCobrar();
     }
 
     public VBox getVbWindow() {

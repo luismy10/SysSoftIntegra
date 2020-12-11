@@ -30,6 +30,7 @@ import javax.print.DocPrintJob;
 import javax.print.PrintException;
 import model.VentaADO;
 import model.VentaCreditoTB;
+import model.VentaTB;
 
 public class FxOpcionesImprimirController implements Initializable {
 
@@ -113,18 +114,37 @@ public class FxOpcionesImprimirController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                VentaCreditoTB ventaCreditoTB = VentaADO.ImprimirVetanCreditoById(idVenta, idVentaCredito);
-                if (ventaCreditoTB != null && ventaCreditoTB.getVentaTB() != null) {
-                    try {
-                        if (desing.equalsIgnoreCase("withdesing")) {
-                            return printTicketWithDesingCuentaCobrar(ventaCreditoTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
-                        } else {
-                            billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
-                            return printTicketNoDesingCuentaCobrar(ventaCreditoTB, nombreImpresora, cortaPapel);
+                if (!Tools.isText(idVenta) && !Tools.isText(idVentaCredito)) {
+                    VentaCreditoTB ventaCreditoTB = VentaADO.ImprimirVetanCreditoById(idVenta, idVentaCredito);
+                    if (ventaCreditoTB != null && ventaCreditoTB.getVentaTB() != null) {
+                        try {
+                            if (desing.equalsIgnoreCase("withdesing")) {
+                                return printTicketWithDesingCuentaCobrarUnico(ventaCreditoTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
+                            } else {
+                                billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+                                return printTicketNoDesingCuentaCobrarUnico(ventaCreditoTB, nombreImpresora, cortaPapel);
+                            }
+                        } catch (PrinterException | IOException | PrintException ex) {
+                            return "Error en imprimir: " + ex.getLocalizedMessage();
                         }
-                    } catch (PrinterException | IOException | PrintException ex) {
-                        Tools.println(ex.getLocalizedMessage());
-                        return "Error en imprimir: " + ex.getLocalizedMessage();
+                    } else {
+                        return "empty";
+                    }
+                } else if (!Tools.isText(idVenta)) {
+                    VentaTB ventaTB = VentaADO.ListarVentasDetalleCredito(idVenta);
+                    if (ventaTB !=null) {
+                        try {
+                            if (desing.equalsIgnoreCase("withdesing")) {
+                                return printTicketWithDesingCuentaCobrar(ventaTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
+                            } else {
+                                billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+                                return printTicketNoDesingCuentaCobrar(ventaTB, nombreImpresora, cortaPapel);
+                            }
+                        } catch (PrinterException | IOException | PrintException ex) {
+                            return "Error en imprimir: " + ex.getLocalizedMessage();
+                        }
+                    } else {
+                        return "empty";
                     }
                 } else {
                     return "empty";
@@ -155,7 +175,7 @@ public class FxOpcionesImprimirController implements Initializable {
             } else {
                 Tools.showAlertNotification("/view/image/error_large.png",
                         "Envío de impresión",
-                        "Se producto un problema por problemas de la impresora\n" + result,
+                        "Se producto un problema de la impresora\n" + result,
                         Duration.seconds(10),
                         Pos.CENTER);
             }
@@ -182,7 +202,7 @@ public class FxOpcionesImprimirController implements Initializable {
 
     }
 
-    private String printTicketWithDesingCuentaCobrar(VentaCreditoTB ventaCreditoTB, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
+    private String printTicketWithDesingCuentaCobrarUnico(VentaCreditoTB ventaCreditoTB, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
         billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
 
         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
@@ -194,8 +214,8 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaCreditoTB.getVentaTB().getClienteTB().getInformacion(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getCelular(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getDireccion(),
-                    "--",
-                    "--");
+                    "",
+                    "");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -222,9 +242,9 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     ventaCreditoTB.getVentaTB().getClienteTB().getNumeroDocumento(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getInformacion(),
-                    "--",
+                    "",
                     ventaCreditoTB.getVentaTB().getClienteTB().getCelular(),
-                    "--");
+                    "");
         }
 
         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -248,7 +268,7 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
-    private String printTicketNoDesingCuentaCobrar(VentaCreditoTB ventaCreditoTB, String nombreImpresora, boolean cortaPapel) {
+    private String printTicketNoDesingCuentaCobrarUnico(VentaCreditoTB ventaCreditoTB, String nombreImpresora, boolean cortaPapel) {
         ArrayList<HBox> object = new ArrayList<>();
         int rows = 0;
         int lines = 0;
@@ -263,8 +283,8 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaCreditoTB.getVentaTB().getClienteTB().getInformacion(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getCelular(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getDireccion(),
-                    "--",
-                    "--");
+                    "",
+                    "");
         }
 
         ObservableList<VentaCreditoTB> arrList = FXCollections.observableArrayList(ventaCreditoTB);
@@ -293,14 +313,131 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     ventaCreditoTB.getVentaTB().getClienteTB().getNumeroDocumento(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getInformacion(),
-                    "--",
+                    "",
                     ventaCreditoTB.getVentaTB().getClienteTB().getCelular(),
-                    "--");
+                    "");
         }
-        
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
     }
+    
+    private String printTicketWithDesingCuentaCobrar(VentaTB ventaTB, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
+        billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
 
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            billPrintable.hbEncebezado(box,
+                    "ABONO",
+                    "VC",
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getDireccion(),
+                    "",
+                    "");
+        }
+
+        AnchorPane hbDetalle = new AnchorPane();
+        ObservableList<VentaCreditoTB> arrList = FXCollections.observableArrayList(ventaTB.getVentaCreditoTBs());
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                billPrintable.hbDetalleCuentaCobrar(hBox, box, arrList, m);
+                hbDetalle.getChildren().add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    "",
+                    ventaTB.getClienteTB().getCelular(),
+                    "");
+        }
+
+        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+        DocPrintJob job = billPrintable.findPrintService(nombreImpresora, PrinterJob.lookupPrintServices()).createPrintJob();
+
+        if (job != null) {
+            PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setPrintService(job.getPrintService());
+            pj.setJobName(nombreImpresora);
+            Book book = new Book();
+            book.append(billPrintable, billPrintable.getPageFormat(pj));
+            pj.setPageable(book);
+            pj.print();
+            if (cortaPapel) {
+                billPrintable.printCortarPapel(nombreImpresora);
+            }
+            return "completed";
+        } else {
+            return "error_name";
+        }
+    }
+
+    private String printTicketNoDesingCuentaCobrar(VentaTB ventaTB, String nombreImpresora, boolean cortaPapel) {
+        ArrayList<HBox> object = new ArrayList<>();
+        int rows = 0;
+        int lines = 0;
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            object.add((HBox) hbEncabezado.getChildren().get(i));
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbEncebezado(box,
+                    "ABONO",
+                    "VC",
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getDireccion(),
+                    "",
+                    "");
+        }
+
+        ObservableList<VentaCreditoTB> arrList = FXCollections.observableArrayList(ventaTB.getVentaCreditoTBs());
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                lines += billPrintable.hbDetalleCuentaCobrar(hBox, box, arrList, m);
+                object.add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            object.add((HBox) hbPie.getChildren().get(i));
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    "",
+                    ventaTB.getClienteTB().getCelular(),
+                    "");
+        }
+        return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
+    }
+    
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
