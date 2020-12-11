@@ -307,7 +307,7 @@ public class Tools {
     }
 
     public static boolean isText(String cadena) {
-        return cadena.trim() == null || cadena.trim().isEmpty();
+        return cadena == null || cadena.trim().isEmpty();
     }
 
     public static String getDate() {

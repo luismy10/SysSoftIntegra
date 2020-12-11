@@ -49,11 +49,20 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
+                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Reporte">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reports.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Ticket">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/ticket.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -91,7 +100,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker fx:id="dpFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" />
+                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
@@ -108,7 +117,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker fx:id="dpFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
+                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="240.0" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -127,14 +136,14 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField fx:id="txtSearch" onAction="#onActionSearch" onKeyReleased="#onKeyReleasedSeach" prefHeight="30.0" promptText="Buscar...." styleClass="text-field-normal" />
+                                    <TextField fx:id="txtSearch" prefHeight="30.0" promptText="Buscar...." styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                            </children>
                         </VBox>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickList" prefHeight="310.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvList" fixedCellSize="-0.0" prefHeight="310.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcFechaRegistro" prefWidth="244.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha de Registro" />
