@@ -204,7 +204,7 @@ public class FxComprasDetalleController implements Initializable {
                     if (!listComprasCredito.isEmpty()) {
                         lblMetodoPago.setText("Método de pago al crédito");
                         for (int i = 0; i < listComprasCredito.size(); i++) {
-                            vbCondicion.getChildren().add(adddElementCondicion("Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Vence el " + listComprasCredito.get(i).getFechaRegistro() + " por " + compraTB.getMonedaNombre() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2) + " Estado " + (listComprasCredito.get(i).isEstado() ? "Pagado" : "Pendiente") + " " + (listComprasCredito.get(i).isEstado() ? "el " + listComprasCredito.get(i).getFechaPago() : "")));
+                            vbCondicion.getChildren().add(adddElementCondicion("Nro." + ((i + 1) < 10 ? "00" + (i + 1) : ((i + 1) >= 10 && (i + 1) <= 99 ? "0" + (i + 1) : (i + 1))) + " Pago el " + listComprasCredito.get(i).getFechaPago()+ " por " + compraTB.getMonedaNombre() + " " + Tools.roundingValue(listComprasCredito.get(i).getMonto(), 2)));
                         }
                     } else {
                         lblMetodoPago.setText("Método de pago al contado");

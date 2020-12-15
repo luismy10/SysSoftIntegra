@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -36,6 +37,7 @@ public class CompraTB {
     private SuministroTB suministroTB;
     private MonedaTB monedaTB;
     
+    private ArrayList<CompraCreditoTB> compraCreditoTBs;
     private HBox hbOpciones;
 
     public CompraTB() {
@@ -259,6 +261,15 @@ public class CompraTB {
         this.usuario = usuario;
     }
 
+    public ArrayList<CompraCreditoTB> getCompraCreditoTBs() {
+        return compraCreditoTBs;
+    }
+
+    public void setCompraCreditoTBs(ArrayList<CompraCreditoTB> compraCreditoTBs) {
+        this.compraCreditoTBs = compraCreditoTBs;
+    }
+
+  
     public HBox getHbOpciones() {
         return hbOpciones;
     }

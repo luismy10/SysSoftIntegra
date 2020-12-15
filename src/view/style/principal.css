@@ -477,7 +477,7 @@
 }
 .text-field-normal:focused{
     -fx-border-color:  #007bff;
-     -fx-effect: dropshadow(gaussian, BACKGROUND_FOCUSED, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 }
 .text-field-normal:disabled{
     -fx-opacity: 1;
@@ -519,7 +519,7 @@
 .text-area:focused{
     -fx-border-width:1;
     -fx-border-color: #00aff0;
-    -fx-effect: dropshadow(gaussian, #007bff, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 /*******************************************************************************
@@ -570,7 +570,7 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, BORDER_HOVER, 15, 0, 0, 5);
+   -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .buttonLight:disabled, .buttonLight:default:disabled{
@@ -638,7 +638,7 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, BORDER_HOVER, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .buttonLightDefault:disabled, .buttonLightDefault:default:disabled{
@@ -708,7 +708,7 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, BORDER_HOVER, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .buttonLightWarning:disabled, .buttonLightWarning:default:disabled{
@@ -778,7 +778,7 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, BORDER_HOVER, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .buttonLightSuccess:disabled, .buttonLightSuccess:default:disabled{
@@ -847,7 +847,7 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-   -fx-effect: dropshadow(gaussian, BORDER_HOVER, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .buttonLightError:disabled, .buttonLightError:default:disabled{
@@ -917,7 +917,7 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, BORDER_HOVER, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 }
 .buttonLightCancel:disabled, .buttonLightCancel:default:disabled{
     -fx-opacity: 0.4;
@@ -1016,7 +1016,7 @@
     -fx-border-color: transparent,  #007bff;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, #007bff, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
     
 }
 .buttonBorder:disabled, .buttonBorder:default:disabled{
@@ -1566,7 +1566,7 @@
 }
 .date-picker:focused{
     -fx-border-color: #007bff;
-    -fx-effect: dropshadow(gaussian, #007bff, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .date-picker .text-field{
@@ -1680,7 +1680,7 @@
 .combo-box:focused {
     -fx-border-width:1;
     -fx-border-color:  #007bff;
-     -fx-effect: dropshadow(gaussian, #007bff, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .combo-box .cell:selected{
@@ -1786,7 +1786,7 @@
 .spinner:contains-focus {
     -fx-border-width:1;
     -fx-border-color:  #007bff;
-     -fx-effect: dropshadow(gaussian, #007bff, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 }
 .spinner:disabled {
     -fx-opacity: -fx-disabled-opacity;
@@ -1954,7 +1954,7 @@
 /* focused */
 .radio-button:focused > .radio{ 
     -fx-border-color: #007bff;
-     -fx-effect: dropshadow(gaussian, #007bff, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 }
 
 /* disabled */
@@ -2066,7 +2066,7 @@
        - second border is control border */
     -fx-border-color: #00aff0;
     -fx-border-width: 1;
-     -fx-effect: dropshadow(gaussian, #007bff, 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
     /*noinspection CssInvalidFunction*/
     /*-fx-border-style: segments(1, 2), solid;*
     -fx-border-insets: -3, 0;*/

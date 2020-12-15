@@ -33,9 +33,11 @@ public class TicketADO {
                         result = "duplicate";
                     } else {
 
-                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET ruta = ? WHERE idTicket = ?");
-                        statementTicket.setString(1, ticketTB.getRuta());
-                        statementTicket.setInt(2, ticketTB.getId());
+                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET nombre = ?,tipo=?,ruta = ? WHERE idTicket = ?");
+                        statementTicket.setString(1, ticketTB.getNombreTicket());
+                        statementTicket.setInt(2, ticketTB.getTipo());
+                        statementTicket.setString(3, ticketTB.getRuta());
+                        statementTicket.setInt(4, ticketTB.getId());
                         statementTicket.addBatch();
 
                         statementImagenBorrar = DBUtil.getConnection().prepareStatement("DELETE FROM ImagenTB WHERE IdRelacionado = ?");

@@ -1,21 +1,13 @@
 package controller.operaciones.venta;
 
-import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.consultas.pagar.FxCuentasPorCobrarVisualizarController;
-import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -25,12 +17,13 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import model.BancoADO;
+import model.BancoHistorialTB;
 import model.BancoTB;
 import model.CajaADO;
 import model.CajaTB;
 import model.ModeloObject;
+import model.MovimientoCajaTB;
 import model.VentaADO;
 import model.VentaCreditoTB;
 
@@ -60,11 +53,11 @@ public class FxVentaAbonoProcesoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
+        Tools.actualDate(Tools.getDate(), dtFecha);
         BancoADO.GetBancoComboBox().forEach(e -> cbCuenta.getItems().add(new BancoTB(e.getIdBanco(), e.getNombreCuenta())));
         ToggleGroup toggleGroup = new ToggleGroup();
         rbBancos.setToggleGroup(toggleGroup);
         rbCaja.setToggleGroup(toggleGroup);
-        Tools.actualDate(Tools.getDate(), dtFecha);
     }
 
     public void setInitLoadVentaAbono(String idVenta) {
@@ -98,7 +91,16 @@ public class FxVentaAbonoProcesoController implements Initializable {
                         ventaCreditoTB.setEstado((short) 1);
                         ventaCreditoTB.setIdUsuario(Session.USER_ID);
                         ventaCreditoTB.setObservacion(txtObservacion.getText().trim());
-                        ModeloObject result = VentaADO.RegistrarAbono(ventaCreditoTB);
+
+                        BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
+                        bancoHistorialTB.setIdBanco(cbCuenta.getSelectionModel().getSelectedItem().getIdBanco());
+                        bancoHistorialTB.setDescripcion("INGRESO DE DINERO POR CUENTAS POR COBRAR".toUpperCase());
+                        bancoHistorialTB.setFecha(Tools.getDate());
+                        bancoHistorialTB.setHora(Tools.getHour());
+                        bancoHistorialTB.setEntrada(Double.parseDouble(txtMonto.getText()));
+                        bancoHistorialTB.setSalida(0);
+
+                        ModeloObject result = VentaADO.RegistrarAbono(ventaCreditoTB, bancoHistorialTB, null);
                         if (result.getState().equalsIgnoreCase("inserted")) {
                             Tools.Dispose(window);
                             cuentasPorCobrarVisualizarController.openModalImpresion(idVenta, result.getIdResult());
@@ -114,7 +116,41 @@ public class FxVentaAbonoProcesoController implements Initializable {
             } else {
                 short value = Tools.AlertMessageConfirmation(window, "Abonor", "¿Está seguro de continuar?");
                 if (value == 1) {
+                    btnAceptar.setDisable(true);
+                    CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                    if (cajaTB.getId() == 2) {
+                        VentaCreditoTB ventaCreditoTB = new VentaCreditoTB();
+                        ventaCreditoTB.setIdVenta(idVenta);
+                        ventaCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
+                        ventaCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
+                        ventaCreditoTB.setHoraPago(Tools.getHour());
+                        ventaCreditoTB.setEstado((short) 1);
+                        ventaCreditoTB.setIdUsuario(Session.USER_ID);
+                        ventaCreditoTB.setObservacion(txtObservacion.getText().trim());
 
+                        MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
+                        movimientoCajaTB.setIdCaja(cajaTB.getIdCaja());
+                        movimientoCajaTB.setFechaMovimiento(Tools.getDate());
+                        movimientoCajaTB.setHoraMovimiento(Tools.getHour());
+                        movimientoCajaTB.setComentario("INGRESO DE DINERO DE LA CUENTA POR COBRAR");
+                        movimientoCajaTB.setTipoMovimiento((short)2);
+                        movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));
+
+                        ModeloObject result = VentaADO.RegistrarAbono(ventaCreditoTB, null, movimientoCajaTB);
+                        if (result.getState().equalsIgnoreCase("inserted")) {
+                            Tools.Dispose(window);
+                            cuentasPorCobrarVisualizarController.openModalImpresion(idVenta, result.getIdResult());
+                            cuentasPorCobrarVisualizarController.loadData(idVenta);
+                        } else if (result.getState().equalsIgnoreCase("error")) {
+                            Tools.AlertMessageWarning(window, "Abonar", result.getMessage());
+                        } else {
+                            Tools.AlertMessageError(window, "Abonar", "No se completo el proceso por problemas de conexión.");
+                            btnAceptar.setDisable(false);
+                        }
+                    } else {
+                        Tools.AlertMessageWarning(window, "Abonar", "No se tiene una caja apertura para realizar el cobro.");
+                        btnAceptar.setDisable(false);
+                    }
                 }
             }
 //            if ((pagado + Double.parseDouble(txtValorCuota.getText())) > total) {

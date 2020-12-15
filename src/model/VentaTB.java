@@ -44,6 +44,7 @@ public class VentaTB {
     private ArrayList<SuministroTB> suministroTBs;
     private HBox hbOpciones;
     private ArrayList<VentaCreditoTB> ventaCreditoTBs;
+    private String clienteName;
 
     public VentaTB() {
 
@@ -357,6 +358,14 @@ public class VentaTB {
 
     public void setVentaCreditoTBs(ArrayList<VentaCreditoTB> ventaCreditoTBs) {
         this.ventaCreditoTBs = ventaCreditoTBs;
+    }
+
+    public String getClienteName() {
+        return clienteName;
+    }
+
+    public void setClienteName(String clienteName) {
+        this.clienteName = clienteName;
     }
 
    

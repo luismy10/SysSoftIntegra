@@ -1,6 +1,8 @@
 package controller.configuracion.impresoras;
 
 import controller.consultas.pagar.FxCuentasPorCobrarVisualizarController;
+import controller.consultas.pagar.FxCuentasPorPagarController;
+import controller.consultas.pagar.FxCuentasPorPagarVisualizarController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.Session;
@@ -39,6 +41,8 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private FxCuentasPorCobrarVisualizarController cuentasPorCobrarVisualizarController;
 
+    private FxCuentasPorPagarVisualizarController cuentasPorPagarVisualizarController;
+
     private ConvertMonedaCadena monedaCadena;
 
     private BillPrintable billPrintable;
@@ -53,6 +57,10 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private String idVentaCredito;
 
+    private String idCompra;
+
+    private String idCompraCredito;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         billPrintable = new BillPrintable();
@@ -65,6 +73,11 @@ public class FxOpcionesImprimirController implements Initializable {
     public void loadDataCuentaPorCobrar(String idVenta, String idVentaCredito) {
         this.idVenta = idVenta;
         this.idVentaCredito = idVentaCredito;
+    }
+
+    public void loadDataCuentaPorPagar(String idCompra, String idCompraCredito) {
+        this.idCompra = idCompra;
+        this.idCompraCredito = idCompraCredito;
     }
 
     private void onEventAceptar() {
@@ -101,6 +114,34 @@ public class FxOpcionesImprimirController implements Initializable {
                 Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
                 Tools.Dispose(apWindow);
             }
+        } else if (cuentasPorPagarVisualizarController != null) {
+            if (!Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR && Tools.isText(Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR) && Tools.isText(Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR)) {
+                Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+                Tools.Dispose(apWindow);
+                return;
+            }
+
+            if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("ticket")) {
+                if (Session.TICKET_CUENTA_POR_COBRAR_ID == 0 && Session.TICKET_CUENTA_POR_COBRAR_RUTA.equalsIgnoreCase("")) {
+                    Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                    Tools.Dispose(apWindow);
+                } else {
+                    Tools.Dispose(apWindow);
+                    executeProcessPrinter(
+                            Session.DESING_IMPRESORA_CUENTA_POR_PAGAR,
+                            Session.TICKET_CUENTA_POR_PAGAR_ID,
+                            Session.TICKET_CUENTA_POR_PAGAR_RUTA,
+                            Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR,
+                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR
+                    );
+                }
+            } else if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("a4")) {
+
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+                Tools.Dispose(apWindow);
+            }
+
         }
     }
 
@@ -132,7 +173,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     }
                 } else if (!Tools.isText(idVenta)) {
                     VentaTB ventaTB = VentaADO.ListarVentasDetalleCredito(idVenta);
-                    if (ventaTB !=null) {
+                    if (ventaTB != null) {
                         try {
                             if (desing.equalsIgnoreCase("withdesing")) {
                                 return printTicketWithDesingCuentaCobrar(ventaTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
@@ -319,7 +360,7 @@ public class FxOpcionesImprimirController implements Initializable {
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
     }
-    
+
     private String printTicketWithDesingCuentaCobrar(VentaTB ventaTB, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
         billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
 
@@ -437,7 +478,7 @@ public class FxOpcionesImprimirController implements Initializable {
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
     }
-    
+
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -474,8 +515,12 @@ public class FxOpcionesImprimirController implements Initializable {
         onEventTicket();
     }
 
-    public void setInitOpcionesImprimirController(FxCuentasPorCobrarVisualizarController cuentasPorCobrarVisualizarController) {
+    public void setInitOpcionesImprimirCuentasPorCobrar(FxCuentasPorCobrarVisualizarController cuentasPorCobrarVisualizarController) {
         this.cuentasPorCobrarVisualizarController = cuentasPorCobrarVisualizarController;
+    }
+
+    public void setInitOpcionesImprimirCuentasPorPagar(FxCuentasPorPagarVisualizarController cuentasPorPagarVisualizarController) {
+        this.cuentasPorPagarVisualizarController = cuentasPorPagarVisualizarController;
     }
 
 }

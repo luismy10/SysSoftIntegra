@@ -9,18 +9,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -30,7 +25,6 @@ import model.BancoADO;
 import model.BancoHistorialTB;
 import model.BancoTB;
 import model.CompraADO;
-import model.CompraCreditoTB;
 import model.CompraTB;
 import model.DetalleCompraTB;
 import model.LoteTB;
@@ -58,17 +52,7 @@ public class FxComprasProcesoController implements Initializable {
     @FXML
     private ComboBox<BancoTB> cbCuentas;
     @FXML
-    private TableView<CompraCreditoTB> tvListaCredito;
-    @FXML
-    private TableColumn<CompraCreditoTB, TextField> tcCredito;
-    @FXML
-    private TableColumn<CompraCreditoTB, DatePicker> tcFecha;
-    @FXML
-    private TableColumn<CompraCreditoTB, Button> tcOpciones;
-    @FXML
-    private Label lblMontoTotal;
-    @FXML
-    private Label lblMontoPagar;
+    private DatePicker txtFechaVencimiento;
 
     private FxComprasController comprasController;
 
@@ -87,11 +71,6 @@ public class FxComprasProcesoController implements Initializable {
         rbContado.setToggleGroup(group);
         rbCredito.setToggleGroup(group);
         rbBorrado.setToggleGroup(group);
-
-        tcCredito.setCellValueFactory(new PropertyValueFactory<>("txtCredito"));
-        tcFecha.setCellValueFactory(new PropertyValueFactory<>("dpFecha"));
-        tcOpciones.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
-
         setInitializeCaja();
     }
 
@@ -107,7 +86,6 @@ public class FxComprasProcesoController implements Initializable {
         this.tvList = tvList;
         this.loteTBs = loteTBs;
         lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(compraTB.getTotal(), 2));
-        lblMontoTotal.setText(Tools.roundingValue(compraTB.getTotal(), 2));
         txtEfectivo.setText(Tools.roundingValue(compraTB.getTotal(), 2));
     }
 
@@ -142,48 +120,34 @@ public class FxComprasProcesoController implements Initializable {
                     if (comprasController != null) {
                         comprasController.clearComponents();
                     } else if (comprasEditarController != null) {
-                        
+
                     }
                 } else {
                     Tools.AlertMessageError(apWindow, "Compra", result);
                 }
             }
         } else if (rbCredito.isSelected()) {
-            int validateMonto = 0;
-            int validateFecha = 0;
-            for (CompraCreditoTB creditoTB : tvListaCredito.getItems()) {
-                validateMonto += !Tools.isNumeric(creditoTB.getTxtCredito().getText()) ? 1 : 0;
-                validateFecha += creditoTB.getDpFecha().getValue() == null ? 1 : 0;
-            }
-
-            if (validateMonto > 0) {
-                Tools.AlertMessageWarning(apWindow, "Compra", "Hay montos sin ingresar en la tabla.");
-                tvListaCredito.requestFocus();
-            } else if (validateFecha > 0) {
-                Tools.AlertMessageWarning(apWindow, "Compra", "Hay fechas sin ingresar en la tabla.");
-                tvListaCredito.requestFocus();
-            } else if (Double.parseDouble(lblMontoTotal.getText()) != Double.parseDouble(lblMontoPagar.getText())) {
-                Tools.AlertMessageWarning(apWindow, "Compra", "El monto total y el monto a pagar no son iguales.");
-                tvListaCredito.requestFocus();
+            if (txtFechaVencimiento.getValue() == null) {
+                Tools.AlertMessageWarning(apWindow, "Compra", "Ingrese la fecha vencimiento.");
+                txtFechaVencimiento.requestFocus();
             } else {
                 compraTB.setTipo(2);
                 compraTB.setEstado(2);
-                compraTB.setFechaVencimiento(tvListaCredito.getItems().get(tvListaCredito.getItems().size() - 1).getFechaRegistro());
+                compraTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
                 compraTB.setHoraVencimiento(compraTB.getHoraCompra());
 
-                String result = CompraADO.Compra_Credito(compraTB, tvList, loteTBs, tvListaCredito);
+                String result = CompraADO.Compra_Credito(compraTB, tvList, loteTBs);
                 if (result.equalsIgnoreCase("register")) {
                     Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
                     Tools.Dispose(apWindow);
                     if (comprasController != null) {
                         comprasController.clearComponents();
                     } else if (comprasEditarController != null) {
-                        
+
                     }
                 } else {
                     Tools.AlertMessageError(apWindow, "Compra", result);
                 }
-
             }
         } else if (rbBorrado.isSelected()) {
             compraTB.setTipo(3);
@@ -198,81 +162,12 @@ public class FxComprasProcesoController implements Initializable {
                 if (comprasController != null) {
                     comprasController.clearComponents();
                 } else if (comprasEditarController != null) {
-                    
+
                 }
             } else {
                 Tools.AlertMessageError(apWindow, "Compra", result);
             }
         }
-    }
-
-    private void eventAgregarCredito() {
-        CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
-        compraCreditoTB.setHoraRegistro(Tools.getHour());
-        compraCreditoTB.setEstado(false);
-
-        TextField txtCredito = new TextField("0.00");
-        txtCredito.setPrefWidth(220);
-        txtCredito.setPrefHeight(30);
-        txtCredito.getStyleClass().add("text-field-normal");
-        txtCredito.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            double sumaMontos = 0;
-            if (!newVal) {
-                if (!Tools.isNumeric(txtCredito.getText())) {
-                    txtCredito.setText("0.00");
-                    compraCreditoTB.setMonto(Double.parseDouble(txtCredito.getText()));
-                }
-                sumaMontos = tvListaCredito.getItems().stream().map(
-                        (cctb) -> Double.parseDouble(cctb.getTxtCredito().getText()))
-                        .reduce(sumaMontos, (accumulator, _item) -> accumulator + _item);
-                lblMontoPagar.setText(Tools.roundingValue(sumaMontos, 2));
-            }
-        });
-        
-        txtCredito.setOnKeyReleased(event -> {
-            if (Tools.isNumeric(txtCredito.getText())) {
-                compraCreditoTB.setMonto(Double.parseDouble(txtCredito.getText()));
-            }
-        });
-        txtCredito.setOnKeyTyped(event -> {
-            char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                event.consume();
-            }
-            if (c == '.' && txtCredito.getText().contains(".")) {
-                event.consume();
-            }
-        });
-        compraCreditoTB.setTxtCredito(txtCredito);
-
-        DatePicker dpFecha = new DatePicker();
-        dpFecha.setPrefWidth(220);
-        dpFecha.setPrefHeight(30);
-        dpFecha.setEditable(false);
-        dpFecha.setOnAction(event -> {
-            if (dpFecha.getValue() != null) {
-                compraCreditoTB.setFechaRegistro(dpFecha.getValue().toString());
-            }
-        });
-        compraCreditoTB.setDpFecha(dpFecha);
-
-        Button btnRemover = new Button();
-        btnRemover.getStyleClass().add("buttonBorder");
-        ImageView view = new ImageView(new Image("/view/image/remove-black.png"));
-        view.setFitWidth(24);
-        view.setFitHeight(24);
-        btnRemover.setGraphic(view);
-        btnRemover.setOnAction(event -> {
-            tvListaCredito.getItems().remove(compraCreditoTB);
-        });
-        btnRemover.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                tvListaCredito.getItems().remove(compraCreditoTB);
-            }
-        });
-        compraCreditoTB.setBtnRemove(btnRemover);
-
-        tvListaCredito.getItems().add(compraCreditoTB);
     }
 
     @FXML
@@ -332,17 +227,6 @@ public class FxComprasProcesoController implements Initializable {
         vbPagoBorrado.setDisable(false);
     }
 
-    @FXML
-    private void onKeyPressedCredito(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            eventAgregarCredito();
-        }
-    }
-
-    @FXML
-    private void oActionAgregarCredito(ActionEvent event) {
-        eventAgregarCredito();
-    }
 
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;

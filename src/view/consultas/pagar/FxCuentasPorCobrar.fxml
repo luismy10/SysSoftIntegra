@@ -40,7 +40,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLight" text="Visualizar">
+                  <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLightDefault" text="Visualizar">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -49,20 +49,11 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Reporte">
+                  <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reports.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Ticket">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/ticket.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -100,7 +91,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="240.0" />
+                                          <DatePicker fx:id="dpFechaInicial" editable="false" onAction="#onActionFechaInicio" prefHeight="30.0" prefWidth="220.0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
@@ -117,7 +108,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker editable="false" prefHeight="30.0" prefWidth="240.0" />
+                                          <DatePicker fx:id="dpFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="220.0" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -136,7 +127,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <TextField fx:id="txtSearch" prefHeight="30.0" promptText="Buscar...." styleClass="text-field-normal" />
+                                    <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="220.0" promptText="Buscar...." styleClass="text-field-normal" />
                                  </children>
                               </VBox>
                            </children>
@@ -164,7 +155,7 @@
                <children>
                   <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
+                        <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -176,7 +167,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label styleClass="labelBorder" text="0" textFill="#020203">
+                        <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
@@ -186,12 +177,12 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="labelBorder" text="0" textFill="#020203">
+                        <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>
                         </Label>
-                        <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
+                        <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                            <font>
                               <Font name="Calibri" size="14.0" />
                            </font>

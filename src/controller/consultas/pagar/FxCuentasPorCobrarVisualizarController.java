@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -30,6 +31,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.VentaADO;
+import model.VentaCreditoTB;
 import model.VentaTB;
 
 public class FxCuentasPorCobrarVisualizarController implements Initializable {
@@ -38,8 +40,6 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     private ScrollPane spWindow;
     @FXML
     private Label lblLoad;
-    @FXML
-    private Label lblCliente;
     @FXML
     private Label lblComprobante;
     @FXML
@@ -53,11 +53,13 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     @FXML
     private GridPane gpList;
     @FXML
-    private Label lblMontoTotal;
-    @FXML
     private Label lblMontoPagado;
     @FXML
     private Label lblDiferencia;
+    @FXML
+    private Label lblCliente;
+    @FXML
+    private Label lblMontoTotal;
     @FXML
     private Label lblObservacion;
 
@@ -67,7 +69,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
 
     private FxCuentasPorCobrarController cuentasPorCobrarController;
 
-    private VentaTB ventaTB;
+    private VentaTB ventaTB;    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -99,6 +101,16 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
                 lblEstado.setTextFill(ventaTB.getEstado() == 3 ? Color.web("#ee4637") : ventaTB.getEstado() == 2 ? Color.web("#eab120") : Color.web("#42bf59"));
                 lblMontoTotal.setText(Tools.roundingValue(ventaTB.getTotal(), 2));
                 lblObservacion.setText(ventaTB.getObservaciones());
+                for (VentaCreditoTB vc : ventaTB.getVentaCreditoTBs()) {
+                    vc.getBtnImprimir().setOnAction(event-> 
+                            openModalImpresion(idVenta, vc.getIdVentaCredito())
+                    );
+                    vc.getBtnImprimir().setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            openModalImpresion(idVenta, vc.getIdVentaCredito());
+                        }
+                    });
+                }
                 fillVentasDetalleTable();
             }
             lblLoad.setVisible(false);
@@ -181,7 +193,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
             //Controlller here
             FxOpcionesImprimirController controller = fXMLLoader.getController();
             controller.loadDataCuentaPorCobrar(idVenta, idVentaCredito);
-            controller.setInitOpcionesImprimirController(this);
+            controller.setInitOpcionesImprimirCuentasPorCobrar(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", spWindow.getScene().getWindow());
             stage.setResizable(false);
@@ -241,5 +253,8 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         this.vbContent = vbContent;
         this.cuentasPorCobrarController = cuentasPorCobrarController;
     }
+
+
+
 
 }

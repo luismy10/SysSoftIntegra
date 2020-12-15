@@ -5,14 +5,15 @@ import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -22,7 +23,8 @@ import model.BancoTB;
 import model.CompraADO;
 import model.CompraCreditoTB;
 import model.ModeloObject;
-import model.TransaccionTB;
+import model.VentaADO;
+import model.VentaCreditoTB;
 
 public class FxAmortizarPagosController implements Initializable {
 
@@ -38,92 +40,106 @@ public class FxAmortizarPagosController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Button btnCancelar;
+    @FXML
+    private RadioButton rbBancos;
+    @FXML
+    private RadioButton rbCaja;
+    @FXML
+    private TextField txtObservacion;
 
     private FxCuentasPorPagarVisualizarController cuentasPorPagarVisualizarController;
 
-    private ObservableList<CompraCreditoTB> tvList;
-
     private String idCompra;
-
-    private String comprobante;
-
-    private double montoPagar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
         Tools.actualDate(Tools.getDate(), dtFecha);
-        cbCuenta.getItems().add(new BancoTB("0", "Seleccionar..."));
         BancoADO.GetBancoComboBox().forEach(e -> cbCuenta.getItems().add(new BancoTB(e.getIdBanco(), e.getNombreCuenta())));
-        cbCuenta.getSelectionModel().select(0);
+        ToggleGroup toggleGroup = new ToggleGroup();
+        rbBancos.setToggleGroup(toggleGroup);
+        rbCaja.setToggleGroup(toggleGroup);
     }
 
-    public void setInitValues(String idCompra, String comprobante, ObservableList<CompraCreditoTB> tvList) {
+    public void setInitValues(String idCompra) {
         this.idCompra = idCompra;
-        this.comprobante = comprobante;
-        this.tvList = tvList;
-        tvList.forEach((cctb) -> montoPagar += cctb.getCbSeleccion().isSelected() && !cctb.getCbSeleccion().isDisable() ? cctb.getMonto() : 0);
-        txtMonto.setText(Tools.roundingValue(montoPagar, 2));
     }
 
     private void eventGuardar() {
-        if (dtFecha.getValue() == null) {
-            Tools.AlertMessageWarning(apWindow, "Generar Pago", "Ingrese la fecha de abono");
-            dtFecha.requestFocus();
-        } else if (cbCuenta.getSelectionModel().getSelectedIndex() <= 0) {
-            Tools.AlertMessageWarning(apWindow, "Generar Pago", "Seleccione el banco o caja");
-            cbCuenta.requestFocus();
+        if (!Tools.isNumeric(txtMonto.getText().trim())) {
+            Tools.AlertMessageWarning(apWindow, "Abonar", "Ingrese el abono.");
+            txtMonto.requestFocus();
+        } else if (Double.parseDouble(txtMonto.getText().trim()) <= 0) {
+            Tools.AlertMessageWarning(apWindow, "Abonar", "El abono no puede ser menor a 0.");
+            txtMonto.requestFocus();
+        } else if (Tools.isText(txtObservacion.getText())) {
+            Tools.AlertMessageWarning(apWindow, "Abonar", "Ingrese alguna observación del abono.");
+            txtObservacion.requestFocus();
         } else {
-            short value = Tools.AlertMessageConfirmation(apWindow, "Generar Pago", "¿Está seguro de continuar?");
-            if (value == 1) {
-                btnGuardar.setDisable(true);
-                btnCancelar.setDisable(true);
-                for (int i = 0; i < tvList.size(); i++) {
-                    if (tvList.get(i).getCbSeleccion().isSelected() && !tvList.get(i).getCbSeleccion().isDisable()) {
-                        tvList.get(i).setFechaPago(Tools.getDatePicker(dtFecha));
-                        tvList.get(i).setHoraPago(Tools.getHour());
-                        tvList.get(i).setEstado(true);
+            if (rbBancos.isSelected()) {
+                if (cbCuenta.getSelectionModel().getSelectedIndex() < 0) {
+                    Tools.AlertMessageWarning(apWindow, "Abonar", "Seleccione la cuenta.");
+                    cbCuenta.requestFocus();
+                } else {
+                    short value = Tools.AlertMessageConfirmation(apWindow, "Abonor", "¿Está seguro de continuar?");
+                    if (value == 1) {
+                        btnGuardar.setDisable(true);
+                        CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
+                        compraCreditoTB.setIdCompra(idCompra);
+                        compraCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
+                        compraCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
+                        compraCreditoTB.setHoraPago(Tools.getHour());
+                        compraCreditoTB.setEstado(true);
+                        compraCreditoTB.setIdEmpleado(Session.USER_ID);
+                        compraCreditoTB.setObservacion(txtObservacion.getText().trim());
+
+                        BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
+                        bancoHistorialTB.setIdBanco(cbCuenta.getSelectionModel().getSelectedItem().getIdBanco());
+                        bancoHistorialTB.setDescripcion("SALIDA DE DINERO POR CUENTAS POR PAGAR".toUpperCase());
+                        bancoHistorialTB.setFecha(Tools.getDate());
+                        bancoHistorialTB.setHora(Tools.getHour());
+                        bancoHistorialTB.setEntrada(0);
+                        bancoHistorialTB.setSalida(Double.parseDouble(txtMonto.getText()));
+
+                        ModeloObject result = CompraADO.Registrar_Amortizacion(compraCreditoTB, bancoHistorialTB, null);
+                        if (result.getState().equalsIgnoreCase("inserted")) {
+                            Tools.Dispose(apWindow);
+                            cuentasPorPagarVisualizarController.openModalImpresion(idCompra, result.getIdResult());
+                            cuentasPorPagarVisualizarController.loadTableCompraCredito(idCompra);
+                        } else if (result.getState().equalsIgnoreCase("error")) {
+                            Tools.AlertMessageWarning(apWindow, "Abonar", result.getMessage());
+                            btnGuardar.setDisable(false);
+                        } else {
+                            Tools.AlertMessageError(apWindow, "Abonar", "No se completo el proceso por problemas de conexión.");
+                            btnGuardar.setDisable(false);
+                        }
                     }
                 }
-
-                BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
-                bancoHistorialTB.setIdBanco(cbCuenta.getSelectionModel().getSelectedItem().getIdBanco());
-                bancoHistorialTB.setDescripcion("Salida de dinero por pago a proveedor".toUpperCase());
-                bancoHistorialTB.setFecha(Tools.getDate());
-                bancoHistorialTB.setHora(Tools.getHour());
-                bancoHistorialTB.setEntrada(0);
-                bancoHistorialTB.setSalida(montoPagar);
-
-                /*
-                1=ingreso
-                2=salida
-                 */
-                TransaccionTB transaccionTB = new TransaccionTB();
-                transaccionTB.setFecha(Tools.getDate());
-                transaccionTB.setHora(Tools.getHour());
-                transaccionTB.setDescripcion("SALIDA DE DINERO POR PAGO DEL COMPROBANTE " + comprobante.toUpperCase());
-                transaccionTB.setTipoTransaccion((short) 2);
-                transaccionTB.setMonto(montoPagar);
-                transaccionTB.setUsuario(Session.USER_ID);
-
-                ModeloObject result = CompraADO.Registrar_Amortizacion(idCompra, tvList, bancoHistorialTB, transaccionTB);
-                if (result.getState().equalsIgnoreCase("updated")) {
-                    Tools.AlertMessageInformation(apWindow, "Generar Pago", "Se registro correctamente el pago.");
-                    Tools.Dispose(apWindow);
-                    cuentasPorPagarVisualizarController.validarEstadoCompra();
-                    cuentasPorPagarVisualizarController.loadTableCompraCredito(idCompra);
-                    cuentasPorPagarVisualizarController.openWindowReport(result.getMessage());
-                } else if (result.getState().equalsIgnoreCase("pagado")) {
-                    Tools.AlertMessageWarning(apWindow, "Generar Pago", "La cuota seleccionada ya está cancelada.");
-                    Tools.Dispose(apWindow);
-                } else if (result.getState().equalsIgnoreCase("error")) {
-                    Tools.AlertMessageError(apWindow, "Generar Pago", result.getMessage());
-                    btnGuardar.setDisable(false);
-                    btnCancelar.setDisable(false);
-                }
+            } else {
 
             }
         }
+    }
+
+    @FXML
+    private void onKeyTypedMonto(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+        if (c == '.' && txtMonto.getText().contains(".")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onActionBancos(ActionEvent event) {
+        cbCuenta.setDisable(false);
+    }
+
+    @FXML
+    private void onActionCaja(ActionEvent event) {
+        cbCuenta.setDisable(true);
     }
 
     @FXML

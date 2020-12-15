@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import static model.DBUtil.getConnection;
 
 public class VentaADO {
 
@@ -1314,26 +1315,33 @@ public class VentaADO {
         return arrayList;
     }
 
-    public static ObservableList<VentaTB> ListarVentasCredito() {
+    public static ArrayList<Object> ListarVentasCredito(short opcion, String buscar, String fechaInicial, String fechaFinal, int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        ObservableList<VentaTB> arrayList = FXCollections.observableArrayList();
+        ArrayList<Object> objects = new ArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Listar_Ventas_Credito()}");
-
+            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Listar_Ventas_Credito(?,?,?,?,?,?)}");
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, buscar);
+            preparedStatement.setString(3, fechaInicial);
+            preparedStatement.setString(4, fechaFinal);
+            preparedStatement.setInt(5, posicionPagina);
+            preparedStatement.setInt(6, filasPorPagina);
             resultSet = preparedStatement.executeQuery();
-
+            ObservableList<VentaTB> arrayList = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 VentaTB ventaTB = new VentaTB();
-                ventaTB.setId(resultSet.getRow());
+                ventaTB.setId(resultSet.getRow() + posicionPagina);
                 ventaTB.setIdVenta(resultSet.getString("IdVenta"));
                 ventaTB.setSerie(resultSet.getString("Serie"));
                 ventaTB.setNumeracion(resultSet.getString("Numeracion"));
                 ventaTB.setFechaVenta(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 ventaTB.setHoraVenta(resultSet.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion")));
+                ventaTB.setClienteName(resultSet.getString("Informacion"));
                 ventaTB.setEstado(resultSet.getInt("Estado"));
+                ventaTB.setEstadoName(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "PENDIENTE" : "PAGADO");
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                 ventaTB.setTotal(resultSet.getDouble("Total"));
 
@@ -1355,6 +1363,21 @@ public class VentaADO {
 
                 arrayList.add(ventaTB);
             }
+
+            objects.add(arrayList);
+
+            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Listar_Ventas_Credito_Count(?,?,?,?)}");
+            preparedStatement.setShort(1, opcion);
+            preparedStatement.setString(2, buscar);
+            preparedStatement.setString(3, fechaInicial);
+            preparedStatement.setString(4, fechaFinal);
+            resultSet = preparedStatement.executeQuery();
+            Integer integer = 0;
+            if (resultSet.next()) {
+                integer = resultSet.getInt("Total");
+            }
+            objects.add(integer);
+
         } catch (SQLException ex) {
             System.out.println("ListarVentasCredito:" + ex.getLocalizedMessage());
         } finally {
@@ -1370,7 +1393,7 @@ public class VentaADO {
 
             }
         }
-        return arrayList;
+        return objects;
     }
 
     public static VentaTB ListarVentasDetalleCredito(String idVenta) {
@@ -1437,9 +1460,12 @@ public class VentaADO {
         return ventaTB;
     }
 
-    public static ModeloObject RegistrarAbono(VentaCreditoTB ventaCreditoTB) {
+    public static ModeloObject RegistrarAbono(VentaCreditoTB ventaCreditoTB, BancoHistorialTB bancoHistorialTB, MovimientoCajaTB movimientoCajaTB) {
         ModeloObject result = new ModeloObject();
         PreparedStatement statementAbono = null;
+        PreparedStatement preparedBanco = null;
+        PreparedStatement preparedBancoHistorial = null;
+        PreparedStatement movimiento_caja = null;
         CallableStatement statementCodigo = null;
         try {
             DBUtil.dbConnect();
@@ -1461,7 +1487,38 @@ public class VentaADO {
             statementAbono.setString(8, ventaCreditoTB.getObservacion());
             statementAbono.addBatch();
 
+            preparedBanco = getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial + ? WHERE IdBanco = ?");
+            preparedBancoHistorial = getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
+            if (bancoHistorialTB != null) {
+                preparedBanco.setDouble(1, bancoHistorialTB.getEntrada());
+                preparedBanco.setString(2, bancoHistorialTB.getIdBanco());
+                preparedBanco.addBatch();
+
+                preparedBancoHistorial.setString(1, bancoHistorialTB.getIdBanco());
+                preparedBancoHistorial.setString(2, "");
+                preparedBancoHistorial.setString(3, bancoHistorialTB.getDescripcion());
+                preparedBancoHistorial.setString(4, bancoHistorialTB.getFecha());
+                preparedBancoHistorial.setString(5, bancoHistorialTB.getHora());
+                preparedBancoHistorial.setDouble(6, bancoHistorialTB.getEntrada());
+                preparedBancoHistorial.setDouble(7, bancoHistorialTB.getSalida());
+                preparedBancoHistorial.addBatch();
+            }
+
+            movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto)VALUES(?,?,?,?,?,?)");
+            if (movimientoCajaTB != null) {
+                movimiento_caja.setString(1, movimientoCajaTB.getIdCaja());
+                movimiento_caja.setString(2, movimientoCajaTB.getFechaMovimiento());
+                movimiento_caja.setString(3, movimientoCajaTB.getHoraMovimiento());
+                movimiento_caja.setString(4, movimientoCajaTB.getComentario());
+                movimiento_caja.setShort(5, movimientoCajaTB.getTipoMovimiento());
+                movimiento_caja.setDouble(6, movimientoCajaTB.getMonto());
+                movimiento_caja.addBatch();
+            }
+
             statementAbono.executeBatch();
+            preparedBanco.executeBatch();
+            preparedBancoHistorial.executeBatch();
+            movimiento_caja.executeBatch();
             DBUtil.getConnection().commit();
             result.setId((short) 1);
             result.setIdResult(idVentaCredito);
@@ -1480,6 +1537,15 @@ public class VentaADO {
             try {
                 if (statementAbono != null) {
                     statementAbono.close();
+                }
+                if (preparedBanco != null) {
+                    preparedBanco.close();
+                }
+                if (preparedBancoHistorial != null) {
+                    preparedBancoHistorial.close();
+                }
+                if (movimiento_caja != null) {
+                    movimiento_caja.close();
                 }
                 if (statementCodigo != null) {
                     statementCodigo.close();

@@ -126,12 +126,12 @@ public class FxCuentasPorPagarController implements Initializable {
             observableList.forEach(f -> {
                 Button btnVisualizar = (Button) f.getHbOpciones().getChildren().get(0);
                 btnVisualizar.setOnAction(event -> {
-                    onEventVisualizar(f.getIdCompra(), f.getTotal());
+                    onEventVisualizar(f.getIdCompra());
 
                 });
                 btnVisualizar.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.ENTER) {
-                        onEventVisualizar(f.getIdCompra(), f.getTotal());
+                        onEventVisualizar(f.getIdCompra());
                     }
                 });
             });
@@ -154,13 +154,13 @@ public class FxCuentasPorPagarController implements Initializable {
         }
     }
 
-    private void onEventVisualizar(String idCompra, double total) {
+    private void onEventVisualizar(String idCompra) {
         try {
             FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_CUENTAS_POR_PAGAR_VISUALIZAR));
             ScrollPane node = fXMLLoader.load();
             //Controlller here
             FxCuentasPorPagarVisualizarController controller = fXMLLoader.getController();
-            controller.loadData(idCompra, total);
+            controller.loadTableCompraCredito(idCompra);
             controller.setInitCuentasPorPagar(vbPrincipal, vbContent, this);
             //
             vbContent.getChildren().clear();
@@ -176,7 +176,6 @@ public class FxCuentasPorPagarController implements Initializable {
 
     private void onEventReporte() {
         try {
-
             if (tvList.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Reporte Cuentas por Pagar", "No hay páginas para mostrar en el reporte.");
                 return;
@@ -189,7 +188,6 @@ public class FxCuentasPorPagarController implements Initializable {
             }
             
             InputStream dir = getClass().getResourceAsStream("/report/CuentasPorPagar.jasper");
-
            
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
@@ -209,7 +207,6 @@ public class FxCuentasPorPagarController implements Initializable {
             stage.setResizable(true);
             stage.show();
             stage.requestFocus();
-
         } catch (HeadlessException | JRException | IOException ex) {
             Tools.AlertMessageError(vbWindow, "Reporte de Inventario", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
@@ -292,7 +289,7 @@ public class FxCuentasPorPagarController implements Initializable {
     private void onKeyPressedVisualizar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getTotal());
+                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra());
             } else {
                 Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
             }
@@ -302,7 +299,7 @@ public class FxCuentasPorPagarController implements Initializable {
     @FXML
     private void onActionVisualizar(ActionEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getTotal());
+            onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra());
         } else {
             Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
         }
@@ -336,7 +333,7 @@ public class FxCuentasPorPagarController implements Initializable {
     private void onMouseClickList(MouseEvent event) {
         if (event.getClickCount() == 2) {
             if (!tvList.getItems().isEmpty()) {
-                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getTotal());
+                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra());
             }
         }
     }
