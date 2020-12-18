@@ -112,7 +112,7 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox fx:id="vbViewCredito" alignment="CENTER_RIGHT" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0.6666666666666666em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbViewCredito" alignment="CENTER" style="-fx-spacing: 0.6666666666666666em; -fx-padding: 0.6666666666666666em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                              <children>

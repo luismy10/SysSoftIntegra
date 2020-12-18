@@ -276,7 +276,6 @@ public class FxVentaDetalleController implements Initializable {
         }
     }
 
-
     private void calcularTotales() {
         if (arrList != null) {
 
@@ -542,6 +541,7 @@ public class FxVentaDetalleController implements Initializable {
 
                         if (Session.DESING_IMPRESORA_VENTA.equalsIgnoreCase("withdesing")) {
                             billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                            ObjectGlobal.QR_PERU_DATA = "|" + Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(ventaTB.getTotal(), 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|";
 
                             for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
@@ -553,6 +553,17 @@ public class FxVentaDetalleController implements Initializable {
                                         ventaTB.getClienteTB().getCelular(),
                                         ventaTB.getClienteTB().getDireccion(),
                                         ventaTB.getCodigo(),
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
                                         "");
                             }
 
@@ -577,7 +588,7 @@ public class FxVentaDetalleController implements Initializable {
                                         Tools.roundingValue(efectivo, 2),
                                         Tools.roundingValue(vuelto, 2),
                                         ventaTB.getClienteTB().getNumeroDocumento(),
-                                        ventaTB.getClienteTB().getInformacion(), 
+                                        ventaTB.getClienteTB().getInformacion(),
                                         ventaTB.getCodigo(),
                                         ventaTB.getClienteTB().getCelular(),
                                         "");
@@ -682,6 +693,17 @@ public class FxVentaDetalleController implements Initializable {
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
                     ventaTB.getCodigo(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     "");
         }
 
@@ -708,7 +730,7 @@ public class FxVentaDetalleController implements Initializable {
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
-                    ventaTB.getClienteTB().getInformacion(), 
+                    ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getCodigo(),
                     ventaTB.getClienteTB().getCelular(),
                     "");

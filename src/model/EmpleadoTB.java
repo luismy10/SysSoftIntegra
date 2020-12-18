@@ -74,6 +74,16 @@ public class EmpleadoTB implements Serializable {
         this.nombres = nombres;
     }
 
+    public EmpleadoTB(String numeroDocumento, String apellidos, String nombres, String celular, String direccion) {
+        this.numeroDocumento = numeroDocumento;
+        this.apellidos = apellidos;
+        this.nombres = nombres;
+        this.celular = celular;
+        this.direccion = direccion;
+    }
+    
+    
+
     public EmpleadoTB(String idEmpleado, int tipoDocumento, String apellidos, String nombres, int puesto, int estado) {
         this.idEmpleado = idEmpleado;
         this.tipoDocumento = tipoDocumento;

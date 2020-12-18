@@ -199,7 +199,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             FxOpcionesImprimirController controller = fXMLLoader.getController();
              controller.loadDataCuentaPorPagar(idCompra, idCompraCredito);
             controller.setInitOpcionesImprimirCuentasPorPagar(this);
-            //controller.setInitOpcionesImprimirController(this);
+            //
             Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();

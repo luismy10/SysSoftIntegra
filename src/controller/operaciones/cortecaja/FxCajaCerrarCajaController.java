@@ -1,35 +1,24 @@
 package controller.operaciones.cortecaja;
 
-import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.BancoADO;
 import model.BancoHistorialTB;
 import model.BancoTB;
 import model.CajaADO;
-import model.DBUtil;
 
 public class FxCajaCerrarCajaController implements Initializable {
 
@@ -45,6 +34,8 @@ public class FxCajaCerrarCajaController implements Initializable {
     private ComboBox<BancoTB> cbCuentasEfectivo;
     @FXML
     private ComboBox<BancoTB> cbCuentasTarjeta;
+
+    private FxCajaController cajaController;
 
     private String idActual;
 
@@ -69,7 +60,7 @@ public class FxCajaCerrarCajaController implements Initializable {
         cbCuentasTarjeta.getItems().addAll(BancoADO.GetBancoComboBoxForma((short) 2));
     }
 
-    private void onEventAceptar() throws IOException {
+    private void onEventAceptar()  {
         if (!Tools.isNumeric(txtEfectivo.getText())) {
             Tools.AlertMessageWarning(window, "Corte de caja", "Ingrese el monto actual de caja.");
             txtEfectivo.requestFocus();
@@ -108,41 +99,9 @@ public class FxCajaCerrarCajaController implements Initializable {
                 }
 
                 String result = CajaADO.CerrarAperturaCaja(idActual, bancoHistorialEfectivo, bancoHistorialTarjeta, Double.parseDouble(txtEfectivo.getText()), calculado);
-                if (result.equalsIgnoreCase("completed")) {
-                    Tools.AlertMessageInformation(window, "Corte de caja", "Se cerro correctamente la caja.");
-                    Tools.Dispose(vbPrincipal);
-
-                    URL urllogin = getClass().getResource(FilesRouters.FX_LOGIN);
-                    FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
-                    Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
-                    Scene scene = new Scene(parent);
-                    Stage primaryStage = new Stage();
-                    primaryStage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
-                    primaryStage.setScene(scene);
-                    primaryStage.initStyle(StageStyle.DECORATED);
-                    primaryStage.setTitle(FilesRouters.TITLE_APP);
-                    primaryStage.centerOnScreen();
-                    primaryStage.setMaximized(true);
-                    primaryStage.setOnCloseRequest(c -> {
-                        short optionI = Tools.AlertMessageConfirmation(parent, "SysSoft Integra", "¿Está seguro de cerrar la aplicación?");
-                        if (optionI == 1) {
-                            try {
-                                if (DBUtil.getConnection() != null && !DBUtil.getConnection().isClosed()) {
-                                    DBUtil.getConnection().close();
-                                }
-                                System.exit(0);
-                                Platform.exit();
-                            } catch (SQLException e) {
-                                System.exit(0);
-                                Platform.exit();
-                            }
-                        } else {
-                            c.consume();
-                        }
-                    });
-                    primaryStage.show();
-                    primaryStage.requestFocus();
-
+                if (result.equalsIgnoreCase("completed")) {     
+                    Tools.Dispose(window);
+                    cajaController.openModalImpresion(idActual);
                 } else {
                     Tools.AlertMessageWarning(window, "Corte de caja", result);
                 }
@@ -174,7 +133,8 @@ public class FxCajaCerrarCajaController implements Initializable {
         }
     }
 
-    void setInitCerrarCajaController(AnchorPane vbPrincipal) {
+    public void setInitCerrarCajaController(FxCajaController cajaController, AnchorPane vbPrincipal) {
+        this.cajaController = cajaController;
         this.vbPrincipal = vbPrincipal;
     }
 

@@ -71,6 +71,17 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Dirección del cliente", "DIRECCION DEL CLIENTE", "direcliente"));
             listCabecera.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo"));
             listCabecera.add(new TicketTB("Importe Total en Letras", "SON CERO 0/0 SOLES", "importetotalletras"));
+            listCabecera.add(new TicketTB("Fecha de inicio de la Operación", "dd/MM/yyyy", "finiciooperacion"));
+            listCabecera.add(new TicketTB("Hora de inicio de la Operación", "HH:mm:ss a", "hiniciooperacion"));
+            listCabecera.add(new TicketTB("Fecha de termino de la Operación", "dd/MM/yyyy", "fterminooperacion"));
+            listCabecera.add(new TicketTB("Hora de termino de la Operación", "HH:mm:ss a", "hterminooperacion"));
+            listCabecera.add(new TicketTB("Contado para corte de caja", "0.00", "contado"));
+            listCabecera.add(new TicketTB("Calculado para corte de caja", "0.00", "calculado"));
+            listCabecera.add(new TicketTB("Diferencia para corte de caja", "0.00", "diferencia"));
+            listCabecera.add(new TicketTB("Numero documento Empleado", "NUMERO DE DOCUMENTO EMPLEADO", "numempleado"));
+            listCabecera.add(new TicketTB("Información del Empleado", "INFORMACION DEL EMPLEADO", "infoempleado"));
+            listCabecera.add(new TicketTB("Celular del Empleado", "CELULAR DEL EMPLEADO", "celempleado"));
+            listCabecera.add(new TicketTB("Dirección del Empleado", "DIRECCION DEL EMPLEADO", "direcempleado"));
             lvLista.getItems().addAll(listCabecera);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
             listDetalleCuerpo.add(new TicketTB("Numeración de las filas", "1", "numfilas"));
@@ -84,6 +95,7 @@ public class FxTicketVariableController implements Initializable {
             listDetalleCuerpo.add(new TicketTB("Monto total de la operación", "0000.00", "montooperacion"));
             listDetalleCuerpo.add(new TicketTB("Fecha de la operación", "FECHA DE LA OPERACION", "fechadetalle"));
             listDetalleCuerpo.add(new TicketTB("Hora de la operación", "HORA DE LA OPERACION", "horadetalle"));
+            listDetalleCuerpo.add(new TicketTB("Tipo de Operación", "TIPO DE OPERACION", "tipomovimiento"));
             listDetalleCuerpo.add(new TicketTB("Descripción del la operación", "INFORACION REFERENTE A LA OPERACION", "observacion"));
             lvLista.getItems().addAll(listDetalleCuerpo);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("cp")) {

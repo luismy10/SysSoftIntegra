@@ -349,7 +349,7 @@ public class CajaADO {
                     cajaTB.setContado(resultSet.getDouble("Contado"));
                     cajaTB.setCalculado(resultSet.getDouble("Calculado"));
                     cajaTB.setDiferencia(resultSet.getDouble("Diferencia"));
-                    cajaTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("Apellidos"), resultSet.getString("Nombres")));
+                    cajaTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("NumeroDocumento"),resultSet.getString("Apellidos"), resultSet.getString("Nombres"),resultSet.getString("Celular"),resultSet.getString("Direccion")));
                     arrayTotales = new ArrayList();
 
                     statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto as MontoBase FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
@@ -425,9 +425,11 @@ public class CajaADO {
             objects.add(cajaTB);
             objects.add(arrayTotales);
             objects.add(arratyLista);
-
+            
+            return objects;
         } catch (SQLException ex) {
             System.out.println("Error en cajaADO: " + ex.getLocalizedMessage());
+            return new ArrayList<>();
         } finally {
             try {
                 if (statementValidar != null) {
@@ -444,7 +446,7 @@ public class CajaADO {
 
             }
         }
-        return objects;
+        
     }
 
     public static String CerrarAperturaCaja(String idCaja, BancoHistorialTB bancoHistorialEfectivo, BancoHistorialTB bancoHistorialTarjeta, double contado, double calculado) {

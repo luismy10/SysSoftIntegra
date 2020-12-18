@@ -451,7 +451,18 @@ public class FxValorInventarioController implements Initializable {
                                     "PUBLICO GENERAL",
                                     "SIN CELULAR",
                                     "SIN DIRECCION",
-                                    "SIN CODIGO","");
+                                    "SIN CODIGO", "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         AnchorPane hbDetalle = new AnchorPane();
@@ -475,7 +486,7 @@ public class FxValorInventarioController implements Initializable {
                                     Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
                                     "SIN DOCUMENTO",
-                                    "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR","");
+                                    "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR", "");
                         }
 
                         billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie);

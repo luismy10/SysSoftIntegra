@@ -1,5 +1,6 @@
 package controller.operaciones.cortecaja;
 
+import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -78,19 +79,7 @@ public class FxCajaConsultasController implements Initializable {
 
     private ArrayList<MovimientoCajaTB> arrList;
 
-    private AnchorPane windowinit;
-
-    private double base;
-
-    private double ventaEfectivo;
-
-    private double ventasconTarjeta;
-
-    private double ingresosdeEfectivo;
-
-    private double salidasdeEfectivo;
-
-    private double total;
+    private AnchorPane vbPrincipal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -167,9 +156,11 @@ public class FxCajaConsultasController implements Initializable {
             gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getFechaMovimiento() + "\n" + arrList.get(i).getHoraMovimiento(), Pos.CENTER_LEFT, "#020203"), 1, (i + 1));
             gpList.add(addElementGridPane("l3" + (i + 1), arrList.get(i).getComentario(), Pos.CENTER_LEFT, "#020203"), 2, (i + 1));
             gpList.add(addElementGridPane("l4" + (i + 1),
-                    arrList.get(i).getTipoMovimiento() == 1 ? "MONTO INICIAL" : arrList.get(i).getTipoMovimiento() == 2 ? "VENTA CON EFECTIVO"
+                    arrList.get(i).getTipoMovimiento() == 1 ? "MONTO INICIAL"
+                    : arrList.get(i).getTipoMovimiento() == 2 ? "VENTA CON EFECTIVO"
                     : arrList.get(i).getTipoMovimiento() == 3 ? "VENTA CON TARJETA"
-                    : arrList.get(i).getTipoMovimiento() == 4 ? "INGRESO DE DINERO" : "SALIDAS DE DINERO",
+                    : arrList.get(i).getTipoMovimiento() == 4 ? "INGRESO DE DINERO"
+                    : "SALIDAS DE DINERO",
                     Pos.CENTER_LEFT, "#020203"), 3, (i + 1));
             gpList.add(addElementGridPane("l5" + (i + 1),
                     arrList.get(i).getTipoMovimiento() == 1
@@ -207,7 +198,7 @@ public class FxCajaConsultasController implements Initializable {
 
     private void openWindowCaja() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(windowinit);
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_CAJA_BUSQUEDA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -218,27 +209,23 @@ public class FxCajaConsultasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar corte de caja", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> windowinit.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
 
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
             System.out.println(ex);
-
         }
     }
 
     private void onOpenReporte() {
         try {
-
             if (cajaTB != null) {
-
                 InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
                 if (Session.COMPANY_IMAGE != null) {
                     imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
                 }
-
                 InputStream dir = getClass().getResourceAsStream("/report/CortedeCaja.jasper");
 //
                 Map map = new HashMap();
@@ -281,6 +268,31 @@ public class FxCajaConsultasController implements Initializable {
         }
     }
 
+    public void openModalImpresion(String idCaja) {
+        if (cajaTB != null) {
+            try {
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxOpcionesImprimirController controller = fXMLLoader.getController();
+                controller.loadDataCorteCaja(idCaja);
+                controller.setInitOpcionesImprimirCajaConsultas(this);
+                //
+                Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", window.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("Controller banco" + ex.getLocalizedMessage());
+            }
+        } else {
+            Tools.AlertMessageWarning(window, "Reporte de Corte de Caja", "No hay datos para mostrar en el ticket");
+        }
+    }
+
     @FXML
     private void onKeyPressedSearch(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -305,8 +317,20 @@ public class FxCajaConsultasController implements Initializable {
         onOpenReporte();
     }
 
-    public void setContent(AnchorPane windowinit) {
-        this.windowinit = windowinit;
+    @FXML
+    private void onKeyPressedTicket(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openModalImpresion(cajaTB.getIdCaja());
+        }
+    }
+
+    @FXML
+    private void onActionTicket(ActionEvent event) {
+        openModalImpresion(cajaTB.getIdCaja());
+    }
+
+    public void setContent(AnchorPane vbPrincipal) {
+        this.vbPrincipal = vbPrincipal;
     }
 
 }

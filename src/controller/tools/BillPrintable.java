@@ -41,8 +41,10 @@ import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import model.CompraCreditoTB;
 import model.ImageADO;
 import model.ImagenTB;
+import model.MovimientoCajaTB;
 import model.SuministroTB;
 import model.VentaCreditoTB;
 import org.json.simple.JSONArray;
@@ -68,7 +70,7 @@ public class BillPrintable implements Printable {
         pointWidthSizePaper = 5.10;
     }
 
-    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras) {
+    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras, String fechaInicioOperacion, String horaInicioOperacion, String fechaTerminoOperaciona, String horaTerminoOperacion, String calculado, String contado, String diferencia, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String empleadoDireccion) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -111,6 +113,28 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(direccion_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("importetotalletras")) {
                     fieldTicket.setText(Tools.AddText2Guines(importe_total_letras));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("finiciooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(fechaInicioOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("hiniciooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(horaInicioOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fterminooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(fechaTerminoOperaciona));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("hterminooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(horaTerminoOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("contado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(calculado));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("calculado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(contado));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("diferencia")) {
+                    fieldTicket.setText(Tools.AddText2Guines(diferencia));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("numempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoNumeroDocumento));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("infoempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoInformacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("celempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoCelular));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoDireccion));
                 }
                 lines = fieldTicket.getLines();
             }
@@ -175,6 +199,84 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFechaPago()));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
                     fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+    
+     public int hbDetalleCuentaPagar(HBox hBox, HBox box, ObservableList<CompraCreditoTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 0) + "%"));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getObservacion()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fechadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFechaPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+
+    public int hbDetalleCorteCaja(HBox hBox, HBox box, ObservableList<MovimientoCajaTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 0) + "%"));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getComentario()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fechadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFechaMovimiento()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraMovimiento()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("tipomovimiento")) {
+                    short tipoMovimiento = arrList.get(m).getTipoMovimiento();
+                    String movimiento = tipoMovimiento == 1 ? "MONTO INICIAL" : tipoMovimiento == 2 ? "VENTA CON EFECTIVO" : tipoMovimiento == 3 ? "VENTA CON TARJETA" : tipoMovimiento == 4 ? "INGRESO DE DINERO" : "SALIDAS DE DINERO";
+                    fieldTicket.setText(Tools.AddText2Guines(movimiento));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
                 }
@@ -474,12 +576,12 @@ public class BillPrintable implements Printable {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
                     if (imageView.getType().equalsIgnoreCase("qr")) {
                         try {
-                            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(new QRCodeWriter().encode("20548033030||T001|142.14|14|2020-12-08|0|00000000|", BarcodeFormat.QR_CODE, 300, 300));
+                            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(new QRCodeWriter().encode(ObjectGlobal.QR_PERU_DATA, BarcodeFormat.QR_CODE, 300, 300));
                             g2d.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
                                     : box.getAlignment() == Pos.CENTER
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
-                         
+
                             gimage.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
                                     : box.getAlignment() == Pos.CENTER
                                     ? (int) (width - imageView.getFitWidth()) / 2
@@ -499,7 +601,7 @@ public class BillPrintable implements Printable {
                                     : box.getAlignment() == Pos.CENTER
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
-                            
+
                             gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
                                     : box.getAlignment() == Pos.CENTER
                                     ? (int) (width - imageView.getFitWidth()) / 2

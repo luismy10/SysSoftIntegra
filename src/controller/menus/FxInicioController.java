@@ -89,7 +89,7 @@ public class FxInicioController implements Initializable {
             new PieChart.Data("Productos Excedentes", 0)
     );
 
-    private short count = 59;
+    private short count = 10;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -162,7 +162,7 @@ public class FxInicioController implements Initializable {
         pcInventario.setData(datas);
         
         vbProductoMasVendidos.getChildren().clear();
-        arrayList.forEach(e -> {
+        arrayList.forEach(e -> {        
             productoModel(e.getNombreMarca(),Tools.roundingValue(e.getPrecioVentaGeneral(),2),Tools.roundingValue(e.getCantidad(),2));
         });
     }

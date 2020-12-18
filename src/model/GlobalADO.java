@@ -207,14 +207,14 @@ public class GlobalADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             try {
-                preparedLista = DBUtil.getConnection().prepareStatement("SELECT SUM(Total) AS Total FROM VentaTB WHERE FechaVenta = ? AND Estado <> 3");
+                preparedLista = DBUtil.getConnection().prepareStatement("SELECT SUM(Total) AS Total FROM VentaTB WHERE FechaVenta = ? AND Estado = 1");
                 preparedLista.setString(1, fechaActual);
                 resultLista = preparedLista.executeQuery();
                 if (resultLista.next()) {
                     ventasTotales = resultLista.getDouble("Total");
                 }
 
-                preparedLista = DBUtil.getConnection().prepareStatement("SELECT SUM(Total) AS Total FROM CompraTB WHERE FechaCompra = ? AND EstadoCompra <> 3");
+                preparedLista = DBUtil.getConnection().prepareStatement("SELECT SUM(d.Importe) AS Total FROM CompraTB as c inner join DetalleCompraTB as d on d.IdCompra = c.IdCompra where c.FechaCompra = ? and c.EstadoCompra = 1");
                 preparedLista.setString(1, fechaActual);
                 resultLista = preparedLista.executeQuery();
                 if (resultLista.next()) {
@@ -279,6 +279,7 @@ public class GlobalADO {
                         + "        order by Cantidad DESC");
                 resultLista = preparedLista.executeQuery();
                 while (resultLista.next()) {
+                    
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setNombreMarca(resultLista.getString("NombreMarca"));
                     suministroTB.setPrecioVentaGeneral(resultLista.getDouble("PrecioVenta"));

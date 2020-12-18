@@ -1,8 +1,9 @@
 package controller.configuracion.impresoras;
 
 import controller.consultas.pagar.FxCuentasPorCobrarVisualizarController;
-import controller.consultas.pagar.FxCuentasPorPagarController;
 import controller.consultas.pagar.FxCuentasPorPagarVisualizarController;
+import controller.operaciones.cortecaja.FxCajaConsultasController;
+import controller.operaciones.cortecaja.FxCajaController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.Session;
@@ -30,6 +31,11 @@ import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
+import model.CajaADO;
+import model.CajaTB;
+import model.CompraADO;
+import model.CompraCreditoTB;
+import model.MovimientoCajaTB;
 import model.VentaADO;
 import model.VentaCreditoTB;
 import model.VentaTB;
@@ -42,6 +48,10 @@ public class FxOpcionesImprimirController implements Initializable {
     private FxCuentasPorCobrarVisualizarController cuentasPorCobrarVisualizarController;
 
     private FxCuentasPorPagarVisualizarController cuentasPorPagarVisualizarController;
+
+    private FxCajaConsultasController cajaConsultasController;
+
+    private FxCajaController cajaController;
 
     private ConvertMonedaCadena monedaCadena;
 
@@ -60,6 +70,8 @@ public class FxOpcionesImprimirController implements Initializable {
     private String idCompra;
 
     private String idCompraCredito;
+
+    private String idCaja;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -80,8 +92,20 @@ public class FxOpcionesImprimirController implements Initializable {
         this.idCompraCredito = idCompraCredito;
     }
 
-    private void onEventAceptar() {
+    public void loadDataCorteCaja(String idCaja) {
+        this.idCaja = idCaja;
+    }
+
+    private void onEventAceptar() throws IOException {
         if (cuentasPorCobrarVisualizarController != null) {
+            Tools.Dispose(apWindow);
+        } else if (cuentasPorPagarVisualizarController != null) {
+            Tools.Dispose(apWindow);
+        } else if (cajaController != null) {
+            Tools.Dispose(apWindow);
+            Tools.Dispose(cajaController.getVbPrincipal());
+            cajaController.openWindowLogin();
+        } else if (cajaConsultasController != null) {
             Tools.Dispose(apWindow);
         }
     }
@@ -100,7 +124,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     Tools.Dispose(apWindow);
                 } else {
                     Tools.Dispose(apWindow);
-                    executeProcessPrinter(
+                    executeProcessPrinterCuentaPorCobrar(
                             Session.DESING_IMPRESORA_CUENTA_POR_COBRAR,
                             Session.TICKET_CUENTA_POR_COBRAR_ID,
                             Session.TICKET_CUENTA_POR_COBRAR_RUTA,
@@ -122,17 +146,17 @@ public class FxOpcionesImprimirController implements Initializable {
             }
 
             if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("ticket")) {
-                if (Session.TICKET_CUENTA_POR_COBRAR_ID == 0 && Session.TICKET_CUENTA_POR_COBRAR_RUTA.equalsIgnoreCase("")) {
+                if (Session.TICKET_CUENTA_POR_PAGAR_ID == 0 && Session.TICKET_CUENTA_POR_PAGAR_RUTA.equalsIgnoreCase("")) {
                     Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
                     Tools.Dispose(apWindow);
                 } else {
                     Tools.Dispose(apWindow);
-                    executeProcessPrinter(
-                            Session.DESING_IMPRESORA_CUENTA_POR_PAGAR,
-                            Session.TICKET_CUENTA_POR_PAGAR_ID,
-                            Session.TICKET_CUENTA_POR_PAGAR_RUTA,
-                            Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR,
-                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR
+                    executeProcessPrinterCuentaPorPagar(
+                            Session.DESING_IMPRESORA_CUENTA_POR_COBRAR,
+                            Session.TICKET_CUENTA_POR_COBRAR_ID,
+                            Session.TICKET_CUENTA_POR_COBRAR_RUTA,
+                            Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR,
+                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR
                     );
                 }
             } else if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("a4")) {
@@ -141,11 +165,73 @@ public class FxOpcionesImprimirController implements Initializable {
                 Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
                 Tools.Dispose(apWindow);
             }
+        } else if (cajaController != null) {
+            if (!Session.ESTADO_IMPRESORA_CORTE_CAJA && Tools.isText(Session.NOMBRE_IMPRESORA_CORTE_CAJA) && Tools.isText(Session.FORMATO_IMPRESORA_CORTE_CAJA)) {
+                Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+                Tools.Dispose(apWindow);
+                Tools.Dispose(cajaController.getVbPrincipal());
+                cajaController.openWindowLogin();
+                return;
+            }
+            if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("ticket")) {
+                if (Session.TICKET_CORTE_CAJA_ID == 0 && Session.TICKET_CORTE_CAJA_RUTA.equalsIgnoreCase("")) {
+                    Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                    Tools.Dispose(apWindow);
+                    Tools.Dispose(cajaController.getVbPrincipal());
+                    cajaController.openWindowLogin();
+                } else {
+                    executeProcessPrinterCorteCaja(
+                            Session.DESING_IMPRESORA_CORTE_CAJA,
+                            Session.TICKET_CORTE_CAJA_ID,
+                            Session.TICKET_CORTE_CAJA_RUTA,
+                            Session.NOMBRE_IMPRESORA_CORTE_CAJA,
+                            Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA
+                    );
+                    Tools.Dispose(apWindow);
+                    Tools.Dispose(cajaController.getVbPrincipal());
+                    cajaController.openWindowLogin();
+                }
+            } else if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("a4")) {
+                Tools.Dispose(apWindow);
+                Tools.Dispose(cajaController.getVbPrincipal());
+                cajaController.openWindowLogin();
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+                Tools.Dispose(apWindow);
+                Tools.Dispose(cajaController.getVbPrincipal());
+                cajaController.openWindowLogin();
+            }
+        } else if (cajaConsultasController != null) {
+            if (!Session.ESTADO_IMPRESORA_CORTE_CAJA && Tools.isText(Session.NOMBRE_IMPRESORA_CORTE_CAJA) && Tools.isText(Session.FORMATO_IMPRESORA_CORTE_CAJA)) {
+                Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+                Tools.Dispose(apWindow);
+                return;
+            }
+            if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("ticket")) {
+                if (Session.TICKET_CORTE_CAJA_ID == 0 && Session.TICKET_CORTE_CAJA_RUTA.equalsIgnoreCase("")) {
+                    Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                    Tools.Dispose(apWindow);
+                } else {
+                    executeProcessPrinterCorteCaja(
+                            Session.DESING_IMPRESORA_CORTE_CAJA,
+                            Session.TICKET_CORTE_CAJA_ID,
+                            Session.TICKET_CORTE_CAJA_RUTA,
+                            Session.NOMBRE_IMPRESORA_CORTE_CAJA,
+                            Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA
+                    );
+                    Tools.Dispose(apWindow);
+                }
+            } else if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("a4")) {
 
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+                Tools.Dispose(apWindow);
+            }
         }
     }
 
-    private void executeProcessPrinter(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
+    /*cuenta por cobrar*/
+    private void executeProcessPrinterCuentaPorCobrar(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -256,6 +342,17 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaCreditoTB.getVentaTB().getClienteTB().getCelular(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getDireccion(),
                     "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     "");
         }
 
@@ -325,6 +422,17 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaCreditoTB.getVentaTB().getClienteTB().getCelular(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getDireccion(),
                     "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     "");
         }
 
@@ -373,6 +481,17 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     "",
                     "");
         }
@@ -443,6 +562,17 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
                     "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     "");
         }
 
@@ -479,15 +609,462 @@ public class FxOpcionesImprimirController implements Initializable {
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
     }
 
+    /*cuenta por pagar*/
+    private void executeProcessPrinterCuentaPorPagar(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                if (!Tools.isText(idCompra) && !Tools.isText(idCompraCredito)) {
+                    CompraCreditoTB compraCreditoTB = CompraADO.ImprimirCompraCreditoById(idCompra, idCompraCredito);
+                    if (compraCreditoTB != null && compraCreditoTB.getCompraTB() != null) {
+                        try {
+                            if (desing.equalsIgnoreCase("withdesing")) {
+                                return printTicketWithDesingCuentaPagarUnico(compraCreditoTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
+                            } else {
+                                billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+                                return printTicketNoDesingCuentaPagarUnico(compraCreditoTB, nombreImpresora, cortaPapel);
+                            }
+                        } catch (PrinterException | IOException | PrintException ex) {
+                            return "Error en imprimir: " + ex.getLocalizedMessage();
+                        }
+                    } else {
+                        return "empty";
+                    }
+                } else {
+                    return "empty";
+                }
+            }
+        };
+
+        task.setOnSucceeded(w -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("completed")) {
+                Tools.showAlertNotification("/view/image/information_large.png",
+                        "Envío de impresión",
+                        "Se completo el proceso de impresión correctamente.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+            } else if (result.equalsIgnoreCase("error_name")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("empty")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "No hay registros para mostrar en el reporte.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else {
+                Tools.showAlertNotification("/view/image/error_large.png",
+                        "Envío de impresión",
+                        "Se producto un problema de la impresora\n" + result,
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            }
+        });
+        task.setOnFailed(w -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
+                    "Envío de impresión",
+                    "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.BOTTOM_RIGHT);
+        });
+
+        task.setOnScheduled(w -> {
+            Tools.showAlertNotification("/view/image/print.png",
+                    "Envío de impresión",
+                    "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                    Duration.seconds(5),
+                    Pos.BOTTOM_RIGHT);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+
+    }
+
+    private String printTicketWithDesingCuentaPagarUnico(CompraCreditoTB compraCreditoTB, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
+        billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            billPrintable.hbEncebezado(box,
+                    "AMORTIZAR",
+                    compraCreditoTB.getIdCompraCredito(),
+                    compraCreditoTB.getProveedorTB().getNumeroDocumento(),
+                    compraCreditoTB.getProveedorTB().getRazonSocial(),
+                    compraCreditoTB.getProveedorTB().getCelular(),
+                    compraCreditoTB.getProveedorTB().getDireccion(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
+
+        AnchorPane hbDetalle = new AnchorPane();
+        ObservableList<CompraCreditoTB> arrList = FXCollections.observableArrayList(compraCreditoTB);
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                billPrintable.hbDetalleCuentaPagar(hBox, box, arrList, m);
+                hbDetalle.getChildren().add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    compraCreditoTB.getProveedorTB().getNumeroDocumento(),
+                    compraCreditoTB.getProveedorTB().getRazonSocial(),
+                    "",
+                    compraCreditoTB.getProveedorTB().getCelular(),
+                    "");
+        }
+
+        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+        DocPrintJob job = billPrintable.findPrintService(nombreImpresora, PrinterJob.lookupPrintServices()).createPrintJob();
+
+        if (job != null) {
+            PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setPrintService(job.getPrintService());
+            pj.setJobName(nombreImpresora);
+            Book book = new Book();
+            book.append(billPrintable, billPrintable.getPageFormat(pj));
+            pj.setPageable(book);
+            pj.print();
+            if (cortaPapel) {
+                billPrintable.printCortarPapel(nombreImpresora);
+            }
+            return "completed";
+        } else {
+            return "error_name";
+        }
+    }
+
+    private String printTicketNoDesingCuentaPagarUnico(CompraCreditoTB compraCreditoTB, String nombreImpresora, boolean cortaPapel) {
+        ArrayList<HBox> object = new ArrayList<>();
+        int rows = 0;
+        int lines = 0;
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            object.add((HBox) hbEncabezado.getChildren().get(i));
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbEncebezado(box,
+                    "AMORTIZAR",
+                    compraCreditoTB.getIdCompraCredito(),
+                    compraCreditoTB.getProveedorTB().getNumeroDocumento(),
+                    compraCreditoTB.getProveedorTB().getRazonSocial(),
+                    compraCreditoTB.getProveedorTB().getCelular(),
+                    compraCreditoTB.getProveedorTB().getDireccion(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
+
+        ObservableList<CompraCreditoTB> arrList = FXCollections.observableArrayList(compraCreditoTB);
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                lines += billPrintable.hbDetalleCuentaPagar(hBox, box, arrList, m);
+                object.add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            object.add((HBox) hbPie.getChildren().get(i));
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    compraCreditoTB.getProveedorTB().getNumeroDocumento(),
+                    compraCreditoTB.getProveedorTB().getRazonSocial(),
+                    "",
+                    compraCreditoTB.getProveedorTB().getCelular(),
+                    "");
+        }
+        return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
+    }
+
+    /*corte de caja*/
+    private void executeProcessPrinterCorteCaja(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                if (!Tools.isText(idCaja)) {
+                    ArrayList<Object> arrayList = CajaADO.ListarMovimientoPorById(idCaja);
+                    if (!arrayList.isEmpty() && arrayList.get(0) != null && arrayList.get(1) != null && arrayList.get(2) != null) {
+                        try {
+                            CajaTB cajaTB = (CajaTB) arrayList.get(0);
+                            if (desing.equalsIgnoreCase("withdesing")) {
+                                return printTicketWithDesingCorteCaja(cajaTB, (ArrayList<MovimientoCajaTB>) arrayList.get(2), ticketId, ticketRuta, nombreImpresora, cortaPapel);
+                            } else {
+                                billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+                                return printTicketNoDesingCorteCaja(cajaTB, (ArrayList<MovimientoCajaTB>) arrayList.get(2), nombreImpresora, cortaPapel);
+                            }
+                        } catch (PrinterException | IOException | PrintException ex) {
+                            return "Error en imprimir: " + ex.getLocalizedMessage();
+                        }
+                    } else {
+                        return "empty";
+                    }
+
+                } else {
+                    return "empty";
+                }
+            }
+        };
+
+        task.setOnSucceeded(w -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("completed")) {
+                Tools.showAlertNotification("/view/image/information_large.png",
+                        "Envío de impresión",
+                        "Se completo el proceso de impresión correctamente.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+            } else if (result.equalsIgnoreCase("error_name")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("empty")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "No hay registros para mostrar en el reporte.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else {
+                Tools.showAlertNotification("/view/image/error_large.png",
+                        "Envío de impresión",
+                        "Se producto un problema de la impresora\n" + result,
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            }
+        });
+        task.setOnFailed(w -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
+                    "Envío de impresión",
+                    "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.BOTTOM_RIGHT);
+        });
+
+        task.setOnScheduled(w -> {
+            Tools.showAlertNotification("/view/image/print.png",
+                    "Envío de impresión",
+                    "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                    Duration.seconds(5),
+                    Pos.BOTTOM_RIGHT);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private String printTicketWithDesingCorteCaja(CajaTB cajaTB, ArrayList<MovimientoCajaTB> movimientoCajaTBs, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
+        billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            billPrintable.hbEncebezado(box,
+                    "CORTE DE CAJA",
+                    cajaTB.getIdCaja(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    cajaTB.getFechaApertura(),
+                    cajaTB.getHoraApertura(),
+                    cajaTB.getFechaCierre(),
+                    cajaTB.getHoraCierre(),
+                    Tools.roundingValue(cajaTB.getCalculado(), 2),
+                    Tools.roundingValue(cajaTB.getContado(), 2),
+                    Tools.roundingValue(cajaTB.getDiferencia(), 2),
+                    cajaTB.getEmpleadoTB().getNumeroDocumento(),
+                    cajaTB.getEmpleadoTB().getApellidos(),
+                    cajaTB.getEmpleadoTB().getCelular(),
+                    cajaTB.getEmpleadoTB().getDireccion());
+        }
+
+        AnchorPane hbDetalle = new AnchorPane();
+        ObservableList<MovimientoCajaTB> arrList = FXCollections.observableArrayList(movimientoCajaTBs);
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                billPrintable.hbDetalleCorteCaja(hBox, box, arrList, m);
+                hbDetalle.getChildren().add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
+
+        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+        DocPrintJob job = billPrintable.findPrintService(nombreImpresora, PrinterJob.lookupPrintServices()).createPrintJob();
+
+        if (job != null) {
+            PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setPrintService(job.getPrintService());
+            pj.setJobName(nombreImpresora);
+            Book book = new Book();
+            book.append(billPrintable, billPrintable.getPageFormat(pj));
+            pj.setPageable(book);
+            pj.print();
+            if (cortaPapel) {
+                billPrintable.printCortarPapel(nombreImpresora);
+            }
+            return "completed";
+        } else {
+            return "error_name";
+        }
+    }
+
+    private String printTicketNoDesingCorteCaja(CajaTB cajaTB, ArrayList<MovimientoCajaTB> movimientoCajaTBs, String nombreImpresora, boolean cortaPapel) {
+        ArrayList<HBox> object = new ArrayList<>();
+        int rows = 0;
+        int lines = 0;
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            object.add((HBox) hbEncabezado.getChildren().get(i));
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbEncebezado(box,
+                    "CORTE DE CAJA",
+                    cajaTB.getIdCaja(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    cajaTB.getFechaApertura(),
+                    cajaTB.getHoraApertura(),
+                    cajaTB.getFechaCierre(),
+                    cajaTB.getHoraCierre(),
+                    Tools.roundingValue(cajaTB.getCalculado(), 2),
+                    Tools.roundingValue(cajaTB.getContado(), 2),
+                    Tools.roundingValue(cajaTB.getDiferencia(), 2),
+                    cajaTB.getEmpleadoTB().getNumeroDocumento(),
+                    cajaTB.getEmpleadoTB().getApellidos(),
+                    cajaTB.getEmpleadoTB().getCelular(),
+                    cajaTB.getEmpleadoTB().getDireccion());
+        }
+
+        ObservableList<MovimientoCajaTB> arrList = FXCollections.observableArrayList(movimientoCajaTBs);
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                lines += billPrintable.hbDetalleCorteCaja(hBox, box, arrList, m);
+                object.add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            object.add((HBox) hbPie.getChildren().get(i));
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
+        return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
+    }
+
     @FXML
-    private void onKeyPressedAceptar(KeyEvent event) {
+    private void onKeyPressedAceptar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             onEventAceptar();
         }
     }
 
     @FXML
-    private void onActionAceptar(ActionEvent event) {
+    private void onActionAceptar(ActionEvent event) throws IOException {
         onEventAceptar();
     }
 
@@ -521,6 +1098,14 @@ public class FxOpcionesImprimirController implements Initializable {
 
     public void setInitOpcionesImprimirCuentasPorPagar(FxCuentasPorPagarVisualizarController cuentasPorPagarVisualizarController) {
         this.cuentasPorPagarVisualizarController = cuentasPorPagarVisualizarController;
+    }
+
+    public void setInitOpcionesImprimirCajaConsultas(FxCajaConsultasController cajaConsultasController) {
+        this.cajaConsultasController = cajaConsultasController;
+    }
+
+    public void setInitOpcionesImprimirCorteCaja(FxCajaController cajaController) {
+        this.cajaController = cajaController;
     }
 
 }
