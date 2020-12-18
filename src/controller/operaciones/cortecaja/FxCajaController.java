@@ -387,6 +387,18 @@ public class FxCajaController implements Initializable {
     private void onActionReporte(ActionEvent event) {
         openReporte();
     }
+    
+        @FXML
+    private void onKeyPressedTicket(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionTicket(ActionEvent event) {
+        
+    }
 
     public void setContent(AnchorPane vbPrincipal) {
         this.vbPrincipal = vbPrincipal;
