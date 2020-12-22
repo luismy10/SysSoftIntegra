@@ -70,7 +70,7 @@ public class BillPrintable implements Printable {
         pointWidthSizePaper = 5.10;
     }
 
-    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras, String fechaInicioOperacion, String horaInicioOperacion, String fechaTerminoOperaciona, String horaTerminoOperacion, String calculado, String contado, String diferencia, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String empleadoDireccion) {
+    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras, String fechaInicioOperacion, String horaInicioOperacion, String fechaTerminoOperaciona, String horaTerminoOperacion, String calculado, String contado, String diferencia, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String empleadoDireccion,String montoTotal,String montoPagado,String montoDiferencial) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -135,6 +135,12 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(empleadoCelular));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempleado")) {
                     fieldTicket.setText(Tools.AddText2Guines(empleadoDireccion));
+                }else if (fieldTicket.getVariable().equalsIgnoreCase("montotal")) {
+                    fieldTicket.setText(Tools.AddText2Guines(montoTotal));
+                }else if (fieldTicket.getVariable().equalsIgnoreCase("montopagacobra")) {
+                    fieldTicket.setText(Tools.AddText2Guines(montoPagado));
+                }else if (fieldTicket.getVariable().equalsIgnoreCase("montorestanten")) {
+                    fieldTicket.setText(Tools.AddText2Guines(montoDiferencial));
                 }
                 lines = fieldTicket.getLines();
             }

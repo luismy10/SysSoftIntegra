@@ -564,6 +564,9 @@ public class FxVentaDetalleController implements Initializable {
                                         "",
                                         "",
                                         "",
+                                        "",
+                                        "",
+                                        "",
                                         "");
                             }
 
@@ -693,6 +696,9 @@ public class FxVentaDetalleController implements Initializable {
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
                     ventaTB.getCodigo(),
+                    "",
+                    "",
+                    "",
                     "",
                     "",
                     "",

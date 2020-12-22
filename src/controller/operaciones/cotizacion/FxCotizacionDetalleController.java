@@ -306,6 +306,9 @@ public class FxCotizacionDetalleController implements Initializable {
                                             "",
                                             "",
                                             "",
+                                            "",
+                                            "",
+                                            "",
                                             "");
                                 }
 
@@ -438,6 +441,9 @@ public class FxCotizacionDetalleController implements Initializable {
                     cotizacionTB.getClienteTB().getCelular(),
                     cotizacionTB.getClienteTB().getDireccion(),
                     "---",
+                    "",
+                    "",
+                    "",
                     "",
                     "",
                     "",

@@ -1476,7 +1476,7 @@ public class FxTicketController implements Initializable {
         if (idTicket > 0) {
             short option = Tools.AlertMessageConfirmation(vbWindow, "Ticket", "¿Está seguro de hacer prederteminado este modelo de ticket?");
             if (option == 1) {
-                String result = TicketADO.ChangeDefaultState(idTicket);
+                String result = TicketADO.ChangeDefaultState(idTicket,tipoTicket); 
                 if (result.equalsIgnoreCase("updated")) {
                     Tools.AlertMessageInformation(vbWindow, "Ticket", "Se realizó los cambios correctamente.");
                     cbPredeterminado.setSelected(true);

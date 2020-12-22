@@ -70,7 +70,10 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Celular del cliente", "CELULAR DEL CLIENTE", "celcliente"));
             listCabecera.add(new TicketTB("Dirección del cliente", "DIRECCION DEL CLIENTE", "direcliente"));
             listCabecera.add(new TicketTB("Codigo de venta", "CODIGO UNICO DE VENTA", "codigo"));
-            listCabecera.add(new TicketTB("Importe Total en Letras", "SON CERO 0/0 SOLES", "importetotalletras"));
+            listCabecera.add(new TicketTB("Importe Total en Letras", "0.00", "importetotalletras"));
+            listCabecera.add(new TicketTB("Monto Total", "0.00", "montotal"));
+            listCabecera.add(new TicketTB("Monto Pagado/Cobrado", "0.00", "montopagacobra"));
+            listCabecera.add(new TicketTB("Monto Restante", "0.00", "montorestanten"));
             listCabecera.add(new TicketTB("Fecha de inicio de la Operación", "dd/MM/yyyy", "finiciooperacion"));
             listCabecera.add(new TicketTB("Hora de inicio de la Operación", "HH:mm:ss a", "hiniciooperacion"));
             listCabecera.add(new TicketTB("Fecha de termino de la Operación", "dd/MM/yyyy", "fterminooperacion"));
@@ -90,12 +93,12 @@ public class FxTicketVariableController implements Initializable {
             listDetalleCuerpo.add(new TicketTB("Descripción del producto", "DESCRIPCION DEL PRODUCTO", "nombretarticulo"));
             listDetalleCuerpo.add(new TicketTB("Cantidad por producto", "1000", "cantarticulo"));
             listDetalleCuerpo.add(new TicketTB("Precio unitario por producto", "0000.00", "precarticulo"));
-            listDetalleCuerpo.add(new TicketTB("Descuento por producto", "0000.00", "descarticulo"));
-            listDetalleCuerpo.add(new TicketTB("Importe por producto", "0000.00", "impoarticulo"));
-            listDetalleCuerpo.add(new TicketTB("Monto total de la operación", "0000.00", "montooperacion"));
+            listDetalleCuerpo.add(new TicketTB("Descuento por producto", "00.00", "descarticulo"));
+            listDetalleCuerpo.add(new TicketTB("Importe por producto", "00.00", "impoarticulo"));
             listDetalleCuerpo.add(new TicketTB("Fecha de la operación", "FECHA DE LA OPERACION", "fechadetalle"));
             listDetalleCuerpo.add(new TicketTB("Hora de la operación", "HORA DE LA OPERACION", "horadetalle"));
             listDetalleCuerpo.add(new TicketTB("Tipo de Operación", "TIPO DE OPERACION", "tipomovimiento"));
+            listDetalleCuerpo.add(new TicketTB("Monto total de la operación", "0000.00", "montooperacion"));
             listDetalleCuerpo.add(new TicketTB("Descripción del la operación", "INFORACION REFERENTE A LA OPERACION", "observacion"));
             lvLista.getItems().addAll(listDetalleCuerpo);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("cp")) {

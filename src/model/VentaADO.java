@@ -1402,7 +1402,7 @@ public class VentaADO {
         VentaTB ventaTB = null;
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Venta_ById(?)}");
+            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Venta_ById_For_Credito(?)}");
             preparedStatement.setString(1, idVenta);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -1414,7 +1414,9 @@ public class VentaADO {
                 ventaTB.setEstado(resultSet.getInt("Estado"));
                 ventaTB.setEstadoName(resultSet.getString("EstadoName"));
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                ventaTB.setTotal(resultSet.getDouble("Total"));
+                ventaTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
+                ventaTB.setMontoCobrado(resultSet.getDouble("MontoCobrado"));
+                ventaTB.setMontoRestante(ventaTB.getMontoTotal()-ventaTB.getMontoCobrado());
 
                 preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Listar_Detalle_Venta_Credito(?)}");
                 preparedStatement.setString(1, idVenta);
@@ -1565,7 +1567,7 @@ public class VentaADO {
         VentaTB ventaTB = null;
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareCall("select IdVentaCredito,Monto,FechaPago,HoraPago,Observacion from VentaCreditoTB where IdVentaCredito = ?");
+            preparedStatement = DBUtil.getConnection().prepareCall("{CALL Sp_Obtener_VentaCredito_By_Id(?)}");
             preparedStatement.setString(1, idVentaCredito);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -1576,7 +1578,7 @@ public class VentaADO {
                 ventaCreditoTB.setHoraPago(resultSet.getTime("HoraPago").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 ventaCreditoTB.setObservacion(resultSet.getString("Observacion"));
 
-                preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Venta_ById(?)}");
+                preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Venta_ById_For_Credito(?)}");
                 preparedStatement.setString(1, idVenta);
                 resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
@@ -1588,7 +1590,9 @@ public class VentaADO {
                     ventaTB.setEstado(resultSet.getInt("Estado"));
                     ventaTB.setEstadoName(resultSet.getString("EstadoName"));
                     ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                    ventaTB.setTotal(resultSet.getDouble("Total"));
+                    ventaTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
+                    ventaTB.setMontoCobrado(resultSet.getDouble("MontoCobrado"));
+                    ventaTB.setMontoRestante(ventaTB.getMontoTotal()-ventaTB.getMontoRestante());
                 }
                 ventaCreditoTB.setVentaTB(ventaTB);
             }

@@ -112,121 +112,137 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private void onEventTicket() {
         if (cuentasPorCobrarVisualizarController != null) {
-            if (!Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR && Tools.isText(Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR) && Tools.isText(Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR)) {
-                Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
-                Tools.Dispose(apWindow);
-                return;
-            }
-
-            if (Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR.equalsIgnoreCase("ticket")) {
-                if (Session.TICKET_CUENTA_POR_COBRAR_ID == 0 && Session.TICKET_CUENTA_POR_COBRAR_RUTA.equalsIgnoreCase("")) {
-                    Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
-                    Tools.Dispose(apWindow);
-                } else {
-                    Tools.Dispose(apWindow);
-                    executeProcessPrinterCuentaPorCobrar(
-                            Session.DESING_IMPRESORA_CUENTA_POR_COBRAR,
-                            Session.TICKET_CUENTA_POR_COBRAR_ID,
-                            Session.TICKET_CUENTA_POR_COBRAR_RUTA,
-                            Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR,
-                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR
-                    );
-                }
-            } else if (Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR.equalsIgnoreCase("a4")) {
-
-            } else {
-                Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
-                Tools.Dispose(apWindow);
-            }
+            printEventCuentasPorCobrar();
         } else if (cuentasPorPagarVisualizarController != null) {
-            if (!Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR && Tools.isText(Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR) && Tools.isText(Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR)) {
-                Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
-                Tools.Dispose(apWindow);
-                return;
-            }
-
-            if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("ticket")) {
-                if (Session.TICKET_CUENTA_POR_PAGAR_ID == 0 && Session.TICKET_CUENTA_POR_PAGAR_RUTA.equalsIgnoreCase("")) {
-                    Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
-                    Tools.Dispose(apWindow);
-                } else {
-                    Tools.Dispose(apWindow);
-                    executeProcessPrinterCuentaPorPagar(
-                            Session.DESING_IMPRESORA_CUENTA_POR_COBRAR,
-                            Session.TICKET_CUENTA_POR_COBRAR_ID,
-                            Session.TICKET_CUENTA_POR_COBRAR_RUTA,
-                            Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR,
-                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR
-                    );
-                }
-            } else if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("a4")) {
-
-            } else {
-                Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
-                Tools.Dispose(apWindow);
-            }
+            printEventCuentasPorPagar();
         } else if (cajaController != null) {
-            if (!Session.ESTADO_IMPRESORA_CORTE_CAJA && Tools.isText(Session.NOMBRE_IMPRESORA_CORTE_CAJA) && Tools.isText(Session.FORMATO_IMPRESORA_CORTE_CAJA)) {
-                Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
-                Tools.Dispose(apWindow);
-                Tools.Dispose(cajaController.getVbPrincipal());
-                cajaController.openWindowLogin();
-                return;
-            }
-            if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("ticket")) {
-                if (Session.TICKET_CORTE_CAJA_ID == 0 && Session.TICKET_CORTE_CAJA_RUTA.equalsIgnoreCase("")) {
-                    Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
-                    Tools.Dispose(apWindow);
-                    Tools.Dispose(cajaController.getVbPrincipal());
-                    cajaController.openWindowLogin();
-                } else {
-                    executeProcessPrinterCorteCaja(
-                            Session.DESING_IMPRESORA_CORTE_CAJA,
-                            Session.TICKET_CORTE_CAJA_ID,
-                            Session.TICKET_CORTE_CAJA_RUTA,
-                            Session.NOMBRE_IMPRESORA_CORTE_CAJA,
-                            Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA
-                    );
-                    Tools.Dispose(apWindow);
-                    Tools.Dispose(cajaController.getVbPrincipal());
-                    cajaController.openWindowLogin();
-                }
-            } else if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("a4")) {
-                Tools.Dispose(apWindow);
-                Tools.Dispose(cajaController.getVbPrincipal());
-                cajaController.openWindowLogin();
-            } else {
-                Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
-                Tools.Dispose(apWindow);
-                Tools.Dispose(cajaController.getVbPrincipal());
-                cajaController.openWindowLogin();
-            }
+            printEventCorteCaja();
         } else if (cajaConsultasController != null) {
-            if (!Session.ESTADO_IMPRESORA_CORTE_CAJA && Tools.isText(Session.NOMBRE_IMPRESORA_CORTE_CAJA) && Tools.isText(Session.FORMATO_IMPRESORA_CORTE_CAJA)) {
-                Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
-                Tools.Dispose(apWindow);
-                return;
-            }
-            if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("ticket")) {
-                if (Session.TICKET_CORTE_CAJA_ID == 0 && Session.TICKET_CORTE_CAJA_RUTA.equalsIgnoreCase("")) {
-                    Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
-                    Tools.Dispose(apWindow);
-                } else {
-                    executeProcessPrinterCorteCaja(
-                            Session.DESING_IMPRESORA_CORTE_CAJA,
-                            Session.TICKET_CORTE_CAJA_ID,
-                            Session.TICKET_CORTE_CAJA_RUTA,
-                            Session.NOMBRE_IMPRESORA_CORTE_CAJA,
-                            Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA
-                    );
-                    Tools.Dispose(apWindow);
-                }
-            } else if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("a4")) {
+            printEventCajaConsultas();
+        }
+    }
 
+    private void printEventCuentasPorCobrar() {
+        if (!Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR && Tools.isText(Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR) && Tools.isText(Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR)) {
+            Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+            return;
+        }
+
+        if (Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_CUENTA_POR_COBRAR_ID == 0 && Session.TICKET_CUENTA_POR_COBRAR_RUTA.equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                Tools.Dispose(apWindow);
             } else {
-                Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+                Tools.Dispose(apWindow);
+                executeProcessPrinterCuentaPorCobrar(
+                        Session.DESING_IMPRESORA_CUENTA_POR_COBRAR,
+                        Session.TICKET_CUENTA_POR_COBRAR_ID,
+                        Session.TICKET_CUENTA_POR_COBRAR_RUTA,
+                        Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR,
+                        Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR
+                );
+            }
+        } else if (Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR.equalsIgnoreCase("a4")) {
+
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+        }
+    }
+
+    private void printEventCuentasPorPagar() {
+        if (!Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR && Tools.isText(Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR) && Tools.isText(Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR)) {
+            Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+            return;
+        }
+
+        if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_CUENTA_POR_PAGAR_ID == 0 && Session.TICKET_CUENTA_POR_PAGAR_RUTA.equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                Tools.Dispose(apWindow);
+            } else {
+                Tools.Dispose(apWindow);
+                executeProcessPrinterCuentaPorPagar(
+                        Session.DESING_IMPRESORA_CUENTA_POR_PAGAR,
+                        Session.TICKET_CUENTA_POR_PAGAR_ID,
+                        Session.TICKET_CUENTA_POR_PAGAR_RUTA,
+                        Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR,
+                        Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR
+                );
+            }
+        } else if (Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR.equalsIgnoreCase("a4")) {
+
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+        }
+    }
+
+    private void printEventCorteCaja() {
+        if (!Session.ESTADO_IMPRESORA_CORTE_CAJA && Tools.isText(Session.NOMBRE_IMPRESORA_CORTE_CAJA) && Tools.isText(Session.FORMATO_IMPRESORA_CORTE_CAJA)) {
+            Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+            Tools.Dispose(cajaController.getVbPrincipal());
+            cajaController.openWindowLogin();
+            return;
+        }
+        if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_CORTE_CAJA_ID == 0 && Session.TICKET_CORTE_CAJA_RUTA.equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                Tools.Dispose(apWindow);
+                Tools.Dispose(cajaController.getVbPrincipal());
+                cajaController.openWindowLogin();
+            } else {
+                executeProcessPrinterCorteCaja(
+                        Session.DESING_IMPRESORA_CORTE_CAJA,
+                        Session.TICKET_CORTE_CAJA_ID,
+                        Session.TICKET_CORTE_CAJA_RUTA,
+                        Session.NOMBRE_IMPRESORA_CORTE_CAJA,
+                        Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA
+                );
+                Tools.Dispose(apWindow);
+                Tools.Dispose(cajaController.getVbPrincipal());
+                cajaController.openWindowLogin();
+            }
+        } else if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("a4")) {
+            Tools.Dispose(apWindow);
+            Tools.Dispose(cajaController.getVbPrincipal());
+            cajaController.openWindowLogin();
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+            Tools.Dispose(cajaController.getVbPrincipal());
+            cajaController.openWindowLogin();
+        }
+    }
+
+    private void printEventCajaConsultas() {
+        if (!Session.ESTADO_IMPRESORA_CORTE_CAJA && Tools.isText(Session.NOMBRE_IMPRESORA_CORTE_CAJA) && Tools.isText(Session.FORMATO_IMPRESORA_CORTE_CAJA)) {
+            Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+            return;
+        }
+        if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_CORTE_CAJA_ID == 0 && Session.TICKET_CORTE_CAJA_RUTA.equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                Tools.Dispose(apWindow);
+            } else {
+                executeProcessPrinterCorteCaja(
+                        Session.DESING_IMPRESORA_CORTE_CAJA,
+                        Session.TICKET_CORTE_CAJA_ID,
+                        Session.TICKET_CORTE_CAJA_RUTA,
+                        Session.NOMBRE_IMPRESORA_CORTE_CAJA,
+                        Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA
+                );
                 Tools.Dispose(apWindow);
             }
+        } else if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("a4")) {
+
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
         }
     }
 
@@ -353,7 +369,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoTotal(), 2),
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoCobrado(), 2),
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoRestante(), 2));
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -433,7 +452,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoTotal(), 2),
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoCobrado(), 2),
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoRestante(), 2));
         }
 
         ObservableList<VentaCreditoTB> arrList = FXCollections.observableArrayList(ventaCreditoTB);
@@ -493,7 +515,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    Tools.roundingValue(ventaTB.getMontoTotal(), 2),
+                    Tools.roundingValue(ventaTB.getMontoCobrado(), 2),
+                    Tools.roundingValue(ventaTB.getMontoRestante(), 2));
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -573,7 +598,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    Tools.roundingValue(ventaTB.getMontoTotal(), 2),
+                    Tools.roundingValue(ventaTB.getMontoCobrado(), 2),
+                    Tools.roundingValue(ventaTB.getMontoRestante(), 2));
         }
 
         ObservableList<VentaCreditoTB> arrList = FXCollections.observableArrayList(ventaTB.getVentaCreditoTBs());
@@ -716,7 +744,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "0",
+                    "0",
+                    "0");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -796,7 +827,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "0",
+                    "0",
+                    "0");
         }
 
         ObservableList<CompraCreditoTB> arrList = FXCollections.observableArrayList(compraCreditoTB);
@@ -940,7 +974,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     cajaTB.getEmpleadoTB().getNumeroDocumento(),
                     cajaTB.getEmpleadoTB().getApellidos(),
                     cajaTB.getEmpleadoTB().getCelular(),
-                    cajaTB.getEmpleadoTB().getDireccion());
+                    cajaTB.getEmpleadoTB().getDireccion(),
+                    "",
+                    "",
+                    "");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -1020,7 +1057,10 @@ public class FxOpcionesImprimirController implements Initializable {
                     cajaTB.getEmpleadoTB().getNumeroDocumento(),
                     cajaTB.getEmpleadoTB().getApellidos(),
                     cajaTB.getEmpleadoTB().getCelular(),
-                    cajaTB.getEmpleadoTB().getDireccion());
+                    cajaTB.getEmpleadoTB().getDireccion(),
+                    "",
+                    "",
+                    "");
         }
 
         ObservableList<MovimientoCajaTB> arrList = FXCollections.observableArrayList(movimientoCajaTBs);

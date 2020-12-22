@@ -45,6 +45,9 @@ public class VentaTB {
     private HBox hbOpciones;
     private ArrayList<VentaCreditoTB> ventaCreditoTBs;
     private String clienteName;
+    private double montoTotal;
+    private double montoCobrado;
+    private double montoRestante;
 
     public VentaTB() {
 
@@ -366,6 +369,30 @@ public class VentaTB {
 
     public void setClienteName(String clienteName) {
         this.clienteName = clienteName;
+    }
+
+    public double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
+    }
+
+    public double getMontoCobrado() {
+        return montoCobrado;
+    }
+
+    public void setMontoCobrado(double montoCobrado) {
+        this.montoCobrado = montoCobrado;
+    }
+
+    public double getMontoRestante() {
+        return montoRestante;
+    }
+
+    public void setMontoRestante(double montoRestante) {
+        this.montoRestante = montoRestante;
     }
 
    

@@ -2,7 +2,6 @@ package controller.consultas.pagar;
 
 import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.operaciones.compras.FxAmortizarPagosController;
-import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -71,14 +70,12 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
 
     private FxCuentasPorPagarController cuentasPorPagarController;
 
-    private ConvertMonedaCadena monedaCadena;
-
     private CompraTB compraTB;
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        monedaCadena = new ConvertMonedaCadena();
+        
     }
 
     public void loadTableCompraCredito(String idCompra) {

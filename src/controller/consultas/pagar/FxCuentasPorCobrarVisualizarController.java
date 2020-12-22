@@ -19,7 +19,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -99,7 +98,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
                 lblComprobante.setText(ventaTB.getSerie() + " - " + ventaTB.getNumeracion());
                 lblEstado.setText(ventaTB.getEstadoName());
                 lblEstado.setTextFill(ventaTB.getEstado() == 3 ? Color.web("#ee4637") : ventaTB.getEstado() == 2 ? Color.web("#eab120") : Color.web("#42bf59"));
-                lblMontoTotal.setText(Tools.roundingValue(ventaTB.getTotal(), 2));
+                lblMontoTotal.setText(Tools.roundingValue(ventaTB.getMontoTotal(), 2));
                 lblObservacion.setText(ventaTB.getObservaciones());
                 for (VentaCreditoTB vc : ventaTB.getVentaCreditoTBs()) {
                     vc.getBtnImprimir().setOnAction(event-> 
@@ -141,7 +140,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
             montoPagado = ventaTB.getVentaCreditoTBs().get(i).getMonto();
         }
         lblMontoPagado.setText(Tools.roundingValue(montoPagado, 2));
-        lblDiferencia.setText(Tools.roundingValue(ventaTB.getTotal() - montoPagado, 2));
+        lblDiferencia.setText(Tools.roundingValue(ventaTB.getMontoTotal()- montoPagado, 2));
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos, Node node) {

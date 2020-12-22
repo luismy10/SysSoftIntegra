@@ -428,7 +428,7 @@ public class CajaADO {
             
             return objects;
         } catch (SQLException ex) {
-            System.out.println("Error en cajaADO: " + ex.getLocalizedMessage());
+            System.out.println("Error en ListarMovimientoPorById: " + ex.getLocalizedMessage());
             return new ArrayList<>();
         } finally {
             try {

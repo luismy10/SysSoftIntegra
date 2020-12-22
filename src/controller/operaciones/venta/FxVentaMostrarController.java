@@ -432,8 +432,10 @@ public class FxVentaMostrarController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            ""
-                                    );
+                                            "",
+                                            "",
+                                            "",
+                                            "");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -568,6 +570,9 @@ public class FxVentaMostrarController implements Initializable {
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
                     ventaTB.getCodigo(),
+                    "",
+                    "",
+                    "",
                     "",
                     "",
                     "",

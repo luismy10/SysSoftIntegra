@@ -39,6 +39,10 @@ public class CompraTB {
     
     private ArrayList<CompraCreditoTB> compraCreditoTBs;
     private HBox hbOpciones;
+    
+    private double montoTotal;
+    private double montoPagado;
+    private double montoRestante;
 
     public CompraTB() {
 
@@ -276,6 +280,30 @@ public class CompraTB {
 
     public void setHbOpciones(HBox hbOpciones) {
         this.hbOpciones = hbOpciones;
+    }
+
+    public double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
+    }
+
+    public double getMontoPagado() {
+        return montoPagado;
+    }
+
+    public void setMontoPagado(double montoPagado) {
+        this.montoPagado = montoPagado;
+    }
+
+    public double getMontoRestante() {
+        return montoRestante;
+    }
+
+    public void setMontoRestante(double montoRestante) {
+        this.montoRestante = montoRestante;
     }
     
     

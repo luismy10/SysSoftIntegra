@@ -89,7 +89,7 @@ public class FxInicioController implements Initializable {
             new PieChart.Data("Productos Excedentes", 0)
     );
 
-    private short count = 10;
+    private short count = 59;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
