@@ -157,7 +157,7 @@ public class FxCajaConsultasController implements Initializable {
             gpList.add(addElementGridPane("l3" + (i + 1), arrList.get(i).getComentario(), Pos.CENTER_LEFT, "#020203"), 2, (i + 1));
             gpList.add(addElementGridPane("l4" + (i + 1),
                     arrList.get(i).getTipoMovimiento() == 1 ? "MONTO INICIAL"
-                    : arrList.get(i).getTipoMovimiento() == 2 ? "VENTA CON EFECTIVO"
+                    : arrList.get(i).getTipoMovimiento() == 2 ? "VENTA EN EFECTIVO"
                     : arrList.get(i).getTipoMovimiento() == 3 ? "VENTA CON TARJETA"
                     : arrList.get(i).getTipoMovimiento() == 4 ? "INGRESO DE DINERO"
                     : "SALIDAS DE DINERO",

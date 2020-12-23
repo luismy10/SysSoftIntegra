@@ -157,6 +157,19 @@ public class SplashScreen extends Preloader {
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = false;
                         }
+                        
+                         String rutaCuentasPorPagar= "./archivos/CUENTAS POR PAGAR.properties";
+                        try (InputStream input = new FileInputStream(rutaCuentasPorPagar)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR = true;
+                            Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR = prop.getProperty("printerNameCuentasPorPagar");
+                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR = Boolean.parseBoolean(prop.getProperty("printerCutPaperCuentasPorPagar"));
+                            Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR = prop.getProperty("printerTypeFormatCuentasPorPagar");
+                            Session.DESING_IMPRESORA_CUENTA_POR_PAGAR = prop.getProperty("printerTypeDesingCuentasPorPagar");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR = false;
+                        }
 
                         LoadFont loadFont = new LoadFont();
                         loadFont.loadFont();

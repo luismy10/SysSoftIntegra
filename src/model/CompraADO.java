@@ -12,14 +12,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 public class CompraADO extends DBUtil {
 
@@ -1134,7 +1131,7 @@ public class CompraADO extends DBUtil {
         CompraTB compraTB = null;
         try {
             dbConnect();
-            preparedProveedor = getConnection().prepareStatement("{call Sp_Obtener_Compra_ById(?)}");
+            preparedProveedor = getConnection().prepareStatement("{call Sp_Obtener_Compra_ById_For_Credito(?)}");
             preparedProveedor.setString(1, idCompra);
             resultSet = preparedProveedor.executeQuery();
             if (resultSet.next()) {
@@ -1144,7 +1141,9 @@ public class CompraADO extends DBUtil {
                 compraTB.setNumeracion(resultSet.getString("Numeracion"));
                 compraTB.setEstado(resultSet.getInt("EstadoCompra"));
                 compraTB.setEstadoName(resultSet.getString("Estado"));
-                compraTB.setTotal(resultSet.getDouble("Total"));
+                compraTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
+                compraTB.setMontoPagado(resultSet.getDouble("MontoPagado"));
+                compraTB.setMontoRestante(compraTB.getMontoTotal()-compraTB.getMontoPagado());
 
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setNumeroDocumento(resultSet.getString("NumeroDocumento"));
@@ -1472,7 +1471,9 @@ public class CompraADO extends DBUtil {
                 compraTB.setEstadoLabel(label);
 
                 compraTB.setMonedaNombre(rsEmps.getString("Simbolo"));
-                compraTB.setTotal(rsEmps.getDouble("Total"));
+                compraTB.setMontoTotal(rsEmps.getDouble("MontoTotal"));
+                compraTB.setMontoPagado(rsEmps.getDouble("MontoPagado"));
+                compraTB.setMontoRestante(compraTB.getMontoTotal()-compraTB.getMontoPagado());
 
                 HBox hBox = new HBox();
                 hBox.setAlignment(Pos.CENTER);
@@ -1520,13 +1521,13 @@ public class CompraADO extends DBUtil {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 compraCreditoTB = new CompraCreditoTB();
-                compraCreditoTB.setIdCompraCredito(resultSet.getString("IdVentaCredito"));
+                compraCreditoTB.setIdCompraCredito(resultSet.getString("IdCompraCredito"));
                 compraCreditoTB.setMonto(resultSet.getDouble("Monto"));
                 compraCreditoTB.setFechaPago(resultSet.getDate("FechaPago").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 compraCreditoTB.setHoraPago(resultSet.getTime("HoraPago").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 compraCreditoTB.setObservacion(resultSet.getString("Observacion"));
 
-                preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Compra_ById(?)}");
+                preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Compra_ById_For_Credito(?)}");
                 preparedStatement.setString(1, idCompra);
                 resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
@@ -1538,7 +1539,9 @@ public class CompraADO extends DBUtil {
                     compraTB.setEstado(resultSet.getInt("EstadoCompra"));
                     compraTB.setEstadoName(resultSet.getString("Estado"));
                     compraTB.setMonedaNombre(resultSet.getString("Simbolo"));
-                    compraTB.setTotal(resultSet.getDouble("Total"));
+                    compraTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
+                    compraTB.setMontoPagado(resultSet.getDouble("MontoPagado"));
+                    compraTB.setMontoRestante(compraTB.getMontoTotal()-compraTB.getMontoPagado());
                 }
                 compraCreditoTB.setCompraTB(compraTB);
             }

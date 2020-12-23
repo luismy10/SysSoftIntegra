@@ -141,8 +141,10 @@
                                     <TableColumn fx:id="tcProveedor" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Proveedor/Persona" />
                                     <TableColumn fx:id="tcComprobante" prefWidth="232.0" style="-fx-alignment: CENTER-LEFT;" text="Comprobante" />
                                     <TableColumn fx:id="tcEstado" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                                    <TableColumn fx:id="tcTotal" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
-                                    <TableColumn fx:id="tcOpciones" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Opciones" />
+                                    <TableColumn fx:id="tcMontoTotal" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Monto Total" />
+                                    <TableColumn fx:id="tcMontoCobrado" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Monto Cobrado" />
+                                    <TableColumn fx:id="tcDiferencia" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Diferencia" />
+                                    <TableColumn fx:id="tcOpciones" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="Opciones" />
                                  </columns>
                               </TableView>
                            </children>
