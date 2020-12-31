@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.configuracion.impresoras.FxOpcionesImprimirController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.configuracion.impresoras.FxOpcionesImprimirController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -30,7 +29,7 @@
                <children>
                   <VBox alignment="CENTER" style="-fx-border-color: #1e88e5; -fx-background-color: #e3f2fd; -fx-padding: 20px; -fx-border-radius: 3px;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label style="-fx-text-fill: #1565c0;" styleClass="labelRoboto15" text="Se guardó correctamente el documento" />
+                        <Label style="-fx-text-fill: #1565c0;" styleClass="labelRoboto15" text="Se guardaron correctamente  los datos." />
                      </children>
                   </VBox>
                </children>

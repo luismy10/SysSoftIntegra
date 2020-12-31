@@ -226,6 +226,19 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     private void onActionCobrar(ActionEvent event) {
         onEventAmortizar();
     }
+    
+    
+    @FXML
+    private void onKeyPressedReporte(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionReporte(ActionEvent event) {
+    }
+
 
     @FXML
     private void onActionTicket(ActionEvent event) {
@@ -252,8 +265,5 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         this.vbContent = vbContent;
         this.cuentasPorCobrarController = cuentasPorCobrarController;
     }
-
-
-
 
 }

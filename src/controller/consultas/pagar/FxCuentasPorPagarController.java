@@ -200,7 +200,9 @@ public class FxCuentasPorPagarController implements Initializable {
             Map map = new HashMap();
             map.put("LOGO", imgInputStream);
             map.put("PERIODO", Tools.getDatePicker(dpFechaInicial) + " - " + Tools.getDatePicker(dpFechaFinal));
-
+            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+            
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(tvList.getItems()));
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);

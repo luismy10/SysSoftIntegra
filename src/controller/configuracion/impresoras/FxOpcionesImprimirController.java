@@ -113,7 +113,7 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private void onEventTicket() {
         if (cuentasPorCobrarVisualizarController != null) {
-            printEventCuentasPorCobrar();
+            printEventCuentasPorCobrarTicket();
         } else if (cuentasPorPagarVisualizarController != null) {
             printEventCuentasPorPagar();
         } else if (cajaController != null) {
@@ -123,13 +123,12 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
-    private void printEventCuentasPorCobrar() {
+    private void printEventCuentasPorCobrarTicket() {
         if (!Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR && Tools.isText(Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR) && Tools.isText(Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR)) {
             Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             Tools.Dispose(apWindow);
             return;
         }
-
         if (Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR.equalsIgnoreCase("ticket")) {
             if (Session.TICKET_CUENTA_POR_COBRAR_ID == 0 && Session.TICKET_CUENTA_POR_COBRAR_RUTA.equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
@@ -144,12 +143,26 @@ public class FxOpcionesImprimirController implements Initializable {
                         Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR
                 );
             }
-        } else if (Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR.equalsIgnoreCase("a4")) {
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+        }
+
+    }
+
+    private void printEventCuentasPorCobrar4a() {
+        if (!Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR && Tools.isText(Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR) && Tools.isText(Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR)) {
+            Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            Tools.Dispose(apWindow);
+            return;
+        }
+        if (Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR.equalsIgnoreCase("a4")) {
 
         } else {
             Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
             Tools.Dispose(apWindow);
         }
+
     }
 
     private void printEventCuentasPorPagar() {
@@ -1276,18 +1289,6 @@ public class FxOpcionesImprimirController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedImprimirA4(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-
-        }
-    }
-
-    @FXML
-    private void onActionImprimirA4(ActionEvent event) {
-
-    }
-
-    @FXML
     private void onKeyPressedImprimirTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             onEventTicket();
@@ -1297,6 +1298,18 @@ public class FxOpcionesImprimirController implements Initializable {
     @FXML
     private void onActionImprimirTicket(ActionEvent event) {
         onEventTicket();
+    }
+
+    @FXML
+    private void onKeyPressedImprimirA4(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionImprimirA4(ActionEvent event) {
+
     }
 
     public void setInitOpcionesImprimirCuentasPorCobrar(FxCuentasPorCobrarVisualizarController cuentasPorCobrarVisualizarController) {
