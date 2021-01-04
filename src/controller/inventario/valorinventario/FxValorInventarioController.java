@@ -485,12 +485,18 @@ public class FxValorInventarioController implements Initializable {
                             billPrintable.hbPie(box, "",
                                     Tools.roundingValue(0, 2),
                                     "-" + Tools.roundingValue(0, 2),
+                                     Tools.roundingValue(0, 2),
+                                    Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
                                     "SIN DOCUMENTO",
-                                    "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR", "");
+                                    "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR", "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         billPrintable.generatePDFPrint(apEncabezado, hbDetalle, apPie);

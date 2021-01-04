@@ -133,7 +133,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
             gpList.add(addElementGridPane("l1" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getId() + "", Pos.CENTER, null), 0, (i + 1));
             gpList.add(addElementGridPane("l2" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getIdVentaCredito(), Pos.CENTER, null), 1, (i + 1));
             gpList.add(addElementGridPane("l3" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getFechaPago(), Pos.CENTER, null), 2, (i + 1));
-            gpList.add(addElementGridPane("l4" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getEstado() + "", Pos.CENTER, null), 3, (i + 1));
+            gpList.add(addElementGridPane("l4" + (i + 1), "Completado", Pos.CENTER, null), 3, (i + 1));
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(ventaTB.getVentaCreditoTBs().get(i).getMonto(), 2), Pos.CENTER, null), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getObservacion(), Pos.CENTER, null), 5, (i + 1));
             gpList.add(addElementGridPane("l7" + (i + 1), "", Pos.CENTER, ventaTB.getVentaCreditoTBs().get(i).getBtnImprimir()), 6, (i + 1));
@@ -226,6 +226,19 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     private void onActionCobrar(ActionEvent event) {
         onEventAmortizar();
     }
+    
+    
+    @FXML
+    private void onKeyPressedReporte(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            
+        }
+    }
+
+    @FXML
+    private void onActionReporte(ActionEvent event) {
+    }
+
 
     @FXML
     private void onActionTicket(ActionEvent event) {
@@ -252,8 +265,5 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         this.vbContent = vbContent;
         this.cuentasPorCobrarController = cuentasPorCobrarController;
     }
-
-
-
 
 }

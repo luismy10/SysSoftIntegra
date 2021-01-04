@@ -586,6 +586,8 @@ public class FxVentaDetalleController implements Initializable {
                                 billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
                                         Tools.roundingValue(subImporte, 2),
                                         "-" + Tools.roundingValue(descuento, 2),
+                                        Tools.roundingValue(totalImporte, 2),
+                                        Tools.roundingValue(ventaTB.getImpuesto(), 2),
                                         Tools.roundingValue(subTotalImporte, 2),
                                         Tools.roundingValue(total, 2),
                                         Tools.roundingValue(efectivo, 2),
@@ -593,7 +595,10 @@ public class FxVentaDetalleController implements Initializable {
                                         ventaTB.getClienteTB().getNumeroDocumento(),
                                         ventaTB.getClienteTB().getInformacion(),
                                         ventaTB.getCodigo(),
-                                        ventaTB.getClienteTB().getCelular(),
+                                        ventaTB.getClienteTB().getCelular(),"",
+                                        "",
+                                        "",
+                                        "",
                                         "");
                             }
 
@@ -732,13 +737,18 @@ public class FxVentaDetalleController implements Initializable {
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    Tools.roundingValue(ventaTB.getImpuesto(), 2),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getCelular(),"",
+                    "",
+                    "",
+                    "",
                     "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);

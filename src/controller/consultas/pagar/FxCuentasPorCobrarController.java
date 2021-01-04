@@ -73,7 +73,11 @@ public class FxCuentasPorCobrarController implements Initializable {
     @FXML
     private TableColumn<VentaTB, Label> tcEstado;
     @FXML
-    private TableColumn<VentaTB, String> tcTotal;
+    private TableColumn<VentaTB, String> tcMontoTotal;
+    @FXML
+    private TableColumn<VentaTB, String> tcMontoCobrado;
+    @FXML
+    private TableColumn<VentaTB, String> tcDiferencia;
     @FXML
     private TableColumn<VentaTB, HBox> tcOpciones;
     @FXML
@@ -98,25 +102,31 @@ public class FxCuentasPorCobrarController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClienteTB().getNumeroDocumento() + "\n" + cellData.getValue().getClienteTB().getInformacion()));
         tcComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tcMontoTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getMontoTotal(), 2)));
+        tcMontoCobrado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getMontoCobrado(), 2)));
+        tcDiferencia.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getMontoRestante(), 2)));
         tcOpciones.setCellValueFactory(new PropertyValueFactory<>("hbOpciones"));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcFechaRegistro.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
-        tcComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcOpciones.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
+        tcFechaRegistro.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcMontoTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcMontoCobrado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcDiferencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcOpciones.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
 
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
         Tools.actualDate(Tools.getDate(), dpFechaFinal);
     }
 
     public void loadTableCuentasPorCobrar() {
-        paginacion = 1;
-        fillPurchasesTable((short) 0, "", "", "");
-        opcion = 0;
+        if (!lblLoad.isVisible()) {
+            paginacion = 1;
+            fillPurchasesTable((short) 0, "", "", "");
+            opcion = 0;
+        }
     }
 
     public void fillPurchasesTable(short opcion, String buscar, String fechaInicio, String fechaFinal) {
@@ -204,27 +214,27 @@ public class FxCuentasPorCobrarController implements Initializable {
                 break;
         }
     }
-    
-     private void onEventReporte() {
+
+    private void onEventReporte() {
         try {
 
             if (tvList.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Reporte Cuentas por Cobrar", "No hay páginas para mostrar en el reporte.");
                 return;
             }
-            
+
             InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
-            if(Session.COMPANY_IMAGE != null){
+            if (Session.COMPANY_IMAGE != null) {
                 imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
             }
-            
+
             InputStream dir = getClass().getResourceAsStream("/report/CuentasPorCobrar.jasper");
-           
+
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("LOGO", imgInputStream);
-            map.put("PERIODO", Tools.getDatePicker(dpFechaInicial)+" - "+Tools.getDatePicker(dpFechaFinal));
+            map.put("PERIODO", Tools.getDatePicker(dpFechaInicial) + " - " + Tools.getDatePicker(dpFechaFinal));
             map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
             map.put("DIRECCION", Session.COMPANY_DOMICILIO);
 
@@ -393,10 +403,10 @@ public class FxCuentasPorCobrarController implements Initializable {
             }
         }
     }
-    
-        @FXML
+
+    @FXML
     private void onKeyPressedReporte(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             onEventReporte();
         }
     }

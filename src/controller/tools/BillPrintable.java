@@ -70,7 +70,7 @@ public class BillPrintable implements Printable {
         pointWidthSizePaper = 5.10;
     }
 
-    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras, String fechaInicioOperacion, String horaInicioOperacion, String fechaTerminoOperaciona, String horaTerminoOperacion, String calculado, String contado, String diferencia, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String empleadoDireccion,String montoTotal,String montoPagado,String montoDiferencial) {
+    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras, String fechaInicioOperacion, String horaInicioOperacion, String fechaTerminoOperaciona, String horaTerminoOperacion, String calculado, String contado, String diferencia, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String empleadoDireccion, String montoTotal, String montoPagado, String montoDiferencial) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -135,11 +135,11 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(empleadoCelular));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempleado")) {
                     fieldTicket.setText(Tools.AddText2Guines(empleadoDireccion));
-                }else if (fieldTicket.getVariable().equalsIgnoreCase("montotal")) {
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montotal")) {
                     fieldTicket.setText(Tools.AddText2Guines(montoTotal));
-                }else if (fieldTicket.getVariable().equalsIgnoreCase("montopagacobra")) {
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montopagacobra")) {
                     fieldTicket.setText(Tools.AddText2Guines(montoPagado));
-                }else if (fieldTicket.getVariable().equalsIgnoreCase("montorestanten")) {
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montorestanten")) {
                     fieldTicket.setText(Tools.AddText2Guines(montoDiferencial));
                 }
                 lines = fieldTicket.getLines();
@@ -214,8 +214,8 @@ public class BillPrintable implements Printable {
         }
         return lines;
     }
-    
-     public int hbDetalleCuentaPagar(HBox hBox, HBox box, ObservableList<CompraCreditoTB> arrList, int m) {
+
+    public int hbDetalleCuentaPagar(HBox hBox, HBox box, ObservableList<CompraCreditoTB> arrList, int m) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -293,7 +293,7 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente, String importe_total_letras) {
+    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String montoOperacion, String montoImpuesto, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente, String importe_total_letras, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String direccionEmpleado) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -308,6 +308,10 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + descuento));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subTotal));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("valoroperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("valorimpustos")) {
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoImpuesto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + total));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
@@ -324,6 +328,14 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(celular_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("importetotalletras")) {
                     fieldTicket.setText(Tools.AddText2Guines(importe_total_letras));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("numempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoNumeroDocumento));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("infoempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoInformacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("celempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoCelular));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(direccionEmpleado));
                 }
                 lines = fieldTicket.getLines();
             }

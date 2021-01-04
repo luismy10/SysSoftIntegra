@@ -66,7 +66,6 @@ public class FxCajaController implements Initializable {
     private Label lblRetirosEfectivo;
     @FXML
     private VBox vbVentas;
-    private Button btnTicket;
 
     private AnchorPane vbPrincipal;
 
@@ -133,7 +132,6 @@ public class FxCajaController implements Initializable {
                         Tools.AlertMessageWarning(window, "Corte de caja", "No tiene ninguna caja aperturada.");
                         btnRealizarCorte.setDisable(false);
                         btnTerminarTurno.setDisable(true);
-                        btnTicket.setDisable(true);
                         idActual = "";
                         clearElements();
                         break;
@@ -153,7 +151,6 @@ public class FxCajaController implements Initializable {
 
                         btnRealizarCorte.setDisable(false);
                         btnTerminarTurno.setDisable(false);
-                        btnTicket.setDisable(false);
                         idActual = cajaTB.getIdCaja();
                         break;
                     case 3:
@@ -172,13 +169,11 @@ public class FxCajaController implements Initializable {
 
                         btnRealizarCorte.setDisable(false);
                         btnTerminarTurno.setDisable(false);
-                        btnTicket.setDisable(false);
                         idActual = cajaTB.getIdCaja();
                         break;
                     default:
                         btnRealizarCorte.setDisable(false);
                         btnTerminarTurno.setDisable(true);
-                        btnTicket.setDisable(true);
                         clearElements();
                         break;
                 }
@@ -186,7 +181,6 @@ public class FxCajaController implements Initializable {
                 Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
                 btnRealizarCorte.setDisable(false);
                 btnTerminarTurno.setDisable(true);
-                btnTicket.setDisable(true);
                 idActual = "";
                 totalDineroCaja = 0;
                 totalTarjeta = 0;
@@ -202,7 +196,6 @@ public class FxCajaController implements Initializable {
             totalTarjeta = 0;
             btnRealizarCorte.setDisable(false);
             btnTerminarTurno.setDisable(true);
-            btnTicket.setDisable(true);
             lblLoad.setVisible(false);
         });
 
@@ -212,7 +205,6 @@ public class FxCajaController implements Initializable {
             totalTarjeta = 0;
             btnRealizarCorte.setDisable(true);
             btnTerminarTurno.setDisable(true);
-            btnTicket.setDisable(true);
             lblLoad.setVisible(true);
         });
 

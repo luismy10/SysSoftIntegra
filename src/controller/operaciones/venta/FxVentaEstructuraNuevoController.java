@@ -735,12 +735,17 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            Tools.roundingValue(ventaTB.getImpuesto(), 2),
+                                            Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             Tools.roundingValue(ventaTB.getTotal(), 2),
                                             Tools.roundingValue(ventaTB.getEfectivo(), 2),
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                            ventaTB.getClienteTB().getCelular(),
+                                            ventaTB.getClienteTB().getCelular(), "",
+                                            "",
+                                            "",
+                                            "",
                                             "");
                                 }
 
@@ -886,12 +891,17 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    Tools.roundingValue(ventaTB.getImpuesto(), 2),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getCelular(), "",
+                    "",
+                    "",
+                    "",
                     "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, printerName, printerCut);
@@ -988,6 +998,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
                                     "-" + Tools.roundingValue(descuentoTotal, 2),
+                                    Tools.roundingValue(totalImporte, 2),
+                                    Tools.roundingValue(totalImpuesto, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -995,7 +1007,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     numeroDocumento,
                                     informacion,
                                     "CODIGO DE VENTA",
-                                    celular,
+                                    celular, "",
+                                    "",
+                                    "",
+                                    "",
                                     "");
                         }
 
@@ -1072,6 +1087,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             lines += billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
                                     "-" + Tools.roundingValue(descuentoTotal, 2),
+                                    Tools.roundingValue(totalImporte, 2),
+                                    Tools.roundingValue(totalImpuesto, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -1079,7 +1096,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     numeroDocumento,
                                     informacion,
                                     "CODIGO DE VENTA",
-                                    celular,
+                                    celular, "",
+                                    "",
+                                    "",
+                                    "",
                                     "");
                         }
                         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);

@@ -1343,7 +1343,9 @@ public class VentaADO {
                 ventaTB.setEstado(resultSet.getInt("Estado"));
                 ventaTB.setEstadoName(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "PENDIENTE" : "PAGADO");
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                ventaTB.setTotal(resultSet.getDouble("Total"));
+                ventaTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
+                ventaTB.setMontoCobrado(resultSet.getDouble("MontoCobrado"));
+                ventaTB.setMontoRestante(ventaTB.getMontoTotal() - ventaTB.getMontoCobrado());
 
                 Label label = new Label(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "PENDIENTE" : "PAGADO");
                 label.getStyleClass().add(ventaTB.getEstado() == 2 ? "label-medio" : ventaTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
@@ -1416,7 +1418,7 @@ public class VentaADO {
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                 ventaTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
                 ventaTB.setMontoCobrado(resultSet.getDouble("MontoCobrado"));
-                ventaTB.setMontoRestante(ventaTB.getMontoTotal()-ventaTB.getMontoCobrado());
+                ventaTB.setMontoRestante(ventaTB.getMontoTotal() - ventaTB.getMontoCobrado());
 
                 preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Listar_Detalle_Venta_Credito(?)}");
                 preparedStatement.setString(1, idVenta);
@@ -1592,7 +1594,7 @@ public class VentaADO {
                     ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                     ventaTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
                     ventaTB.setMontoCobrado(resultSet.getDouble("MontoCobrado"));
-                    ventaTB.setMontoRestante(ventaTB.getMontoTotal()-ventaTB.getMontoRestante());
+                    ventaTB.setMontoRestante(ventaTB.getMontoTotal() - ventaTB.getMontoRestante());
                 }
                 ventaCreditoTB.setVentaTB(ventaTB);
             }

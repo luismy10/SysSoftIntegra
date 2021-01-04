@@ -71,11 +71,10 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     private FxCuentasPorPagarController cuentasPorPagarController;
 
     private CompraTB compraTB;
-    
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     public void loadTableCompraCredito(String idCompra) {
@@ -99,18 +98,18 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
         });
         task.setOnSucceeded(w -> {
             compraTB = task.getValue();
-            if(compraTB != null){
-                lblProveedor.setText(compraTB.getProveedorTB().getNumeroDocumento()+" - "+compraTB.getProveedorTB().getRazonSocial());
+            if (compraTB != null) {
+                lblProveedor.setText(compraTB.getProveedorTB().getNumeroDocumento() + " - " + compraTB.getProveedorTB().getRazonSocial());
                 lblTelefonoCelular.setText(compraTB.getProveedorTB().getCelular());
                 lblDireccion.setText(compraTB.getProveedorTB().getDireccion());
                 lblEmail.setText(compraTB.getProveedorTB().getEmail());
-                lblComprobante.setText(compraTB.getSerie()+" - "+compraTB.getNumeracion());
+                lblComprobante.setText(compraTB.getSerie() + " - " + compraTB.getNumeracion());
                 lblEstado.setText(compraTB.getEstadoName());
                 lblObservacion.setText(compraTB.getObservaciones());
-                lblMontoTotal.setText(Tools.roundingValue(compraTB.getTotal(), 2));      
+                lblMontoTotal.setText(Tools.roundingValue(compraTB.getMontoTotal(), 2));
                 for (CompraCreditoTB vc : compraTB.getCompraCreditoTBs()) {
-                    vc.getBtnImprimir().setOnAction(event-> 
-                            openModalImpresion(idCompra, vc.getIdCompraCredito())
+                    vc.getBtnImprimir().setOnAction(event
+                            -> openModalImpresion(idCompra, vc.getIdCompraCredito())
                     );
                     vc.getBtnImprimir().setOnKeyPressed(event -> {
                         if (event.getCode() == KeyCode.ENTER) {
@@ -120,7 +119,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
                 }
                 fillVentasDetalleTable();
                 lblLoad.setVisible(false);
-            }else{                
+            } else {
                 lblLoad.setVisible(false);
             }
         });
@@ -129,21 +128,21 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             exec.shutdown();
         }
     }
-    
-     private void fillVentasDetalleTable() {
+
+    private void fillVentasDetalleTable() {
         double montoPagado = 0;
         for (int i = 0; i < compraTB.getCompraCreditoTBs().size(); i++) {
             gpList.add(addElementGridPane("l1" + (i + 1), compraTB.getCompraCreditoTBs().get(i).getId() + "", Pos.CENTER, null), 0, (i + 1));
             gpList.add(addElementGridPane("l2" + (i + 1), compraTB.getCompraCreditoTBs().get(i).getIdCompraCredito(), Pos.CENTER, null), 1, (i + 1));
             gpList.add(addElementGridPane("l3" + (i + 1), compraTB.getCompraCreditoTBs().get(i).getFechaPago(), Pos.CENTER, null), 2, (i + 1));
-            gpList.add(addElementGridPane("l4" + (i + 1), compraTB.getCompraCreditoTBs().get(i).isEstado()+ "", Pos.CENTER, null), 3, (i + 1));
+            gpList.add(addElementGridPane("l4" + (i + 1), "Completado", Pos.CENTER, null), 3, (i + 1));
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(compraTB.getCompraCreditoTBs().get(i).getMonto(), 2), Pos.CENTER, null), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), compraTB.getCompraCreditoTBs().get(i).getObservacion(), Pos.CENTER, null), 5, (i + 1));
             gpList.add(addElementGridPane("l7" + (i + 1), "", Pos.CENTER, compraTB.getCompraCreditoTBs().get(i).getBtnImprimir()), 6, (i + 1));
-            montoPagado = compraTB.getCompraCreditoTBs().get(i).getMonto();
+            montoPagado += compraTB.getCompraCreditoTBs().get(i).getMonto();
         }
         lblMontoPagado.setText(Tools.roundingValue(montoPagado, 2));
-        lblDiferencia.setText(Tools.roundingValue(compraTB.getTotal() - montoPagado, 2));
+        lblDiferencia.setText(Tools.roundingValue(compraTB.getMontoTotal() - montoPagado, 2));
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos, Node node) {
@@ -194,7 +193,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxOpcionesImprimirController controller = fXMLLoader.getController();
-             controller.loadDataCuentaPorPagar(idCompra, idCompraCredito);
+            controller.loadDataCuentaPorPagar(idCompra, idCompraCredito);
             controller.setInitOpcionesImprimirCuentasPorPagar(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", spWindow.getScene().getWindow());
@@ -337,13 +336,21 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            if (compraTB != null) {
+                openModalImpresion(compraTB.getIdCompra(), "");
+            } else {
+                Tools.AlertMessageWarning(spWindow, "Generar Cobro", "No se puede habrir el modal por error en carga de datos.");
+            }
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-
+        if (compraTB != null) {
+            openModalImpresion(compraTB.getIdCompra(), "");
+        } else {
+            Tools.AlertMessageWarning(spWindow, "Generar Cobro", "No se puede habrir el modal por error en carga de datos.");
+        }
     }
 
     public void setInitCuentasPorPagar(AnchorPane vbPrincipal, AnchorPane vbContent, FxCuentasPorPagarController cuentasPorPagarController) {

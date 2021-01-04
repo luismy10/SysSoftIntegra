@@ -40,7 +40,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLight" text="Visualizar">
+                  <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLightDefault" text="Visualizar">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -141,7 +141,9 @@
                                     <TableColumn fx:id="tcProveedor" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Proveedor/Persona" />
                                     <TableColumn fx:id="tcComprobante" prefWidth="232.0" style="-fx-alignment: CENTER-LEFT;" text="Comprobante" />
                                     <TableColumn fx:id="tcEstado" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                                    <TableColumn fx:id="tcTotal" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
+                                    <TableColumn fx:id="tcMontoTotal" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Monto Total" />
+                                    <TableColumn fx:id="tcMontoPagado" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Monto Pagado" />
+                                    <TableColumn fx:id="tcDiferencia" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Diferencia" />
                                     <TableColumn fx:id="tcOpciones" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Opciones" />
                                  </columns>
                               </TableView>
