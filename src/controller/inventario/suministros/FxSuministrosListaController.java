@@ -330,7 +330,7 @@ public class FxSuministrosListaController implements Initializable {
             loteCambiarController.getTxtArticulo().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             loteCambiarController.getTxtCantidad().setText("" + tvList.getSelectionModel().getSelectedItem().getCantidad());
             Tools.Dispose(apWindow);
-        }else if(producirProcesoController != null){
+        } else if (producirProcesoController != null) {
             producirProcesoController.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
             producirProcesoController.getTxtProductoFabricar().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             Tools.Dispose(apWindow);
@@ -416,9 +416,15 @@ public class FxSuministrosListaController implements Initializable {
                 }
             });
             suministroTB.setRemover(button);
-            //ventaEstructuraController.openWindowCantidadLista(suministroTB, true);
-            Tools.Dispose(apWindow);
-            ventaEstructuraController.getAddArticulo(suministroTB);
+            if (ventaEstructuraController.isCerar_modal_agregar_item_lista()) {
+                Tools.Dispose(apWindow);
+                ventaEstructuraController.getAddArticulo(suministroTB,apWindow.getScene().getWindow());
+            } else {
+                txtSearch.selectAll();
+                txtSearch.requestFocus();
+                ventaEstructuraController.getAddArticulo(suministroTB,apWindow.getScene().getWindow());
+            }
+
         }
     }
 

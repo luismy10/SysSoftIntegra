@@ -293,7 +293,25 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String montoOperacion, String montoImpuesto, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente, String importe_total_letras, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String direccionEmpleado) {
+    public int hbPie(HBox box, 
+            String moneda, 
+            String valorVenta, 
+            String descuento, 
+            String montoOperacion, 
+            String montoImpuesto, 
+            String subTotal, 
+            String total, 
+            String efectivo, 
+            String vuelto, 
+            String numCliente, 
+            String infoCliente, 
+            String codigoVenta, 
+            String celular_cliente, 
+            String importe_total_letras, 
+            String empleadoNumeroDocumento, 
+            String empleadoInformacion, 
+            String empleadoCelular, 
+            String direccionEmpleado) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {

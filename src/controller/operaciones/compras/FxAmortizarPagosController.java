@@ -20,9 +20,12 @@ import javafx.scene.layout.AnchorPane;
 import model.BancoADO;
 import model.BancoHistorialTB;
 import model.BancoTB;
+import model.CajaADO;
+import model.CajaTB;
 import model.CompraADO;
 import model.CompraCreditoTB;
 import model.ModeloObject;
+import model.MovimientoCajaTB;
 import model.VentaADO;
 import model.VentaCreditoTB;
 
@@ -81,7 +84,7 @@ public class FxAmortizarPagosController implements Initializable {
                     Tools.AlertMessageWarning(apWindow, "Abonar", "Seleccione la cuenta.");
                     cbCuenta.requestFocus();
                 } else {
-                    short value = Tools.AlertMessageConfirmation(apWindow, "Abonor", "¿Está seguro de continuar?");
+                    short value = Tools.AlertMessageConfirmation(apWindow, "Abonar", "¿Está seguro de continuar?");
                     if (value == 1) {
                         btnGuardar.setDisable(true);
                         CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
@@ -116,7 +119,45 @@ public class FxAmortizarPagosController implements Initializable {
                     }
                 }
             } else {
+                short value = Tools.AlertMessageConfirmation(apWindow, "Abonar", "¿Está seguro de continuar?");
+                if (value == 1) {
 
+                    btnGuardar.setDisable(true);
+                    CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
+                    if (cajaTB.getId() == 2) {
+                        CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
+                        compraCreditoTB.setIdCompra(idCompra);
+                        compraCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
+                        compraCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
+                        compraCreditoTB.setHoraPago(Tools.getHour());
+                        compraCreditoTB.setEstado(true);
+                        compraCreditoTB.setIdEmpleado(Session.USER_ID);
+                        compraCreditoTB.setObservacion(txtObservacion.getText().trim());
+
+                        MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
+                        movimientoCajaTB.setIdCaja(cajaTB.getIdCaja());
+                        movimientoCajaTB.setFechaMovimiento(Tools.getDate());
+                        movimientoCajaTB.setHoraMovimiento(Tools.getHour());
+                        movimientoCajaTB.setComentario("SALIDA DE DINERO DE LA CUENTA POR PAGAR");
+                        movimientoCajaTB.setTipoMovimiento((short) 5);
+                        movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));
+
+                        ModeloObject result = CompraADO.Registrar_Amortizacion(compraCreditoTB, null, movimientoCajaTB);
+                        if (result.getState().equalsIgnoreCase("inserted")) {
+                            Tools.Dispose(apWindow);
+                            cuentasPorPagarVisualizarController.openModalImpresion(idCompra, result.getIdResult());
+                            cuentasPorPagarVisualizarController.loadTableCompraCredito(idCompra);
+                        } else if (result.getState().equalsIgnoreCase("error")) {
+                            Tools.AlertMessageWarning(apWindow, "Abonar", result.getMessage());
+                        } else {
+                            Tools.AlertMessageError(apWindow, "Abonar", "No se completo el proceso por problemas de conexión.");
+                            btnGuardar.setDisable(false);
+                        }
+                    } else {
+                        Tools.AlertMessageWarning(apWindow, "Abonar", "No se tiene una caja apertura para realizar el cobro.");
+                        btnGuardar.setDisable(false);
+                    }
+                }
             }
         }
     }

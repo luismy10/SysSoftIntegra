@@ -153,33 +153,6 @@ public class FxVentaAbonoProcesoController implements Initializable {
                     }
                 }
             }
-//            if ((pagado + Double.parseDouble(txtValorCuota.getText())) > total) {
-//                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", "El abono ingresado sobrepasa al monto a cobrar.", false);
-//                txtValorCuota.requestFocus();
-//            } else {
-//                CuentasHistorialClienteTB historialClienteTB = new CuentasHistorialClienteTB();
-//                historialClienteTB.setIdCuentaClientes(idCuentasCliente);
-//                historialClienteTB.setAbono(Double.parseDouble(txtValorCuota.getText()));
-//                historialClienteTB.setFechaAbono(LocalDateTime.now());
-//                historialClienteTB.setReferencia(txtObservacion.getText().trim().equalsIgnoreCase("") ? "NINGUNO" : txtObservacion.getText().trim());
-//
-//                MovimientoCajaTB movimientoCaja = new MovimientoCajaTB();
-//                movimientoCaja.setIdCaja(Session.CAJA_ID);
-//                movimientoCaja.setIdUsuario(Session.USER_ID);
-//                movimientoCaja.setFechaMovimiento(Tools.getDate());
-//                movimientoCaja.setComentario("Abono");
-//                movimientoCaja.setMovimiento("ABON");
-//                movimientoCaja.setEntrada(Double.parseDouble(txtValorCuota.getText()));
-//                movimientoCaja.setSalidas(0);
-//                movimientoCaja.setSaldo(Double.parseDouble(txtValorCuota.getText()));
-//
-//                String result = CuentasHistorialClienteADO.Crud_CuentasHistorialCliente(historialClienteTB, movimientoCaja, (total == (pagado + Double.parseDouble(txtValorCuota.getText()))), idVenta);
-//                if (result.equalsIgnoreCase("register")) {
-//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Abonar", "Se registro correctamente el abono.", false);
-//                    Tools.Dispose(window);
-//                } else {
-//                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Abonar", result, false);
-//                }
 
         }
     }
