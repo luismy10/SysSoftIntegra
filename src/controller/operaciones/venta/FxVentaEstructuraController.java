@@ -533,7 +533,7 @@ public class FxVentaEstructuraController implements Initializable {
             });
             suministroTB.setRemover(button);
 
-            getAddArticulo(suministroTB,window.getScene().getWindow());
+            getArticuloCodigoBarras(suministroTB);
             txtSearch.clear();
             txtSearch.selectAll();
             txtSearch.requestFocus();
@@ -665,7 +665,7 @@ public class FxVentaEstructuraController implements Initializable {
         }
     }
 
-    private void openWindowCambiarPrecio(String title, boolean opcion, boolean isClose,Window window) {
+    private void openWindowCambiarPrecio(String title, boolean opcion, boolean isClose, Window window) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (!unidades_cambio_precio && tvList.getSelectionModel().getSelectedItem().getValorInventario() == 1
                     || !valormonetario_cambio_precio && tvList.getSelectionModel().getSelectedItem().getValorInventario() == 2
@@ -756,7 +756,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-    public void openWindowCantidad(boolean isClose,Window window) {
+    public void openWindowCantidad(boolean isClose, Window window) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (!unidades_cambio_cantidades && tvList.getSelectionModel().getSelectedItem().getValorInventario() == 1
                     || !valormonetario_cambio_cantidades && tvList.getSelectionModel().getSelectedItem().getValorInventario() == 2
@@ -839,7 +839,7 @@ public class FxVentaEstructuraController implements Initializable {
         }
     }
 
-    public void getAddArticulo(SuministroTB suministro,Window window) {
+    public void getAddArticulo(SuministroTB suministro, Window window) {
         if (validateDuplicateArticulo(tvList, suministro)) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
                 if (tvList.getItems().get(i).getIdSuministro().equalsIgnoreCase(suministro.getIdSuministro())) {
@@ -847,12 +847,12 @@ public class FxVentaEstructuraController implements Initializable {
                         case 3:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowCantidad(cerar_modal_agregar_item_lista,window);
+                            openWindowCantidad(cerar_modal_agregar_item_lista, window);
                             break;
                         case 2:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowCambiarPrecio("Cambiar precio al Artículo", false, cerar_modal_agregar_item_lista,window);
+                            openWindowCambiarPrecio("Cambiar precio al Artículo", false, cerar_modal_agregar_item_lista, window);
                             break;
                         default:
                             SuministroTB suministroTB = tvList.getItems().get(i);
@@ -880,7 +880,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowCantidad(cerar_modal_agregar_item_lista,window);
+                    openWindowCantidad(cerar_modal_agregar_item_lista, window);
                     calculateTotales();
                     break;
                 }
@@ -889,7 +889,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowCambiarPrecio("Cambiar precio al Artículo", false, cerar_modal_agregar_item_lista,window);
+                    openWindowCambiarPrecio("Cambiar precio al Artículo", false, cerar_modal_agregar_item_lista, window);
                     calculateTotales();
                     break;
                 }
@@ -902,6 +902,39 @@ public class FxVentaEstructuraController implements Initializable {
                     break;
                 }
             }
+        }
+
+    }
+
+    public void getArticuloCodigoBarras(SuministroTB suministro) {
+        if (validateDuplicateArticulo(tvList, suministro)) {
+            for (int i = 0; i < tvList.getItems().size(); i++) {
+                if (tvList.getItems().get(i).getIdSuministro().equalsIgnoreCase(suministro.getIdSuministro())) {
+
+                    SuministroTB suministroTB = tvList.getItems().get(i);
+                    suministroTB.setCantidad(suministroTB.getCantidad() + 1);
+                    double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
+
+                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+
+                    suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                    suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+
+                    tvList.refresh();
+                    tvList.getSelectionModel().select(i);
+                    calculateTotales();
+                    break;
+
+                }
+            }
+        } else {
+            tvList.getItems().add(suministro);
+            int index = tvList.getItems().size() - 1;
+            tvList.getSelectionModel().select(index);
+            calculateTotales();
+            txtSearch.requestFocus();
         }
 
     }
@@ -1268,7 +1301,7 @@ public class FxVentaEstructuraController implements Initializable {
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                            ventaTB.getClienteTB().getCelular(), 
+                                            ventaTB.getClienteTB().getCelular(),
                                             monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
                                             "",
                                             "",
@@ -1424,7 +1457,7 @@ public class FxVentaEstructuraController implements Initializable {
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular(), 
+                    ventaTB.getClienteTB().getCelular(),
                     monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
                     "",
                     "",
@@ -1520,7 +1553,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
-                                    txtCelularCliente.getText().trim(), 
+                                    txtCelularCliente.getText().trim(),
                                     monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ""),
                                     "",
                                     "",
@@ -1608,7 +1641,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
-                                    txtCelularCliente.getText().trim(), 
+                                    txtCelularCliente.getText().trim(),
                                     monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ""),
                                     "",
                                     "",
@@ -2088,13 +2121,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedCantidad(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCantidad(true,window.getScene().getWindow());
+            openWindowCantidad(true, window.getScene().getWindow());
         }
     }
 
     @FXML
     private void onActionCantidad(ActionEvent event) {
-        openWindowCantidad(true,window.getScene().getWindow());
+        openWindowCantidad(true, window.getScene().getWindow());
     }
 
     @FXML
@@ -2363,16 +2396,16 @@ public class FxVentaEstructuraController implements Initializable {
             openWindowListaPrecios();
             event.consume();
         } else if (event.getCode() == KeyCode.F4) {
-            openWindowCantidad(true,window.getScene().getWindow());
+            openWindowCantidad(true, window.getScene().getWindow());
             event.consume();
         } else if (event.getCode() == KeyCode.F5) {
-            openWindowCambiarPrecio("Cambiar precio al Artículo", false, true,window.getScene().getWindow());
+            openWindowCambiarPrecio("Cambiar precio al Artículo", false, true, window.getScene().getWindow());
             event.consume();
         } else if (event.getCode() == KeyCode.F6) {
             openWindowDescuento();
             event.consume();
         } else if (event.getCode() == KeyCode.F7) {
-            openWindowCambiarPrecio("Sumar precio al Artículo", true, true,window.getScene().getWindow());
+            openWindowCambiarPrecio("Sumar precio al Artículo", true, true, window.getScene().getWindow());
             event.consume();
         } else if (event.getCode() == KeyCode.F8) {
             openWindowCashMovement();
