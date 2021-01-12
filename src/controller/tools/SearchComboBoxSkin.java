@@ -70,7 +70,11 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         // se ha hecho click sobre el ListView
         itemView.addEventFilter(MouseEvent.ANY, me -> clickSelection = me.getEventType().equals(MouseEvent.MOUSE_PRESSED));
 
-        searchComboBox.getComboBox().addEventHandler(KeyEvent.KEY_PRESSED, event -> searchComboBox.getComboBox().show());
+        searchComboBox.getComboBox().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                searchComboBox.getComboBox().show();
+            }
+        });
 
     }
 

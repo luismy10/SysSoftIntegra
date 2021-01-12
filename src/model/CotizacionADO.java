@@ -332,23 +332,21 @@ public class CotizacionADO {
             DBUtil.dbConnect();
             statementCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Cotizacion_Reporte_ById(?)}");
             statementCotizacione.setString(1, idCotizacion);
-            try (ResultSet result = statementCotizacione.executeQuery()) {
-                if (result.next()) {
-                    cotizacionTB = new CotizacionTB();
-                    cotizacionTB.setId(result.getRow());
-                    cotizacionTB.setIdCotizacion(idCotizacion);
-                    cotizacionTB.setFechaCotizacion(result.getDate("FechaCotizacion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                    cotizacionTB.setHoraCotizacion(result.getTime("HoraCotizacion").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                    cotizacionTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
-                    cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Telefono"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
-                    cotizacionTB.setMonedaTB(new MonedaTB(result.getString("Nombre"), result.getString("Simbolo")));
-                    cotizacionTB.setObservaciones(result.getString("Observaciones"));
-                }
-            }
+            ResultSet result = statementCotizacione.executeQuery();
+            if (result.next()) {
+                cotizacionTB = new CotizacionTB();
+                cotizacionTB.setId(result.getRow());
+                cotizacionTB.setIdCotizacion(idCotizacion);
+                cotizacionTB.setFechaCotizacion(result.getDate("FechaCotizacion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                cotizacionTB.setHoraCotizacion(result.getTime("HoraCotizacion").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                cotizacionTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
+                cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Telefono"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
+                cotizacionTB.setMonedaTB(new MonedaTB(result.getString("Nombre"), result.getString("Simbolo")));
+                cotizacionTB.setObservaciones(result.getString("Observaciones"));
 
-            statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_Reporte_ById(?)}");
-            statementDetalleCotizacione.setString(1, idCotizacion);
-            try (ResultSet result = statementDetalleCotizacione.executeQuery()) {
+                statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_Reporte_ById(?)}");
+                statementDetalleCotizacione.setString(1, idCotizacion);
+                result = statementDetalleCotizacione.executeQuery();
                 while (result.next()) {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setId(result.getRow());
@@ -364,9 +362,9 @@ public class CotizacionADO {
                     double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
                     double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
-                    suministroTB.setDescuento(result.getDouble("Descuento"));
+                    suministroTB.setDescuento(descuento);
                     suministroTB.setDescuentoCalculado(porcentajeRestante);
-                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+                    suministroTB.setDescuentoSumado(descuento * suministroTB.getCantidad());
 
                     suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
                     suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
@@ -385,18 +383,14 @@ public class CotizacionADO {
                     suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
                     suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
-                    suministroTB.setInventario(result.getBoolean("Inventario"));
-                    suministroTB.setUnidadVenta(result.getInt("UnidadVenta"));
-                    suministroTB.setValorInventario(result.getShort("ValorInventario"));
-
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");
 
                     suministroTB.setRemover(button);
                     cotizacionTBs.add(suministroTB);
                 }
+                cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
             }
-            cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
 
         } catch (SQLException ex) {
             System.out.println("Error en cotización: " + ex.getLocalizedMessage());

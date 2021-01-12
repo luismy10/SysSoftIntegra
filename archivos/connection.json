@@ -2,9 +2,9 @@
     "body":{
         "addres":"localhost",
         "port":"1433",
-        "dbname":"PuntoVentaSysSoftDBDesarrollo",
+        "dbname":"Actual",
         "user":"sa",
-        "password":"Qz0966lb"
+        "password":"123456"
     }
    
 }
