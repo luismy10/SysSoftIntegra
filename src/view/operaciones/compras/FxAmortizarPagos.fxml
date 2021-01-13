@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -19,7 +20,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc;">
                      <children>
-                        <Label styleClass="labelRobotoBold15" text="Amortizar deuda" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Amortizar" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -43,7 +44,7 @@
                               </Label>
                            </children>
                         </VBox>
-                        <TextField fx:id="txtMonto" disable="true" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
+                        <TextField fx:id="txtMonto" onAction="#onActionGuardar" onKeyTyped="#onKeyTypedMonto" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
@@ -61,7 +62,30 @@
                               </Label>
                            </children>
                         </VBox>
-                        <DatePicker fx:id="dtFecha" editable="false" prefHeight="30.0" prefWidth="280.0" />
+                        <DatePicker fx:id="dtFecha" disable="true" editable="false" prefHeight="30.0" prefWidth="280.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
+                     <children>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cobrar por:" textFill="#020203">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../image/choose_movement.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER_LEFT" prefWidth="280.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <RadioButton fx:id="rbBancos" mnemonicParsing="false" onAction="#onActionBancos" selected="true" text="Bancos" />
+                              <RadioButton fx:id="rbCaja" mnemonicParsing="false" onAction="#onActionCaja" text="Caja" />
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
@@ -82,11 +106,21 @@
                         <ComboBox fx:id="cbCuenta" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" />
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Observaciòn:" textFill="#020203" />
+                           </children>
+                        </VBox>
+                        <TextField fx:id="txtObservacion" onAction="#onActionGuardar" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" text="N/D" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
                      <children>
-                        <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar">
+                        <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Pagar">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/save.png" />
                                  </image></ImageView>
@@ -94,7 +128,7 @@
                         </Button>
                         <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/error.png" />
                                  </image></ImageView>

@@ -1,8 +1,6 @@
 package controller.tools;
 
 import controller.operaciones.venta.FxVentaEstructuraNuevoController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -41,7 +39,7 @@ public class BbItemProducto extends HBox {
         HBox.setHgrow(vbLeft, Priority.ALWAYS);
         vbLeft.setAlignment(Pos.CENTER_LEFT);
         vbLeft.setMaxWidth(Control.USE_PREF_SIZE);
-        Label lblProducto = new Label(suministroTB.getNombreMarca());
+        Label lblProducto = new Label(suministroTB.getNombreMarca()+(suministroTB.getBonificacion()<=0?"":"(BONIFICACIÓN: "+suministroTB.getBonificacion()+")"));
         lblProducto.getStyleClass().add("labelRoboto14");
         lblProducto.setTextFill(Color.web("#020203"));
         lblProducto.setWrapText(true);

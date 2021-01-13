@@ -31,6 +31,15 @@ public class ProveedorTB {
         this.razonSocial = razonSocial;
     }
 
+    public ProveedorTB(String numeroDocumento, String razonSocial, String telefono, String celular, String email, String direccion) {
+        this.numeroDocumento = numeroDocumento;
+        this.razonSocial = razonSocial;
+        this.telefono = telefono;
+        this.celular = celular;
+        this.email = email;
+        this.direccion = direccion;
+    }
+
     public ProveedorTB(String razonSocial) {
         this.razonSocial = razonSocial;
     }

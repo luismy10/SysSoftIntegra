@@ -1,6 +1,10 @@
 package controller.tools;
 
 import br.com.adilson.util.PrinterMatrix;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.qrcode.QRCodeWriter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -25,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javax.imageio.ImageIO;
@@ -38,9 +41,12 @@ import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import model.CompraCreditoTB;
 import model.ImageADO;
 import model.ImagenTB;
+import model.MovimientoCajaTB;
 import model.SuministroTB;
+import model.VentaCreditoTB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -64,47 +70,77 @@ public class BillPrintable implements Printable {
         pointWidthSizePaper = 5.10;
     }
 
-    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta) {
+    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras, String fechaInicioOperacion, String horaInicioOperacion, String fechaTerminoOperaciona, String horaTerminoOperacion, String calculado, String contado, String diferencia, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String empleadoDireccion, String montoTotal, String montoPagado, String montoDiferencial) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
                 if (fieldTicket.getVariable().equalsIgnoreCase("repeempresa")) {
-                    fieldTicket.setText(Session.COMPANY_REPRESENTANTE);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_REPRESENTANTE));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("telempresa")) {
-                    fieldTicket.setText(Session.COMPANY_TELEFONO);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_TELEFONO));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("celempresa")) {
-                    fieldTicket.setText(Session.COMPANY_CELULAR);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_CELULAR));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("pagwempresa")) {
-                    fieldTicket.setText(Session.COMPANY_PAGINAWEB);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_PAGINAWEB));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("emailempresa")) {
-                    fieldTicket.setText(Session.COMPANY_EMAIL);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_EMAIL));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempresa")) {
-                    fieldTicket.setText(Session.COMPANY_DOMICILIO);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_DOMICILIO));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("rucempresa")) {
-                    fieldTicket.setText(Session.COMPANY_NUMERO_DOCUMENTO);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_NUMERO_DOCUMENTO));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("razoempresa")) {
-                    fieldTicket.setText(Session.COMPANY_RAZON_SOCIAL);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_RAZON_SOCIAL));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("nomcomempresa")) {
-                    fieldTicket.setText(Session.COMPANY_NOMBRE_COMERCIAL);
+                    fieldTicket.setText(Tools.AddText2Guines(Session.COMPANY_NOMBRE_COMERCIAL));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
-                    fieldTicket.setText(Tools.getDate("dd/MM/yyyy"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getDate("dd/MM/yyyy")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
-                    fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("docventa")) {
-                    fieldTicket.setText(nombre_impresion_comprobante);
+                    fieldTicket.setText(Tools.AddText2Guines(nombre_impresion_comprobante));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numventa")) {
-                    fieldTicket.setText(numeracion_serie_comprobante);
+                    fieldTicket.setText(Tools.AddText2Guines(numeracion_serie_comprobante));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
-                    fieldTicket.setText(codigoVenta);
+                    fieldTicket.setText(Tools.AddText2Guines(codigoVenta));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numcliente")) {
-                    fieldTicket.setText(nummero_documento_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(nummero_documento_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
-                    fieldTicket.setText(informacion_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(informacion_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("celcliente")) {
-                    fieldTicket.setText(celular_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(celular_cliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcliente")) {
-                    fieldTicket.setText(direccion_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(direccion_cliente));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("importetotalletras")) {
+                    fieldTicket.setText(Tools.AddText2Guines(importe_total_letras));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("finiciooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(fechaInicioOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("hiniciooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(horaInicioOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fterminooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(fechaTerminoOperaciona));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("hterminooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(horaTerminoOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("contado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(calculado));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("calculado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(contado));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("diferencia")) {
+                    fieldTicket.setText(Tools.AddText2Guines(diferencia));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("numempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoNumeroDocumento));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("infoempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoInformacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("celempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoCelular));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoDireccion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montotal")) {
+                    fieldTicket.setText(Tools.AddText2Guines(montoTotal));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montopagacobra")) {
+                    fieldTicket.setText(Tools.AddText2Guines(montoPagado));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montorestanten")) {
+                    fieldTicket.setText(Tools.AddText2Guines(montoDiferencial));
                 }
                 lines = fieldTicket.getLines();
             }
@@ -118,22 +154,22 @@ public class BillPrintable implements Printable {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
                 if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
-                    fieldTicket.setText("" + (m + 1));
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
-                    fieldTicket.setText(arrList.get(m).getClaveAlterna());
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getClaveAlterna()));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
-                    fieldTicket.setText(arrList.get(m).getClave());
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getClave()));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
                     String nombreMarcaReplace = arrList.get(m).getNombreMarca().replaceAll("\"", "");
-                    fieldTicket.setText(nombreMarcaReplace);
+                    fieldTicket.setText(Tools.AddText2Guines(nombreMarcaReplace));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getCantidad(), 2));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getCantidad(), 2)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%");
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%"));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
-                    fieldTicket.setText(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral() * arrList.get(m).getCantidad(), 2));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral() * arrList.get(m).getCantidad(), 2)));
                 }
                 hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
                 lines = fieldTicket.getLines();
@@ -142,35 +178,164 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente) {
+    public int hbDetalleCuentaCobrar(HBox hBox, HBox box, ObservableList<VentaCreditoTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 0) + "%"));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getObservacion()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fechadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFechaPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+
+    public int hbDetalleCuentaPagar(HBox hBox, HBox box, ObservableList<CompraCreditoTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 0) + "%"));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getObservacion()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fechadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFechaPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraPago()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+
+    public int hbDetalleCorteCaja(HBox hBox, HBox box, ObservableList<MovimientoCajaTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 0) + "%"));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getComentario()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fechadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFechaMovimiento()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraMovimiento()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("tipomovimiento")) {
+                    short tipoMovimiento = arrList.get(m).getTipoMovimiento();
+                    String movimiento = tipoMovimiento == 1 ? "MONTO INICIAL" : tipoMovimiento == 2 ? "VENTA CON EFECTIVO" : tipoMovimiento == 3 ? "VENTA CON TARJETA" : tipoMovimiento == 4 ? "INGRESO DE DINERO" : "SALIDAS DE DINERO";
+                    fieldTicket.setText(Tools.AddText2Guines(movimiento));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+
+    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String montoOperacion, String montoImpuesto, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente, String importe_total_letras, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String direccionEmpleado) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
                 TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
                 if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
-                    fieldTicket.setText(Tools.getDate("dd/MM/yyyy"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getDate("dd/MM/yyyy")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
-                    fieldTicket.setText(Tools.getHour("hh:mm:ss aa"));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
-                    fieldTicket.setText(moneda + " " + valorVenta);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + valorVenta));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("dscttotal")) {
-                    fieldTicket.setText(moneda + " " + descuento);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + descuento));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
-                    fieldTicket.setText(moneda + " " + subTotal);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subTotal));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("valoroperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoOperacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("valorimpustos")) {
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoImpuesto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
-                    fieldTicket.setText(moneda + " " + total);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + total));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
-                    fieldTicket.setText(moneda + " " + efectivo);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + efectivo));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("vuelto")) {
-                    fieldTicket.setText(moneda + " " + vuelto);
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + vuelto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("codigo")) {
-                    fieldTicket.setText(codigoVenta);
+                    fieldTicket.setText(Tools.AddText2Guines(codigoVenta));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numcliente")) {
-                    fieldTicket.setText(numCliente);
+                    fieldTicket.setText(Tools.AddText2Guines(numCliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("infocliente")) {
-                    fieldTicket.setText(infoCliente);
+                    fieldTicket.setText(Tools.AddText2Guines(infoCliente));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("celcliente")) {
-                    fieldTicket.setText(celular_cliente);
+                    fieldTicket.setText(Tools.AddText2Guines(celular_cliente));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("importetotalletras")) {
+                    fieldTicket.setText(Tools.AddText2Guines(importe_total_letras));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("numempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoNumeroDocumento));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("infoempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoInformacion));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("celempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(empleadoCelular));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempleado")) {
+                    fieldTicket.setText(Tools.AddText2Guines(direccionEmpleado));
                 }
                 lines = fieldTicket.getLines();
             }
@@ -310,7 +475,6 @@ public class BillPrintable implements Printable {
             BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D gimage = image.createGraphics();
             Graphics2D g2d = (Graphics2D) graphics;
-
             double width = pageFormat.getImageableWidth();
 
             g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
@@ -339,202 +503,63 @@ public class BillPrintable implements Printable {
     }
 
     private int createRow(AnchorPane anchorPane, Graphics2D g2d, Graphics2D gimage, double width, int y) {
+        if (anchorPane == null) {
+            return y;
+        }
         for (int i = 0; i < anchorPane.getChildren().size(); i++) {
             HBox box = ((HBox) anchorPane.getChildren().get(i));
-            StringBuilder result = new StringBuilder();
 
             if (box.getChildren().size() > 1) {
-
-                int columnI;
-                int columnF;
-                int columnA = 0;
-                float fontSize = 0;
+                int yMax = 0;
+                int yAux = 0;
+                int xPos = 0;
+                int yPos = 0;
+                yPos = y;
                 for (int j = 0; j < box.getChildren().size(); j++) {
                     TextFieldTicket field = (TextFieldTicket) box.getChildren().get(j);
-                    fontSize = field.getFontSize();
-                    columnI = columnA;
-                    columnF = columnI + field.getColumnWidth();
-                    columnA = columnF;
 
-                    int totalWidth;
-                    int length;
+                    Font font = new Font(field.getFontName().equalsIgnoreCase("Consola")
+                            ? FontsPersonalize.FONT_CONSOLAS
+                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
+                            ? FontsPersonalize.FONT_ROBOTO
+                            : FontsPersonalize.FONT_ROBOTO,
+                            field.getFontName().equalsIgnoreCase("Consola")
+                            ? Font.PLAIN
+                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
+                            ? Font.PLAIN
+                            : Font.BOLD,
+                            (int) (field.getFontSize() - 3.5f));
 
-                    if (null != field.getAlignment()) {
-                        switch (field.getAlignment()) {
-                            case CENTER_LEFT:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int posl = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= 0 && ca <= (length - 1)) {
-                                        char c = field.getText().charAt(posl);
-                                        result.append(c);
-                                        posl++;
+                    AttributedString attributedString = new AttributedString(field.getText());
+                    attributedString.addAttribute(TextAttribute.FONT, font);
 
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-                                break;
-                            case CENTER:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int centro = (totalWidth - length) / 2;
-                                int posc = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= centro && ca <= (centro + (length - 1))) {
-                                        char c = field.getText().charAt(posc);
-                                        result.append(c);
-                                        posc++;
+                    AttributedCharacterIterator charIterator = attributedString.getIterator();
+                    LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(charIterator, g2d.getFontRenderContext());
+                    lineBreakMeasurer.setPosition(charIterator.getBeginIndex());
+                    float xmove = (float) (field.getColumnWidth() * pointWidthSizePaper);
+                    while (lineBreakMeasurer.getPosition() < charIterator.getEndIndex()) {
+                        TextLayout layout = lineBreakMeasurer.nextLayout(xmove);
+                        yAux += layout.getAscent() + 3;
+                        int x = field.getAlignment() == Pos.CENTER_LEFT
+                                ? 0
+                                : field.getAlignment() == Pos.CENTER
+                                ? (int) ((field.getColumnWidth() * pointWidthSizePaper) - layout.getAdvance()) / 2
+                                : (int) ((field.getColumnWidth() * pointWidthSizePaper) - layout.getAdvance());
 
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-
-                                break;
-                            case CENTER_RIGHT:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int right = totalWidth - length;
-                                int posr = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= right && ca <= (right + (length - 1))) {
-                                        char c = field.getText().charAt(posr);
-                                        result.append(c);
-                                        posr++;
-
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-                                break;
-                            default:
-                                totalWidth = columnF - columnI;
-                                length = field.getText().length();
-                                int posd = 0;
-                                for (int ca = 0; ca < totalWidth; ca++) {
-                                    if (ca >= 0 && ca <= (length - 1)) {
-                                        char c = field.getText().charAt(posd);
-                                        result.append(c);
-                                        posd++;
-
-                                    } else {
-                                        result.append(" ");
-                                    }
-                                }
-                                break;
-                        }
+                        layout.draw(g2d, xPos + x, yPos + yAux);
+                        layout.draw(gimage, xPos + x, yPos + yAux);
+                        yAux += layout.getDescent() + layout.getLeading();
                     }
+                    if (yMax < yAux) {
+                        yMax = yAux;
+                    }
+                    yAux = 0;
+                    xPos += xmove;
                 }
-
-                Font font = new Font(FontsPersonalize.FONT_CONSOLAS, Font.PLAIN, (int) (fontSize - 3.5f));
-
-                AttributedString attributedString = new AttributedString(result.toString());
-                attributedString.addAttribute(TextAttribute.FONT, font);
-
-                AttributedCharacterIterator charIterator = attributedString.getIterator();
-                LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(charIterator, g2d.getFontRenderContext());
-                lineBreakMeasurer.setPosition(charIterator.getBeginIndex());
-                while (lineBreakMeasurer.getPosition() < charIterator.getEndIndex()) {
-                    TextLayout layout = lineBreakMeasurer.nextLayout((float) width);
-                    y += layout.getAscent() + 3;
-                    layout.draw(g2d, 0, y);
-                    layout.draw(gimage, 0, y);
-                    y += layout.getDescent() + layout.getLeading();
-                }
-
-//                Font font = new Font("Consolas", Font.PLAIN, (int) (fontSize - 3.5f));
-//                gimage.setFont(font);
-//                g2d.setFont(font);
-//
-//                FontMetrics metrics = g2d.getFontMetrics(font);
-//
-//                y += metrics.getAscent();
-//
-//                g2d.drawString(result.toString(), 0, y);
-//                gimage.drawString(result.toString(), 0, y);
-//
-//                y += metrics.getDescent() + metrics.getLeading();
-//                g2d.drawString(result.toString(), 0, y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//                gimage.drawString(result.toString(), 0, y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//                y += (fontSize + 1.5f);
+                yPos = yMax;
+                y += yPos;
             } else {
                 if (box.getChildren().get(0) instanceof TextFieldTicket) {
-
-//                    TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
-//                    int columnI;
-//                    int columnF;
-//
-//                    columnI = 0;
-//                    columnF = columnI + field.getColumnWidth();
-//
-//                    int totalWidth;
-//                    int length;
-//
-//                    if (null != field.getAlignment()) {
-//                        switch (field.getAlignment()) {
-//                            case CENTER_LEFT:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int posl = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= 0 && ca <= (length - 1)) {
-//                                        char c = field.getText().charAt(posl);
-//                                        result.append(c);
-//                                        posl++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//                                break;
-//                            case CENTER:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int centro = (totalWidth - length) / 2;
-//                                int posc = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= centro && ca <= (centro + (length - 1))) {
-//                                        char c = field.getText().charAt(posc);
-//                                        result.append(c);
-//                                        posc++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//
-//                                break;
-//                            case CENTER_RIGHT:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int right = totalWidth - length;
-//                                int posr = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= right && ca <= (right + (length - 1))) {
-//                                        char c = field.getText().charAt(posr);
-//                                        result.append(c);
-//                                        posr++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//                                break;
-//                            default:
-//                                totalWidth = columnF - columnI;
-//                                length = field.getText().length();
-//                                int posd = 0;
-//                                for (int ca = 0; ca < totalWidth; ca++) {
-//                                    if (ca >= 0 && ca <= (length - 1)) {
-//                                        char c = field.getText().charAt(posd);
-//                                        result.append(c);
-//                                        posd++;
-//                                    } else {
-//                                        result.append(" ");
-//                                    }
-//                                }
-//                                break;
-//                        }
-//                    }
                     TextFieldTicket field = (TextFieldTicket) box.getChildren().get(0);
                     Font font = new Font(field.getFontName().equalsIgnoreCase("Consola")
                             ? FontsPersonalize.FONT_CONSOLAS
@@ -547,14 +572,6 @@ public class BillPrintable implements Printable {
                             ? Font.PLAIN
                             : Font.BOLD,
                             (int) (field.getFontSize() - 3.5f));
-//                    gimage.setFont(font);
-//                    g2d.setFont(font);
-
-// field.getFontName().equalsIgnoreCase("Consola")
-//                            ? "Consola"
-//                            : field.getFontName().equalsIgnoreCase("Roboto Regular")
-//                            ? "RobotoRegular"
-//                            : "RobotoBold"
                     AttributedString attributedString = new AttributedString(field.getText());
                     attributedString.addAttribute(TextAttribute.FONT, font);
 
@@ -573,54 +590,45 @@ public class BillPrintable implements Printable {
                         layout.draw(gimage, x, y);
                         y += layout.getDescent() + layout.getLeading();
                     }
-//                    FontMetrics metrics = g2d.getFontMetrics(font);
-//
-//                    y += metrics.getAscent();
-//
-//                    g2d.drawString(field.getText(), 0, y);
-//                    gimage.drawString(field.getText(), 0, y);
-//
-//                    y += metrics.getDescent() + metrics.getLeading();
-
-//                    g2d.drawString(field.getText(), field.getAlignment() == Pos.CENTER_LEFT
-//                            ? 0
-//                            : field.getAlignment() == Pos.CENTER
-//                            ? (int) (width - metrics.stringWidth(field.getText())) / 2
-//                            : (int) (width - metrics.stringWidth(field.getText())), y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//
-//                    gimage.drawString(field.getText(), field.getAlignment() == Pos.CENTER_LEFT
-//                            ? 0
-//                            : field.getAlignment() == Pos.CENTER
-//                            ? (int) (width - metrics.stringWidth(field.getText())) / 2
-//                            : (int) (width - metrics.stringWidth(field.getText())), y + metrics.getAscent() + ((metrics.getAscent() + metrics.getDescent()) / 2));
-//
-//                    y += (field.getFontSize() + 1.5f);
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
                     ImageViewTicket imageView = (ImageViewTicket) box.getChildren().get(0);
+                    if (imageView.getType().equalsIgnoreCase("qr")) {
+                        try {
+                            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(new QRCodeWriter().encode(ObjectGlobal.QR_PERU_DATA, BarcodeFormat.QR_CODE, 300, 300));
+                            g2d.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
 
-                    try {
-
-                        BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/view/image/no-image.png"));
-                        if (imageView.getUrl() != null) {
-                            ByteArrayInputStream bais = new ByteArrayInputStream(imageView.getUrl());
-                            image = ImageIO.read(bais);
+                            gimage.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+                            y += imageView.getFitHeight() + 3;
+                        } catch (WriterException ex) {
+                            System.out.println(ex.getLocalizedMessage());
                         }
+                    } else {
+                        try {
+                            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/view/image/no-image.png"));
+                            if (imageView.getUrl() != null) {
+                                ByteArrayInputStream bais = new ByteArrayInputStream(imageView.getUrl());
+                                image = ImageIO.read(bais);
+                            }
+                            g2d.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
 
-                        gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
-                                : box.getAlignment() == Pos.CENTER
-                                ? (int) (width - imageView.getFitWidth()) / 2
-                                : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
-                        g2d.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
-                                : box.getAlignment() == Pos.CENTER
-                                ? (int) (width - imageView.getFitWidth()) / 2
-                                : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
-
-                        y += imageView.getFitHeight() + 3;
-
-                    } catch (IOException ex) {
-                        System.out.println(ex.getLocalizedMessage());
+                            gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+                            y += imageView.getFitHeight() + 3;
+                        } catch (IOException ex) {
+                            System.out.println(ex.getLocalizedMessage());
+                        }
                     }
-
                 }
             }
         }
@@ -1081,7 +1089,7 @@ public class BillPrintable implements Printable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false, object.get("type").toString());
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -1109,7 +1117,7 @@ public class BillPrintable implements Printable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false, object.get("type").toString());
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -1138,7 +1146,7 @@ public class BillPrintable implements Printable {
                     }
                 } else if (objectObtener.get("image") != null) {
                     JSONObject object = Json.obtenerObjetoJSON(objectObtener.get("image").toString());
-                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false);
+                    ImageViewTicket imageView = addElementImageView("", Short.parseShort(object.get("width").toString()), Double.parseDouble(object.get("fitwidth").toString()), Double.parseDouble(object.get("fitheight").toString()), false, object.get("type").toString());
                     imageView.setId(String.valueOf(object.get("value").toString()));
                     box.setPrefWidth(imageView.getColumnWidth() * pointWidthSizeView);
                     box.setPrefHeight(imageView.getFitHeight());
@@ -1242,12 +1250,13 @@ public class BillPrintable implements Printable {
         return field;
     }
 
-    private ImageViewTicket addElementImageView(String path, short widthColumn, double width, double height, boolean newImage) {
+    private ImageViewTicket addElementImageView(String path, short widthColumn, double width, double height, boolean newImage, String type) {
         ImageViewTicket imageView = new ImageViewTicket();
         imageView.setColumnWidth(widthColumn);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
         imageView.setSmooth(true);
+        imageView.setType(type);
         if (newImage) {
             imageView.setImage(new javafx.scene.image.Image(path));
             imageView.setUrl(Tools.getImageBytes(imageView.getImage(), Tools.getFileExtension(new File(path))));

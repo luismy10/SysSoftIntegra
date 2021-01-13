@@ -205,9 +205,6 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeCompra, 0d);
         AnchorPane.setBottomAnchor(nodeCompra, 0d);
         vbContent.getChildren().add(nodeCompra);
-        if (!controllerCompras.isLoadData()) {
-            controllerCompras.loadAllComponents();
-        }
     }
 
     private void openWindowCotizacion() {
@@ -260,7 +257,9 @@ public class FxOperacionesController implements Initializable {
 
     @FXML
     public void onKeyPressedVentasNueva(KeyEvent keyEvent) {
-        openWindowVentaNueva();
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            openWindowVentaNueva();
+        }
     }
 
     @FXML

@@ -17,7 +17,7 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+            <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                <children>
 
                   <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity">

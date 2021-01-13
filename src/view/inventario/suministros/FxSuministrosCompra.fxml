@@ -48,6 +48,18 @@
                            <children>
                               <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
+                                    <HBox alignment="CENTER" style="-fx-padding: 0.5em;">
+                                       <children>
+                                          <Label styleClass="labelRobotoBold15" text="Datos de compra" textFill="#020203">
+                                             <font>
+                                                <Font name="Roboto" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                     <VBox spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
@@ -90,20 +102,10 @@
                                                             </Label>
                                                             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                                                <children>
-                                                                  <TextField fx:id="txtCantidad" onAction="#onActionAdd" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="130.0" promptText="0.00" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                                  <TextField fx:id="txtCantidad" onAction="#onActionAdd" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                                                   <Label fx:id="lblMedida" styleClass="labelRobotoBold13" text="Medida" textFill="#034f8a" />
                                                                </children>
                                                             </HBox>
-                                                         </children>
-                                                      </VBox>
-                                                      <VBox spacing="5.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                                         <children>
-                                                            <Label styleClass="labelRoboto13" text="Costo" textFill="#020203">
-                                                               <font>
-                                                                  <Font size="14.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <TextField fx:id="txtCosto" onAction="#onActionAdd" onKeyTyped="#onKeyTypedCosto" prefHeight="30.0" prefWidth="180.0" promptText="0.00" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -112,12 +114,22 @@
                                                    <children>
                                                       <VBox spacing="5.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                                          <children>
-                                                            <Label styleClass="labelRoboto13" text="Descuento(%)" textFill="#020203">
+                                                            <Label styleClass="labelRoboto13" text="Costo" textFill="#020203">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" prefHeight="30.0" prefWidth="180.0" promptText="\%" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                                            <TextField fx:id="txtCosto" onAction="#onActionAdd" onKeyTyped="#onKeyTypedCosto" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox spacing="5.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label styleClass="labelRoboto13" text="Descuento(Costo Fijo)" textFill="#020203">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" prefHeight="30.0" prefWidth="220.0" promptText="\%" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -138,7 +150,7 @@
                                              <children>
                                                 <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                                    <children>
-                                                      <Label styleClass="labelRobotoBold15" text="Datos de precio" textFill="#020203">
+                                                      <Label styleClass="labelRobotoBold15" text="Datos de precio para venta" textFill="#020203">
                                                          <font>
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
@@ -162,7 +174,7 @@
                                                    <children>
                                                       <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                                          <children>
-                                                            <RadioButton fx:id="rbPrecioNormal" mnemonicParsing="false" onAction="#onActionRbListaPrecios" selected="true" styleClass="labelRoboto14" text="Lista de Precio Normal" textFill="#006fee" />
+                                                            <RadioButton fx:id="rbPrecioNormal" mnemonicParsing="false" onAction="#onActionRbListaPrecios" selected="true" styleClass="labelRoboto13" text="Lista de Precio Normal" textFill="#006fee" />
                                                          </children>
                                                       </HBox>
                                                       <HBox fx:id="hbPrecioNormal" alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
@@ -178,12 +190,12 @@
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                </rowConstraints>
                                                                <children>
-                                                                  <Label styleClass="labelRoboto13" text="Precio de Venta 1" textFill="#020203" />
-                                                                  <Label styleClass="labelRoboto14" text="Precio de Venta 2" textFill="#020203" GridPane.columnIndex="1" />
-                                                                  <Label styleClass="labelRoboto14" text="Precio de Venta 3" textFill="#020203" GridPane.columnIndex="2" />
-                                                                  <TextField fx:id="txtPrecio1" onAction="#onActionAdd" onKeyTyped="#onKeyTypedPrecio1" prefHeight="30.0" prefWidth="180.0" promptText="0.00" styleClass="text-field-normal" GridPane.rowIndex="1" />
-                                                                  <TextField fx:id="txtPrecio2" onAction="#onActionAdd" onKeyTyped="#onKeyTypedPrecio2" prefHeight="30.0" prefWidth="180.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                                  <TextField fx:id="txtPrecio3" onAction="#onActionAdd" onKeyTyped="#onKeyTypedPrecio3" prefHeight="30.0" prefWidth="180.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                                  <Label styleClass="labelRoboto13" text="Precio General" textFill="#020203" />
+                                                                  <Label styleClass="labelRoboto13" text="Precio de Venta 2" textFill="#020203" GridPane.columnIndex="1" />
+                                                                  <Label styleClass="labelRoboto13" text="Precio de Venta 3" textFill="#020203" GridPane.columnIndex="2" />
+                                                                  <TextField fx:id="txtPrecio1" onAction="#onActionAdd" onKeyTyped="#onKeyTypedPrecio1" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" GridPane.rowIndex="1" />
+                                                                  <TextField fx:id="txtPrecio2" onAction="#onActionAdd" onKeyTyped="#onKeyTypedPrecio2" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                  <TextField fx:id="txtPrecio3" onAction="#onActionAdd" onKeyTyped="#onKeyTypedPrecio3" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                </children>
                                                             </GridPane>
                                                          </children>
@@ -194,7 +206,7 @@
                                                    <children>
                                                       <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.8333333333333334em;">
                                                          <children>
-                                                            <RadioButton fx:id="rbPrecioPersonalizado" mnemonicParsing="false" onAction="#onActionRbListaPrecios" styleClass="labelRoboto14" text="Lista de Precios Personalizado" textFill="#006fee" />
+                                                            <RadioButton fx:id="rbPrecioPersonalizado" mnemonicParsing="false" onAction="#onActionRbListaPrecios" styleClass="labelRoboto13" text="Lista de Precios Personalizado" textFill="#006fee" />
                                                          </children>
                                                       </HBox>
                                                       <VBox fx:id="vbPrecioPersonalizado">
@@ -203,7 +215,7 @@
                                                                <children>
                                                                   <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
                                                                      <children>
-                                                                        <Label prefWidth="220.0" styleClass="labelRoboto13" text="Precio de venta" textFill="#020203" />
+                                                                        <Label prefWidth="220.0" styleClass="labelRoboto13" text="Precio de General" textFill="#020203" />
                                                                         <TextField fx:id="txtPrecioVentaNetoPersonalizado" onKeyTyped="#onKeyTypedPrecioPersonalizado" prefHeight="30.0" prefWidth="200.0" promptText="0.00" styleClass="text-field-normal" />
                                                                      </children>
                                                                   </VBox>
@@ -226,10 +238,10 @@
                                                                <children>
                                                                   <TableView fx:id="tvPrecios" prefHeight="220.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                                                      <columns>
-                                                                        <TableColumn fx:id="tcNombre" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Nombre" />
-                                                                        <TableColumn fx:id="tcMonto" prefWidth="210.0" style="-fx-alignment: CENTER-LEFT;" text="Monto" />
-                                                                        <TableColumn fx:id="tcFactor" prefWidth="210.0" style="-fx-alignment: CENTER-LEFT;" text="Factor" />
-                                                                        <TableColumn fx:id="tcOpcion" prefWidth="160.0" style="-fx-alignment: CENTER;" text="Opcion" />
+                                                                        <TableColumn fx:id="tcNombre" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Nombre" />
+                                                                        <TableColumn fx:id="tcMonto" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Monto" />
+                                                                        <TableColumn fx:id="tcFactor" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Factor" />
+                                                                        <TableColumn fx:id="tcOpcion" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Opcion" />
                                                                      </columns>
                                                                      <columnResizePolicy>
                                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -192,7 +192,6 @@ public class FxVentaDetalleController implements Initializable {
             if (ventaTB != null) {
                 EmpleadoTB empleadoTB = ventaTB.getEmpleadoTB();
                 ObservableList<SuministroTB> empList = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
-
                 lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
                 lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + "-" + ventaTB.getClienteTB().getInformacion());
                 lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
@@ -263,7 +262,7 @@ public class FxVentaDetalleController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaDetalle(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), lblTotalVenta.getText(), totalVenta);
+            controller.setLoadVentaDevolucion(idVenta, arrList, lblSerie.getText(), lblTotalVenta.getText(), totalVenta);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
             stage.setResizable(false);
@@ -277,33 +276,6 @@ public class FxVentaDetalleController implements Initializable {
         }
     }
 
-//    private void openWindowAbonos() {
-//        if (lblTipo.getText().equalsIgnoreCase("credito")) {
-//            try {
-//                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-//                URL url = getClass().getResource(FilesRouters.FX_VENTA_ABONO);
-//                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-//                Parent parent = fXMLLoader.load(url.openStream());
-//
-//                FxVentaAbonoController controller = fXMLLoader.getController();
-//                controller.setInitVentaAbonoController(this);
-//
-//                Stage stage = WindowStage.StageLoaderModal(parent, "Historial de abonos", window.getScene().getWindow());
-//                stage.setResizable(false);
-//                stage.sizeToScene();
-//                stage.setOnHiding(w -> {
-//                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-//                });
-//                stage.show();
-//                controller.loadInitData(idVenta, ventaTB.getMonedaTB().getSimbolo());
-//
-//            } catch (IOException ex) {
-//                System.out.println(ex.getLocalizedMessage());
-//            }
-//        } else {
-//            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle de Venta", "La venta se realizó al contado.", false);
-//        }
-//    }
     private void calcularTotales() {
         if (arrList != null) {
 
@@ -569,6 +541,7 @@ public class FxVentaDetalleController implements Initializable {
 
                         if (Session.DESING_IMPRESORA_VENTA.equalsIgnoreCase("withdesing")) {
                             billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                            ObjectGlobal.QR_PERU_DATA = "|" + Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(ventaTB.getTotal(), 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|";
 
                             for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
@@ -579,7 +552,22 @@ public class FxVentaDetalleController implements Initializable {
                                         ventaTB.getClienteTB().getInformacion(),
                                         ventaTB.getClienteTB().getCelular(),
                                         ventaTB.getClienteTB().getDireccion(),
-                                        ventaTB.getCodigo());
+                                        ventaTB.getCodigo(),
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "");
                             }
 
                             AnchorPane hbDetalle = new AnchorPane();
@@ -598,14 +586,20 @@ public class FxVentaDetalleController implements Initializable {
                                 billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
                                         Tools.roundingValue(subImporte, 2),
                                         "-" + Tools.roundingValue(descuento, 2),
+                                        Tools.roundingValue(totalImporte, 2),
+                                        Tools.roundingValue(ventaTB.getImpuesto(), 2),
                                         Tools.roundingValue(subTotalImporte, 2),
                                         Tools.roundingValue(total, 2),
                                         Tools.roundingValue(efectivo, 2),
                                         Tools.roundingValue(vuelto, 2),
                                         ventaTB.getClienteTB().getNumeroDocumento(),
-                                        ventaTB.getClienteTB().getInformacion(), 
+                                        ventaTB.getClienteTB().getInformacion(),
                                         ventaTB.getCodigo(),
-                                        ventaTB.getClienteTB().getCelular());
+                                        ventaTB.getClienteTB().getCelular(),"",
+                                        "",
+                                        "",
+                                        "",
+                                        "");
                             }
 
                             billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -706,7 +700,22 @@ public class FxVentaDetalleController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
-                    ventaTB.getCodigo());
+                    ventaTB.getCodigo(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -728,13 +737,19 @@ public class FxVentaDetalleController implements Initializable {
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    Tools.roundingValue(ventaTB.getImpuesto(), 2),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
-                    ventaTB.getClienteTB().getInformacion(), 
+                    ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular());
+                    ventaTB.getClienteTB().getCelular(),"",
+                    "",
+                    "",
+                    "",
+                    "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }

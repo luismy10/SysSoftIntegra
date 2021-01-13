@@ -43,7 +43,7 @@ public class FxVentaDevolucionController implements Initializable {
 
     private ObservableList<SuministroTB> arrList;
 
-    private double totalVenta;   
+    private double totalVenta;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -79,7 +79,7 @@ public class FxVentaDevolucionController implements Initializable {
                         MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
                         movimientoCajaTB.setHoraMovimiento(Tools.getHour());
-                        movimientoCajaTB.setComentario(txtObservacion.getText().toUpperCase());
+                        movimientoCajaTB.setComentario(txtObservacion.getText().toUpperCase() + " (ANULACIÓN DEL COMPROBANTE " + lblComprobante.getText()+")");
                         movimientoCajaTB.setTipoMovimiento((short) 5);
                         movimientoCajaTB.setMonto(totalVenta);
                         return VentaADO.CancelTheSale(idVenta, arrList, movimientoCajaTB);

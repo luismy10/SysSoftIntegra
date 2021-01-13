@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -36,7 +37,12 @@ public class CompraTB {
     private SuministroTB suministroTB;
     private MonedaTB monedaTB;
     
+    private ArrayList<CompraCreditoTB> compraCreditoTBs;
     private HBox hbOpciones;
+    
+    private double montoTotal;
+    private double montoPagado;
+    private double montoRestante;
 
     public CompraTB() {
 
@@ -259,12 +265,45 @@ public class CompraTB {
         this.usuario = usuario;
     }
 
+    public ArrayList<CompraCreditoTB> getCompraCreditoTBs() {
+        return compraCreditoTBs;
+    }
+
+    public void setCompraCreditoTBs(ArrayList<CompraCreditoTB> compraCreditoTBs) {
+        this.compraCreditoTBs = compraCreditoTBs;
+    }
+
+  
     public HBox getHbOpciones() {
         return hbOpciones;
     }
 
     public void setHbOpciones(HBox hbOpciones) {
         this.hbOpciones = hbOpciones;
+    }
+
+    public double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
+    }
+
+    public double getMontoPagado() {
+        return montoPagado;
+    }
+
+    public void setMontoPagado(double montoPagado) {
+        this.montoPagado = montoPagado;
+    }
+
+    public double getMontoRestante() {
+        return montoRestante;
+    }
+
+    public void setMontoRestante(double montoRestante) {
+        this.montoRestante = montoRestante;
     }
     
     

@@ -148,28 +148,6 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox fx:id="hbOperacionesDos" alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-               <children>
-                  <VBox fx:id="btnAsignacion" alignment="CENTER" visible="false">
-                     <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionAsignacion" onKeyPressed="#onKeyPressedAsignacion" styleClass="buttonTransparent" text="Asignacion de Productos">
-                           <graphic>
-                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../image/asignacion.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Text fill="#464545" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Inventario">
-                           <font>
-                              <Font name="Roboto" size="14.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
          </children>
       </VBox>
    </children>

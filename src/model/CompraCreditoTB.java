@@ -10,15 +10,12 @@ public class CompraCreditoTB {
 
     private int id;
     private String idCompra;
-    private int idCompraCredito;
+    private String idCompraCredito;
     private double monto;
     private String cuota;
-    private String fechaRegistro;
-    private String horaRegistro;
     private String fechaPago;
     private String horaPago;
     private boolean estado;
-    private String idTransaccion;
     private TextField txtCredito;
     private DatePicker dpFecha;
     private Button btnRemove;
@@ -26,6 +23,9 @@ public class CompraCreditoTB {
     private CheckBox cbSeleccion;
     private Button btnImprimir;
     private ProveedorTB proveedorTB;
+    private String observacion;
+    private String idEmpleado;
+    private CompraTB compraTB;
 
     public CompraCreditoTB() {
 
@@ -47,11 +47,11 @@ public class CompraCreditoTB {
         this.idCompra = idCompra;
     }
 
-    public int getIdCompraCredito() {
+    public String getIdCompraCredito() {
         return idCompraCredito;
     }
 
-    public void setIdCompraCredito(int idCompraCredito) {
+    public void setIdCompraCredito(String idCompraCredito) {
         this.idCompraCredito = idCompraCredito;
     }
 
@@ -69,22 +69,6 @@ public class CompraCreditoTB {
 
     public void setCuota(String cuota) {
         this.cuota = cuota;
-    }
-
-    public String getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(String fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getHoraRegistro() {
-        return horaRegistro;
-    }
-
-    public void setHoraRegistro(String horaRegistro) {
-        this.horaRegistro = horaRegistro;
     }
 
     public String getFechaPago() {
@@ -109,14 +93,6 @@ public class CompraCreditoTB {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
-    }
-
-    public String getIdTransaccion() {
-        return idTransaccion;
-    }
-
-    public void setIdTransaccion(String idTransaccion) {
-        this.idTransaccion = idTransaccion == null ? "" : idTransaccion;
     }
 
     public TextField getTxtCredito() {
@@ -173,6 +149,30 @@ public class CompraCreditoTB {
 
     public void setProveedorTB(ProveedorTB proveedorTB) {
         this.proveedorTB = proveedorTB;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
+    public String getIdEmpleado() {
+        return idEmpleado;
+    }
+
+    public void setIdEmpleado(String idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
+
+    public CompraTB getCompraTB() {
+        return compraTB;
+    }
+
+    public void setCompraTB(CompraTB compraTB) {
+        this.compraTB = compraTB;
     }
 
 }

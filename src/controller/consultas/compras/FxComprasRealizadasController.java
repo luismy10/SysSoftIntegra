@@ -77,7 +77,7 @@ public class FxComprasRealizadasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFechaCompra.setCellValueFactory(cellData -> Bindings.concat(
-                LocalDate.parse(cellData.getValue().getFechaCompra()).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)).toUpperCase() + "\n"
+                LocalDate.parse(cellData.getValue().getFechaCompra()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toUpperCase() + "\n"
                 + cellData.getValue().getHoraCompra()
         ));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(

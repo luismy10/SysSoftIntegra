@@ -3,13 +3,11 @@ package controller.menus;
 import controller.inventario.inventarioinicial.FxInventarioInicialController;
 import controller.inventario.lote.FxLoteController;
 import controller.inventario.valorinventario.FxValorInventarioController;
-import controller.produccion.asignacion.FxAsignacionController;
 import controller.inventario.movimientos.FxMovimientosController;
 import controller.inventario.suministros.FxSuministrosController;
 import controller.inventario.suministros.FxSuministrosKardexController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
-import controller.tools.Tools;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,8 +33,6 @@ public class FxInventarioController implements Initializable {
     @FXML
     private HBox hbOperacionesUno;
     @FXML
-    private HBox hbOperacionesDos;
-    @FXML
     private VBox btnProducto;
     @FXML
     private VBox btnKardex;
@@ -48,8 +44,6 @@ public class FxInventarioController implements Initializable {
     private VBox btnMovimiento;
     @FXML
     private VBox btnLote;
-    @FXML
-    private VBox btnAsignacion;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -83,14 +77,6 @@ public class FxInventarioController implements Initializable {
 
     private FxSuministrosKardexController controllerKardex;
 
-    /*
-    Controller asignacion
-     */
-    private FXMLLoader fXMLAsignacion;
-
-    private HBox nodeAsignacion;
-
-    private FxAsignacionController controllerAsignacion;
 
     /*
     Controller asignacion
@@ -133,10 +119,6 @@ public class FxInventarioController implements Initializable {
             fXMLKardex = new FXMLLoader(getClass().getResource(FilesRouters.FX_SUMINISTROS_KARDEX));
             nodeKardex = fXMLKardex.load();
             controllerKardex = fXMLKardex.getController();
-
-            fXMLAsignacion = new FXMLLoader(getClass().getResource(FilesRouters.FX_ASIGNACION));
-            nodeAsignacion = fXMLAsignacion.load();
-            controllerAsignacion = fXMLAsignacion.getController();
 
             fXMLInventarioInicial = new FXMLLoader(getClass().getResource(FilesRouters.FX_INVENTARIO_INICIAL));
             nodeInventarioInicial = fXMLInventarioInicial.load();
@@ -188,7 +170,7 @@ public class FxInventarioController implements Initializable {
         }
 
         if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
-            hbOperacionesDos.getChildren().remove(btnAsignacion);
+           
         } else {
 
         }
@@ -210,15 +192,6 @@ public class FxInventarioController implements Initializable {
         vbContent.getChildren().add(nodeKardex);
     }
 
-    private void openWindowAsignacion() {
-        controllerAsignacion.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeAsignacion, 0d);
-        AnchorPane.setTopAnchor(nodeAsignacion, 0d);
-        AnchorPane.setRightAnchor(nodeAsignacion, 0d);
-        AnchorPane.setBottomAnchor(nodeAsignacion, 0d);
-        vbContent.getChildren().add(nodeAsignacion);
-    }
 
     private void openWindowValorInventario() {
         controllerValorInventario.setContent(vbPrincipal);
@@ -338,18 +311,6 @@ public class FxInventarioController implements Initializable {
     @FXML
     private void onActionKardex(ActionEvent event) {
         openWindowKardex();
-    }
-
-    @FXML
-    private void onKeyPressedAsignacion(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowAsignacion();
-        }
-    }
-
-    @FXML
-    private void onActionAsignacion(ActionEvent event) {
-        openWindowAsignacion();
     }
 
     @FXML

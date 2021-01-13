@@ -398,7 +398,7 @@
 .buttonMenu {
     -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
     -fx-spacing: 0.8333333333333334em;
-    -fx-opacity: 0.5;
+    -fx-opacity: 0.6;
 
 }
 .buttonMenu:hover {
@@ -477,6 +477,7 @@
 }
 .text-field-normal:focused{
     -fx-border-color:  #007bff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 }
 .text-field-normal:disabled{
     -fx-opacity: 1;
@@ -518,6 +519,8 @@
 .text-area:focused{
     -fx-border-width:1;
     -fx-border-color: #00aff0;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 /*******************************************************************************
  *                                                                             *
@@ -567,6 +570,8 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
+   -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 .buttonLight:disabled, .buttonLight:default:disabled{
     -fx-opacity: 0.4;
@@ -633,6 +638,8 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 .buttonLightDefault:disabled, .buttonLightDefault:default:disabled{
     -fx-opacity: 0.4;
@@ -701,6 +708,8 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 .buttonLightWarning:disabled, .buttonLightWarning:default:disabled{
     -fx-opacity: 0.4;
@@ -769,6 +778,8 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 .buttonLightSuccess:disabled, .buttonLightSuccess:default:disabled{
     -fx-opacity: 0.4;
@@ -836,6 +847,8 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 .buttonLightError:disabled, .buttonLightError:default:disabled{
     -fx-opacity: 0.4;
@@ -854,6 +867,73 @@
     -fx-background-color: derive(ACCENT_COLOR, -40%);
 }
 
+
+/*******************************************************************************
+ *                                                                             *
+ * Button                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.buttonLightCancel  {
+    BACKGROUND:  #DD6B55;
+    BACKGROUND_PRESSED: #cc4d34;
+
+    BORDER_HOVER: #007bff;
+
+    TEXT: #ffffff;
+    DEFAULT_BUTTON_TEXT: white;
+
+    FOCUS_RING_BORDER: #ffffff;
+
+    -shrink-animate-on-press: true;
+}
+
+.buttonLightCancel{
+    -fx-padding: 0.4166666666666667em 0.75em 0.4166666666666667em 0.75em; /*5px 9px 5px 9px*/
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: BACKGROUND;
+
+    -fx-font-family:"Roboto Medium";
+    -fx-font-size: 1.0833333333333333em;/*13px*/
+    -fx-text-fill: TEXT;
+
+    -fx-cursor: hand;
+}
+.buttonLightCancel:hover{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-width: 1;
+}
+.buttonLightCancel:pressed{
+    -fx-border-color: BACKGROUND_PRESSED;
+    -fx-background-color: BACKGROUND_PRESSED;
+    -fx-border-width: 1;
+}
+.buttonLightCancel:focused{
+    -fx-border-color: BORDER_HOVER;
+    -fx-border-radius: 0, 0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+}
+.buttonLightCancel:disabled, .buttonLightCancel:default:disabled{
+    -fx-opacity: 0.4;
+    -fx-background-color: BACKGROUND;
+    -fx-text-fill: TEXT;
+}
+.buttonLightCancel:default{
+    -fx-background-color: ACCENT_COLOR;
+    -fx-text-fill: DEFAULT_BUTTON_TEXT;
+}
+.buttonLightCancel:default:hover{
+    -fx-border-color: BORDER_HOVER_DEFAULT;
+}
+.buttonLightCancel:default:pressed {
+    -fx-background-color: derive(ACCENT_COLOR, -40%);
+}
 
 /*******************************************************************************
  *                                                                             *
@@ -936,15 +1016,15 @@
     -fx-border-color: transparent,  #007bff;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+    
 }
 .buttonBorder:disabled, .buttonBorder:default:disabled{
     -fx-opacity: 1;
     -fx-background-color: #d9d9d9, #eaeaea;
     -fx-text-fill: #666666;
 }
-
-.buttonBorder:default
-{
+.buttonBorder:default{
     -fx-background-color: ACCENT_COLOR;
     -fx-text-fill: DEFAULT_BUTTON_TEXT;
 }
@@ -1332,10 +1412,11 @@
 
 .table-view-principal:row-selection .table-row-cell:filled:hover { 
     -fx-background-color: #cccccc;
+     -fx-cursor:hand;
 }
 
 .table-view-principal:row-selection .table-row-cell:filled:selected:hover { 
-    -fx-background-color:   #007bff;
+    -fx-background-color:   #ffc8e7;
 }
 
 .table-view-principal:row-selection .table-row-cell:filled:selected { 
@@ -1343,12 +1424,12 @@
 }
 
 .table-view-principal:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused {
-    -fx-background-color:  #007bff;
+    -fx-background-color:  #ffc8e7;
 }
 
-.table-view-principal:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused .table-cell {
+/*.table-view-principal:focused:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:focused .table-cell {
     -fx-text-fill: white;
-}
+}*/
 
 /*
 .table-view-principal:row-selection .table-row-cell:filled:selected .table-cell{
@@ -1485,6 +1566,8 @@
 }
 .date-picker:focused{
     -fx-border-color: #007bff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 .date-picker .text-field{
     -fx-background-color: transparent, transparent, transparent, transparent;
@@ -1597,6 +1680,8 @@
 .combo-box:focused {
     -fx-border-width:1;
     -fx-border-color:  #007bff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+
 }
 .combo-box .cell:selected{
     -fx-text-fill: #020203;
@@ -1617,7 +1702,7 @@
 .combo-box.combo-box-base > .arrow-button {    
     -fx-background-color: white;
     -fx-background-radius: 0;
-    
+
     -fx-border-width:0px;
     -fx-border-color: #007bff;
 }
@@ -1696,14 +1781,12 @@
     -fx-background-color: transparent, transparent;
     -fx-border-width:1;
     -fx-border-color: #999999;
-
 }
 .spinner:focused,
 .spinner:contains-focus {
     -fx-border-width:1;
     -fx-border-color:  #007bff;
-
-
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 }
 .spinner:disabled {
     -fx-opacity: -fx-disabled-opacity;
@@ -1719,19 +1802,19 @@
 }
 
 .spinner .increment-arrow-button {
-    -fx-background-color: #3c8dbc;
+    -fx-background-color: #007bff;
     -fx-background-insets: 0;
     -fx-background-radius: 0,0;
     -fx-border-width:1;
-    -fx-border-color:  #3c8dbc;
+    -fx-border-color:  #007bff;
     -fx-padding: 0.333em 0.666em 0.333em 0.666em; /* 4 8 4 8 */
 }
 .spinner .decrement-arrow-button {
-    -fx-background-color: #3c8dbc;
+    -fx-background-color: #007bff;
     -fx-background-insets: 0;
     -fx-background-radius: 0,0;
     -fx-border-width:1;
-    -fx-border-color:  #3c8dbc;
+    -fx-border-color:  #007bff;
     -fx-padding: 0.333em 0.666em 0.333em 0.666em; /* 4 8 4 8 */
 }
 
@@ -1871,6 +1954,7 @@
 /* focused */
 .radio-button:focused > .radio{ 
     -fx-border-color: #007bff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 }
 
 /* disabled */
@@ -1893,6 +1977,7 @@
     -fx-text-fill:  #020203;
     -fx-font-family:"Roboto";  
     -fx-font-size: 1.0833333333333333em;/*13px*/
+    -fx-cursor:hand;
 }
 
 /* unselected */
@@ -1981,6 +2066,7 @@
        - second border is control border */
     -fx-border-color: #00aff0;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
     /*noinspection CssInvalidFunction*/
     /*-fx-border-style: segments(1, 2), solid;*
     -fx-border-insets: -3, 0;*/
@@ -2374,7 +2460,7 @@
 
 .label-medio{
     -fx-max-width: Infinity;
-    -fx-background-color: #F9E434 ; 
+    -fx-background-color: #F9E434; 
     -fx-background-radius: 0 2 2 0; 
     -fx-font-weight: 700; 
     -fx-border-color: #C4A900 ; 

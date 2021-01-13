@@ -1,4 +1,3 @@
-
 package model;
 
 import controller.tools.Tools;
@@ -6,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class PreciosTB {
-    
+
     private int id;
     private int idPrecios;
     private String idArticulo;
@@ -15,7 +14,7 @@ public class PreciosTB {
     private double valor;
     private double factor;
     private boolean estado;
-    
+
     private TextField txtNombre;
     private TextField txtValor;
     private TextField txtFactor;
@@ -42,7 +41,7 @@ public class PreciosTB {
         this.valor = valor;
         this.factor = factor;
     }
-    
+
     public PreciosTB(String nombre, double valor) {
         this.nombre = nombre;
         this.valor = valor;
@@ -146,6 +145,6 @@ public class PreciosTB {
 
     @Override
     public String toString() {
-        return nombre +"= Precio: "+Tools.roundingValue(valor, 2)+" Cant.: "+Tools.roundingValue(factor,2);
+        return nombre + ": " + Tools.roundingValue(valor, 2) + (factor <= 1 ? "" : " Factor(" + Tools.roundingValue(factor, 2)+")");
     }
 }

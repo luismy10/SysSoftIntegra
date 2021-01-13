@@ -66,6 +66,12 @@
                         <CheckBox fx:id="cbGuia" mnemonicParsing="false" onAction="#onActionGuia" styleClass="check-box-contenido" text="No" />
                      </children>
                   </VBox>
+                  <VBox style="-fx-spacing: 0.5em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Comprobante Facturado" textFill="#020203" />
+                        <CheckBox fx:id="cbFacturado" mnemonicParsing="false" onAction="#onActionFactura" styleClass="check-box-contenido" text="No" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;">

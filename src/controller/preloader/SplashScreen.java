@@ -119,6 +119,19 @@ public class SplashScreen extends Preloader {
                             Session.ESTADO_IMPRESORA_PRE_VENTA = false;
                         }
 
+                        String rutaCorteCaja = "./archivos/CORTE DE CAJA.properties";
+                        try (InputStream input = new FileInputStream(rutaCorteCaja)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_CORTE_CAJA = true;
+                            Session.NOMBRE_IMPRESORA_CORTE_CAJA = prop.getProperty("printerNameCorteCaja");
+                            Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA = Boolean.parseBoolean(prop.getProperty("printerCutPaperCorteCaja"));
+                            Session.FORMATO_IMPRESORA_CORTE_CAJA = prop.getProperty("printerTypeFormatCorteCaja");
+                            Session.DESING_IMPRESORA_CORTE_CAJA = prop.getProperty("printerTypeDesingCorteCaja");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_CORTE_CAJA = false;
+                        }
+
                         String rutaCotizacion = "./archivos/COTIZACION.properties";
                         try (InputStream input = new FileInputStream(rutaCotizacion)) {
                             Properties prop = new Properties();
@@ -130,6 +143,32 @@ public class SplashScreen extends Preloader {
                             Session.DESING_IMPRESORA_COTIZACION = prop.getProperty("printerTypeDesingCotizacion");
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA_COTIZACION = false;
+                        }
+
+                        String rutaCuentasPorCobrar = "./archivos/CUENTAS POR COBRAR.properties";
+                        try (InputStream input = new FileInputStream(rutaCuentasPorCobrar)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = true;
+                            Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR = prop.getProperty("printerNameCuentasPorCobrar");
+                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR = Boolean.parseBoolean(prop.getProperty("printerCutPaperCuentasPorCobrar"));
+                            Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR = prop.getProperty("printerTypeFormatCuentasPorCobrar");
+                            Session.DESING_IMPRESORA_CUENTA_POR_COBRAR = prop.getProperty("printerTypeDesingCuentasPorCobrar");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = false;
+                        }
+                        
+                         String rutaCuentasPorPagar= "./archivos/CUENTAS POR PAGAR.properties";
+                        try (InputStream input = new FileInputStream(rutaCuentasPorPagar)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR = true;
+                            Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR = prop.getProperty("printerNameCuentasPorPagar");
+                            Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR = Boolean.parseBoolean(prop.getProperty("printerCutPaperCuentasPorPagar"));
+                            Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR = prop.getProperty("printerTypeFormatCuentasPorPagar");
+                            Session.DESING_IMPRESORA_CUENTA_POR_PAGAR = prop.getProperty("printerTypeDesingCuentasPorPagar");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR = false;
                         }
 
                         LoadFont loadFont = new LoadFont();
@@ -144,13 +183,13 @@ public class SplashScreen extends Preloader {
                             Session.TICKET_VENTA_RUTA = "";
                         }
 
-                        TicketTB ticketCotizacionTB = TicketADO.GetTicketRuta(8);
-                        if (ticketCotizacionTB != null) {
-                            Session.TICKET_COTIZACION_ID = ticketCotizacionTB.getId();
-                            Session.TICKET_COTIZACION_RUTA = ticketCotizacionTB.getRuta();                           
+                        TicketTB ticketCorteCajaTB = TicketADO.GetTicketRuta(5);
+                        if (ticketCorteCajaTB != null) {
+                            Session.TICKET_CORTE_CAJA_ID = ticketCorteCajaTB.getId();
+                            Session.TICKET_CORTE_CAJA_RUTA = ticketCorteCajaTB.getRuta();
                         } else {
-                            Session.TICKET_COTIZACION_ID = 0;
-                            Session.TICKET_COTIZACION_RUTA = "";
+                            Session.TICKET_CORTE_CAJA_ID = 0;
+                            Session.TICKET_CORTE_CAJA_RUTA = "";
                         }
 
                         TicketTB ticketPreVentaTB = TicketADO.GetTicketRuta(7);
@@ -160,6 +199,33 @@ public class SplashScreen extends Preloader {
                         } else {
                             Session.TICKET_PRE_VENTA_ID = 0;
                             Session.TICKET_PRE_VENTA_RUTA = "";
+                        }
+
+                        TicketTB ticketCotizacionTB = TicketADO.GetTicketRuta(8);
+                        if (ticketCotizacionTB != null) {
+                            Session.TICKET_COTIZACION_ID = ticketCotizacionTB.getId();
+                            Session.TICKET_COTIZACION_RUTA = ticketCotizacionTB.getRuta();
+                        } else {
+                            Session.TICKET_COTIZACION_ID = 0;
+                            Session.TICKET_COTIZACION_RUTA = "";
+                        }
+
+                        TicketTB ticketCuentasPorCobrarTB = TicketADO.GetTicketRuta(9);
+                        if (ticketCuentasPorCobrarTB != null) {
+                            Session.TICKET_CUENTA_POR_COBRAR_ID = ticketCuentasPorCobrarTB.getId();
+                            Session.TICKET_CUENTA_POR_COBRAR_RUTA = ticketCuentasPorCobrarTB.getRuta();
+                        } else {
+                            Session.TICKET_CUENTA_POR_COBRAR_ID = 0;
+                            Session.TICKET_CUENTA_POR_COBRAR_RUTA = "";
+                        }
+
+                        TicketTB ticketCuentasPorPagarTB = TicketADO.GetTicketRuta(10);
+                        if (ticketCuentasPorPagarTB != null) {
+                            Session.TICKET_CUENTA_POR_PAGAR_ID = ticketCuentasPorPagarTB.getId();
+                            Session.TICKET_CUENTA_POR_PAGAR_RUTA = ticketCuentasPorPagarTB.getRuta();
+                        } else {
+                            Session.TICKET_CUENTA_POR_PAGAR_ID = 0;
+                            Session.TICKET_CUENTA_POR_PAGAR_RUTA = "";
                         }
 
                         EmpresaTB list = EmpresaADO.GetEmpresa();

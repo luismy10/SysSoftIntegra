@@ -10,6 +10,8 @@ public class ImageViewTicket extends ImageView {
 
     private byte[] url;
     
+    private String type;
+    
     public ImageViewTicket() {
         super();
     }
@@ -36,6 +38,14 @@ public class ImageViewTicket extends ImageView {
 
     public void setUrl(byte[] url) {
         this.url = url;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
     
 

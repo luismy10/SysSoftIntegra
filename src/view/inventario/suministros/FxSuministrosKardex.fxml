@@ -89,7 +89,7 @@
                                        <graphic>
                                           <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../image/lote-box.png" />
+                                                <Image url="@../../image/search.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>

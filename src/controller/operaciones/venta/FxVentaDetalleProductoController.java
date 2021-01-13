@@ -31,6 +31,8 @@ public class FxVentaDetalleProductoController implements Initializable {
     private Label lblProducto;
     @FXML
     private ListView<PreciosTB> tvListPrecios;
+    @FXML
+    private TextField txtBonificacion;
 
     private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
 
@@ -50,6 +52,7 @@ public class FxVentaDetalleProductoController implements Initializable {
         txtPrecio.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getPrecioVentaGeneral(), 2));
         txtCantidad.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getCantidad(), 2));
         txtDescuento.setText(Tools.roundingValue(bbItemProducto.getSuministroTB().getDescuento(), 2));
+        txtBonificacion.setText("" + bbItemProducto.getSuministroTB().getBonificacion());
         loadDataView(bbItemProducto.getSuministroTB().getIdSuministro());
     }
 
@@ -116,7 +119,6 @@ public class FxVentaDetalleProductoController implements Initializable {
             bbItemProducto.getSuministroTB().setSubImporte(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * Double.parseDouble(txtCantidad.getText()));
             bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
             bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
-
         }
     }
 
@@ -125,6 +127,7 @@ public class FxVentaDetalleProductoController implements Initializable {
         if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText())) {
             double precio = Double.parseDouble(txtPrecio.getText());
             double cantidad = Double.parseDouble(txtCantidad.getText());
+            bbItemProducto.getSuministroTB().setBonificacion(!Tools.isNumeric(txtBonificacion.getText().trim()) ? 0 : Double.parseDouble(txtBonificacion.getText().trim()));
             bbItemProducto.getSuministroTB().setCantidad(cantidad);
 
             double valor_sin_impuesto = precio / ((bbItemProducto.getSuministroTB().getImpuestoValor() / 100.00) + 1);
@@ -178,6 +181,36 @@ public class FxVentaDetalleProductoController implements Initializable {
     }
 
     @FXML
+    private void onKeyReleasedBonificacion(KeyEvent event) {
+        if (Tools.isNumeric(txtPrecio.getText()) && Tools.isNumeric(txtCantidad.getText()) && Tools.isNumeric(txtDescuento.getText()) && Tools.isNumeric(txtBonificacion.getText())) {
+            double precio = Double.parseDouble(txtPrecio.getText());
+            double cantidad = Double.parseDouble(txtCantidad.getText());
+            bbItemProducto.getSuministroTB().setBonificacion(Double.parseDouble(txtBonificacion.getText().trim()));
+            bbItemProducto.getSuministroTB().setCantidad(cantidad);
+
+            double valor_sin_impuesto = precio / ((bbItemProducto.getSuministroTB().getImpuestoValor() / 100.00) + 1);
+            double descuento = Double.parseDouble(txtDescuento.getText());
+            double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+            double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+            bbItemProducto.getSuministroTB().setDescuento(descuento);
+            bbItemProducto.getSuministroTB().setDescuentoCalculado(porcentajeRestante);
+            bbItemProducto.getSuministroTB().setDescuentoSumado(porcentajeRestante * Double.parseDouble(txtCantidad.getText()));
+
+            bbItemProducto.getSuministroTB().setPrecioVentaGeneralUnico(valor_sin_impuesto);
+            bbItemProducto.getSuministroTB().setPrecioVentaGeneralReal(preciocalculado);
+
+            double impuesto = Tools.calculateTax(bbItemProducto.getSuministroTB().getImpuestoValor(), bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+            bbItemProducto.getSuministroTB().setImpuestoSumado(Double.parseDouble(txtCantidad.getText()) * impuesto);
+            bbItemProducto.getSuministroTB().setPrecioVentaGeneral(bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal() + impuesto);
+
+            bbItemProducto.getSuministroTB().setSubImporte(bbItemProducto.getSuministroTB().getPrecioVentaGeneralUnico() * Double.parseDouble(txtCantidad.getText()));
+            bbItemProducto.getSuministroTB().setSubImporteDescuento(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+            bbItemProducto.getSuministroTB().setTotalImporte(Double.parseDouble(txtCantidad.getText()) * bbItemProducto.getSuministroTB().getPrecioVentaGeneralReal());
+        }
+    }
+
+    @FXML
     private void onKeyTypedPrecio(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
@@ -201,6 +234,14 @@ public class FxVentaDetalleProductoController implements Initializable {
 
     @FXML
     private void onKeyTypedPorcentajeDescuento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedBonificacion(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
             event.consume();

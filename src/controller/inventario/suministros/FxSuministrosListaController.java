@@ -1,11 +1,9 @@
 package controller.inventario.suministros;
 
 import controller.operaciones.compras.FxComprasController;
-import controller.consultas.compras.FxComprasEditarController;
+import controller.inventario.lote.FxLoteCambiarController;
 import controller.operaciones.venta.FxVentaEstructuraController;
 import controller.reporte.FxVentaUtilidadesController;
-import controller.produccion.asignacion.FxAsignacionController;
-import controller.produccion.asignacion.FxAsignacionProcesoController;
 import controller.inventario.movimientos.FxMovimientosProcesoController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
@@ -87,15 +85,7 @@ public class FxSuministrosListaController implements Initializable {
 
     private FxComprasController comprasController;
 
-    private FxComprasEditarController comprasEditarController;
-
     private FxSuministrosKardexController suministrosKardexController;
-
-    private FxProducirProcesoController producirProcesoController;
-
-    private FxAsignacionController asignacionController;
-
-    private FxAsignacionProcesoController asignacionProcesoController;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -104,6 +94,10 @@ public class FxSuministrosListaController implements Initializable {
     private FxCotizacionController cotizacionController;
 
     private FxGuiaRemisionController guiaRemisionController;
+
+    private FxLoteCambiarController loteCambiarController;
+
+    private FxProducirProcesoController producirProcesoController;
 
     private boolean status;
 
@@ -267,37 +261,25 @@ public class FxSuministrosListaController implements Initializable {
         }
     }
 
-    private void openWindowCompra(short option) {
+    private void openWindowCompra() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (tvList.getSelectionModel().getSelectedItem().isInventario()) {
-                WindowStage.openWindowSuministroCompra(false, null, comprasController, tvList.getSelectionModel().getSelectedItem(), apWindow.getScene().getWindow());
-//                try {
-//                    URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
-//                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-//                    Parent parent = fXMLLoader.load(url.openStream());
-//                    //Controlller here
-//                    FxSuministrosCompraController controller = fXMLLoader.getController();
-//                    if (option == 1) {
-//                        controller.setInitComprasController(comprasController);
-//                    } else {
-//                        controller.setInitComprasEditarController(comprasEditarController);
-//                    }
-//                    controller.setLoadData(
-//                            tvList.getSelectionModel().getSelectedItem().getIdSuministro(),
-//                            tvList.getSelectionModel().getSelectedItem().getClave(),
-//                            tvList.getSelectionModel().getSelectedItem().getNombreMarca(),
-//                            Tools.roundingValue(tvList.getSelectionModel().getSelectedItem().getCostoCompra(), 8),
-//                            tvList.getSelectionModel().getSelectedItem().getUnidadCompraName(),
-//                            tvList.getSelectionModel().getSelectedItem().isLote()
-//                    );
-//                    //
-//                    Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", apWindow.getScene().getWindow());
-//                    stage.setResizable(false);
-//                    stage.sizeToScene();
-//                    stage.show();
-//                } catch (IOException ix) {
-//                    System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
-//                }
+                try {
+                    URL url = WindowStage.class.getClassLoader().getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
+                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                    Parent parent = fXMLLoader.load(url.openStream());
+                    //Controlller here
+                    FxSuministrosCompraController controller = fXMLLoader.getController();
+                    controller.setInitComprasController(comprasController);
+                    controller.setLoadData(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), false);
+                    //
+                    Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", apWindow.getScene().getWindow());
+                    stage.setResizable(false);
+                    stage.sizeToScene();
+                    stage.show();
+                } catch (IOException ix) {
+                    System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
+                }
             } else {
                 Tools.AlertMessageWarning(apWindow, "Compra", "El producto no es inventariado, actualize sus campos.");
             }
@@ -329,12 +311,7 @@ public class FxSuministrosListaController implements Initializable {
             }
         } else if (comprasController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                openWindowCompra((short) 1);
-                txtSearch.requestFocus();
-            }
-        } else if (comprasEditarController != null) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                openWindowCompra((short) 0);
+                openWindowCompra();
                 txtSearch.requestFocus();
             }
         } else if (suministrosKardexController != null) {
@@ -343,21 +320,20 @@ public class FxSuministrosListaController implements Initializable {
                 suministrosKardexController.fillKardexTable((short) 0, tvList.getSelectionModel().getSelectedItem().getIdSuministro(), "", "");
                 Tools.Dispose(apWindow);
             }
-        } else if (asignacionProcesoController != null) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                if (!validateDuplicate(asignacionProcesoController.getTvList(), tvList.getSelectionModel().getSelectedItem())) {
-                    asignacionProcesoController.addSuministroLista(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
-                    Tools.Dispose(apWindow);
-                } else {
-                    Tools.AlertMessageWarning(apWindow, "Asignación", "Ya hay un producto con las mismas características.");
-                }
-            }
         } else if (ventaUtilidadesController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 ventaUtilidadesController.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
                 ventaUtilidadesController.getTxtProducto().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
                 Tools.Dispose(apWindow);
             }
+        } else if (loteCambiarController != null) {
+            loteCambiarController.getTxtArticulo().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+            loteCambiarController.getTxtCantidad().setText("" + tvList.getSelectionModel().getSelectedItem().getCantidad());
+            Tools.Dispose(apWindow);
+        }else if(producirProcesoController != null){
+            producirProcesoController.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
+            producirProcesoController.getTxtProductoFabricar().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+            Tools.Dispose(apWindow);
         }
     }
 
@@ -395,6 +371,7 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             suministroTB.setCantidad(1);
             suministroTB.setCostoCompra(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
+            suministroTB.setBonificacion(0);
 
             double valor_sin_impuesto = tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral() / ((tvList.getSelectionModel().getSelectedItem().getImpuestoValor() / 100.00) + 1);
             double descuento = suministroTB.getDescuento();
@@ -701,24 +678,8 @@ public class FxSuministrosListaController implements Initializable {
         this.comprasController = comprasController;
     }
 
-    public void setInitComprasEditarController(FxComprasEditarController comprasController) {
-        this.comprasEditarController = comprasController;
-    }
-
     public void setInitSuministrosKardexController(FxSuministrosKardexController suministrosKardexController) {
         this.suministrosKardexController = suministrosKardexController;
-    }
-
-    public void setInitProducirProcesoController(FxProducirProcesoController producirProcesoController) {
-        this.producirProcesoController = producirProcesoController;
-    }
-
-    public void setInitAsignacionController(FxAsignacionController asignacionController) {
-        this.asignacionController = asignacionController;
-    }
-
-    public void setInitAsignacionProcesoController(FxAsignacionProcesoController asignacionProcesoController) {
-        this.asignacionProcesoController = asignacionProcesoController;
     }
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
@@ -735,6 +696,14 @@ public class FxSuministrosListaController implements Initializable {
 
     public void setInitGuiaRemisionController(FxGuiaRemisionController guiaRemisionController) {
         this.guiaRemisionController = guiaRemisionController;
+    }
+
+    public void setInitLoteController(FxLoteCambiarController loteCambiarController) {
+        this.loteCambiarController = loteCambiarController;
+    }
+
+    public void setInitProducirProcesoController(FxProducirProcesoController producirProcesoController) {
+        this.producirProcesoController = producirProcesoController;
     }
 
 }

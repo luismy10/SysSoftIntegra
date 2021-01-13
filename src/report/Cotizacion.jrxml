@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="78"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -65,32 +65,20 @@
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="315" y="65" width="30" height="25" backcolor="#B5B5B5" uuid="d7b93662-2673-4513-8f6f-47e0d8251351"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="315" y="0" width="30" height="65" backcolor="#576767" uuid="b643d54b-9eb9-41af-93db-144c28a9e85e"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="0" y="0" width="315" height="90" backcolor="#373B46" uuid="19032309-773d-4f69-b43f-645505f281cc"/>
+				<reportElement x="0" y="0" width="345" height="90" backcolor="#373B46" uuid="19032309-773d-4f69-b43f-645505f281cc"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="100" y="0" width="215" height="47" forecolor="#F0F3FC" uuid="44fb73db-b8df-4a61-92b0-8196ea1731d7"/>
+				<reportElement mode="Transparent" x="100" y="0" width="245" height="36" forecolor="#F0F3FC" uuid="44fb73db-b8df-4a61-92b0-8196ea1731d7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{EMPRESA}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="100" y="46" width="215" height="15" forecolor="#F0F3FC" uuid="6c054231-0520-4945-aa9f-c44d32c91504"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="39" width="245" height="15" forecolor="#F0F3FC" uuid="6c054231-0520-4945-aa9f-c44d32c91504"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -98,7 +86,7 @@
 				<textFieldExpression><![CDATA[$P{DIRECCION}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="100" y="74" width="215" height="15" forecolor="#F0F3FC" uuid="abb146fd-68fc-4b33-a7f7-e29554bae5b3"/>
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="73" width="245" height="15" forecolor="#F0F3FC" uuid="abb146fd-68fc-4b33-a7f7-e29554bae5b3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -106,7 +94,7 @@
 				<textFieldExpression><![CDATA[$P{TELEFONOCELULAR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="100" y="60" width="215" height="15" forecolor="#F0F3FC" uuid="53cdb2f0-9a36-4537-9340-94767f2e5e1b"/>
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="56" width="245" height="15" forecolor="#F0F3FC" uuid="53cdb2f0-9a36-4537-9340-94767f2e5e1b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -139,7 +127,7 @@
 				<textFieldExpression><![CDATA[$P{NUMERODOCUMENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="75" y="90" width="360" height="20" uuid="923f0f67-6337-4d21-b64b-25c7d3e7c27a"/>
+				<reportElement x="75" y="90" width="360" height="20" forecolor="#000000" uuid="923f0f67-6337-4d21-b64b-25c7d3e7c27a"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -163,7 +151,7 @@
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[Cliente:]]></text>
+				<text><![CDATA[CLIENTE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="110" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="e4b9e70d-8b1c-4a30-83b7-8bae8d155ddc"/>
@@ -177,10 +165,10 @@
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[Celular:]]></text>
+				<text><![CDATA[CELULAR:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="75" y="110" width="360" height="20" forecolor="#1A2226" uuid="5bfd7423-331c-45ab-87b0-3a36f0beae2d"/>
+				<reportElement x="75" y="110" width="360" height="20" forecolor="#000000" uuid="5bfd7423-331c-45ab-87b0-3a36f0beae2d"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -204,10 +192,10 @@
 					<font fontName="Arial" size="7" isBold="true" isStrikeThrough="false"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[Email:]]></text>
+				<text><![CDATA[EMAIL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="75" y="130" width="360" height="20" forecolor="#1A2226" uuid="94c782f0-0e62-42c4-9ca8-110c67523212"/>
+				<reportElement x="75" y="130" width="360" height="20" forecolor="#000000" uuid="94c782f0-0e62-42c4-9ca8-110c67523212"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -231,10 +219,10 @@
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[Dirección:]]></text>
+				<text><![CDATA[DIRECCIÓN:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="75" y="150" width="360" height="20" forecolor="#1A2226" uuid="046a5a90-1338-46a0-94ab-9ee7de752f40"/>
+				<reportElement x="75" y="150" width="360" height="20" forecolor="#000000" uuid="046a5a90-1338-46a0-94ab-9ee7de752f40"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -257,10 +245,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha de Cotización]]></text>
+				<text><![CDATA[FECHA DE COTIZACIÓN]]></text>
 			</staticText>
 			<textField>
-				<reportElement isPrintRepeatedValues="false" x="435" y="110" width="120" height="20" forecolor="#1A2226" uuid="36307161-8543-47c4-9bc7-8e173d95d73f"/>
+				<reportElement isPrintRepeatedValues="false" x="435" y="110" width="120" height="20" forecolor="#000000" uuid="36307161-8543-47c4-9bc7-8e173d95d73f"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -373,10 +361,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Moneda]]></text>
+				<text><![CDATA[MONEDA]]></text>
 			</staticText>
 			<textField>
-				<reportElement isPrintRepeatedValues="false" x="435" y="150" width="120" height="20" forecolor="#1A2226" uuid="966f61ec-2185-4292-86de-7bab27756936"/>
+				<reportElement isPrintRepeatedValues="false" x="435" y="150" width="120" height="20" forecolor="#000000" uuid="966f61ec-2185-4292-86de-7bab27756936"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -415,7 +403,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="18" forecolor="#1A2226" uuid="b383cd7e-3744-42ad-abe5-6fadaa04375a">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="18" forecolor="#000000" uuid="b383cd7e-3744-42ad-abe5-6fadaa04375a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
 				</reportElement>
 				<box>
@@ -424,12 +412,12 @@
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="65" height="18" forecolor="#1A2226" uuid="a8d79233-4ac4-4cdc-8f4c-07af6255c96e">
+				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="65" height="18" forecolor="#000000" uuid="a8d79233-4ac4-4cdc-8f4c-07af6255c96e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
 				</reportElement>
 				<box>
@@ -438,12 +426,12 @@
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{cantidad})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="95" y="0" width="70" height="18" forecolor="#1A2226" uuid="c8bf840e-1143-4e41-b2ed-11f306f649b2">
+				<reportElement stretchType="RelativeToBandHeight" x="95" y="0" width="70" height="18" forecolor="#000000" uuid="c8bf840e-1143-4e41-b2ed-11f306f649b2">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3da7e1ae-407f-4aa8-93f4-73f7353846ed"/>
 				</reportElement>
 				<box>
@@ -452,12 +440,12 @@
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unidadCompraName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="210" height="18" forecolor="#1A2226" uuid="d4feb5c9-c856-4431-adaa-e6e855fa1df7">
+				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="210" height="18" forecolor="#000000" uuid="d4feb5c9-c856-4431-adaa-e6e855fa1df7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
 				</reportElement>
 				<box>
@@ -466,13 +454,13 @@
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombreMarca}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="375" y="0" width="60" height="18" forecolor="#1A2226" uuid="e41fcd1b-e703-4c42-93c1-8b580a36c2c9">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="375" y="0" width="60" height="18" forecolor="#000000" uuid="e41fcd1b-e703-4c42-93c1-8b580a36c2c9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c6e4efc2-4078-4cc3-ba83-e24c26a460f5"/>
 				</reportElement>
 				<box>
@@ -481,26 +469,26 @@
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{precioVentaGeneral})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="435" y="0" width="60" height="18" forecolor="#1A2226" uuid="9f8e44dc-c91a-4221-8073-dfb3cefc1738"/>
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="0" width="60" height="18" forecolor="#000000" uuid="9f8e44dc-c91a-4221-8073-dfb3cefc1738"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{descuento})).setScale(2, RoundingMode.HALF_UP)+"%"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="495" y="0" width="60" height="18" forecolor="#1A2226" uuid="92223993-9f63-48b7-bc03-8f655b957744">
+				<reportElement stretchType="RelativeToBandHeight" x="495" y="0" width="60" height="18" forecolor="#000000" uuid="92223993-9f63-48b7-bc03-8f655b957744">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>
@@ -509,7 +497,7 @@
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{totalImporte})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
@@ -525,7 +513,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="0" y="0" width="555" height="20" forecolor="#1A2226" backcolor="#1A2226" uuid="66c9e07e-ddcc-4b08-984e-94eff3f7b3e7"/>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#000000" backcolor="#1A2226" uuid="66c9e07e-ddcc-4b08-984e-94eff3f7b3e7"/>
 				<box>
 					<pen lineColor="#373B46"/>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
@@ -602,7 +590,7 @@
 				<text><![CDATA[Gracias por hacer negocios.]]></text>
 			</staticText>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="435" y="20" width="120" height="16" forecolor="#1A2226" uuid="4cbc1bec-6316-4158-b00d-e25c7762248a">
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="20" width="120" height="16" forecolor="#000000" uuid="4cbc1bec-6316-4158-b00d-e25c7762248a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>
@@ -618,7 +606,7 @@
 				<textFieldExpression><![CDATA[$P{SIMBOLO}+" "+$P{VALOR_VENTA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="435" y="36" width="120" height="16" forecolor="#1A2226" uuid="cf8e03ea-7522-4cf0-b20a-339742d1e94e">
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="36" width="120" height="16" forecolor="#000000" uuid="cf8e03ea-7522-4cf0-b20a-339742d1e94e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>
@@ -634,7 +622,7 @@
 				<textFieldExpression><![CDATA[$P{SIMBOLO}+" "+$P{DESCUENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="435" y="52" width="120" height="16" forecolor="#1A2226" uuid="2dbcfc6d-3086-4b18-8c49-77f714a62758">
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="52" width="120" height="16" forecolor="#000000" uuid="2dbcfc6d-3086-4b18-8c49-77f714a62758">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>
@@ -664,7 +652,7 @@
 				<text><![CDATA[IMPORTE TOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="435" y="84" width="120" height="16" forecolor="#1A2226" uuid="e2b2ed1e-9b8d-4abc-858c-8e4fbe718dc4">
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="84" width="120" height="16" forecolor="#000000" uuid="e2b2ed1e-9b8d-4abc-858c-8e4fbe718dc4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>
@@ -694,7 +682,7 @@
 				<text><![CDATA[IGV(18%):]]></text>
 			</staticText>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="435" y="68" width="120" height="16" forecolor="#1A2226" uuid="efc2574d-65ff-4367-a415-d6dac617ac87">
+				<reportElement stretchType="RelativeToBandHeight" x="435" y="68" width="120" height="16" forecolor="#000000" uuid="efc2574d-65ff-4367-a415-d6dac617ac87">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>
@@ -733,7 +721,7 @@
 				<imageExpression><![CDATA[$P{ICON}]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="36" width="249" height="92" forecolor="#1A2226" uuid="545f007d-2e8b-4328-baca-430972800e99">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="36" width="249" height="92" forecolor="#000000" uuid="545f007d-2e8b-4328-baca-430972800e99">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>

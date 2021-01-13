@@ -362,8 +362,47 @@ public class FxImpresoraController implements Initializable {
                 Session.FORMATO_IMPRESORA_COTIZACION = rbTicket.isSelected() ? "ticket" : "a4";
                 Session.DESING_IMPRESORA_COTIZACION = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
                 Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("CORTE DE CAJA")) {
+                prop.setProperty("printerNameCorteCaja", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperCorteCaja", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatCorteCaja", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingCorteCaja", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
+                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+
+                Session.ESTADO_IMPRESORA_CORTE_CAJA = true;
+                Session.NOMBRE_IMPRESORA_CORTE_CAJA = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_CORTE_CAJA = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_CORTE_CAJA = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("CUENTAS POR COBRAR")) {
+                prop.setProperty("printerNameCuentasPorCobrar", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperCuentasPorCobrar", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatCuentasPorCobrar", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingCuentasPorCobrar", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
+                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+
+                Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = true;
+                Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_COBRAR = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_CUENTA_POR_COBRAR = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_CUENTA_POR_COBRAR = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("CUENTAS POR PAGAR")) {
+                prop.setProperty("printerNameCuentasPorPagar", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperCuentasPorPagar", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatCuentasPorPagar", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingCuentasPorPagar", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
+                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+
+                Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR = true;
+                Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_CUENTA_POR_PAGAR = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
             } else {
-                Tools.AlertMessageWarning(vbWindow, "Impresora", "No se puede guardar la configuración por problemas con la lista de tipo de impresora.");
+                Tools.AlertMessageWarning(vbWindow, "Impresora", "No se puede guardar la configuración, comuníquese con su proveedor para habilitar el módulo.");
             }
         } catch (IOException io) {
             Tools.AlertMessageError(vbWindow, "Impresora", "Error al crear el archivo: " + io.getLocalizedMessage());

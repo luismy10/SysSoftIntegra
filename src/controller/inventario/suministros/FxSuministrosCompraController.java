@@ -1,7 +1,6 @@
 package controller.inventario.suministros;
 
 import controller.operaciones.compras.FxComprasController;
-import controller.consultas.compras.FxComprasEditarController;
 import controller.inventario.lote.FxLoteProcesoController;
 import controller.tools.FilesRouters;
 import controller.tools.RadioButtonModel;
@@ -98,13 +97,9 @@ public class FxSuministrosCompraController implements Initializable {
 
     private FxComprasController comprasController;
 
-    private FxComprasEditarController comprasEditarController;
-
     private boolean editarSuministros;
 
     private String idSuminisitro;
-
-    private boolean loteSuministro;
 
     private int indexcompra;
 
@@ -116,7 +111,7 @@ public class FxSuministrosCompraController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
         editarSuministros = false;
-        loteSuministro = false;
+//        loteSuministro = false;
         idSuminisitro = "";
         indexcompra = 0;
         tvPreciosNormal = new ArrayList();
@@ -170,9 +165,9 @@ public class FxSuministrosCompraController implements Initializable {
         this.clave = suministroTB.getClave();
         descripcion = suministroTB.getNombreMarca();
         lblDescripcion.setText(clave + " - " + descripcion);
-        txtCosto.setText(Tools.roundingValue(suministroTB.getCostoCompra(), 8));
+        txtCosto.setText("" + suministroTB.getCostoCompra());
         lblMedida.setText(suministroTB.getUnidadCompraName());
-        loteSuministro = lote;
+//        loteSuministro = lote;
         for (ImpuestoTB impuestoTB : cbImpuesto.getItems()) {
             if (suministroTB.getImpuestoId() == impuestoTB.getIdImpuesto()) {
                 cbImpuesto.getSelectionModel().select(impuestoTB);
@@ -182,7 +177,7 @@ public class FxSuministrosCompraController implements Initializable {
         if (suministroTB.isTipoPrecio()) {
             rbPrecioNormal.setSelected(true);
 
-            txtPrecio1.setText(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 4));
+            txtPrecio1.setText("" + suministroTB.getPrecioVentaGeneral());
             ObservableList<PreciosTB> preciosTBs = PreciosADO.Get_Lista_Precios_By_IdSuministro(idSuministro);
             if (!preciosTBs.isEmpty()) {
                 if (((PreciosTB) preciosTBs.get(0)) != null) {
@@ -197,7 +192,7 @@ public class FxSuministrosCompraController implements Initializable {
             rbPrecioPersonalizado.setSelected(true);
             vbContenedorPreciosPersonalizado.getChildren().add(vbPrecioPersonalizado);
 
-            txtPrecioVentaNetoPersonalizado.setText(Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 4));
+            txtPrecioVentaNetoPersonalizado.setText("" + suministroTB.getPrecioVentaGeneral());
             ObservableList<PreciosTB> preciosTBs = PreciosADO.Get_Lista_Precios_By_IdSuministro(idSuministro);
             if (!preciosTBs.isEmpty()) {
                 for (int i = 0; i < preciosTBs.size(); i++) {
@@ -220,8 +215,8 @@ public class FxSuministrosCompraController implements Initializable {
         descripcion = detalleCompraTB.getSuministroTB().getNombreMarca();
         lblDescripcion.setText(detalleCompraTB.getSuministroTB().getClave() + " - " + detalleCompraTB.getSuministroTB().getNombreMarca());
         txtCantidad.setText("" + detalleCompraTB.getCantidad());
-        txtDescuento.setText(Tools.roundingValue(detalleCompraTB.getDescuento(), 0));
-        txtCosto.setText(Tools.roundingValue(detalleCompraTB.getPrecioCompra(), 8));
+        txtDescuento.setText("" + detalleCompraTB.getDescuento());
+        txtCosto.setText("" + detalleCompraTB.getPrecioCompra());
 
         int impuesto = detalleCompraTB.getIdImpuesto();
         if (impuesto != 0) {
@@ -237,7 +232,7 @@ public class FxSuministrosCompraController implements Initializable {
             if (!vbImpuestos.getChildren().isEmpty()) {
                 ((RadioButtonModel) vbImpuestos.getChildren().get(0)).setSelected(true);
             }
-        }     
+        }
 
         editarSuministros = true;
         indexcompra = index;
@@ -251,24 +246,22 @@ public class FxSuministrosCompraController implements Initializable {
         }
 
         if (detalleCompraTB.getSuministroTB().isTipoPrecio()) {
-            txtPrecio1.setText(Tools.roundingValue(detalleCompraTB.getSuministroTB().getPrecioVentaGeneral(), 4));
+            txtPrecio1.setText("" + detalleCompraTB.getSuministroTB().getPrecioVentaGeneral());
 
             ArrayList<PreciosTB> preciosTBs = detalleCompraTB.getListPrecios();
             if (!preciosTBs.isEmpty()) {
                 if (((PreciosTB) preciosTBs.get(0)) != null) {
-                    txtPrecio2.setText(Tools.roundingValue(((PreciosTB) preciosTBs.get(0)).getValor(), 4));
+                    txtPrecio2.setText("" + ((PreciosTB) preciosTBs.get(0)).getValor());
                 }
                 if (((PreciosTB) preciosTBs.get(1)) != null) {
-                    txtPrecio3.setText(Tools.roundingValue(((PreciosTB) preciosTBs.get(1)).getValor(), 4));
+                    txtPrecio3.setText("" + ((PreciosTB) preciosTBs.get(1)).getValor());
                 }
             }
         } else {
             vbContenedorPrecioNormal.getChildren().remove(hbPrecioNormal);
-
             rbPrecioPersonalizado.setSelected(true);
             vbContenedorPreciosPersonalizado.getChildren().add(vbPrecioPersonalizado);
-
-            txtPrecioVentaNetoPersonalizado.setText(Tools.roundingValue(detalleCompraTB.getSuministroTB().getPrecioVentaGeneral(), 4));           
+            txtPrecioVentaNetoPersonalizado.setText("" + detalleCompraTB.getSuministroTB().getPrecioVentaGeneral());
 
             ArrayList<PreciosTB> preciosTBs = detalleCompraTB.getListPrecios();
             if (!preciosTBs.isEmpty()) {
@@ -289,8 +282,8 @@ public class FxSuministrosCompraController implements Initializable {
 
     private boolean validateStock(TableView<DetalleCompraTB> view, String clave) {
         boolean ret = false;
-        for (int i = 0; i < view.getItems().size(); i++) {
-            if (view.getItems().get(i).getSuministroTB().getClave().equals(clave)) {
+        for (DetalleCompraTB d : view.getItems()) {
+            if (d.getSuministroTB().getClave().equals(clave)) {
                 ret = true;
                 break;
             }
@@ -353,10 +346,11 @@ public class FxSuministrosCompraController implements Initializable {
     }
 
     private void addSuministros(int idImpuesto, String nombreImpuesto, double valorImpuesto) {
+
         DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
         detalleCompraTB.setId(editarSuministros ? indexcompra + 1 : comprasController.getTvList().getItems().size() + 1);
         detalleCompraTB.setIdArticulo(idSuminisitro);
-        //
+//       
         SuministroTB suministrosTB = new SuministroTB();
         suministrosTB.setClave(clave);
         suministrosTB.setNombreMarca(descripcion);
@@ -365,100 +359,80 @@ public class FxSuministrosCompraController implements Initializable {
                 : Tools.isNumeric(txtPrecioVentaNetoPersonalizado.getText()) ? Double.parseDouble(txtPrecioVentaNetoPersonalizado.getText()) : 0;
         suministrosTB.setPrecioVentaGeneral(precioValidado);
         suministrosTB.setImpuestoId(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
-        suministrosTB.setTipoPrecio(rbPrecioNormal.isSelected()); 
+        suministrosTB.setTipoPrecio(rbPrecioNormal.isSelected());
         detalleCompraTB.setSuministroTB(suministrosTB);
-
         tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 1", !Tools.isNumeric(txtPrecio2.getText()) ? 0 : Double.parseDouble(txtPrecio2.getText()), 1));
         tvPreciosNormal.add(new PreciosTB(0, "Precio de Venta 2", !Tools.isNumeric(txtPrecio3.getText()) ? 0 : Double.parseDouble(txtPrecio3.getText()), 1));
         detalleCompraTB.setListPrecios(rbPrecioNormal.isSelected() ? tvPreciosNormal : new ArrayList<>(tvPrecios.getItems()));
-        //        
-        detalleCompraTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-        detalleCompraTB.setPrecioCompra(Double.parseDouble(txtCosto.getText()));
-        detalleCompraTB.setDescuento(!Tools.isNumeric(txtDescuento.getText()) ? 0 : Double.parseDouble(txtDescuento.getText()));
+//        //       
         detalleCompraTB.setIdImpuesto(idImpuesto);
         detalleCompraTB.setNombreImpuesto(nombreImpuesto);
         detalleCompraTB.setValorImpuesto(valorImpuesto);
         detalleCompraTB.setDescripcion("");
+        detalleCompraTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
+
+        double valor_sin_impuesto = Double.parseDouble(txtCosto.getText()) / ((detalleCompraTB.getValorImpuesto() / 100.00) + 1);
+        double descuento = !Tools.isNumeric(txtDescuento.getText()) ? 0 : Double.parseDouble(txtDescuento.getText());
+        double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+        double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+        detalleCompraTB.setDescuento(descuento);
+        detalleCompraTB.setDescuentoSumado(descuento * detalleCompraTB.getCantidad());
+
+        detalleCompraTB.setPrecioCompraUnico(valor_sin_impuesto);
+        detalleCompraTB.setPrecioCompraReal(preciocalculado);
+
+        double impuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), detalleCompraTB.getPrecioCompraReal());
+        detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * impuesto);
+        detalleCompraTB.setPrecioCompra(detalleCompraTB.getPrecioCompraReal() + impuesto);
         
-        double totalDescuento = detalleCompraTB.getPrecioCompra() * (detalleCompraTB.getDescuento() / 100.00);
-        double nuevoPrecioCompra = detalleCompraTB.getPrecioCompra() - totalDescuento;
-        double totalImpuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), nuevoPrecioCompra);
-        
-        detalleCompraTB.setPrecioCompraCalculado((totalDescuento == 0 ? 0 : -1 * totalDescuento));
-        detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * totalImpuesto);
-        detalleCompraTB.setImporte(detalleCompraTB.getCantidad() * (nuevoPrecioCompra + totalImpuesto));
-        
-        detalleCompraTB.setLote(loteSuministro);
+        detalleCompraTB.setImporte(detalleCompraTB.getPrecioCompra() * detalleCompraTB.getCantidad());
+
+////        detalleCompraTB.setLote(loteSuministro);
         Button btnRemove = new Button();
         btnRemove.setId(detalleCompraTB.getIdArticulo());
         btnRemove.getStyleClass().add("buttonDark");
         ImageView view = new ImageView(new Image("/view/image/remove.png"));
-        view.setFitWidth(24);
-        view.setFitHeight(24);
+        view.setFitWidth(22);
+        view.setFitHeight(22);
         btnRemove.setGraphic(view);
         detalleCompraTB.setRemove(btnRemove);
 
-        if (comprasController != null) {
-            if (!validateStock(comprasController.getTvList(), detalleCompraTB.getSuministroTB().getClave()) && !editarSuministros) {
-                if (loteSuministro) {
-                    openWindowLote(suministrosTB);
-                } else {
-                    comprasController.addSuministroToTable(detalleCompraTB);
-                    comprasController.calculateTotals();
-                    Tools.Dispose(apWindow);
-                }
-            } else if (editarSuministros) {
-                if (loteSuministro) {
-                    openWindowLote(suministrosTB);
-                } else {
-                    comprasController.editSuministroToTable(indexcompra, detalleCompraTB);
-                    comprasController.calculateTotals();
-                    Tools.Dispose(apWindow);
-                }
-            } else {
-                Tools.AlertMessageWarning(apWindow, "Compra", "Ya hay un producto con las mismas características.");
-            }
-        } else if (comprasEditarController != null) {
-//            if (!validateStock(comprasEditarController.getTvList(), suministrosTB) && !editarSuministros) {
-//                if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
+        if (!validateStock(comprasController.getTvList(), detalleCompraTB.getSuministroTB().getClave()) && !editarSuministros) {
+            comprasController.addSuministroToTable(detalleCompraTB);
+            comprasController.calculateTotals();
+            Tools.Dispose(apWindow);
+
+        } else if (editarSuministros) {
+            comprasController.editSuministroToTable(indexcompra, detalleCompraTB);
+            comprasController.calculateTotals();
+            Tools.Dispose(apWindow);
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Compra", "Ya hay un producto con las mismas características.");
+        }
+
+//        if (comprasController != null) {
+//            if (!validateStock(comprasController.getTvList(), detalleCompraTB.getSuministroTB().getClave()) && !editarSuministros) {
+//                if (loteSuministro) {
 //                    openWindowLote(suministrosTB);
 //                } else {
-//                    comprasEditarController.getTvList().getItems().add(suministrosTB);
-//                    comprasEditarController.calculateTotals();
+//                    comprasController.addSuministroToTable(detalleCompraTB);
+//                    comprasController.calculateTotals();
 //                    Tools.Dispose(apWindow);
 //                }
 //            } else if (editarSuministros) {
-//                if (validarlote && cantidadinicial != Double.parseDouble(txtCantidad.getText())) {
+//                if (loteSuministro) {
 //                    openWindowLote(suministrosTB);
 //                } else {
-//                    comprasEditarController.getTvList().getItems().set(indexcompra, suministrosTB);
-//                    comprasEditarController.calculateTotals();
+//                    comprasController.editSuministroToTable(indexcompra, detalleCompraTB);
+//                    comprasController.calculateTotals();
 //                    Tools.Dispose(apWindow);
 //                }
 //            } else {
-//                Tools.AlertMessage(apWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Ya hay un producto con las mismas características.", false);
-//            }
-        }
-
-    }
-
-//    private void onActionImpuesto() {
-//        if (Tools.isNumeric(txtCosto.getText())) {
-//            if (!vbImpuestos.getChildren().isEmpty()) {
-//                double costo = Double.parseDouble(txtCosto.getText());
-//
-//                double totalImpuesto = 0;
-//                for (int i = 0; i < vbImpuestos.getChildren().size(); i++) {
-//                    totalImpuesto += Tools.calculateTax(((RadioButtonModel) vbImpuestos.getChildren().get(i)).isSelected()
-//                            ? ((RadioButtonModel) vbImpuestos.getChildren().get(i)).getValor()
-//                            : 0, costo);
-//                }
-//
-//                double precioimpuesto = (costo + totalImpuesto);
-//                txtCostoCalculado.setText(Tools.roundingValue(precioimpuesto, 8));
-//            }
+//                Tools.AlertMessageWarning(apWindow, "Compra", "Ya hay un producto con las mismas características.");
+//            }        
 //        }
-//    }
+    }
 
     private void openWindowLote(SuministroTB suministroTB) {
         try {
@@ -658,7 +632,7 @@ public class FxSuministrosCompraController implements Initializable {
             event.consume();
         }
     }
-    
+
     @FXML
     private void onKeyTypedPrecioPersonalizado(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
@@ -681,7 +655,6 @@ public class FxSuministrosCompraController implements Initializable {
         }
     }
 
-
     @FXML
     private void onKeyPressedNew(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -699,15 +672,11 @@ public class FxSuministrosCompraController implements Initializable {
     }
 
     public void setValidarlote(boolean loteSuministro) {
-        this.loteSuministro = loteSuministro;
+//        this.loteSuministro = loteSuministro;
     }
 
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
-    }
-
-    public void setInitComprasEditarController(FxComprasEditarController comprasEditarController) {
-        this.comprasEditarController = comprasEditarController;
     }
 
     public FxComprasController getComprasController() {

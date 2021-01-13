@@ -41,6 +41,15 @@
             </HBox>
             <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                <children>
+                  <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -86,7 +95,7 @@
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true">
                                              <image>
                                                 <Image url="@../../image/search.png" />
                                              </image>
@@ -100,7 +109,7 @@
                                  <children>
                                     <Label styleClass="labelOpenSansRegular13" text="Estado" textFill="#020203" VBox.vgrow="ALWAYS">
                                        <graphic>
-                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/options.png" />
                                              </image>
@@ -151,7 +160,7 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/left.png" />
                                  </image></ImageView>
@@ -177,7 +186,7 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                                  <image>
                                     <Image url="@../../image/left.png" />
                                  </image></ImageView>

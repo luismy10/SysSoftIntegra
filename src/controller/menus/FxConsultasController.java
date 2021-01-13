@@ -2,6 +2,7 @@ package controller.menus;
 
 import controller.banco.FxBancosController;
 import controller.consultas.compras.FxComprasRealizadasController;
+import controller.consultas.pagar.FxCuentasPorCobrarController;
 import controller.consultas.pagar.FxCuentasPorPagarController;
 import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.cotizacion.FxCotizacionRealizadasController;
@@ -106,13 +107,22 @@ public class FxConsultasController implements Initializable {
     private FxCajaConsultasController controlleCajaConsultas;
 
     /*
-    Controller caja consultas
+    Controller cuentas por pagar
      */
     private FXMLLoader fXMLCuentasPorCobrar;
 
     private VBox nodeCuentasPorCobrar;
 
-    private FxCuentasPorPagarController controlleCuentasPorCobrar;
+    private FxCuentasPorCobrarController controlleCuentasPorCobrar;
+
+    /*
+    Controller cuentas por pagar
+     */
+    private FXMLLoader fXMLCuentasPorPagar;
+
+    private VBox nodeCuentasPorPagar;
+
+    private FxCuentasPorPagarController controlleCuentasPorPagar;
 
     /*
     Controller caja consultas
@@ -149,6 +159,10 @@ public class FxConsultasController implements Initializable {
             fXMLCuentasPorCobrar = new FXMLLoader(getClass().getResource(FilesRouters.FX_CUENTAS_POR_COBRAR));
             nodeCuentasPorCobrar = fXMLCuentasPorCobrar.load();
             controlleCuentasPorCobrar = fXMLCuentasPorCobrar.getController();
+
+            fXMLCuentasPorPagar = new FXMLLoader(getClass().getResource(FilesRouters.FX_CUENTAS_POR_PAGAR));
+            nodeCuentasPorPagar = fXMLCuentasPorPagar.load();
+            controlleCuentasPorPagar = fXMLCuentasPorPagar.getController();
 
             fXMLBancos = new FXMLLoader(getClass().getResource(FilesRouters.FX_BANCOS));
             nodeBancos = fXMLBancos.load();
@@ -252,7 +266,18 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setBottomAnchor(nodeCuentasPorCobrar, 0d);
         vbContent.getChildren().add(nodeCuentasPorCobrar);
-        controlleCuentasPorCobrar.fillPurchasesTable("", "", "", (short) 0);
+        controlleCuentasPorCobrar.loadTableCuentasPorCobrar();
+    }
+
+    private void openWindowCuentasPorPagar() {
+        controlleCuentasPorPagar.setContent(vbPrincipal, vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeCuentasPorPagar, 0d);
+        AnchorPane.setTopAnchor(nodeCuentasPorPagar, 0d);
+        AnchorPane.setRightAnchor(nodeCuentasPorPagar, 0d);
+        AnchorPane.setBottomAnchor(nodeCuentasPorPagar, 0d);
+        vbContent.getChildren().add(nodeCuentasPorPagar);
+        controlleCuentasPorPagar.loadTableCuentasPorPagar();
     }
 
     private void openWindowBancos() {
@@ -269,13 +294,13 @@ public class FxConsultasController implements Initializable {
     @FXML
     private void onKeyPressedCuentasCobrar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            openWindowCuentasPorCobrar();
         }
     }
 
     @FXML
     private void onActionCuentasCobrar(ActionEvent event) {
-
+        openWindowCuentasPorCobrar();
     }
 
     @FXML
@@ -341,13 +366,13 @@ public class FxConsultasController implements Initializable {
     @FXML
     private void onKeyPressedCuentasPagar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCuentasPorCobrar();
+            openWindowCuentasPorPagar();
         }
     }
 
     @FXML
     private void onActionCuentasPagar(ActionEvent event) {
-        openWindowCuentasPorCobrar();
+        openWindowCuentasPorPagar();
     }
 
     @FXML

@@ -140,7 +140,8 @@ public class FxTipoDocumentoController implements Initializable {
                     tvList.getSelectionModel().getSelectedItem().getSerie(),
                     tvList.getSelectionModel().getSelectedItem().getNumeracion(),
                     tvList.getSelectionModel().getSelectedItem().getCodigoAlterno(),
-                    tvList.getSelectionModel().getSelectedItem().isGuia()
+                    tvList.getSelectionModel().getSelectedItem().isGuia(),
+                    tvList.getSelectionModel().getSelectedItem().isFactura()
             );
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());

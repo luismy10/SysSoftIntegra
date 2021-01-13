@@ -21,6 +21,8 @@ public class ObjectGlobal {
     public static AnchorPane PANE;
 
     public static AnchorPane PANE_PRINCIPAL;
+    
+    public static String QR_PERU_DATA = "|0|0|0|0|0|0|0|0|";
 
     static {
         PANE_PRINCIPAL = new AnchorPane();

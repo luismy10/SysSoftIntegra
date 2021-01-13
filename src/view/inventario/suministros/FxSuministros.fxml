@@ -201,7 +201,7 @@
                                        <children>
                                           <Label style="-fx-border-color: #999999;">
                                              <graphic>
-                                                <ImageView fx:id="ivPrincipal" fitHeight="160.0" fitWidth="180.0" pickOnBounds="true">
+                                                <ImageView fx:id="ivPrincipal" fitHeight="140.0" fitWidth="140.0" pickOnBounds="true">
                                                    <image>
                                                       <Image url="@../../image/no-image.png" />
                                                    </image>

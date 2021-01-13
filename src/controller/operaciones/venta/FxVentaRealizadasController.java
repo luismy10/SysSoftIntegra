@@ -89,7 +89,7 @@ public class FxVentaRealizadasController implements Initializable {
     private Label lblTotal;
     @FXML
     private VBox vbTotalVenta;
-    
+
     private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
@@ -101,7 +101,6 @@ public class FxVentaRealizadasController implements Initializable {
     private int totalPaginacion;
 
     private short opcion;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -110,7 +109,10 @@ public class FxVentaRealizadasController implements Initializable {
                 cellData.getValue().getFechaVenta() + "\n"
                 + cellData.getValue().getHoraVenta()
         ));
-        tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdCliente()));
+        tcCliente.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getClienteTB().getNumeroDocumento() + "\n"
+                + cellData.getValue().getClienteTB().getInformacion()
+        ));
         tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));

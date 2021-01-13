@@ -8,23 +8,35 @@ import javafx.scene.control.TextField;
 
 
 public class VentaCreditoTB {
-    
+        
+    private int id;
     private String idVenta;
-    private int idVentaCredito;
+    private String idVentaCredito;
     private double monto;
-    private String fechaRegistro ;
-    private String horaRegistro;
     private String fechaPago;
     private String horaPago;
-    private boolean estado;
+    private short estado;
+    private String idUsuario;
+    private String observacion;
+    private EmpleadoTB empleadoTB;
+    private VentaTB ventaTB;
     
     private TextField tfMonto;
     private DatePicker dpFecha;
     private CheckBox cbMontoInicial;
+    private Button btnImprimir;
     private Button btnQuitar;
     
     public VentaCreditoTB(){
         
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getIdVenta() {
@@ -35,11 +47,11 @@ public class VentaCreditoTB {
         this.idVenta = idVenta;
     }
 
-    public int getIdVentaCredito() {
+    public String getIdVentaCredito() {
         return idVentaCredito;
     }
 
-    public void setIdVentaCredito(int idVentaCredito) {
+    public void setIdVentaCredito(String idVentaCredito) {
         this.idVentaCredito = idVentaCredito;
     }
 
@@ -49,22 +61,6 @@ public class VentaCreditoTB {
 
     public void setMonto(double monto) {
         this.monto = monto;
-    }
-
-    public String getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(String fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getHoraRegistro() {
-        return horaRegistro;
-    }
-
-    public void setHoraRegistro(String horaRegistro) {
-        this.horaRegistro = horaRegistro;
     }
 
     public String getFechaPago() {
@@ -83,12 +79,36 @@ public class VentaCreditoTB {
         this.horaPago = horaPago;
     }
 
-    public boolean isEstado() {
+    public short getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(short estado) {
         this.estado = estado;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
+    }
+
+    public VentaTB getVentaTB() {
+        return ventaTB;
+    }
+
+    public void setVentaTB(VentaTB ventaTB) {
+        this.ventaTB = ventaTB;
     }
 
     public TextField getTfMonto() {
@@ -115,6 +135,14 @@ public class VentaCreditoTB {
         this.cbMontoInicial = cbMontoInicial;
     }
 
+    public Button getBtnImprimir() {
+        return btnImprimir;
+    }
+
+    public void setBtnImprimir(Button btnImprimir) {
+        this.btnImprimir = btnImprimir;
+    }
+
     public Button getBtnQuitar() {
         return btnQuitar;
     }
@@ -122,5 +150,13 @@ public class VentaCreditoTB {
     public void setBtnQuitar(Button btnQuitar) {
         this.btnQuitar = btnQuitar;
     }
-    
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
 }

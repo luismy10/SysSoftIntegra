@@ -8,16 +8,10 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -27,7 +21,6 @@ import javafx.scene.layout.VBox;
 import model.ResultTransaction;
 import model.SuministroTB;
 import model.VentaADO;
-import model.VentaCreditoTB;
 import model.VentaTB;
 
 public class FxVentaProcesoController implements Initializable {
@@ -61,20 +54,7 @@ public class FxVentaProcesoController implements Initializable {
     @FXML
     private Label lblVueltoNombre;
     @FXML
-    private TableView<VentaCreditoTB> tvPlazos;
-    @FXML
-    private TableColumn<VentaCreditoTB, TextField> tcMonto;
-    @FXML
-    private TableColumn<VentaCreditoTB, DatePicker> tcFecha;
-    @FXML
-    private TableColumn<VentaCreditoTB, CheckBox> tcMontoInicial;
-    @FXML
-    private TableColumn<VentaCreditoTB, Button> tcOpcion;
-//    private TextField txtObservacion;
-    @FXML
-    private Label lblMontoPagar;
-    @FXML
-    private Label lblMontoTotal;
+    private DatePicker txtFechaVencimiento;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -95,6 +75,7 @@ public class FxVentaProcesoController implements Initializable {
     private boolean state_view_pago;
 
     private boolean provilegios;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
@@ -103,23 +84,18 @@ public class FxVentaProcesoController implements Initializable {
         vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         lblVueltoNombre.setText("Su cambio: ");
-        tcMonto.setCellValueFactory(new PropertyValueFactory<>("tfMonto"));
-        tcFecha.setCellValueFactory(new PropertyValueFactory<>("dpFecha"));
-        tcMontoInicial.setCellValueFactory(new PropertyValueFactory<>("cbMontoInicial"));
-        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
     }
 
-    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList,boolean provilegios) {
+    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList, boolean provilegios) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
         tota_venta = Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1));
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(tota_venta, 2));
-        lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(tota_venta, 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
         lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ""));
         hbContenido.setDisable(false);
-        this.provilegios=provilegios;
+        this.provilegios = provilegios;
     }
 
     private void TotalAPagar() {
@@ -166,36 +142,43 @@ public class FxVentaProcesoController implements Initializable {
 
     private void onEventAceptar() {
         if (state_view_pago) {
-
-            int validateMonto = 0;
-            int validateFecha = 0;
-            double montoPagar = 0;
-            for (VentaCreditoTB creditoTB : tvPlazos.getItems()) {
-                validateMonto += !Tools.isNumeric(creditoTB.getTfMonto().getText()) ? 1 : 0;
-                validateFecha += creditoTB.getDpFecha().getValue() == null ? 1 : 0;
-                montoPagar += creditoTB.getMonto();
-            }
-
-            if (validateMonto > 0) {
-                Tools.AlertMessageWarning(window, "Venta", "Hay montos sin ingresar en la tabla.");
-                tvPlazos.requestFocus();
-            } else if (validateFecha > 0) {
-                Tools.AlertMessageWarning(window, "Venta", "Hay fechas sin ingresar en la tabla.");
-                tvPlazos.requestFocus();
-            } else if (ventaTB.getTotal() != montoPagar) {
-                Tools.AlertMessageWarning(window, "Venta", "El monto total y el monto a pagar no son iguales.");
-                tvPlazos.requestFocus();
+            if (txtFechaVencimiento.getValue() == null) {
+                Tools.AlertMessageWarning(window, "Venta", "Ingrese la fecha de vencimiento.");
+                txtFechaVencimiento.requestFocus();
             } else {
-
                 ventaTB.setTipo(2);
                 ventaTB.setEstado(2);
                 ventaTB.setVuelto(0);
                 ventaTB.setEfectivo(0);
                 ventaTB.setTarjeta(0);
                 ventaTB.setObservaciones("");
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
+                ventaTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
+                ventaTB.setHoraVencimiento(Tools.getHour());
+                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de continuar?");
                 if (confirmation == 1) {
-
+                    ResultTransaction result = VentaADO.registrarVentaCredito(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), provilegios);
+                    switch (result.getCode()) {
+                        case "register":
+                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
+                            if (value == 1) {
+                                ventaEstructuraController.resetVenta();
+                                ventaEstructuraController.imprimirVenta(result.getResult());
+                                Tools.Dispose(window);
+                            } else {
+                                ventaEstructuraController.resetVenta();
+                                Tools.Dispose(window);
+                            }
+                            break;
+                        case "nocantidades":
+                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
+                            break;
+                        case "error":
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
+                            break;
+                        default:
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
+                            break;
+                    }
                 }
 
             }
@@ -241,7 +224,7 @@ public class FxVentaProcesoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(),provilegios);
+                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraController.getIdTipoComprobante(), provilegios);
                     switch (result.getCode()) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
@@ -255,7 +238,7 @@ public class FxVentaProcesoController implements Initializable {
                             }
                             break;
                         case "nocantidades":
-                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.",result.toStringArrayResult());
+                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
                             break;
                         case "error":
                             Tools.AlertMessageError(window, "Venta", result.getResult());
@@ -269,74 +252,7 @@ public class FxVentaProcesoController implements Initializable {
             }
         }
     }
-
-    private void addElementPlazos() {
-        VentaCreditoTB vc = new VentaCreditoTB();
-
-        TextField textField = new TextField();
-        textField.setPromptText("0.00");
-        textField.setAlignment(Pos.CENTER);
-        textField.getStyleClass().add("text-field-normal");
-        textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            double sumaMontos = 0;
-            if (!newVal) {
-                if (!Tools.isNumeric(textField.getText())) {
-                    textField.setText("0.00");
-                    vc.setMonto(Double.parseDouble(textField.getText()));
-                }
-                sumaMontos = tvPlazos.getItems().stream().map(
-                        (cctb) -> cctb.getMonto())
-                        .reduce(sumaMontos, (accumulator, _item) -> accumulator + _item);
-                lblMontoPagar.setText("MONTO A PAGAR: " + Tools.roundingValue(sumaMontos, 2));
-            }
-        });
-        textField.setOnKeyReleased(event -> {
-            if (Tools.isNumeric(textField.getText())) {
-                vc.setMonto(Double.parseDouble(textField.getText()));
-            }
-        });
-        textField.setOnKeyTyped(event -> {
-            char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                event.consume();
-            }
-            if (c == '.' && textField.getText().contains(".")) {
-                event.consume();
-            }
-        });
-        vc.setTfMonto(textField);
-
-        DatePicker datePicker = new DatePicker();
-        datePicker.getStyleClass().add("");
-        datePicker.setPromptText("00/00/0000");
-        datePicker.setEditable(false);
-        datePicker.setOnAction(event -> {
-            if (datePicker.getValue() != null) {
-                vc.setFechaPago(datePicker.getValue().toString());
-            }
-        });
-        vc.setDpFecha(datePicker);
-
-        CheckBox checkBox = new CheckBox();
-        checkBox.getStyleClass().add("check-box-contenido");
-        vc.setCbMontoInicial(checkBox);
-
-        Button button = new Button("X");
-        button.getStyleClass().add("buttonDark");
-        button.setOnAction(event -> {
-            tvPlazos.getItems().remove(vc);
-        });
-        button.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                tvPlazos.getItems().remove(vc);
-            }
-        });
-        vc.setBtnQuitar(button);
-
-        tvPlazos.getItems().add(vc);
-
-    }
-
+    
     @FXML
     private void onActionAceptar(ActionEvent event) {
         onEventAceptar();
@@ -428,15 +344,9 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
-    @FXML
-    private void onActionAgregarPlazos(ActionEvent event) {
-        addElementPlazos();
-    }
-
-    @FXML
     private void onKeyPressedPlazos(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            addElementPlazos();
+//            addElementPlazos();
         }
     }
 

@@ -471,7 +471,10 @@ public class FxVentaEstructuraController implements Initializable {
         SuministroTB a = SuministroADO.Get_Suministro_By_Search(search);
         if (a != null) {
             if (vender_con_cantidades_negativas && a.getCantidad() <= 0) {
-                Tools.AlertMessageWarning(window, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+                //  Tools.AlertMessageWarning(window, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+                txtSearch.clear();
+                txtSearch.selectAll();
+                txtSearch.requestFocus();
                 return;
             }
             SuministroTB suministroTB = new SuministroTB();
@@ -480,6 +483,7 @@ public class FxVentaEstructuraController implements Initializable {
             suministroTB.setNombreMarca(a.getNombreMarca());
             suministroTB.setCantidad(1);
             suministroTB.setCostoCompra(a.getCostoCompra());
+            suministroTB.setBonificacion(0);
 
             suministroTB.setDescuento(0);
             suministroTB.setDescuentoCalculado(0);
@@ -527,6 +531,7 @@ public class FxVentaEstructuraController implements Initializable {
 
             getAddArticulo(suministroTB);
             txtSearch.clear();
+            txtSearch.selectAll();
             txtSearch.requestFocus();
         }
     }
@@ -910,8 +915,8 @@ public class FxVentaEstructuraController implements Initializable {
 
     private boolean validateDuplicateArticulo(TableView<SuministroTB> view, SuministroTB suministroTB) {
         boolean ret = false;
-        for (int i = 0; i < view.getItems().size(); i++) {
-            if (view.getItems().get(i).getClave().equals(suministroTB.getClave())) {
+        for (SuministroTB sm : view.getItems()) {
+            if (sm.getClave().equals(suministroTB.getClave())) {
                 ret = true;
                 break;
             }
@@ -965,14 +970,6 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-//    private boolean validateImpuesto(ArrayList<SuministroTB> stb, String idSuministro) {
-//        for (SuministroTB stb1 : stb) {
-//            if (stb1.getIdSuministro().equals(idSuministro)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
     private Label addLabelTitle(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;");
@@ -1148,7 +1145,7 @@ public class FxVentaEstructuraController implements Initializable {
         map.put("SUB_IMPORTE", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getSubImporte(), 2));
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
-        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(total, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
+        map.put("QRDATA", "|" + Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(total, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
         return jasperPrint;
@@ -1225,6 +1222,7 @@ public class FxVentaEstructuraController implements Initializable {
 
                             if (Session.DESING_IMPRESORA_VENTA.equalsIgnoreCase("withdesing")) {
                                 billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                                ObjectGlobal.QR_PERU_DATA = "|" + Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(ventaTB.getTotal(), 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|";
 
                                 for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                                     HBox box = ((HBox) hbEncabezado.getChildren().get(i));
@@ -1235,7 +1233,22 @@ public class FxVentaEstructuraController implements Initializable {
                                             ventaTB.getClienteTB().getInformacion(),
                                             ventaTB.getClienteTB().getCelular(),
                                             ventaTB.getClienteTB().getDireccion(),
-                                            ventaTB.getCodigo());
+                                            ventaTB.getCodigo(),
+                                            monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -1252,17 +1265,22 @@ public class FxVentaEstructuraController implements Initializable {
                                 for (int i = 0; i < hbPie.getChildren().size(); i++) {
                                     HBox box = ((HBox) hbPie.getChildren().get(i));
                                     billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
-                                            Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            Tools.roundingValue(ventaTB.getSubTotal(), 2),
                                             "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
+                                            Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            Tools.roundingValue(ventaTB.getImpuesto(), 2),
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             Tools.roundingValue(ventaTB.getTotal(), 2),
                                             Tools.roundingValue(ventaTB.getEfectivo(), 2),
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                            ventaTB.getClienteTB().getCelular());
+                                            ventaTB.getClienteTB().getCelular(), "",
+                                            "",
+                                            "",
+                                            "",
+                                            "");
                                 }
-
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
 
                                 DocPrintJob job = billPrintable.findPrintService(printerName, PrinterJob.lookupPrintServices()).createPrintJob();
@@ -1368,7 +1386,22 @@ public class FxVentaEstructuraController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
-                    ventaTB.getCodigo());
+                    ventaTB.getCodigo(),
+                    monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -1390,12 +1423,18 @@ public class FxVentaEstructuraController implements Initializable {
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            Tools.roundingValue(ventaTB.getImpuesto(), 2),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular());
+                    ventaTB.getClienteTB().getCelular(), "",
+                    "",
+                    "",
+                    "",
+                    "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, printerName, printerCut);
     }
@@ -1437,13 +1476,28 @@ public class FxVentaEstructuraController implements Initializable {
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             billPrintable.hbEncebezado(box,
-                                    "NOMBRE DEL COMPROBANTE",
-                                    "NUMERACION DEL COMPROBANTE",
+                                    "SIN NOMBRE",
+                                    "SIN NUMERACIÓN",
                                     txtNumeroDocumento.getText().trim().toUpperCase(),
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
-                                    "00000000");
+                                    "00000000",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         AnchorPane hbDetalle = new AnchorPane();
@@ -1462,6 +1516,8 @@ public class FxVentaEstructuraController implements Initializable {
                             billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
                                     "-" + Tools.roundingValue(descuentoTotal, 2),
+                                    Tools.roundingValue(totalImporte, 2),
+                                            Tools.roundingValue(totalImpuesto, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -1469,7 +1525,11 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
-                                    txtCelularCliente.getText().trim());
+                                    txtCelularCliente.getText().trim(),"",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -1501,13 +1561,28 @@ public class FxVentaEstructuraController implements Initializable {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             rows++;
                             lines += billPrintable.hbEncebezado(box,
-                                    "NOMBRE DEL COMPROBANTE",
-                                    "NUMERACION DEL COMPROBANTE",
+                                    "SIN NOMBRE",
+                                    "SIN NUMERACIÓN",
                                     txtNumeroDocumento.getText().trim().toUpperCase(),
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
-                                    "00000000");
+                                    "00000000",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         for (int m = 0; m < tvList.getItems().size(); m++) {
@@ -1528,6 +1603,8 @@ public class FxVentaEstructuraController implements Initializable {
                             lines += billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
                                     "-" + Tools.roundingValue(descuentoTotal, 2),
+                                      Tools.roundingValue(totalImporte, 2),
+                                            Tools.roundingValue(totalImpuesto, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -1535,7 +1612,11 @@ public class FxVentaEstructuraController implements Initializable {
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
-                                    txtCelularCliente.getText().trim());
+                                    txtCelularCliente.getText().trim(), "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
                         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
                     }
@@ -1965,7 +2046,6 @@ public class FxVentaEstructuraController implements Initializable {
         btnBuscarSunat.setDisable(false);
         btnBuscarReniec.setDisable(false);
 
-        txtNumeroDocumento.setText("");
         txtDatosCliente.setText("");
         txtCelularCliente.setText("");
         txtCorreoElectronico.setText("");

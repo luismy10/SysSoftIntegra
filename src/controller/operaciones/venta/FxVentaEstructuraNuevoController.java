@@ -1,6 +1,5 @@
 package controller.operaciones.venta;
 
-import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosProcesoModalController;
 import controller.tools.*;
 
@@ -13,7 +12,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -71,6 +69,8 @@ import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
 import model.ClienteADO;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.PrivilegioTB;
 import model.VentaADO;
 import net.sf.jasperreports.engine.JRException;
@@ -80,6 +80,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import org.json.simple.JSONObject;
 
 public class FxVentaEstructuraNuevoController implements Initializable {
 
@@ -100,13 +101,29 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private ComboBox<ClienteTB> cbCliente;
-    @FXML
     private ComboBox<TipoDocumentoTB> cbComprobante;
     @FXML
     private Text lblSerie;
     @FXML
     private Text lblNumeracion;
+    @FXML
+    private ComboBox<DetalleTB> cbTipoDocumento;
+    @FXML
+    private TextField txtNumeroDocumento;
+    @FXML
+    private Button btnBuscarCliente;
+    @FXML
+    private Button btnBuscarSunat;
+    @FXML
+    private Button btnBuscarReniec;
+    @FXML
+    private TextField txtDatosCliente;
+    @FXML
+    private TextField txtCelularCliente;
+    @FXML
+    private TextField txtCorreoElectronico;
+    @FXML
+    private TextField txtDireccionCliente;
 
     private AnchorPane vbPrincipal;
 
@@ -123,6 +140,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private AnchorPane hbPie;
 
     private String monedaSimbolo;
+
+    private String idCliente;
 
     private boolean vender_con_cantidades_negativas;
 
@@ -159,55 +178,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         opcion = 0;
         state = false;
         monedaSimbolo = "M";
-
-        SearchComboBox<ClienteTB> searchComboBoxCliente = new SearchComboBox<>(cbCliente, false);
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
-                if (!searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBoxCliente.getSearchComboBoxSkin().getItemView().requestFocus();
-                }
-            } else if (t.getCode() == KeyCode.ESCAPE) {
-                searchComboBoxCliente.getComboBox().hide();
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-            searchComboBoxCliente.getComboBox().getItems().clear();
-            List<ClienteTB> clienteTBs = ClienteADO.GetSearchComboBoxCliente((short) 4, searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().getText().trim());
-            clienteTBs.forEach(e -> cbCliente.getItems().add(e));
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-            if (null == t.getCode()) {
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-            } else {
-                switch (t.getCode()) {
-                    case ENTER:
-                    case SPACE:
-                    case ESCAPE:
-                        searchComboBoxCliente.getComboBox().hide();
-                        break;
-                    case UP:
-                    case DOWN:
-                    case LEFT:
-                    case RIGHT:
-                        break;
-                    default:
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                        searchComboBoxCliente.getSearchComboBoxSkin().getSearchBox().selectAll();
-                        break;
-                }
-            }
-        });
-        searchComboBoxCliente.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-            if (item != null) {
-                searchComboBoxCliente.getComboBox().getSelectionModel().select(item);
-                if (searchComboBoxCliente.getSearchComboBoxSkin().isClickSelection()) {
-                    searchComboBoxCliente.getComboBox().hide();
-                }
-            }
-        });
-
+        idCliente = "";
         loadDataComponent();
     }
 
@@ -242,10 +213,23 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             }
         }
 
-        cbCliente.getItems().clear();
-        if (!Session.CLIENTE_ID.equalsIgnoreCase("")) {
-            cbCliente.getItems().add(new ClienteTB(Session.CLIENTE_ID, Session.CLIENTE_TIPO_DOCUMENTO, Session.CLIENTE_NUMERO_DOCUMENTO, Session.CLIENTE_DATOS, "", "", Session.CLIENTE_DIRECCION));
-            cbCliente.getSelectionModel().select(0);
+        cbTipoDocumento.getItems().clear();
+        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
+
+        idCliente = Session.CLIENTE_ID;
+        txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
+        txtDatosCliente.setText(Session.CLIENTE_DATOS);
+        txtCelularCliente.setText(Session.CLIENTE_CELULAR);
+        txtCorreoElectronico.setText(Session.CLIENTE_EMAIL);
+        txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+
+        if (!cbTipoDocumento.getItems().isEmpty()) {
+            for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
+                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                    cbTipoDocumento.getSelectionModel().select(detalleTB);
+                    break;
+                }
+            }
         }
     }
 
@@ -293,10 +277,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     double dpi = resultNumber * 8;
 
                     VBox vBox = new VBox();
-                    ImageView imageView = null;
-                    if (tvList1.getNuevaImagen() == null) {
-                        imageView = new ImageView(new Image("/view/image/no-image.png"));
-                    } else {
+                    ImageView imageView = new ImageView(new Image("/view/image/no-image.png"));
+                    if (tvList1.getNuevaImagen() != null) {
                         imageView = new ImageView(new Image(new ByteArrayInputStream(tvList1.getNuevaImagen())));
                     }
                     imageView.setFitWidth(dpi * 1.3);
@@ -394,6 +376,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         suministroTB.setNombreMarca(a.getNombreMarca());
         suministroTB.setCantidad(1);
         suministroTB.setCostoCompra(a.getCostoCompra());
+        suministroTB.setBonificacion(0);
 
         double valor_sin_impuesto = a.getPrecioVentaGeneral() / ((a.getImpuestoValor() / 100.00) + 1);
         double descuento = suministroTB.getDescuento();
@@ -706,6 +689,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                         } else {
                             if (Session.DESING_IMPRESORA_VENTA.equalsIgnoreCase("withdesing")) {
                                 billPrintable.loadEstructuraTicket(Session.TICKET_VENTA_ID, Session.TICKET_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+                                ObjectGlobal.QR_PERU_DATA = "|" + Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(ventaTB.getTotal(), 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|";
 
                                 for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                                     HBox box = ((HBox) hbEncabezado.getChildren().get(i));
@@ -716,7 +700,22 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                             ventaTB.getClienteTB().getInformacion(),
                                             ventaTB.getClienteTB().getCelular(),
                                             ventaTB.getClienteTB().getDireccion(),
-                                            ventaTB.getCodigo());
+                                            ventaTB.getCodigo(),
+                                            monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -736,12 +735,18 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                                            Tools.roundingValue(ventaTB.getImpuesto(), 2),
+                                            Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             Tools.roundingValue(ventaTB.getTotal(), 2),
                                             Tools.roundingValue(ventaTB.getEfectivo(), 2),
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                                            ventaTB.getClienteTB().getCelular());
+                                            ventaTB.getClienteTB().getCelular(), "",
+                                            "",
+                                            "",
+                                            "",
+                                            "");
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -849,7 +854,22 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
-                    ventaTB.getCodigo());
+                    ventaTB.getCodigo(),
+                    monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -871,12 +891,18 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     "-" + Tools.roundingValue(ventaTB.getDescuento(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
+                    Tools.roundingValue(ventaTB.getImpuesto(), 2),
+                    Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
-                    ventaTB.getClienteTB().getCelular());
+                    ventaTB.getClienteTB().getCelular(), "",
+                    "",
+                    "",
+                    "",
+                    "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, printerName, printerCut);
     }
@@ -918,27 +944,40 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     String email = "";
                     String direccion = "";
 
-                    if (cbCliente.getSelectionModel().getSelectedIndex() >= 0) {
-                        ClienteTB clienteTB = cbCliente.getSelectionModel().getSelectedItem();
-                        numeroDocumento = clienteTB.getNumeroDocumento() == null ? "" : clienteTB.getNumeroDocumento().toUpperCase();
-                        informacion = clienteTB.getInformacion() == null ? "" : clienteTB.getInformacion().toUpperCase();
-                        celular = clienteTB.getCelular() == null ? "" : clienteTB.getCelular().toUpperCase();
-                        email = clienteTB.getEmail() == null ? "" : clienteTB.getEmail();
-                        direccion = clienteTB.getDireccion() == null ? "" : clienteTB.getDireccion().toUpperCase();
-                    }
+                    numeroDocumento = txtNumeroDocumento.getText().trim().length() == 0 ? "" : txtNumeroDocumento.getText().trim().toUpperCase();
+                    informacion = txtDatosCliente.getText().trim().length() == 0 ? "" : txtDatosCliente.getText().trim().toUpperCase();
+                    celular = txtCelularCliente.getText().trim().length() == 0 ? "" : txtCelularCliente.getText().trim().toUpperCase();
+                    email = txtCorreoElectronico.getText().trim().length() == 0 ? "" : txtCorreoElectronico.getText().trim().toUpperCase();
+                    direccion = txtDireccionCliente.getText().trim().length() == 0 ? "" : txtDireccionCliente.getText().trim().toUpperCase();
+
                     if (Session.DESING_IMPRESORA_PRE_VENTA.equalsIgnoreCase("withdesing")) {
                         billPrintable.loadEstructuraTicket(Session.TICKET_PRE_VENTA_ID, Session.TICKET_PRE_VENTA_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
 
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             billPrintable.hbEncebezado(box,
-                                    "NOMBRE DEL COMPROBANTE",
-                                    "NUMERACION DEL COMPROBANTE",
+                                    "SIN NOMBRE",
+                                    "SIN NUMERACIÓN",
                                     numeroDocumento,
                                     informacion,
                                     celular,
                                     direccion,
-                                    "00000000");
+                                    "00000000",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         ObservableList<SuministroTB> observableList = FXCollections.observableArrayList();
@@ -959,6 +998,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
                                     "-" + Tools.roundingValue(descuentoTotal, 2),
+                                    Tools.roundingValue(totalImporte, 2),
+                                    Tools.roundingValue(totalImpuesto, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -966,7 +1007,11 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     numeroDocumento,
                                     informacion,
                                     "CODIGO DE VENTA",
-                                    celular);
+                                    celular, "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -998,13 +1043,28 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             rows++;
                             lines += billPrintable.hbEncebezado(box,
-                                    "NOMBRE DEL COMPROBANTE",
-                                    "NUMERACION DEL COMPROBANTE",
+                                    "SIN NOMBRE",
+                                    "SIN NUMERACIÓN",
                                     numeroDocumento,
                                     informacion,
                                     celular,
                                     direccion,
-                                    "00000000");
+                                    "00000000",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
 
                         ObservableList<SuministroTB> observableList = FXCollections.observableArrayList();
@@ -1027,6 +1087,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             lines += billPrintable.hbPie(box, monedaSimbolo,
                                     Tools.roundingValue(subTotal, 2),
                                     "-" + Tools.roundingValue(descuentoTotal, 2),
+                                    Tools.roundingValue(totalImporte, 2),
+                                    Tools.roundingValue(totalImpuesto, 2),
                                     Tools.roundingValue(subTotalImporte, 2),
                                     Tools.roundingValue(total, 2),
                                     "EFECTIVO",
@@ -1034,7 +1096,11 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     numeroDocumento,
                                     informacion,
                                     "CODIGO DE VENTA",
-                                    celular);
+                                    celular, "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                         }
                         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
                     }
@@ -1135,9 +1201,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione la moneda ha usar.");
                 cbMoneda.requestFocus();
-            } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
-                Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione un cliente.");
-                cbCliente.requestFocus();
+            } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(vbWindow, "Ventas", "Seleccione el tipo de documento del cliente.");
+                cbTipoDocumento.requestFocus();
+            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(vbWindow, "Ventas", "Ingrese el número del documento del cliente.");
+                txtNumeroDocumento.requestFocus();
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "Seleccione el tipo de comprobante.");
                 cbComprobante.requestFocus();
@@ -1147,7 +1216,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             } else if (total <= 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "El total de la venta no puede ser menor que 0.");
             } else {
-
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
                 URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO_NUEVO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -1163,13 +1231,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 stage.show();
 
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
-                clienteTB.setTipoDocumento(cbCliente.getSelectionModel().getSelectedItem().getTipoDocumento());
-                clienteTB.setNumeroDocumento(cbCliente.getSelectionModel().getSelectedItem().getNumeroDocumento());
-                clienteTB.setInformacion(cbCliente.getSelectionModel().getSelectedItem().getInformacion());
-                clienteTB.setCelular(cbCliente.getSelectionModel().getSelectedItem().getCelular());
-                clienteTB.setEmail(cbCliente.getSelectionModel().getSelectedItem().getEmail());
-                clienteTB.setDireccion(cbCliente.getSelectionModel().getSelectedItem().getDireccion());
+                clienteTB.setIdCliente(idCliente);
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
+                clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
+                clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
+                clienteTB.setEmail(txtCorreoElectronico.getText().trim().toUpperCase());
+                clienteTB.setDireccion(txtDireccionCliente.getText().trim().toUpperCase());
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
@@ -1193,31 +1261,378 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
                 lvProductoAgregados.getItems().forEach(e -> suministroTBs.add(e.getSuministroTB()));
-                controller.setInitComponents(ventaTB, suministroTBs,vender_con_cantidades_negativas);
+                controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas);
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
         }
     }
 
-    private void onEventCliente() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_CLIENTE_PROCESO);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxClienteProcesoController controller = fXMLLoader.getController();
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-            controller.setValueAdd();
-        } catch (IOException ex) {
-            System.out.println("Cliente controller en openWindowAddCliente()" + ex.getLocalizedMessage());
+    public void onExecuteCliente(short opcion, String search) {
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ClienteTB> task = new Task<ClienteTB>() {
+            @Override
+            public ClienteTB call() {
+                return ClienteADO.GetSearchClienteNumeroDocumento(opcion, search);
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtCorreoElectronico.setText("");
+            txtDireccionCliente.setText("");
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente internamente.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+            ClienteTB clienteTB = task.getValue();
+            if (clienteTB != null) {
+                Tools.showAlertNotification("/view/image/succes_large.png",
+                        "Buscando clíente",
+                        "Se completo la busqueda con exito.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                txtNumeroDocumento.setDisable(false);
+                txtDatosCliente.setDisable(false);
+                txtCelularCliente.setDisable(false);
+                txtCorreoElectronico.setDisable(false);
+                txtDireccionCliente.setDisable(false);
+                btnBuscarCliente.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
+
+                idCliente = clienteTB.getIdCliente();
+                txtDatosCliente.setText(clienteTB.getInformacion());
+                txtCelularCliente.setText(clienteTB.getCelular());
+                txtCorreoElectronico.setText(clienteTB.getEmail());
+                txtDireccionCliente.setText(clienteTB.getDireccion());
+                for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                        cbTipoDocumento.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+            } else {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
         }
+    }
+
+    private void getApiSunat() {
+        ApiPeru apiSunat = new ApiPeru();
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList();
+                ClienteTB clienteTB = ClienteADO.GetSearchClienteNumeroDocumento((short) 2, txtNumeroDocumento.getText().trim());
+                if (clienteTB == null) {
+                    objects.add("client-no-exists");
+                    objects.add("");
+                    objects.add(apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim()));
+                } else {
+                    objects.add("client-exists");
+                    objects.add(clienteTB);
+                    objects.add(apiSunat.getUrlSunatApisPeru(txtNumeroDocumento.getText().trim()));
+                }
+                return objects;
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtCorreoElectronico.setText("");
+            txtDireccionCliente.setText("");
+
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente por su número de ruc.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+
+            ArrayList<Object> result = task.getValue();
+            if (!result.isEmpty()) {
+                String stateClient = (String) result.get(0);
+                String api = (String) result.get(2);
+
+                if (api.equalsIgnoreCase("200") && !Tools.isText(apiSunat.getJsonURL())) {
+
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Buscando clíente",
+                                "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        clearDataClient();
+                    } else {
+                        Tools.showAlertNotification("/view/image/succes_large.png",
+                                "Buscando clíente",
+                                "Se completo la busqueda con exito.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        txtNumeroDocumento.setDisable(false);
+                        txtDatosCliente.setDisable(false);
+                        txtCelularCliente.setDisable(false);
+                        txtCorreoElectronico.setDisable(false);
+                        txtDireccionCliente.setDisable(false);
+                        btnBuscarCliente.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("ruc") != null) {
+                            txtNumeroDocumento.setText(sONObject.get("ruc").toString());
+                        }
+                        if (sONObject.get("razonSocial") != null) {
+                            txtDatosCliente.setText(sONObject.get("razonSocial").toString());
+                        }
+                        if (sONObject.get("direccion") != null) {
+                            txtDireccionCliente.setText(sONObject.get("direccion").toString());
+                        }
+
+                        if (stateClient.equals("client-exists")) {
+                            ClienteTB clienteTB = (ClienteTB) result.get(1);
+                            txtCelularCliente.setText(clienteTB.getCelular());
+                            txtCorreoElectronico.setText(clienteTB.getEmail());
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                } else {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Paso un problema en trear la información por\n problemas de conexión o error el número ruc.",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
+                }
+            } else {
+
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void getApiReniec() {
+        ApiPeru apiSunat = new ApiPeru();
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+            @Override
+            public ArrayList<Object> call() {
+                ArrayList<Object> objects = new ArrayList();
+                ClienteTB clienteTB = ClienteADO.GetSearchClienteNumeroDocumento((short) 2, txtNumeroDocumento.getText().trim());
+                if (clienteTB == null) {
+                    objects.add("client-no-exists");
+                    objects.add("");
+                    objects.add(apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim()));
+                } else {
+                    objects.add("client-exists");
+                    objects.add(clienteTB);
+                    objects.add(apiSunat.getUrlReniecApisPeru(txtNumeroDocumento.getText().trim()));
+                }
+                return objects;
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtNumeroDocumento.setDisable(true);
+            txtDatosCliente.setDisable(true);
+            txtCelularCliente.setDisable(true);
+            txtCorreoElectronico.setDisable(true);
+            txtDireccionCliente.setDisable(true);
+            btnBuscarCliente.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+
+            txtDatosCliente.setText("");
+            txtCelularCliente.setText("");
+            txtDireccionCliente.setText("");
+            txtDireccionCliente.setText("");
+
+            Tools.showAlertNotification("/view/image/information_large.png",
+                    "Buscando clíente",
+                    "Se inicio el proceso de busqueda\n del cliente por su número de dni.",
+                    Duration.seconds(5),
+                    Pos.TOP_RIGHT);
+        });
+
+        task.setOnFailed(e -> {
+            Tools.showAlertNotification("/view/image/error_large.png",
+                    "Buscando clíente",
+                    "Se produjo un error al buscar al cliente intenten\n nuevamente, si persiste el problema comuniquese con su \nproveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.TOP_RIGHT);
+            clearDataClient();
+        });
+
+        task.setOnSucceeded(e -> {
+            ArrayList<Object> result = task.getValue();
+            if (!result.isEmpty()) {
+                String stateClient = (String) result.get(0);
+                String api = (String) result.get(2);
+
+                if (api.equalsIgnoreCase("200") && !Tools.isText(apiSunat.getJsonURL())) {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Buscando clíente",
+                                "Hubo un problema en validar el resultado de\n datos intente nuevamente.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        clearDataClient();
+                    } else {
+                        Tools.showAlertNotification("/view/image/succes_large.png",
+                                "Buscando clíente",
+                                "Se completo la busqueda con exito.",
+                                Duration.seconds(5),
+                                Pos.TOP_RIGHT);
+                        txtNumeroDocumento.setDisable(false);
+                        txtDatosCliente.setDisable(false);
+                        txtCelularCliente.setDisable(false);
+                        txtCorreoElectronico.setDisable(false);
+                        txtDireccionCliente.setDisable(false);
+                        btnBuscarCliente.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("dni") != null) {
+                            txtNumeroDocumento.setText(sONObject.get("dni").toString());
+                        }
+                        if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
+                            txtDatosCliente.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
+                        }
+                        if (stateClient.equals("client-exists")) {
+                            ClienteTB clienteTB = (ClienteTB) result.get(1);
+
+                            txtCelularCliente.setText(clienteTB.getCelular());
+                            txtCorreoElectronico.setText(clienteTB.getEmail());
+                            txtDireccionCliente.setText(clienteTB.getDireccion());
+
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Buscando clíente",
+                            "Paso un problema en trear la información por\n problemas de conexión o error el número del dni.",
+                            Duration.seconds(5),
+                            Pos.TOP_RIGHT);
+                    clearDataClient();
+                }
+
+            } else {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Hubo un problema interno, intente nuevamente.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void clearDataClient() {
+        txtNumeroDocumento.setDisable(false);
+        txtDatosCliente.setDisable(false);
+        txtCelularCliente.setDisable(false);
+        txtCorreoElectronico.setDisable(false);
+        txtDireccionCliente.setDisable(false);
+        btnBuscarCliente.setDisable(false);
+        btnBuscarSunat.setDisable(false);
+        btnBuscarReniec.setDisable(false);
+
+        txtDatosCliente.setText("");
+        txtCelularCliente.setText("");
+        txtCorreoElectronico.setText("");
+        txtDireccionCliente.setText("");
     }
 
     private void onEventProducto() {
@@ -1294,7 +1709,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 cbMoneda.requestFocus();
                 break;
             case F4:
-                cbCliente.requestFocus();
+                txtNumeroDocumento.requestFocus();
                 break;
             case F5:
 
@@ -1450,13 +1865,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onKeyPressedCliente(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            onEventCliente();
+            onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
         }
     }
 
     @FXML
     private void onActionCliente(ActionEvent event) {
-        onEventCliente();
+        onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
     }
 
     @FXML
@@ -1517,6 +1932,38 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onActionVentasPorDia(ActionEvent event) {
         openWindowMostrarVentas();
+    }
+
+    @FXML
+    private void onKeyTypedNumeroDocumento(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSunat(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiSunat();
+        }
+    }
+
+    @FXML
+    private void onActionSunat(ActionEvent event) {
+        getApiSunat();
+    }
+
+    @FXML
+    private void onKeyPressedReniec(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiReniec();
+        }
+    }
+
+    @FXML
+    private void onActionReniec(ActionEvent event) {
+        getApiReniec();
     }
 
     public TextField getTxtSearch() {

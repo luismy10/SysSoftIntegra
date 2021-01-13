@@ -294,7 +294,22 @@ public class FxCotizacionDetalleController implements Initializable {
                                             cotizacionTB.getClienteTB().getInformacion(),
                                             cotizacionTB.getClienteTB().getCelular(),
                                             cotizacionTB.getClienteTB().getDireccion(),
-                                            "---");
+                                            "---",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -313,6 +328,8 @@ public class FxCotizacionDetalleController implements Initializable {
                                     billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
                                             Tools.roundingValue(subTotal, 2),
                                             "-" + Tools.roundingValue(descuentoTotal, 2),
+                                            Tools.roundingValue(totalImporte, 2),
+                                            Tools.roundingValue(totalImpuesto, 2),
                                             Tools.roundingValue(subTotalImporte, 2),
                                             Tools.roundingValue(total, 2),
                                             Tools.roundingValue(0, 2),
@@ -320,7 +337,11 @@ public class FxCotizacionDetalleController implements Initializable {
                                             cotizacionTB.getClienteTB().getNumeroDocumento(),
                                             cotizacionTB.getClienteTB().getInformacion(),
                                             "---",
-                                            cotizacionTB.getClienteTB().getCelular());
+                                            cotizacionTB.getClienteTB().getCelular(),"",
+                                            "",
+                                            "",
+                                            "",
+                                            "");
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -424,7 +445,22 @@ public class FxCotizacionDetalleController implements Initializable {
                     cotizacionTB.getClienteTB().getInformacion(),
                     cotizacionTB.getClienteTB().getCelular(),
                     cotizacionTB.getClienteTB().getDireccion(),
-                    "---");
+                    "---",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
         }
 
         for (int m = 0; m < arrList.size(); m++) {
@@ -445,6 +481,8 @@ public class FxCotizacionDetalleController implements Initializable {
             lines += billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
                     Tools.roundingValue(subTotal, 2),
                     "-" + Tools.roundingValue(descuentoTotal, 2),
+                    Tools.roundingValue(totalImporte, 2),
+                    Tools.roundingValue(totalImpuesto, 2),
                     Tools.roundingValue(subTotalImporte, 2),
                     Tools.roundingValue(total, 2),
                     Tools.roundingValue(0, 2),
@@ -452,7 +490,11 @@ public class FxCotizacionDetalleController implements Initializable {
                     cotizacionTB.getClienteTB().getNumeroDocumento(),
                     cotizacionTB.getClienteTB().getInformacion(),
                     "---",
-                    cotizacionTB.getClienteTB().getCelular());
+                    cotizacionTB.getClienteTB().getCelular(),"",
+                    "",
+                    "",
+                    "",
+                    "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }

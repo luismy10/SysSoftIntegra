@@ -65,7 +65,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label minWidth="-Infinity" styleClass="labelOpenSansRegular13" text="Fecha Inicial:" textFill="#020203">
+                                                <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Fecha Inicial:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -74,12 +74,12 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dpFechaInicial" prefWidth="220.0" />
+                                                <DatePicker fx:id="dpFechaInicial" prefHeight="30.0" prefWidth="220.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
                                              <children>
-                                                <Label minWidth="-Infinity" styleClass="labelOpenSansRegular13" text="Fecha Final:" textFill="#020203">
+                                                <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Fecha Final:" textFill="#020203">
                                                    <graphic>
                                                       <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -88,7 +88,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Label>
-                                                <DatePicker fx:id="dpFechaFinal" minWidth="-Infinity" prefWidth="220.0" />
+                                                <DatePicker fx:id="dpFechaFinal" prefHeight="30.0" prefWidth="220.0" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -112,7 +112,7 @@
                                                    </rowConstraints>
                                                    <children>
                                                       <CheckBox fx:id="cbProductosSeleccionar" mnemonicParsing="false" onAction="#onActionCbProductosSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los productos" />
-                                                      <Label minWidth="-Infinity" styleClass="labelOpenSansRegular13" text="Productos" textFill="#020203" GridPane.columnIndex="1">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Productos" textFill="#020203" GridPane.columnIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -126,7 +126,7 @@
                                                             <TextField fx:id="txtProducto" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
                                                             <Button fx:id="btnProductos" disable="true" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionProductos" onKeyPressed="#onKeyPressedProductos" styleClass="buttonBorder">
                                                                <graphic>
-                                                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                                  <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
                                                                         <Image url="@../image/search.png" />
                                                                      </image>
@@ -137,7 +137,7 @@
                                                       </HBox>
                                                       <CheckBox fx:id="cbCategoriaSeleccionar" mnemonicParsing="false" onAction="#onActionCbCategoriaSeleccionar" selected="true" styleClass="check-box-contenido" text="Todas las categorias" GridPane.rowIndex="1" />
                                                       <CheckBox fx:id="cbMarcaSeleccionar" mnemonicParsing="false" onAction="#onActionCbMarcaSeleccionar" selected="true" styleClass="check-box-contenido" text="Todas las marcas" GridPane.rowIndex="2" />
-                                                      <Label minWidth="-Infinity" styleClass="labelOpenSansRegular13" text="Marcas" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Marcas" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -146,7 +146,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <Label minWidth="-Infinity" styleClass="labelOpenSansRegular13" text="Categorias" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Categorias" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -155,10 +155,10 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <ComboBox fx:id="cbCategorias" disable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                      <ComboBox fx:id="cbMarcas" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <ComboBox fx:id="cbCategorias" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <ComboBox fx:id="cbMarcas" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                       <CheckBox fx:id="cbPresentacionSeleccionar" mnemonicParsing="false" onAction="#onActionCbPresentacionSeleccionar" selected="true" styleClass="check-box-contenido" text="Todas las presentaciones" GridPane.rowIndex="3" />
-                                                      <Label styleClass="labelOpenSansRegular13" text="Presentación" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                      <Label styleClass="labelRoboto13" text="Presentación" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -167,7 +167,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <ComboBox fx:id="cbPresentacion" disable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <ComboBox fx:id="cbPresentacion" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                    </children>
                                                 </GridPane>
                                              </children>

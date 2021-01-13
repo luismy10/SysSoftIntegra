@@ -62,7 +62,7 @@
                   </VBox>
                   <VBox fx:id="btnCompras" alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionComprasRealizadas" onKeyPressed="#onKeyPressedComprasRealizadas" styleClass="buttonTransparent" text="Compras Echas" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionComprasRealizadas" onKeyPressed="#onKeyPressedComprasRealizadas" styleClass="buttonTransparent" text="Compras/Gastos" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -137,7 +137,7 @@
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../image/cuentascobrar.png" />
+                                    <Image url="@../image/cuentaspagar.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -155,7 +155,7 @@
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../image/cuentaspagar.png" />
+                                    <Image url="@../image/cuentascobrar.png" />
                                  </image>
                               </ImageView>
                            </graphic>

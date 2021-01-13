@@ -33,9 +33,11 @@ public class TicketADO {
                         result = "duplicate";
                     } else {
 
-                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET ruta = ? WHERE idTicket = ?");
-                        statementTicket.setString(1, ticketTB.getRuta());
-                        statementTicket.setInt(2, ticketTB.getId());
+                        statementTicket = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET nombre = ?,tipo=?,ruta = ? WHERE idTicket = ?");
+                        statementTicket.setString(1, ticketTB.getNombreTicket());
+                        statementTicket.setInt(2, ticketTB.getTipo());
+                        statementTicket.setString(3, ticketTB.getRuta());
+                        statementTicket.setInt(4, ticketTB.getId());
                         statementTicket.addBatch();
 
                         statementImagenBorrar = DBUtil.getConnection().prepareStatement("DELETE FROM ImagenTB WHERE IdRelacionado = ?");
@@ -304,7 +306,7 @@ public class TicketADO {
         return ticketTB;
     }
 
-    public static String ChangeDefaultState(int idTicket) {
+    public static String ChangeDefaultState(int idTicket,int tipoTicket) {
         String result = null;
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
@@ -313,9 +315,11 @@ public class TicketADO {
             PreparedStatement statementState = null;
             try {
                 DBUtil.getConnection().setAutoCommit(false);
-                statementSelect = DBUtil.getConnection().prepareStatement("SELECT predeterminado FROM TicketTB WHERE predeterminado = 1");
+                statementSelect = DBUtil.getConnection().prepareStatement("SELECT predeterminado FROM TicketTB WHERE tipo = ? AND predeterminado = 1");
+                statementSelect.setInt(1, tipoTicket);
                 if (statementSelect.executeQuery().next()) {
-                    statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET predeterminado = 0 WHERE predeterminado = 1");
+                    statementUpdate = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET predeterminado = 0 WHERE tipo = ?");
+                    statementUpdate.setInt(1, tipoTicket);
                     statementUpdate.addBatch();
 
                     statementState = DBUtil.getConnection().prepareStatement("UPDATE TicketTB SET predeterminado = 1 WHERE idTicket = ?");

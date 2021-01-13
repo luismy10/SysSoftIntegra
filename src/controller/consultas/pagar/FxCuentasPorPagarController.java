@@ -65,7 +65,11 @@ public class FxCuentasPorPagarController implements Initializable {
     @FXML
     private TableColumn<CompraTB, String> tcComprobante;
     @FXML
-    private TableColumn<CompraTB, String> tcTotal;
+    private TableColumn<CompraTB, String> tcMontoTotal;
+    @FXML
+    private TableColumn<CompraTB, String> tcMontoPagado;
+    @FXML
+    private TableColumn<CompraTB, String> tcDiferencia;
     @FXML
     private TableColumn<CompraTB, Label> tcEstado;
     @FXML
@@ -88,19 +92,27 @@ public class FxCuentasPorPagarController implements Initializable {
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial()));
         tcComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tcMontoTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre() + " " + Tools.roundingValue(cellData.getValue().getMontoTotal(), 2)));
+        tcMontoPagado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre() + " " + Tools.roundingValue(cellData.getValue().getMontoPagado(), 2)));
+        tcDiferencia.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre() + " " + Tools.roundingValue(cellData.getValue().getMontoRestante(), 2)));
         tcOpciones.setCellValueFactory(new PropertyValueFactory<>("hbOpciones"));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcFechaRegistro.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
-        tcComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcOpciones.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
+        tcFechaRegistro.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
+        tcComprobante.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcMontoTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcMontoPagado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcDiferencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcOpciones.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
 
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
         Tools.actualDate(Tools.getDate(), dpFechaFinal);
+    }
+
+    public void loadTableCuentasPorPagar() {
+        fillPurchasesTable("", "", "", (short) 0);
     }
 
     public void fillPurchasesTable(String search, String fechaInicio, String fechaFinal, short opcion) {
@@ -121,12 +133,12 @@ public class FxCuentasPorPagarController implements Initializable {
             observableList.forEach(f -> {
                 Button btnVisualizar = (Button) f.getHbOpciones().getChildren().get(0);
                 btnVisualizar.setOnAction(event -> {
-                    onEventVisualizar(f.getIdCompra(), f.getTotal());
+                    onEventVisualizar(f.getIdCompra());
 
                 });
                 btnVisualizar.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.ENTER) {
-                        onEventVisualizar(f.getIdCompra(), f.getTotal());
+                        onEventVisualizar(f.getIdCompra());
                     }
                 });
             });
@@ -149,13 +161,13 @@ public class FxCuentasPorPagarController implements Initializable {
         }
     }
 
-    private void onEventVisualizar(String idCompra, double total) {
+    private void onEventVisualizar(String idCompra) {
         try {
             FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_CUENTAS_POR_PAGAR_VISUALIZAR));
             ScrollPane node = fXMLLoader.load();
             //Controlller here
             FxCuentasPorPagarVisualizarController controller = fXMLLoader.getController();
-            controller.loadData(idCompra, total);
+            controller.loadTableCompraCredito(idCompra);
             controller.setInitCuentasPorPagar(vbPrincipal, vbContent, this);
             //
             vbContent.getChildren().clear();
@@ -171,26 +183,26 @@ public class FxCuentasPorPagarController implements Initializable {
 
     private void onEventReporte() {
         try {
-
             if (tvList.getItems().isEmpty()) {
                 Tools.AlertMessageWarning(vbWindow, "Reporte Cuentas por Pagar", "No hay páginas para mostrar en el reporte.");
                 return;
             }
-            
+
             InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
-            if(Session.COMPANY_IMAGE != null){
+            if (Session.COMPANY_IMAGE != null) {
                 imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
             }
-            
+
             InputStream dir = getClass().getResourceAsStream("/report/CuentasPorPagar.jasper");
 
-           
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(dir);
             Map map = new HashMap();
             map.put("LOGO", imgInputStream);
-            map.put("PERIODO", Tools.getDatePicker(dpFechaInicial)+" - "+Tools.getDatePicker(dpFechaFinal));
-
+            map.put("PERIODO", Tools.getDatePicker(dpFechaInicial) + " - " + Tools.getDatePicker(dpFechaFinal));
+            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+            
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(tvList.getItems()));
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
@@ -204,7 +216,6 @@ public class FxCuentasPorPagarController implements Initializable {
             stage.setResizable(true);
             stage.show();
             stage.requestFocus();
-
         } catch (HeadlessException | JRException | IOException ex) {
             Tools.AlertMessageError(vbWindow, "Reporte de Inventario", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
@@ -287,7 +298,7 @@ public class FxCuentasPorPagarController implements Initializable {
     private void onKeyPressedVisualizar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getTotal());
+                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra());
             } else {
                 Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
             }
@@ -297,7 +308,7 @@ public class FxCuentasPorPagarController implements Initializable {
     @FXML
     private void onActionVisualizar(ActionEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getTotal());
+            onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra());
         } else {
             Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
         }
@@ -331,7 +342,7 @@ public class FxCuentasPorPagarController implements Initializable {
     private void onMouseClickList(MouseEvent event) {
         if (event.getClickCount() == 2) {
             if (!tvList.getItems().isEmpty()) {
-                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra(), tvList.getSelectionModel().getSelectedItem().getTotal());
+                onEventVisualizar(tvList.getSelectionModel().getSelectedItem().getIdCompra());
             }
         }
     }
