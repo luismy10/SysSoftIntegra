@@ -259,32 +259,32 @@ public class EmpleadoADO {
         }
     }
 
-    public static void UpdateImage() {
-        PreparedStatement preparedUpdate = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedUpdate = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET NuevaImagen = ? WHERE IdSuministro = ?");
-
-            preparedStatement = DBUtil.getConnection().prepareStatement("SELECT IdSuministro,Imagen FROM SuministroTB");
-            ResultSet rsEmps = preparedStatement.executeQuery();
-            File selectFile = null;
-            while (rsEmps.next()) {
-                selectFile = new File(rsEmps.getString("Imagen"));
-                if (selectFile != null && selectFile.exists()) {
-                    preparedUpdate.setBytes(1, Tools.getImageBytes(selectFile));
-                    preparedUpdate.setString(2, rsEmps.getString("IdSuministro"));
-                    preparedUpdate.execute();
-                    Tools.println(Tools.getImageBytes(selectFile));
-                }
-            }
-
-            Tools.println("bien");
-        } catch (SQLException ex) {
-            Tools.println(ex.getLocalizedMessage());
-
-        }
-
-    }
+//    public static void UpdateImage() {
+//        PreparedStatement preparedUpdate = null;
+//        PreparedStatement preparedStatement = null;
+//        try {
+//            preparedUpdate = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET NuevaImagen = ? WHERE IdSuministro = ?");
+//
+//            preparedStatement = DBUtil.getConnection().prepareStatement("SELECT IdSuministro,Imagen FROM SuministroTB where NuevaImagen is null");
+//            ResultSet rsEmps = preparedStatement.executeQuery();
+//            File selectFile = null;
+//            while (rsEmps.next()) {
+//                selectFile = new File(rsEmps.getString("Imagen"));
+//                if (selectFile != null && selectFile.exists()) {
+//                    preparedUpdate.setBytes(1, Tools.getImageBytes(selectFile));
+//                    preparedUpdate.setString(2, rsEmps.getString("IdSuministro"));
+//                    preparedUpdate.execute();
+//                    Tools.println(Tools.getImageBytes(selectFile));
+//                }
+//            }
+//
+//            Tools.println("bien");
+//        } catch (SQLException ex) {
+//            Tools.println(ex.getLocalizedMessage());
+//
+//        }
+//
+//    }
 
     public static ObservableList<EmpleadoTB> ListEmployeeInProProduction(String value) {
         String selectStmt = "{call Sp_Listar_Empleados(?)}";
