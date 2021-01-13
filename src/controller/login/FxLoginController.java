@@ -189,4 +189,9 @@ public class FxLoginController implements Initializable {
         txtUsuario.requestFocus();
     }
 
+    @FXML
+    private void onImage(ActionEvent event) {
+        EmpleadoADO.UpdateImage();
+    }
+
 }

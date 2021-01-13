@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
@@ -52,7 +52,7 @@
 	<title>
 		<band height="190" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="575" height="190" uuid="797dcbcd-9f38-492d-9de0-f836152f2a64"/>
+				<reportElement x="0" y="0" width="555" height="190" uuid="797dcbcd-9f38-492d-9de0-f836152f2a64"/>
 				<graphicElement>
 					<pen lineWidth="0.25" lineColor="#373B46"/>
 				</graphicElement>
@@ -195,7 +195,7 @@
 				<text><![CDATA[CELULAR:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="75" y="150" width="150" height="20" forecolor="#000000" uuid="5bfd7423-331c-45ab-87b0-3a36f0beae2d"/>
+				<reportElement x="75" y="150" width="158" height="20" forecolor="#000000" uuid="5bfd7423-331c-45ab-87b0-3a36f0beae2d"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -208,7 +208,7 @@
 				<textFieldExpression><![CDATA[$P{CELULARCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="225" y="150" width="55" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="b63ce981-d651-435a-a071-ee53f10a05fe"/>
+				<reportElement mode="Opaque" x="233" y="150" width="55" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="b63ce981-d651-435a-a071-ee53f10a05fe"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -222,7 +222,7 @@
 				<text><![CDATA[EMAIL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="280" y="150" width="155" height="20" forecolor="#000000" uuid="94c782f0-0e62-42c4-9ca8-110c67523212"/>
+				<reportElement x="288" y="150" width="147" height="20" forecolor="#000000" uuid="94c782f0-0e62-42c4-9ca8-110c67523212"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -344,7 +344,7 @@
 				<text><![CDATA[Unidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="145" y="170" width="230" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="5798831c-301d-43d7-815c-70cc94ba5294">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="165" y="170" width="210" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="5798831c-301d-43d7-815c-70cc94ba5294">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
 				</reportElement>
 				<box>
@@ -424,7 +424,7 @@
 		<band height="16" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.spreadsheet.SpreadsheetLayout"/>
 			<rectangle>
-				<reportElement x="0" y="0" width="575" height="16" uuid="73a40a20-c89f-4f40-ae2f-7324f9f3d32c"/>
+				<reportElement x="0" y="0" width="555" height="16" uuid="73a40a20-c89f-4f40-ae2f-7324f9f3d32c"/>
 				<graphicElement>
 					<pen lineWidth="0.25" lineColor="#373B46"/>
 				</graphicElement>
@@ -534,7 +534,7 @@
 	<lastPageFooter>
 		<band height="141" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="575" height="141" uuid="0d8f58eb-a68d-4db6-9b11-adae46872627"/>
+				<reportElement x="0" y="0" width="555" height="141" uuid="0d8f58eb-a68d-4db6-9b11-adae46872627"/>
 				<graphicElement>
 					<pen lineWidth="0.25" lineColor="#373B46"/>
 				</graphicElement>
@@ -752,7 +752,13 @@ Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 				<textFieldExpression><![CDATA[$P{SIMBOLO}+" "+$P{IMPUESTO_TOTAL}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
-				<reportElement x="8" y="23" width="67" height="61" uuid="03a73a9e-6761-40cd-a7d8-5d0815f27779"/>
+				<reportElement x="2" y="22" width="80" height="80" uuid="03a73a9e-6761-40cd-a7d8-5d0815f27779"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+    new com.google.zxing.qrcode.QRCodeWriter().encode(
+        $P{QRDATA},
+        com.google.zxing.BarcodeFormat.QR_CODE, 300, 300
+    )
+)]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="122" width="284" height="19" forecolor="#F0F3FC" backcolor="#373B46" uuid="4f2bf4c2-debc-455a-a60d-77af24aa770a"/>
