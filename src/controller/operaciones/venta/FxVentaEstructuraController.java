@@ -475,7 +475,7 @@ public class FxVentaEstructuraController implements Initializable {
         SuministroTB a = SuministroADO.Get_Suministro_By_Search(search);
         if (a != null) {
             if (vender_con_cantidades_negativas && a.getCantidad() <= 0) {
-                //  Tools.AlertMessageWarning(window, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+                Tools.AlertMessageWarning(window, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
                 txtSearch.clear();
                 txtSearch.selectAll();
                 txtSearch.requestFocus();
