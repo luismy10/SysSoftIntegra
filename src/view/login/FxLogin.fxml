@@ -74,6 +74,15 @@
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
+                              <Button mnemonicParsing="false" onAction="#onImage" styleClass="buttonLightDefault" text="IMAGE">
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../image/accept.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                         </HBox>
                         <VBox style="-fx-spacing: 0.8333333333333334em;">
