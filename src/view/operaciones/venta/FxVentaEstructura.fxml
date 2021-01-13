@@ -268,7 +268,7 @@
                                                 </Label>
                                                 <HBox>
                                                    <children>
-                                                      <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="220.0" promptText="N° de documento" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionCliente" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="220.0" promptText="N° de documento" styleClass="text-field-normal" />
                                                       <Button fx:id="btnBuscarCliente" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonLight">
                                                          <graphic>
                                                             <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
