@@ -1,8 +1,8 @@
 package controller.operaciones.cotizacion;
 
+import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosListaController;
-import controller.reporte.FxReportViewController;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
@@ -10,14 +10,10 @@ import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +24,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -46,7 +41,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import model.ClienteADO;
 import model.ClienteTB;
 import model.CotizacionADO;
@@ -56,10 +50,6 @@ import model.MonedaADO;
 import model.MonedaTB;
 import model.SuministroADO;
 import model.SuministroTB;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class FxCotizacionController implements Initializable {
 
@@ -282,104 +272,6 @@ public class FxCotizacionController implements Initializable {
         });
     }
 
-    private void reportA4(CotizacionTB cotizacionTB) {
-        try {
-            double subTotalReporte = 0;
-            double descuentoTotalReporte = 0;
-            double subTotalImporteReporte = 0;
-            double totalImpuestoReporte = 0;
-            double totalImporteReporte = 0;
-            double totalReporte = 0;
-            int count = 0;
-
-            ArrayList<SuministroTB> list = new ArrayList();
-            for (SuministroTB suministroTB : cotizacionTB.getDetalleSuministroTBs()) {
-                subTotalReporte += suministroTB.getSubImporte();
-                descuentoTotalReporte += suministroTB.getDescuentoSumado();
-                subTotalImporteReporte += suministroTB.getSubImporteDescuento();
-                totalImpuestoReporte += suministroTB.getImpuestoSumado();               
-                totalImporteReporte+=suministroTB.getTotalImporte();
-                
-                count++;
-                SuministroTB stb = new SuministroTB();
-                stb.setId(count + 1);
-                stb.setClave(suministroTB.getClave());
-                stb.setNombreMarca(suministroTB.getNombreMarca());
-                stb.setCantidad(suministroTB.getCantidad());
-                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                stb.setSubImporte(suministroTB.getSubImporte());
-                stb.setDescuentoSumado(suministroTB.getDescuentoSumado());
-                stb.setSubImporteDescuento(suministroTB.getSubImporteDescuento());
-                stb.setImpuestoSumado(suministroTB.getImpuestoSumado());
-                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                stb.setDescuento(suministroTB.getDescuento());
-                stb.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
-                list.add(stb);
-            }
-             totalReporte = totalImporteReporte + totalImpuestoReporte;
-
-            InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
-            InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
-            if (Session.COMPANY_IMAGE != null) {
-                imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
-            }
-
-            InputStream dir = getClass().getResourceAsStream("/report/Cotizacion.jasper");
-
-            Map map = new HashMap();
-            map.put("LOGO", imgInputStream);
-            map.put("ICON", imgInputStreamIcon);
-            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
-            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
-            map.put("TELEFONOCELULAR", "TELÉFONO: " + Session.COMPANY_TELEFONO + " CELULAR: " + Session.COMPANY_CELULAR);
-            map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL);
-
-            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
-            map.put("NOMBREDOCUMENTO", "COTIZACIÓN");
-            map.put("NUMERODOCUMENTO", "N° " + cotizacionTB.getIdCotizacion());
-
-            map.put("DATOSCLIENTE", cotizacionTB.getClienteTB().getInformacion());
-            map.put("DOCUMENTOCLIENTE", "");
-            map.put("NUMERODOCUMENTOCLIENTE", cotizacionTB.getClienteTB().getNumeroDocumento());
-            map.put("CELULARCLIENTE", cotizacionTB.getClienteTB().getCelular());
-            map.put("EMAILCLIENTE", cotizacionTB.getClienteTB().getEmail());
-            map.put("DIRECCIONCLIENTE", cotizacionTB.getClienteTB().getDireccion());
-
-            map.put("FECHAEMISION", cotizacionTB.getFechaCotizacion());
-            map.put("MONEDA", cotizacionTB.getMonedaTB().getNombre());
-            map.put("CONDICIONPAGO", "");
-
-            map.put("SIMBOLO", cotizacionTB.getMonedaTB().getSimbolo());
-            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalReporte, 2), true, cotizacionTB.getMonedaTB().getNombre()));
-
-            map.put("VALOR_VENTA", Tools.roundingValue(subTotalReporte, 2));
-            map.put("DESCUENTO", Tools.roundingValue(descuentoTotalReporte, 2));
-            map.put("SUB_IMPORTE", Tools.roundingValue(subTotalImporteReporte, 2));
-            map.put("IMPUESTO_TOTAL", Tools.roundingValue(totalImpuestoReporte, 2));
-            map.put("IMPORTE_TOTAL", Tools.roundingValue(totalReporte, 2));
-            map.put("OBSERVACION", cotizacionTB.getObservaciones());
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
-
-            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxReportViewController controller = fXMLLoader.getController();
-            controller.setJasperPrint(jasperPrint);
-            controller.show();
-            Stage stage = WindowStage.StageLoader(parent, "Cotizacion realizada");
-            stage.setResizable(true);
-            stage.show();
-            stage.requestFocus();
-
-        } catch (IOException | JRException ex) {
-            Tools.AlertMessageError(hbWindow, "Reporte de Cotizacion", "Error al generar el reporte : " + ex.getLocalizedMessage());
-        }
-    }
-
     private void onEventCliente() {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -578,57 +470,6 @@ public class FxCotizacionController implements Initializable {
         calculateTotales();
     }
 
-    private void onExecuteImpresion(String idCotizacion) {
-        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-        Task<CotizacionTB> task = new Task<CotizacionTB>() {
-            @Override
-            public CotizacionTB call() {
-                return CotizacionADO.CargarCotizacionReporte(idCotizacion);
-            }
-        };
-        task.setOnScheduled(w -> {
-            Tools.showAlertNotification("/view/image/information_large.png",
-                    "Generando reporte",
-                    "Se envió los datos para generar\n el reporte.",
-                    Duration.seconds(5),
-                    Pos.BOTTOM_RIGHT);
-        });
-        task.setOnFailed(w -> {
-            Tools.showAlertNotification("/view/image/warning_large.png",
-                    "Generando reporte",
-                    "Se produjo un problema al generar.",
-                    Duration.seconds(10),
-                    Pos.BOTTOM_RIGHT);
-        });
-        task.setOnSucceeded(w -> {
-            CotizacionTB cotizacionTB = task.getValue();
-            if (cotizacionTB != null && !cotizacionTB.getDetalleSuministroTBs().isEmpty()) {
-                ObservableList<SuministroTB> cotizacionTBs = cotizacionTB.getDetalleSuministroTBs();
-                reportA4(cotizacionTB);
-                Tools.showAlertNotification("/view/image/succes_large.png",
-                        "Generando reporte",
-                        "Se genero correctamente el reporte.",
-                        Duration.seconds(5),
-                        Pos.BOTTOM_RIGHT);
-
-            } else {
-                Tools.showAlertNotification("/view/image/error_large.png",
-                        "Generando reporte",
-                        "Se producto al obtenener los datos.",
-                        Duration.seconds(10),
-                        Pos.CENTER);
-            }
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-    }
-
     public void loadCotizacion(String idCotizacion) {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
@@ -715,6 +556,27 @@ public class FxCotizacionController implements Initializable {
         }
     }
 
+    public void openModalImpresion(String idCotizacion) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxOpcionesImprimirController controller = fXMLLoader.getController();
+            controller.loadDataCotizacion(idCotizacion);
+            controller.setInitOpcionesImprimirCotizacion(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", hbWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Controller Modal Impresión: " + ex.getLocalizedMessage());
+        }
+    }
+
     private void onEventGuardar() {
         if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(hbWindow, "Cotización", "Seleccione un cliente.");
@@ -766,12 +628,12 @@ public class FxCotizacionController implements Initializable {
                     case "0":
                         Tools.AlertMessageInformation(hbWindow, "Cotización", "Se registro corectamente la cotización.");
                         resetVenta();
-                        onExecuteImpresion(result[1]);
+                        openModalImpresion(result[1]);
                         break;
                     case "1":
                         Tools.AlertMessageInformation(hbWindow, "Cotización", "Se actualizo corectamente la cotización.");
                         resetVenta();
-                        onExecuteImpresion(result[1]);
+                        openModalImpresion(result[1]);
                         break;
                     case "2":
                         Tools.AlertMessageError(hbWindow, "Cotización", result[1]);
@@ -873,7 +735,6 @@ public class FxCotizacionController implements Initializable {
     @FXML
     private void onActionGuardar(ActionEvent event) {
         onEventGuardar();
-
     }
 
     @FXML

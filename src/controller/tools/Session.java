@@ -94,6 +94,7 @@ public class Session {
     public static boolean CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR;
     public static String FORMATO_IMPRESORA_CUENTA_POR_PAGAR = "";
     public static String DESING_IMPRESORA_CUENTA_POR_PAGAR = "";
+    
     /*
     variable de cliente
      */

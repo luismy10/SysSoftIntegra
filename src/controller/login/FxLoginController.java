@@ -188,5 +188,5 @@ public class FxLoginController implements Initializable {
     public void initComponents() {
         txtUsuario.requestFocus();
     }
-
+    
 }

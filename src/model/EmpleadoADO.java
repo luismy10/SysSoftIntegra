@@ -1,6 +1,7 @@
 package model;
 
 import controller.tools.Tools;
+import java.io.File;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -258,6 +259,33 @@ public class EmpleadoADO {
         }
     }
 
+//    public static void UpdateImage() {
+//        PreparedStatement preparedUpdate = null;
+//        PreparedStatement preparedStatement = null;
+//        try {
+//            preparedUpdate = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET NuevaImagen = ? WHERE IdSuministro = ?");
+//
+//            preparedStatement = DBUtil.getConnection().prepareStatement("SELECT IdSuministro,Imagen FROM SuministroTB where NuevaImagen is null");
+//            ResultSet rsEmps = preparedStatement.executeQuery();
+//            File selectFile = null;
+//            while (rsEmps.next()) {
+//                selectFile = new File(rsEmps.getString("Imagen"));
+//                if (selectFile != null && selectFile.exists()) {
+//                    preparedUpdate.setBytes(1, Tools.getImageBytes(selectFile));
+//                    preparedUpdate.setString(2, rsEmps.getString("IdSuministro"));
+//                    preparedUpdate.execute();
+//                    Tools.println(Tools.getImageBytes(selectFile));
+//                }
+//            }
+//
+//            Tools.println("bien");
+//        } catch (SQLException ex) {
+//            Tools.println(ex.getLocalizedMessage());
+//
+//        }
+//
+//    }
+
     public static ObservableList<EmpleadoTB> ListEmployeeInProProduction(String value) {
         String selectStmt = "{call Sp_Listar_Empleados(?)}";
         //String selectStmt = "select * from EmpleadoTB";
@@ -410,11 +438,11 @@ public class EmpleadoADO {
                 statementValidation = DBUtil.getConnection().prepareStatement("SELECT * FROM SuministroTB");
                 ResultSet resultSet = statementValidation.executeQuery();
                 Thread.sleep(sleep);
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     arrayList.add(resultSet.getString("IdSuministro"));
                 }
             } catch (SQLException ex) {
-                Tools.println("Error sql: "+ex.getLocalizedMessage());
+                Tools.println("Error sql: " + ex.getLocalizedMessage());
             } finally {
                 try {
                     if (statementValidation != null) {
@@ -422,10 +450,10 @@ public class EmpleadoADO {
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
-                    
+
                 }
             }
-        } 
+        }
         return arrayList;
     }
 

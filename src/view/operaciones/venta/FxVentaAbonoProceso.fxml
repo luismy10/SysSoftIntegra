@@ -82,8 +82,8 @@
                   </VBox>
                   <HBox alignment="CENTER_LEFT" prefWidth="280.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <RadioButton fx:id="rbBancos" mnemonicParsing="false" onAction="#onActionBancos" selected="true" text="Bancos" />
-                        <RadioButton fx:id="rbCaja" mnemonicParsing="false" onAction="#onActionCaja" text="Caja" />
+                        <RadioButton fx:id="rbBancos" mnemonicParsing="false" onAction="#onActionBancos" text="Bancos" />
+                        <RadioButton fx:id="rbCaja" mnemonicParsing="false" onAction="#onActionCaja" selected="true" text="Caja" />
                      </children>
                   </HBox>
                </children>
@@ -103,7 +103,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <ComboBox fx:id="cbCuenta" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="- Seleccione. -" />
+                  <ComboBox fx:id="cbCuenta" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="- Seleccione. -" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">

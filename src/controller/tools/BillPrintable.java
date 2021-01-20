@@ -70,7 +70,29 @@ public class BillPrintable implements Printable {
         pointWidthSizePaper = 5.10;
     }
 
-    public int hbEncebezado(HBox box, String nombre_impresion_comprobante, String numeracion_serie_comprobante, String nummero_documento_cliente, String informacion_cliente, String celular_cliente, String direccion_cliente, String codigoVenta, String importe_total_letras, String fechaInicioOperacion, String horaInicioOperacion, String fechaTerminoOperaciona, String horaTerminoOperacion, String calculado, String contado, String diferencia, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String empleadoDireccion, String montoTotal, String montoPagado, String montoDiferencial) {
+    public int hbEncebezado(HBox box,
+            String nombre_impresion_comprobante, 
+            String numeracion_serie_comprobante, 
+            String nummero_documento_cliente, 
+            String informacion_cliente, 
+            String celular_cliente, 
+            String direccion_cliente, 
+            String codigoVenta, 
+            String importe_total_letras, 
+            String fechaInicioOperacion, 
+            String horaInicioOperacion, 
+            String fechaTerminoOperaciona,
+            String horaTerminoOperacion, 
+            String calculado, 
+            String contado, 
+            String diferencia, 
+            String empleadoNumeroDocumento, 
+            String empleadoInformacion, 
+            String empleadoCelular, 
+            String empleadoDireccion, 
+            String montoTotal, 
+            String montoPagado, 
+            String montoDiferencial) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -293,7 +315,25 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, String moneda, String valorVenta, String descuento, String montoOperacion, String montoImpuesto, String subTotal, String total, String efectivo, String vuelto, String numCliente, String infoCliente, String codigoVenta, String celular_cliente, String importe_total_letras, String empleadoNumeroDocumento, String empleadoInformacion, String empleadoCelular, String direccionEmpleado) {
+    public int hbPie(HBox box, 
+            String moneda, 
+            String valorVenta, 
+            String descuento, 
+            String montoOperacion, 
+            String montoImpuesto, 
+            String subTotal, 
+            String total, 
+            String efectivo, 
+            String vuelto, 
+            String numCliente, 
+            String infoCliente, 
+            String codigoVenta, 
+            String celular_cliente, 
+            String importe_total_letras, 
+            String empleadoNumeroDocumento, 
+            String empleadoInformacion, 
+            String empleadoCelular, 
+            String direccionEmpleado) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {

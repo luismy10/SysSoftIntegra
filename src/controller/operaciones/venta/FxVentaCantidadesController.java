@@ -87,7 +87,7 @@ public class FxVentaCantidadesController implements Initializable {
         suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
         if (tipoVenta) {
-            ventaEstructuraController.getAddArticulo(suministroTB);
+            ventaEstructuraController.getAddArticulo(suministroTB, ventaEstructuraController.getWindow().getScene().getWindow());
             Tools.Dispose(apWindow);
         } else {
             ventaEstructuraController.getTvList().refresh();

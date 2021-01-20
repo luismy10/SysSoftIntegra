@@ -15,7 +15,7 @@ public class ConvertMonedaCadena {
 
     public String Convertir(String numero, boolean mayusculas, String moneda) {
 
-        String literal = "";
+        String literal;
         String parte_decimal;
         //si el numero utiliza (.) en lugar de (,) -> se reemplaza
         numero = numero.replace(".", ",");
@@ -54,7 +54,7 @@ public class ConvertMonedaCadena {
                 return (literal + parte_decimal);
             }
         } else {//error, no se puede convertir
-            return literal = "Sin valor";
+            return "Sin valor";
         }
     }
 
