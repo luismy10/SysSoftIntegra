@@ -1091,8 +1091,8 @@ public class CompraADO extends DBUtil {
                 suministroTB.setCostoCompra(resultSet1.getDouble("PrecioCompra") - porcentajeRestante);
                 suministroTB.setCostoCompraReal(resultSet1.getDouble("PrecioCompra"));
 
-                suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getCostoCompraReal());
-                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getCostoCompra());
+                suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getCostoCompraReal());
+                suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getCostoCompra());
 
                 suministroTB.setImpuestoId(resultSet1.getInt("IdImpuesto"));
                 suministroTB.setImpuestoNombre(resultSet1.getString("NombreImpuesto"));

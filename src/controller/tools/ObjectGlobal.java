@@ -1,5 +1,6 @@
 package controller.tools;
 
+import java.util.ArrayList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -21,8 +22,10 @@ public class ObjectGlobal {
     public static AnchorPane PANE;
 
     public static AnchorPane PANE_PRINCIPAL;
-    
+
     public static String QR_PERU_DATA = "|0|0|0|0|0|0|0|0|";
+
+    public static ArrayList<String> DATA_CLIENTS = new ArrayList<>();
 
     static {
         PANE_PRINCIPAL = new AnchorPane();

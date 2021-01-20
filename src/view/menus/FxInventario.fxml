@@ -112,7 +112,7 @@
                   </VBox>
                   <VBox fx:id="btnMovimiento" alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionMovimientos" onKeyPressed="#onKeyPressedMovimientos" styleClass="buttonTransparent" text="Movimiento o Ajuste" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionMovimientos" onKeyPressed="#onKeyPressedMovimientos" styleClass="buttonTransparent" text="Ajuste de Inventario" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

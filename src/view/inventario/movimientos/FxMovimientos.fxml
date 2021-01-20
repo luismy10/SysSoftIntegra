@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                <children>
-                  <Label styleClass="labelRobotoBold15" text="Movimientos Realizados" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Ajustes Realizados" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -70,7 +70,7 @@
                                  <children>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Buscar por  Tipo de Movimiento(F1)" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Buscar por  Metodo de Ajuste(F1)" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>

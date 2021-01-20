@@ -1,6 +1,5 @@
 package controller.inventario.movimientos;
 
-import controller.contactos.proveedores.FxProveedorListaController;
 import controller.operaciones.compras.FxComprasListaController;
 import controller.inventario.suministros.FxSuministrosListaController;
 import controller.tools.FilesRouters;
@@ -44,8 +43,8 @@ import javafx.stage.Stage;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import model.MovimientoInventarioADO;
-import model.MovimientoInventarioTB;
+import model.AjusteInventarioADO;
+import model.AjusteInventarioTB;
 import model.SuministroADO;
 import model.SuministroTB;
 import model.TipoMovimientoADO;
@@ -85,23 +84,15 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private RadioButton rbDecremento;
     @FXML
-    private CheckBox cbConfirmar;
-    @FXML
-    private TextField txtProveedor;
-    @FXML
     private HBox hbBotones;
     @FXML
     private CheckBox cbCaja;
-    @FXML
-    private CheckBox cbEstadoMovimiento;
 
     private AnchorPane vbPrincipal;
 
     private AnchorPane vbContent;
 
     private FxMovimientosController movimientosController;
-
-    private String idProveedor;
 
     private Alert alert = null;
 
@@ -128,16 +119,12 @@ public class FxMovimientosProcesoController implements Initializable {
         tcNuevaExistencia.setCellValueFactory(new PropertyValueFactory<>("txtMovimiento"));
         tcExistenciaActual.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getUnidadCompraName()));
         tcDiferencia.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDiferencia(), 2)));
-//        tcCosto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
-//        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
-//        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("validar"));
 
         tcAccion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcClave.prefWidthProperty().bind(tvList.widthProperty().multiply(0.31));
         tcNuevaExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
         tcExistenciaActual.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
         tcDiferencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
-//        tcOpcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
 
         ToggleGroup groupAjuste = new ToggleGroup();
         rbIncremento.setToggleGroup(groupAjuste);
@@ -155,7 +142,6 @@ public class FxMovimientosProcesoController implements Initializable {
     }
 
     private void registrarMovimiento() {
-
         if (!tvList.getItems().isEmpty()) {
             int validete = 0;
             validete = tvList.getItems().stream().filter((SuministroTB e) -> e.getMovimiento() <= 0).map((_item) -> 1).reduce(validete, Integer::sum);
@@ -168,7 +154,7 @@ public class FxMovimientosProcesoController implements Initializable {
                 openAlertMessageWarning("Ingrese una observación, por favor.");
                 txtObservacion.requestFocus();
             } else {
-                MovimientoInventarioTB inventarioTB = new MovimientoInventarioTB();
+                AjusteInventarioTB inventarioTB = new AjusteInventarioTB();
                 inventarioTB.setFecha(Tools.getDate());
                 inventarioTB.setHora(Tools.getHour());
                 inventarioTB.setTipoAjuste(rbIncremento.isSelected());
@@ -176,9 +162,7 @@ public class FxMovimientosProcesoController implements Initializable {
                 inventarioTB.setTipoMovimientoName(cbAjuste.getSelectionModel().getSelectedItem().getNombre());
                 inventarioTB.setObservacion(txtObservacion.getText().trim());
                 inventarioTB.setSuministro(true);
-                inventarioTB.setArticulo(cbConfirmar.isSelected());
-                inventarioTB.setProveedor(idProveedor);
-                inventarioTB.setEstado(cbEstadoMovimiento.isSelected() ? (short) 1 : (short) 0);
+                inventarioTB.setEstado((short)1);
                 if (cbCaja.isSelected()) {
                     openWindowMovimientoCaja(rbIncremento.isSelected(), inventarioTB, tvList);
                 } else {
@@ -240,7 +224,7 @@ public class FxMovimientosProcesoController implements Initializable {
         }
     }
      */
-    private void ejecutarConsulta(MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+    private void ejecutarConsulta(AjusteInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -249,7 +233,7 @@ public class FxMovimientosProcesoController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                return MovimientoInventarioADO.Crud_Movimiento_Inventario(inventarioTB, tableView);
+                return AjusteInventarioADO.Crud_Movimiento_Inventario(inventarioTB, tableView);
             }
         };
         task.setOnScheduled(t -> {
@@ -281,7 +265,7 @@ public class FxMovimientosProcesoController implements Initializable {
     }
 
     public void clearComponents() {
-        rbIncremento.setSelected(false);
+        rbIncremento.setSelected(true);
         rbIncremento.setDisable(false);
         rbDecremento.setDisable(false);
         cbAjuste.setDisable(false);
@@ -289,8 +273,7 @@ public class FxMovimientosProcesoController implements Initializable {
         TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
             cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
         });
-        txtObservacion.clear();
-        cbConfirmar.setSelected(false);
+        txtObservacion.setText("N/D");
         tvList.getItems().clear();
         cbCaja.setSelected(false);
     }
@@ -327,7 +310,7 @@ public class FxMovimientosProcesoController implements Initializable {
                         tvList.getItems().remove(suministroTB);
                     }
                 });
-                suministroTB.getTxtMovimiento().setOnAction(event -> {
+                suministroTB.getTxtMovimiento().setOnKeyReleased(event -> {
                     if (Tools.isNumeric(suministroTB.getTxtMovimiento().getText().trim())) {
                         if (rbIncremento.isSelected()) {
                             double newDiferencia = suministroTB.getCantidad() + Double.parseDouble(suministroTB.getTxtMovimiento().getText());
@@ -340,11 +323,7 @@ public class FxMovimientosProcesoController implements Initializable {
                             suministroTB.setDiferencia(newDiferencia);
                             suministroTB.setCambios(true);
                         }
-                    } else {
-                        suministroTB.setMovimiento(0);
-                        suministroTB.getTxtMovimiento().setText("0");
-                        suministroTB.setCambios(true);
-                    }
+                    } 
                     tvList.refresh();
                 });
                 suministroTB.getTxtMovimiento().focusedProperty().addListener((obs, oldVal, newVal) -> {
@@ -386,27 +365,6 @@ public class FxMovimientosProcesoController implements Initializable {
         }
     }
 
-    private void openWindowProveedor() {
-        try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-            URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_LISTA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxProveedorListaController controller = fXMLLoader.getController();
-            controller.setInitMovimientoProcesoController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", hbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-            stage.show();
-            controller.fillCustomersTable("");
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
-
     private void openWindowCompras() {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -428,7 +386,7 @@ public class FxMovimientosProcesoController implements Initializable {
         }
     }
 
-    private void openWindowMovimientoCaja(boolean tipoMovimiento, MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+    private void openWindowMovimientoCaja(boolean tipoMovimiento, AjusteInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         try {
             ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
             URL url = getClass().getResource(FilesRouters.FX_MOVIMIENTO_CAJA);
@@ -577,49 +535,8 @@ public class FxMovimientosProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionConfirmar(ActionEvent event) {
-        if (cbConfirmar.isSelected()) {
-            rbIncremento.setSelected(false);
-            rbIncremento.setDisable(true);
-            rbDecremento.setDisable(true);
-            rbDecremento.setSelected(true);
-            cbAjuste.setDisable(true);
-            cbAjuste.getItems().clear();
-            TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
-                cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
-            });
-            cbAjuste.getSelectionModel().select(0);
-            cbEstadoMovimiento.setDisable(true);
-            txtObservacion.setText("Envío directo para venta");
-        } else {
-            rbIncremento.setSelected(true);
-            rbIncremento.setDisable(false);
-            rbDecremento.setDisable(false);
-            cbAjuste.setDisable(false);
-            cbAjuste.getItems().clear();
-            TipoMovimientoADO.Get_list_Tipo_Movimiento(rbIncremento.isSelected(), false).forEach(e -> {
-                cbAjuste.getItems().add(new TipoMovimientoTB(e.getIdTipoMovimiento(), e.getNombre(), e.isAjuste()));
-            });
-            cbEstadoMovimiento.setDisable(false);
-            txtObservacion.setText("");
-        }
-    }
-
-    @FXML
     private void onMouseClickedBehind(MouseEvent event) {
         closeWindow();
-    }
-
-    @FXML
-    private void onKeyPressedProveedor(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowProveedor();
-        }
-    }
-
-    @FXML
-    private void onActionProveedor(ActionEvent event) {
-        openWindowProveedor();
     }
 
     @FXML
@@ -646,14 +563,12 @@ public class FxMovimientosProcesoController implements Initializable {
         executeGenerarReporte();
     }
 
-    @FXML
     private void onKeyPressedRemover(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             executeEventRomever();
         }
     }
 
-    @FXML
     private void onActionRemover(ActionEvent event) {
         executeEventRomever();
     }
@@ -675,18 +590,8 @@ public class FxMovimientosProcesoController implements Initializable {
         cbCaja.setText(cbCaja.isSelected() ? "Si" : "No");
     }
 
-    @FXML
-    private void onActionEstadoMoviminento(ActionEvent event) {
-        cbEstadoMovimiento.setText(cbEstadoMovimiento.isSelected() ? "Validado" : "Por validar");
-    }
-
     public TableView<SuministroTB> getTvList() {
         return tvList;
-    }
-
-    public void setInitProveedor(String idProveedor, String datos) {
-        this.idProveedor = idProveedor;
-        txtProveedor.setText(datos);
     }
 
     public void setContent(FxMovimientosController movimientosController, AnchorPane vbPrincipal, AnchorPane vbContent) {

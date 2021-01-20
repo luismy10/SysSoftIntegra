@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="288"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -39,7 +39,7 @@
 	<field name="nombreMarca" class="java.lang.String"/>
 	<field name="precioVentaGeneral" class="java.lang.Double"/>
 	<field name="descuento" class="java.lang.Double"/>
-	<field name="totalImporte" class="java.lang.Double"/>
+	<field name="importeNeto" class="java.lang.Double"/>
 	<background>
 		<band height="802">
 			<rectangle>
@@ -55,7 +55,7 @@
 			<rectangle>
 				<reportElement x="0" y="0" width="555" height="190" uuid="797dcbcd-9f38-492d-9de0-f836152f2a64"/>
 				<graphicElement>
-					<pen lineWidth="0.25" lineColor="#373B46"/>
+					<pen lineWidth="0.0" lineColor="#373B46"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
@@ -181,7 +181,7 @@
 				<textFieldExpression><![CDATA[$P{CELULARCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="130" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="b63ce981-d651-435a-a071-ee53f10a05fe"/>
+				<reportElement mode="Opaque" x="0" y="150" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="b63ce981-d651-435a-a071-ee53f10a05fe"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -195,7 +195,7 @@
 				<text><![CDATA[EMAIL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="75" y="130" width="360" height="20" forecolor="#000000" uuid="94c782f0-0e62-42c4-9ca8-110c67523212"/>
+				<reportElement x="75" y="150" width="360" height="20" forecolor="#000000" uuid="94c782f0-0e62-42c4-9ca8-110c67523212"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -208,7 +208,7 @@
 				<textFieldExpression><![CDATA[$P{EMAILCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="150" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="94d83c1c-9336-4b35-acbc-4646270b868b"/>
+				<reportElement mode="Opaque" x="0" y="130" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="94d83c1c-9336-4b35-acbc-4646270b868b"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -222,7 +222,7 @@
 				<text><![CDATA[DIRECCIÓN:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="75" y="150" width="360" height="20" forecolor="#000000" uuid="046a5a90-1338-46a0-94ab-9ee7de752f40"/>
+				<reportElement x="75" y="130" width="360" height="20" forecolor="#000000" uuid="046a5a90-1338-46a0-94ab-9ee7de752f40"/>
 				<box>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
@@ -261,9 +261,7 @@
 				<textFieldExpression><![CDATA[$P{FECHAEMISION}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="30" y="170" width="65" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="33a0feb5-6aa6-485a-a559-20cb348dccfc">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
-				</reportElement>
+				<reportElement mode="Opaque" x="435" y="130" width="120" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="6de1624e-a5cf-4e86-a33a-6fbafc5fc429"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -271,10 +269,23 @@
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Cantidad]]></text>
+				<text><![CDATA[MONEDA]]></text>
 			</staticText>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="435" y="150" width="120" height="20" forecolor="#000000" uuid="966f61ec-2185-4292-86de-7bab27756936"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MONEDA}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="95" y="170" width="70" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="8a7b8cc6-3961-474c-bab3-c266cdb600ea">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3da7e1ae-407f-4aa8-93f4-73f7353846ed"/>
@@ -351,34 +362,8 @@
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="435" y="130" width="120" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="6de1624e-a5cf-4e86-a33a-6fbafc5fc429"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7" isBold="true"/>
-				</textElement>
-				<text><![CDATA[MONEDA]]></text>
-			</staticText>
-			<textField>
-				<reportElement isPrintRepeatedValues="false" x="435" y="150" width="120" height="20" forecolor="#000000" uuid="966f61ec-2185-4292-86de-7bab27756936"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{MONEDA}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="170" width="30" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="c7c84ae4-6b52-4b8e-a500-d9387c6504fc">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="170" width="30" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="75be339c-d092-464d-9ca0-ca02f937cab4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3da7e1ae-407f-4aa8-93f4-73f7353846ed"/>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
@@ -386,13 +371,31 @@
 					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
 					<rightPen lineWidth="0.25" lineColor="#373B46"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Item]]></text>
 			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="30" y="170" width="65" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="4a31434d-1212-420b-8592-086cbd9a8d2b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3da7e1ae-407f-4aa8-93f4-73f7353846ed"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<bottomPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
 		</band>
 	</title>
+	<columnHeader>
+		<band/>
+	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.spreadsheet.SpreadsheetLayout"/>
@@ -500,7 +503,7 @@
 					<font fontName="Arial" size="6"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{totalImporte})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{importeNeto})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -540,7 +543,7 @@
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[VALOR VENTA:]]></text>
+				<text><![CDATA[IMPORTE BRUTO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="335" y="36" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="c19a7b74-ee51-442d-befc-502754ce2f6c"/>
@@ -568,7 +571,7 @@
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[SUB IMPORTE:]]></text>
+				<text><![CDATA[SUB IMPORTE]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="249" y="104" width="36" height="25" backcolor="#B5B5B5" uuid="873407f0-97ab-4fdf-bf8a-2aee29299b4f"/>
@@ -649,7 +652,7 @@
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[IMPORTE TOTAL:]]></text>
+				<text><![CDATA[IMPORTE NETO:]]></text>
 			</staticText>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="435" y="84" width="120" height="16" forecolor="#000000" uuid="e2b2ed1e-9b8d-4abc-858c-8e4fbe718dc4">

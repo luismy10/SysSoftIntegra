@@ -25,7 +25,7 @@
                <children>
                   <Label onMouseClicked="#onMouseClickedBehind" style="-fx-cursor: hand;">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                            <image>
                               <Image url="@../../image/right.png" />
                            </image>
@@ -34,7 +34,7 @@
                   </Label>
                   <Label styleClass="labelRobotoBold15" text="Detalle de la Venta" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/sales.png" />
                            </image>

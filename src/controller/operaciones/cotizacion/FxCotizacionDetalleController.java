@@ -108,17 +108,15 @@ public class FxCotizacionDetalleController implements Initializable {
 
     private AnchorPane hbPie;
 
-    private double subTotal = 0;
+    private double importeBruto = 0;
 
-    private double descuentoTotal = 0;
+    private double descuentoBruto = 0;
 
-    private double subTotalImporte = 0;
+    private double subImporteNeto = 0;
 
-    private double totalImpuesto = 0;
+    private double impuestoNeto = 0;
 
-    private double totalImporte = 0;
-
-    private double total = 0;
+    private double importeTotal = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -236,30 +234,28 @@ public class FxCotizacionDetalleController implements Initializable {
 
     public void calculateTotales(String simbolo) {
 
-        subTotal = 0;
-        arrList.forEach(e -> subTotal += e.getSubImporte());
-        lblValorVenta.setText(simbolo + " " + Tools.roundingValue(subTotal, 2));
+        importeBruto = 0;
+        arrList.forEach(e -> importeBruto += e.getImporteBruto());
+        lblValorVenta.setText(simbolo + " " + Tools.roundingValue(importeBruto, 2));
 
-        descuentoTotal = 0;
-        arrList.forEach(e -> descuentoTotal += e.getDescuentoSumado());
-        lblDescuento.setText(simbolo + " " + (Tools.roundingValue(descuentoTotal * (-1), 2)));
+        descuentoBruto = 0;
+        arrList.forEach(e -> descuentoBruto += e.getDescuentoSumado());
+        lblDescuento.setText(simbolo + " " + (Tools.roundingValue(descuentoBruto * (-1), 2)));
 
-        subTotalImporte = 0;
-        arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-        lblSubTotal.setText(simbolo + " " + Tools.roundingValue(subTotalImporte, 2));
+        subImporteNeto = 0;
+        arrList.forEach(e -> subImporteNeto += e.getSubImporteNeto());
+        lblSubTotal.setText(simbolo + " " + Tools.roundingValue(subImporteNeto, 2));
 
         gpImpuestos.getChildren().clear();
-        totalImpuesto = 0;
-        arrList.forEach(e -> totalImpuesto += e.getImpuestoSumado());
+        impuestoNeto = 0;
+        arrList.forEach(e -> impuestoNeto += e.getImpuestoSumado());
 
         gpImpuestos.add(addLabelTitle("IMPUESTO GENERADO:", Pos.CENTER_LEFT), 0, 0 + 1);
-        gpImpuestos.add(addLabelTotal(simbolo + " " + Tools.roundingValue(totalImpuesto, 2), Pos.CENTER_RIGHT), 1, 0 + 1);
+        gpImpuestos.add(addLabelTotal(simbolo + " " + Tools.roundingValue(impuestoNeto, 2), Pos.CENTER_RIGHT), 1, 0 + 1);
 
-        totalImporte = 0;
-        total = 0;
-        arrList.forEach(e -> totalImporte += e.getTotalImporte());
-        total = totalImporte + totalImpuesto;
-        lblTotal.setText(simbolo + " " + Tools.roundingValue(total, 2));
+        importeTotal = 0;
+        importeTotal = subImporteNeto + impuestoNeto;
+        lblTotal.setText(simbolo + " " + Tools.roundingValue(importeTotal, 2));
     }
 
     private void ticket() {
@@ -326,12 +322,12 @@ public class FxCotizacionDetalleController implements Initializable {
                                 for (int i = 0; i < hbPie.getChildren().size(); i++) {
                                     HBox box = ((HBox) hbPie.getChildren().get(i));
                                     billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
-                                            Tools.roundingValue(subTotal, 2),
-                                            "-" + Tools.roundingValue(descuentoTotal, 2),
-                                            Tools.roundingValue(totalImporte, 2),
-                                            Tools.roundingValue(totalImpuesto, 2),
-                                            Tools.roundingValue(subTotalImporte, 2),
-                                            Tools.roundingValue(total, 2),
+                                            Tools.roundingValue(importeBruto, 2),
+                                            "-" + Tools.roundingValue(descuentoBruto, 2),
+                                            Tools.roundingValue(subImporteNeto, 2),
+                                            Tools.roundingValue(impuestoNeto, 2),
+                                            Tools.roundingValue(subImporteNeto, 2),
+                                            Tools.roundingValue(importeTotal, 2),
                                             Tools.roundingValue(0, 2),
                                             Tools.roundingValue(0, 2),
                                             cotizacionTB.getClienteTB().getNumeroDocumento(),
@@ -479,12 +475,12 @@ public class FxCotizacionDetalleController implements Initializable {
             HBox box = ((HBox) hbPie.getChildren().get(i));
             rows++;
             lines += billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
-                    Tools.roundingValue(subTotal, 2),
-                    "-" + Tools.roundingValue(descuentoTotal, 2),
-                    Tools.roundingValue(totalImporte, 2),
-                    Tools.roundingValue(totalImpuesto, 2),
-                    Tools.roundingValue(subTotalImporte, 2),
-                    Tools.roundingValue(total, 2),
+                    Tools.roundingValue(importeBruto, 2),
+                    "-" + Tools.roundingValue(descuentoBruto, 2),
+                    Tools.roundingValue(subImporteNeto, 2),
+                    Tools.roundingValue(impuestoNeto, 2),
+                    Tools.roundingValue(subImporteNeto, 2),
+                    Tools.roundingValue(importeTotal, 2),
                     Tools.roundingValue(0, 2),
                     Tools.roundingValue(0, 2),
                     cotizacionTB.getClienteTB().getNumeroDocumento(),
@@ -509,13 +505,13 @@ public class FxCotizacionDetalleController implements Initializable {
                 stb.setNombreMarca(arrList.get(i).getNombreMarca());
                 stb.setCantidad(arrList.get(i).getCantidad());
                 stb.setUnidadCompraName(arrList.get(i).getUnidadCompraName());
-                stb.setSubImporte(arrList.get(i).getSubImporte());
+                stb.setImporteBruto(arrList.get(i).getImporteBruto());
                 stb.setDescuentoSumado(arrList.get(i).getDescuentoSumado());
-                stb.setSubImporteDescuento(arrList.get(i).getSubImporteDescuento());
+                stb.setSubImporteNeto(arrList.get(i).getSubImporteNeto());
                 stb.setImpuestoSumado(arrList.get(i).getImpuestoSumado());
                 stb.setPrecioVentaGeneral(arrList.get(i).getPrecioVentaGeneral());
                 stb.setDescuento(arrList.get(i).getDescuento());
-                stb.setTotalImporte(arrList.get(i).getCantidad() * arrList.get(i).getPrecioVentaGeneral());
+                stb.setImporteNeto(arrList.get(i).getCantidad() * arrList.get(i).getPrecioVentaGeneral());
                 list.add(stb);
             }
 
@@ -558,13 +554,13 @@ public class FxCotizacionDetalleController implements Initializable {
             map.put("CONDICIONPAGO", "");
 
             map.put("SIMBOLO", cotizacionTB.getMonedaTB().getSimbolo());
-            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(total, 2), true, cotizacionTB.getMonedaTB().getNombre()));
+            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(importeTotal, 2), true, cotizacionTB.getMonedaTB().getNombre()));
 
-            map.put("VALOR_VENTA", Tools.roundingValue(subTotal, 2));
-            map.put("DESCUENTO", "-" + Tools.roundingValue(descuentoTotal, 2));
-            map.put("SUB_IMPORTE", Tools.roundingValue(subTotalImporte, 2));
-            map.put("IMPUESTO_TOTAL", Tools.roundingValue(totalImpuesto, 2));
-            map.put("IMPORTE_TOTAL", Tools.roundingValue(total, 2));
+            map.put("VALOR_VENTA", Tools.roundingValue(importeBruto, 2));
+            map.put("DESCUENTO", "-" + Tools.roundingValue(descuentoBruto, 2));
+            map.put("SUB_IMPORTE", Tools.roundingValue(subImporteNeto, 2));
+            map.put("IMPUESTO_TOTAL", Tools.roundingValue(impuestoNeto, 2));
+            map.put("IMPORTE_TOTAL", Tools.roundingValue(importeTotal, 2));
             map.put("OBSERVACION", cotizacionTB.getObservaciones());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
@@ -574,6 +570,7 @@ public class FxCotizacionDetalleController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxReportViewController controller = fXMLLoader.getController();
+            controller.setFileName("COTIZACION N° " + cotizacionTB.getIdCotizacion()); 
             controller.setJasperPrint(jasperPrint);
             controller.show();
             Stage stage = WindowStage.StageLoader(parent, "Cotizacion realizada");

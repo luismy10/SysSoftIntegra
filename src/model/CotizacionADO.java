@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -287,9 +286,9 @@ public class CotizacionADO {
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-                    suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
-                    suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
                     suministroTB.setInventario(result.getBoolean("Inventario"));
                     suministroTB.setUnidadVenta(result.getInt("UnidadVenta"));
@@ -355,7 +354,6 @@ public class CotizacionADO {
                     suministroTB.setNombreMarca(result.getString("NombreMarca"));
                     suministroTB.setUnidadCompraName(result.getString("UnidadCompraNombre"));
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
-                    suministroTB.setCostoCompra(result.getDouble("PrecioCompra"));
 
                     double valor_sin_impuesto = result.getDouble("Precio") / ((result.getDouble("Valor") / 100.00) + 1);
                     double descuento = suministroTB.getDescuento();
@@ -379,9 +377,9 @@ public class CotizacionADO {
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-                    suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
-                    suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");

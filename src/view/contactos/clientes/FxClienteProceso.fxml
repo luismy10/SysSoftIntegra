@@ -67,7 +67,7 @@
                                                       </Label>
                                                       <HBox VBox.vgrow="ALWAYS">
                                                          <children>
-                                                            <ComboBox fx:id="cbDocumentType" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" />
+                                                            <ComboBox fx:id="cbDocumentType" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -88,7 +88,7 @@
                                                       </Label>
                                                       <HBox VBox.vgrow="ALWAYS">
                                                          <children>
-                                                            <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
+                                                            <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" />
                                                             <Button fx:id="btnBuscarSunat" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSunat" onKeyPressed="#onKeyPressedSunat" prefHeight="30.0" styleClass="buttonLight">
                                                                <graphic>
                                                                   <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
@@ -129,7 +129,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <TextField fx:id="txtInformacion" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtInformacion" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -143,7 +143,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtTelefono" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtTelefono" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                                 <VBox style="-fx-spacing: 0.4166666666666667em;" HBox.hgrow="ALWAYS">
@@ -153,7 +153,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtCelular" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtCelular" onAction="#onActionToRegister" prefWidth="260.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -167,7 +167,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtEmail" onAction="#onActionToRegister" prefWidth="280.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtEmail" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -181,7 +181,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtDireccion" onAction="#onActionToRegister" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtDireccion" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -213,7 +213,7 @@
                                                             <Font name="Roboto" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtRepresentante" onAction="#onActionToRegister" prefHeight="30.0" styleClass="text-field-normal" />
+                                                      <TextField fx:id="txtRepresentante" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" />
                                                    </children>
                                                 </VBox>
                                              </children>

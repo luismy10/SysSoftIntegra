@@ -1640,16 +1640,15 @@ public class FxOpcionesImprimirController implements Initializable {
             double subTotalImporteReporte = 0;
             double totalImpuestoReporte = 0;
             double totalImporteReporte = 0;
-            double totalReporte = 0;
             int count = 0;
 
             ArrayList<SuministroTB> list = new ArrayList();
             for (SuministroTB suministroTB : cotizacionTB.getDetalleSuministroTBs()) {
-                subTotalReporte += suministroTB.getSubImporte();
+                subTotalReporte += suministroTB.getImporteBruto();
                 descuentoTotalReporte += suministroTB.getDescuentoSumado();
-                subTotalImporteReporte += suministroTB.getSubImporteDescuento();
+                subTotalImporteReporte += suministroTB.getSubImporteNeto();
                 totalImpuestoReporte += suministroTB.getImpuestoSumado();
-                totalImporteReporte += suministroTB.getTotalImporte();
+                totalImporteReporte += suministroTB.getImporteNeto();
 
                 count++;
                 SuministroTB stb = new SuministroTB();
@@ -1658,16 +1657,15 @@ public class FxOpcionesImprimirController implements Initializable {
                 stb.setNombreMarca(suministroTB.getNombreMarca());
                 stb.setCantidad(suministroTB.getCantidad());
                 stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                stb.setSubImporte(suministroTB.getSubImporte());
+                stb.setImporteBruto(suministroTB.getImporteBruto());
                 stb.setDescuentoSumado(suministroTB.getDescuentoSumado());
-                stb.setSubImporteDescuento(suministroTB.getSubImporteDescuento());
+                stb.setSubImporteNeto(suministroTB.getSubImporteNeto());
                 stb.setImpuestoSumado(suministroTB.getImpuestoSumado());
                 stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
                 stb.setDescuento(suministroTB.getDescuento());
-                stb.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+                stb.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
                 list.add(stb);
             }
-            totalReporte = totalImporteReporte + totalImpuestoReporte;
 
             InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
@@ -1703,13 +1701,13 @@ public class FxOpcionesImprimirController implements Initializable {
             map.put("CONDICIONPAGO", "");
 
             map.put("SIMBOLO", cotizacionTB.getMonedaTB().getSimbolo());
-            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalReporte, 2), true, cotizacionTB.getMonedaTB().getNombre()));
+            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalImporteReporte, 2), true, cotizacionTB.getMonedaTB().getNombre()));
 
             map.put("VALOR_VENTA", Tools.roundingValue(subTotalReporte, 2));
             map.put("DESCUENTO", Tools.roundingValue(descuentoTotalReporte, 2));
             map.put("SUB_IMPORTE", Tools.roundingValue(subTotalImporteReporte, 2));
             map.put("IMPUESTO_TOTAL", Tools.roundingValue(totalImpuestoReporte, 2));
-            map.put("IMPORTE_TOTAL", Tools.roundingValue(totalReporte, 2));
+            map.put("IMPORTE_TOTAL", Tools.roundingValue(totalImporteReporte, 2));
             map.put("OBSERVACION", cotizacionTB.getObservaciones());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
@@ -1719,6 +1717,7 @@ public class FxOpcionesImprimirController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxReportViewController controller = fXMLLoader.getController();
+            controller.setFileName("COTIZACION N° " + cotizacionTB.getIdCotizacion());
             controller.setJasperPrint(jasperPrint);
             controller.show();
             Stage stage = WindowStage.StageLoader(parent, "Cotizacion");

@@ -1,6 +1,7 @@
 package model;
 
 import controller.tools.Session;
+import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -499,6 +500,31 @@ public class ClienteADO {
         }
         return result;
 
+    }
+
+    public static ArrayList<String> ListarClienteNumeroDocumento() {
+        PreparedStatement statementLista = null;
+        ArrayList<String> arrayList = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            statementLista = DBUtil.getConnection().prepareStatement("SELECT NumeroDocumento FROM ClienteTB");
+            try (ResultSet resultSet = statementLista.executeQuery()) {
+                while (resultSet.next()) {
+                    arrayList.add(resultSet.getString("NumeroDocumento"));
+                }
+            }
+        } catch (SQLException ex) {
+            Tools.println("Error en ClienteADO: " + ex.getLocalizedMessage());
+        } finally {
+            try {
+                if (statementLista != null) {
+                    statementLista.close();
+                }
+            } catch (SQLException ex) {
+
+            }
+        }
+        return arrayList;
     }
 
 }

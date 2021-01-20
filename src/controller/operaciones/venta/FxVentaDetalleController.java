@@ -126,15 +126,13 @@ public class FxVentaDetalleController implements Initializable {
 
     private String idVenta;
 
-    private double subImporte;
+    private double importeBruto;
 
-    private double descuento;
+    private double descuentoBruto;
 
-    private double subTotalImporte;
+    private double subImporteNeto;
 
-    private double totalImporte;
-
-    private double total;
+    private double importeNeto;
 
     private FxVentaRealizadasController ventaRealizadasController;
 
@@ -267,9 +265,7 @@ public class FxVentaDetalleController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
             stage.show();
         } catch (IOException ex) {
             System.out.println("Error en venta detalle: " + ex.getLocalizedMessage());
@@ -279,17 +275,17 @@ public class FxVentaDetalleController implements Initializable {
     private void calcularTotales() {
         if (arrList != null) {
 
-            subImporte = 0;
-            arrList.forEach(e -> subImporte += e.getSubImporte());
-            lblValorVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subImporte, 2));
+            importeBruto = 0;
+            arrList.forEach(e -> importeBruto += e.getImporteBruto());
+            lblValorVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(importeBruto, 2));
 
-            descuento = 0;
-            arrList.forEach(e -> descuento += e.getDescuentoSumado());
-            lblDescuento.setText(ventaTB.getMonedaTB().getSimbolo() + " -" + Tools.roundingValue(descuento, 2));
+            descuentoBruto = 0;
+            arrList.forEach(e -> descuentoBruto += e.getDescuentoSumado());
+            lblDescuento.setText(ventaTB.getMonedaTB().getSimbolo() + " -" + Tools.roundingValue(descuentoBruto, 2));
 
-            subTotalImporte = 0;
-            arrList.forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-            lblSubTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subTotalImporte, 2));
+            subImporteNeto = 0;
+            arrList.forEach(e -> subImporteNeto += e.getSubImporteNeto());
+            lblSubTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(subImporteNeto, 2));
 
 //            gpOperaciones.getChildren().clear();
             gpImpuestos.getChildren().clear();
@@ -330,11 +326,8 @@ public class FxVentaDetalleController implements Initializable {
                 }
             }
 
-            totalImporte = 0;
-            arrList.forEach(e -> totalImporte += e.getTotalImporte());
-
-            total = totalImporte + totalImpuestos;
-            lblTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(total, 2));
+            importeNeto = subImporteNeto + totalImpuestos;
+            lblTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(importeNeto, 2));
         }
 
     }
@@ -393,7 +386,7 @@ public class FxVentaDetalleController implements Initializable {
                 stb.setUnidadCompraName(arrList.get(i).getUnidadCompraName());
                 stb.setPrecioVentaGeneral(arrList.get(i).getPrecioVentaGeneral());
                 stb.setDescuento(arrList.get(i).getDescuento());
-                stb.setTotalImporte(arrList.get(i).getCantidad() * +arrList.get(i).getPrecioVentaGeneral());
+                stb.setImporteNeto(arrList.get(i).getCantidad() * +arrList.get(i).getPrecioVentaGeneral());
                 list.add(stb);
             }
             if (list.isEmpty()) {
@@ -406,6 +399,7 @@ public class FxVentaDetalleController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxReportViewController controller = fXMLLoader.getController();
+            controller.setFileName(ventaTB.getComprobanteName().toUpperCase() + " " + ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
             controller.setJasperPrint(reportA4(list));
             controller.show();
             Stage stage = WindowStage.StageLoader(parent, "Venta realizada");
@@ -439,11 +433,11 @@ public class FxVentaDetalleController implements Initializable {
         map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL);
 
         map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
-        map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName());
+        map.put("NOMBREDOCUMENTO", ventaTB.getComprobanteName().toUpperCase());
         map.put("NUMERODOCUMENTO", ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
 
         map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
-        map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName().substring(0, 1).toUpperCase() + ventaTB.getClienteTB().getTipoDocumentoName().substring(1).toLowerCase() + ":");
+        map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName().toUpperCase() + ":");
         map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
         map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular().equals("") ? "---" : ventaTB.getClienteTB().getCelular());
         map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail().equals("") ? "---" : ventaTB.getClienteTB().getEmail());
@@ -461,7 +455,7 @@ public class FxVentaDetalleController implements Initializable {
         map.put("SUB_IMPORTE", lblSubTotal.getText());
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", lblTotal.getText());
-        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(total, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
+        map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(importeNeto, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
 //            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
@@ -511,7 +505,7 @@ public class FxVentaDetalleController implements Initializable {
                             stb.setUnidadCompraName(arrList.get(i).getUnidadCompraName());
                             stb.setPrecioVentaGeneral(arrList.get(i).getPrecioVentaGeneral());
                             stb.setDescuento(arrList.get(i).getDescuento());
-                            stb.setTotalImporte(arrList.get(i).getCantidad() * +arrList.get(i).getPrecioVentaGeneral());
+                            stb.setImporteNeto(arrList.get(i).getCantidad() * +arrList.get(i).getPrecioVentaGeneral());
                             list.add(stb);
                         }
 
@@ -584,12 +578,12 @@ public class FxVentaDetalleController implements Initializable {
                             for (int i = 0; i < hbPie.getChildren().size(); i++) {
                                 HBox box = ((HBox) hbPie.getChildren().get(i));
                                 billPrintable.hbPie(box, ventaTB.getMonedaTB().getSimbolo(),
-                                        Tools.roundingValue(subImporte, 2),
-                                        "-" + Tools.roundingValue(descuento, 2),
-                                        Tools.roundingValue(totalImporte, 2),
+                                        Tools.roundingValue(importeBruto, 2),
+                                        "-" + Tools.roundingValue(descuentoBruto, 2),
+                                        Tools.roundingValue(subImporteNeto, 2),
                                         Tools.roundingValue(ventaTB.getImpuesto(), 2),
-                                        Tools.roundingValue(subTotalImporte, 2),
-                                        Tools.roundingValue(total, 2),
+                                        Tools.roundingValue(subImporteNeto, 2),
+                                        Tools.roundingValue(importeNeto, 2),
                                         Tools.roundingValue(efectivo, 2),
                                         Tools.roundingValue(vuelto, 2),
                                         ventaTB.getClienteTB().getNumeroDocumento(),

@@ -23,9 +23,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.MovimientoInventarioADO;
+import model.AjusteInventarioADO;
 import model.MovimientoInventarioDetalleTB;
-import model.MovimientoInventarioTB;
+import model.AjusteInventarioTB;
 
 public class FxMovimientosDetalleController implements Initializable {
 
@@ -39,8 +39,6 @@ public class FxMovimientosDetalleController implements Initializable {
     private Label lblHoraFecha;
     @FXML
     private Label lblObservacion;
-    @FXML
-    private Label lblProveedor;
     @FXML
     private Label lblEstado;
     @FXML
@@ -62,7 +60,7 @@ public class FxMovimientosDetalleController implements Initializable {
 
     private String idMovimientoInventario;
 
-    private MovimientoInventarioTB inventarioTB;
+    private AjusteInventarioTB inventarioTB;
 
     private ObservableList<MovimientoInventarioDetalleTB> detalleTBs;
 
@@ -90,7 +88,7 @@ public class FxMovimientosDetalleController implements Initializable {
         Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
             public ArrayList<Object> call() {
-                return MovimientoInventarioADO.Obtener_Movimiento_Inventario_By_Id(value);
+                return AjusteInventarioADO.Obtener_Movimiento_Inventario_By_Id(value);
             }
         };
 
@@ -106,14 +104,13 @@ public class FxMovimientosDetalleController implements Initializable {
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
 
-                inventarioTB = (MovimientoInventarioTB) objects.get(0);
+                inventarioTB = (AjusteInventarioTB) objects.get(0);
                 detalleTBs = (ObservableList<MovimientoInventarioDetalleTB>) objects.get(1);
 
                 if (inventarioTB != null) {
                     lblTIpoMovimiento.setText(inventarioTB.getTipoMovimientoName());
                     lblHoraFecha.setText(inventarioTB.getFecha() + " " + inventarioTB.getHora());
-                    lblObservacion.setText(inventarioTB.getObservacion());
-                    lblProveedor.setText(inventarioTB.getProveedor());
+                    lblObservacion.setText(inventarioTB.getObservacion());             
                     lblEstado.setText(inventarioTB.getEstadoName());
                     if (inventarioTB.getEstadoName().equalsIgnoreCase("COMPLETADO")) {
                         btnRegistrar.setDisable(true);
@@ -145,7 +142,7 @@ public class FxMovimientosDetalleController implements Initializable {
             short option = Tools.AlertMessageConfirmation(apWindow, "Movimiento", "¿Esta seguro de continuar?");
             if (option == 1) {
                 btnRegistrar.setDisable(true);
-                String result = MovimientoInventarioADO.RegistrarMovimientoSuministro(inventarioTB, detalleTBs);
+                String result = AjusteInventarioADO.RegistrarMovimientoSuministro(inventarioTB, detalleTBs);
                 if (result.equalsIgnoreCase("updated")) {
                     Tools.AlertMessageInformation(apWindow, "Movimiento", "Se registraron los cambios correctamente.");
                     Tools.Dispose(apWindow);

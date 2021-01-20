@@ -35,7 +35,6 @@ public class SuministroTB {
     private double stockMinimo;
     private double stockMaximo;
     private double cantidad;
-    private double cantidadGranel;
     private double costoCompra;
     private double costoCompraReal;
 
@@ -56,13 +55,13 @@ public class SuministroTB {
     private double descuento;
     private double descuentoSumado;
     private double descuentoCalculado;
-
-    private double subImporteDescuento;
+    
     private double movimiento;
     private double diferencia;
 
-    private double subImporte;
-    private double totalImporte;
+    private double importeBruto;
+    private double subImporteNeto;
+    private double importeNeto;
     //private String imagenTB;
     private File imagenFile;
     private String claveSat;
@@ -357,15 +356,7 @@ public class SuministroTB {
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
-
-    public double getCantidadGranel() {
-        return cantidadGranel;
-    }
-
-    public void setCantidadGranel(double cantidadGranel) {
-        this.cantidadGranel = cantidadGranel;
-    }
-
+    
     public double getDescuento() {
         return descuento;
     }
@@ -390,20 +381,20 @@ public class SuministroTB {
         this.descuentoCalculado = descuentoCalculado;
     }
 
-    public double getSubImporte() {
-        return subImporte;
+    public double getImporteBruto() {
+        return importeBruto;
     }
 
-    public void setSubImporte(double subImporte) {
-        this.subImporte = subImporte;
+    public void setImporteBruto(double importeBruto) {
+        this.importeBruto = importeBruto;
     }
 
-    public double getSubImporteDescuento() {
-        return subImporteDescuento;
+    public double getSubImporteNeto() {
+        return subImporteNeto;
     }
 
-    public void setSubImporteDescuento(double subImporteDescuento) {
-        this.subImporteDescuento = subImporteDescuento;
+    public void setSubImporteNeto(double subImporteNeto) {
+        this.subImporteNeto = subImporteNeto;
     }
 
     public double getMovimiento() {
@@ -422,13 +413,13 @@ public class SuministroTB {
         this.diferencia = diferencia;
     }
 
-    public double getTotalImporte() {
-        return totalImporte;
+    public double getImporteNeto() {
+        return importeNeto;
     }
 
-    public void setTotalImporte(double totalImporte) {
-        this.totalImporte = totalImporte;
-    }
+    public void setImporteNeto(double importeNeto) {
+        this.importeNeto = importeNeto;
+    }    
 
     public ImageView getImageValorInventario() {
         return imageValorInventario;

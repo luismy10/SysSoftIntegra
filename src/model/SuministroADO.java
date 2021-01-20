@@ -717,7 +717,7 @@ public class SuministroADO {
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
                 suministroTB.setEstadoName(rsEmps.getString("Estado"));
-                suministroTB.setTotalImporte(rsEmps.getDouble("Total"));
+                suministroTB.setImporteNeto(rsEmps.getDouble("Total"));
                 suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
                 suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
                 suministroTB.setCategoriaName(rsEmps.getString("Categoria"));

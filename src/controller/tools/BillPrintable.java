@@ -317,12 +317,12 @@ public class BillPrintable implements Printable {
 
     public int hbPie(HBox box, 
             String moneda, 
-            String valorVenta, 
-            String descuento, 
+            String importeBruto, 
+            String descuentoBruto, 
             String montoOperacion, 
             String montoImpuesto, 
-            String subTotal, 
-            String total, 
+            String subImporteNeto, 
+            String importeNeto, 
             String efectivo, 
             String vuelto, 
             String numCliente, 
@@ -343,17 +343,17 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
-                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + valorVenta));
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + importeBruto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("dscttotal")) {
-                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + descuento));
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + descuentoBruto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
-                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subTotal));
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subImporteNeto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("valoroperacion")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoOperacion));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("valorimpustos")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoImpuesto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
-                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + total));
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + importeNeto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + efectivo));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("vuelto")) {

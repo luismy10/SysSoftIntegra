@@ -45,14 +45,15 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
-            <Button mnemonicParsing="false" onAction="#onActionSave" prefHeight="30.0" styleClass="buttonLight">
+            <Button mnemonicParsing="false" onAction="#onActionPdf" prefHeight="30.0" styleClass="buttonLight">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../image/save.png" />
+                        <Image url="@../image/pdf.png" />
                      </image>
                   </ImageView>
-               </graphic></Button>
+               </graphic>
+            </Button>
             <Button mnemonicParsing="false" onAction="#onActionPrint" prefHeight="30.0" styleClass="buttonLight">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">

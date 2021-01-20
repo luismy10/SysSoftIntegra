@@ -3,7 +3,6 @@ package controller.reporte;
 import controller.tools.Tools;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -25,17 +24,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-
-import javax.imageio.ImageIO;
-
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
-import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 
 public class FxReportViewController implements Initializable {
 
@@ -44,7 +36,7 @@ public class FxReportViewController implements Initializable {
     @FXML
     private ImageView imageView;
     @FXML
-    private Slider zoomLevel;   
+    private Slider zoomLevel;
     @FXML
     private Label lblReportPages;
     @FXML
@@ -71,6 +63,8 @@ public class FxReportViewController implements Initializable {
     private double imageWidth;
 
     private int reportPages;
+
+    private String fileName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -135,67 +129,73 @@ public class FxReportViewController implements Initializable {
         try {
             JasperPrintManager.printReport(jasperPrint, true);
         } catch (JRException e) {
-
         }
     }
 
-    @FXML
     public boolean onActionSave() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save File");
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Document", Arrays.asList("*.pdf", "*.PDF")));
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("PNG image", Arrays.asList("*.png", "*.PNG")));
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("DOCX Document", Arrays.asList("*.docx", "*.DOCX")));
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("XLSX Document", Arrays.asList("*.xlsx", "*.XLSX")));
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("HTML Document", Arrays.asList("*.html", "*.HTML")));
+        fileChooser.setTitle("Guardar Archivo");
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Documento", Arrays.asList("*.pdf", "*.PDF")));
+//        fileChooser.getExtensionFilters().add(new ExtensionFilter("PNG image", Arrays.asList("*.png", "*.PNG")));
+//        fileChooser.getExtensionFilters().add(new ExtensionFilter("DOCX Document", Arrays.asList("*.docx", "*.DOCX")));
+//        fileChooser.getExtensionFilters().add(new ExtensionFilter("XLSX Document", Arrays.asList("*.xlsx", "*.XLSX")));
+//        fileChooser.getExtensionFilters().add(new ExtensionFilter("HTML Document", Arrays.asList("*.html", "*.HTML")));
+        fileChooser.setInitialFileName((Tools.isText(fileName) ? "" : fileName));
         File file = fileChooser.showSaveDialog(bpWindow.getScene().getWindow());
         if (fileChooser.getSelectedExtensionFilter() != null && fileChooser.getSelectedExtensionFilter().getExtensions() != null) {
             try {
                 List<String> selectedExtension = fileChooser.getSelectedExtensionFilter().getExtensions();
                 if (selectedExtension.contains("*.pdf")) {
-                    JasperExportManager.exportReportToPdfFile(jasperPrint, file.getAbsolutePath());
-                } else if (selectedExtension.contains("*.png")) {
-                    for (int i = 0; i < jasperPrint.getPages().size(); i++) {
-                        String fileNumber = "0000" + Integer.toString(i + 1);
-                        fileNumber = fileNumber.substring(fileNumber.length() - 4, fileNumber.length());
-                        WritableImage image = getImage(i);
-                        String[] fileTokens = file.getAbsolutePath().split("\\.");
-                        String filename = "";
-
-                        if (fileTokens.length > 0) {
-                            for (int i2 = 0; i2 < fileTokens.length - 1; i2++) {
-                                filename = filename + fileTokens[i2] + ((i2 < fileTokens.length - 2) ? "." : "");
-                            }
-                            filename = filename + fileNumber + "." + fileTokens[fileTokens.length - 1];
-                        } else {
-                            filename = file.getAbsolutePath() + fileNumber;
-                        }
-                        System.out.println(filename);
-                        File imageFile = new File(filename);
-                        ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", imageFile);
-                        System.out.println(imageFile.getAbsolutePath());
-                    }
-
-                } else if (selectedExtension.contains("*.html")) {
-                    JasperExportManager.exportReportToHtmlFile(jasperPrint, file.getAbsolutePath());
-                } else if (selectedExtension.contains("*.docx")) {
-                    JRDocxExporter exporter = new JRDocxExporter();
-                    exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-                    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, file.getAbsolutePath());
-                    exporter.exportReport();
-                    System.out.println("docx");
-                } else if (selectedExtension.contains("*.xlsx")) {
-                    JRXlsxExporter exporter = new JRXlsxExporter();
-                    exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
-                    exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, file.getAbsolutePath());
-                    exporter.exportReport();
-                    System.out.println("xlsx");
+                    Tools.println(fileName);
+                    JasperExportManager.exportReportToPdfFile(jasperPrint,  file.getAbsolutePath());
                 }
-            } catch (JRException | IOException e) {
+//                else if (selectedExtension.contains("*.png")) {
+//                    for (int i = 0; i < jasperPrint.getPages().size(); i++) {
+//                        String fileNumber = "0000" + Integer.toString(i + 1);
+//                        fileNumber = fileNumber.substring(fileNumber.length() - 4, fileNumber.length());
+//                        WritableImage image = getImage(i);
+//                        String[] fileTokens = file.getAbsolutePath().split("\\.");
+//                        String filename = "";
+//
+//                        if (fileTokens.length > 0) {
+//                            for (int i2 = 0; i2 < fileTokens.length - 1; i2++) {
+//                                filename = filename + fileTokens[i2] + ((i2 < fileTokens.length - 2) ? "." : "");
+//                            }
+//                            filename = filename + fileNumber + "." + fileTokens[fileTokens.length - 1];
+//                        } else {
+//                            filename = file.getAbsolutePath() + fileNumber;
+//                        }
+//                        System.out.println(filename);
+//                        File imageFile = new File(filename);
+//                        ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", imageFile);
+//                        System.out.println(imageFile.getAbsolutePath());
+//                    }
+//
+//                } else if (selectedExtension.contains("*.html")) {
+//                    JasperExportManager.exportReportToHtmlFile(jasperPrint, file.getAbsolutePath());
+//                } else if (selectedExtension.contains("*.docx")) {
+//                    JRDocxExporter exporter = new JRDocxExporter();
+//                    exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+//                    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, file.getAbsolutePath());
+//                    exporter.exportReport();
+//                    System.out.println("docx");
+//                } else if (selectedExtension.contains("*.xlsx")) {
+//                    JRXlsxExporter exporter = new JRXlsxExporter();
+//                    exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+//                    exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, file.getAbsolutePath());
+//                    exporter.exportReport();
+//                    System.out.println("xlsx");
+//                }
+            } catch (JRException e) {
 
             }
         }
         return false;
+    }
+
+    @FXML
+    private void onActionPdf(ActionEvent event) {
+        onActionSave();
     }
 
     @FXML
@@ -254,6 +254,14 @@ public class FxReportViewController implements Initializable {
 
     public void setJasperPrint(JasperPrint jasperPrint) {
         this.jasperPrint = jasperPrint;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
 }

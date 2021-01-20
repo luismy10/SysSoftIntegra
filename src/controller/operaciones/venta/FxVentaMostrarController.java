@@ -385,7 +385,7 @@ public class FxVentaMostrarController implements Initializable {
                                 stb.setUnidadCompraName(suministroTBs.get(i).getUnidadCompraName());
                                 stb.setPrecioVentaGeneral(suministroTBs.get(i).getPrecioVentaGeneral());
                                 stb.setDescuento(suministroTBs.get(i).getDescuento());
-                                stb.setTotalImporte(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
+                                stb.setImporteNeto(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
                                 list.add(stb);
                             }
 
