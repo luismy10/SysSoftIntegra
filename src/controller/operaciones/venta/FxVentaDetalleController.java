@@ -100,8 +100,6 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Label lblSubTotal;
     @FXML
-    private Text lblTotalVenta;
-    @FXML
     private Button btnCancelarVenta;
     @FXML
     private GridPane gpImpuestos;
@@ -119,6 +117,8 @@ public class FxVentaDetalleController implements Initializable {
     private Label lblValor;
     @FXML
     private Text lbClienteInformacion;
+    @FXML
+    private Text lblMetodoPago;
 
     private AnchorPane vbPrincipal;
 
@@ -154,7 +154,7 @@ public class FxVentaDetalleController implements Initializable {
 
     private double totalVenta;
 
-    private double efectivo, tarjeta, vuelto;
+    private double efectivo, tarjeta, vuelto;    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -200,7 +200,7 @@ public class FxVentaDetalleController implements Initializable {
                 lblObservaciones.setText(ventaTB.getObservaciones());
                 lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
                 btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
-                lblTotalVenta.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
+                lblMetodoPago.setText(ventaTB.getFormaName());
                 efectivo = ventaTB.getEfectivo();
                 tarjeta = ventaTB.getTarjeta();
                 vuelto = ventaTB.getVuelto();
@@ -260,7 +260,7 @@ public class FxVentaDetalleController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaDetalle(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblSerie.getText(), lblTotalVenta.getText(), totalVenta);
+            controller.setLoadVentaDevolucion(idVenta, arrList, lblSerie.getText(), Tools.roundingValue(importeNeto, 2), ventaTB.getForma());
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
             stage.setResizable(false);

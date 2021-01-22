@@ -737,7 +737,7 @@ public class VentaADO {
                 Label label = new Label(ventaTB.getEstadoName());
                 if (ventaTB.getEstadoName().equalsIgnoreCase("PAGADO")) {
                     label.getStyleClass().add("label-asignacion");
-                } else if (ventaTB.getEstadoName().equalsIgnoreCase("PENDIENTE")) {
+                } else if (ventaTB.getEstadoName().equalsIgnoreCase("POR PAGAR")) {
                     label.getStyleClass().add("label-medio");
                 } else if (ventaTB.getEstadoName().equalsIgnoreCase("ANULADO")) {
                     label.getStyleClass().add("label-proceso");
@@ -904,6 +904,8 @@ public class VentaADO {
                         ventaTB.setObservaciones(resultSetVenta.getString("Observaciones"));
                         ventaTB.setTipoName(resultSetVenta.getString("Tipo"));
                         ventaTB.setEstadoName(resultSetVenta.getString("Estado"));
+                        ventaTB.setForma(resultSetVenta.getInt("Forma"));
+                        ventaTB.setFormaName(resultSetVenta.getString("FormaName"));
                         ventaTB.setEfectivo(resultSetVenta.getDouble("Efectivo"));
                         ventaTB.setVuelto(resultSetVenta.getDouble("Vuelto"));
                         ventaTB.setTarjeta(resultSetVenta.getDouble("Tarjeta"));
@@ -948,7 +950,7 @@ public class VentaADO {
                                 suministroTB.setId(resultSetLista.getRow());
                                 suministroTB.setIdSuministro(resultSetLista.getString("IdSuministro"));
                                 suministroTB.setClave(resultSetLista.getString("Clave"));
-                                suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca") + (resultSetLista.getDouble("Bonificacion") <= 0 ? "" : "\n BONIFICACIÓN: " + resultSetLista.getDouble("Bonificacion")));
+                                suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca") + (resultSetLista.getDouble("Bonificacion") <= 0 ? "" : "\nBONIFICACIÓN: " + resultSetLista.getDouble("Bonificacion")));
                                 suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
                                 suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
                                 suministroTB.setUnidadCompraName(resultSetLista.getString("UnidadCompra"));
@@ -1318,13 +1320,13 @@ public class VentaADO {
                 ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion")));
                 ventaTB.setClienteName(resultSet.getString("Informacion"));
                 ventaTB.setEstado(resultSet.getInt("Estado"));
-                ventaTB.setEstadoName(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "PENDIENTE" : "PAGADO");
+                ventaTB.setEstadoName(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "POR PAGAR" : "PAGADO");
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
                 ventaTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
                 ventaTB.setMontoCobrado(resultSet.getDouble("MontoCobrado"));
                 ventaTB.setMontoRestante(ventaTB.getMontoTotal() - ventaTB.getMontoCobrado());
 
-                Label label = new Label(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "PENDIENTE" : "PAGADO");
+                Label label = new Label(ventaTB.getEstado() == 3 ? "CANCELADO" : ventaTB.getEstado() == 2 ? "POR PAGAR" : "PAGADO");
                 label.getStyleClass().add(ventaTB.getEstado() == 2 ? "label-medio" : ventaTB.getEstado() == 3 ? "label-proceso" : "label-ultimo");
                 ventaTB.setEstadoLabel(label);
 

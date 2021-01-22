@@ -697,7 +697,7 @@ public class FxSuministrosProcesoController implements Initializable {
                     }
                 }
 
-                if (suministroTB.getNuevaImagen() != null) {
+                 if (suministroTB.getNuevaImagen() == null) {
                     imageBytes = null;
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
                     lnPrincipal.setFitWidth(160);
