@@ -260,7 +260,7 @@ public class VentaADO {
                     suministro_kardex.addBatch();
                 }
 
-                movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto)VALUES(?,?,?,?,?,?)");
+                movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto,IdProcedencia)VALUES(?,?,?,?,?,?,?)");
                 if (ventaTB.getEfectivo() > 0) {
                     movimiento_caja.setString(1, Session.CAJA_ID);
                     movimiento_caja.setString(2, ventaTB.getFechaVenta());
@@ -268,6 +268,7 @@ public class VentaADO {
                     movimiento_caja.setString(4, "VENTA CON EFECTIVO DE SERIE Y NUMERACIÓN DEL COMPROBANTE " + id_comprabante[0] + "-" + id_comprabante[1]);
                     movimiento_caja.setShort(5, (short) 2);
                     movimiento_caja.setDouble(6, ventaTB.getTarjeta() > 0 ? ventaTB.getEfectivo() : ventaTB.getTotal());
+                    movimiento_caja.setString(7, id_venta);
                     movimiento_caja.addBatch();
                 }
 
@@ -278,6 +279,7 @@ public class VentaADO {
                     movimiento_caja.setString(4, "VENTA CON TAJETA DE SERIE Y NUMERACIÓN DEL COMPROBANTE  " + id_comprabante[0] + "-" + id_comprabante[1]);
                     movimiento_caja.setShort(5, (short) 3);
                     movimiento_caja.setDouble(6, ventaTB.getTarjeta());
+                    movimiento_caja.setString(7, id_venta);
                     movimiento_caja.addBatch();
                 }
 
@@ -366,8 +368,6 @@ public class VentaADO {
         PreparedStatement suministro_update_unidad = null;
         PreparedStatement suministro_update_granel = null;
         PreparedStatement suministro_kardex = null;
-        PreparedStatement movimiento_caja = null;
-//        PreparedStatement venta_credito = null;
         ResultTransaction resultTransaction = new ResultTransaction();
         resultTransaction.setResult("Error en completar la petición intente nuevamente por favor.");
         try {
@@ -592,27 +592,6 @@ public class VentaADO {
                     suministro_kardex.addBatch();
                 }
 
-                movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto)VALUES(?,?,?,?,?,?)");
-                if (ventaTB.getEfectivo() > 0) {
-                    movimiento_caja.setString(1, Session.CAJA_ID);
-                    movimiento_caja.setString(2, ventaTB.getFechaVenta());
-                    movimiento_caja.setString(3, ventaTB.getHoraVenta());
-                    movimiento_caja.setString(4, "VENTA CON EFECTIVO DE SERIE Y NUMERACIÓN DEL COMPROBANTE " + id_comprabante[0] + "-" + id_comprabante[1]);
-                    movimiento_caja.setShort(5, (short) 2);
-                    movimiento_caja.setDouble(6, ventaTB.getTarjeta() > 0 ? ventaTB.getEfectivo() : ventaTB.getTotal());
-                    movimiento_caja.addBatch();
-                }
-
-                if (ventaTB.getTarjeta() > 0) {
-                    movimiento_caja.setString(1, Session.CAJA_ID);
-                    movimiento_caja.setString(2, ventaTB.getFechaVenta());
-                    movimiento_caja.setString(3, ventaTB.getHoraVenta());
-                    movimiento_caja.setString(4, "VENTA CON TAJETA DE SERIE Y NUMERACIÓN DEL COMPROBANTE  " + id_comprabante[0] + "-" + id_comprabante[1]);
-                    movimiento_caja.setShort(5, (short) 3);
-                    movimiento_caja.setDouble(6, ventaTB.getTarjeta());
-                    movimiento_caja.addBatch();
-                }
-
 //                venta_credito = DBUtil.getConnection().prepareStatement("INSERT INTO VentaCreditoTB(IdVenta,Monto,FechaRegistro,HoraRegistro,FechaPago,HoraPago,Estado) VALUES(?,?,?,?,?,?,?)");
 //                for (VentaCreditoTB creditoTB : tvPlazos.getItems()) {
 //                    venta_credito.setString(1, id_venta);
@@ -626,7 +605,6 @@ public class VentaADO {
 //                }
                 cliente.executeBatch();
                 venta.executeBatch();
-                movimiento_caja.executeBatch();
                 comprobante.executeBatch();
                 detalle_venta.executeBatch();
                 suministro_update_unidad.executeBatch();
@@ -690,9 +668,7 @@ public class VentaADO {
                 if (codigo_venta != null) {
                     codigo_venta.close();
                 }
-                if (movimiento_caja != null) {
-                    movimiento_caja.close();
-                }
+               
                 DBUtil.dbDisconnect();
             } catch (SQLException e) {
             }

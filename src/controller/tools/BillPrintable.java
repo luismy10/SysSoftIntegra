@@ -71,27 +71,27 @@ public class BillPrintable implements Printable {
     }
 
     public int hbEncebezado(HBox box,
-            String nombre_impresion_comprobante, 
-            String numeracion_serie_comprobante, 
-            String nummero_documento_cliente, 
-            String informacion_cliente, 
-            String celular_cliente, 
-            String direccion_cliente, 
-            String codigoVenta, 
-            String importe_total_letras, 
-            String fechaInicioOperacion, 
-            String horaInicioOperacion, 
+            String nombre_impresion_comprobante,
+            String numeracion_serie_comprobante,
+            String nummero_documento_cliente,
+            String informacion_cliente,
+            String celular_cliente,
+            String direccion_cliente,
+            String codigoVenta,
+            String importe_total_letras,
+            String fechaInicioOperacion,
+            String horaInicioOperacion,
             String fechaTerminoOperaciona,
-            String horaTerminoOperacion, 
-            String calculado, 
-            String contado, 
-            String diferencia, 
-            String empleadoNumeroDocumento, 
-            String empleadoInformacion, 
-            String empleadoCelular, 
-            String empleadoDireccion, 
-            String montoTotal, 
-            String montoPagado, 
+            String horaTerminoOperacion,
+            String calculado,
+            String contado,
+            String diferencia,
+            String empleadoNumeroDocumento,
+            String empleadoInformacion,
+            String empleadoCelular,
+            String empleadoDireccion,
+            String montoTotal,
+            String montoPagado,
             String montoDiferencial) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
@@ -303,7 +303,17 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraMovimiento()));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("tipomovimiento")) {
                     short tipoMovimiento = arrList.get(m).getTipoMovimiento();
-                    String movimiento = tipoMovimiento == 1 ? "MONTO INICIAL" : tipoMovimiento == 2 ? "VENTA CON EFECTIVO" : tipoMovimiento == 3 ? "VENTA CON TARJETA" : tipoMovimiento == 4 ? "INGRESO DE DINERO" : "SALIDAS DE DINERO";
+                    String movimiento = tipoMovimiento == 1
+                            ? "MONTO INICIAL"
+                            : tipoMovimiento == 2
+                                    ? "VENTA CON EFECTIVO"
+                                    : tipoMovimiento == 3
+                                            ? "VENTA CON TARJETA"
+                                            : tipoMovimiento == 4
+                                                    ? "INGRESO EN EFECTIVO"
+                                                    : tipoMovimiento == 5
+                                                            ? "SALIDA EN EFECTIVO"
+                                                            : "SALIDA CON TARJETA";
                     fieldTicket.setText(Tools.AddText2Guines(movimiento));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
@@ -315,24 +325,24 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, 
-            String moneda, 
-            String importeBruto, 
-            String descuentoBruto, 
-            String montoOperacion, 
-            String montoImpuesto, 
-            String subImporteNeto, 
-            String importeNeto, 
-            String efectivo, 
-            String vuelto, 
-            String numCliente, 
-            String infoCliente, 
-            String codigoVenta, 
-            String celular_cliente, 
-            String importe_total_letras, 
-            String empleadoNumeroDocumento, 
-            String empleadoInformacion, 
-            String empleadoCelular, 
+    public int hbPie(HBox box,
+            String moneda,
+            String importeBruto,
+            String descuentoBruto,
+            String montoOperacion,
+            String montoImpuesto,
+            String subImporteNeto,
+            String importeNeto,
+            String efectivo,
+            String vuelto,
+            String numCliente,
+            String infoCliente,
+            String codigoVenta,
+            String celular_cliente,
+            String importe_total_letras,
+            String empleadoNumeroDocumento,
+            String empleadoInformacion,
+            String empleadoCelular,
             String direccionEmpleado) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
