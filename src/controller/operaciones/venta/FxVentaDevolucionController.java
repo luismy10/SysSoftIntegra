@@ -45,15 +45,18 @@ public class FxVentaDevolucionController implements Initializable {
 
     private double totalVenta;
 
+    private int formaPago;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
+        Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void setLoadVentaDevolucion(String idVenta, ObservableList<SuministroTB> arrList, String comprobante, String total, double totalVenta) {
+    public void setLoadVentaDevolucion(String idVenta, ObservableList<SuministroTB> arrList, String comprobante, String total, int formaPago) {
         this.idVenta = idVenta;
         this.arrList = arrList;
-        this.totalVenta = Double.parseDouble(Tools.roundingValue(totalVenta, 1));
+        this.totalVenta = Double.parseDouble(total);
+        this.formaPago = formaPago;
         lblComprobante.setText(comprobante);
         lblTotal.setText(total);
         txtEfectivo.setText(Tools.roundingValue(totalVenta, 2));
@@ -80,7 +83,7 @@ public class FxVentaDevolucionController implements Initializable {
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
                         movimientoCajaTB.setHoraMovimiento(Tools.getHour());
                         movimientoCajaTB.setComentario(txtObservacion.getText().toUpperCase() + " (ANULACIÓN DEL COMPROBANTE " + lblComprobante.getText() + ")");
-                        movimientoCajaTB.setTipoMovimiento((short) 5);
+                        movimientoCajaTB.setTipoMovimiento(formaPago == 1 ? (short) 5 : (short) 6);
                         movimientoCajaTB.setMonto(totalVenta);
                         return VentaADO.CancelTheSale(idVenta, arrList, movimientoCajaTB);
                     }

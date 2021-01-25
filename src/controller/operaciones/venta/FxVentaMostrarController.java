@@ -631,7 +631,7 @@ public class FxVentaMostrarController implements Initializable {
 
     private void cancelVenta() {
         try {
-            if ("".equals(idVenta) || idVenta == null) {
+            if (Tools.isText(idVenta)) { 
                 return;
             }
 
@@ -641,7 +641,7 @@ public class FxVentaMostrarController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaMostrar(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), lblTotal.getText(), ventaTB.getTotal());
+            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), Tools.roundingValue(ventaTB.getTotal(), 2), ventaTB.getForma());
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", apWindow.getScene().getWindow());
             stage.setResizable(false);

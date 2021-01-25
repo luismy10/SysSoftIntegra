@@ -2,9 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/C:/Users/Alexander/Documents/NetBeansProjects/SysSoftIntegra/src/controller/operaciones/cortecaja/FxCajaController.java</file>
             <file>file:/C:/Users/Alexander/Documents/NetBeansProjects/SysSoftIntegra/archivos/connection.json</file>
         </group>
+=======
+        <group/>
+>>>>>>> 7b066d9aa35b713c19fcc45e1f846d41c1eb0c28
     </open-files>
 </project-private>
