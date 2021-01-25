@@ -395,9 +395,9 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
-            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+            suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
             suministroTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             suministroTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
@@ -418,7 +418,7 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setRemover(button);
             if (ventaEstructuraController.isCerar_modal_agregar_item_lista()) {
                 Tools.Dispose(apWindow);
-                ventaEstructuraController.getAddArticulo(suministroTB,apWindow.getScene().getWindow());
+                ventaEstructuraController.getAddArticulo(suministroTB,ventaEstructuraController.getWindow().getScene().getWindow());
             } else {
                 txtSearch.selectAll();
                 txtSearch.requestFocus();
@@ -499,9 +499,9 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-            suministroTB.setSubImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
-            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+            suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
             suministroTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
             suministroTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());

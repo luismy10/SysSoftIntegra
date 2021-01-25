@@ -30,11 +30,11 @@
                         <Image url="@../../image/left.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelRobotoBold15" text="Movimiento o ajuste de Productos" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Ajuste de Inventario" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/producto.png" />
+                              <Image url="@../../image/ajuste-inventario.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -105,14 +105,11 @@
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo de ajuste:" textFill="#020203" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo de Movimiento:" textFill="#020203" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.rowIndex="4" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo de Ajuste:" textFill="#020203" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Metodo de Ajuste:" textFill="#020203" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" GridPane.columnIndex="1">
                                        <children>
                                           <RadioButton fx:id="rbIncremento" mnemonicParsing="false" onAction="#onActionTipo" onKeyPressed="#onKeyPressedTipo" prefHeight="30.0" styleClass="labelOpenSansRegular13" text="Incremento" textFill="#1a2226">
@@ -136,33 +133,11 @@
                                        </children>
                                     </HBox>
                                     <ComboBox fx:id="cbAjuste" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="txtObservacion" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField fx:id="txtObservacion" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="N/D" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Envío directo para venta:" visible="false" GridPane.columnIndex="2" />
-                                    <CheckBox fx:id="cbConfirmar" mnemonicParsing="false" onAction="#onActionConfirmar" prefHeight="30.0" styleClass="check-box-contenido" text="Confirmar" visible="false" GridPane.columnIndex="3" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Proveedor involucrado:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <HBox GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                       <children>
-                                          <TextField fx:id="txtProveedor" disable="true" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionProveedor" onKeyPressed="#onKeyPressedProveedor" prefHeight="30.0" styleClass="buttonBorder">
-                                             <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../image/providers.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </HBox>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular14" text="Estado del Movimiento:" textFill="#1a2226" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Movimiento con caja:" textFill="#020203" GridPane.columnIndex="2" />
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Ajuste con Caja:" textFill="#020203" GridPane.columnIndex="2" />
                                     <CheckBox fx:id="cbCaja" mnemonicParsing="false" onAction="#onActionCaja" styleClass="check-box-contenido" text="No" GridPane.columnIndex="3" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado del movimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Almacen:" textFill="#020203" GridPane.rowIndex="2" />
-                                    <CheckBox fx:id="cbEstadoMovimiento" mnemonicParsing="false" onAction="#onActionEstadoMoviminento" selected="true" styleClass="check-box-contenido" text="Validado" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Almacen o Lugar de Origen:" textFill="#020203" GridPane.rowIndex="3" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Almacen o Lugar de Destino:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                  </children>
                               </GridPane>
                            </children>
@@ -172,27 +147,6 @@
                            <children>
                               <VBox style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <VBox>
-                                       <children>
-                                          <Label styleClass="labelOpenSansRegular13" text="Para realizar el movimiento tiene que completar los campos requeridos" textFill="#0057ae">
-                                             <graphic>
-                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../image/note.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></Label>
-                                          <Label styleClass="labelOpenSansRegular13" text="Para que las cantidad ingresadas a la tabla se efectúen tiene que precionar enter en la fila Nueva Existencia" textFill="#00608d">
-                                             <graphic>
-                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../image/note.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                       </children>
-                                    </VBox>
                                     <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" prefHeight="320.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcAccion" prefWidth="105.99996948242188" style="-fx-alignment: CENTER;" text="Acción" />

@@ -157,8 +157,8 @@ public class SplashScreen extends Preloader {
                         } catch (IOException ex) {
                             Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = false;
                         }
-                        
-                         String rutaCuentasPorPagar= "./archivos/CUENTAS POR PAGAR.properties";
+
+                        String rutaCuentasPorPagar = "./archivos/CUENTAS POR PAGAR.properties";
                         try (InputStream input = new FileInputStream(rutaCuentasPorPagar)) {
                             Properties prop = new Properties();
                             prop.load(input);
@@ -263,14 +263,14 @@ public class SplashScreen extends Preloader {
                             Session.CLIENTE_DIRECCION = "";
                         }
 
-                    }
+                        ClienteADO.ListarClienteNumeroDocumento().forEach(c -> ObjectGlobal.DATA_CLIENTS.add(c));
 
+                    }
                 } else {
                     Tools.AlertMessageError(preloaderStage.getScene().getRoot(), "Preloader", "No se pudo conectar al servidor, revise su conexión e intente nuevamente.");
                     preloaderStage.hide();
                     Platform.exit();
                 }
-
                 break;
 
             case BEFORE_START:

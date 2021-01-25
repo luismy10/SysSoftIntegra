@@ -11,7 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -55,6 +57,10 @@ public class FxVentaProcesoController implements Initializable {
     private Label lblVueltoNombre;
     @FXML
     private DatePicker txtFechaVencimiento;
+    @FXML
+    private RadioButton rbEfectivo;
+    @FXML
+    private RadioButton rbTarjeta;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -75,7 +81,7 @@ public class FxVentaProcesoController implements Initializable {
     private boolean state_view_pago;
 
     private boolean provilegios;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
@@ -84,13 +90,16 @@ public class FxVentaProcesoController implements Initializable {
         vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         lblVueltoNombre.setText("Su cambio: ");
+        ToggleGroup group = new ToggleGroup();
+        rbEfectivo.setToggleGroup(group);
+        rbTarjeta.setToggleGroup(group);
     }
 
     public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList, boolean provilegios) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
-        tota_venta = Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1));
+        tota_venta = Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 2));
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(tota_venta, 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
         lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ""));
@@ -147,6 +156,7 @@ public class FxVentaProcesoController implements Initializable {
                 txtFechaVencimiento.requestFocus();
             } else {
                 ventaTB.setTipo(2);
+                ventaTB.setForma(0);
                 ventaTB.setEstado(2);
                 ventaTB.setVuelto(0);
                 ventaTB.setEfectivo(0);
@@ -185,6 +195,11 @@ public class FxVentaProcesoController implements Initializable {
         } else {
             if (!estado) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
+                if (rbEfectivo.isSelected()) {
+                    txtEfectivo.requestFocus();
+                } else {
+                    txtTarjeta.requestFocus();
+                }
             } else {
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
@@ -196,10 +211,12 @@ public class FxVentaProcesoController implements Initializable {
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
                     ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
+                    ventaTB.setForma(1);
                 }
 
                 if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
                     ventaTB.setTarjeta(Double.parseDouble(txtTarjeta.getText()));
+                    ventaTB.setForma(2);
                 }
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
@@ -252,7 +269,7 @@ public class FxVentaProcesoController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     private void onActionAceptar(ActionEvent event) {
         onEventAceptar();
@@ -344,9 +361,20 @@ public class FxVentaProcesoController implements Initializable {
         }
     }
 
-    private void onKeyPressedPlazos(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-//            addElementPlazos();
+    @FXML
+    private void onActionMetodo(ActionEvent event) {
+        if (rbEfectivo.isSelected()) {
+            txtTarjeta.setDisable(true);
+            txtEfectivo.setDisable(false);
+            txtTarjeta.setText("");
+            txtEfectivo.setText("");
+            txtEfectivo.requestFocus();
+        } else {
+            txtTarjeta.setDisable(false);
+            txtEfectivo.setDisable(true);
+            txtTarjeta.setText("");
+            txtEfectivo.setText("");
+            txtTarjeta.requestFocus();
         }
     }
 

@@ -402,13 +402,10 @@
                                                     <RowConstraints />
                                                     <RowConstraints />
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
                                                       <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPORTE NETO:" textFill="#020203" GridPane.rowIndex="2" />
-                                                      <Label style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto15" text="IMPORTE NETO:(RDON.):" textFill="#020203" GridPane.rowIndex="3" />
                                                       <Label fx:id="lblImporteTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M 0.00" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                      <Label fx:id="lblTotalPagar" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #0771d3;" styleClass="labelRobotoMedium17" text="M 0.00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                    </children>
                                                 </GridPane>
                                              </children>

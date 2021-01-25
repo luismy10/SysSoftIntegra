@@ -62,10 +62,8 @@
                         <Label fx:id="lblHoraFecha" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.rowIndex="2" />
                         <Label fx:id="lblObservacion" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Proveedor:" textFill="#020203" GridPane.columnIndex="2" />
-                        <Label fx:id="lblProveedor" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="3" />
-                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado del Movimiento:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="lblEstado" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado del Movimiento:" textFill="#020203" GridPane.columnIndex="2" />
+                        <Label fx:id="lblEstado" styleClass="labelRoboto13" text="--" textFill="#006ac1" GridPane.columnIndex="3" />
                      </children>
                   </GridPane>
                </children>

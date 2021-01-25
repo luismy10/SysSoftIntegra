@@ -16,8 +16,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import model.MovimientoCajaTB;
-import model.MovimientoInventarioADO;
-import model.MovimientoInventarioTB;
+import model.AjusteInventarioADO;
+import model.AjusteInventarioTB;
 import model.SuministroTB;
 
 public class FxMovimientoCajaController implements Initializable {
@@ -35,7 +35,7 @@ public class FxMovimientoCajaController implements Initializable {
 
     private FxMovimientosProcesoController movimientosProcesoController;
 
-    private MovimientoInventarioTB inventarioTB;
+    private AjusteInventarioTB inventarioTB;
 
     private TableView<SuministroTB> tableView;
 
@@ -46,7 +46,7 @@ public class FxMovimientoCajaController implements Initializable {
 
     }
 
-    public void loadData(boolean tipoMovimiento, MovimientoInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
+    public void loadData(boolean tipoMovimiento, AjusteInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         lblTipoMovimiento.setText(tipoMovimiento ? "Realizar salida de dinero" : "Realizar ingreso de dinero");
         ImageView imageView = new ImageView(new Image(tipoMovimiento ? "/view/image/remove-item.png" : "/view/image/accept.png"));
         imageView.setFitWidth(24);
@@ -74,7 +74,7 @@ public class FxMovimientoCajaController implements Initializable {
                 movimientoCajaTB.setComentario(txtObservacion.getText().trim());
                 movimientoCajaTB.setTipoMovimiento(tipoMovimiento ? (short) 5 : (short) 4);
                 movimientoCajaTB.setMonto(Double.parseDouble(txtEfectivo.getText()));
-                String result = MovimientoInventarioADO.Crud_Movimiento_Inventario_Con_Caja(movimientoCajaTB, inventarioTB, tableView);
+                String result = AjusteInventarioADO.Crud_Movimiento_Inventario_Con_Caja(movimientoCajaTB, inventarioTB, tableView);
                 if (result.equalsIgnoreCase("registered")) {
                     Tools.AlertMessageInformation(apWindow, "Movimiento de caja", "Se completo el registro correctamente.");
                     Tools.Dispose(apWindow);

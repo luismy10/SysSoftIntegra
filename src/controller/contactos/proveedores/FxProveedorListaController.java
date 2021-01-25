@@ -2,7 +2,6 @@ package controller.contactos.proveedores;
 
 import controller.operaciones.compras.FxComprasController;
 import controller.consultas.compras.FxComprasEditarController;
-import controller.inventario.movimientos.FxMovimientosProcesoController;
 import controller.reporte.FxCompraReporteController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -50,8 +49,6 @@ public class FxProveedorListaController implements Initializable {
     private TableColumn<ProveedorTB, String> tcMovil;
 
     private FxComprasController comprasController;
-
-    private FxMovimientosProcesoController movimientosProcesoController;
 
     private FxComprasEditarController comprasEditarController;
 
@@ -149,10 +146,6 @@ public class FxProveedorListaController implements Initializable {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (comprasController != null) {
                 comprasController.setLoadProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor());
-                Tools.Dispose(apWindow);
-            } else if (movimientosProcesoController != null) {
-                movimientosProcesoController.setInitProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
-                        tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             } else if (comprasEditarController != null) {
                 comprasEditarController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
@@ -271,10 +264,6 @@ public class FxProveedorListaController implements Initializable {
 
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
-    }
-
-    public void setInitMovimientoProcesoController(FxMovimientosProcesoController movimientosProcesoController) {
-        this.movimientosProcesoController = movimientosProcesoController;
     }
 
     public void setInitComprasEditarController(FxComprasEditarController comprasEditarController) {

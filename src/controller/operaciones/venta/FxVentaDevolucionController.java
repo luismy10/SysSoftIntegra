@@ -47,7 +47,7 @@ public class FxVentaDevolucionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
     }
 
     public void setLoadVentaDevolucion(String idVenta, ObservableList<SuministroTB> arrList, String comprobante, String total, double totalVenta) {
@@ -79,7 +79,7 @@ public class FxVentaDevolucionController implements Initializable {
                         MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
                         movimientoCajaTB.setHoraMovimiento(Tools.getHour());
-                        movimientoCajaTB.setComentario(txtObservacion.getText().toUpperCase() + " (ANULACIÓN DEL COMPROBANTE " + lblComprobante.getText()+")");
+                        movimientoCajaTB.setComentario(txtObservacion.getText().toUpperCase() + " (ANULACIÓN DEL COMPROBANTE " + lblComprobante.getText() + ")");
                         movimientoCajaTB.setTipoMovimiento((short) 5);
                         movimientoCajaTB.setMonto(totalVenta);
                         return VentaADO.CancelTheSale(idVenta, arrList, movimientoCajaTB);
@@ -95,6 +95,8 @@ public class FxVentaDevolucionController implements Initializable {
                         Tools.AlertMessageWarning(window, "Detalle de venta", "Ya está anulada la venta.");
                     } else if (result.equalsIgnoreCase("nocaja")) {
                         Tools.AlertMessageWarning(window, "Detalle de venta", "No tienes aperturado ninguna caja para completar la operación.");
+                    } else if (result.equalsIgnoreCase("nodate")) {
+                        Tools.AlertMessageWarning(window, "Detalle de venta", "No se puede eliminar la venta porque la fecha es distinta a la fecha de emisión.");
                     } else {
                         Tools.AlertMessageError(window, "Detalle de ventas", result);
                     }

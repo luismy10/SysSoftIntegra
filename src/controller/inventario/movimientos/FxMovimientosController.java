@@ -31,10 +31,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.MovimientoInventarioADO;
-import model.MovimientoInventarioTB;
+import model.AjusteInventarioADO;
+import model.AjusteInventarioTB;
 import model.PrivilegioTB;
-import model.SuministroTB;
 import model.TipoMovimientoADO;
 import model.TipoMovimientoTB;
 
@@ -47,21 +46,21 @@ public class FxMovimientosController implements Initializable {
     @FXML
     private ComboBox<TipoMovimientoTB> cbMovimiento;
     @FXML
-    private TableView<MovimientoInventarioTB> tvList;
+    private TableView<AjusteInventarioTB> tvList;
     @FXML
-    private TableColumn<MovimientoInventarioTB, String> tcNumero;
+    private TableColumn<AjusteInventarioTB, String> tcNumero;
     @FXML
-    private TableColumn<MovimientoInventarioTB, String> tcTipoMovimiento;
+    private TableColumn<AjusteInventarioTB, String> tcTipoMovimiento;
     @FXML
-    private TableColumn<MovimientoInventarioTB, String> tcFecha;
+    private TableColumn<AjusteInventarioTB, String> tcFecha;
     @FXML
-    private TableColumn<MovimientoInventarioTB, String> tcObservacion;
+    private TableColumn<AjusteInventarioTB, String> tcObservacion;
     @FXML
-    private TableColumn<MovimientoInventarioTB, String> tcInformacion;
+    private TableColumn<AjusteInventarioTB, String> tcInformacion;
     @FXML
-    private TableColumn<MovimientoInventarioTB, Label> tcEstado;
+    private TableColumn<AjusteInventarioTB, Label> tcEstado;
     @FXML
-    private TableColumn<MovimientoInventarioTB, Button> tcOpcion;
+    private TableColumn<AjusteInventarioTB, Button> tcOpcion;
     @FXML
     private DatePicker dtFechaInicio;
     @FXML
@@ -96,7 +95,7 @@ public class FxMovimientosController implements Initializable {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcTipoMovimiento.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoMovimientoName()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + " " + cellData.getValue().getHora()));
-        tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservacion() + "\n" + cellData.getValue().getProveedor()));
+        tcObservacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getObservacion()));
         tcInformacion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getInformacion()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("lblEstado"));
         tcOpcion.setCellValueFactory(new PropertyValueFactory<>("validar"));
@@ -150,7 +149,7 @@ public class FxMovimientosController implements Initializable {
         Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
             public ArrayList<Object> call() {
-                return MovimientoInventarioADO.ListMovimientoInventario(init, (short) 1, movimiento, fechaInicial, fechaFinal, (paginacion - 1) * 10, 10);
+                return AjusteInventarioADO.ListMovimientoInventario(init, (short) 1, movimiento, fechaInicial, fechaFinal, (paginacion - 1) * 10, 10);
             }
         };
 
@@ -160,8 +159,8 @@ public class FxMovimientosController implements Initializable {
         task.setOnSucceeded((WorkerStateEvent e) -> {
             ArrayList<Object> objects = task.getValue();
             if (!objects.isEmpty()) {
-                ObservableList<MovimientoInventarioTB> inventarioTBs = (ObservableList<MovimientoInventarioTB>) objects.get(0);
-                for (MovimientoInventarioTB mi : inventarioTBs) {
+                ObservableList<AjusteInventarioTB> inventarioTBs = (ObservableList<AjusteInventarioTB>) objects.get(0);
+                for (AjusteInventarioTB mi : inventarioTBs) {
                     mi.getValidar().setOnAction(event -> {
                         openWindowMovimientoDetalle(mi.getIdMovimientoInventario());
                     });
@@ -345,7 +344,7 @@ public class FxMovimientosController implements Initializable {
         return hbWindow;
     }
 
-    public TableView<MovimientoInventarioTB> getTvList() {
+    public TableView<AjusteInventarioTB> getTvList() {
         return tvList;
     }
 

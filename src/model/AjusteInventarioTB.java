@@ -3,7 +3,7 @@ package model;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class MovimientoInventarioTB {
+public class AjusteInventarioTB {
 
     private int id;
     private String idMovimientoInventario;
@@ -15,16 +15,14 @@ public class MovimientoInventarioTB {
     private String observacion;
     private String informacion;
     private boolean suministro;
-    private boolean articulo;
     private short estado;
     private String estadoName;
-    private String proveedor;
     private String codigoVerificacion;
 
     private Button validar;
     private Label lblEstado;
 
-    public MovimientoInventarioTB() {
+    public AjusteInventarioTB() {
     }
 
     public int getId() {
@@ -107,14 +105,6 @@ public class MovimientoInventarioTB {
         this.suministro = suministro;
     }
 
-    public boolean isArticulo() {
-        return articulo;
-    }
-
-    public void setArticulo(boolean articulo) {
-        this.articulo = articulo;
-    }
-
     public short getEstado() {
         return estado;
     }
@@ -131,14 +121,6 @@ public class MovimientoInventarioTB {
         this.estadoName = estadoName;
     }
 
-    public String getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(String proveedor) {
-        this.proveedor = proveedor;
-    }
-
     public String getCodigoVerificacion() {
         return codigoVerificacion;
     }
@@ -153,11 +135,6 @@ public class MovimientoInventarioTB {
 
     public void setValidar(Button validar) {
         this.validar = validar;
-    }
-
-    @Override
-    public String toString() {
-        return "MovimientoInventarioTB{" + "id=" + id + ", idMovimientoInventario=" + idMovimientoInventario + ", fecha=" + fecha + ", hora=" + hora + ", tipoAjuste=" + tipoAjuste + ", tipoMovimiento=" + tipoMovimiento + ", tipoMovimientoName=" + tipoMovimientoName + ", observacion=" + observacion + ", informacion=" + informacion + ", suministro=" + suministro + ", articulo=" + articulo + ", estado=" + estado + ", estadoName=" + estadoName + ", proveedor=" + proveedor + ", validar=" + validar + '}';
     }
 
     public Label getLblEstado() {

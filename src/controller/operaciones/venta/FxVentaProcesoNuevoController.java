@@ -11,7 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -55,6 +57,11 @@ public class FxVentaProcesoNuevoController implements Initializable {
     private Label lblVueltoNombre;
     @FXML
     private DatePicker txtFechaVencimiento;
+    @FXML
+    private RadioButton rbEfectivo;
+    @FXML
+    private RadioButton rbTarjeta;
+
 //    private TableView<VentaCreditoTB> tvPlazos;
 //    private TableColumn<VentaCreditoTB, TextField> tcMonto;
 //    private TableColumn<VentaCreditoTB, DatePicker> tcFecha;
@@ -91,6 +98,9 @@ public class FxVentaProcesoNuevoController implements Initializable {
         vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         lblVueltoNombre.setText("Su cambio: ");
+        ToggleGroup group = new ToggleGroup();
+        rbEfectivo.setToggleGroup(group);
+        rbTarjeta.setToggleGroup(group);
 //        tcMonto.setCellValueFactory(new PropertyValueFactory<>("tfMonto"));
 //        tcFecha.setCellValueFactory(new PropertyValueFactory<>("dpFecha"));
 //        tcMontoInicial.setCellValueFactory(new PropertyValueFactory<>("cbMontoInicial"));
@@ -101,7 +111,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
-        tota_venta = Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1));
+        tota_venta = Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 2));
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(tota_venta, 2));
 //        lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(tota_venta, 2));
         lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
@@ -156,30 +166,12 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
     private void onEventAceptar() {
         if (state_view_pago) {
-
-//            int validateMonto = 0;
-//            int validateFecha = 0;
-//            double montoPagar = 0;
-//            for (VentaCreditoTB creditoTB : tvPlazos.getItems()) {
-//                validateMonto += !Tools.isNumeric(creditoTB.getTfMonto().getText()) ? 1 : 0;
-//                validateFecha += creditoTB.getDpFecha().getValue() == null ? 1 : 0;
-//                montoPagar += creditoTB.getMonto();
-//            }
-//            if (validateMonto > 0) {
-//                Tools.AlertMessageWarning(window, "Venta", "Hay montos sin ingresar en la tabla.");
-//                tvPlazos.requestFocus();
-//            } else if (validateFecha > 0) {
-//                Tools.AlertMessageWarning(window, "Venta", "Hay fechas sin ingresar en la tabla.");
-//                tvPlazos.requestFocus();
-//            } else if (ventaTB.getTotal() != montoPagar) {
-//                Tools.AlertMessageWarning(window, "Venta", "El monto total y el monto a pagar no son iguales.");
-//                tvPlazos.requestFocus();
-//            } else {
             if (txtFechaVencimiento.getValue() == null) {
                 Tools.AlertMessageWarning(window, "Venta", "Ingrese la fecha de vencimiento.");
                 txtFechaVencimiento.requestFocus();
             } else {
                 ventaTB.setTipo(2);
+                ventaTB.setForma(0);
                 ventaTB.setEstado(2);
                 ventaTB.setVuelto(0);
                 ventaTB.setEfectivo(0);
@@ -218,21 +210,27 @@ public class FxVentaProcesoNuevoController implements Initializable {
         } else {
             if (!estado) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
+                if (rbEfectivo.isSelected()) {
+                    txtEfectivo.requestFocus();
+                } else {
+                    txtTarjeta.requestFocus();
+                }
             } else {
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
                 ventaTB.setVuelto(vuelto);
                 ventaTB.setObservaciones("");
-
                 ventaTB.setEfectivo(0);
                 ventaTB.setTarjeta(0);
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
                     ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
+                    ventaTB.setForma(1);
                 }
 
                 if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
                     ventaTB.setTarjeta(Double.parseDouble(txtTarjeta.getText()));
+                    ventaTB.setForma(2);
                 }
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
@@ -351,7 +349,6 @@ public class FxVentaProcesoNuevoController implements Initializable {
 //        tvPlazos.getItems().add(vc);
 //
 //    }
-
     @FXML
     private void onActionAceptar(ActionEvent event) {
         onEventAceptar();
@@ -440,6 +437,23 @@ public class FxVentaProcesoNuevoController implements Initializable {
             vbViewEfectivo.setVisible(false);
             vbViewCredito.setVisible(true);
             state_view_pago = true;
+        }
+    }
+
+    @FXML
+    private void onActionMetodo(ActionEvent event) {
+        if (rbEfectivo.isSelected()) {
+            txtTarjeta.setDisable(true);
+            txtEfectivo.setDisable(false);
+            txtTarjeta.setText("");
+            txtEfectivo.setText("");
+            txtEfectivo.requestFocus();
+        } else {
+            txtTarjeta.setDisable(false);
+            txtEfectivo.setDisable(true);
+            txtTarjeta.setText("");
+            txtEfectivo.setText("");
+            txtTarjeta.requestFocus();
         }
     }
 

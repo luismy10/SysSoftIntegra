@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="288"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -38,7 +38,7 @@
 	<field name="nombreMarca" class="java.lang.String"/>
 	<field name="precioVentaGeneral" class="java.lang.Double"/>
 	<field name="descuento" class="java.lang.Double"/>
-	<field name="totalImporte" class="java.lang.Double"/>
+	<field name="importeNeto" class="java.lang.Double"/>
 	<background>
 		<band height="802">
 			<rectangle>
@@ -457,21 +457,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unidadCompraName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="210" height="16" forecolor="#000000" uuid="988b9d2d-7190-40a8-a738-b80561ebee89">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreMarca}]]></textFieldExpression>
-			</textField>
 			<textField pattern="">
 				<reportElement key="" stretchType="RelativeToBandHeight" x="375" y="0" width="60" height="16" forecolor="#000000" uuid="d4f9905d-678a-475c-aee4-7558af874e4d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c6e4efc2-4078-4cc3-ba83-e24c26a460f5"/>
@@ -513,7 +498,7 @@
 					<font fontName="Arial" size="6" isBold="false"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{totalImporte})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{importeNeto})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="16" forecolor="#000000" uuid="e6071826-8084-43af-aced-db7008df9207">
@@ -528,6 +513,21 @@
 					<font fontName="Arial" size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="210" height="16" forecolor="#000000" uuid="cde78c79-6d18-4086-82f1-1fadd7d23bb5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3da7e1ae-407f-4aa8-93f4-73f7353846ed"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#373B46"/>
+					<leftPen lineWidth="0.25" lineColor="#373B46"/>
+					<rightPen lineWidth="0.25" lineColor="#373B46"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isBold="false"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreMarca}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

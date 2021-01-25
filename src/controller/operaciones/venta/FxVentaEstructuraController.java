@@ -19,9 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
@@ -85,6 +88,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 import org.json.simple.JSONObject;
 
 public class FxVentaEstructuraController implements Initializable {
@@ -152,8 +157,6 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private Label lblImporteTotal;
     @FXML
-    private Label lblTotalPagar;
-    @FXML
     private Button btnMovimiento;
     @FXML
     private Button btnCancelar;
@@ -190,6 +193,10 @@ public class FxVentaEstructuraController implements Initializable {
 
     private AnchorPane hbPie;
 
+    private AutoCompletionBinding<String> autoCompletionBinding;
+
+    private final Set<String> posiblesWord = new HashSet<>();
+
     private boolean unidades_cambio_cantidades;
 
     private boolean unidades_cambio_precio;
@@ -214,23 +221,20 @@ public class FxVentaEstructuraController implements Initializable {
 
     private boolean stateSearch;
 
-    private double subTotal;
+    private double importeBruto;
 
-    private double descuentoTotal;
+    private double descuentoBruto;
 
-    private double subTotalImporte;
+    private double subImporteNeto;
 
-    private double totalImporte;
+    private double impuestoNeto;
 
-    private double totalImpuesto;
-
-    private double total;
+    private double importeNeto;
 
     private Alert alert = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         hbEncabezado = new AnchorPane();
         hbDetalleCabecera = new AnchorPane();
         hbPie = new AnchorPane();
@@ -283,6 +287,9 @@ public class FxVentaEstructuraController implements Initializable {
         txtCelularCliente.setText(Session.CLIENTE_CELULAR);
         txtCorreoElectronico.setText(Session.CLIENTE_EMAIL);
         txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
+
+        ObjectGlobal.DATA_CLIENTS.forEach(c -> posiblesWord.add(c));        
+        autoCompletionBinding = TextFields.bindAutoCompletion(txtNumeroDocumento, posiblesWord);
 
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
@@ -383,9 +390,9 @@ public class FxVentaEstructuraController implements Initializable {
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
 
-                    suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                    suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
                     tvList.refresh();
                     calculateTotales();
@@ -400,7 +407,6 @@ public class FxVentaEstructuraController implements Initializable {
 
         } else {
             tcPrecio.setCellFactory(TextFieldTableCell.forTableColumn());
-
             tcPrecio.setOnEditCommit(data -> {
                 final Double value = Tools.isNumeric(data.getNewValue())
                         ? (Double.parseDouble(data.getNewValue()) <= 0 ? Double.parseDouble(data.getOldValue()) : Double.parseDouble(data.getNewValue()))
@@ -429,9 +435,9 @@ public class FxVentaEstructuraController implements Initializable {
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-                    suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                    suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
 
                     tvList.refresh();
                     calculateTotales();
@@ -511,9 +517,9 @@ public class FxVentaEstructuraController implements Initializable {
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
 
-            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+            suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
             suministroTB.setInventario(a.isInventario());
             suministroTB.setUnidadVenta(a.getUnidadVenta());
@@ -580,7 +586,7 @@ public class FxVentaEstructuraController implements Initializable {
             } else if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "Seleccione un moneda.");
                 cbMoneda.requestFocus();
-            } else if (total <= 0) {
+            } else if (importeNeto <= 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "El total de la venta no puede ser menor que 0.");
             } else {
                 ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
@@ -620,11 +626,11 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setNumeracion(lblNumeracion.getText());
                 ventaTB.setFechaVenta(Tools.getDate());
                 ventaTB.setHoraVenta(Tools.getHour());
-                ventaTB.setSubTotal(subTotal);
-                ventaTB.setDescuento(descuentoTotal);
-                ventaTB.setSubImporte(subTotalImporte);
-                ventaTB.setImpuesto(totalImpuesto);
-                ventaTB.setTotal(total);
+                ventaTB.setSubTotal(importeBruto);
+                ventaTB.setDescuento(descuentoBruto);
+                ventaTB.setSubImporte(subImporteNeto);
+                ventaTB.setImpuesto(impuestoNeto);
+                ventaTB.setTotal(importeNeto);
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList.getItems());
                 controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas);
@@ -862,9 +868,9 @@ public class FxVentaEstructuraController implements Initializable {
                             suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
                             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
 
-                            suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                            suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                            suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                            suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                            suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                            suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
                             tvList.refresh();
                             tvList.getSelectionModel().select(i);
@@ -918,9 +924,9 @@ public class FxVentaEstructuraController implements Initializable {
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
 
-                    suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                    suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
                     tvList.refresh();
                     tvList.getSelectionModel().select(i);
@@ -959,20 +965,21 @@ public class FxVentaEstructuraController implements Initializable {
 
     public void calculateTotales() {
 
-        subTotal = 0;
-        tvList.getItems().forEach(e -> subTotal += e.getSubImporte());
-        lblValorVenta.setText(monedaSimbolo + " " + Tools.roundingValue(subTotal, 2));
+        importeBruto = 0;
+        tvList.getItems().forEach(e -> importeBruto += e.getImporteBruto());
+        lblValorVenta.setText(monedaSimbolo + " " + Tools.roundingValue(importeBruto, 2));
 
-        descuentoTotal = 0;
-        tvList.getItems().forEach(e -> descuentoTotal += e.getDescuentoSumado());
-        lblDescuento.setText(monedaSimbolo + " " + (Tools.roundingValue(descuentoTotal * (-1), 2)));
+        descuentoBruto = 0;
+        tvList.getItems().forEach(e -> descuentoBruto += e.getDescuentoSumado());
+        lblDescuento.setText(monedaSimbolo + " " + (Tools.roundingValue(descuentoBruto * (-1), 2)));
 
-        subTotalImporte = 0;
-        tvList.getItems().forEach(e -> subTotalImporte += e.getSubImporteDescuento());
-        lblSubImporte.setText(monedaSimbolo + " " + Tools.roundingValue(subTotalImporte, 2));
+        subImporteNeto = 0;
+        tvList.getItems().forEach(e -> subImporteNeto += e.getSubImporteNeto());
+        lblSubImporte.setText(monedaSimbolo + " " + Tools.roundingValue(subImporteNeto, 2));
 
         gpTotales.getChildren().clear();
 
+        impuestoNeto = 0;
         double totalImpuestos = 0;
 
         if (!tvList.getItems().isEmpty()) {
@@ -981,18 +988,14 @@ public class FxVentaEstructuraController implements Initializable {
             }
         }
 
+        impuestoNeto = totalImpuestos;
         gpTotales.add(addLabelTitle("IMPUESTO GENERADO:", Pos.CENTER_LEFT), 0, 0 + 1);
-        gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(totalImpuestos, 2), Pos.CENTER_RIGHT), 1, 0 + 1);
+        gpTotales.add(addLabelTotal(monedaSimbolo + " " + Tools.roundingValue(impuestoNeto, 2), Pos.CENTER_RIGHT), 1, 0 + 1);
 
-        totalImporte = 0;
-        totalImpuesto = 0;
-        total = 0;
-        tvList.getItems().forEach(e -> totalImporte += e.getTotalImporte());
-        totalImpuesto = totalImpuestos;
-        total = totalImporte + totalImpuesto;
-        lblImporteTotal.setText(monedaSimbolo + " " + Tools.roundingValue(total, 2));
-        lblTotalPagar.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));
-        lblTotal.setText(monedaSimbolo + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(total, 1)), 2));
+        importeNeto = 0;
+        importeNeto = subImporteNeto + impuestoNeto;
+        lblImporteTotal.setText(monedaSimbolo + " " + Tools.roundingValue(importeNeto, 2));
+        lblTotal.setText(monedaSimbolo + " " + Tools.roundingValue(importeNeto, 2));
 
     }
 
@@ -1171,7 +1174,7 @@ public class FxVentaEstructuraController implements Initializable {
         map.put("SUB_IMPORTE", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getSubImporte(), 2));
         map.put("IMPUESTO_TOTAL", Tools.roundingValue(ventaTB.getImpuesto(), 2));
         map.put("IMPORTE_TOTAL", ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(ventaTB.getTotal(), 2));
-        map.put("QRDATA", "|" + Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(total, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
+        map.put("QRDATA", "|" + Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(importeNeto, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
         return jasperPrint;
@@ -1223,7 +1226,7 @@ public class FxVentaEstructuraController implements Initializable {
                                 stb.setUnidadCompraName(suministroTBs.get(i).getUnidadCompraName());
                                 stb.setPrecioVentaGeneral(suministroTBs.get(i).getPrecioVentaGeneral());
                                 stb.setDescuento(suministroTBs.get(i).getDescuento());
-                                stb.setTotalImporte(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
+                                stb.setImporteNeto(suministroTBs.get(i).getCantidad() * +suministroTBs.get(i).getPrecioVentaGeneral());
                                 list.add(stb);
                             }
 
@@ -1542,19 +1545,19 @@ public class FxVentaEstructuraController implements Initializable {
                         for (int i = 0; i < hbPie.getChildren().size(); i++) {
                             HBox box = ((HBox) hbPie.getChildren().get(i));
                             billPrintable.hbPie(box, monedaSimbolo,
-                                    Tools.roundingValue(subTotal, 2),
-                                    "-" + Tools.roundingValue(descuentoTotal, 2),
-                                    Tools.roundingValue(totalImporte, 2),
-                                    Tools.roundingValue(totalImpuesto, 2),
-                                    Tools.roundingValue(subTotalImporte, 2),
-                                    Tools.roundingValue(total, 2),
+                                    Tools.roundingValue(importeBruto, 2),
+                                    "-" + Tools.roundingValue(descuentoBruto, 2),
+                                    Tools.roundingValue(subImporteNeto, 2),
+                                    Tools.roundingValue(impuestoNeto, 2),
+                                    Tools.roundingValue(subImporteNeto, 2),
+                                    Tools.roundingValue(importeNeto, 2),
                                     "EFECTIVO",
                                     "VUELTO",
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
                                     txtCelularCliente.getText().trim(),
-                                    monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ""),
+                                    monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, ""),
                                     "",
                                     "",
                                     "",
@@ -1630,19 +1633,19 @@ public class FxVentaEstructuraController implements Initializable {
                             HBox box = ((HBox) hbPie.getChildren().get(i));
                             rows++;
                             lines += billPrintable.hbPie(box, monedaSimbolo,
-                                    Tools.roundingValue(subTotal, 2),
-                                    "-" + Tools.roundingValue(descuentoTotal, 2),
-                                    Tools.roundingValue(totalImporte, 2),
-                                    Tools.roundingValue(totalImpuesto, 2),
-                                    Tools.roundingValue(subTotalImporte, 2),
-                                    Tools.roundingValue(total, 2),
+                                    Tools.roundingValue(importeBruto, 2),
+                                    "-" + Tools.roundingValue(descuentoBruto, 2),
+                                    Tools.roundingValue(subImporteNeto, 2),
+                                    Tools.roundingValue(impuestoNeto, 2),
+                                    Tools.roundingValue(subImporteNeto, 2),
+                                    Tools.roundingValue(importeNeto, 2),
                                     "EFECTIVO",
                                     "VUELTO",
                                     txtNumeroDocumento.getText(),
                                     txtDatosCliente.getText(),
                                     "CODIGO DE VENTA",
                                     txtCelularCliente.getText().trim(),
-                                    monedaCadena.Convertir(Tools.roundingValue(total, 2), true, ""),
+                                    monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, ""),
                                     "",
                                     "",
                                     "",
@@ -2082,6 +2085,14 @@ public class FxVentaEstructuraController implements Initializable {
         txtDireccionCliente.setText("");
     }
 
+    private void learnWord(String text) {
+        posiblesWord.add(text);
+        if (autoCompletionBinding != null) {
+            autoCompletionBinding.dispose();
+        }
+        autoCompletionBinding = TextFields.bindAutoCompletion(txtNumeroDocumento, posiblesWord);
+    }
+
     @FXML
     private void onKeyPressedRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -2226,9 +2237,9 @@ public class FxVentaEstructuraController implements Initializable {
                 double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
                 suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
 
-                suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
                 tvList.refresh();
                 tvList.getSelectionModel().select(index);
@@ -2252,9 +2263,9 @@ public class FxVentaEstructuraController implements Initializable {
                 double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
                 suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
 
-                suministroTB.setSubImporte(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                suministroTB.setSubImporteDescuento(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                suministroTB.setTotalImporte(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
 
                 tvList.refresh();
                 tvList.getSelectionModel().select(index);
@@ -2320,36 +2331,42 @@ public class FxVentaEstructuraController implements Initializable {
     private void onKeyPressedCliente(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+            learnWord(txtNumeroDocumento.getText().trim());
         }
     }
 
     @FXML
     private void onActionCliente(ActionEvent event) {
         onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+        learnWord(txtNumeroDocumento.getText().trim());
     }
 
     @FXML
     private void onKeyPressedSunat(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             getApiSunat();
+            learnWord(txtNumeroDocumento.getText().trim());
         }
     }
 
     @FXML
     private void onActionSunat(ActionEvent event) {
         getApiSunat();
+        learnWord(txtNumeroDocumento.getText().trim());
     }
 
     @FXML
     private void onKeyPressedReniec(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             getApiReniec();
+            learnWord(txtNumeroDocumento.getText().trim());
         }
     }
 
     @FXML
     private void onActionReniec(ActionEvent event) {
         getApiReniec();
+        learnWord(txtNumeroDocumento.getText().trim());
     }
 
     @FXML

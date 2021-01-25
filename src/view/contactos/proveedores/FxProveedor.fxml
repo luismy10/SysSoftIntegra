@@ -20,7 +20,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="paddinContainer">
                      <children>
-                        <Label styleClass="labelRobotoBold15" text="Proveedores" textFill="#020203">
+                        <Label styleClass="labelRobotoBold15" text="Lista de Proveedor" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -41,9 +41,9 @@
                   </HBox>
                   <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLight" text="Agregar(F1)">
+                        <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLightDefault" text="Agregar(F1)">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/plus.png" />
                                  </image>
@@ -52,7 +52,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionEdit" onKeyPressed="#onKeyPressedEdit" styleClass="buttonLight" text="Editar(F2)">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/edit.png" />
                                  </image>
@@ -61,7 +61,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionRemove" onKeyPressed="#onKeyPressedRemove" styleClass="buttonLight" text="Eliminar(F3)">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/remove.png" />
                                  </image>
@@ -70,7 +70,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar(F5)">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/reload.png" />
                                  </image>
@@ -133,7 +133,7 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/left.png" />
                                        </image></ImageView>
@@ -159,7 +159,7 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/right.png" />
                                        </image></ImageView>

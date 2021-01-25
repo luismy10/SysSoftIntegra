@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="hbWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.cotizacion.FxCotizacionController">
+<HBox fx:id="hbWindow" onKeyReleased="#onKeyReleasedWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.cotizacion.FxCotizacionController">
    <children>
       <VBox HBox.hgrow="ALWAYS">
          <children>
@@ -38,7 +38,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-background-color: #cccccc;">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar (F1)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -47,7 +47,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Productos">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Productos (F2)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -56,20 +56,20 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Limpiar">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/escoba.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCotizaciones" onKeyPressed="#onKeyPressedCotizaciones" styleClass="buttonLight" text="Cotizaciones">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCotizaciones" onKeyPressed="#onKeyPressedCotizaciones" styleClass="buttonLight" text="Cotizaciones (F3)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/cotizacion.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Limpiar (F4)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/escoba.png" />
                            </image>
                         </ImageView>
                      </graphic>

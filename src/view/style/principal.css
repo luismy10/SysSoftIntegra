@@ -570,7 +570,7 @@
     -fx-border-color: BORDER_HOVER;
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
-   -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
 
 }
 .buttonLight:disabled, .buttonLight:default:disabled{
@@ -1017,7 +1017,7 @@
     -fx-border-radius: 0, 0;
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
-    
+
 }
 .buttonBorder:disabled, .buttonBorder:default:disabled{
     -fx-opacity: 1;
@@ -1412,7 +1412,7 @@
 
 .table-view-principal:row-selection .table-row-cell:filled:hover { 
     -fx-background-color: #cccccc;
-     -fx-cursor:hand;
+    -fx-cursor:hand;
 }
 
 .table-view-principal:row-selection .table-row-cell:filled:selected:hover { 
@@ -1674,27 +1674,32 @@
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-padding: 0.16666666666666666em 0.16666666666666666em 0.16666666666666666em 0.16666666666666666em; /*2px 2px 2px 2px*/
 }
+
 .combo-box:hover {
     -fx-border-color: #7a7a7a;
 }
+
 .combo-box:focused {
     -fx-border-width:1;
     -fx-border-color:  #007bff;
     -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.5), 3, 1, 0, 0);
-
 }
-.combo-box .cell:selected{
+
+.combo-box .cell:selected {
     -fx-text-fill: #020203;
 }
+
 .combo-box.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
     -fx-font-family:"Roboto";  
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-padding: 0.5em;
 }
+
 .combo-box > .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover{
     -fx-background-color:  #007bff;
     -fx-text-fill: white;
 }
+
 .combo-box .text-field{
     -fx-background-color: white;
 }
@@ -1706,11 +1711,13 @@
     -fx-border-width:0px;
     -fx-border-color: #007bff;
 }
+
 .combo-box.combo-box-base > .arrow-button > .arrow {
     -fx-background-color: #999999;
     -fx-shape: "M 0 0 H 7 L 3.5 4 z";
     -fx-scale-shape: true;
 }
+
 .combo-box:disabled{
     -fx-opacity: 1;
     -fx-background-color: transparent, transparent, #eaeaea, transparent;
@@ -1734,6 +1741,7 @@
 
 .list-view:focused {
     -fx-border-color:  #007bff;
+    -fx-text-fill: #020203;
 }
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
@@ -1755,8 +1763,8 @@
 }
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:selected {
-    -fx-background-color:  #007bff;
-    -fx-text-fill: white;
+    -fx-background-color:  #ffc8e7;
+     -fx-text-fill: #020203;
 }
 
 /*
@@ -2429,7 +2437,6 @@
     -fx-text-fill: white;
 }
 
-
 .label-asignacion{
     -fx-max-width: Infinity;
     -fx-background-color: #c6e2cc; 
@@ -2498,11 +2505,13 @@
         -fx-font-family:"Monospace"; 
         -fx-font-weight:bold;*/
 }
+
 .text-field-ticket:hover{
     -fx-background-color: transparent, white;
     -fx-border-width:0 1px 0 0;
     -fx-border-color: #999999;
 }
+
 .text-field-ticket:focused{
     -fx-background-color: transparent, white;
     -fx-border-width:0 1px 0 0;
@@ -2515,8 +2524,6 @@
     -fx-background-position: center center;
     -fx-background-size: 100%;  
 }
-
-
 
 .buttonView{
     -fx-padding: 0em;
@@ -2571,3 +2578,23 @@
     -fx-background-repeat: no-repeat; 
     -fx-background-position: 90%; 
 }
+
+TextFieldTableCell > * { 
+    -fx-padding: 0.5em 0.75em 0.5em 0.75em; /*6px 9px 6px 9px*/
+    -fx-background-radius: 0, 0;
+    -fx-background-color: white, white,white,white;
+    -fx-border-width:1;
+    -fx-border-color: #999999;
+    -fx-font-size:1.0833333333333333em;/*13px */ 
+    -fx-font-family:"Roboto"; 
+    -fx-text-fill:  #020203;
+}
+
+TextFieldTableCell > *:focused { 
+      -fx-border-color:  #007bff;
+}
+
+
+
+
+
