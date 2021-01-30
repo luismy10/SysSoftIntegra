@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -307,7 +308,7 @@ public class Tools {
     }
 
     public static boolean isText(String cadena) {
-        return cadena == null || cadena.trim().isEmpty();      
+        return cadena == null || cadena.trim().isEmpty();
     }
 
     public static String getDate() {
@@ -426,4 +427,16 @@ public class Tools {
         return value.trim().isEmpty() ? "--" : value;
     }
 
+    public static Label placeHolderTableView(String message, String styleCss, boolean viewImage) {
+        Label label = new Label(message);
+        label.setStyle(styleCss);
+        label.getStyleClass().add("labelRoboto14");
+        if (viewImage) {
+            ImageView imageView = new ImageView(new Image("/view/image/load.gif"));
+            imageView.setFitWidth(48);
+            imageView.setFitHeight(48);
+            label.setGraphic(imageView);
+        }
+        return label;
+    }
 }

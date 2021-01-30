@@ -108,7 +108,6 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Cliente:" textFill="#020203" />
@@ -132,8 +131,6 @@
                                     <Text fx:id="lblObservaciones" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Vendedor:" textFill="#020203" GridPane.rowIndex="7" />
                                     <Text fx:id="lblVendedor" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Metodo Pago" textFill="#020203" GridPane.rowIndex="8" />
-                                    <Text fx:id="lblMetodoPago" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                                  </children>
                               </GridPane>
                            </children>

@@ -66,8 +66,6 @@ public class FxProveedorProcesoController implements Initializable {
     private Tab tab1;
     @FXML
     private Tab tab2;
-    @FXML
-    private Tab tab3;
 
     private String idProveedor;
 
@@ -87,7 +85,6 @@ public class FxProveedorProcesoController implements Initializable {
         cbEstado.getSelectionModel().select(0);
 
         tab2.setText("");
-        tab3.setText("");
 
     }
 

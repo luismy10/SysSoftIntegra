@@ -235,7 +235,7 @@ public class FxVentaRealizadasController implements Initializable {
             AnchorPane.setBottomAnchor(node, 0d);
             vbContent.getChildren().add(node);
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
+            Tools.AlertMessageWarning(window, "Compra", "Debe seleccionar una compra de la lista");
         }
     }
 
@@ -319,10 +319,12 @@ public class FxVentaRealizadasController implements Initializable {
                 && event.getCode() != KeyCode.PRINTSCREEN
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
-            if (!lblLoad.isVisible()) {
-                paginacion = 1;
-                fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
-                opcion = 1;
+            if (!Tools.isText(txtSearch.getText())) {
+                if (!lblLoad.isVisible()) {
+                    paginacion = 1;
+                    fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
+                    opcion = 1;
+                }
             }
         }
     }

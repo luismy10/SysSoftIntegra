@@ -11,9 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -36,6 +34,8 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private TextField txtEfectivo;
     @FXML
+    private TextField txtTarjeta;
+    @FXML
     private Label lblVuelto;
     @FXML
     private VBox vbEfectivo;
@@ -52,15 +52,9 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private Label lblMonedaLetras;
     @FXML
-    private TextField txtTarjeta;
-    @FXML
     private Label lblVueltoNombre;
     @FXML
     private DatePicker txtFechaVencimiento;
-    @FXML
-    private RadioButton rbEfectivo;
-    @FXML
-    private RadioButton rbTarjeta;
 
 //    private TableView<VentaCreditoTB> tvPlazos;
 //    private TableColumn<VentaCreditoTB, TextField> tcMonto;
@@ -98,9 +92,6 @@ public class FxVentaProcesoNuevoController implements Initializable {
         vuelto = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         lblVueltoNombre.setText("Su cambio: ");
-        ToggleGroup group = new ToggleGroup();
-        rbEfectivo.setToggleGroup(group);
-        rbTarjeta.setToggleGroup(group);
 //        tcMonto.setCellValueFactory(new PropertyValueFactory<>("tfMonto"));
 //        tcFecha.setCellValueFactory(new PropertyValueFactory<>("dpFecha"));
 //        tcMontoInicial.setCellValueFactory(new PropertyValueFactory<>("cbMontoInicial"));
@@ -121,7 +112,6 @@ public class FxVentaProcesoNuevoController implements Initializable {
     }
 
     private void TotalAPagar() {
-
         if (txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()) {
             lblVuelto.setText(moneda_simbolo + " 0.00");
             lblVueltoNombre.setText("POR PAGAR: ");
@@ -171,7 +161,6 @@ public class FxVentaProcesoNuevoController implements Initializable {
                 txtFechaVencimiento.requestFocus();
             } else {
                 ventaTB.setTipo(2);
-                ventaTB.setForma(0);
                 ventaTB.setEstado(2);
                 ventaTB.setVuelto(0);
                 ventaTB.setEfectivo(0);
@@ -210,11 +199,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
         } else {
             if (!estado) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
-                if (rbEfectivo.isSelected()) {
-                    txtEfectivo.requestFocus();
-                } else {
-                    txtTarjeta.requestFocus();
-                }
+                txtEfectivo.requestFocus();
             } else {
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
@@ -225,12 +210,10 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
                     ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
-                    ventaTB.setForma(1);
                 }
 
                 if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
                     ventaTB.setTarjeta(Double.parseDouble(txtTarjeta.getText()));
-                    ventaTB.setForma(2);
                 }
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
@@ -437,23 +420,6 @@ public class FxVentaProcesoNuevoController implements Initializable {
             vbViewEfectivo.setVisible(false);
             vbViewCredito.setVisible(true);
             state_view_pago = true;
-        }
-    }
-
-    @FXML
-    private void onActionMetodo(ActionEvent event) {
-        if (rbEfectivo.isSelected()) {
-            txtTarjeta.setDisable(true);
-            txtEfectivo.setDisable(false);
-            txtTarjeta.setText("");
-            txtEfectivo.setText("");
-            txtEfectivo.requestFocus();
-        } else {
-            txtTarjeta.setDisable(false);
-            txtEfectivo.setDisable(true);
-            txtTarjeta.setText("");
-            txtEfectivo.setText("");
-            txtTarjeta.requestFocus();
         }
     }
 

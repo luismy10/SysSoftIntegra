@@ -129,7 +129,7 @@
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" prefHeight="30.0" prefWidth="220.0" promptText="\%" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                                            <TextField fx:id="txtDescuento" onAction="#onActionAdd" onKeyTyped="#onKeyTypedDescuento" prefHeight="30.0" prefWidth="220.0" promptText="0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -272,7 +272,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAdd" onKeyPressed="#onKeyPressedAdd" styleClass="buttonLightDefault" text="Agregar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/plus.png" />
                            </image>
@@ -281,7 +281,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancel" onKeyPressed="#onKeyPressedCancel" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>

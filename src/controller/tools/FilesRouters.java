@@ -341,7 +341,11 @@ public final class FilesRouters {
     public static final String FX_INSUMO_PROCESO = "/view/produccion/insumos/FxInsumosProceso.fxml";
 
     public static final String FX_INSUMO_LISTA = "/view/produccion/insumos/FxInsumosLista.fxml";
-    
+
     public static final String FX_OPCIONES_IMPRIMIR = "/view/configuracion/impresoras/FxOpcionesImprimir.fxml";
+
+    public static final String FX_NOTA_CREDITO = "/view/operaciones/notacredito/FxNotaCreditoRealizadas.fxml";
+
+    public static final String FX_NOTA_CREDITO_DETALLE = "/view/operaciones/notacredito/FxNotaCreditoDetalle.fxml";
 
 }
