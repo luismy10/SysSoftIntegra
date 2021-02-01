@@ -32,10 +32,6 @@ public class Session {
     public static String COMPANY_NUMERO_DOCUMENTO = "";
     public static String COMPANY_RAZON_SOCIAL = "";
     public static String COMPANY_NOMBRE_COMERCIAL = "";
-    public static String COMPANY_PAIS = "";
-    public static String COMPANY_DEPARTAMENTO = "";
-    public static String COMPANY_PROVINCIA = "";
-    public static String COMPANY_DISTRITO = "";
     public static byte[] COMPANY_IMAGE = null;
 
     /*
@@ -51,13 +47,16 @@ public class Session {
     public static String TICKET_PRE_VENTA_RUTA = "";
 
     public static int TICKET_COTIZACION_ID = 0;
-    public static String TICKET_COTIZACION_RUTA = "";   
+    public static String TICKET_COTIZACION_RUTA = "";
 
     public static int TICKET_CUENTA_POR_COBRAR_ID = 0;
     public static String TICKET_CUENTA_POR_COBRAR_RUTA = "";
 
     public static int TICKET_CUENTA_POR_PAGAR_ID = 0;
-    public static String TICKET_CUENTA_POR_PAGAR_RUTA = ""; 
+    public static String TICKET_CUENTA_POR_PAGAR_RUTA = "";
+
+    public static int TICKET_GUIA_REMISION_ID = 0;
+    public static String TICKET_GUIA_REMISION_RUTA = "";
 
     public static boolean ESTADO_IMPRESORA_VENTA;
     public static String NOMBRE_IMPRESORA_VENTA = "";
@@ -94,7 +93,13 @@ public class Session {
     public static boolean CORTAPAPEL_IMPRESORA_CUENTA_POR_PAGAR;
     public static String FORMATO_IMPRESORA_CUENTA_POR_PAGAR = "";
     public static String DESING_IMPRESORA_CUENTA_POR_PAGAR = "";
-    
+
+    public static boolean ESTADO_IMPRESORA_GUIA_REMISION;
+    public static String NOMBRE_IMPRESORA_GUIA_REMISION = "";
+    public static boolean CORTAPAPEL_IMPRESORA_GUIA_REMISION;
+    public static String FORMATO_IMPRESORA_GUIA_REMISION = "";
+    public static String DESING_IMPRESORA_GUIA_REMISION = "";
+
     /*
     variable de cliente
      */

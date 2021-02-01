@@ -131,7 +131,7 @@ public class FxNotaCreditoRealizadasController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return NotaCreditoADO.ListarNotasCredito(opcion, buscar, fechaInico, fechaFinal, (posicionPagina - 1) * 5, 5);
+                return NotaCreditoADO.ListarNotasCredito(opcion, buscar, fechaInico, fechaFinal, (posicionPagina - 1) * 10, 10);
             }
         };
 
@@ -142,7 +142,7 @@ public class FxNotaCreditoRealizadasController implements Initializable {
                 ObservableList<NotaCreditoTB> notaCreditoTBs = (ObservableList<NotaCreditoTB>) objects[0];
                 if (!notaCreditoTBs.isEmpty()) {
                     tvList.setItems(notaCreditoTBs);
-                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 5.00));
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 10.00));
                     lblPaginaActual.setText(paginacion + "");
                     lblPaginaSiguiente.setText(totalPaginacion + "");
                 } else {

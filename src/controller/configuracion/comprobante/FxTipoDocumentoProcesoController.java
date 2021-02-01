@@ -34,6 +34,8 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     private CheckBox cbGuia;
     @FXML
     private CheckBox cbFacturado;
+    @FXML
+    private CheckBox cbNotaCredito;
 
     private FxTipoDocumentoController tipoDocumentoController;
 
@@ -44,7 +46,7 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void initUpdate(int codigo, String nombre, String serie, int numeracion, String codigoAlterno, boolean guia, boolean factura) {
+    public void initUpdate(int codigo, String nombre, String serie, int numeracion, String codigoAlterno, boolean guia, boolean factura, boolean notaCredito) {
         idTipoDocumento = codigo;
         txtNombre.setText(nombre);
         txtSerie.setText(serie);
@@ -56,6 +58,8 @@ public class FxTipoDocumentoProcesoController implements Initializable {
         cbGuia.setText(guia ? "Si" : "No");
         cbFacturado.setSelected(factura);
         cbFacturado.setText(factura ? "Si" : "No");
+        cbNotaCredito.setSelected(notaCredito);
+        cbNotaCredito.setText(notaCredito ? "Si" : "No");
     }
 
     private void saveTipoImpuesto() {
@@ -75,25 +79,26 @@ public class FxTipoDocumentoProcesoController implements Initializable {
             TipoDocumentoTB documentoTB = new TipoDocumentoTB();
             documentoTB.setIdTipoDocumento(idTipoDocumento);
             documentoTB.setNombre(txtNombre.getText().toUpperCase().trim());
-            documentoTB.setSerie(txtSerie.getText().trim());
+            documentoTB.setSerie(txtSerie.getText().trim().toUpperCase());
             documentoTB.setNumeracion(Integer.parseInt(txtNumeracion.getText().trim()));
             documentoTB.setCodigoAlterno(txtCodigoAlterno.getText().trim());
             documentoTB.setPredeterminado(false);
             documentoTB.setGuia(cbGuia.isSelected());
             documentoTB.setFactura(cbFacturado.isSelected());
+            documentoTB.setNotaCredito(cbNotaCredito.isSelected());
 
             String result = TipoDocumentoADO.CrudTipoDocumento(documentoTB);
             if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de documento", "Se actualizado correctamente", false);
                 Tools.Dispose(window);
-                tipoDocumentoController.fillTabletTipoDocumento();
+                tipoDocumentoController.initLoad();
             } else if (result.equalsIgnoreCase("duplicate")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Tipo de documento", "Ya existe comprobante con el mismo nombre", false);
                 txtNombre.requestFocus();
             } else if (result.equalsIgnoreCase("inserted")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Tipo de documento", "Se ha insertado correctamente", false);
                 Tools.Dispose(window);
-                tipoDocumentoController.fillTabletTipoDocumento();
+                tipoDocumentoController.initLoad();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Tipo de documento", result, false);
             }
@@ -141,6 +146,11 @@ public class FxTipoDocumentoProcesoController implements Initializable {
     @FXML
     private void onActionFactura(ActionEvent event) {
         cbFacturado.setText(cbFacturado.isSelected() ? "Si" : "No");
+    }
+
+    @FXML
+    private void onActionNotaCredito(ActionEvent event) {
+        cbNotaCredito.setText(cbNotaCredito.isSelected() ? "Si" : "No");
     }
 
     public void setTipoDocumentoController(FxTipoDocumentoController tipoDocumentoController) {

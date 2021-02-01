@@ -119,12 +119,7 @@
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Dirección:" textFill="#020203" GridPane.rowIndex="3" />
                                     <Text fx:id="lbDireccion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Comprobante" textFill="#020203" GridPane.rowIndex="4" />
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.25em;" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                       <children>
-                                          <Text fx:id="lblComprobante" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" />
-                                          <Text fx:id="lblSerie" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" />
-                                       </children>
-                                    </HBox>
+                                    <Text fx:id="lblComprobante" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Tipo y Estado de la Venta:" textFill="#020203" GridPane.rowIndex="5" />
                                     <Text fx:id="lblTipo" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observaciones:" textFill="#020203" GridPane.rowIndex="6" />

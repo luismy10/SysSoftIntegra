@@ -90,8 +90,6 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Text lblVendedor;
     @FXML
-    private Text lblSerie;
-    @FXML
     private GridPane gpList;
     @FXML
     private Label lblValorVenta;
@@ -193,11 +191,10 @@ public class FxVentaDetalleController implements Initializable {
                 lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
                 lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
                 lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
-                lblComprobante.setText(ventaTB.getComprobanteName());
-                lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+                lblComprobante.setText(ventaTB.getComprobanteName() + " " + ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                 lblObservaciones.setText(ventaTB.getObservaciones());
                 lblTipo.setText(ventaTB.getTipoName() + " - " + ventaTB.getEstadoName());
-                btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
+                btnCancelarVenta.setDisable(ventaTB.getEstado() == 3);
                 efectivo = ventaTB.getEfectivo();
                 tarjeta = ventaTB.getTarjeta();
                 vuelto = ventaTB.getVuelto();
@@ -257,7 +254,7 @@ public class FxVentaDetalleController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaDetalle(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblSerie.getText(), Tools.roundingValue(importeNeto, 2));
+            controller.setLoadVentaDevolucion(idVenta, arrList, ventaTB.getSerie() + "-" + ventaTB.getNumeracion(), Tools.roundingValue(importeNeto, 2));
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
             stage.setResizable(false);
@@ -537,7 +534,7 @@ public class FxVentaDetalleController implements Initializable {
                                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                                 billPrintable.hbEncebezado(box,
                                         ventaTB.getComprobanteName(),
-                                        lblSerie.getText(),
+                                        ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
                                         ventaTB.getClienteTB().getNumeroDocumento(),
                                         ventaTB.getClienteTB().getInformacion(),
                                         ventaTB.getClienteTB().getCelular(),

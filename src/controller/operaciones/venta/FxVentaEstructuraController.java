@@ -288,7 +288,7 @@ public class FxVentaEstructuraController implements Initializable {
         txtCorreoElectronico.setText(Session.CLIENTE_EMAIL);
         txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
 
-        ObjectGlobal.DATA_CLIENTS.forEach(c -> posiblesWord.add(c));        
+        ObjectGlobal.DATA_CLIENTS.forEach(c -> posiblesWord.add(c));
         autoCompletionBinding = TextFields.bindAutoCompletion(txtNumeroDocumento, posiblesWord);
 
         if (!cbTipoDocumento.getItems().isEmpty()) {
@@ -577,7 +577,7 @@ public class FxVentaEstructuraController implements Initializable {
             } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Ventas", "Seleccione el tipo de documento del cliente.");
                 cbTipoDocumento.requestFocus();
-            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
+            } else if (!Tools.isNumeric(txtNumeroDocumento.getText().trim())) {
                 Tools.AlertMessageWarning(window, "Ventas", "Ingrese el número del documento del cliente.");
                 txtNumeroDocumento.requestFocus();
             } else if (txtDatosCliente.getText().trim().equalsIgnoreCase("")) {
@@ -614,12 +614,8 @@ public class FxVentaEstructuraController implements Initializable {
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
-                ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()
-                        : 0);
-                ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbComprobante.getSelectionModel().getSelectedItem().getNombre()
-                        : "");
+                ventaTB.setIdComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
+                ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedItem().getNombre());
                 ventaTB.setMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
                 ventaTB.setMonedaName(monedaSimbolo);
                 ventaTB.setSerie(lblSerie.getText());
@@ -633,7 +629,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setTotal(importeNeto);
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>(tvList.getItems());
-                controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas);
+                controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas, cbMoneda.getSelectionModel().getSelectedItem().getNombre());
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
@@ -2384,7 +2380,7 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyTypedNumeroDocumento(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+        if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
         }
     }
@@ -2458,10 +2454,6 @@ public class FxVentaEstructuraController implements Initializable {
             }
             event.consume();
         }
-    }
-
-    public int getIdTipoComprobante() {
-        return cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento();
     }
 
     public TextField getTxtSearch() {

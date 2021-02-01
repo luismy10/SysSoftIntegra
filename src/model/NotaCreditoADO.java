@@ -77,7 +77,7 @@ public class NotaCreditoADO {
                 if (resultSet.next()) {
                     ventaTB = new VentaTB();
                     ventaTB.setIdVenta(resultSet.getString("IdVenta"));
-                    ventaTB.setComprobante(resultSet.getInt("Comprobante"));
+                    ventaTB.setIdComprobante(resultSet.getInt("Comprobante"));
                     ventaTB.setSerie(resultSet.getString("Serie"));
                     ventaTB.setNumeracion(resultSet.getString("Numeracion"));
                     ClienteTB clienteTB = new ClienteTB();
@@ -156,9 +156,9 @@ public class NotaCreditoADO {
         PreparedStatement statementNotaCredito = null;
         ResultSet resultSet = null;
         try {
-            Object[] objects = new Object[2];
-            ObservableList<NotaCreditoTB> notaCreditoTBs = FXCollections.observableArrayList();
             DBUtil.dbConnect();
+            Object[] objects = new Object[2];
+            ObservableList<NotaCreditoTB> notaCreditoTBs = FXCollections.observableArrayList();            
             statementNotaCredito = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_NotaCredito(?,?,?,?,?,?)}");
             statementNotaCredito.setInt(1, opcion);
             statementNotaCredito.setString(2, buscar);

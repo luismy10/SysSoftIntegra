@@ -44,7 +44,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Guardar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image>
@@ -53,7 +53,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionToReload" onKeyPressed="#onKeyPressedToReload" styleClass="buttonLight" text="Recargar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
@@ -66,17 +66,34 @@
                <children>
                   <VBox style="-fx-background-color: white; -fx-border-width: 1; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
                      <children>
+                        <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label contentDisplay="RIGHT" styleClass="labelRoboto13" text="Documento Guia de Remisión:" textFill="#020203">
+                                       <graphic>
+                                          <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/asterisk.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <HBox VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <ComboBox fx:id="cbDocumentoGuia" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="- Seleccionar -" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
                         <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #e5e5e5; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label alignment="CENTER" style="-fx-background-color: rgb(63,81,181); -fx-padding: 5px 9px; -fx-background-radius: 100px; -fx-border-radius: 300px;" styleClass="labelRobotoBold13" text="1" textFill="WHITE" />
                                     <Label styleClass="labelRobotoBold13" text="Cliente" textFill="#020203" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                 <children>
-                                    <Label fx:id="lblEstadoComprobante" alignment="CENTER" styleClass="labelRobotoBold15" text="-" textFill="#020203" />
                                  </children>
                               </HBox>
                            </children>
