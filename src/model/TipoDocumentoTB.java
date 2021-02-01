@@ -14,6 +14,7 @@ public class TipoDocumentoTB {
     private boolean sistema;
     private boolean guia;
     private boolean factura;
+    private boolean notaCredito;
     private String codigoAlterno;
     private Label lblDestino;
     private ImageView ivPredeterminado;
@@ -118,6 +119,14 @@ public class TipoDocumentoTB {
 
     public void setFactura(boolean factura) {
         this.factura = factura;
+    }
+
+    public boolean isNotaCredito() {
+        return notaCredito;
+    }
+
+    public void setNotaCredito(boolean notaCredito) {
+        this.notaCredito = notaCredito;
     }
 
     public String getCodigoAlterno() {

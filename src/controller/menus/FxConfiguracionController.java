@@ -109,6 +109,14 @@ public class FxConfiguracionController implements Initializable {
     private VBox nodeImpresora;
 
     private FxImpresoraController controllerImpresora;
+    /*
+    Controller impresora
+     */
+    private FXMLLoader fXMLTipoDocumento;
+
+    private VBox nodeTipoDocumento;
+
+    private FxTipoDocumentoController controllerTipoDocumento;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -136,6 +144,10 @@ public class FxConfiguracionController implements Initializable {
             fXMLImpresora = new FXMLLoader(getClass().getResource(FilesRouters.FX_IMPRESORA));
             nodeImpresora = fXMLImpresora.load();
             controllerImpresora = fXMLImpresora.getController();
+
+            fXMLTipoDocumento = new FXMLLoader(getClass().getResource(FilesRouters.FX_TIPO_DOCUMENTO));
+            nodeTipoDocumento = fXMLTipoDocumento.load();
+            controllerTipoDocumento = fXMLTipoDocumento.getController();
         } catch (IOException ex) {
             System.out.println("Error en Configuración Controller:" + ex.getLocalizedMessage());
         }
@@ -257,21 +269,13 @@ public class FxConfiguracionController implements Initializable {
     }
 
     private void openWindowVoucher() {
-        try {
-            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_TIPO_DOCUMENTO));
-            VBox node = fXMLPrincipal.load();
-            FxTipoDocumentoController controller = fXMLPrincipal.getController();
-            controller.setContent(vbPrincipal);
-            vbContent.getChildren().clear();
-            AnchorPane.setLeftAnchor(node, 0d);
-            AnchorPane.setTopAnchor(node, 0d);
-            AnchorPane.setRightAnchor(node, 0d);
-            AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
-            controller.fillTabletTipoDocumento();
-        } catch (IOException ex) {
-            System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
-        }
+        controllerTipoDocumento.setContent(vbPrincipal);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeTipoDocumento, 0d);
+        AnchorPane.setTopAnchor(nodeTipoDocumento, 0d);
+        AnchorPane.setRightAnchor(nodeTipoDocumento, 0d);
+        AnchorPane.setBottomAnchor(nodeTipoDocumento, 0d);
+        vbContent.getChildren().add(nodeTipoDocumento);
     }
 
     private void openWindowTex() {

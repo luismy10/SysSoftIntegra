@@ -12,7 +12,6 @@ import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
@@ -54,11 +54,25 @@ public class FxTipoDocumentoController implements Initializable {
     private TableColumn<TipoDocumentoTB, String> tcCodigoAlterno;
     @FXML
     private TableColumn<TipoDocumentoTB, ImageView> tcPredeterminado;
+    @FXML
+    private Label lblPaginaActual;
+    @FXML
+    private Label lblPaginaSiguiente;
+    @FXML
+    private Text lblPredeterminado;
 
     private AnchorPane vbPrincipal;
 
+    private int paginacion;
+
+    private int totalPaginacion;
+
+    private short opcion;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        paginacion = 1;
+        opcion = 0;
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcTipoComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSerie()));
@@ -74,38 +88,93 @@ public class FxTipoDocumentoController implements Initializable {
         tcDestino.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcCodigoAlterno.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcPredeterminado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+        initLoad();
     }
 
-    public void fillTabletTipoDocumento() {
+    public void initLoad() {
+        if (!lblLoad.isVisible()) {
+            paginacion = 1;
+            fillTabletTipoDocumento(paginacion);
+            opcion = 0;
+        }
+    }
+
+    private void fillTabletTipoDocumento(int posicionPagina) {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
 
-        Task<ObservableList<TipoDocumentoTB>> task = new Task<ObservableList<TipoDocumentoTB>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ObservableList<TipoDocumentoTB> call() {
-                return TipoDocumentoADO.ListTipoDocumento();
+            public Object call() {
+                return TipoDocumentoADO.ListTipoDocumento((posicionPagina - 1) * 10, 10);
             }
         };
-        task.setOnSucceeded((WorkerStateEvent e) -> {
-            tvList.setItems(task.getValue());
-            lblLoad.setVisible(false);
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<TipoDocumentoTB> notaCreditoTBs = (ObservableList<TipoDocumentoTB>) objects[0];
+                if (!notaCreditoTBs.isEmpty()) {
+                    tvList.setItems(notaCreditoTBs);
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 10.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
 
-        });
-        task.setOnFailed((WorkerStateEvent event) -> {
+                    for (int i = 0; i < notaCreditoTBs.size(); i++) {
+                        if (notaCreditoTBs.get(i).isPredeterminado()) {
+                            lblPredeterminado.setText(notaCreditoTBs.get(i).getNombre());
+                            break;
+                        } else {
+                            lblPredeterminado.setText("Ninguno");
+                        }
+                    }
+
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
+                    lblPredeterminado.setText("Ninguno");
+                }
+            } else if (object instanceof String) {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
+                lblPredeterminado.setText("Ninguno");
+            } else {
+                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
+                lblPredeterminado.setText("Ninguno");
+            }
             lblLoad.setVisible(false);
         });
+        task.setOnFailed(w -> {
+            lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
+            lblPredeterminado.setText("Ninguno");
+        });
 
-        task.setOnScheduled((WorkerStateEvent event) -> {
+        task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
+            lblPredeterminado.setText("Ninguno");
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
         }
 
+    }
+
+    private void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillTabletTipoDocumento(paginacion);
+                break;
+
+        }
     }
 
     private void openWindowAdd() throws IOException {
@@ -141,7 +210,8 @@ public class FxTipoDocumentoController implements Initializable {
                     tvList.getSelectionModel().getSelectedItem().getNumeracion(),
                     tvList.getSelectionModel().getSelectedItem().getCodigoAlterno(),
                     tvList.getSelectionModel().getSelectedItem().isGuia(),
-                    tvList.getSelectionModel().getSelectedItem().isFactura()
+                    tvList.getSelectionModel().getSelectedItem().isFactura(),
+                    tvList.getSelectionModel().getSelectedItem().isNotaCredito()
             );
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());
@@ -161,7 +231,7 @@ public class FxTipoDocumentoController implements Initializable {
             String result = TipoDocumentoADO.ChangeDefaultState(true, tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento());
             if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessageInformation(window, "Tipo de comprobante", "Se cambio el estado correctamente.");
-                fillTabletTipoDocumento();
+                initLoad();
             } else {
                 Tools.AlertMessageError(window, "Tipo de comprobante", "Error: " + result);
             }
@@ -177,9 +247,11 @@ public class FxTipoDocumentoController implements Initializable {
                 String result = TipoDocumentoADO.EliminarTipoDocumento(tvList.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 if (result.equalsIgnoreCase("removed")) {
                     Tools.AlertMessageInformation(window, "Tipo de comprobante", "Se elimino correctamente el tipo de documento.");
-                    fillTabletTipoDocumento();
+                    initLoad();
                 } else if (result.equalsIgnoreCase("venta")) {
                     Tools.AlertMessageWarning(window, "Tipo de comprobante", "El tipo de documento esta ligado a una venta.");
+                } else if (result.equalsIgnoreCase("notacredito")) {
+                    Tools.AlertMessageWarning(window, "Tipo de comprobante", "El tipo de documento esta ligado a una nota de crédito.");
                 } else if (result.equalsIgnoreCase("sistema")) {
                     Tools.AlertMessageWarning(window, "Tipo de comprobante", "El tipo de documento no se puede eliminar porque es del sistema.");
                 } else {
@@ -249,13 +321,57 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private void onKeyPressedReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            fillTabletTipoDocumento();
+            initLoad();
         }
     }
 
     @FXML
     private void onActionReload(ActionEvent event) {
-        fillTabletTipoDocumento();
+        initLoad();
+    }
+
+    @FXML
+    private void onKeyPressedAnterior(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                if (paginacion > 1) {
+                    paginacion--;
+                    onEventPaginacion();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onActionAnterior(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            if (paginacion > 1) {
+                paginacion--;
+                onEventPaginacion();
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSiguiente(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                if (paginacion < totalPaginacion) {
+                    paginacion++;
+                    onEventPaginacion();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onActionSiguiente(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            if (paginacion < totalPaginacion) {
+                paginacion++;
+                onEventPaginacion();
+            }
+        }
     }
 
     public void setContent(AnchorPane vbPrincipal) {

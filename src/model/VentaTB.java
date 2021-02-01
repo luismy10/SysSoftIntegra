@@ -10,7 +10,7 @@ public class VentaTB {
     private String idVenta;
     private String idCliente;
     private String vendedor;
-    private int comprobante;
+    private int idComprobante;
     private int moneda;
     private String monedaName;
     private String comprobanteName;
@@ -91,12 +91,12 @@ public class VentaTB {
         this.vendedor = vendedor;
     }
 
-    public int getComprobante() {
-        return comprobante;
+    public int getIdComprobante() {
+        return idComprobante;
     }
 
-    public void setComprobante(int comprobante) {
-        this.comprobante = comprobante;
+    public void setIdComprobante(int idComprobante) {
+        this.idComprobante = idComprobante;
     }
 
     public int getMoneda() {

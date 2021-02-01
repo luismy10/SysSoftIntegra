@@ -37,6 +37,7 @@ public class GuiaRemisionADO {
 
                 statementGuiaRemision = DBUtil.getConnection().prepareStatement("INSERT INTO GuiaRemisionTB"
                         + "(IdGuiaRemision"
+                        + ",Comprobante"
                         + ",Serie"
                         + ",Numeracion"
                         + ",IdCliente"
@@ -61,32 +62,33 @@ public class GuiaRemisionADO {
                         + ",IdTipoComprobante"
                         + ",SerieFactura"
                         + ",NumeracionFactura)"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 statementGuiaRemision.setObject(1, idGuiaRemision);
-                statementGuiaRemision.setObject(2, id_comprabante[0]);
-                statementGuiaRemision.setObject(3, id_comprabante[1]);
-                statementGuiaRemision.setObject(4, guiaRemisionTB.getIdCliente());
-                statementGuiaRemision.setObject(5, guiaRemisionTB.getIdVendedor());
-                statementGuiaRemision.setObject(6, guiaRemisionTB.getEmail());
-                statementGuiaRemision.setObject(7, guiaRemisionTB.getIdMotivoTraslado());
-                statementGuiaRemision.setObject(8, guiaRemisionTB.getIdModalidadTraslado());
-                statementGuiaRemision.setObject(9, guiaRemisionTB.getFechaTraslado());
-                statementGuiaRemision.setObject(10, Tools.getHour());
-                statementGuiaRemision.setObject(11, guiaRemisionTB.getPesoBruto());
-                statementGuiaRemision.setObject(12, guiaRemisionTB.getNumeroBultos());
-                statementGuiaRemision.setObject(13, guiaRemisionTB.getTipoDocumentoConducto());
-                statementGuiaRemision.setObject(14, guiaRemisionTB.getNumeroConductor());
-                statementGuiaRemision.setObject(15, guiaRemisionTB.getNombreConductor());
-                statementGuiaRemision.setObject(16, guiaRemisionTB.getTelefonoCelularConducto());
-                statementGuiaRemision.setObject(17, guiaRemisionTB.getNumeroPlaca());
-                statementGuiaRemision.setObject(18, guiaRemisionTB.getMarcaVehiculo());
-                statementGuiaRemision.setObject(19, guiaRemisionTB.getDireccionPartida());
-                statementGuiaRemision.setObject(20, guiaRemisionTB.getIdUbigeoPartida());
-                statementGuiaRemision.setObject(21, guiaRemisionTB.getDireccionLlegada());
-                statementGuiaRemision.setObject(22, guiaRemisionTB.getIdUbigeoLlegada());
-                statementGuiaRemision.setObject(23, guiaRemisionTB.getIdTipoComprobanteFactura());
-                statementGuiaRemision.setObject(24, guiaRemisionTB.getSerieFactura());
-                statementGuiaRemision.setObject(25, guiaRemisionTB.getNumeracionFactura());
+                statementGuiaRemision.setObject(2, guiaRemisionTB.getIdComprobante());
+                statementGuiaRemision.setObject(3, id_comprabante[0]);
+                statementGuiaRemision.setObject(4, id_comprabante[1]);
+                statementGuiaRemision.setObject(5, guiaRemisionTB.getIdCliente());
+                statementGuiaRemision.setObject(6, guiaRemisionTB.getIdVendedor());
+                statementGuiaRemision.setObject(7, guiaRemisionTB.getEmail());
+                statementGuiaRemision.setObject(8, guiaRemisionTB.getIdMotivoTraslado());
+                statementGuiaRemision.setObject(9, guiaRemisionTB.getIdModalidadTraslado());
+                statementGuiaRemision.setObject(10, guiaRemisionTB.getFechaTraslado());
+                statementGuiaRemision.setObject(11, Tools.getHour());
+                statementGuiaRemision.setObject(12, guiaRemisionTB.getPesoBruto());
+                statementGuiaRemision.setObject(13, guiaRemisionTB.getNumeroBultos());
+                statementGuiaRemision.setObject(14, guiaRemisionTB.getTipoDocumentoConducto());
+                statementGuiaRemision.setObject(15, guiaRemisionTB.getNumeroConductor());
+                statementGuiaRemision.setObject(16, guiaRemisionTB.getNombreConductor());
+                statementGuiaRemision.setObject(17, guiaRemisionTB.getTelefonoCelularConducto());
+                statementGuiaRemision.setObject(18, guiaRemisionTB.getNumeroPlaca());
+                statementGuiaRemision.setObject(19, guiaRemisionTB.getMarcaVehiculo());
+                statementGuiaRemision.setObject(20, guiaRemisionTB.getDireccionPartida());
+                statementGuiaRemision.setObject(21, guiaRemisionTB.getIdUbigeoPartida());
+                statementGuiaRemision.setObject(22, guiaRemisionTB.getDireccionLlegada());
+                statementGuiaRemision.setObject(23, guiaRemisionTB.getIdUbigeoLlegada());
+                statementGuiaRemision.setObject(24, guiaRemisionTB.getIdTipoComprobanteFactura());
+                statementGuiaRemision.setObject(25, guiaRemisionTB.getSerieFactura());
+                statementGuiaRemision.setObject(26, guiaRemisionTB.getNumeracionFactura());
                 statementGuiaRemision.addBatch();
 
                 statementGuiaRemisionDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO GuiaRemisionDetalleTB"

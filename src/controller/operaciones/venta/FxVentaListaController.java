@@ -72,9 +72,10 @@ public class FxVentaListaController implements Initializable {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaVenta() + "\n" + cellData.getValue().getHoraVenta()));
         tcComprobante.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
-        tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClienteTB().getNumeroDocumento()+"\n"+cellData.getValue().getClienteTB().getInformacion()));
+        tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClienteTB().getNumeroDocumento() + "\n" + cellData.getValue().getClienteTB().getInformacion()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
         Tools.actualDate(Tools.getDate(), txtFechaInicio);
         Tools.actualDate(Tools.getDate(), txtFechaFinal);
@@ -97,29 +98,44 @@ public class FxVentaListaController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
             }
         };
         task.setOnSucceeded(w -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                tvList.setItems((ObservableList<VentaTB>) objects.get(0));
-                if (tvList.getItems().isEmpty()) {
-                    tvList.getSelectionModel().select(0);
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) objects[0];
+                if (!ventaTBs.isEmpty()) {
+                    tvList.setItems(ventaTBs);
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
                 }
-                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 20.00));
-                lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-                lblLoad.setVisible(false);
+            } else if (object instanceof String) {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
             } else {
-                lblLoad.setVisible(false);
+                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
             }
+            lblLoad.setVisible(false);
         });
-        task.setOnFailed(w -> lblLoad.setVisible(false));
-        task.setOnScheduled(w -> lblLoad.setVisible(true));
+        task.setOnFailed(w -> {
+            lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
+        });
+        task.setOnScheduled(w -> {
+            lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
+        });
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
