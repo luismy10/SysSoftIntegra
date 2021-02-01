@@ -1396,6 +1396,7 @@
     -fx-font-weight: 100;
     -fx-font-size: 1.0833333333333333em; /* 13px */
     -fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em;/*8px 2px 8px 2px*/
+    -fx-alignment: CENTER;
 }
 .table-view-principal .column-header .label:hover{
     -fx-text-fill: white;

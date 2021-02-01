@@ -641,7 +641,7 @@ public class FxVentaMostrarController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaMostrar(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), Tools.roundingValue(ventaTB.getTotal(), 2), ventaTB.getForma());
+            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), Tools.roundingValue(ventaTB.getTotal(), 2));
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", apWindow.getScene().getWindow());
             stage.setResizable(false);

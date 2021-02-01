@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="12"/>
-	<property name="ireport.y" value="84"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="295"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -23,7 +23,6 @@
 	<parameter name="FECHAEMISION" class="java.lang.String"/>
 	<parameter name="CONDICIONPAGO" class="java.lang.String"/>
 	<parameter name="MONEDA" class="java.lang.String"/>
-	<parameter name="SIMBOLO" class="java.lang.String"/>
 	<parameter name="CALCULAR_TOTALES" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="VALORSOLES" class="java.lang.String"/>
 	<parameter name="VALOR_VENTA" class="java.lang.String"/>
@@ -274,7 +273,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FECHA DE VENTA]]></text>
+				<text><![CDATA[FECHA DE REGISTRO]]></text>
 			</staticText>
 			<textField>
 				<reportElement isPrintRepeatedValues="false" x="435" y="110" width="120" height="20" forecolor="#000000" uuid="36307161-8543-47c4-9bc7-8e173d95d73f"/>
@@ -805,7 +804,7 @@ Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{SIMBOLO}+" "+$P{IMPUESTO_TOTAL}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{IMPUESTO_TOTAL}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
 				<reportElement x="2" y="22" width="80" height="80" uuid="03a73a9e-6761-40cd-a7d8-5d0815f27779"/>

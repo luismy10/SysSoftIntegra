@@ -43,7 +43,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAjuste" onKeyPressed="#onKeyPressedAjuste" styleClass="buttonLight" text="Ajuste">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image>
@@ -52,7 +52,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
@@ -61,7 +61,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/complete.png" />
                            </image>
@@ -70,7 +70,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionTicket" onKeyPressed="#onKeyPressedTicket" styleClass="buttonLight" text="Ticket">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/ticket.png" />
                            </image>

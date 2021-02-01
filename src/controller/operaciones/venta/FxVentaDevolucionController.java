@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.MovimientoCajaTB;
 import model.SuministroTB;
 import model.VentaADO;
 
@@ -45,18 +44,15 @@ public class FxVentaDevolucionController implements Initializable {
 
     private double totalVenta;
 
-    private int formaPago;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
     }
 
-    public void setLoadVentaDevolucion(String idVenta, ObservableList<SuministroTB> arrList, String comprobante, String total, int formaPago) {
+    public void setLoadVentaDevolucion(String idVenta, ObservableList<SuministroTB> arrList, String comprobante, String total) {
         this.idVenta = idVenta;
         this.arrList = arrList;
         this.totalVenta = Double.parseDouble(total);
-        this.formaPago = formaPago;
         lblComprobante.setText(comprobante);
         lblTotal.setText(total);
         txtEfectivo.setText(Tools.roundingValue(totalVenta, 2));
@@ -78,14 +74,8 @@ public class FxVentaDevolucionController implements Initializable {
 
                 Task<String> task = new Task<String>() {
                     @Override
-                    public String call() {
-                        MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
-                        movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-                        movimientoCajaTB.setHoraMovimiento(Tools.getHour());
-                        movimientoCajaTB.setComentario(txtObservacion.getText().toUpperCase() + " (ANULACIÓN DEL COMPROBANTE " + lblComprobante.getText() + ")");
-                        movimientoCajaTB.setTipoMovimiento(formaPago == 1 ? (short) 5 : (short) 6);
-                        movimientoCajaTB.setMonto(totalVenta);
-                        return VentaADO.CancelTheSale(idVenta, arrList, movimientoCajaTB);
+                    public String call() {                       
+                        return VentaADO.CancelTheSale(idVenta, arrList);
                     }
                 };
 

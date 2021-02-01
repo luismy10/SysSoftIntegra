@@ -117,8 +117,6 @@ public class FxVentaDetalleController implements Initializable {
     private Label lblValor;
     @FXML
     private Text lbClienteInformacion;
-    @FXML
-    private Text lblMetodoPago;
 
     private AnchorPane vbPrincipal;
 
@@ -154,7 +152,7 @@ public class FxVentaDetalleController implements Initializable {
 
     private double totalVenta;
 
-    private double efectivo, tarjeta, vuelto;    
+    private double efectivo, tarjeta, vuelto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -198,9 +196,8 @@ public class FxVentaDetalleController implements Initializable {
                 lblComprobante.setText(ventaTB.getComprobanteName());
                 lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                 lblObservaciones.setText(ventaTB.getObservaciones());
-                lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
+                lblTipo.setText(ventaTB.getTipoName() + " - " + ventaTB.getEstadoName());
                 btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
-                lblMetodoPago.setText(ventaTB.getFormaName());
                 efectivo = ventaTB.getEfectivo();
                 tarjeta = ventaTB.getTarjeta();
                 vuelto = ventaTB.getVuelto();
@@ -260,7 +257,7 @@ public class FxVentaDetalleController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaDetalle(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblSerie.getText(), Tools.roundingValue(importeNeto, 2), ventaTB.getForma());
+            controller.setLoadVentaDevolucion(idVenta, arrList, lblSerie.getText(), Tools.roundingValue(importeNeto, 2));
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
             stage.setResizable(false);
@@ -439,9 +436,9 @@ public class FxVentaDetalleController implements Initializable {
         map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
         map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName().toUpperCase() + ":");
         map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
-        map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular().equals("") ? "---" : ventaTB.getClienteTB().getCelular());
-        map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail().equals("") ? "---" : ventaTB.getClienteTB().getEmail());
-        map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion().equals("") ? "---" : ventaTB.getClienteTB().getDireccion());
+        map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular());
+        map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail());
+        map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
 
         map.put("FECHAEMISION", ventaTB.getFechaVenta());
         map.put("MONEDA", ventaTB.getMonedaTB().getNombre() + "-" + ventaTB.getMonedaTB().getAbreviado());
@@ -458,7 +455,6 @@ public class FxVentaDetalleController implements Initializable {
         map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(importeNeto, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
         return jasperPrint;
     }
 

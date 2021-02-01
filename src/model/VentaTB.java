@@ -28,8 +28,6 @@ public class VentaTB {
     private String totalFormat;
     private int tipo;
     private String tipoName;
-    private int forma;
-    private String formaName;
     private int estado;
     private String estadoName;
     private Label estadoLabel;
@@ -212,23 +210,7 @@ public class VentaTB {
     public void setTipoName(String tipoName) {
         this.tipoName = tipoName;
     }
-
-    public int getForma() {
-        return forma;
-    }
-
-    public void setForma(int forma) {
-        this.forma = forma;
-    }
-
-    public String getFormaName() {
-        return formaName;
-    }
-
-    public void setFormaName(String formaName) {
-        this.formaName = formaName;
-    }
-
+    
     public double getImpuesto() {
         return impuesto;
     }

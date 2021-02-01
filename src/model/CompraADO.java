@@ -36,9 +36,7 @@ public class CompraADO extends DBUtil {
 
         dbConnect();
         if (getConnection() != null) {
-
             try {
-                dbConnect();
                 getConnection().setAutoCommit(false);
 
                 codigo_compra = getConnection().prepareCall("{? = call Fc_Compra_Codigo_Alfanumerico()}");
@@ -1143,7 +1141,7 @@ public class CompraADO extends DBUtil {
                 compraTB.setEstadoName(resultSet.getString("Estado"));
                 compraTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
                 compraTB.setMontoPagado(resultSet.getDouble("MontoPagado"));
-                compraTB.setMontoRestante(compraTB.getMontoTotal()-compraTB.getMontoPagado());
+                compraTB.setMontoRestante(compraTB.getMontoTotal() - compraTB.getMontoPagado());
 
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setNumeroDocumento(resultSet.getString("NumeroDocumento"));
@@ -1241,8 +1239,10 @@ public class CompraADO extends DBUtil {
 
     public static ModeloObject Registrar_Amortizacion(CompraCreditoTB compraCreditoTB, BancoHistorialTB bancoHistorialTB, MovimientoCajaTB movimientoCajaTB) {
         ModeloObject result = new ModeloObject();
+
         dbConnect();
         if (getConnection() != null) {
+            PreparedStatement statementValidate = null;
             CallableStatement callableIdCompraCredito = null;
             PreparedStatement preparedBanco = null;
             PreparedStatement preparedBancoHistorial = null;
@@ -1251,60 +1251,70 @@ public class CompraADO extends DBUtil {
             try {
                 getConnection().setAutoCommit(false);
 
-                callableIdCompraCredito = DBUtil.getConnection().prepareCall("{? = call Fc_Compra_Credito_Codigo_Alfanumerico()}");
-                callableIdCompraCredito.registerOutParameter(1, java.sql.Types.VARCHAR);
-                callableIdCompraCredito.execute();
-                String idCompraCreditoCredito = callableIdCompraCredito.getString(1);
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT Total FROM CompraTB WHERE IdCompra = ?");
+                statementValidate.setString(1, compraCreditoTB.getIdCompra());
+                ResultSet resultSet = statementValidate.executeQuery();
+                if (resultSet.next()) {
 
-                preparedBanco = getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial - ? WHERE IdBanco = ?");
-                preparedBancoHistorial = getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
+                    callableIdCompraCredito = DBUtil.getConnection().prepareCall("{? = call Fc_Compra_Credito_Codigo_Alfanumerico()}");
+                    callableIdCompraCredito.registerOutParameter(1, java.sql.Types.VARCHAR);
+                    callableIdCompraCredito.execute();
+                    String idCompraCreditoCredito = callableIdCompraCredito.getString(1);
 
-                if (bancoHistorialTB != null) {
-                    preparedBanco.setDouble(1, bancoHistorialTB.getSalida());
-                    preparedBanco.setString(2, bancoHistorialTB.getIdBanco());
-                    preparedBanco.addBatch();
+                    preparedBanco = getConnection().prepareStatement("UPDATE Banco SET SaldoInicial = SaldoInicial - ? WHERE IdBanco = ?");
+                    preparedBancoHistorial = getConnection().prepareStatement("INSERT INTO BancoHistorialTB(IdBanco,IdProcedencia,Descripcion,Fecha,Hora,Entrada,Salida)VALUES(?,?,?,?,?,?,?)");
 
-                    preparedBancoHistorial.setString(1, bancoHistorialTB.getIdBanco());
-                    preparedBancoHistorial.setString(2, "");
-                    preparedBancoHistorial.setString(3, bancoHistorialTB.getDescripcion());
-                    preparedBancoHistorial.setString(4, bancoHistorialTB.getFecha());
-                    preparedBancoHistorial.setString(5, bancoHistorialTB.getHora());
-                    preparedBancoHistorial.setDouble(6, bancoHistorialTB.getEntrada());
-                    preparedBancoHistorial.setDouble(7, bancoHistorialTB.getSalida());
-                    preparedBancoHistorial.addBatch();
+                    if (bancoHistorialTB != null) {
+                        preparedBanco.setDouble(1, bancoHistorialTB.getSalida());
+                        preparedBanco.setString(2, bancoHistorialTB.getIdBanco());
+                        preparedBanco.addBatch();
+
+                        preparedBancoHistorial.setString(1, bancoHistorialTB.getIdBanco());
+                        preparedBancoHistorial.setString(2, "");
+                        preparedBancoHistorial.setString(3, bancoHistorialTB.getDescripcion());
+                        preparedBancoHistorial.setString(4, bancoHistorialTB.getFecha());
+                        preparedBancoHistorial.setString(5, bancoHistorialTB.getHora());
+                        preparedBancoHistorial.setDouble(6, bancoHistorialTB.getEntrada());
+                        preparedBancoHistorial.setDouble(7, bancoHistorialTB.getSalida());
+                        preparedBancoHistorial.addBatch();
+                    }
+
+                    movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto)VALUES(?,?,?,?,?,?)");
+                    if (movimientoCajaTB != null) {
+                        movimiento_caja.setString(1, movimientoCajaTB.getIdCaja());
+                        movimiento_caja.setString(2, movimientoCajaTB.getFechaMovimiento());
+                        movimiento_caja.setString(3, movimientoCajaTB.getHoraMovimiento());
+                        movimiento_caja.setString(4, movimientoCajaTB.getComentario());
+                        movimiento_caja.setShort(5, movimientoCajaTB.getTipoMovimiento());
+                        movimiento_caja.setDouble(6, movimientoCajaTB.getMonto());
+                        movimiento_caja.addBatch();
+                    }
+
+                    preparedCompraCredito = DBUtil.getConnection().prepareStatement("INSERT INTO CompraCreditoTB(IdCompra,IdCompraCredito,Monto,FechaPago,HoraPago,Estado,IdUsuario,Observacion) VALUES(?,?,?,?,?,?,?,?)");
+                    preparedCompraCredito.setString(1, compraCreditoTB.getIdCompra());
+                    preparedCompraCredito.setString(2, idCompraCreditoCredito);
+                    preparedCompraCredito.setDouble(3, compraCreditoTB.getMonto());
+                    preparedCompraCredito.setString(4, compraCreditoTB.getFechaPago());
+                    preparedCompraCredito.setString(5, compraCreditoTB.getHoraPago());
+                    preparedCompraCredito.setBoolean(6, compraCreditoTB.isEstado());
+                    preparedCompraCredito.setString(7, compraCreditoTB.getIdEmpleado());
+                    preparedCompraCredito.setString(8, compraCreditoTB.getObservacion());
+                    preparedCompraCredito.addBatch();
+
+                    preparedBanco.executeBatch();
+                    preparedBancoHistorial.executeBatch();
+                    preparedCompraCredito.executeBatch();
+                    movimiento_caja.executeBatch();
+                    DBUtil.getConnection().commit();
+                    result.setId((short) 1);
+                    result.setState("inserted");
+                    result.setIdResult(idCompraCreditoCredito);
+                    result.setMessage("Se completo correctamente el proceso.");
+                } else {
+                    result.setId((short) 2);
+                    result.setMessage("Problemas al encontrar le venta con el id indicado " + compraCreditoTB.getIdCompra());
+                    result.setState("error");
                 }
-
-                movimiento_caja = DBUtil.getConnection().prepareStatement("INSERT INTO MovimientoCajaTB(IdCaja,FechaMovimiento,HoraMovimiento,Comentario,TipoMovimiento,Monto)VALUES(?,?,?,?,?,?)");
-                if (movimientoCajaTB != null) {
-                    movimiento_caja.setString(1, movimientoCajaTB.getIdCaja());
-                    movimiento_caja.setString(2, movimientoCajaTB.getFechaMovimiento());
-                    movimiento_caja.setString(3, movimientoCajaTB.getHoraMovimiento());
-                    movimiento_caja.setString(4, movimientoCajaTB.getComentario());
-                    movimiento_caja.setShort(5, movimientoCajaTB.getTipoMovimiento());
-                    movimiento_caja.setDouble(6, movimientoCajaTB.getMonto());
-                    movimiento_caja.addBatch();
-                }
-
-                preparedCompraCredito = DBUtil.getConnection().prepareStatement("INSERT INTO CompraCreditoTB(IdCompra,IdCompraCredito,Monto,FechaPago,HoraPago,Estado,IdUsuario,Observacion) VALUES(?,?,?,?,?,?,?,?)");
-                preparedCompraCredito.setString(1, compraCreditoTB.getIdCompra());
-                preparedCompraCredito.setString(2, idCompraCreditoCredito);
-                preparedCompraCredito.setDouble(3, compraCreditoTB.getMonto());
-                preparedCompraCredito.setString(4, compraCreditoTB.getFechaPago());
-                preparedCompraCredito.setString(5, compraCreditoTB.getHoraPago());
-                preparedCompraCredito.setBoolean(6, compraCreditoTB.isEstado());
-                preparedCompraCredito.setString(7, compraCreditoTB.getIdEmpleado());
-                preparedCompraCredito.setString(8, compraCreditoTB.getObservacion());
-                preparedCompraCredito.addBatch();
-
-                preparedBanco.executeBatch();
-                preparedBancoHistorial.executeBatch();
-                preparedCompraCredito.executeBatch();
-                movimiento_caja.executeBatch();
-                DBUtil.getConnection().commit();
-                result.setId((short) 1);
-                result.setState("inserted");
-                result.setIdResult(idCompraCreditoCredito);
-                result.setMessage("Se completo correctamente el proceso.");
             } catch (SQLException e) {
                 try {
                     getConnection().rollback();
@@ -1473,7 +1483,7 @@ public class CompraADO extends DBUtil {
                 compraTB.setMonedaNombre(rsEmps.getString("Simbolo"));
                 compraTB.setMontoTotal(rsEmps.getDouble("MontoTotal"));
                 compraTB.setMontoPagado(rsEmps.getDouble("MontoPagado"));
-                compraTB.setMontoRestante(compraTB.getMontoTotal()-compraTB.getMontoPagado());
+                compraTB.setMontoRestante(compraTB.getMontoTotal() - compraTB.getMontoPagado());
 
                 HBox hBox = new HBox();
                 hBox.setAlignment(Pos.CENTER);
@@ -1541,7 +1551,7 @@ public class CompraADO extends DBUtil {
                     compraTB.setMonedaNombre(resultSet.getString("Simbolo"));
                     compraTB.setMontoTotal(resultSet.getDouble("MontoTotal"));
                     compraTB.setMontoPagado(resultSet.getDouble("MontoPagado"));
-                    compraTB.setMontoRestante(compraTB.getMontoTotal()-compraTB.getMontoPagado());
+                    compraTB.setMontoRestante(compraTB.getMontoTotal() - compraTB.getMontoPagado());
                 }
                 compraCreditoTB.setCompraTB(compraTB);
             }

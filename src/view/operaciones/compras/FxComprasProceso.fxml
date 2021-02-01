@@ -135,7 +135,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightSuccess" text="Aceptar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image></ImageView>
@@ -143,7 +143,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image></ImageView>
