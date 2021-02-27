@@ -231,8 +231,6 @@ public class FxProducirAgregarController implements Initializable {
         button.setAlignment(Pos.CENTER);
         button.setPrefWidth(Control.USE_COMPUTED_SIZE);
         button.setPrefHeight(Control.USE_COMPUTED_SIZE);
-//        button.setMaxWidth(Double.MAX_VALUE);
-//        button.setMaxHeight(Double.MAX_VALUE);
         ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
         imageView.setFitWidth(20);
         imageView.setFitHeight(20);
@@ -399,7 +397,8 @@ public class FxProducirAgregarController implements Initializable {
         } else {
             ProduccionTB produccionTB = new ProduccionTB();
             produccionTB.setFechaInicio(Tools.getDatePicker(txtFechaInicio));
-            produccionTB.setDias(!Tools.isNumericInteger(txtDias.getText()) ? 0 : Integer.parseInt(txtDias.getText()));
+            produccionTB.setHoraInicio(Tools.getHour());
+            produccionTB.setDias(!Tools.isNumericInteger(txtDias.getText()) ? 1 : Integer.parseInt(txtDias.getText()));
             produccionTB.setHoras(!Tools.isNumericInteger(txtHoras.getText()) ? 0 : Integer.parseInt(txtHoras.getText()));
             produccionTB.setMinutos(!Tools.isNumericInteger(txtMinutos.getText()) ? 0 : Integer.parseInt(txtMinutos.getText()));
             produccionTB.setIdProducto(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
@@ -409,6 +408,7 @@ public class FxProducirAgregarController implements Initializable {
             produccionTB.setFechaRegistro(Tools.getDate());
             produccionTB.setHoraRegistro(Tools.getHour());
             produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
+            produccionTB.setEstado(1);
             short value = Tools.AlertMessageConfirmation(spWindow, "Producción", "¿Está seguro de continuar?");
             if (value == 1) {
                 String result = ProduccionADO.Registrar_Produccion(produccionTB);

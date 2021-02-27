@@ -1,12 +1,14 @@
 package model;
 
-import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 public class ProduccionADO {
 
@@ -35,8 +37,9 @@ public class ProduccionADO {
                     + "Descripcion,"
                     + "FechaRegistro,"
                     + "HoraRegistro,"
-                    + "Cantidad"
-                    + ")VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "Cantidad,"
+                    + "Estado"
+                    + ")VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             statementRegisrar.setString(1, id_produccion);
             statementRegisrar.setString(2, produccionTB.getFechaInicio());
             statementRegisrar.setString(3, produccionTB.getHoraInicio());
@@ -50,6 +53,7 @@ public class ProduccionADO {
             statementRegisrar.setString(11, produccionTB.getFechaRegistro());
             statementRegisrar.setString(12, produccionTB.getHoraRegistro());
             statementRegisrar.setDouble(13, produccionTB.getCantidad());
+            statementRegisrar.setInt(14, produccionTB.getEstado());
             statementRegisrar.addBatch();
 
             statementRegisrar.executeBatch();
@@ -75,25 +79,79 @@ public class ProduccionADO {
 
     public static Object ListarProduccion(int tipo, String fechaInicio, String fechaFinal, String busqueda, int posicionPagina, int filasPorPagina) {
         PreparedStatement statementListar = null;
-        ObservableList<ProduccionTB> produccionTBs = FXCollections.observableArrayList();
         try {
-            statementListar = DBUtil.getConnection().prepareStatement("{CALL ListarProduccion()}");
+            DBUtil.dbConnect();
+            Object[] objects = new Object[2];
+
+            ObservableList<ProduccionTB> produccionTBs = FXCollections.observableArrayList();
+            statementListar = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Produccion(?,?,?,?,?,?)}");
+            statementListar.setInt(1, tipo);
+            statementListar.setString(2, fechaInicio);
+            statementListar.setString(3, fechaFinal);
+            statementListar.setString(4, busqueda);
+            statementListar.setInt(5, posicionPagina);
+            statementListar.setInt(6, filasPorPagina);
             ResultSet resultSet = statementListar.executeQuery();
             while (resultSet.next()) {
                 ProduccionTB produccionTB = new ProduccionTB();
-                produccionTB.setId(resultSet.getRow());
+                produccionTB.setId(resultSet.getRow() + posicionPagina);
                 produccionTB.setIdProduccion(resultSet.getString("IdProduccion"));
-//                produccionTB.setSuministroTB(new SuministroTB(resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
-//                produccionTB.setFechaProduccion(resultSet.getDate("FechaProduccion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
-//                produccionTB.setHoraProduccion(resultSet.getTime("HoraProduccion").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-//                produccionTB.setFechaInicio(resultSet.getDate("FechaInicio").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
-//                produccionTB.setFechaTermino(resultSet.getDate("FechaTermino").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
-//                produccionTB.setNumeroOrden(resultSet.getInt("NumeroOrden"));
-//                produccionTB.setEstado(resultSet.getShort("Estado"));
-//                produccionTB.setTipoOrden(resultSet.getBoolean("TipoOrden"));
+                produccionTB.setFechaRegistro(resultSet.getDate("FechaRegistro").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
+                produccionTB.setHoraRegistro(resultSet.getTime("HoraRegistro").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                produccionTB.setFechaInicio(resultSet.getDate("FechaInico").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
+                produccionTB.setHoraInicio(resultSet.getTime("HoraInicio").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                produccionTB.setDias(resultSet.getInt("Dias"));
+                produccionTB.setHoras(resultSet.getInt("Horas"));
+                produccionTB.setMinutos(resultSet.getInt("Minutos"));
+                produccionTB.setCantidad(resultSet.getDouble("Cantidad"));
+
+                SuministroTB suministroTB = new SuministroTB();
+                suministroTB.setClave(resultSet.getString("Clave"));
+                suministroTB.setNombreMarca(resultSet.getString("NombreMarca"));
+                suministroTB.setUnidadCompraName(resultSet.getString("Medida"));
+                produccionTB.setSuministroTB(suministroTB);
+
+                EmpleadoTB empleadoTB = new EmpleadoTB();
+                empleadoTB.setNumeroDocumento(resultSet.getString("NumeroDocumento"));
+                empleadoTB.setApellidos(resultSet.getString("Apellidos"));
+                empleadoTB.setNombres(resultSet.getString("Nombres"));
+                produccionTB.setEmpleadoTB(empleadoTB);
+
+                Label label = new Label();
+                switch (resultSet.getInt("Estado")) {
+                    case 3:
+                        label.setText("ANULADO");
+                        label.getStyleClass().add("label-proceso");
+                        break;
+                    case 2:
+                        label.setText("EN PRODUCCIÓN");
+                        label.getStyleClass().add("label-medio");
+                        break;
+                    default:
+                        label.setText("COMPLETADO");
+                        label.getStyleClass().add("label-asignacion");
+                        break;
+                }
+                produccionTB.setLblEstado(label);
+
                 produccionTBs.add(produccionTB);
             }
-            return null;
+
+            statementListar = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Produccion_Count(?,?,?,?)}");
+            statementListar.setInt(1, tipo);
+            statementListar.setString(2, fechaInicio);
+            statementListar.setString(3, fechaFinal);
+            statementListar.setString(4, busqueda);
+            resultSet = statementListar.executeQuery();
+            Integer cantidadTotal = 0;
+            if (resultSet.next()) {
+                cantidadTotal = resultSet.getInt("Total");
+            }
+
+            objects[0] = produccionTBs;
+            objects[1] = cantidadTotal;
+
+            return objects;
         } catch (SQLException ex) {
             return ex.getLocalizedMessage();
         } finally {

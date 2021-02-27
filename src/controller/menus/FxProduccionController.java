@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -85,8 +84,7 @@ public class FxProduccionController implements Initializable {
         AnchorPane.setTopAnchor(nodeProducir, 0d);
         AnchorPane.setRightAnchor(nodeProducir, 0d);
         AnchorPane.setBottomAnchor(nodeProducir, 0d);
-        vbContent.getChildren().add(nodeProducir);
-        controllerProducir.loadInitComponents();
+        vbContent.getChildren().add(nodeProducir);    
     }
 
     private void openWindowInsumo() {

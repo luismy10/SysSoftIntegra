@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import javafx.scene.control.Label;
 
 public class ProduccionTB {
 
@@ -18,6 +19,10 @@ public class ProduccionTB {
     private int horas;
     private int minutos;
     private double cantidad;
+    private int estado;
+    private Label lblEstado;
+    private SuministroTB suministroTB;
+    private EmpleadoTB empleadoTB;
     private ArrayList<InsumoTB> insumoTBs;
     
     public ProduccionTB() {
@@ -135,6 +140,38 @@ public class ProduccionTB {
         this.cantidad = cantidad;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public Label getLblEstado() {
+        return lblEstado;
+    }
+
+    public void setLblEstado(Label lblEstado) {
+        this.lblEstado = lblEstado;
+    }
+
+    public SuministroTB getSuministroTB() {
+        return suministroTB;
+    }
+
+    public void setSuministroTB(SuministroTB suministroTB) {
+        this.suministroTB = suministroTB;
+    }    
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
+    }
+    
     public ArrayList<InsumoTB> getInsumoTBs() {
         return insumoTBs;
     }

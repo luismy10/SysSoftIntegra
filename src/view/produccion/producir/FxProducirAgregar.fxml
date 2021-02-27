@@ -36,7 +36,7 @@
                         <Image url="@../../image/produce.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Agregar Orden de Producción" />
+                  <Text fill="#030202" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Agregar Orden de Producción" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">

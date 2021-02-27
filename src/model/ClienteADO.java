@@ -129,21 +129,25 @@ public class ClienteADO {
         return result;
     }
 
-    public static ObservableList<ClienteTB> ListCliente(String value) {
-        String selectStmt = "{call Sp_Listar_Clientes(?)}";
+    public static Object ListCliente(String buscar, int posicionPagina, int filasPorPagina) {
+
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        ObservableList<ClienteTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value);
-            rsEmps = preparedStatement.executeQuery();
+            Object[] objects = new Object[2];
 
+            ObservableList<ClienteTB> empList = FXCollections.observableArrayList();
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Clientes(?,?,?)}");
+            preparedStatement.setString(1, buscar);
+            preparedStatement.setInt(2, posicionPagina);
+            preparedStatement.setInt(3, filasPorPagina);
+            rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 ClienteTB clienteTB = new ClienteTB();
-                clienteTB.setId(rsEmps.getRow());
+                clienteTB.setId(rsEmps.getRow() + posicionPagina);
                 clienteTB.setIdCliente(rsEmps.getString("IdCliente"));
+                clienteTB.setTipoDocumentoName(rsEmps.getString("TipoDocumento")); 
                 clienteTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
                 clienteTB.setInformacion(rsEmps.getString("Informacion"));
                 clienteTB.setTelefono(rsEmps.getString("Telefono"));
@@ -158,8 +162,21 @@ public class ClienteADO {
 
                 empList.add(clienteTB);
             }
-        } catch (SQLException e) {
-            System.out.println("ListCliente - La operación de selección de SQL ha fallado: " + e);
+
+            preparedStatement = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Clientes_Count(?)}");
+            preparedStatement.setString(1, buscar);
+            rsEmps = preparedStatement.executeQuery();
+            Integer cantidadTotal = 0;
+            if (rsEmps.next()) {
+                cantidadTotal = rsEmps.getInt("Total");
+            }
+
+            objects[0] = empList;
+            objects[1] = cantidadTotal;
+            
+            return objects;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
 
         } finally {
             try {
@@ -171,10 +188,10 @@ public class ClienteADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return empList;
+
     }
 
     public static ObservableList<ClienteTB> ListClienteVenta(String value) {

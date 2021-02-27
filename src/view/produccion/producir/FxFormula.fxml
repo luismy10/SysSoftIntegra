@@ -121,12 +121,12 @@
                                  <children>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Buscar por nombre de producción o formula" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Buscar por nombre de formula o producto" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="220.0" promptText="Ingrese los datos a buscar..." styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                        </children>
                                     </VBox>
                                  </children>

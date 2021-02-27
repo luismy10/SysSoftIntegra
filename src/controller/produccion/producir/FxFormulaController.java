@@ -91,9 +91,12 @@ public class FxFormulaController implements Initializable {
 
     private void initLoadTable() {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            paginacion = 1;
-            fillFormulaTable(opcion, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-            opcion = 0;
+            if (!lblLoad.isVisible()) {
+                paginacion = 1;
+                fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 0;
+
+            }
         }
     }
 
@@ -149,10 +152,13 @@ public class FxFormulaController implements Initializable {
         }
     }
 
-    public void onEventPaginacion() {
+    private void onEventPaginacion() {
         switch (opcion) {
             case 0:
                 fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                break;
+            case 1:
+                fillFormulaTable(1, "", "", txtSearch.getText().trim());
                 break;
         }
     }
@@ -341,8 +347,8 @@ public class FxFormulaController implements Initializable {
     private void onKeyPressedAnterior(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
-                if (paginacion < totalPaginacion) {
-                    paginacion++;
+                if (paginacion > 1) {
+                    paginacion--;
                     onEventPaginacion();
                 }
             }
@@ -352,8 +358,8 @@ public class FxFormulaController implements Initializable {
     @FXML
     private void onActionAnterior(ActionEvent event) {
         if (!lblLoad.isVisible()) {
-            if (paginacion < totalPaginacion) {
-                paginacion++;
+            if (paginacion > 1) {
+                paginacion--;
                 onEventPaginacion();
             }
         }

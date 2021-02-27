@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -38,21 +40,17 @@ public class FxProducirController implements Initializable {
     @FXML
     private TableColumn<ProduccionTB, String> tcNumero;
     @FXML
-    private TableColumn<ProduccionTB, String> tcNumeroOrden;
+    private TableColumn<ProduccionTB, String> tcEncargado;
     @FXML
-    private TableColumn<ProduccionTB, String> tcFecha;
+    private TableColumn<ProduccionTB, String> tcFechaInicio;
     @FXML
-    private TableColumn<ProduccionTB, String> tcProduccion;
+    private TableColumn<ProduccionTB, String> tcDuracion;
     @FXML
-    private TableColumn<ProduccionTB, String> tcProducto;
-    @FXML
-    private TableColumn<ProduccionTB, String> tcPersonaEncargada;
-    @FXML
-    private TableColumn<ProduccionTB, String> tcAreaProduccion;
-    @FXML
-    private TableColumn<ProduccionTB, String> tcTipoOrden;
+    private TableColumn<ProduccionTB, String> tcProductoFabricar;
     @FXML
     private TableColumn<ProduccionTB, String> tcCantidad;
+    @FXML
+    private TableColumn<ProduccionTB, Label> tcEstado;
     @FXML
     private Label lblPaginaActual;
     @FXML
@@ -61,6 +59,8 @@ public class FxProducirController implements Initializable {
     private DatePicker dtFechaInicial;
     @FXML
     private DatePicker dtFechaFinal;
+    @FXML
+    private TextField txtSearch;
 
     private ScrollPane node;
 
@@ -83,7 +83,7 @@ public class FxProducirController implements Initializable {
             node = fXMLLoader.load();
             controller = fXMLLoader.getController();
 
-            paginacion = 1; 
+            paginacion = 1;
             opcion = 0;
             loadTableComponents();
             initLoadTable();
@@ -95,24 +95,34 @@ public class FxProducirController implements Initializable {
 
     private void loadTableComponents() {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
-//        tcNumeroOrden.setCellValueFactory(cellData -> Bindings.concat(
-//                "Nrm. " + Tools.Generador0(cellData.getValue().getNumeroOrden())
-//        ));
-//        tcFecha.setCellValueFactory(cellData -> Bindings.concat(
-//                cellData.getValue().getFechaProduccion() + "\n"
-//                + cellData.getValue().getHoraProduccion()
-//        ));
-//        tcProduccion.setCellValueFactory(cellData -> Bindings.concat(
-//                cellData.getValue().getFechaInicio() + "\n"
-//                + cellData.getValue().getFechaTermino()
-//        ));
-//        tcProducto.setCellValueFactory(cellData -> Bindings.concat(
-//                cellData.getValue().getSuministroTB().getClave() + "\n"
-//                + cellData.getValue().getSuministroTB().getNombreMarca()
-//        ));
-//        tcTipoOrden.setCellValueFactory(cellData -> Bindings.concat(
-//                cellData.getValue().isTipoOrden() ? "INTERNO" : "EXTERNO"
-//        ));
+        tcEncargado.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getEmpleadoTB().getNumeroDocumento() + "\n"
+                + cellData.getValue().getEmpleadoTB().getApellidos() + " " + cellData.getValue().getEmpleadoTB().getNombres()
+        ));
+        tcFechaInicio.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getFechaInicio() + "\n"
+                + cellData.getValue().getHoraInicio()
+        ));
+        tcDuracion.setCellValueFactory(cellData -> Bindings.concat(
+                (cellData.getValue().getDias() == 1 ? cellData.getValue().getDias() + " día" : cellData.getValue().getDias() + " días ") + cellData.getValue().getHoras() + ":" + cellData.getValue().getMinutos() + ":00" + "\n"
+                + cellData.getValue().getFechaInicio()
+        ));
+        tcProductoFabricar.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getSuministroTB().getClave() + "\n"
+                + cellData.getValue().getSuministroTB().getNombreMarca()
+        ));
+        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
+                Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getSuministroTB().getUnidadCompraName()
+        ));
+
+        tcEstado.setCellValueFactory(new PropertyValueFactory<>("lblEstado"));
+        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
+        tcEncargado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
+        tcFechaInicio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcDuracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcProductoFabricar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.22));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
         tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
     }
@@ -120,10 +130,14 @@ public class FxProducirController implements Initializable {
     private void initLoadTable() {
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
+        txtSearch.requestFocus();
+        txtSearch.selectAll();
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            paginacion = 1;
-            fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-            opcion = 0;
+            if (!lblLoad.isVisible()) {
+                paginacion = 1;
+                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 0;
+            }
         }
     }
 
@@ -157,6 +171,18 @@ public class FxProducirController implements Initializable {
         task.setOnSucceeded(w -> {
             Object object = task.getValue();
             if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<ProduccionTB> produccionTBs = (ObservableList<ProduccionTB>) objects[0];
+                if (!produccionTBs.isEmpty()) {
+                    tvList.setItems(produccionTBs);
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
+                }
 
             } else if (object instanceof String) {
                 tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
@@ -169,6 +195,17 @@ public class FxProducirController implements Initializable {
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
+        }
+    }
+
+    public void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                break;
+            case 1:
+                fillProduccionTable(1, "", "", txtSearch.getText().trim());
+                break;
         }
     }
 
@@ -208,31 +245,92 @@ public class FxProducirController implements Initializable {
 
     @FXML
     private void onKeyReleasedSearch(KeyEvent event) {
-
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE) {
+            if (!Tools.isText(txtSearch.getText())) {
+                if (!lblLoad.isVisible()) {
+                    paginacion = 1;
+                    fillProduccionTable(1, "", "", txtSearch.getText().trim());
+                    opcion = 1;
+                }
+            }
+        }
     }
 
     @FXML
     private void onKeyPressedAnterior(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            if (!lblLoad.isVisible()) {
+                if (paginacion > 1) {
+                    paginacion--;
+                    onEventPaginacion();
+                }
+            }
         }
     }
 
     @FXML
     private void onActionAnterior(ActionEvent event) {
-
+        if (!lblLoad.isVisible()) {
+            if (paginacion > 1) {
+                paginacion--;
+                onEventPaginacion();
+            }
+        }
     }
 
     @FXML
     private void onKeyPressedSiguiente(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            if (!lblLoad.isVisible()) {
+                if (paginacion < totalPaginacion) {
+                    paginacion++;
+                    onEventPaginacion();
+                }
+            }
         }
     }
 
     @FXML
     private void onActionSiguiente(ActionEvent event) {
-
+        if (!lblLoad.isVisible()) {
+            if (paginacion < totalPaginacion) {
+                paginacion++;
+                onEventPaginacion();
+            }
+        }
     }
 
     public HBox getWindow() {

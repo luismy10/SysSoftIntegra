@@ -21,7 +21,7 @@
                <children>
                   <Label styleClass="labelRobotoBold15" text="Producir" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/producir.png" />
                            </image>
@@ -104,7 +104,7 @@
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <DatePicker fx:id="dtFechaInicial" editable="false" prefHeight="30.0" prefWidth="220.0" />
+                                    <DatePicker fx:id="dtFechaInicial" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="00/00/0000" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.3333333333333333em;">
@@ -114,7 +114,7 @@
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <DatePicker fx:id="dtFechaFinal" editable="false" prefHeight="30.0" prefWidth="220.0" />
+                                    <DatePicker fx:id="dtFechaFinal" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="00/00/0000" />
                                  </children>
                               </VBox>
                            </children>
@@ -130,7 +130,7 @@
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <TextField onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="220.0" promptText="Ingrese los datos para buscar..." styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -140,15 +140,12 @@
                                     <TableView fx:id="tvList" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
-                                          <TableColumn fx:id="tcNumeroOrden" prefWidth="120.0" style="-fx-alignment: center;" text="N° de Orden" />
-                                          <TableColumn fx:id="tcFecha" prefWidth="129.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Registro" />
-                                          <TableColumn fx:id="tcProduccion" prefWidth="133.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Ini./Ter." />
-                                          <TableColumn fx:id="tcProducto" prefWidth="183.0" style="-fx-alignment: CENTER-LEFT;" text="Producto" />
-                                          <TableColumn fx:id="tcPersonaEncargada" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Persona Encargado" />
-                                          <TableColumn fx:id="tcAreaProduccion" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Área de Producción" />
-                                          <TableColumn prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                                          <TableColumn fx:id="tcTipoOrden" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo Orden" />
-                                          <TableColumn fx:id="tcCantidad" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                          <TableColumn fx:id="tcEncargado" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Encargado" />
+                                          <TableColumn fx:id="tcFechaInicio" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Inicio" />
+                                          <TableColumn fx:id="tcDuracion" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Duración" />
+                                          <TableColumn fx:id="tcProductoFabricar" prefWidth="229.0" style="-fx-alignment: CENTER-LEFT;" text="Producto a Fabricar" />
+                                          <TableColumn fx:id="tcCantidad" prefWidth="160.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                          <TableColumn fx:id="tcEstado" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Estado" />
                                        </columns>
                                     </TableView>
                                  </children>

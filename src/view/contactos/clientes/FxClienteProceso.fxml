@@ -67,7 +67,7 @@
                                                       </Label>
                                                       <HBox VBox.vgrow="ALWAYS">
                                                          <children>
-                                                            <ComboBox fx:id="cbDocumentType" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" />
+                                                            <ComboBox fx:id="cbDocumentType" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="260.0" HBox.hgrow="ALWAYS" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -88,7 +88,7 @@
                                                       </Label>
                                                       <HBox VBox.vgrow="ALWAYS">
                                                          <children>
-                                                            <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="260.0" styleClass="text-field-normal" />
+                                                            <TextField fx:id="txtDocumentNumber" onAction="#onActionToRegister" prefHeight="30.0" prefWidth="188.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                                             <Button fx:id="btnBuscarSunat" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSunat" onKeyPressed="#onKeyPressedSunat" prefHeight="30.0" styleClass="buttonLight">
                                                                <graphic>
                                                                   <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
@@ -264,7 +264,7 @@
                      <children>
                         <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionToRegister" onKeyPressed="#onKeyPressedToRegister" styleClass="buttonLightDefault" text="Registrar">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/save.png" />
                                  </image>
@@ -273,7 +273,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionToCancel" onKeyPressed="#onKeyPressedToCancel" styleClass="buttonLight" text="Cancelar">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/error.png" />
                                  </image>
