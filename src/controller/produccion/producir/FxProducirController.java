@@ -25,10 +25,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import model.InsumoADO;
-import model.InsumoTB;
-import report.ProduccionADO;
-import report.ProduccionTB;
+import model.ProduccionTB;
 
 public class FxProducirController implements Initializable {
 
@@ -63,7 +60,7 @@ public class FxProducirController implements Initializable {
 
     private ScrollPane node;
 
-    private FxProducirProcesoController controller;
+    private FxProducirAgregarController controller;
 
     private AnchorPane vbContent;
 
@@ -72,7 +69,7 @@ public class FxProducirController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_PRODUCIR_PROCESO));
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_PRODUCIR_AGREGAR));
             node = fXMLLoader.load();
             controller = fXMLLoader.getController();
         } catch (IOException ex) {
@@ -83,24 +80,24 @@ public class FxProducirController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
 
         tcNumero.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        tcNumeroOrden.setCellValueFactory(cellData -> Bindings.concat(
-                "Nrm. " + Tools.Generador0(cellData.getValue().getNumeroOrden())
-        ));
-        tcFecha.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getFechaProduccion() + "\n"
-                + cellData.getValue().getHoraProduccion()
-        ));
-        tcProduccion.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getFechaInicio() + "\n"
-                + cellData.getValue().getFechaTermino()
-        ));
-        tcProducto.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getSuministroTB().getClave() + "\n"
-                + cellData.getValue().getSuministroTB().getNombreMarca()
-        ));
-        tcTipoOrden.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().isTipoOrden() ? "INTERNO" : "EXTERNO"
-        ));
+//        tcNumeroOrden.setCellValueFactory(cellData -> Bindings.concat(
+//                "Nrm. " + Tools.Generador0(cellData.getValue().getNumeroOrden())
+//        ));
+//        tcFecha.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().getFechaProduccion() + "\n"
+//                + cellData.getValue().getHoraProduccion()
+//        ));
+//        tcProduccion.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().getFechaInicio() + "\n"
+//                + cellData.getValue().getFechaTermino()
+//        ));
+//        tcProducto.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().getSuministroTB().getClave() + "\n"
+//                + cellData.getValue().getSuministroTB().getNombreMarca()
+//        ));
+//        tcTipoOrden.setCellValueFactory(cellData -> Bindings.concat(
+//                cellData.getValue().isTipoOrden() ? "INTERNO" : "EXTERNO"
+//        ));
 
     }
 
@@ -111,27 +108,27 @@ public class FxProducirController implements Initializable {
     }
 
     private void fillTableInsumos(String busqueda) {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-        Task<ObservableList<ProduccionTB>> task = new Task<ObservableList<ProduccionTB>>() {
-            @Override
-            public ObservableList<ProduccionTB> call() {
-                return ProduccionADO.ListarProduccion();
-            }
-        };
-        task.setOnSucceeded(w -> {
-            tvList.setItems(task.getValue());
-            lblLoad.setVisible(false);
-        });
-        task.setOnFailed(w -> lblLoad.setVisible(false));
-        task.setOnScheduled(w -> lblLoad.setVisible(true));
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
+//        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+//            Thread t = new Thread(runnable);
+//            t.setDaemon(true);
+//            return t;
+//        });
+//        Task<ObservableList<ProduccionTB>> task = new Task<ObservableList<ProduccionTB>>() {
+//            @Override
+//            public ObservableList<ProduccionTB> call() {
+//                return ProduccionADO.ListarProduccion(); 
+//            }
+//        };
+//        task.setOnSucceeded(w -> {
+//            tvList.setItems(task.getValue());
+//            lblLoad.setVisible(false);
+//        });
+//        task.setOnFailed(w -> lblLoad.setVisible(false));
+//        task.setOnScheduled(w -> lblLoad.setVisible(true));
+//        exec.execute(task);
+//        if (!exec.isShutdown()) {
+//            exec.shutdown();
+//        }
     }
 
     private void onViewProducirProceso() {
@@ -142,8 +139,6 @@ public class FxProducirController implements Initializable {
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
         vbContent.getChildren().add(node);
-
-        //
     }
 
     @FXML

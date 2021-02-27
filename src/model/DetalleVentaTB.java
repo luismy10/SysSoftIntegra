@@ -1,6 +1,8 @@
 
 package model;
 
+import javafx.scene.control.Button;
+
 public class DetalleVentaTB {
     
     private int id;
@@ -13,6 +15,7 @@ public class DetalleVentaTB {
     private double descuento;
     private double importe;
     private SuministroTB suministroTB;
+    private Button btnRemove;
     
     public DetalleVentaTB(){
         
@@ -96,6 +99,14 @@ public class DetalleVentaTB {
 
     public void setSuministroTB(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
+    }
+
+    public Button getBtnRemove() {
+        return btnRemove;
+    }
+
+    public void setBtnRemove(Button btnRemove) {
+        this.btnRemove = btnRemove;
     }
     
 }

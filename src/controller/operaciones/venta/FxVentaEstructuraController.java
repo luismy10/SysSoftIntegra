@@ -175,7 +175,7 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnBuscarReniec;
     @FXML
     private TextField txtCorreoElectronico;
-
+ 
     private AnchorPane vbPrincipal;
 
     private String monedaSimbolo;
@@ -230,7 +230,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     private double importeNeto;
 
-    private Alert alert = null;
+    private Alert alert = null;   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -504,7 +504,6 @@ public class FxVentaEstructuraController implements Initializable {
             double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
             suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-            suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
             suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
             suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
@@ -515,6 +514,7 @@ public class FxVentaEstructuraController implements Initializable {
             double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
 
             suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
             suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -615,7 +615,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setVendedor(Session.USER_ID);
                 ventaTB.setIdComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedItem().getNombre());
-                ventaTB.setMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
+                ventaTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
                 ventaTB.setMonedaName(monedaSimbolo);
                 ventaTB.setSerie(lblSerie.getText());
                 ventaTB.setNumeracion(lblNumeracion.getText());
@@ -1272,7 +1272,13 @@ public class FxVentaEstructuraController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            "",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -1426,7 +1432,13 @@ public class FxVentaEstructuraController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -1523,7 +1535,13 @@ public class FxVentaEstructuraController implements Initializable {
                                     "",
                                     "",
                                     "",
-                                    "");
+                                    "",
+                                    "",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0");
                         }
 
                         AnchorPane hbDetalle = new AnchorPane();
@@ -1609,7 +1627,13 @@ public class FxVentaEstructuraController implements Initializable {
                                     "",
                                     "",
                                     "",
-                                    "");
+                                    "",
+                                    "",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0");
                         }
 
                         for (int m = 0; m < tvList.getItems().size(); m++) {

@@ -35,7 +35,7 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         });
 
         itemView = new ListView<>();
-        itemView.setPrefHeight(260);
+        itemView.setPrefHeight(240);
         itemView.setItems(searchComboBox.getFilterList());
 
         // administrar la seleccion de un nuevo item
@@ -80,7 +80,6 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
 
     @Override
     protected PopupControl getPopup() {
-
         // redefinir el combobox popup
         super.getPopup().setSkin(new Skin<Skinnable>() {
             @Override
@@ -109,7 +108,7 @@ public class SearchComboBoxSkin<T> extends ComboBoxListViewSkin {
         box.setStyle("-fx-background-color:white;-fx-border-color:#999;-fx-border-width:1px;");
         box.setMinWidth(getSkinnable().getWidth());
         box.setPrefWidth(getSkinnable().getWidth());
-        box.setMaxWidth(Control.USE_COMPUTED_SIZE);
+        box.setMaxWidth(Control.USE_COMPUTED_SIZE);       
         VBox.setVgrow(box, Priority.ALWAYS);
         return box;
     }

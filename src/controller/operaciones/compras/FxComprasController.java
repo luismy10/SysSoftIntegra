@@ -520,7 +520,7 @@ public class FxComprasController implements Initializable {
                 double costo = dctb.getPrecioCompra();
                 double descuento = dctb.getDescuento();
                 double preciocalculado = costo - descuento;
-                double valor_sin_impuesto = preciocalculado / ((dctb.getValorImpuesto()/ 100.00) + 1);
+                double valor_sin_impuesto = preciocalculado / ((dctb.getValorImpuesto() / 100.00) + 1);
 
                 dctb.setDescuento(descuento);
                 dctb.setDescuentoSumado(descuento * dctb.getCantidad());
@@ -615,7 +615,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private void onKeyPressedRecargar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            short value = Tools.AlertMessageConfirmation(spWindow, "COmpras", "¿Está seguro de cancelar el venta?");
+            short value = Tools.AlertMessageConfirmation(spWindow, "Compras", "¿Está seguro de limpiar la compra?");
             if (value == 1) {
                 clearComponents();
             }
@@ -624,7 +624,7 @@ public class FxComprasController implements Initializable {
 
     @FXML
     private void onActionRecargar(ActionEvent event) {
-        short value = Tools.AlertMessageConfirmation(spWindow, "COmpras", "¿Está seguro de cancelar el venta?");
+        short value = Tools.AlertMessageConfirmation(spWindow, "Compras", "¿Está seguro de limpiar la compra?");
         if (value == 1) {
             clearComponents();
         }

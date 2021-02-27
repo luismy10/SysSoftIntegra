@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fx:id="spWindow" fitToWidth="true" style="-fx-background-color: white;" styleClass="scroll-pane-primary" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirAgregarController">
+   <content>
+      <VBox style="-fx-background-color: white;">
+         <children>
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <ImageView fitHeight="28.0" fitWidth="28.0" onMouseClicked="#onMouseClickedBehind" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../../image/left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/produce.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Agregar Orden de Producción" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar(F1)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/save.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionLimpiar" onKeyPressed="#onKeyPressedLimpiar" styleClass="buttonLight" text="Limpiar(F2)">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/escoba.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">
+               <children>
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Fecha de Inicio:" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="15.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="txtFechaRegistro" disable="true" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="00/00/0000" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Duración" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="15.0" />
+                           </font>
+                        </Label>
+                        <HBox>
+                           <children>
+                              <TextField fx:id="txtDias" prefHeight="30.0" prefWidth="100.0" promptText="Días" styleClass="text-field-normal" />
+                              <TextField fx:id="txtHoras" prefHeight="30.0" prefWidth="100.0" promptText="Horas" styleClass="text-field-normal" />
+                              <TextField fx:id="txtMinutos" prefHeight="30.0" prefWidth="100.0" promptText="Minutos" styleClass="text-field-normal" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 0;" VBox.vgrow="ALWAYS">
+               <children>
+                  <TabPane style="-fx-border-color: #ccc;" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                     <tabs>
+                        <Tab text="Información General">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                                       <children>
+                                          <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Producto a Fabricar:" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <ComboBox fx:id="cbProducto" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="320.0" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Formula:" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <ComboBox fx:id="cbFormula" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="320.0" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Tipo de Orden" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox style="-fx-spacing: 0.8333333333333334em;">
+                                                   <children>
+                                                      <RadioButton fx:id="cbInterno" mnemonicParsing="false" selected="true" text="Interna" />
+                                                      <RadioButton fx:id="cbExterno" mnemonicParsing="false" text="Externa" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Persona Encargada" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox>
+                                                   <children>
+                                                      <ComboBox fx:id="cbPersonaEncargada" prefHeight="30.0" prefWidth="320.0" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Glosa Descriptiva de la Orden:" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <TextArea fx:id="txtGlosaDescriptiva" maxHeight="140.0" prefHeight="140.0" promptText="Ingrese una descripción..." HBox.hgrow="ALWAYS" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </Tab>
+                        <Tab text="Insumos">
+                           <content>
+                              <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                                       <children>
+                                          <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cantidad:" textFill="#020203">
+                                                   <font>
+                                                      <Font name="Calibri" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField prefHeight="30.0" prefWidth="320.0" promptText="0.00" styleClass="text-field-normal" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children></VBox>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

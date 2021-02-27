@@ -34,7 +34,7 @@
                         </HBox>
                         <HBox style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                            <children>
-                              <VBox fx:id="vbEfectivo" alignment="CENTER" minWidth="180.0" onMouseClicked="#onMouseClickedEfectivo" style="-fx-cursor: hand; -fx-background-color: #007bff; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbEfectivo" alignment="CENTER" minWidth="200.0" onMouseClicked="#onMouseClickedEfectivo" style="-fx-cursor: hand; -fx-background-color: #007bff; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="lblEfectivo" alignment="BASELINE_LEFT" contentDisplay="TOP" styleClass="labelRoboto15" text="Al contado" textFill="WHITE">
                                        <graphic>
@@ -47,7 +47,7 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox fx:id="vbCredito" alignment="CENTER" minWidth="180.0" onMouseClicked="#onMouseClickedCredito" style="-fx-cursor: hand; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbCredito" alignment="CENTER" minWidth="200.0" onMouseClicked="#onMouseClickedCredito" style="-fx-cursor: hand; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="lblCredito" alignment="CENTER" contentDisplay="TOP" styleClass="labelRoboto15" text="Al Crédito" textFill="#020203">
                                        <graphic>
@@ -60,7 +60,7 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox fx:id="vbPagoAdelantado" alignment="CENTER" minWidth="180.0" onMouseClicked="#onMouseClickedPagoAdelantado" style="-fx-cursor: hand; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="vbPagoAdelantado" alignment="CENTER" minWidth="200.0" onMouseClicked="#onMouseClickedPagoAdelantado" style="-fx-cursor: hand; -fx-padding: 0.5em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="lblPagoAdelantado" alignment="CENTER" contentDisplay="TOP" styleClass="labelRoboto15" text="Pago adelantado" textFill="#020203">
                                        <graphic>

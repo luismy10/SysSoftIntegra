@@ -1,25 +1,27 @@
+package model;
 
-package report;
-
-import model.SuministroTB;
-
+import java.util.ArrayList;
 
 public class ProduccionTB {
-    
+
     private int id;
     private String idProduccion;
-    private String fechaProduccion;
-    private String horaProduccion;
-    private String fechaInicio;
-    private String fechaTermino;
-    private String idSuministro;
-    private int numeroOrden;
-    private short estado;
+    private String idProducto;
     private boolean tipoOrden;
-    private SuministroTB suministroTB;
-
+    private String idEncargado;
+    private String descripcion;
+    private String fechaInicio;
+    private String horaInicio;
+    private String horaRegistro;
+    private String fechaRegistro;
+    private int duracion;
+    private int horas;
+    private int minutos;
+    private double cantidad;
+    private ArrayList<InsumoTB> insumoTBs;
+    
     public ProduccionTB() {
-    }     
+    }
 
     public int getId() {
         return id;
@@ -37,60 +39,12 @@ public class ProduccionTB {
         this.idProduccion = idProduccion;
     }
 
-    public String getFechaProduccion() {
-        return fechaProduccion;
+    public String getIdProducto() {
+        return idProducto;
     }
 
-    public void setFechaProduccion(String fechaProduccion) {
-        this.fechaProduccion = fechaProduccion;
-    }
-
-    public String getHoraProduccion() {
-        return horaProduccion;
-    }
-
-    public void setHoraProduccion(String horaProduccion) {
-        this.horaProduccion = horaProduccion;
-    }
-
-    public String getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public String getFechaTermino() {
-        return fechaTermino;
-    }
-
-    public void setFechaTermino(String fechaTermino) {
-        this.fechaTermino = fechaTermino;
-    }
-
-    public String getIdSuministro() {
-        return idSuministro;
-    }
-
-    public void setIdSuministro(String idSuministro) {
-        this.idSuministro = idSuministro;
-    }
-
-    public int getNumeroOrden() {
-        return numeroOrden;
-    }
-
-    public void setNumeroOrden(int numeroOrden) {
-        this.numeroOrden = numeroOrden;
-    }
-
-    public short getEstado() {
-        return estado;
-    }
-
-    public void setEstado(short estado) {
-        this.estado = estado;
+    public void setIdProducto(String idProducto) {
+        this.idProducto = idProducto;
     }
 
     public boolean isTipoOrden() {
@@ -101,12 +55,92 @@ public class ProduccionTB {
         this.tipoOrden = tipoOrden;
     }
 
-    public SuministroTB getSuministroTB() {
-        return suministroTB;
+    public String getIdEncargado() {
+        return idEncargado;
     }
 
-    public void setSuministroTB(SuministroTB suministroTB) {
-        this.suministroTB = suministroTB;
+    public void setIdEncargado(String idEncargado) {
+        this.idEncargado = idEncargado;
+    }
+
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getHoraRegistro() {
+        return horaRegistro;
+    }
+
+    public void setHoraRegistro(String horaRegistro) {
+        this.horaRegistro = horaRegistro;
+    }
+
+    public String getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(String fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+
+    public int getHoras() {
+        return horas;
+    }
+
+    public void setHoras(int horas) {
+        this.horas = horas;
+    }
+
+    public int getMinutos() {
+        return minutos;
+    }
+
+    public void setMinutos(int minutos) {
+        this.minutos = minutos;
     }    
-     
+
+    public double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public ArrayList<InsumoTB> getInsumoTBs() {
+        return insumoTBs;
+    }
+
+    public void setInsumoTBs(ArrayList<InsumoTB> insumoTBs) {
+        this.insumoTBs = insumoTBs;
+    }
+    
 }

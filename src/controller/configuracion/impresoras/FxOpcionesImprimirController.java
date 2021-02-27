@@ -5,6 +5,7 @@ import controller.consultas.pagar.FxCuentasPorPagarVisualizarController;
 import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.cortecaja.FxCajaController;
 import controller.operaciones.cotizacion.FxCotizacionController;
+import controller.operaciones.venta.FxVentaLlevarControllerHistorial;
 import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
@@ -49,7 +50,8 @@ import model.CompraCreditoTB;
 import model.CompraTB;
 import model.CotizacionADO;
 import model.CotizacionTB;
-import model.MovimientoCajaTB;
+import model.DetalleVentaTB;
+import model.HistorialSuministroSalidaTB;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaCreditoTB;
@@ -74,6 +76,8 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private FxCotizacionController cotizacionController;
 
+    private FxVentaLlevarControllerHistorial ventaLlevarControllerHistorial;
+
     private ConvertMonedaCadena monedaCadena;
 
     private BillPrintable billPrintable;
@@ -96,8 +100,14 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private String idCotizacion;
 
+    private String idSuministro;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        loadComponents();
+    }
+
+    public void loadComponents() {
         billPrintable = new BillPrintable();
         hbEncabezado = new AnchorPane();
         hbDetalleCabecera = new AnchorPane();
@@ -123,6 +133,11 @@ public class FxOpcionesImprimirController implements Initializable {
         this.idCotizacion = idCotizacion;
     }
 
+    public void loadDataHistorialSuministroLlevar(String idVenta, String idSuministro) {
+        this.idVenta = idVenta;
+        this.idSuministro = idSuministro;
+    }
+
     private void onEventAceptar() {
         if (cuentasPorCobrarVisualizarController != null) {
             Tools.Dispose(apWindow);
@@ -134,8 +149,11 @@ public class FxOpcionesImprimirController implements Initializable {
             cajaController.openWindowLogin();
         } else if (cajaConsultasController != null) {
             Tools.Dispose(apWindow);
+
         } else if (cotizacionController != null) {
             Tools.Dispose(apWindow);
+        } else if (ventaLlevarControllerHistorial != null) {
+            Tools.println(apWindow);
         }
     }
 
@@ -145,11 +163,16 @@ public class FxOpcionesImprimirController implements Initializable {
         } else if (cuentasPorPagarVisualizarController != null) {
             printEventCuentasPorPagar();
         } else if (cajaController != null) {
-            printEventCorteCaja();
+            printEventCorteCajaTicket();
+            Tools.Dispose(apWindow);
+            Tools.Dispose(cajaController.getVbPrincipal());
+            cajaController.openWindowLogin();
         } else if (cajaConsultasController != null) {
             printEventCajaConsultas();
         } else if (cotizacionController != null) {
             printEventTicketCotizacion();
+        } else if (ventaLlevarControllerHistorial != null) {
+            printEventHistorialSuministroLlevarTicket();
         }
     }
 
@@ -230,12 +253,9 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
-    private void printEventCorteCaja() {
+    public void printEventCorteCajaTicket() {
         if (!Session.ESTADO_IMPRESORA_CORTE_CAJA && Tools.isText(Session.NOMBRE_IMPRESORA_CORTE_CAJA) && Tools.isText(Session.FORMATO_IMPRESORA_CORTE_CAJA)) {
             Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
-            Tools.Dispose(apWindow);
-            Tools.Dispose(cajaController.getVbPrincipal());
-            cajaController.openWindowLogin();
             return;
         }
         if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("ticket")) {
@@ -252,19 +272,11 @@ public class FxOpcionesImprimirController implements Initializable {
                         Session.NOMBRE_IMPRESORA_CORTE_CAJA,
                         Session.CORTAPAPEL_IMPRESORA_CORTE_CAJA
                 );
-                Tools.Dispose(apWindow);
-                Tools.Dispose(cajaController.getVbPrincipal());
-                cajaController.openWindowLogin();
             }
         } else if (Session.FORMATO_IMPRESORA_CORTE_CAJA.equalsIgnoreCase("a4")) {
-            Tools.Dispose(apWindow);
-            Tools.Dispose(cajaController.getVbPrincipal());
-            cajaController.openWindowLogin();
+
         } else {
             Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
-            Tools.Dispose(apWindow);
-            Tools.Dispose(cajaController.getVbPrincipal());
-            cajaController.openWindowLogin();
         }
     }
 
@@ -298,16 +310,16 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private void printEventTicketCotizacion() {
         if (!Session.ESTADO_IMPRESORA_COTIZACION && Tools.isText(Session.NOMBRE_IMPRESORA_COTIZACION) && Tools.isText(Session.FORMATO_IMPRESORA_COTIZACION)) {
-            Tools.AlertMessageWarning(apWindow, "Abono", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            Tools.AlertMessageWarning(apWindow, "Cotización", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             Tools.Dispose(apWindow);
             return;
         }
         if (Session.FORMATO_IMPRESORA_COTIZACION.equalsIgnoreCase("ticket")) {
             if (Session.TICKET_COTIZACION_ID == 0 && Session.TICKET_COTIZACION_RUTA.equalsIgnoreCase("")) {
-                Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                Tools.AlertMessageWarning(apWindow, "Cotización", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
                 Tools.Dispose(apWindow);
             } else {
-                executeProcessCotizacion(
+                executeProcessCotizacionTicket(
                         Session.DESING_IMPRESORA_COTIZACION,
                         Session.TICKET_COTIZACION_ID,
                         Session.TICKET_COTIZACION_RUTA,
@@ -317,17 +329,41 @@ public class FxOpcionesImprimirController implements Initializable {
                 Tools.Dispose(apWindow);
             }
         } else {
-            Tools.AlertMessageWarning(apWindow, "Abono", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+            Tools.AlertMessageWarning(apWindow, "Cotización", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
             Tools.Dispose(apWindow);
         }
     }
 
     private void printEvent4aCotizacion() {
-        onExecuteImpresion();
+        executeProcessCotizacionReporte();
         Tools.Dispose(apWindow);
     }
 
-    /*cuenta por cobrar*/
+    public void printEventHistorialSuministroLlevarTicket() {
+        if (!Session.ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS && Tools.isText(Session.NOMBRE_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS) && Tools.isText(Session.FORMATO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS)) {
+            Tools.AlertMessageWarning(apWindow, "Salida del Producto", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            return;
+        }
+        if (Session.FORMATO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID == 0 && Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA.equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(apWindow, "Salida del Producto", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+            } else {
+                executeProcessHistorialSalidaProducto(
+                        Session.DESING_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS,
+                        Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID,
+                        Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA,
+                        Session.NOMBRE_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS,
+                        Session.CORTAPAPEL_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS
+                );
+            }
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Salida del Producto", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+        }
+    }
+
+    /**
+     * CUENTAS POR COBRAR
+     */
     private void executeProcessPrinterCuentaPorCobrar(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -453,7 +489,13 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoTotal(), 2),
                     Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoCobrado(), 2),
-                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoRestante(), 2));
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoRestante(), 2),
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -542,7 +584,13 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoTotal(), 2),
                     Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoCobrado(), 2),
-                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoRestante(), 2));
+                    Tools.roundingValue(ventaCreditoTB.getVentaTB().getMontoRestante(), 2),
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         ObservableList<VentaCreditoTB> arrList = FXCollections.observableArrayList(ventaCreditoTB);
@@ -611,7 +659,13 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     Tools.roundingValue(ventaTB.getMontoTotal(), 2),
                     Tools.roundingValue(ventaTB.getMontoCobrado(), 2),
-                    Tools.roundingValue(ventaTB.getMontoRestante(), 2));
+                    Tools.roundingValue(ventaTB.getMontoRestante(), 2),
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -700,7 +754,13 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     Tools.roundingValue(ventaTB.getMontoTotal(), 2),
                     Tools.roundingValue(ventaTB.getMontoCobrado(), 2),
-                    Tools.roundingValue(ventaTB.getMontoRestante(), 2));
+                    Tools.roundingValue(ventaTB.getMontoRestante(), 2),
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         ObservableList<VentaCreditoTB> arrList = FXCollections.observableArrayList(ventaTB.getVentaCreditoTBs());
@@ -742,7 +802,9 @@ public class FxOpcionesImprimirController implements Initializable {
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
     }
 
-    /*cuenta por pagar*/
+    /**
+     * CUENTAS POR PAGAR
+     */
     private void executeProcessPrinterCuentaPorPagar(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -764,7 +826,6 @@ public class FxOpcionesImprimirController implements Initializable {
                                 return printTicketNoDesingCuentaPagarUnico(compraCreditoTB, nombreImpresora, cortaPapel);
                             }
                         } catch (PrinterException | IOException | PrintException ex) {
-                            Tools.println("error: " + ex.getLocalizedMessage());
                             return "Error en imprimir: " + ex.getLocalizedMessage();
                         }
                     } else {
@@ -781,7 +842,6 @@ public class FxOpcionesImprimirController implements Initializable {
                                 return printTicketNoDesingCuentaPagar(compraTB, nombreImpresora, cortaPapel);
                             }
                         } catch (PrinterException | IOException | PrintException ex) {
-                            Tools.println("error: " + ex.getLocalizedMessage());
                             return "Error en imprimir: " + ex.getLocalizedMessage();
                         }
                     } else {
@@ -870,7 +930,13 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     Tools.roundingValue(compraCreditoTB.getCompraTB().getMontoTotal(), 2),
                     Tools.roundingValue(compraCreditoTB.getCompraTB().getMontoPagado(), 2),
-                    Tools.roundingValue(compraCreditoTB.getCompraTB().getMontoRestante(), 2));
+                    Tools.roundingValue(compraCreditoTB.getCompraTB().getMontoRestante(), 2),
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -960,6 +1026,12 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "0",
                     "0",
+                    "0",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
                     "0");
         }
 
@@ -1029,7 +1101,13 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     Tools.roundingValue(compraTB.getMontoTotal(), 2),
                     Tools.roundingValue(compraTB.getMontoPagado(), 2),
-                    Tools.roundingValue(compraTB.getMontoRestante(), 2));
+                    Tools.roundingValue(compraTB.getMontoRestante(), 2),
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -1119,6 +1197,12 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "0",
                     "0",
+                    "0",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
                     "0");
         }
 
@@ -1161,7 +1245,9 @@ public class FxOpcionesImprimirController implements Initializable {
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
     }
 
-    /*corte de caja*/
+    /**
+     * CORTE DE CAJA
+     */
     private void executeProcessPrinterCorteCaja(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -1173,19 +1259,22 @@ public class FxOpcionesImprimirController implements Initializable {
             @Override
             public String call() {
                 if (!Tools.isText(idCaja)) {
-                    ArrayList<Object> arrayList = CajaADO.ListarMovimientoPorById(idCaja);
-                    if (!arrayList.isEmpty() && arrayList.get(0) != null && arrayList.get(1) != null && arrayList.get(2) != null) {
+                    Object arrayList = CajaADO.ListarMovimientoPorById(idCaja);
+                    if (arrayList instanceof Object[]) {
                         try {
-                            CajaTB cajaTB = (CajaTB) arrayList.get(0);
+                            Object object[] = (Object[]) arrayList;
+                            CajaTB cajaTB = (CajaTB) object[0];
                             if (desing.equalsIgnoreCase("withdesing")) {
-                                return printTicketWithDesingCorteCaja(cajaTB, (ArrayList<MovimientoCajaTB>) arrayList.get(2), ticketId, ticketRuta, nombreImpresora, cortaPapel);
+                                return printTicketWithDesingCorteCaja(cajaTB, (ArrayList<Double>) object[1], ticketId, ticketRuta, nombreImpresora, cortaPapel);
                             } else {
                                 billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
-                                return printTicketNoDesingCorteCaja(cajaTB, (ArrayList<MovimientoCajaTB>) arrayList.get(2), nombreImpresora, cortaPapel);
+                                return printTicketNoDesingCorteCaja(cajaTB, (ArrayList<Double>) object[1], nombreImpresora, cortaPapel);
                             }
                         } catch (PrinterException | IOException | PrintException ex) {
                             return "Error en imprimir: " + ex.getLocalizedMessage();
                         }
+                    } else if (arrayList instanceof String) {
+                        return (String) arrayList;
                     } else {
                         return "empty";
                     }
@@ -1244,7 +1333,7 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
-    private String printTicketWithDesingCorteCaja(CajaTB cajaTB, ArrayList<MovimientoCajaTB> movimientoCajaTBs, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
+    private String printTicketWithDesingCorteCaja(CajaTB cajaTB, ArrayList<Double> movimientoCajaTBs, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
         billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
 
         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
@@ -1271,20 +1360,27 @@ public class FxOpcionesImprimirController implements Initializable {
                     cajaTB.getEmpleadoTB().getDireccion(),
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    Tools.roundingValue(movimientoCajaTBs.get(0), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(1), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(2), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(3), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(4), 2)
+            );
         }
 
         AnchorPane hbDetalle = new AnchorPane();
-        ObservableList<MovimientoCajaTB> arrList = FXCollections.observableArrayList(movimientoCajaTBs);
-        for (int m = 0; m < arrList.size(); m++) {
-            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                HBox hBox = new HBox();
-                hBox.setId("dc_" + m + "" + i);
-                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                billPrintable.hbDetalleCorteCaja(hBox, box, arrList, m);
-                hbDetalle.getChildren().add(hBox);
-            }
-        }
+//        ObservableList<Double> arrList = FXCollections.observableArrayList(movimientoCajaTBs);
+//        for (int m = 0; m < arrList.size(); m++) {
+//            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+//                HBox hBox = new HBox();
+//                hBox.setId("dc_" + m + "" + i);
+//                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+//                billPrintable.hbDetalleCorteCaja(hBox, box, arrList, m);
+//                hbDetalle.getChildren().add(hBox);
+//            }
+//        }
 
         for (int i = 0; i < hbPie.getChildren().size(); i++) {
             HBox box = ((HBox) hbPie.getChildren().get(i));
@@ -1330,7 +1426,7 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
-    private String printTicketNoDesingCorteCaja(CajaTB cajaTB, ArrayList<MovimientoCajaTB> movimientoCajaTBs, String nombreImpresora, boolean cortaPapel) {
+    private String printTicketNoDesingCorteCaja(CajaTB cajaTB, ArrayList<Double> movimientoCajaTBs, String nombreImpresora, boolean cortaPapel) {
         ArrayList<HBox> object = new ArrayList<>();
         int rows = 0;
         int lines = 0;
@@ -1360,21 +1456,27 @@ public class FxOpcionesImprimirController implements Initializable {
                     cajaTB.getEmpleadoTB().getDireccion(),
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    Tools.roundingValue(movimientoCajaTBs.get(0), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(1), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(2), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(3), 2),
+                    Tools.roundingValue(movimientoCajaTBs.get(4), 2)
+            );
         }
 
-        ObservableList<MovimientoCajaTB> arrList = FXCollections.observableArrayList(movimientoCajaTBs);
-        for (int m = 0; m < arrList.size(); m++) {
-            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
-                HBox hBox = new HBox();
-                hBox.setId("dc_" + m + "" + i);
-                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                rows++;
-                lines += billPrintable.hbDetalleCorteCaja(hBox, box, arrList, m);
-                object.add(hBox);
-            }
-        }
-
+//        ObservableList<Double> arrList = FXCollections.observableArrayList(movimientoCajaTBs);
+//        for (int m = 0; m < arrList.size(); m++) {
+//            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+//                HBox hBox = new HBox();
+//                hBox.setId("dc_" + m + "" + i);
+//                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+//                rows++;
+//                lines += billPrintable.hbDetalleCorteCaja(hBox, box, arrList, m);
+//                object.add(hBox);
+//            }
+//        }
         for (int i = 0; i < hbPie.getChildren().size(); i++) {
             object.add((HBox) hbPie.getChildren().get(i));
             HBox box = ((HBox) hbPie.getChildren().get(i));
@@ -1402,8 +1504,10 @@ public class FxOpcionesImprimirController implements Initializable {
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
     }
 
-    /*cotización*/
-    private void executeProcessCotizacion(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
+    /**
+     * COTIZACION
+     */
+    private void executeProcessCotizacionTicket(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -1510,7 +1614,13 @@ public class FxOpcionesImprimirController implements Initializable {
                     "-",
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         AnchorPane hbDetalle = new AnchorPane();
@@ -1583,7 +1693,7 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
-    private void onExecuteImpresion() {
+    private void executeProcessCotizacionReporte() {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -1734,6 +1844,283 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
+    /**
+     * HISTORIAL DE SALIDA DEL PRODUCTO
+     */
+    private void executeProcessHistorialSalidaProducto(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                if (!Tools.isText(idVenta) && !Tools.isText(idSuministro)) {
+                    Object object = VentaADO.ListarHistorialSuministroLlevar(idVenta, idSuministro);
+
+                    if (object instanceof Object[]) {
+                        Object[] objects = (Object[]) object;
+
+                        if (objects[0] != null && objects[1] != null) {
+                            try {
+                                VentaTB ventaTB = (VentaTB) objects[0];
+                                DetalleVentaTB detalleVentaTB = (DetalleVentaTB) objects[1];
+                                ArrayList<HistorialSuministroSalidaTB> suministroSalidas = (ArrayList<HistorialSuministroSalidaTB>) objects[2];
+                                if (desing.equalsIgnoreCase("withdesing")) {
+                                    return printTicketWithDesingHistorialSalidaProducto(ventaTB, detalleVentaTB, suministroSalidas, ticketId, ticketRuta, nombreImpresora, cortaPapel);
+                                } else {
+                                    billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+                                    return printTicketNoDesingHistorialSalidaProducto(ventaTB, detalleVentaTB, suministroSalidas, nombreImpresora, cortaPapel);
+                                }
+                            } catch (PrinterException | IOException | PrintException ex) {
+                                return "Error en imprimir: " + ex.getLocalizedMessage();
+                            }
+                        } else {
+                            return "hay valores nulos en traer los datos";
+                        }
+                    } else if (object instanceof String) {
+                        return (String) object;
+                    } else {
+                        return "no se puedo cargar los datos";
+                    }
+                } else {
+                    return "id no inicializados";
+                }
+            }
+        };
+
+        task.setOnSucceeded(w -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("completed")) {
+                Tools.showAlertNotification("/view/image/information_large.png",
+                        "Envío de impresión",
+                        "Se completo el proceso de impresión correctamente.",
+                        Duration.seconds(5),
+                        Pos.BOTTOM_RIGHT);
+            } else if (result.equalsIgnoreCase("error_name")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else if (result.equalsIgnoreCase("empty")) {
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Envío de impresión",
+                        "No hay registros para mostrar en el reporte.",
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            } else {
+                Tools.showAlertNotification("/view/image/error_large.png",
+                        "Envío de impresión",
+                        "Se producto un problema de la impresora\n" + result,
+                        Duration.seconds(10),
+                        Pos.CENTER);
+            }
+        });
+        task.setOnFailed(w -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
+                    "Envío de impresión",
+                    "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                    Duration.seconds(10),
+                    Pos.BOTTOM_RIGHT);
+        });
+
+        task.setOnScheduled(w -> {
+            Tools.showAlertNotification("/view/image/print.png",
+                    "Envío de impresión",
+                    "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                    Duration.seconds(5),
+                    Pos.BOTTOM_RIGHT);
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private String printTicketWithDesingHistorialSalidaProducto(VentaTB ventaTB, DetalleVentaTB detalleVentaTB, ArrayList<HistorialSuministroSalidaTB> suministroSalidas, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
+        billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
+
+        double cantidadActual = 0;
+        for (HistorialSuministroSalidaTB hs : suministroSalidas) {
+            cantidadActual += hs.getCantidad();
+        }
+
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            billPrintable.hbEncebezado(box,
+                    "HISTORIAL DE SALIDA",
+                    ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getDireccion(),
+                    "",
+                    "",
+                    ventaTB.getFechaVenta(),
+                    ventaTB.getHoraVenta(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    Tools.roundingValue(detalleVentaTB.getCantidad(), 2),
+                    Tools.roundingValue(cantidadActual, 2),
+                    Tools.roundingValue(detalleVentaTB.getCantidad() - cantidadActual, 2),
+                    detalleVentaTB.getSuministroTB().getNombreMarca(),
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0"
+            );
+        }
+
+        AnchorPane hbDetalle = new AnchorPane();
+        ArrayList<HistorialSuministroSalidaTB> arrList = suministroSalidas;
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                billPrintable.hbDetalleHistorialSumistroSalida(hBox, box, arrList, m);
+                hbDetalle.getChildren().add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    "",
+                    ventaTB.getClienteTB().getCelular(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
+
+        billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+        DocPrintJob job = billPrintable.findPrintService(nombreImpresora, PrinterJob.lookupPrintServices()).createPrintJob();
+        if (job != null) {
+            PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setPrintService(job.getPrintService());
+            pj.setJobName(nombreImpresora);
+            Book book = new Book();
+            book.append(billPrintable, billPrintable.getPageFormat(pj));
+            pj.setPageable(book);
+            pj.print();
+            if (cortaPapel) {
+                billPrintable.printCortarPapel(nombreImpresora);
+            }
+            return "completed";
+        } else {
+            return "error_name";
+        }
+    }
+
+    private String printTicketNoDesingHistorialSalidaProducto(VentaTB ventaTB, DetalleVentaTB detalleVentaTB, ArrayList<HistorialSuministroSalidaTB> suministroSalidas, String nombreImpresora, boolean cortaPapel) {
+        ArrayList<HBox> object = new ArrayList<>();
+
+        double cantidadActual = 0;
+        for (HistorialSuministroSalidaTB hs : suministroSalidas) {
+            cantidadActual += hs.getCantidad();
+        }
+
+        int rows = 0;
+        int lines = 0;
+        for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+            object.add((HBox) hbEncabezado.getChildren().get(i));
+            HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbEncebezado(box,
+                    "HISTORIAL DE SALIDA",
+                    ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    ventaTB.getClienteTB().getCelular(),
+                    ventaTB.getClienteTB().getDireccion(),
+                    "",
+                    "",
+                    ventaTB.getFechaVenta(),
+                    ventaTB.getHoraVenta(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    Tools.roundingValue(detalleVentaTB.getCantidad(), 2),
+                    Tools.roundingValue(cantidadActual, 2),
+                    Tools.roundingValue(detalleVentaTB.getCantidad() - cantidadActual, 2),
+                    detalleVentaTB.getSuministroTB().getNombreMarca(),
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0"
+            );
+        }
+
+        ArrayList<HistorialSuministroSalidaTB> arrList = suministroSalidas;
+        for (int m = 0; m < arrList.size(); m++) {
+            for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                HBox hBox = new HBox();
+                hBox.setId("dc_" + m + "" + i);
+                HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                rows++;
+                lines += billPrintable.hbDetalleHistorialSumistroSalida(hBox, box, arrList, m);
+                object.add(hBox);
+            }
+        }
+
+        for (int i = 0; i < hbPie.getChildren().size(); i++) {
+            object.add((HBox) hbPie.getChildren().get(i));
+            HBox box = ((HBox) hbPie.getChildren().get(i));
+            rows++;
+            lines += billPrintable.hbPie(box,
+                    "M",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    "0.00",
+                    ventaTB.getClienteTB().getNumeroDocumento(),
+                    ventaTB.getClienteTB().getInformacion(),
+                    "",
+                    ventaTB.getClienteTB().getCelular(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
+        return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
+    }
+
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -1778,16 +2165,20 @@ public class FxOpcionesImprimirController implements Initializable {
         this.cuentasPorPagarVisualizarController = cuentasPorPagarVisualizarController;
     }
 
-    public void setInitOpcionesImprimirCajaConsultas(FxCajaConsultasController cajaConsultasController) {
-        this.cajaConsultasController = cajaConsultasController;
-    }
-
     public void setInitOpcionesImprimirCorteCaja(FxCajaController cajaController) {
         this.cajaController = cajaController;
     }
 
+    public void setInitOpcionesImprimirCorteCaja(FxCajaConsultasController cajaConsultasController) {
+        this.cajaConsultasController = cajaConsultasController;
+    }
+
     public void setInitOpcionesImprimirCotizacion(FxCotizacionController cotizacionController) {
         this.cotizacionController = cotizacionController;
+    }
+
+    public void setInitOpcionesVentaLlevar(FxVentaLlevarControllerHistorial ventaLlevarControllerHistorial) {
+        this.ventaLlevarControllerHistorial = ventaLlevarControllerHistorial;
     }
 
 }

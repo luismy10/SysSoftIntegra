@@ -1,6 +1,7 @@
 package controller.menus;
 
 import controller.produccion.insumos.FxInsumoController;
+import controller.produccion.producir.FxFormulaController;
 import controller.produccion.producir.FxProducirController;
 import controller.tools.FilesRouters;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -47,6 +49,15 @@ public class FxProduccionController implements Initializable {
     private HBox nodeInsumo;
 
     private FxInsumoController controllerInsumo;
+    
+      /*
+    Controller formula     
+     */
+    private FXMLLoader fXMLFormula;
+
+    private HBox nodeFormula;
+
+    private FxFormulaController controllerFormula;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -58,6 +69,10 @@ public class FxProduccionController implements Initializable {
             fXMLInsumo = new FXMLLoader(getClass().getResource(FilesRouters.FX_INSUMOS));
             nodeInsumo = fXMLInsumo.load();
             controllerInsumo = fXMLInsumo.getController();
+            
+            fXMLFormula = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA));
+            nodeFormula = fXMLFormula.load();
+            controllerFormula = fXMLFormula.getController();
         } catch (IOException ex) {
             System.out.println("Error en Producción Controller:" + ex.getLocalizedMessage());
         }
@@ -85,6 +100,16 @@ public class FxProduccionController implements Initializable {
         controllerInsumo.loadInitComponents();
     }
 
+    private void openWindowFormula() {
+        controllerFormula.setContent(vbPrincipal, vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeFormula, 0d);
+        AnchorPane.setTopAnchor(nodeFormula, 0d);
+        AnchorPane.setRightAnchor(nodeFormula, 0d);
+        AnchorPane.setBottomAnchor(nodeFormula, 0d);
+        vbContent.getChildren().add(nodeFormula);        
+    }
+
     @FXML
     private void onKeyPressedProducir(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -107,6 +132,18 @@ public class FxProduccionController implements Initializable {
     @FXML
     private void onActionInsumos(ActionEvent event) {
         openWindowInsumo();
+    }
+
+    @FXML
+    private void onKeyPressedFormula(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowFormula();
+        }
+    }
+
+    @FXML
+    private void onActionFormula(ActionEvent event) {
+        openWindowFormula();
     }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {

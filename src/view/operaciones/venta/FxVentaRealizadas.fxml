@@ -147,7 +147,7 @@
                                  <children>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular13" text="Buscar por Cliente o Serie/Numeración" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Buscar por N° de Documento, Datos del Cliente o Serie/Numeración de Comprobante" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>

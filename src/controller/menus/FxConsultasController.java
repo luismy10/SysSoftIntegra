@@ -180,7 +180,7 @@ public class FxConsultasController implements Initializable {
             nodeBancos = fXMLBancos.load();
             bancosController = fXMLBancos.getController();
 
-            fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO));
+            fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO_REALIZADOS));
             nodeNotaCredito = fXMLNotaCredito.load();
             notaCreditoController = fXMLNotaCredito.getController();
 

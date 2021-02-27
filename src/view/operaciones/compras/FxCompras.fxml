@@ -72,11 +72,11 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnRecargar" mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar(F5)">
+                  <Button fx:id="btnRecargar" mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Limpiar(F5)">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/reload.png" />
+                              <Image url="@../../image/escoba.png" />
                            </image>
                         </ImageView>
                      </graphic>

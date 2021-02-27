@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -24,15 +23,19 @@ public class FxVentaLlevarController implements Initializable {
     @FXML
     private RadioButton rbCantidad;
     @FXML
-    private TextField txtMonto;
+    private TextField txtCantidad;
     @FXML
-    private Button btnAceptar;
-    
+    private TextField txtObservacion;
+
     private FxVentaDetalleController ventaDetalleController;
 
     private String idVenta;
 
     private String idSuministro;
+
+    private String comprobante;
+
+    private double costo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -42,23 +45,41 @@ public class FxVentaLlevarController implements Initializable {
         rbCantidad.setToggleGroup(toggleGroup);
     }
 
-    public void setInitData(String idVenta, String idSuministro) {
+    public void setInitData(String idVenta, String idSuministro, String comprobante, double costo) {
         this.idVenta = idVenta;
         this.idSuministro = idSuministro;
+        this.comprobante = comprobante;
+        this.costo = costo;
     }
 
     private void llevarProducto() {
+        if (rbCompletado.isSelected()) {
+            executeQuery(0, txtObservacion.getText().trim());
+        } else {
+            if (!Tools.isNumeric(txtCantidad.getText().trim())) {
+                Tools.AlertMessageWarning(apWindow, "Venta detalle", "Ingreso un valor númerico, por favor.");
+                txtCantidad.requestFocus();
+            } else {
+                executeQuery(Double.parseDouble(txtCantidad.getText().trim()), txtObservacion.getText().trim());
+            }
+        }
+    }
+
+    private void executeQuery(double cantidad, String observacion) {
         short confirmation = Tools.AlertMessageConfirmation(apWindow, "Venta detalle", "¿Está seguro de continuar?");
         if (confirmation == 1) {
-            String result = VentaADO.UpdateProductoParaLlevar(idVenta, idSuministro, 0, rbCompletado.isSelected());
+            String result = VentaADO.UpdateProductoParaLlevar(idVenta, idSuministro, comprobante, cantidad, costo, observacion, rbCompletado.isSelected());
             switch (result) {
                 case "update":
                     Tools.AlertMessageInformation(apWindow, "Venta detalle", "Se actualizó correctamente el cambio.");
                     Tools.Dispose(apWindow);
-                    ventaDetalleController.setInitComponents(idVenta); 
+                    ventaDetalleController.setInitComponents(idVenta);
                     break;
                 case "noproduct":
                     Tools.AlertMessageWarning(apWindow, "Venta detalle", "No se pudo completar por problemas de id de venta y producto.");
+                    break;
+                case "historial":
+                    Tools.AlertMessageWarning(apWindow, "Venta detalle", "No se puede hacer un movimiento total porque ya existe un historial de salida.");
                     break;
                 default:
                     Tools.AlertMessageError(apWindow, "Venta detalle", result);
@@ -69,12 +90,12 @@ public class FxVentaLlevarController implements Initializable {
 
     @FXML
     private void onActionCompletado(ActionEvent event) {
-        txtMonto.setDisable(true);
+        txtCantidad.setDisable(true);
     }
 
     @FXML
     private void onActionCantidad(ActionEvent event) {
-        txtMonto.setDisable(false);
+        txtCantidad.setDisable(false);
     }
 
     @FXML
@@ -95,7 +116,7 @@ public class FxVentaLlevarController implements Initializable {
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
             event.consume();
         }
-        if (c == '.' && txtMonto.getText().contains(".")) {
+        if (c == '.' && txtCantidad.getText().contains(".")) {
             event.consume();
         }
     }
@@ -113,7 +134,7 @@ public class FxVentaLlevarController implements Initializable {
     }
 
     public void setInitVentaDetalleController(FxVentaDetalleController ventaDetalleController) {
-        this.ventaDetalleController=ventaDetalleController;
+        this.ventaDetalleController = ventaDetalleController;
     }
 
 }

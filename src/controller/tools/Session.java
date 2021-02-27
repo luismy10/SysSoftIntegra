@@ -58,6 +58,9 @@ public class Session {
     public static int TICKET_GUIA_REMISION_ID = 0;
     public static String TICKET_GUIA_REMISION_RUTA = "";
 
+    public static int TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = 0;
+    public static String TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = "";
+
     public static boolean ESTADO_IMPRESORA_VENTA;
     public static String NOMBRE_IMPRESORA_VENTA = "";
     public static boolean CORTAPAPEL_IMPRESORA_VENTA;
@@ -99,6 +102,12 @@ public class Session {
     public static boolean CORTAPAPEL_IMPRESORA_GUIA_REMISION;
     public static String FORMATO_IMPRESORA_GUIA_REMISION = "";
     public static String DESING_IMPRESORA_GUIA_REMISION = "";
+
+    public static boolean ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS;
+    public static String NOMBRE_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = "";
+    public static boolean CORTAPAPEL_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS;
+    public static String FORMATO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = "";
+    public static String DESING_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = "";
 
     /*
     variable de cliente

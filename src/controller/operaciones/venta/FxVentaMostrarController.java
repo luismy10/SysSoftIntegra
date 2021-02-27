@@ -435,7 +435,13 @@ public class FxVentaMostrarController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            "",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -590,7 +596,13 @@ public class FxVentaMostrarController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -631,7 +643,7 @@ public class FxVentaMostrarController implements Initializable {
 
     private void cancelVenta() {
         try {
-            if (Tools.isText(idVenta)) { 
+            if (Tools.isText(idVenta)) {
                 return;
             }
 

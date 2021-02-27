@@ -325,17 +325,19 @@ public class CajaADO {
         return objects;
     }
 
-    public static ArrayList<Object> ListarMovimientoPorById(String idCaja) {
+    public static Object ListarMovimientoPorById(String idCaja) {
         PreparedStatement statementValidar = null;
         PreparedStatement statementMovimiento = null;
         PreparedStatement statementMovimientoBase = null;
 
-        CajaTB cajaTB = null;
-        ArrayList<Double> arrayTotales = null;
-        ArrayList<MovimientoCajaTB> arratyLista = null;
-        ArrayList<Object> objects = new ArrayList<>();
         try {
             DBUtil.dbConnect();
+            Object[] objects = new Object[3];
+            
+            CajaTB cajaTB = null;
+            ArrayList<Double> arrayTotales = new ArrayList();
+            ArrayList<MovimientoCajaTB> arratyLista = new ArrayList<>();
+            
             statementValidar = DBUtil.getConnection().prepareStatement("{call Sp_Obtener_Caja_Aperturada_By_Id(?)}");
             statementValidar.setString(1, idCaja);
             try (ResultSet resultSet = statementValidar.executeQuery()) {
@@ -349,8 +351,7 @@ public class CajaADO {
                     cajaTB.setContado(resultSet.getDouble("Contado"));
                     cajaTB.setCalculado(resultSet.getDouble("Calculado"));
                     cajaTB.setDiferencia(resultSet.getDouble("Diferencia"));
-                    cajaTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("NumeroDocumento"),resultSet.getString("Apellidos"), resultSet.getString("Nombres"),resultSet.getString("Celular"),resultSet.getString("Direccion")));
-                    arrayTotales = new ArrayList();
+                    cajaTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Apellidos"), resultSet.getString("Nombres"), resultSet.getString("Celular"), resultSet.getString("Direccion")));
 
                     statementMovimientoBase = DBUtil.getConnection().prepareStatement("SELECT Monto as MontoBase FROM MovimientoCajaTB WHERE IdCaja = ? AND TipoMovimiento = 1");
                     statementMovimientoBase.setString(1, cajaTB.getIdCaja());
@@ -404,8 +405,6 @@ public class CajaADO {
 
                 }
 
-                arratyLista = new ArrayList<>();
-
                 statementMovimiento = DBUtil.getConnection().prepareStatement("select * from MovimientoCajaTB where IdCaja = ?");
                 statementMovimiento.setString(1, idCaja);
                 try (ResultSet resultSetMovimiento = statementMovimiento.executeQuery()) {
@@ -422,14 +421,14 @@ public class CajaADO {
                 }
 
             }
-            objects.add(cajaTB);
-            objects.add(arrayTotales);
-            objects.add(arratyLista);
-            
+            objects[0] = cajaTB;
+            objects[1] = arrayTotales;
+            objects[2] = arratyLista;
+
             return objects;
         } catch (SQLException ex) {
-            System.out.println("Error en ListarMovimientoPorById: " + ex.getLocalizedMessage());
-            return new ArrayList<>();
+            Tools.println(ex.getLocalizedMessage());
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statementValidar != null) {
@@ -443,10 +442,10 @@ public class CajaADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        
+
     }
 
     public static String CerrarAperturaCaja(String idCaja, BancoHistorialTB bancoHistorialEfectivo, BancoHistorialTB bancoHistorialTarjeta, double contado, double calculado) {

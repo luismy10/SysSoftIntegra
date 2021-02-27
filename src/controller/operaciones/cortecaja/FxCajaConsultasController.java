@@ -94,19 +94,20 @@ public class FxCajaConsultasController implements Initializable {
             return t;
         });
 
-        Task< ArrayList<Object>> task = new Task< ArrayList<Object>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return CajaADO.ListarMovimientoPorById(idCaja);
             }
         };
 
         task.setOnSucceeded(e -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                if (objects.get(0) != null && objects.get(1) != null && objects.get(2) != null) {
-                    cajaTB = (CajaTB) objects.get(0);
-                    ArrayList<Double> arrayList = (ArrayList<Double>) objects.get(1);
+            Object objects = task.getValue();
+            if (objects instanceof Object[]) {
+                Object[] objectData = (Object[]) objects;
+                if (objectData[0] != null) {
+                    cajaTB = (CajaTB) objectData[0];
+                    ArrayList<Double> arrayList = (ArrayList<Double>) objectData[1];
 
                     lblInicoTurno.setText(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
                     lblFinTurno.setText(cajaTB.getFechaCierre() + " " + cajaTB.getHoraCierre());
@@ -123,18 +124,20 @@ public class FxCajaConsultasController implements Initializable {
                     lblRetirosEfectivo.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(arrayList.get(4), 2));
                     lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue((arrayList.get(0) + arrayList.get(1) + arrayList.get(3)) - arrayList.get(4), 2));
 
-                    fillVentasDetalleTable((ArrayList<MovimientoCajaTB>) objects.get(2));
+                    fillVentasDetalleTable((ArrayList<MovimientoCajaTB>) objectData[2]);
                 } else {
-                    Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+                    Tools.AlertMessageError(window, "Corte de caja", "Hay valores nulos en el momento de cargar los datos.");
                 }
+            } else if (objects instanceof String) {
+                Tools.AlertMessageError(window, "Corte de caja", (String) objects);
             } else {
-                Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+                Tools.AlertMessageError(window, "Corte de caja", "Ha ocurrido un error grave, comuníquese con su proveedor del sistema.");
             }
             lblLoad.setVisible(false);
         });
 
         task.setOnFailed(e -> {
-            Tools.AlertMessageError(window, "Corte de caja", "No se pudo realizar la petición por problemas de conexión, intente nuevamente.");
+            Tools.AlertMessageError(window, "Corte de caja", "Se genero un problema en ejecutar la tarea.");
             lblLoad.setVisible(false);
         });
 
@@ -214,7 +217,6 @@ public class FxCajaConsultasController implements Initializable {
 
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
-            System.out.println(ex);
         }
     }
 
@@ -269,28 +271,11 @@ public class FxCajaConsultasController implements Initializable {
     }
 
     public void openModalImpresion(String idCaja) {
-        if (cajaTB != null) {
-            try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxOpcionesImprimirController controller = fXMLLoader.getController();
-                controller.loadDataCorteCaja(idCaja);
-                controller.setInitOpcionesImprimirCajaConsultas(this);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", window.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-                stage.show();
-            } catch (IOException ex) {
-                System.out.println("Controller banco" + ex.getLocalizedMessage());
-            }
-        } else {
-            Tools.AlertMessageWarning(window, "Reporte de Corte de Caja", "No hay datos para mostrar en el ticket");
-        }
+        FxOpcionesImprimirController imprimirController = new FxOpcionesImprimirController();
+        imprimirController.loadComponents();
+        imprimirController.setInitOpcionesImprimirCorteCaja(this);
+        imprimirController.loadDataCorteCaja(idCaja);
+        imprimirController.printEventCorteCajaTicket();
     }
 
     @FXML
@@ -326,7 +311,11 @@ public class FxCajaConsultasController implements Initializable {
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-        openModalImpresion(cajaTB.getIdCaja());
+        if (cajaTB != null) {
+            openModalImpresion(cajaTB.getIdCaja());
+        } else {
+            Tools.AlertMessageWarning(window, "Reporte de Corte de Caja", "No hay datos para mostrar en el ticket");
+        }
     }
 
     public void setContent(AnchorPane vbPrincipal) {

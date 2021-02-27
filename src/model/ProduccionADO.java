@@ -1,16 +1,12 @@
-package report;
+package model;
 
 import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.DBUtil;
-import model.SuministroTB;
-
 public class ProduccionADO {
 
     public static String RegistrarProduccion(ProduccionTB produccionTB) {
@@ -21,36 +17,27 @@ public class ProduccionADO {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
 
-            statementCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Producir_Codigo_Alfanumerico()}");
+            statementCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Produccion_Codigo_Alfanumerico()}");
             statementCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
             statementCodigo.execute();
             String id_produccion = statementCodigo.getString(1);
-            
-            statementNumeroOrden = DBUtil.getConnection().prepareCall("{? = call Fc_Produccion_Nrm_Orden_Numerico()}");
-            statementNumeroOrden.registerOutParameter(1, java.sql.Types.INTEGER);
-            statementNumeroOrden.execute();
-            int numero_produccion = (int) statementNumeroOrden.getObject(1);
 
             statementRegisrar = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionTB("
-                    + "IdProduccion,"
-                    + "FechaProduccion,"
-                    + "HoraProduccion,"
-                    + "FechaInicio,"
-                    + "FechaTermino,"
-                    + "IdSuministro,"
-                    + "NumeroOrden,"
-                    + "Estado,"
-                    + "TipoOrden"
-                    + ")VALUES(?,?,?,?,?,?,?,?,?)");
+                    + "IdProduccion,"      
+                    + "IdProducto,"
+                    + "TipoOrden,"
+                    + "IdEncargado,"
+                    + "Descripcion"
+                    + "FechaRegistro"
+                    + "HoraRegistro"
+                    + ")VALUES(?,?,?,?,?,?,?)");
             statementRegisrar.setString(1, id_produccion);
-            statementRegisrar.setString(2, produccionTB.getFechaProduccion());
-            statementRegisrar.setString(3, produccionTB.getHoraProduccion());
-            statementRegisrar.setString(4, produccionTB.getFechaInicio());
-            statementRegisrar.setString(5, produccionTB.getFechaTermino());
-            statementRegisrar.setString(6, produccionTB.getIdSuministro());
-            statementRegisrar.setInt(7, numero_produccion);
-            statementRegisrar.setShort(8, produccionTB.getEstado());
-            statementRegisrar.setBoolean(9, produccionTB.isTipoOrden());
+            statementRegisrar.setString(2, produccionTB.getIdProducto());
+            statementRegisrar.setBoolean(3, produccionTB.isTipoOrden());
+            statementRegisrar.setString(4, produccionTB.getIdEncargado());
+            statementRegisrar.setString(5, produccionTB.getDescripcion());
+            statementRegisrar.setString(6, produccionTB.getFechaRegistro());
+            statementRegisrar.setString(7, produccionTB.getHoraRegistro());
             statementRegisrar.addBatch();
 
             statementRegisrar.executeBatch();
@@ -84,14 +71,14 @@ public class ProduccionADO {
                 ProduccionTB produccionTB = new ProduccionTB();
                 produccionTB.setId(resultSet.getRow());
                 produccionTB.setIdProduccion(resultSet.getString("IdProduccion"));
-                produccionTB.setSuministroTB(new SuministroTB(resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
-                produccionTB.setFechaProduccion(resultSet.getDate("FechaProduccion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
-                produccionTB.setHoraProduccion(resultSet.getTime("HoraProduccion").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                produccionTB.setFechaInicio(resultSet.getDate("FechaInicio").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
-                produccionTB.setFechaTermino(resultSet.getDate("FechaTermino").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
-                produccionTB.setNumeroOrden(resultSet.getInt("NumeroOrden"));
-                produccionTB.setEstado(resultSet.getShort("Estado"));
-                produccionTB.setTipoOrden(resultSet.getBoolean("TipoOrden"));
+//                produccionTB.setSuministroTB(new SuministroTB(resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
+//                produccionTB.setFechaProduccion(resultSet.getDate("FechaProduccion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
+//                produccionTB.setHoraProduccion(resultSet.getTime("HoraProduccion").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+//                produccionTB.setFechaInicio(resultSet.getDate("FechaInicio").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
+//                produccionTB.setFechaTermino(resultSet.getDate("FechaTermino").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM//yyyy")));
+//                produccionTB.setNumeroOrden(resultSet.getInt("NumeroOrden"));
+//                produccionTB.setEstado(resultSet.getShort("Estado"));
+//                produccionTB.setTipoOrden(resultSet.getBoolean("TipoOrden"));
                 produccionTBs.add(produccionTB);
             }
         } catch (SQLException ex) {

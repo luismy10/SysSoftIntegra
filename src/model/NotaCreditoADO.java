@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,15 +8,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class NotaCreditoADO {
 
-    public static ArrayList<Object> ListarComprobanteParaNotaCredito(String comprobante) {
+    public static Object ListarComprobanteParaNotaCredito(String comprobante) {
         PreparedStatement statementNotaCredito = null;
         try {
             DBUtil.dbConnect();
 
-            ArrayList<Object> objects = new ArrayList();
+            Object[] objects = new Object[7];
 
             statementNotaCredito = DBUtil.getConnection().prepareStatement("SELECT IdTipoDocumento,Nombre FROM TipoDocumentoTB WHERE NotaCredito = 1");
             ArrayList<TipoDocumentoTB> arrayNotaCredito = new ArrayList<>();
@@ -29,7 +35,7 @@ public class NotaCreditoADO {
             ArrayList<MonedaTB> arrayMoneda = new ArrayList<>();
             try (ResultSet resultSet = statementNotaCredito.executeQuery()) {
                 while (resultSet.next()) {
-                    arrayMoneda.add(new MonedaTB(resultSet.getInt("IdTipoDocumento"), resultSet.getString("Nombre")));
+                    arrayMoneda.add(new MonedaTB(resultSet.getInt("IdMoneda"), resultSet.getString("Nombre")));
                 }
             }
 
@@ -60,6 +66,7 @@ public class NotaCreditoADO {
             statementNotaCredito = DBUtil.getConnection().prepareStatement("SELECT \n"
                     + "            v.IdVenta,\n"
                     + "            v.Comprobante,\n"
+                    + "            v.Moneda,\n"
                     + "            v.Serie,\n"
                     + "            v.Numeracion,\n"
                     + "            c.IdCliente,\n"
@@ -78,6 +85,7 @@ public class NotaCreditoADO {
                     ventaTB = new VentaTB();
                     ventaTB.setIdVenta(resultSet.getString("IdVenta"));
                     ventaTB.setIdComprobante(resultSet.getInt("Comprobante"));
+                    ventaTB.setIdMoneda(resultSet.getInt("Moneda"));
                     ventaTB.setSerie(resultSet.getString("Serie"));
                     ventaTB.setNumeracion(resultSet.getString("Numeracion"));
                     ClienteTB clienteTB = new ClienteTB();
@@ -89,6 +97,8 @@ public class NotaCreditoADO {
                     clienteTB.setCelular(resultSet.getString("Celular"));
                     clienteTB.setEmail(resultSet.getString("Email"));
                     ventaTB.setClienteTB(clienteTB);
+                } else {
+                    throw new NullPointerException("No se encontro ningún comprobante");
                 }
             }
 
@@ -124,32 +134,45 @@ public class NotaCreditoADO {
                     suministroTB.setImpuestoValor(resultSet.getDouble("ValorImpuesto"));
                     suministroTB.setImpuestoNombre(resultSet.getString("NombreImpuesto"));
                     detalleVentaTB.setSuministroTB(suministroTB);
+
+                    Button button = new Button();
+                    button.getStyleClass().add("buttonLightError");
+                    button.setAlignment(Pos.CENTER);
+                    button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+                    button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+//                    button.setMaxWidth(Double.MAX_VALUE);
+//                    button.setMaxHeight(Double.MAX_VALUE);
+                    ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+                    imageView.setFitWidth(20);
+                    imageView.setFitHeight(20);
+                    button.setGraphic(imageView);
+                    detalleVentaTB.setBtnRemove(button);
                     arrayDetalleVenta.add(detalleVentaTB);
                 }
             }
 
-            objects.add(arrayNotaCredito);
-            objects.add(arrayMoneda);
-            objects.add(arrayTipoComprobante);
-            objects.add(arrayMotivoAnulacion);
-            objects.add(arrayTipoDocumento);
-            objects.add(ventaTB);
-            objects.add(arrayDetalleVenta);
+            objects[0] = arrayNotaCredito;
+            objects[1] = arrayMoneda;
+            objects[2] = arrayTipoComprobante;
+            objects[3] = arrayMotivoAnulacion;
+            objects[4] = arrayTipoDocumento;
+            objects[5] = ventaTB;
+            objects[6] = arrayDetalleVenta;
 
             return objects;
-        } catch (SQLException ex) {
-
+        } catch (SQLException | NullPointerException ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statementNotaCredito != null) {
                     statementNotaCredito.close();
                 }
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
 
         }
-        return null;
+
     }
 
     public static Object ListarNotasCredito(int opcion, String buscar, String fechaInico, String fechaFinal, int posicionPagina, int filasPorPagina) {
@@ -158,7 +181,7 @@ public class NotaCreditoADO {
         try {
             DBUtil.dbConnect();
             Object[] objects = new Object[2];
-            ObservableList<NotaCreditoTB> notaCreditoTBs = FXCollections.observableArrayList();            
+            ObservableList<NotaCreditoTB> notaCreditoTBs = FXCollections.observableArrayList();
             statementNotaCredito = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_NotaCredito(?,?,?,?,?,?)}");
             statementNotaCredito.setInt(1, opcion);
             statementNotaCredito.setString(2, buscar);
@@ -310,4 +333,115 @@ public class NotaCreditoADO {
             }
         }
     }
+
+    public static String Registrar_NotaCredito(NotaCreditoTB notaCreditoTB) {
+        PreparedStatement statementNotaCredito = null;
+        PreparedStatement statementComprobante = null;
+        PreparedStatement statementDetalle = null;
+        CallableStatement statementCodigoNotaCredito = null;
+        CallableStatement statementCodigoSerieNumeracion = null;
+        try {
+            DBUtil.dbConnect();
+            DBUtil.getConnection().setAutoCommit(false);
+
+            statementCodigoNotaCredito = DBUtil.getConnection().prepareCall("{? = call Fc_NotaCredito_Codigo_Alfanumerico()}");
+            statementCodigoNotaCredito.registerOutParameter(1, java.sql.Types.VARCHAR);
+            statementCodigoNotaCredito.execute();
+            String idNotaCredito = statementCodigoNotaCredito.getString(1);
+
+            statementCodigoSerieNumeracion = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero()}");
+            statementCodigoSerieNumeracion.registerOutParameter(1, java.sql.Types.VARCHAR);
+            statementCodigoSerieNumeracion.setInt(2, notaCreditoTB.getIdComprobante());
+            statementCodigoSerieNumeracion.execute();
+            String[] id_comprabante = statementCodigoSerieNumeracion.getString(1).split("-");
+
+            statementNotaCredito = DBUtil.getConnection().prepareStatement("INSERT INTO NotaCreditoTB(\n"
+                    + "IdNotaCredito,\n"
+                    + "Vendedor,\n"
+                    + "Cliente,\n"
+                    + "Comprobante,\n"
+                    + "Moneda,\n"
+                    + "Serie,\n"
+                    + "Numeracion,\n"
+                    + "Motivo,\n"
+                    + "FechaRegistro,\n"
+                    + "HoraRegistro,\n"
+                    + "IdVenta,\n"
+                    + "Estado)\n"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+            statementNotaCredito.setString(1, idNotaCredito);
+            statementNotaCredito.setString(2, notaCreditoTB.getIdVendedor());
+            statementNotaCredito.setString(3, notaCreditoTB.getIdCliente());
+            statementNotaCredito.setInt(4, notaCreditoTB.getIdComprobante());
+            statementNotaCredito.setInt(5, notaCreditoTB.getIdMoneda());
+            statementNotaCredito.setString(6, id_comprabante[0]);
+            statementNotaCredito.setString(7, id_comprabante[1]);
+            statementNotaCredito.setInt(8, notaCreditoTB.getIdMotivo());
+            statementNotaCredito.setString(9, notaCreditoTB.getFechaRegistro());
+            statementNotaCredito.setString(10, notaCreditoTB.getHoraRegistro());
+            statementNotaCredito.setString(11, notaCreditoTB.getIdVenta());
+            statementNotaCredito.setInt(12, notaCreditoTB.getEstado());
+            statementNotaCredito.addBatch();
+            statementNotaCredito.executeBatch();
+
+            statementComprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(IdTipoDocumento,Serie,Numeracion,FechaRegistro)VALUES(?,?,?,?)");
+            statementComprobante.setInt(1, notaCreditoTB.getIdComprobante());
+            statementComprobante.setString(2, id_comprabante[0]);
+            statementComprobante.setString(3, id_comprabante[1]);
+            statementComprobante.setString(4, notaCreditoTB.getFechaRegistro());
+            statementComprobante.addBatch();
+            statementComprobante.executeBatch();
+
+            statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO NotaCreditoDetalleTB("
+                    + "IdNotaCredito,\n"
+                    + "IdSuministro,\n"
+                    + "Cantidad,\n"
+                    + "Precio,\n"
+                    + "Descuento,\n"
+                    + "ValorImpuesto)\n "
+                    + "VALUES(?,?,?,?,?,?)");
+
+            for (NotaCreditoDetalleTB detalleTB : notaCreditoTB.getNotaCreditoDetalleTBs()) {
+                statementDetalle.setString(1, idNotaCredito);
+                statementDetalle.setString(2, detalleTB.getIdSuministro());
+                statementDetalle.setDouble(3, detalleTB.getCantidad());
+                statementDetalle.setDouble(4, detalleTB.getPrecio());
+                statementDetalle.setDouble(5, detalleTB.getDescuento());
+                statementDetalle.setDouble(6, detalleTB.getValorImpuesto());
+                statementDetalle.addBatch();
+            }
+            statementDetalle.executeBatch();
+
+            DBUtil.getConnection().commit();
+            return "registrado";
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException e) {
+                return e.getLocalizedMessage();
+            }
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementNotaCredito != null) {
+                    statementNotaCredito.close();
+                }
+                if (statementComprobante != null) {
+                    statementComprobante.close();
+                }
+                if (statementDetalle != null) {
+                    statementDetalle.close();
+                }
+                if (statementCodigoNotaCredito != null) {
+                    statementCodigoNotaCredito.close();
+                }
+                if (statementCodigoSerieNumeracion != null) {
+                    statementCodigoSerieNumeracion.close();
+                }
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+    }
+
 }

@@ -4,6 +4,7 @@ import controller.operaciones.compras.FxComprasController;
 import controller.operaciones.cortecaja.FxCajaController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
+import controller.operaciones.notacredito.FxNotaCreditoController;
 import controller.operaciones.venta.FxVentaController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -102,6 +103,14 @@ public class FxOperacionesController implements Initializable {
     private VBox nodeCorteCaja;
 
     private FxCajaController controllerCorteCaja;
+    /*
+    Controller corte de caja
+     */
+    private FXMLLoader fXMLNotaCredito;
+
+    private AnchorPane nodeNotaCredito;
+
+    private FxNotaCreditoController controllerNotaCredito;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -133,6 +142,10 @@ public class FxOperacionesController implements Initializable {
             fXMLCorteCaja = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA));
             nodeCorteCaja = fXMLCorteCaja.load();
             controllerCorteCaja = fXMLCorteCaja.getController();
+
+            fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO));
+            nodeNotaCredito = fXMLNotaCredito.load();
+            controllerNotaCredito = fXMLNotaCredito.getController();
 
         } catch (IOException ex) {
             System.out.println("Error en Ingresos Controller:" + ex.getLocalizedMessage());
@@ -238,6 +251,17 @@ public class FxOperacionesController implements Initializable {
 
     }
 
+    private void openWindowNotaCredito() {
+        controllerNotaCredito.setContent(vbPrincipal,vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeNotaCredito, 0d);
+        AnchorPane.setTopAnchor(nodeNotaCredito, 0d);
+        AnchorPane.setRightAnchor(nodeNotaCredito, 0d);
+        AnchorPane.setBottomAnchor(nodeNotaCredito, 0d);
+        vbContent.getChildren().add(nodeNotaCredito);
+
+    }
+
     @FXML
     private void onKeyPressedVentas(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -309,10 +333,22 @@ public class FxOperacionesController implements Initializable {
     private void onActionCotizacion(ActionEvent event) {
         openWindowCotizacion();
     }
+    
+     @FXML
+    private void onKeyPresseNotaCredito(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowNotaCredito();
+        }
+    }
+
+    @FXML
+    private void onActioNotaCredito(ActionEvent event) {
+        openWindowNotaCredito();
+    }
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.vbPrincipal = vbPrincipal;
         this.vbContent = vbContent;
-    }
+    }   
 
 }

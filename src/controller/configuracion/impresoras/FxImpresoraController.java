@@ -401,6 +401,19 @@ public class FxImpresoraController implements Initializable {
                 Session.FORMATO_IMPRESORA_CUENTA_POR_PAGAR = rbTicket.isSelected() ? "ticket" : "a4";
                 Session.DESING_IMPRESORA_CUENTA_POR_PAGAR = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
                 Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("HISTORIAL DE SALIDA DEL PRODUCTO")) {
+                prop.setProperty("printerNameHistorialSalidaProducto", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperHistorialSalidaProducto", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatHistorialSalidaProducto", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingHistorialSalidaProducto", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
+                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+
+                Session.ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = true;
+                Session.NOMBRE_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
             } else {
                 Tools.AlertMessageWarning(vbWindow, "Impresora", "No se puede guardar la configuración, comuníquese con su proveedor para habilitar el módulo.");
             }

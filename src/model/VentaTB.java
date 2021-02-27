@@ -11,7 +11,7 @@ public class VentaTB {
     private String idCliente;
     private String vendedor;
     private int idComprobante;
-    private int moneda;
+    private int idMoneda;
     private String monedaName;
     private String comprobanteName;
     private String serie;
@@ -99,12 +99,12 @@ public class VentaTB {
         this.idComprobante = idComprobante;
     }
 
-    public int getMoneda() {
-        return moneda;
+    public int getIdMoneda() {
+        return idMoneda;
     }
 
-    public void setMoneda(int moneda) {
-        this.moneda = moneda;
+    public void setIdMoneda(int idMoneda) {
+        this.idMoneda = idMoneda;
     }
 
     public String getMonedaName() {

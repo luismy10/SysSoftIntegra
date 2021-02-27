@@ -507,7 +507,10 @@ public class FxTicketController implements Initializable {
                                 Session.TICKET_CUENTA_POR_PAGAR_RUTA = sampleObject.toJSONString();
                             } else if (tipoTicket == 11) {
                                 Session.TICKET_GUIA_REMISION_ID = idTicket;
-                                Session.TICKET_GUIA_REMISION_RUTA = ruta;
+                                Session.TICKET_GUIA_REMISION_RUTA = sampleObject.toJSONString();
+                            } else if (tipoTicket == 12) {
+                                Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = idTicket;
+                                Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = sampleObject.toJSONString();
                             }
                         }
                         clearPane();
@@ -1505,6 +1508,9 @@ public class FxTicketController implements Initializable {
                     } else if (tipoTicket == 11) {
                         Session.TICKET_GUIA_REMISION_ID = idTicket;
                         Session.TICKET_GUIA_REMISION_RUTA = ruta;
+                    }else if (tipoTicket == 12) {
+                        Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = idTicket;
+                        Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = ruta;
                     }
                 } else {
                     Tools.AlertMessageError(vbWindow, "Ticket", result);
@@ -1542,8 +1548,11 @@ public class FxTicketController implements Initializable {
                         Session.TICKET_CUENTA_POR_PAGAR_ID = 0;
                         Session.TICKET_CUENTA_POR_PAGAR_RUTA = "";
                     } else if (tipoTicket == 11) {
-                        Session.TICKET_GUIA_REMISION_ID = idTicket;
-                        Session.TICKET_GUIA_REMISION_RUTA = ruta;
+                        Session.TICKET_GUIA_REMISION_ID = 0;
+                        Session.TICKET_GUIA_REMISION_RUTA = "";
+                    }else if (tipoTicket == 12) {
+                        Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = 0;
+                        Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = "";
                     }
                     clearPane();
                 } else if (result.equalsIgnoreCase("predeterminated")) {

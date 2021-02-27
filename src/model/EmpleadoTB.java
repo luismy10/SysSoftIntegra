@@ -1,60 +1,94 @@
-
 package model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.CheckBox;
 
-
-
 public class EmpleadoTB implements Serializable {
 
-    
+    public static List<EmpleadoTB> getSearchComboBoxEmpleados(String buscar) {
+        String selectStmt = "SELECT IdEmpleado,NumeroDocumento,Apellidos,Nombres FROM EmpleadoTB WHERE NumeroDocumento LIKE ? OR Apellidos LIKE ? OR Nombres LIKE ?";
+        PreparedStatement preparedStatement = null;
+        List<EmpleadoTB> empleadoTBs = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, buscar + "%");
+            preparedStatement.setString(2, buscar + "%");
+            preparedStatement.setString(3, buscar + "%");
+            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                while (rsEmps.next()) {
+                    EmpleadoTB empleadoTB = new EmpleadoTB();
+                    empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
+                    empleadoTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                    empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
+                    empleadoTB.setNombres(rsEmps.getString("Nombres"));
+                    empleadoTBs.add(empleadoTB);
+                }
+            }
+        } catch (SQLException e) {
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+        return empleadoTBs;
+    }
+
     private SimpleIntegerProperty id;
-  
+
     private String idEmpleado;
-   
+
     private int tipoDocumento;
-  
+
     private String numeroDocumento;
-  
+
     private String apellidos;
 
     private String nombres;
-   
+
     private Integer sexo;
-    
+
     private Date fechaNacimiento;
-  
+
     private int puesto;
-    
+
     private String puestoName;
 
     private int estado;
-    
+
     private String estadoName;
-    
+
     private String telefono;
-    
+
     private String celular;
 
     private String email;
- 
+
     private String direccion;
-    
+
     private String usuario;
-  
+
     private String clave;
-    
+
     private int rol;
-    
+
     private String rolName;
-    
+
     private CheckBox validarEm;
-    
+
     private String informacion;
-    
 
     public EmpleadoTB() {
     }
@@ -68,7 +102,7 @@ public class EmpleadoTB implements Serializable {
         this.apellidos = apellidos;
         this.nombres = nombres;
     }
-   
+
     public EmpleadoTB(String apellidos, String nombres) {
         this.apellidos = apellidos;
         this.nombres = nombres;
@@ -81,8 +115,6 @@ public class EmpleadoTB implements Serializable {
         this.celular = celular;
         this.direccion = direccion;
     }
-    
-    
 
     public EmpleadoTB(String idEmpleado, int tipoDocumento, String apellidos, String nombres, int puesto, int estado) {
         this.idEmpleado = idEmpleado;
@@ -250,7 +282,7 @@ public class EmpleadoTB implements Serializable {
     }
 
     public void setRolName(String rolName) {
-        this.rolName = rolName == null ? "Global": rolName;
+        this.rolName = rolName == null ? "Global" : rolName;
     }
 
     public CheckBox getValidarEm() {
@@ -271,8 +303,7 @@ public class EmpleadoTB implements Serializable {
 
     @Override
     public String toString() {
-        return apellidos+" "+ nombres;
+        return apellidos + " " + nombres;
     }
 
-    
 }

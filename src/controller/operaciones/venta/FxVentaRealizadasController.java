@@ -96,6 +96,8 @@ public class FxVentaRealizadasController implements Initializable {
 
     private short opcion;
 
+    private boolean buscarTodos;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         paginacion = 1;
@@ -168,6 +170,9 @@ public class FxVentaRealizadasController implements Initializable {
         if (privilegioTBs.get(7).getIdPrivilegio() != 0 && !privilegioTBs.get(7).isEstado()) {
             txtSearch.setDisable(true);
         }
+        if (privilegioTBs.get(8).getIdPrivilegio() != 0 && privilegioTBs.get(8).isEstado()) {
+            buscarTodos = true;
+        }
     }
 
     public void loadInit() {
@@ -204,7 +209,7 @@ public class FxVentaRealizadasController implements Initializable {
                     tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
                     lblPaginaActual.setText("0");
                     lblPaginaSiguiente.setText("0");
-                }                
+                }
             } else if (object instanceof String) {
                 tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
             } else {
@@ -277,7 +282,7 @@ public class FxVentaRealizadasController implements Initializable {
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
                 break;
             case 1:
-                fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
+                fillVentasTable((short) (!buscarTodos ? 1 : 2), txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
                 break;
         }
     }
@@ -331,7 +336,7 @@ public class FxVentaRealizadasController implements Initializable {
             if (!Tools.isText(txtSearch.getText())) {
                 if (!lblLoad.isVisible()) {
                     paginacion = 1;
-                    fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
+                    fillVentasTable((short) (!buscarTodos ? 1 : 2), txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
                     opcion = 1;
                 }
             }

@@ -18,6 +18,7 @@ public class NotaCreditoTB {
     private String nombreMotivo;
     private String fechaRegistro;
     private String horaRegistro;
+    private int estado;
     private String idVenta;
     private String xmlSunat;
     private String xmlDescripcion;
@@ -142,6 +143,14 @@ public class NotaCreditoTB {
 
     public void setHoraRegistro(String horaRegistro) {
         this.horaRegistro = horaRegistro;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public String getIdVenta() {
