@@ -92,7 +92,7 @@ public class FxFormulaController implements Initializable {
     private void initLoadTable() {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             paginacion = 1;
-            fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillFormulaTable(opcion, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
             opcion = 0;
         }
     }

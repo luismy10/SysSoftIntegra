@@ -7,12 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 public class ProduccionADO {
 
-    public static String RegistrarProduccion(ProduccionTB produccionTB) {
+    public static String Registrar_Produccion(ProduccionTB produccionTB) {
         PreparedStatement statementRegisrar = null;
         CallableStatement statementCodigo = null;
-        CallableStatement statementNumeroOrden = null;
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -23,21 +23,33 @@ public class ProduccionADO {
             String id_produccion = statementCodigo.getString(1);
 
             statementRegisrar = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionTB("
-                    + "IdProduccion,"      
+                    + "IdProduccion,"
+                    + "FechaInico,"
+                    + "HoraInicio,"
+                    + "Dias,"
+                    + "Horas,"
+                    + "Minutos,"
                     + "IdProducto,"
                     + "TipoOrden,"
                     + "IdEncargado,"
-                    + "Descripcion"
-                    + "FechaRegistro"
-                    + "HoraRegistro"
-                    + ")VALUES(?,?,?,?,?,?,?)");
+                    + "Descripcion,"
+                    + "FechaRegistro,"
+                    + "HoraRegistro,"
+                    + "Cantidad"
+                    + ")VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
             statementRegisrar.setString(1, id_produccion);
-            statementRegisrar.setString(2, produccionTB.getIdProducto());
-            statementRegisrar.setBoolean(3, produccionTB.isTipoOrden());
-            statementRegisrar.setString(4, produccionTB.getIdEncargado());
-            statementRegisrar.setString(5, produccionTB.getDescripcion());
-            statementRegisrar.setString(6, produccionTB.getFechaRegistro());
-            statementRegisrar.setString(7, produccionTB.getHoraRegistro());
+            statementRegisrar.setString(2, produccionTB.getFechaInicio());
+            statementRegisrar.setString(3, produccionTB.getHoraInicio());
+            statementRegisrar.setInt(4, produccionTB.getDias());
+            statementRegisrar.setInt(5, produccionTB.getHoras());
+            statementRegisrar.setInt(6, produccionTB.getMinutos());
+            statementRegisrar.setString(7, produccionTB.getIdProducto());
+            statementRegisrar.setBoolean(8, produccionTB.isTipoOrden());
+            statementRegisrar.setString(9, produccionTB.getIdEncargado());
+            statementRegisrar.setString(10, produccionTB.getDescripcion());
+            statementRegisrar.setString(11, produccionTB.getFechaRegistro());
+            statementRegisrar.setString(12, produccionTB.getHoraRegistro());
+            statementRegisrar.setDouble(13, produccionTB.getCantidad());
             statementRegisrar.addBatch();
 
             statementRegisrar.executeBatch();
@@ -61,7 +73,7 @@ public class ProduccionADO {
         }
     }
 
-    public static ObservableList<ProduccionTB> ListarProduccion() {
+    public static Object ListarProduccion(int tipo, String fechaInicio, String fechaFinal, String busqueda, int posicionPagina, int filasPorPagina) {
         PreparedStatement statementListar = null;
         ObservableList<ProduccionTB> produccionTBs = FXCollections.observableArrayList();
         try {
@@ -81,8 +93,9 @@ public class ProduccionADO {
 //                produccionTB.setTipoOrden(resultSet.getBoolean("TipoOrden"));
                 produccionTBs.add(produccionTB);
             }
+            return null;
         } catch (SQLException ex) {
-            Tools.println("Error en listar: " + ex.getLocalizedMessage());
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statementListar != null) {
@@ -90,10 +103,9 @@ public class ProduccionADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return produccionTBs;
     }
 
 }

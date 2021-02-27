@@ -38,9 +38,9 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 0px 0px 1px 0px; -fx-border-color: #cccccc;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionNuevaFormula" onKeyPressed="#onKeyPressedNuevaFormula" styleClass="buttonLightDefault" text="Nueva formula">
+                  <Button mnemonicParsing="false" onAction="#onActionNuevaFormula" onKeyPressed="#onKeyPressedNuevaFormula" styleClass="buttonLightDefault" text="Nueva Form.(F1)">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -49,7 +49,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionEditarFormula" onKeyPressed="#onKeyPressedEditarFormula" styleClass="buttonLight" text="Editar formula">
+                  <Button mnemonicParsing="false" onAction="#onActionEditarFormula" onKeyPressed="#onKeyPressedEditarFormula" styleClass="buttonLight" text="Editar Form.(F2)">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -58,7 +58,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionEliminarFormula" onKeyPressed="#onKeyPressedEliminarFormula" styleClass="buttonLight" text="Eliminar formula">
+                  <Button mnemonicParsing="false" onAction="#onActionEliminarFormula" onKeyPressed="#onKeyPressedEliminarFormula" styleClass="buttonLight" text="Eliminar Form.(F3)">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -67,7 +67,16 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar">
+                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Vizualizar(F4)">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/report-global.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar(F5)">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>

@@ -349,7 +349,7 @@ public class NotaCreditoADO {
             statementCodigoNotaCredito.execute();
             String idNotaCredito = statementCodigoNotaCredito.getString(1);
 
-            statementCodigoSerieNumeracion = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero()}");
+            statementCodigoSerieNumeracion = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");
             statementCodigoSerieNumeracion.registerOutParameter(1, java.sql.Types.VARCHAR);
             statementCodigoSerieNumeracion.setInt(2, notaCreditoTB.getIdComprobante());
             statementCodigoSerieNumeracion.execute();

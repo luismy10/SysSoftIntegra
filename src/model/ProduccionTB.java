@@ -14,7 +14,7 @@ public class ProduccionTB {
     private String horaInicio;
     private String horaRegistro;
     private String fechaRegistro;
-    private int duracion;
+    private int dias;
     private int horas;
     private int minutos;
     private double cantidad;
@@ -103,12 +103,12 @@ public class ProduccionTB {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public int getDuracion() {
-        return duracion;
+    public int getDias() {
+        return dias;
     }
 
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
+    public void setDias(int dias) {
+        this.dias = dias;
     }
 
     public int getHoras() {

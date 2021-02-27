@@ -12,7 +12,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -40,7 +43,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar(F1)">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image>
@@ -49,7 +52,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionLimpiar" onKeyPressed="#onKeyPressedLimpiar" styleClass="buttonLight" text="Limpiar(F2)">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/escoba.png" />
                            </image>
@@ -67,7 +70,7 @@
                               <Font name="Calibri" size="15.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="txtFechaRegistro" disable="true" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="00/00/0000" />
+                        <DatePicker fx:id="txtFechaInicio" editable="false" prefHeight="30.0" prefWidth="220.0" promptText="00/00/0000" />
                      </children>
                   </VBox>
                   <VBox spacing="10.0">
@@ -79,9 +82,9 @@
                         </Label>
                         <HBox>
                            <children>
-                              <TextField fx:id="txtDias" prefHeight="30.0" prefWidth="100.0" promptText="Días" styleClass="text-field-normal" />
-                              <TextField fx:id="txtHoras" prefHeight="30.0" prefWidth="100.0" promptText="Horas" styleClass="text-field-normal" />
-                              <TextField fx:id="txtMinutos" prefHeight="30.0" prefWidth="100.0" promptText="Minutos" styleClass="text-field-normal" />
+                              <TextField fx:id="txtDias" onKeyTyped="#onKeyTypedDias" prefHeight="30.0" prefWidth="100.0" promptText="Días" styleClass="text-field-normal" />
+                              <TextField fx:id="txtHoras" onKeyTyped="#onKeyTypedHoras" prefHeight="30.0" prefWidth="100.0" promptText="Horas" styleClass="text-field-normal" />
+                              <TextField fx:id="txtMinutos" onKeyTyped="#onKeyTypedMinutos" prefHeight="30.0" prefWidth="100.0" promptText="Minutos" styleClass="text-field-normal" />
                            </children>
                         </HBox>
                      </children>
@@ -90,7 +93,7 @@
             </HBox>
             <HBox style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 0;" VBox.vgrow="ALWAYS">
                <children>
-                  <TabPane style="-fx-border-color: #ccc;" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                  <TabPane fx:id="tpContenedor" style="-fx-border-color: #ccc;" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
                      <tabs>
                         <Tab text="Información General">
                            <content>
@@ -196,9 +199,38 @@
                                                       <Font name="Calibri" size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField prefHeight="30.0" prefWidth="320.0" promptText="0.00" styleClass="text-field-normal" />
+                                                <TextField fx:id="txtCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="320.0" promptText="0.00" styleClass="text-field-normal" />
                                              </children>
                                           </VBox>
+                                          <VBox alignment="BOTTOM_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Agregar">
+                                                   <graphic>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/plus.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.4166666666666667em;">
+                                       <children>
+                                          <GridPane fx:id="gpList" style="-fx-vgap: 1em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="340.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="260.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints />
+                                             </rowConstraints>
+                                          </GridPane>
                                        </children>
                                     </HBox>
                                  </children></VBox>

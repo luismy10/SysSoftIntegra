@@ -151,7 +151,7 @@ public class FxNotaCreditoController implements Initializable {
 
                 VentaTB ventaTB = (VentaTB) objects[5];
                 idVenta = ventaTB.getIdVenta();
-                idCliente = ventaTB.getIdCliente();
+                idCliente = ventaTB.getClienteTB().getIdCliente();
                 txtSerieNumeracion.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                 for (int i = 0; i < cbMoneda.getItems().size(); i++) {
                     if (cbMoneda.getItems().get(i).getIdMoneda() == ventaTB.getIdMoneda()) {
@@ -351,33 +351,33 @@ public class FxNotaCreditoController implements Initializable {
 
     private void registrarNotaCredito() {
         if (cbNotaCredito.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Debe seleccionar la nota de crédito.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Debe seleccionar la nota de crédito.");
             cbNotaCredito.requestFocus();
         } else if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Debe seleccionar la moneda.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Debe seleccionar la moneda.");
             cbMoneda.requestFocus();
         } else if (txtFechaRegistro.getValue() == null) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la fecha de registro.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Ingrese la fecha de registro.");
             txtFechaRegistro.requestFocus();
         } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Debe seleccionar el tipo de comprobante.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Debe seleccionar el tipo de comprobante.");
             cbComprobante.requestFocus();
         } else if (cbMotivo.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Debe seleccionar el motivo de la nota de crédito.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Debe seleccionar el motivo de la nota de crédito.");
             cbMotivo.requestFocus();
         } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Debe seleccionar el tipo de documento de identidad");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Debe seleccionar el tipo de documento de identidad");
             cbTipoDocumento.requestFocus();
         } else if (Tools.isText(txtNumeroDocumento.getText())) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese el  número de documento de identidad.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Ingrese el  número de documento de identidad.");
             txtNumeroDocumento.requestFocus();
         } else if (Tools.isText(txtRazonsocial.getText())) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Ingreso los datos del cliente.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Ingreso los datos del cliente.");
             txtRazonsocial.requestFocus();
         } else if (detalleVentaTBs.isEmpty()) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "No hay datos en el detalle para guardar el documento.");
+            Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "No hay datos en el detalle para guardar el documento.");
         } else {
-            short value = Tools.AlertMessageConfirmation(apWindow, "Producción", "¿Está seguro de continuar?");
+            short value = Tools.AlertMessageConfirmation(apWindow, "Nota de Crédito", "¿Está seguro de continuar?");
             if (value == 1) {
                 NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
                 notaCreditoTB.setIdVendedor(Session.USER_ID);
@@ -403,12 +403,12 @@ public class FxNotaCreditoController implements Initializable {
 
                 String result = NotaCreditoADO.Registrar_NotaCredito(notaCreditoTB);
                 if (result.equalsIgnoreCase("registrado")) {
-                    Tools.AlertMessageInformation(apWindow, "Producción", "Se registro correctamente la nota de crédito");
+                    Tools.AlertMessageInformation(apWindow, "Nota de Crédito", "Se registro correctamente la nota de crédito");
                     clearElements();
                     hbLoad.setVisible(false);
                     spBody.setDisable(false);
                 } else {
-                    Tools.AlertMessageError(apWindow, "Producción", result);
+                    Tools.AlertMessageError(apWindow, "Nota de Crédito", result);
                 }
             }
         }

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -37,11 +38,11 @@
                   </Label>
                </children>
             </HBox>
-            <VBox>
+            <VBox style="-fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
                   <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLight" text="Agregar(F1)">
+                        <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightDefault" text="Nueva Produc.(F1)">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -50,7 +51,25 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Vizualizar(F2)">
+                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Editar Produc.(F2)">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/edit.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Eliminar Produc.(F3)">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/remove.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" styleClass="buttonLight" text="Vizualizar(F4)">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -72,46 +91,119 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox spacing="10.0" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;">
+            <HBox style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox spacing="10.0">
+                  <VBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: white; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRoboto14" text="Fecha Inicial" textFill="#1a2226">
-                           <font>
-                              <Font name="Calibri" size="15.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="dtFechaInicial" prefHeight="30.0" prefWidth="220.0" />
-                     </children>
-                  </VBox>
-                  <VBox spacing="10.0">
-                     <children>
-                        <Label styleClass="labelRoboto14" text="Fecha Final" textFill="#1a2226">
-                           <font>
-                              <Font name="Calibri" size="15.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="dtFechaFinal" prefHeight="30.0" prefWidth="220.0" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto13" text="Fecha Inicial" textFill="#020203">
+                                       <font>
+                                          <Font name="Calibri" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <DatePicker fx:id="dtFechaInicial" editable="false" prefHeight="30.0" prefWidth="220.0" />
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto13" text="Fecha Final" textFill="#020203">
+                                       <font>
+                                          <Font name="Calibri" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <DatePicker fx:id="dtFechaFinal" editable="false" prefHeight="30.0" prefWidth="220.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <VBox style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label styleClass="labelRoboto13" text="Buscar por nombre de producción" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <TableView fx:id="tvList" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                       <columns>
+                                          <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
+                                          <TableColumn fx:id="tcNumeroOrden" prefWidth="120.0" style="-fx-alignment: center;" text="N° de Orden" />
+                                          <TableColumn fx:id="tcFecha" prefWidth="129.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Registro" />
+                                          <TableColumn fx:id="tcProduccion" prefWidth="133.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Ini./Ter." />
+                                          <TableColumn fx:id="tcProducto" prefWidth="183.0" style="-fx-alignment: CENTER-LEFT;" text="Producto" />
+                                          <TableColumn fx:id="tcPersonaEncargada" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Persona Encargado" />
+                                          <TableColumn fx:id="tcAreaProduccion" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Área de Producción" />
+                                          <TableColumn prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
+                                          <TableColumn fx:id="tcTipoOrden" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo Orden" />
+                                          <TableColumn fx:id="tcCantidad" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0;" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" style="-fx-border-width: 1 0 0 0; -fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <TableView fx:id="tvList" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
-                     <columns>
-                        <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
-                        <TableColumn fx:id="tcNumeroOrden" prefWidth="120.0" style="-fx-alignment: center;" text="N° de Orden" />
-                        <TableColumn fx:id="tcFecha" prefWidth="129.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Registro" />
-                        <TableColumn fx:id="tcProduccion" prefWidth="133.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Ini./Ter." />
-                        <TableColumn fx:id="tcProducto" prefWidth="183.0" style="-fx-alignment: CENTER-LEFT;" text="Producto" />
-                        <TableColumn fx:id="tcPersonaEncargada" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Persona Encargado" />
-                        <TableColumn fx:id="tcAreaProduccion" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Área de Producción" />
-                        <TableColumn prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                        <TableColumn fx:id="tcTipoOrden" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo Orden" />
-                        <TableColumn fx:id="tcCantidad" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                     </columns>
-                  </TableView>
+                  <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/left.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="labelForm" text="de" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                        </Label>
+                        <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
+                           <font>
+                              <Font name="Calibri" size="14.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/right.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
          </children>
