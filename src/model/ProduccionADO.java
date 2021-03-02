@@ -8,12 +8,12 @@ import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
 
 public class ProduccionADO {
 
     public static String Registrar_Produccion(ProduccionTB produccionTB) {
         PreparedStatement statementRegisrar = null;
+        PreparedStatement statementDetalle = null;
         CallableStatement statementCodigo = null;
         try {
             DBUtil.dbConnect();
@@ -56,7 +56,16 @@ public class ProduccionADO {
             statementRegisrar.setInt(14, produccionTB.getEstado());
             statementRegisrar.addBatch();
 
+            statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad)VALUES(?,?,?)");
+            for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
+                statementDetalle.setString(1, id_produccion);
+                statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+                statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()));
+                statementDetalle.addBatch();
+            }
+
             statementRegisrar.executeBatch();
+            statementDetalle.executeBatch();
             DBUtil.getConnection().commit();
             return "registrado";
         } catch (SQLException ex) {
@@ -70,6 +79,9 @@ public class ProduccionADO {
             try {
                 if (statementRegisrar != null) {
                     statementRegisrar.close();
+                }
+                if (statementDetalle != null) {
+                    statementDetalle.close();
                 }
             } catch (SQLException e) {
 

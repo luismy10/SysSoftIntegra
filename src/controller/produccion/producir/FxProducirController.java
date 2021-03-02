@@ -17,7 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -62,7 +61,7 @@ public class FxProducirController implements Initializable {
     @FXML
     private TextField txtSearch;
 
-    private ScrollPane node;
+    private AnchorPane node;
 
     private FxProducirAgregarController controller;
 

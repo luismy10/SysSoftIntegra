@@ -23,7 +23,7 @@ public class FormulaTB {
     private String hora;
 
     private SuministroTB suministroTB;
-    
+
     private ArrayList<InsumoTB> insumoTBs;
 
     public FormulaTB() {
@@ -116,5 +116,10 @@ public class FormulaTB {
     public void setInsumoTBs(ArrayList<InsumoTB> insumoTBs) {
         this.insumoTBs = insumoTBs;
     }
-    
+
+    @Override
+    public String toString() {
+        return titulo;
+    }
+
 }

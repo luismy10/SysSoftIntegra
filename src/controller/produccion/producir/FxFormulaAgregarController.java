@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -150,8 +151,8 @@ public class FxFormulaAgregarController implements Initializable {
         button.setAlignment(Pos.CENTER);
         button.setPrefWidth(Control.USE_COMPUTED_SIZE);
         button.setPrefHeight(Control.USE_COMPUTED_SIZE);
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
+//        button.setMaxWidth(Double.MAX_VALUE);
+//        button.setMaxHeight(Double.MAX_VALUE);
         ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
         imageView.setFitWidth(20);
         imageView.setFitHeight(20);
@@ -195,6 +196,7 @@ public class FxFormulaAgregarController implements Initializable {
         gpList.getColumnConstraints().get(4).setMinWidth(10);
         gpList.getColumnConstraints().get(4).setPrefWidth(60);
         gpList.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
+        gpList.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
 
         gpList.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
         gpList.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
@@ -203,7 +205,7 @@ public class FxFormulaAgregarController implements Initializable {
         gpList.add(addElementGridPaneLabel("l05", "Quitar"), 4, 0);
     }
 
-    private void addElementPaneBody() {        
+    private void addElementPaneBody() {
         for (int i = 0; i < insumoTBs.size(); i++) {
             gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
             gpList.add(insumoTBs.get(i).getComboBox(), 1, (i + 1));

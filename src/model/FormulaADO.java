@@ -287,8 +287,8 @@ public class FormulaADO {
                     button.setAlignment(Pos.CENTER);
                     button.setPrefWidth(Control.USE_COMPUTED_SIZE);
                     button.setPrefHeight(Control.USE_COMPUTED_SIZE);
-                    button.setMaxWidth(Double.MAX_VALUE);
-                    button.setMaxHeight(Double.MAX_VALUE);
+//                    button.setMaxWidth(Double.MAX_VALUE);
+//                    button.setMaxHeight(Double.MAX_VALUE);
                     ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
                     imageView.setFitWidth(20);
                     imageView.setFitHeight(20);
@@ -301,6 +301,39 @@ public class FormulaADO {
             } else {
                 return null;
             }
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementFormula != null) {
+                    statementFormula.close();
+                }
+                if (statementDetalle != null) {
+                    statementDetalle.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+    }
+
+    public static Object Obtener_Formula_ByIdProducto(String idProducto) {
+        PreparedStatement statementFormula = null;
+        ResultSet resultSet = null;
+        try {
+            DBUtil.dbConnect();
+            statementFormula = DBUtil.getConnection().prepareStatement("SELECT IdFormula,Titulo FROM FormulaTB WHERE IdSuministro = ?");
+            statementFormula.setString(1, idProducto);
+            resultSet = statementFormula.executeQuery();
+            List<FormulaTB> formulaTBs = new ArrayList<>();
+            while (resultSet.next()) {
+                FormulaTB formulaTB = new FormulaTB();
+                formulaTB.setIdFormula(resultSet.getString("IdFormula"));
+                formulaTB.setTitulo(resultSet.getString("Titulo"));
+                formulaTBs.add(formulaTB);
+            }
+            return formulaTBs;
         } catch (SQLException ex) {
             return ex.getLocalizedMessage();
         } finally {

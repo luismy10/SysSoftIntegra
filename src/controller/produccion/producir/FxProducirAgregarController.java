@@ -6,9 +6,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -16,7 +20,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -28,8 +31,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import model.EmpleadoTB;
+import model.FormulaADO;
 import model.FormulaTB;
 import model.InsumoADO;
 import model.InsumoTB;
@@ -41,15 +47,13 @@ import model.SuministroTB;
 public class FxProducirAgregarController implements Initializable {
 
     @FXML
-    private ScrollPane spWindow;
+    private AnchorPane apWindow;
     @FXML
     private RadioButton cbInterno;
     @FXML
     private RadioButton cbExterno;
     @FXML
     private ComboBox<SuministroTB> cbProducto;
-    @FXML
-    private ComboBox<FormulaTB> cbFormula;
     @FXML
     private ComboBox<EmpleadoTB> cbPersonaEncargada;
     @FXML
@@ -68,6 +72,12 @@ public class FxProducirAgregarController implements Initializable {
     private TextField txtCantidad;
     @FXML
     private TabPane tpContenedor;
+    @FXML
+    private VBox vbBody;
+    @FXML
+    private HBox hbLoad;
+    @FXML
+    private Label lblMessageLoad;
 
     private FxProducirController producirController;
 
@@ -109,6 +119,7 @@ public class FxProducirAgregarController implements Initializable {
         gpList.getColumnConstraints().get(4).setMinWidth(10);
         gpList.getColumnConstraints().get(4).setPrefWidth(60);
         gpList.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
+        gpList.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
 
         gpList.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
         gpList.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
@@ -259,7 +270,7 @@ public class FxProducirAgregarController implements Initializable {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
                     searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();                   
                 }
             } else if (t.getCode() == KeyCode.ESCAPE) {
                 searchComboBox.getComboBox().hide();
@@ -294,15 +305,11 @@ public class FxProducirAgregarController implements Initializable {
             if (item != null) {
                 searchComboBox.getComboBox().getSelectionModel().select(item);
                 if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
-                    searchComboBox.getComboBox().hide();
+                    searchComboBox.getComboBox().hide();                   
                 }
             }
         });
-    }
-
-    private void comboBoxFormula() {
-
-    }
+    }   
 
     private void comboBoxEmpleados() {
         SearchComboBox<EmpleadoTB> searchComboBox = new SearchComboBox<>(cbPersonaEncargada, false);
@@ -357,9 +364,7 @@ public class FxProducirAgregarController implements Initializable {
         txtHoras.clear();
         txtMinutos.clear();
         cbProducto.getItems().clear();
-        cbProducto.getSelectionModel().select(null);
-        cbFormula.getItems().clear();
-        cbFormula.getSelectionModel().select(null);
+        cbProducto.getSelectionModel().select(null);  
         cbInterno.setSelected(true);
         cbPersonaEncargada.getItems().clear();
         cbPersonaEncargada.getSelectionModel().select(null);
@@ -368,7 +373,7 @@ public class FxProducirAgregarController implements Initializable {
     }
 
     private void closeWindow() {
-        vbContent.getChildren().remove(spWindow);
+        vbContent.getChildren().remove(apWindow);
         vbContent.getChildren().clear();
         AnchorPane.setLeftAnchor(producirController.getWindow(), 0d);
         AnchorPane.setTopAnchor(producirController.getWindow(), 0d);
@@ -379,48 +384,73 @@ public class FxProducirAgregarController implements Initializable {
 
     private void registrarProduccion() {
         if (txtFechaInicio.getValue() == null) {
-            Tools.AlertMessageWarning(spWindow, "Producción", "Ingrese la fecha de inicio.");
+            Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la fecha de inicio.");
             tpContenedor.getSelectionModel().select(0);
             txtFechaInicio.requestFocus();
-        } else if (cbProducto.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(spWindow, "Producción", "Seleccione el producto a fabricar.");
-            tpContenedor.getSelectionModel().select(0);
-            cbProducto.requestFocus();
         } else if (cbPersonaEncargada.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(spWindow, "Producción", "Seleccione el encargado de la producción.");
+            Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione el encargado de la producción.");
             tpContenedor.getSelectionModel().select(0);
             cbPersonaEncargada.requestFocus();
+        } else if (cbProducto.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione el producto a fabricar.");
+            tpContenedor.getSelectionModel().select(1);
+            cbProducto.requestFocus();
         } else if (!Tools.isNumeric(txtCantidad.getText())) {
-            Tools.AlertMessageWarning(spWindow, "Producción", "Ingrese la cantidad a producir.");
+            Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la cantidad a producir.");
             tpContenedor.getSelectionModel().select(1);
             txtCantidad.requestFocus();
         } else {
-            ProduccionTB produccionTB = new ProduccionTB();
-            produccionTB.setFechaInicio(Tools.getDatePicker(txtFechaInicio));
-            produccionTB.setHoraInicio(Tools.getHour());
-            produccionTB.setDias(!Tools.isNumericInteger(txtDias.getText()) ? 1 : Integer.parseInt(txtDias.getText()));
-            produccionTB.setHoras(!Tools.isNumericInteger(txtHoras.getText()) ? 0 : Integer.parseInt(txtHoras.getText()));
-            produccionTB.setMinutos(!Tools.isNumericInteger(txtMinutos.getText()) ? 0 : Integer.parseInt(txtMinutos.getText()));
-            produccionTB.setIdProducto(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
-            produccionTB.setTipoOrden(cbInterno.isSelected());
-            produccionTB.setIdEncargado(cbPersonaEncargada.getSelectionModel().getSelectedItem().getIdEmpleado());
-            produccionTB.setDescripcion(txtGlosaDescriptiva.getText());
-            produccionTB.setFechaRegistro(Tools.getDate());
-            produccionTB.setHoraRegistro(Tools.getHour());
-            produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-            produccionTB.setEstado(1);
-            short value = Tools.AlertMessageConfirmation(spWindow, "Producción", "¿Está seguro de continuar?");
-            if (value == 1) {
-                String result = ProduccionADO.Registrar_Produccion(produccionTB);
-                if (result.equalsIgnoreCase("registrado")) {
-                    Tools.AlertMessageInformation(spWindow, "Producción", "Se registró correctamente la produccón.");
-                    clearComponentes();
-                    closeWindow();
+            int cantidad = 0;
+            int insumo = 0;
+            for (InsumoTB insumoTB : insumoTBs) {
+                if (Tools.isNumeric(insumoTB.getTxtCantidad().getText()) && Double.parseDouble(insumoTB.getTxtCantidad().getText()) > 0) {
+                    cantidad += 0;
                 } else {
-                    Tools.AlertMessageWarning(spWindow, "Producción", result);
+                    cantidad += 1;
                 }
+
+                if (insumoTB.getSearchComboBox().getComboBox().getSelectionModel().getSelectedIndex() >= 0) {
+                    insumo += 0;
+                } else {
+                    insumo += 1;
+                }
+
             }
 
+            if (cantidad > 0) {
+                Tools.AlertMessageWarning(apWindow, "Producción", "Hay cantidades en 0 en la lista de insumos.");
+                tpContenedor.getSelectionModel().select(1);
+            } else if (insumo > 0) {
+                Tools.AlertMessageWarning(apWindow, "Producción", "No hay insumos seleccionados en la lista.");
+                tpContenedor.getSelectionModel().select(1);
+            } else {
+                ProduccionTB produccionTB = new ProduccionTB();
+                produccionTB.setFechaInicio(Tools.getDatePicker(txtFechaInicio));
+                produccionTB.setHoraInicio(Tools.getHour());
+                produccionTB.setDias(!Tools.isNumericInteger(txtDias.getText()) ? 1 : Integer.parseInt(txtDias.getText()));
+                produccionTB.setHoras(!Tools.isNumericInteger(txtHoras.getText()) ? 0 : Integer.parseInt(txtHoras.getText()));
+                produccionTB.setMinutos(!Tools.isNumericInteger(txtMinutos.getText()) ? 0 : Integer.parseInt(txtMinutos.getText()));
+                produccionTB.setIdProducto(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
+                produccionTB.setTipoOrden(cbInterno.isSelected());
+                produccionTB.setIdEncargado(cbPersonaEncargada.getSelectionModel().getSelectedItem().getIdEmpleado());
+                produccionTB.setDescripcion(txtGlosaDescriptiva.getText());
+                produccionTB.setFechaRegistro(Tools.getDate());
+                produccionTB.setHoraRegistro(Tools.getHour());
+                produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
+                produccionTB.setEstado(1);
+                produccionTB.setInsumoTBs(insumoTBs);
+                short value = Tools.AlertMessageConfirmation(apWindow, "Producción", "¿Está seguro de continuar?");
+                if (value == 1) {
+                    String result = ProduccionADO.Registrar_Produccion(produccionTB);
+                    if (result.equalsIgnoreCase("registrado")) {
+                        Tools.AlertMessageInformation(apWindow, "Producción", "Se registró correctamente la produccón.");
+                        clearComponentes();
+                        closeWindow();
+                    } else {
+                        Tools.AlertMessageWarning(apWindow, "Producción", result);
+                    }
+                }
+            }
         }
     }
 
