@@ -135,16 +135,16 @@ public class FxCotizacionDetalleController implements Initializable {
             return t;
         });
 
-        Task<CotizacionTB> task = new Task<CotizacionTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            protected CotizacionTB call() {
+            protected Object call() {
                 return CotizacionADO.CargarCotizacionReporte(idCotizacion);
             }
         };
         task.setOnSucceeded(e -> {
-            cotizacionTB = task.getValue();
-            if (cotizacionTB != null) {
-
+            Object object = task.getValue();
+            if (object instanceof CotizacionTB) {
+                cotizacionTB = (CotizacionTB) object;
                 lblNumero.setText("N° " + cotizacionTB.getIdCotizacion());
                 lblFechaVenta.setText(cotizacionTB.getFechaCotizacion());
                 lblCliente.setText(cotizacionTB.getClienteTB().getInformacion());
