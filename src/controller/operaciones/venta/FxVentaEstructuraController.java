@@ -1311,6 +1311,7 @@ public class FxVentaEstructuraController implements Initializable {
                                             "",
                                             "",
                                             "",
+                                            "",
                                             "");
                                 }
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -1474,6 +1475,7 @@ public class FxVentaEstructuraController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, printerName, printerCut);
@@ -1577,6 +1579,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     "");
                         }
 
@@ -1669,6 +1672,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     "CODIGO DE VENTA",
                                     txtCelularCliente.getText().trim(),
                                     monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, ""),
+                                    "",
                                     "",
                                     "",
                                     "",

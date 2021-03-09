@@ -474,6 +474,7 @@ public class FxVentaMostrarController implements Initializable {
                                             "",
                                             "",
                                             "",
+                                            "",
                                             "");
                                 }
 
@@ -635,6 +636,7 @@ public class FxVentaMostrarController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
                     ventaTB.getClienteTB().getCelular(),
                     monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                    "",
                     "",
                     "",
                     "",

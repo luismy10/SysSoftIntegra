@@ -503,6 +503,7 @@ public class FxValorInventarioController implements Initializable {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     "");
                         }
 

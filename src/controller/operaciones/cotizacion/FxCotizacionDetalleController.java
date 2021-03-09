@@ -344,7 +344,8 @@ public class FxCotizacionDetalleController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            cotizacionTB.getObservaciones());
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -504,7 +505,8 @@ public class FxCotizacionDetalleController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    cotizacionTB.getObservaciones());
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }

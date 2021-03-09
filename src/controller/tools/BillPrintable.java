@@ -400,7 +400,8 @@ public class BillPrintable implements Printable {
             String empleadoNumeroDocumento,
             String empleadoInformacion,
             String empleadoCelular,
-            String direccionEmpleado) {
+            String direccionEmpleado,
+            String observacion) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -445,6 +446,8 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(empleadoCelular));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("direcempleado")) {
                     fieldTicket.setText(Tools.AddText2Guines(direccionEmpleado));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(observacion));
                 }
                 lines = fieldTicket.getLines();
             }

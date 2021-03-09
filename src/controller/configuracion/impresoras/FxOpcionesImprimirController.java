@@ -531,6 +531,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
 
@@ -629,6 +630,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
@@ -699,6 +701,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     "",
                     ventaTB.getClienteTB().getCelular(),
+                    "",
                     "",
                     "",
                     "",
@@ -797,6 +800,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     "",
                     ventaTB.getClienteTB().getCelular(),
+                    "",
                     "",
                     "",
                     "",
@@ -977,6 +981,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
 
@@ -1075,6 +1080,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, nombreImpresora, cortaPapel);
@@ -1146,6 +1152,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     compraTB.getProveedorTB().getRazonSocial(),
                     "",
                     compraTB.getProveedorTB().getCelular(),
+                    "",
                     "",
                     "",
                     "",
@@ -1244,6 +1251,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     compraTB.getProveedorTB().getRazonSocial(),
                     "",
                     compraTB.getProveedorTB().getCelular(),
+                    "",
                     "",
                     "",
                     "",
@@ -1411,6 +1419,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
 
@@ -1501,6 +1510,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "",
                     "",
                     "",
                     "",
@@ -1677,7 +1687,8 @@ public class FxOpcionesImprimirController implements Initializable {
                     "DOCUMENTO EMPLEADO",
                     cotizacionTB.getEmpleadoTB().getApellidos() + " " + cotizacionTB.getEmpleadoTB().getNombres(),
                     "CELULAR EMPLEADO",
-                    "DIRECCION EMPLEADO");
+                    "DIRECCION EMPLEADO",
+                    cotizacionTB.getObservaciones());
         }
 
         billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -2022,6 +2033,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
 
@@ -2119,6 +2131,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     ventaTB.getClienteTB().getInformacion(),
                     "",
                     ventaTB.getClienteTB().getCelular(),
+                    "",
                     "",
                     "",
                     "",

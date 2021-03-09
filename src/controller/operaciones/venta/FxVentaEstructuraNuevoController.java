@@ -793,6 +793,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                             "",
                                             "",
                                             "",
+                                            "",
                                             "");
                                 }
 
@@ -957,6 +958,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, printerName, printerCut);
@@ -1074,6 +1076,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     "");
                         }
 
@@ -1168,6 +1171,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     "CODIGO DE VENTA",
                                     celular,
                                     monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, ""),
+                                    "",
                                     "",
                                     "",
                                     "",
