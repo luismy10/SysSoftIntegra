@@ -81,10 +81,16 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Contado para corte de caja", "0.00", "contado"));
             listCabecera.add(new TicketTB("Calculado para corte de caja", "0.00", "calculado"));
             listCabecera.add(new TicketTB("Diferencia para corte de caja", "0.00", "diferencia"));
+            listCabecera.add(new TicketTB("Apertura de caja", "0.00", "aperturacaja"));
+            listCabecera.add(new TicketTB("Ventas con efectivo de caja", "0.00", "ventasefectivocaja"));
+            listCabecera.add(new TicketTB("Ventas con tarjeta de caja", "0.00", "ventastarjetacaja"));
+            listCabecera.add(new TicketTB("Ingresos en efectivo de caja", "0.00", "ingresosefectivocaja"));
+            listCabecera.add(new TicketTB("Egresos en efectivo de caja", "0.00", "egresosefectivocaja"));
             listCabecera.add(new TicketTB("Numero documento Empleado", "NUMERO DE DOCUMENTO EMPLEADO", "numempleado"));
             listCabecera.add(new TicketTB("Información del Empleado", "INFORMACION DEL EMPLEADO", "infoempleado"));
             listCabecera.add(new TicketTB("Celular del Empleado", "CELULAR DEL EMPLEADO", "celempleado"));
             listCabecera.add(new TicketTB("Dirección del Empleado", "DIRECCION DEL EMPLEADO", "direcempleado"));
+            listCabecera.add(new TicketTB("Observación Generada en los documentos", "OBSERVACION", "observacion"));
             lvLista.getItems().addAll(listCabecera);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("dr")) {
             listDetalleCuerpo.add(new TicketTB("Numeración de las filas", "1", "numfilas"));

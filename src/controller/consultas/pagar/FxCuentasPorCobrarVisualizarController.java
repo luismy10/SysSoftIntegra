@@ -68,7 +68,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
 
     private FxCuentasPorCobrarController cuentasPorCobrarController;
 
-    private VentaTB ventaTB;    
+    private VentaTB ventaTB;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -99,10 +99,12 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
                 lblEstado.setText(ventaTB.getEstadoName());
                 lblEstado.setTextFill(ventaTB.getEstado() == 3 ? Color.web("#ee4637") : ventaTB.getEstado() == 2 ? Color.web("#eab120") : Color.web("#42bf59"));
                 lblMontoTotal.setText(Tools.roundingValue(ventaTB.getMontoTotal(), 2));
+                lblMontoPagado.setText(Tools.roundingValue(ventaTB.getMontoCobrado(), 2));
+                lblDiferencia.setText(Tools.roundingValue(ventaTB.getMontoRestante(), 2));
                 lblObservacion.setText(ventaTB.getObservaciones());
                 for (VentaCreditoTB vc : ventaTB.getVentaCreditoTBs()) {
-                    vc.getBtnImprimir().setOnAction(event-> 
-                            openModalImpresion(idVenta, vc.getIdVentaCredito())
+                    vc.getBtnImprimir().setOnAction(event
+                            -> openModalImpresion(idVenta, vc.getIdVentaCredito())
                     );
                     vc.getBtnImprimir().setOnKeyPressed(event -> {
                         if (event.getCode() == KeyCode.ENTER) {
@@ -127,8 +129,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         }
     }
 
-    private void fillVentasDetalleTable() {
-        double montoPagado = 0;
+    private void fillVentasDetalleTable() {       
         for (int i = 0; i < ventaTB.getVentaCreditoTBs().size(); i++) {
             gpList.add(addElementGridPane("l1" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getId() + "", Pos.CENTER, null), 0, (i + 1));
             gpList.add(addElementGridPane("l2" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getIdVentaCredito(), Pos.CENTER, null), 1, (i + 1));
@@ -137,10 +138,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(ventaTB.getVentaCreditoTBs().get(i).getMonto(), 2), Pos.CENTER, null), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getObservacion(), Pos.CENTER, null), 5, (i + 1));
             gpList.add(addElementGridPane("l7" + (i + 1), "", Pos.CENTER, ventaTB.getVentaCreditoTBs().get(i).getBtnImprimir()), 6, (i + 1));
-            montoPagado = ventaTB.getVentaCreditoTBs().get(i).getMonto();
         }
-        lblMontoPagado.setText(Tools.roundingValue(montoPagado, 2));
-        lblDiferencia.setText(Tools.roundingValue(ventaTB.getMontoTotal()- montoPagado, 2));
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos, Node node) {
@@ -226,19 +224,17 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     private void onActionCobrar(ActionEvent event) {
         onEventAmortizar();
     }
-    
-    
+
     @FXML
     private void onKeyPressedReporte(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
-            
+        if (event.getCode() == KeyCode.ENTER) {
+
         }
     }
 
     @FXML
     private void onActionReporte(ActionEvent event) {
     }
-
 
     @FXML
     private void onActionTicket(ActionEvent event) {

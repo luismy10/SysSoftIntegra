@@ -1,17 +1,21 @@
 
 package model;
 
+import javafx.scene.control.Button;
+
 public class DetalleVentaTB {
     
     private int id;
     private String idVenta;
     private String idArticulo;
+    private String estado;
     private double cantidad;
     private double costoVenta;
     private double precioVenta;
     private double descuento;
     private double importe;
     private SuministroTB suministroTB;
+    private Button btnRemove;
     
     public DetalleVentaTB(){
         
@@ -39,6 +43,14 @@ public class DetalleVentaTB {
 
     public void setIdArticulo(String idArticulo) {
         this.idArticulo = idArticulo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public double getCantidad() {
@@ -87,6 +99,14 @@ public class DetalleVentaTB {
 
     public void setSuministroTB(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
+    }
+
+    public Button getBtnRemove() {
+        return btnRemove;
+    }
+
+    public void setBtnRemove(Button btnRemove) {
+        this.btnRemove = btnRemove;
     }
     
 }

@@ -420,6 +420,7 @@ public class FxBienvenidaController implements Initializable {
                 String result = task.getValue();
                 if (result.equalsIgnoreCase("inserted")) {
                     Tools.AlertMessageInformation(apWindow, "SysSoftIntegra", "Se guardo los cambios correctamente, habra nuevamente la aplicación son su usuario y clave creada.");
+                    
                     System.exit(0);
                 } else {
                     Tools.AlertMessageError(apWindow, "SysSoftIntegra", result);

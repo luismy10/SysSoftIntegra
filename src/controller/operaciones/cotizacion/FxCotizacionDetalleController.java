@@ -305,7 +305,13 @@ public class FxCotizacionDetalleController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            "",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -333,7 +339,7 @@ public class FxCotizacionDetalleController implements Initializable {
                                             cotizacionTB.getClienteTB().getNumeroDocumento(),
                                             cotizacionTB.getClienteTB().getInformacion(),
                                             "---",
-                                            cotizacionTB.getClienteTB().getCelular(),"",
+                                            cotizacionTB.getClienteTB().getCelular(), "",
                                             "",
                                             "",
                                             "",
@@ -456,7 +462,13 @@ public class FxCotizacionDetalleController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < arrList.size(); m++) {
@@ -486,7 +498,7 @@ public class FxCotizacionDetalleController implements Initializable {
                     cotizacionTB.getClienteTB().getNumeroDocumento(),
                     cotizacionTB.getClienteTB().getInformacion(),
                     "---",
-                    cotizacionTB.getClienteTB().getCelular(),"",
+                    cotizacionTB.getClienteTB().getCelular(), "",
                     "",
                     "",
                     "",
@@ -570,7 +582,7 @@ public class FxCotizacionDetalleController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxReportViewController controller = fXMLLoader.getController();
-            controller.setFileName("COTIZACION N° " + cotizacionTB.getIdCotizacion()); 
+            controller.setFileName("COTIZACION N° " + cotizacionTB.getIdCotizacion());
             controller.setJasperPrint(jasperPrint);
             controller.show();
             Stage stage = WindowStage.StageLoader(parent, "Cotizacion realizada");

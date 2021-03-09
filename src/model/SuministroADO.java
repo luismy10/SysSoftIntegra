@@ -146,7 +146,7 @@ public class SuministroADO {
 //                                }
 //                            }
                             preparedPrecios = DBUtil.getConnection().prepareStatement("DELETE FROM PreciosTB WHERE IdSuministro = ?");
-                            preparedPrecios.setString(1, suministroTB.getIdSuministro());                            
+                            preparedPrecios.setString(1, suministroTB.getIdSuministro());
                             preparedPrecios.addBatch();
                             preparedPrecios.executeBatch();
 
@@ -413,13 +413,14 @@ public class SuministroADO {
         return rutaValidada;
     }
 
-    public static ArrayList<Object> ListSuministrosListaView(short tipo, String value, int posicionPagina, int filasPorPagina) {
+    public static Object ListSuministrosListaView(short tipo, String value, int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        ArrayList<Object> objects = new ArrayList<>();
-        ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
+            Object[] objects = new Object[2];
+
+            ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
             preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Suministros_Lista_View(?,?,?,?)}");
             preparedStatement.setShort(1, tipo);
             preparedStatement.setString(2, value);
@@ -457,7 +458,6 @@ public class SuministroADO {
 
                 empList.add(suministroTB);
             }
-            objects.add(empList);
 
             preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Suministros_Lista_View_Count(?,?)}");
             preparedStatement.setShort(1, tipo);
@@ -467,10 +467,13 @@ public class SuministroADO {
             if (rsEmps.next()) {
                 integer = rsEmps.getInt("Total");
             }
-            objects.add(integer);
-        } catch (SQLException e) {
-            System.out.println("Error en SuministroADO->ListSuministrosListaView:" + e);
 
+            objects[0] = empList;
+            objects[1] = integer;
+
+            return objects;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -481,10 +484,9 @@ public class SuministroADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return objects;
     }
 
     public static ArrayList<Object> ListarSuministros(short opcion, String clave, String nombreMarca, int categoria, int marca, int posicionPagina, int filasPorPagina) {
@@ -1156,13 +1158,15 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static List<SuministroTB> getSearchComboBoxSuministros() {
-        String selectStmt = "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB";
+    public static List<SuministroTB> getSearchComboBoxSuministros(String buscar) {
+        String selectStmt = "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB WHERE Clave LIKE ? OR NombreMarca LIKE ?";
         PreparedStatement preparedStatement = null;
         List<SuministroTB> suministroTBs = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, buscar + "%");
+            preparedStatement.setString(2, buscar + "%");
             try (ResultSet rsEmps = preparedStatement.executeQuery()) {
                 while (rsEmps.next()) {
                     SuministroTB suministroTB = new SuministroTB();

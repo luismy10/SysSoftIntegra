@@ -25,7 +25,11 @@ public class DetalleTB implements Serializable {
         this.idDetalle = idDetalle;
         this.nombre = nombre;
     }
-  
+
+    public DetalleTB(int idDetalle, String nombre) {
+        this.idDetalle = new SimpleIntegerProperty(idDetalle);
+        this.nombre = new SimpleStringProperty(nombre);
+    }
 
     public SimpleIntegerProperty getIdDetalle() {
         return idDetalle;

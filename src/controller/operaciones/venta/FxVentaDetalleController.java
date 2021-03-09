@@ -34,6 +34,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -90,8 +92,6 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Text lblVendedor;
     @FXML
-    private Text lblSerie;
-    @FXML
     private GridPane gpList;
     @FXML
     private Label lblValorVenta;
@@ -117,8 +117,6 @@ public class FxVentaDetalleController implements Initializable {
     private Label lblValor;
     @FXML
     private Text lbClienteInformacion;
-    @FXML
-    private Text lblMetodoPago;
 
     private AnchorPane vbPrincipal;
 
@@ -154,7 +152,7 @@ public class FxVentaDetalleController implements Initializable {
 
     private double totalVenta;
 
-    private double efectivo, tarjeta, vuelto;    
+    private double efectivo, tarjeta, vuelto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -185,6 +183,11 @@ public class FxVentaDetalleController implements Initializable {
                 return VentaADO.ListCompletaVentasDetalle(idVenta);
             }
         };
+
+        task.setOnScheduled(e -> {
+            lblLoad.setVisible(true);
+        });
+
         task.setOnSucceeded(e -> {
             ventaTB = task.getValue();
             if (ventaTB != null) {
@@ -195,12 +198,10 @@ public class FxVentaDetalleController implements Initializable {
                 lbClienteInformacion.setText(ventaTB.getClienteTB().getTelefono() + "-" + ventaTB.getClienteTB().getCelular());
                 lbCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
                 lbDireccion.setText(ventaTB.getClienteTB().getDireccion());
-                lblComprobante.setText(ventaTB.getComprobanteName());
-                lblSerie.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
+                lblComprobante.setText(ventaTB.getComprobanteName() + " " + ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
                 lblObservaciones.setText(ventaTB.getObservaciones());
-                lblTipo.setText(ventaTB.getTipoName() + "-" + ventaTB.getEstadoName());
-                btnCancelarVenta.setDisable(ventaTB.getEstadoName().equalsIgnoreCase("ANULADO"));
-                lblMetodoPago.setText(ventaTB.getFormaName());
+                lblTipo.setText(ventaTB.getTipoName() + " - " + ventaTB.getEstadoName());
+                btnCancelarVenta.setDisable(ventaTB.getEstado() == 3);
                 efectivo = ventaTB.getEfectivo();
                 tarjeta = ventaTB.getTarjeta();
                 vuelto = ventaTB.getVuelto();
@@ -224,9 +225,6 @@ public class FxVentaDetalleController implements Initializable {
             }
 
         });
-        task.setOnScheduled(e -> {
-            lblLoad.setVisible(true);
-        });
         task.setOnFailed(e -> {
             lblLoad.setVisible(false);
         });
@@ -239,14 +237,19 @@ public class FxVentaDetalleController implements Initializable {
     private void fillVentasDetalleTable(ObservableList<SuministroTB> empList) {
         arrList = empList;
         for (int i = 0; i < arrList.size(); i++) {
-            gpList.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
-            gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
-            gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
-            gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
-            gpList.add(addElementGridPane("l5" + (i + 1), arrList.get(i).getImpuestoNombre(), Pos.CENTER_RIGHT), 4, (i + 1));
-            gpList.add(addElementGridPane("l6" + (i + 1), ventaTB.getMonedaTB().getSimbolo() + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
-            gpList.add(addElementGridPane("l7" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 6, (i + 1));
-            gpList.add(addElementGridPane("l8" + (i + 1), ventaTB.getMonedaTB().getSimbolo() + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral() * arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
+            gpList.add(addElementGridPaneLabel("l1" + (i + 1), arrList.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
+            gpList.add(addElementGridPaneLabel("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
+            gpList.add(addElementGridPaneLabel("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+            gpList.add(addElementGridPaneLabel("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
+            gpList.add(addElementGridPaneLabel("l5" + (i + 1), arrList.get(i).getImpuestoNombre(), Pos.CENTER_RIGHT), 4, (i + 1));
+            gpList.add(addElementGridPaneLabel("l6" + (i + 1), ventaTB.getMonedaTB().getSimbolo() + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
+            gpList.add(addElementGridPaneLabel("l7" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 6, (i + 1));
+            gpList.add(addElementGridPaneLabel("l8" + (i + 1), ventaTB.getMonedaTB().getSimbolo() + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral() * arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
+            gpList.add(arrList.get(i).getEstadoName().equalsIgnoreCase("C")
+                    ? addElementGridPaneLabel("l9" + (i + 1), "COMPLETADO", Pos.CENTER_LEFT)
+                    : addElementGridPaneButtonLlevar("l9" + (i + 1), "LLEVAR \n" + Tools.roundingValue(arrList.get(i).getPorLlevar(), 2), arrList.get(i).getIdSuministro(), arrList.get(i).getCostoCompra(), Pos.CENTER_LEFT),
+                    8, (i + 1));
+            gpList.add(addElementGridPaneButtonHistorial("l10" + (i + 1), "HISTORIAL", arrList.get(i), Pos.CENTER_LEFT), 9, (i + 1));
         }
         calcularTotales();
     }
@@ -260,7 +263,7 @@ public class FxVentaDetalleController implements Initializable {
             //Controlller here
             FxVentaDevolucionController controller = fXMLLoader.getController();
             controller.setInitVentaDetalle(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblSerie.getText(), Tools.roundingValue(importeNeto, 2), ventaTB.getForma());
+            controller.setLoadVentaDevolucion(idVenta, arrList, ventaTB.getSerie() + "-" + ventaTB.getNumeracion(), Tools.roundingValue(importeNeto, 2));
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
             stage.setResizable(false);
@@ -332,7 +335,7 @@ public class FxVentaDetalleController implements Initializable {
 
     }
 
-    private Label addElementGridPane(String id, String nombre, Pos pos) {
+    private Label addElementGridPaneLabel(String id, String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setId(id);
         label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
@@ -344,6 +347,54 @@ public class FxVentaDetalleController implements Initializable {
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
         return label;
+    }
+
+    private Button addElementGridPaneButtonLlevar(String id, String nombre, String idSuministro, double costo, Pos pos) {
+        Button button = new Button(nombre);
+        button.setId(id);
+        button.getStyleClass().add("buttonLightCancel");
+        button.setAlignment(pos);
+        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMaxHeight(Double.MAX_VALUE);
+        ImageView imageView = new ImageView(new Image("/view/image/plus.png"));
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        button.setGraphic(imageView);
+        button.setOnAction(event -> {
+            openWindowLlevar(idSuministro, costo);
+        });
+        button.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                openWindowLlevar(idSuministro, costo);
+            }
+        });
+        return button;
+    }
+
+    private Button addElementGridPaneButtonHistorial(String id, String nombre, SuministroTB suministroTB, Pos pos) {
+        Button button = new Button(nombre);
+        button.setId(id);
+        button.getStyleClass().add("buttonLightCancel");
+        button.setAlignment(pos);
+        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMaxHeight(Double.MAX_VALUE);
+        ImageView imageView = new ImageView(new Image("/view/image/asignacion.png"));
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        button.setGraphic(imageView);
+        button.setOnAction(event -> {
+            openWindowHistorial(suministroTB);
+        });
+        button.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                openWindowHistorial(suministroTB);
+            }
+        });
+        return button;
     }
 
     private Label addLabelTitle(String nombre, Pos pos) {
@@ -372,6 +423,50 @@ public class FxVentaDetalleController implements Initializable {
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Control.USE_COMPUTED_SIZE);
         return label;
+    }
+
+    private void openWindowLlevar(String idSuministro, double costo) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_LLEVAR);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaLlevarController controller = fXMLLoader.getController();
+            controller.setInitData(idVenta, idSuministro, lblComprobante.getText(), costo);
+            controller.setInitVentaDetalleController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Producto a llevar", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            Tools.println("Venta estructura openWindowLlevar: " + ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowHistorial(SuministroTB suministroTB) {
+        try {
+            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_LLEVAR_HISTORIAL);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaLlevarControllerHistorial controller = fXMLLoader.getController();
+            controller.setInitVentaDetalleController(this);
+            controller.loadData(ventaTB, suministroTB);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Historial de Salida", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.show();
+
+        } catch (IOException ex) {
+            Tools.println("Venta estructura openWindowHistorial: " + ex.getLocalizedMessage());
+        }
     }
 
     private void openWindowReporte() {
@@ -439,9 +534,9 @@ public class FxVentaDetalleController implements Initializable {
         map.put("DATOSCLIENTE", ventaTB.getClienteTB().getInformacion());
         map.put("DOCUMENTOCLIENTE", ventaTB.getClienteTB().getTipoDocumentoName().toUpperCase() + ":");
         map.put("NUMERODOCUMENTOCLIENTE", ventaTB.getClienteTB().getNumeroDocumento());
-        map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular().equals("") ? "---" : ventaTB.getClienteTB().getCelular());
-        map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail().equals("") ? "---" : ventaTB.getClienteTB().getEmail());
-        map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion().equals("") ? "---" : ventaTB.getClienteTB().getDireccion());
+        map.put("CELULARCLIENTE", ventaTB.getClienteTB().getCelular());
+        map.put("EMAILCLIENTE", ventaTB.getClienteTB().getEmail());
+        map.put("DIRECCIONCLIENTE", ventaTB.getClienteTB().getDireccion());
 
         map.put("FECHAEMISION", ventaTB.getFechaVenta());
         map.put("MONEDA", ventaTB.getMonedaTB().getNombre() + "-" + ventaTB.getMonedaTB().getAbreviado());
@@ -458,7 +553,6 @@ public class FxVentaDetalleController implements Initializable {
         map.put("QRDATA", Session.COMPANY_NUMERO_DOCUMENTO + "|" + ventaTB.getCodigoAlterno() + "|" + ventaTB.getSerie() + "|" + ventaTB.getNumeracion() + "|" + Tools.roundingValue(ventaTB.getImpuesto(), 2) + "|" + Tools.roundingValue(importeNeto, 2) + "|" + ventaTB.getFechaVenta() + "|" + ventaTB.getClienteTB().getIdAuxiliar() + "|" + ventaTB.getClienteTB().getNumeroDocumento() + "|");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JREmptyDataSource());
         return jasperPrint;
     }
 
@@ -541,7 +635,7 @@ public class FxVentaDetalleController implements Initializable {
                                 HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                                 billPrintable.hbEncebezado(box,
                                         ventaTB.getComprobanteName(),
-                                        lblSerie.getText(),
+                                        ventaTB.getSerie() + "-" + ventaTB.getNumeracion(),
                                         ventaTB.getClienteTB().getNumeroDocumento(),
                                         ventaTB.getClienteTB().getInformacion(),
                                         ventaTB.getClienteTB().getCelular(),
@@ -561,7 +655,13 @@ public class FxVentaDetalleController implements Initializable {
                                         "",
                                         "",
                                         "",
-                                        "");
+                                        "",
+                                        "",
+                                        "0",
+                                        "0",
+                                        "0",
+                                        "0",
+                                        "0");
                             }
 
                             AnchorPane hbDetalle = new AnchorPane();
@@ -595,6 +695,7 @@ public class FxVentaDetalleController implements Initializable {
                                         "",
                                         "",
                                         "");
+                                
                             }
 
                             billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -710,7 +811,13 @@ public class FxVentaDetalleController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -791,7 +898,6 @@ public class FxVentaDetalleController implements Initializable {
         AnchorPane.setRightAnchor(ventaRealizadasController.getWindow(), 0d);
         AnchorPane.setBottomAnchor(ventaRealizadasController.getWindow(), 0d);
         vbContent.getChildren().add(ventaRealizadasController.getWindow());
-
     }
 
     @FXML

@@ -62,7 +62,7 @@
                   </VBox>
                   <VBox fx:id="btnCompras" alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionComprasRealizadas" onKeyPressed="#onKeyPressedComprasRealizadas" styleClass="buttonTransparent" text="Compras/Gastos" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionComprasRealizadas" onKeyPressed="#onKeyPressedComprasRealizadas" styleClass="buttonTransparent" text="Compras Echas" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -171,6 +171,24 @@
             </HBox>
             <HBox fx:id="hbOperacionesDos" alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
+                  <VBox fx:id="btnNotaCredito" alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionNotaCredito" onKeyPressed="#onKeyPressedNotaCredito" styleClass="buttonTransparent" text="Nota de Crédito" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/note.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documento">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
                   <VBox fx:id="btnBancos" alignment="CENTER">
                      <children>
                         <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionBanco" onKeyPressed="#onKeyPressedBanco" styleClass="buttonTransparent" text="Bancos / Cajas" textFill="#020203">

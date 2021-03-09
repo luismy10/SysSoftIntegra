@@ -107,6 +107,8 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
                 lblEstado.setText(compraTB.getEstadoName());
                 lblObservacion.setText(compraTB.getObservaciones());
                 lblMontoTotal.setText(Tools.roundingValue(compraTB.getMontoTotal(), 2));
+                lblMontoPagado.setText(Tools.roundingValue(compraTB.getMontoPagado(), 2));
+                lblDiferencia.setText(Tools.roundingValue(compraTB.getMontoRestante(), 2));
                 for (CompraCreditoTB vc : compraTB.getCompraCreditoTBs()) {
                     vc.getBtnImprimir().setOnAction(event
                             -> openModalImpresion(idCompra, vc.getIdCompraCredito())
@@ -141,8 +143,6 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             gpList.add(addElementGridPane("l7" + (i + 1), "", Pos.CENTER, compraTB.getCompraCreditoTBs().get(i).getBtnImprimir()), 6, (i + 1));
             montoPagado += compraTB.getCompraCreditoTBs().get(i).getMonto();
         }
-        lblMontoPagado.setText(Tools.roundingValue(montoPagado, 2));
-        lblDiferencia.setText(Tools.roundingValue(compraTB.getMontoTotal() - montoPagado, 2));
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos, Node node) {

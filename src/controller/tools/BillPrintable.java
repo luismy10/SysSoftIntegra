@@ -42,6 +42,7 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import model.CompraCreditoTB;
+import model.HistorialSuministroSalidaTB;
 import model.ImageADO;
 import model.ImagenTB;
 import model.MovimientoCajaTB;
@@ -71,28 +72,34 @@ public class BillPrintable implements Printable {
     }
 
     public int hbEncebezado(HBox box,
-            String nombre_impresion_comprobante, 
-            String numeracion_serie_comprobante, 
-            String nummero_documento_cliente, 
-            String informacion_cliente, 
-            String celular_cliente, 
-            String direccion_cliente, 
-            String codigoVenta, 
-            String importe_total_letras, 
-            String fechaInicioOperacion, 
-            String horaInicioOperacion, 
+            String nombre_impresion_comprobante,
+            String numeracion_serie_comprobante,
+            String nummero_documento_cliente,
+            String informacion_cliente,
+            String celular_cliente,
+            String direccion_cliente,
+            String codigoVenta,
+            String importe_total_letras,
+            String fechaInicioOperacion,
+            String horaInicioOperacion,
             String fechaTerminoOperaciona,
-            String horaTerminoOperacion, 
-            String calculado, 
-            String contado, 
-            String diferencia, 
-            String empleadoNumeroDocumento, 
-            String empleadoInformacion, 
-            String empleadoCelular, 
-            String empleadoDireccion, 
-            String montoTotal, 
-            String montoPagado, 
-            String montoDiferencial) {
+            String horaTerminoOperacion,
+            String calculado,
+            String contado,
+            String diferencia,
+            String empleadoNumeroDocumento,
+            String empleadoInformacion,
+            String empleadoCelular,
+            String empleadoDireccion,
+            String montoTotal,
+            String montoPagado,
+            String montoDiferencial,
+            String obsevacion_descripción,
+            String monto_inicial_caja,
+            String monto_efectivo_caja,
+            String monto_tarjeta_caja,
+            String monto_ingreso_caja,
+            String monto_egreso_caja) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
             if (box.getChildren().get(j) instanceof TextFieldTicket) {
@@ -163,6 +170,18 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(montoPagado));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("montorestanten")) {
                     fieldTicket.setText(Tools.AddText2Guines(montoDiferencial));
+                }else if(fieldTicket.getVariable().equalsIgnoreCase("observacion")){
+                    fieldTicket.setText(Tools.AddText2Guines(obsevacion_descripción));
+                }else if(fieldTicket.getVariable().equalsIgnoreCase("aperturacaja")){
+                    fieldTicket.setText(Tools.AddText2Guines(monto_inicial_caja));
+                }else if(fieldTicket.getVariable().equalsIgnoreCase("ventasefectivocaja")){
+                    fieldTicket.setText(Tools.AddText2Guines(monto_efectivo_caja));
+                }else if(fieldTicket.getVariable().equalsIgnoreCase("ventastarjetacaja")){
+                    fieldTicket.setText(Tools.AddText2Guines(monto_tarjeta_caja));
+                }else if(fieldTicket.getVariable().equalsIgnoreCase("ingresosefectivocaja")){
+                    fieldTicket.setText(Tools.AddText2Guines(monto_ingreso_caja));
+                }else if(fieldTicket.getVariable().equalsIgnoreCase("egresosefectivocaja")){
+                    fieldTicket.setText(Tools.AddText2Guines(monto_egreso_caja));
                 }
                 lines = fieldTicket.getLines();
             }
@@ -303,7 +322,17 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHoraMovimiento()));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("tipomovimiento")) {
                     short tipoMovimiento = arrList.get(m).getTipoMovimiento();
-                    String movimiento = tipoMovimiento == 1 ? "MONTO INICIAL" : tipoMovimiento == 2 ? "VENTA CON EFECTIVO" : tipoMovimiento == 3 ? "VENTA CON TARJETA" : tipoMovimiento == 4 ? "INGRESO DE DINERO" : "SALIDAS DE DINERO";
+                    String movimiento = tipoMovimiento == 1
+                            ? "MONTO INICIAL"
+                            : tipoMovimiento == 2
+                                    ? "VENTA CON EFECTIVO"
+                                    : tipoMovimiento == 3
+                                            ? "VENTA CON TARJETA"
+                                            : tipoMovimiento == 4
+                                                    ? "INGRESO EN EFECTIVO"
+                                                    : tipoMovimiento == 5
+                                                            ? "SALIDA EN EFECTIVO"
+                                                            : "SALIDA CON TARJETA";
                     fieldTicket.setText(Tools.AddText2Guines(movimiento));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getMonto(), 2)));
@@ -315,24 +344,61 @@ public class BillPrintable implements Printable {
         return lines;
     }
 
-    public int hbPie(HBox box, 
-            String moneda, 
-            String importeBruto, 
-            String descuentoBruto, 
-            String montoOperacion, 
-            String montoImpuesto, 
-            String subImporteNeto, 
-            String importeNeto, 
-            String efectivo, 
-            String vuelto, 
-            String numCliente, 
-            String infoCliente, 
-            String codigoVenta, 
-            String celular_cliente, 
-            String importe_total_letras, 
-            String empleadoNumeroDocumento, 
-            String empleadoInformacion, 
-            String empleadoCelular, 
+    public int hbDetalleHistorialSumistroSalida(HBox hBox, HBox box, ArrayList<HistorialSuministroSalidaTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(""));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 0) + "%"));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(0, 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getObservacion()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("fechadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getFecha()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("horadetalle")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getHora()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("montooperacion")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getCantidad(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+
+    public int hbPie(HBox box,
+            String moneda,
+            String importeBruto,
+            String descuentoBruto,
+            String montoOperacion,
+            String montoImpuesto,
+            String subImporteNeto,
+            String importeNeto,
+            String efectivo,
+            String vuelto,
+            String numCliente,
+            String infoCliente,
+            String codigoVenta,
+            String celular_cliente,
+            String importe_total_letras,
+            String empleadoNumeroDocumento,
+            String empleadoInformacion,
+            String empleadoCelular,
             String direccionEmpleado) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {

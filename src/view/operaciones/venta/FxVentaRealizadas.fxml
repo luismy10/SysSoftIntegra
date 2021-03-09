@@ -137,23 +137,6 @@
                                           <ComboBox fx:id="cbEstado" onAction="#onActionEstado" prefHeight="30.0" prefWidth="220.0" promptText="Seleccione" />
                                        </children>
                                     </VBox>
-                                    <VBox fx:id="vbTotalVenta" alignment="CENTER_RIGHT" style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label styleClass="labelOpenSansRegular13" text="Total de Ventas" textFill="#020203" VBox.vgrow="ALWAYS">
-                                             <font>
-                                                <Font name="Calibri" size="15.0" />
-                                             </font>
-                                             <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../image/efectivo_1.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
-                                          <Label fx:id="lblTotal" maxHeight="1.7976931348623157E308" styleClass="labelRobotoBold17" text="0.00" textFill="#020203" VBox.vgrow="ALWAYS" />
-                                       </children>
-                                    </VBox>
                                  </children>
                               </HBox>
                            </children>
@@ -164,7 +147,7 @@
                                  <children>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelOpenSansRegular13" text="Buscar por Cliente o Serie/Numeración" textFill="#020203">
+                                          <Label styleClass="labelOpenSansRegular13" text="Buscar por N° de Documento, Datos del Cliente o Serie/Numeración de Comprobante" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
@@ -221,7 +204,7 @@
                                           <TableColumn fx:id="tcSerie" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Comprobante" />
                                           <TableColumn fx:id="tcTipo" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Tipo de Venta" />
                                           <TableColumn fx:id="tcEstado" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Estado" />
-                                          <TableColumn fx:id="tcTotal" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Total/Saldo" />
+                                          <TableColumn fx:id="tcTotal" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe Total" />
                                        </columns>
                                     </TableView>
                                  </children>
@@ -241,7 +224,7 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/left.png" />
                                  </image>
@@ -268,7 +251,7 @@
                               <Font name="Calibri" size="14.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/right.png" />
                                  </image>

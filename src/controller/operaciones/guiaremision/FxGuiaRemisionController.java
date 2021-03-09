@@ -43,7 +43,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.ClienteADO;
@@ -72,7 +71,7 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private Label lblLoad;
     @FXML
-    private Label lblEstadoComprobante;
+    private ComboBox<TipoDocumentoTB> cbDocumentoGuia;
     @FXML
     private ComboBox<ClienteTB> cbCliente;
     @FXML
@@ -129,8 +128,6 @@ public class FxGuiaRemisionController implements Initializable {
     private TableColumn<GuiaRemisionDetalleTB, Button> tcOpcion;
 
     private AnchorPane vbPrincipal;
-
-    private int idComprobante;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -196,7 +193,6 @@ public class FxGuiaRemisionController implements Initializable {
             }
         });
 
-        idComprobante = 0;
         Tools.actualDate(Tools.getDate(), dtFechaTraslado);
         txtDireccionPartida.setText(Session.COMPANY_DOMICILIO);
         loadUbigeoPartida();
@@ -367,18 +363,11 @@ public class FxGuiaRemisionController implements Initializable {
                     tipoComprobante.forEach(cbTipoComprobante.getItems()::add);
                 }
                 if (objects.get(4) != null) {
-                    TipoDocumentoTB documentoTB = (TipoDocumentoTB) objects.get(4);
-                    if (documentoTB != null) {
-                        idComprobante = documentoTB.getIdTipoDocumento();
-                        lblEstadoComprobante.setText("Comprobante activo.");
-                        lblEstadoComprobante.setTextFill(Color.web("#008922"));
-                    } else {
-                        lblEstadoComprobante.setText("Comprobante inactivo.");
-                        lblEstadoComprobante.setTextFill(Color.web("#c20202"));
+                    ArrayList<TipoDocumentoTB> documentoTBs = (ArrayList<TipoDocumentoTB>) objects.get(4);
+                    documentoTBs.forEach(cbDocumentoGuia.getItems()::add);
+                    if(cbDocumentoGuia.getItems().size()==1){
+                        cbDocumentoGuia.getSelectionModel().select(0);
                     }
-                } else {
-                    lblEstadoComprobante.setText("Comprobante inactivo.");
-                    lblEstadoComprobante.setTextFill(Color.web("#c20202"));
                 }
                 lblLoad.setVisible(false);
             } else {
@@ -633,8 +622,9 @@ public class FxGuiaRemisionController implements Initializable {
     }
 
     private void onExecuteGuardar() {
-        if (idComprobante <= 0) {
-            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "No se puedo completar el procreso por problemas en obtener el tipo de documento.");
+        if (cbDocumentoGuia.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione el documento guía usar.");
+            cbDocumentoGuia.requestFocus();
         } else if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(spWindow, "Guía de Remisión", "Seleccione un cliente.");
             cbCliente.requestFocus();
@@ -693,7 +683,7 @@ public class FxGuiaRemisionController implements Initializable {
                 GuiaRemisionTB guiaRemisionTB = new GuiaRemisionTB();
                 guiaRemisionTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
                 guiaRemisionTB.setIdVendedor(Session.USER_ID);
-                guiaRemisionTB.setIdComprobante(idComprobante);
+                guiaRemisionTB.setIdComprobante(cbDocumentoGuia.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 guiaRemisionTB.setEmail(txtEmail.getText().trim());
                 guiaRemisionTB.setIdMotivoTraslado(cbMotivoTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
                 guiaRemisionTB.setIdModalidadTraslado(cbModalidadTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
@@ -773,7 +763,7 @@ public class FxGuiaRemisionController implements Initializable {
                 ArrayList<SuministroTB> empList = ventaTB.getSuministroTBs();
 
                 for (int i = 0; i < cbTipoComprobante.getItems().size(); i++) {
-                    if (cbTipoComprobante.getItems().get(i).getIdTipoDocumento() == ventaTB.getComprobante()) {
+                    if (cbTipoComprobante.getItems().get(i).getIdTipoDocumento() == ventaTB.getIdComprobante()) {
                         cbTipoComprobante.getSelectionModel().select(i);
                         break;
                     }

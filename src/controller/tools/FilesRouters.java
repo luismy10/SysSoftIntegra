@@ -269,7 +269,9 @@ public final class FilesRouters {
 
     public static final String FX_PRODUCIR = "/view/produccion/producir/FxProducir.fxml";
 
-    public static final String FX_PRODUCIR_PROCESO = "/view/produccion/producir/FxProducirProceso.fxml";
+    public static final String FX_PRODUCIR_AGREGAR = "/view/produccion/producir/FxProducirAgregar.fxml";
+
+    public static final String FX_PRODUCIR_EDITAR = "/view/produccion/producir/FxProducirEditar.fxml";
 
     //--------------------------------------------------------------------------------------------------
     //PROCESO DE SUMINISTROS
@@ -341,7 +343,23 @@ public final class FilesRouters {
     public static final String FX_INSUMO_PROCESO = "/view/produccion/insumos/FxInsumosProceso.fxml";
 
     public static final String FX_INSUMO_LISTA = "/view/produccion/insumos/FxInsumosLista.fxml";
-    
+
     public static final String FX_OPCIONES_IMPRIMIR = "/view/configuracion/impresoras/FxOpcionesImprimir.fxml";
+
+    public static final String FX_NOTA_CREDITO = "/view/operaciones/notacredito/FxNotaCredito.fxml";
+
+    public static final String FX_NOTA_CREDITO_REALIZADOS = "/view/operaciones/notacredito/FxNotaCreditoRealizadas.fxml";
+
+    public static final String FX_NOTA_CREDITO_DETALLE = "/view/operaciones/notacredito/FxNotaCreditoDetalle.fxml";
+
+    public static final String FX_VENTA_LLEVAR = "/view/operaciones/venta/FxVentaLlevar.fxml";
+
+    public static final String FX_VENTA_LLEVAR_HISTORIAL = "/view/operaciones/venta/FxVentaLlevarHistorial.fxml";
+
+    public static final String FX_FORMULA = "/view/produccion/producir/FxFormula.fxml";
+
+    public static final String FX_FORMULA_AGREGAR = "/view/produccion/producir/FxFormulaAgregar.fxml";
+
+    public static final String FX_FORMULA_EDITAR = "/view/produccion/producir/FxFormulaEditar.fxml";
 
 }

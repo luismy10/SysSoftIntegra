@@ -154,6 +154,35 @@
                   </HBox>
                </children>
             </VBox>
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                     <children>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActioNotaCredito" onKeyPressed="#onKeyPresseNotaCredito" styleClass="buttonTransparent" text="Nota de Crédito" textFill="#020203">
+                                 <graphic>
+                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../image/note.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Egresos">
+                                 <font>
+                                    <Font name="Roboto" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>

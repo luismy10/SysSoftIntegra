@@ -120,7 +120,7 @@
                      <children>
                         <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Pagar">
                            <graphic>
-                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/save.png" />
                                  </image></ImageView>
@@ -128,7 +128,7 @@
                         </Button>
                         <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Cancelar">
                            <graphic>
-                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/error.png" />
                                  </image></ImageView>

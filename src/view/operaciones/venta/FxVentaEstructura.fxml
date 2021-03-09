@@ -135,7 +135,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label prefHeight="30.0" styleClass="labelRoboto13" text="CTRL+D" textFill="#1a2226">
+                                          <Label prefHeight="30.0" styleClass="labelRoboto13" text="CTRL+D" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -158,7 +158,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <ComboBox fx:id="cbMoneda" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="240.0" promptText="Moneda" HBox.hgrow="ALWAYS" />
+                                          <ComboBox fx:id="cbMoneda" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#onActionMoneda" prefHeight="30.0" prefWidth="200.0" promptText="Moneda" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -225,7 +225,7 @@
                                  <children>
                                     <HBox alignment="CENTER" style="-fx-spacing: 0.16666666666666666em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Text fill="#1a2226" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="SERIE:" />
+                                          <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="SERIE:" />
                                           <Text fx:id="lblSerie" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="0000" />
                                        </children>
                                     </HBox>

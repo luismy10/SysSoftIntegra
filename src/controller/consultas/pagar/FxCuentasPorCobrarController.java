@@ -116,6 +116,7 @@ public class FxCuentasPorCobrarController implements Initializable {
         tcMontoCobrado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcDiferencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcOpciones.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
         Tools.actualDate(Tools.getDate(), dpFechaFinal);
@@ -136,44 +137,79 @@ public class FxCuentasPorCobrarController implements Initializable {
             return t;
         });
 
-        Task< ArrayList<Object>> task = new Task< ArrayList<Object>>() {
+        Task< Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return VentaADO.ListarVentasCredito(opcion, buscar, fechaInicio, fechaFinal, (paginacion - 1) * 10, 10);
             }
         };
         task.setOnSucceeded(w -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) objects.get(0);
-                ventaTBs.forEach(e -> {
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) objects[0];
+                if (!ventaTBs.isEmpty()) {
+                    ventaTBs.forEach(e -> {
                     Button btnVisualizar = (Button) e.getHbOpciones().getChildren().get(0);
-                    btnVisualizar.setOnAction(event -> {
-                        onEventVisualizar(e.getIdVenta());
-                    });
-                    btnVisualizar.setOnKeyPressed(event -> {
-                        if (event.getCode() == KeyCode.ENTER) {
+                        btnVisualizar.setOnAction(event -> {
                             onEventVisualizar(e.getIdVenta());
-                        }
+                        });
+                        btnVisualizar.setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                onEventVisualizar(e.getIdVenta());
+                            }
+                        });
                     });
-                });
-                tvList.setItems(ventaTBs);
-                int integer = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
-                totalPaginacion = integer;
-                lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-
-                lblLoad.setVisible(false);
+                    tvList.setItems(ventaTBs);
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 10.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
+                }
+            } else if (object instanceof String) {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
             } else {
-                lblLoad.setVisible(false);
+                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
             }
+            lblLoad.setVisible(false);
+//            ArrayList<Object> objects = task.getValue();
+//            if (!objects.isEmpty()) {
+//                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) objects.get(0);
+//                ventaTBs.forEach(e -> {
+//                    Button btnVisualizar = (Button) e.getHbOpciones().getChildren().get(0);
+//                    btnVisualizar.setOnAction(event -> {
+//                        onEventVisualizar(e.getIdVenta());
+//                    });
+//                    btnVisualizar.setOnKeyPressed(event -> {
+//                        if (event.getCode() == KeyCode.ENTER) {
+//                            onEventVisualizar(e.getIdVenta());
+//                        }
+//                    });
+//                });
+//                tvList.setItems(ventaTBs);
+//                int integer = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
+//                totalPaginacion = integer;
+//                lblPaginaActual.setText(paginacion + "");
+//                lblPaginaSiguiente.setText(totalPaginacion + "");
+//
+//                lblLoad.setVisible(false);
+//            } else {
+//                lblLoad.setVisible(false);
+//            }
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
         });
 
         task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
         });
         exec.execute(task);
         if (!exec.isShutdown()) {

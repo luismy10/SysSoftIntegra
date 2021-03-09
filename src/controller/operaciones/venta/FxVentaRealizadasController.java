@@ -8,7 +8,6 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -85,10 +83,6 @@ public class FxVentaRealizadasController implements Initializable {
     private Label lblPaginaActual;
     @FXML
     private Label lblPaginaSiguiente;
-    @FXML
-    private Label lblTotal;
-    @FXML
-    private VBox vbTotalVenta;
 
     private AnchorPane vbPrincipal;
 
@@ -102,8 +96,30 @@ public class FxVentaRealizadasController implements Initializable {
 
     private short opcion;
 
+    private boolean buscarTodos;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        paginacion = 1;
+        opcion = 0;
+        loadTableView();
+        Tools.actualDate(Tools.getDate(), dtFechaInicial);
+        Tools.actualDate(Tools.getDate(), dtFechaFinal);
+
+        cbEstado.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));
+        DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
+        cbEstado.getSelectionModel().select(0);
+
+        cbComprobante.getItems().add(new TipoDocumentoTB(0, "TODOS"));
+        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre())));
+        cbComprobante.getSelectionModel().select(0);
+
+        idEmpleado = Session.USER_ID;
+        txtVendedor.setText(Session.USER_NAME.toUpperCase());
+
+    }
+
+    private void loadTableView() {
         tcId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         tcFechaVenta.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getFechaVenta() + "\n"
@@ -119,29 +135,14 @@ public class FxVentaRealizadasController implements Initializable {
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
-        tcFechaVenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcFechaVenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcCliente.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
         tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
         tcTipo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
-        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
+        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
         tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
-        cbEstado.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));
-        DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
-        cbEstado.getSelectionModel().select(0);
-
-        cbComprobante.getItems().add(new TipoDocumentoTB(0, "TODOS"));
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre())));
-        cbComprobante.getSelectionModel().select(0);
-
-        Tools.actualDate(Tools.getDate(), dtFechaInicial);
-        Tools.actualDate(Tools.getDate(), dtFechaFinal);
-
-        idEmpleado = Session.USER_ID;
-        txtVendedor.setText(Session.USER_NAME.toUpperCase());
-
-        paginacion = 1;
-        opcion = 0;
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -165,10 +166,12 @@ public class FxVentaRealizadasController implements Initializable {
         }
         if (privilegioTBs.get(6).getIdPrivilegio() != 0 && !privilegioTBs.get(6).isEstado()) {
             hbVendedor.setDisable(true);
-            vbTotalVenta.setVisible(false);
         }
         if (privilegioTBs.get(7).getIdPrivilegio() != 0 && !privilegioTBs.get(7).isEstado()) {
             txtSearch.setDisable(true);
+        }
+        if (privilegioTBs.get(8).getIdPrivilegio() != 0 && privilegioTBs.get(8).isEstado()) {
+            buscarTodos = true;
         }
     }
 
@@ -186,33 +189,44 @@ public class FxVentaRealizadasController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
             }
         };
         task.setOnSucceeded(w -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                tvList.setItems((ObservableList<VentaTB>) objects.get(0));
-                if (tvList.getItems().isEmpty()) {
-                    tvList.getSelectionModel().select(0);
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) objects[0];
+                if (!ventaTBs.isEmpty()) {
+                    tvList.setItems(ventaTBs);
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
                 }
-                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 20.00));
-                lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-
-                double ventaTotal = (double) objects.get(2);
-                lblTotal.setText(Tools.roundingValue(ventaTotal, 2));
-                lblLoad.setVisible(false);
+            } else if (object instanceof String) {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
             } else {
-                lblLoad.setVisible(false);
-                lblTotal.setText(Tools.roundingValue(0, 2));
+                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
             }
+            lblLoad.setVisible(false);
         });
-        task.setOnFailed(w -> lblLoad.setVisible(false));
-        task.setOnScheduled(w -> lblLoad.setVisible(true));
+        task.setOnFailed(w -> {
+            lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
+        });
+        task.setOnScheduled(w -> {
+            lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
+        });
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -235,7 +249,7 @@ public class FxVentaRealizadasController implements Initializable {
             AnchorPane.setBottomAnchor(node, 0d);
             vbContent.getChildren().add(node);
         } else {
-            Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
+            Tools.AlertMessageWarning(window, "Compra", "Debe seleccionar una compra de la lista");
         }
     }
 
@@ -268,7 +282,7 @@ public class FxVentaRealizadasController implements Initializable {
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
                 break;
             case 1:
-                fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
+                fillVentasTable((short) (!buscarTodos ? 1 : 2), txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
                 break;
         }
     }
@@ -319,10 +333,12 @@ public class FxVentaRealizadasController implements Initializable {
                 && event.getCode() != KeyCode.PRINTSCREEN
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
-            if (!lblLoad.isVisible()) {
-                paginacion = 1;
-                fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
-                opcion = 1;
+            if (!Tools.isText(txtSearch.getText())) {
+                if (!lblLoad.isVisible()) {
+                    paginacion = 1;
+                    fillVentasTable((short) (!buscarTodos ? 1 : 2), txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
+                    opcion = 1;
+                }
             }
         }
     }

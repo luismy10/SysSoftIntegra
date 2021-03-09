@@ -264,98 +264,133 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             return t;
         });
 
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 20, 20);
             }
         };
 
         task.setOnSucceeded(e -> {
-            fpProductos.getChildren().clear();
-            listSuministros.clear();
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                fpProductos.getChildren().clear();
                 fpProductos.setAlignment(Pos.TOP_CENTER);
-                listSuministros.addAll((ObservableList<SuministroTB>) objects.get(0));
-                for (SuministroTB tvList1 : listSuministros) {
+                listSuministros.addAll((ObservableList<SuministroTB>) objects[0]);
+                if (!listSuministros.isEmpty()) {
+                    for (SuministroTB tvList1 : listSuministros) {
+                        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+                        PPI display = new PPI("" + screenBounds.getWidth(), "" + screenBounds.getHeight(), "" + 96);
+                        double resultNumber = display.calc();
+                        double dpi = resultNumber * 8;
 
-                    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-                    PPI display = new PPI("" + screenBounds.getWidth(), "" + screenBounds.getHeight(), "" + 96);
-                    double resultNumber = display.calc();
-                    double dpi = resultNumber * 8;
-
-                    VBox vBox = new VBox();
-                    ImageView imageView = new ImageView(new Image("/view/image/no-image.png"));
-                    if (tvList1.getNuevaImagen() != null) {
-                        imageView = new ImageView(new Image(new ByteArrayInputStream(tvList1.getNuevaImagen())));
-                    }
-                    imageView.setFitWidth(dpi * 1.3);
-                    imageView.setFitHeight(dpi * 1.2);
-                    vBox.getChildren().add(imageView);
+                        VBox vBox = new VBox();
+                        ImageView imageView = new ImageView(new Image("/view/image/no-image.png"));
+                        if (tvList1.getNuevaImagen() != null) {
+                            imageView = new ImageView(new Image(new ByteArrayInputStream(tvList1.getNuevaImagen())));
+                        }
+                        imageView.setFitWidth(dpi * 1.3);
+                        imageView.setFitHeight(dpi * 1.2);
+                        vBox.getChildren().add(imageView);
 
 //                    Label lblCodigo = new Label(tvList1.getClave());
 //                    lblCodigo.getStyleClass().add("labelOpenSansRegular13");
 //                    lblCodigo.setTextFill(Color.web("#020203"));
 //                    vBox.getChildren().add(lblCodigo);
-                    Label lblProducto = new Label(tvList1.getNombreMarca());
-                    lblProducto.getStyleClass().add("labelRobotoBold15");
-                    lblProducto.setTextFill(Color.web("#020203"));
+                        Label lblProducto = new Label(tvList1.getNombreMarca());
+                        lblProducto.getStyleClass().add("labelRobotoBold15");
+                        lblProducto.setTextFill(Color.web("#020203"));
 //                    lblProducto.setWrapText(true);
-                    lblProducto.setTextAlignment(TextAlignment.CENTER);
-                    lblProducto.setAlignment(Pos.CENTER);
-                    lblProducto.setMinWidth(Control.USE_PREF_SIZE);
-                    lblProducto.setPrefWidth(dpi * 1.3);
+                        lblProducto.setTextAlignment(TextAlignment.CENTER);
+                        lblProducto.setAlignment(Pos.CENTER);
+                        lblProducto.setMinWidth(Control.USE_PREF_SIZE);
+                        lblProducto.setPrefWidth(dpi * 1.3);
 //                    lblProducto.setMaxWidth(Double.MAX_VALUE);
 //                    VBox.setVgrow(lblProducto, Priority.ALWAYS);
-                    vBox.getChildren().add(lblProducto);
+                        vBox.getChildren().add(lblProducto);
 
-                    Label lblMarca = new Label(Tools.isText(tvList1.getMarcaName()) ? "No Marca" : tvList1.getMarcaName());
-                    lblMarca.getStyleClass().add("labelOpenSansRegular13");
-                    lblMarca.setTextFill(Color.web("#1a2226"));
-                    vBox.getChildren().add(lblMarca);
+                        Label lblMarca = new Label(Tools.isText(tvList1.getMarcaName()) ? "No Marca" : tvList1.getMarcaName());
+                        lblMarca.getStyleClass().add("labelOpenSansRegular13");
+                        lblMarca.setTextFill(Color.web("#1a2226"));
+                        vBox.getChildren().add(lblMarca);
 
-                    Label lblCantidad = new Label(Tools.roundingValue(tvList1.getCantidad(), 2));
-                    lblCantidad.getStyleClass().add("labelRobotoBold17");
-                    lblCantidad.setTextFill(tvList1.getCantidad() <= 0 ? Color.web("#e40000") : Color.web("#117cee"));
-                    vBox.getChildren().add(lblCantidad);
+                        Label lblCantidad = new Label(Tools.roundingValue(tvList1.getCantidad(), 2));
+                        lblCantidad.getStyleClass().add("labelRobotoBold17");
+                        lblCantidad.setTextFill(tvList1.getCantidad() <= 0 ? Color.web("#e40000") : Color.web("#117cee"));
+                        vBox.getChildren().add(lblCantidad);
 
-                    Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
-                    lblTotalProducto.getStyleClass().add("labelRobotoBold19");
-                    lblTotalProducto.setTextFill(Color.web("#009a1e"));
-                    lblTotalProducto.maxWidth(Double.MAX_VALUE);
-                    vBox.getChildren().add(lblTotalProducto);
+                        Label lblTotalProducto = new Label(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(tvList1.getPrecioVentaGeneral(), 2));
+                        lblTotalProducto.getStyleClass().add("labelRobotoBold19");
+                        lblTotalProducto.setTextFill(Color.web("#009a1e"));
+                        lblTotalProducto.maxWidth(Double.MAX_VALUE);
+                        vBox.getChildren().add(lblTotalProducto);
 
-                    vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
-                    vBox.setAlignment(Pos.TOP_CENTER);
-                    vBox.setMinWidth(Control.USE_COMPUTED_SIZE);
-                    vBox.setPrefWidth(dpi * 1.5);
-                    vBox.maxWidth(Control.USE_COMPUTED_SIZE);
+                        vBox.setStyle("-fx-spacing: 0.4166666666666667em;-fx-padding: 0.4166666666666667em;-fx-border-color: #0478b2;-fx-border-width:2px;-fx-background-color:transparent;");
+                        vBox.setAlignment(Pos.TOP_CENTER);
+                        vBox.setMinWidth(Control.USE_COMPUTED_SIZE);
+                        vBox.setPrefWidth(dpi * 1.5);
+                        vBox.maxWidth(Control.USE_COMPUTED_SIZE);
 
-                    Button button = new Button();
-                    button.getStyleClass().add("buttonView");
-                    button.setGraphic(vBox);
-                    button.setOnAction(event -> {
-                        addElementListView(tvList1);
-                    });
-                    button.setOnKeyPressed(event -> {
-                        if (event.getCode() == KeyCode.ENTER) {
+                        Button button = new Button();
+                        button.getStyleClass().add("buttonView");
+                        button.setGraphic(vBox);
+                        button.setOnAction(event -> {
                             addElementListView(tvList1);
-                        }
-                    });
+                        });
+                        button.setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                addElementListView(tvList1);
+                            }
+                        });
 
-                    fpProductos.getChildren().add(button);
+                        fpProductos.getChildren().add(button);
 
+                    }
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    fpProductos.getChildren().clear();
+                    fpProductos.setAlignment(Pos.CENTER);
+                    Label lblLoad = new Label("No hay datos para mostrar.");
+                    lblLoad.getStyleClass().add("labelRoboto15");
+                    lblLoad.setTextFill(Color.web("#1a2226"));                          
+                    lblLoad.setContentDisplay(ContentDisplay.TOP);                
+                    fpProductos.getChildren().add(lblLoad);
                 }
-                totalPaginacion = (int) (Math.ceil(((Integer) objects.get(1)) / 20.00));
-                lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
+            } else if (object instanceof String) {
+                fpProductos.getChildren().clear();
+                fpProductos.setAlignment(Pos.CENTER);
+                Label lblLoad = new Label((String) object);
+                lblLoad.getStyleClass().add("labelRoboto15");
+                lblLoad.setTextFill(Color.web("#a70820"));
+                lblLoad.setContentDisplay(ContentDisplay.TOP);
+                fpProductos.getChildren().add(lblLoad);
+            } else {
+                fpProductos.getChildren().clear();
+                fpProductos.setAlignment(Pos.CENTER);
+                Label lblLoad = new Label("Error en traer los datos, intente nuevamente.");
+                lblLoad.getStyleClass().add("labelRoboto15");
+                lblLoad.setTextFill(Color.web("#a70820"));
+                lblLoad.setContentDisplay(ContentDisplay.TOP);
+                fpProductos.getChildren().add(lblLoad);
             }
             state = false;
         });
-        task.setOnFailed(e -> state = false);
+        task.setOnFailed(e -> {
+            state = false;
+            fpProductos.getChildren().clear();
+            fpProductos.setAlignment(Pos.CENTER);
+            Label lblLoad = new Label(task.getMessage());
+            lblLoad.getStyleClass().add("labelRoboto15");
+            lblLoad.setTextFill(Color.web("#a70820"));
+            lblLoad.setContentDisplay(ContentDisplay.TOP);
+            fpProductos.getChildren().add(lblLoad);
+        });
         task.setOnScheduled(e -> {
             state = true;
+            listSuministros.clear();
             fpProductos.getChildren().clear();
             fpProductos.setAlignment(Pos.CENTER);
             Label lblLoad = new Label("Cargando productos para su venta");
@@ -366,7 +401,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             lblLoad.setContentDisplay(ContentDisplay.TOP);
             lblLoad.setGraphic(progressIndicator);
             fpProductos.getChildren().add(lblLoad);
-
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -397,7 +431,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         suministroTB.setDescuentoSumado(0);
 
         suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-        suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
         suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
         suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
@@ -408,6 +441,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
         suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
         suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+        suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
 
         suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
         suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -720,7 +754,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            "",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -875,7 +915,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -984,7 +1030,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     "",
                                     "",
                                     "",
-                                    "");
+                                    "",
+                                    "",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0");
                         }
 
                         ObservableList<SuministroTB> observableList = FXCollections.observableArrayList();
@@ -1072,7 +1124,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     "",
                                     "",
                                     "",
-                                    "");
+                                    "",
+                                    "",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0");
                         }
 
                         ObservableList<SuministroTB> observableList = FXCollections.observableArrayList();
@@ -1213,7 +1271,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             } else if (cbTipoDocumento.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(vbWindow, "Ventas", "Seleccione el tipo de documento del cliente.");
                 cbTipoDocumento.requestFocus();
-            } else if (txtNumeroDocumento.getText().trim().equalsIgnoreCase("")) {
+            } else if (!Tools.isNumeric(txtNumeroDocumento.getText().trim())) {
                 Tools.AlertMessageWarning(vbWindow, "Ventas", "Ingrese el número del documento del cliente.");
                 txtNumeroDocumento.requestFocus();
             } else if (cbComprobante.getSelectionModel().getSelectedIndex() < 0) {
@@ -1250,13 +1308,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
                 VentaTB ventaTB = new VentaTB();
                 ventaTB.setVendedor(Session.USER_ID);
-                ventaTB.setComprobante(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento()
-                        : 0);
-                ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbComprobante.getSelectionModel().getSelectedItem().getNombre()
-                        : "");
-                ventaTB.setMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
+                ventaTB.setIdComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
+                ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedItem().getNombre());
+                ventaTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
                 ventaTB.setMonedaName(monedaSimbolo);
                 ventaTB.setSerie(lblSerie.getText());
                 ventaTB.setNumeracion(lblNumeracion.getText());
@@ -1270,7 +1324,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setClienteTB(clienteTB);
                 ArrayList<SuministroTB> suministroTBs = new ArrayList<>();
                 lvProductoAgregados.getItems().forEach(e -> suministroTBs.add(e.getSuministroTB()));
-                controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas);
+                controller.setInitComponents(ventaTB, suministroTBs, vender_con_cantidades_negativas, cbMoneda.getSelectionModel().getSelectedItem().getNombre());
             }
         } catch (IOException ex) {
             System.out.println("openWindowVentaProceso():" + ex.getLocalizedMessage());
@@ -1764,9 +1818,48 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     @FXML
     private void onKeyReleasedToSearch(KeyEvent event) {
-        paginacion = 1;
-        searchTable(event, txtSearch.getText().trim());
-        opcion = 1;
+        if (event.getCode() != KeyCode.ESCAPE
+                && event.getCode() != KeyCode.F1
+                && event.getCode() != KeyCode.F2
+                && event.getCode() != KeyCode.F3
+                && event.getCode() != KeyCode.F4
+                && event.getCode() != KeyCode.F5
+                && event.getCode() != KeyCode.F6
+                && event.getCode() != KeyCode.F7
+                && event.getCode() != KeyCode.F8
+                && event.getCode() != KeyCode.F9
+                && event.getCode() != KeyCode.F10
+                && event.getCode() != KeyCode.F11
+                && event.getCode() != KeyCode.F12
+                && event.getCode() != KeyCode.ALT
+                && event.getCode() != KeyCode.CONTROL
+                && event.getCode() != KeyCode.UP
+                && event.getCode() != KeyCode.DOWN
+                && event.getCode() != KeyCode.RIGHT
+                && event.getCode() != KeyCode.LEFT
+                && event.getCode() != KeyCode.TAB
+                && event.getCode() != KeyCode.CAPS
+                && event.getCode() != KeyCode.SHIFT
+                && event.getCode() != KeyCode.HOME
+                && event.getCode() != KeyCode.WINDOWS
+                && event.getCode() != KeyCode.ALT_GRAPH
+                && event.getCode() != KeyCode.CONTEXT_MENU
+                && event.getCode() != KeyCode.END
+                && event.getCode() != KeyCode.INSERT
+                && event.getCode() != KeyCode.PAGE_UP
+                && event.getCode() != KeyCode.PAGE_DOWN
+                && event.getCode() != KeyCode.NUM_LOCK
+                && event.getCode() != KeyCode.PRINTSCREEN
+                && event.getCode() != KeyCode.SCROLL_LOCK
+                && event.getCode() != KeyCode.PAUSE) {
+            if (!Tools.isText(txtSearch.getText())) {
+                if (!state) {
+                    paginacion = 1;
+                    searchTable(event, txtSearch.getText().trim());
+                    opcion = 1;
+                }
+            }
+        }
     }
 
     private void onKeyPressReload(KeyEvent event) {
@@ -1956,7 +2049,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onKeyTypedNumeroDocumento(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
-        if ((c < '0' || c > '9') && (c != '\b') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+        if ((c < '0' || c > '9') && (c != '\b')) {
             event.consume();
         }
     }

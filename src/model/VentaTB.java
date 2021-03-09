@@ -10,8 +10,8 @@ public class VentaTB {
     private String idVenta;
     private String idCliente;
     private String vendedor;
-    private int comprobante;
-    private int moneda;
+    private int idComprobante;
+    private int idMoneda;
     private String monedaName;
     private String comprobanteName;
     private String serie;
@@ -28,8 +28,6 @@ public class VentaTB {
     private String totalFormat;
     private int tipo;
     private String tipoName;
-    private int forma;
-    private String formaName;
     private int estado;
     private String estadoName;
     private Label estadoLabel;
@@ -93,20 +91,20 @@ public class VentaTB {
         this.vendedor = vendedor;
     }
 
-    public int getComprobante() {
-        return comprobante;
+    public int getIdComprobante() {
+        return idComprobante;
     }
 
-    public void setComprobante(int comprobante) {
-        this.comprobante = comprobante;
+    public void setIdComprobante(int idComprobante) {
+        this.idComprobante = idComprobante;
     }
 
-    public int getMoneda() {
-        return moneda;
+    public int getIdMoneda() {
+        return idMoneda;
     }
 
-    public void setMoneda(int moneda) {
-        this.moneda = moneda;
+    public void setIdMoneda(int idMoneda) {
+        this.idMoneda = idMoneda;
     }
 
     public String getMonedaName() {
@@ -212,23 +210,7 @@ public class VentaTB {
     public void setTipoName(String tipoName) {
         this.tipoName = tipoName;
     }
-
-    public int getForma() {
-        return forma;
-    }
-
-    public void setForma(int forma) {
-        this.forma = forma;
-    }
-
-    public String getFormaName() {
-        return formaName;
-    }
-
-    public void setFormaName(String formaName) {
-        this.formaName = formaName;
-    }
-
+    
     public double getImpuesto() {
         return impuesto;
     }

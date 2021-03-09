@@ -274,7 +274,6 @@ public class CotizacionADO {
                     suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
 
                     suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-                    suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
                     suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
                     suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
@@ -285,6 +284,7 @@ public class CotizacionADO {
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+                    suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
 
                     suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
                     suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -365,7 +365,6 @@ public class CotizacionADO {
                     suministroTB.setDescuentoSumado(descuento * suministroTB.getCantidad());
 
                     suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-                    suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
                     suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
                     suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
@@ -376,6 +375,7 @@ public class CotizacionADO {
                     double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
                     suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
                     suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+                    suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
 
                     suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
                     suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());

@@ -46,7 +46,6 @@ public class ComprobanteADO {
     public static String GetSerieNumeracionEspecifico(int idTipoDocumento) {
         CallableStatement callableStatement = null;
         try {
-
             DBUtil.dbConnect();
             callableStatement = DBUtil.getConnection().prepareCall("{? = call Fc_Serie_Numero(?)}");          
             callableStatement.registerOutParameter(1, Types.VARCHAR);

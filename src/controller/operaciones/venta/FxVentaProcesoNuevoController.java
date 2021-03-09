@@ -11,9 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -36,7 +34,19 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private TextField txtEfectivo;
     @FXML
+    private TextField txtTarjeta;
+    @FXML
+    private Label lblVueltoNombre;
+    @FXML
     private Label lblVuelto;
+    @FXML
+    private TextField txtEfectivoAdelantado;
+    @FXML
+    private TextField txtTarjetaAdelantado;
+    @FXML
+    private Label lblVueltoNombreAdelantado;
+    @FXML
+    private Label lblVueltoAdelantado;
     @FXML
     private VBox vbEfectivo;
     @FXML
@@ -46,30 +56,20 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private VBox vbViewCredito;
     @FXML
+    private VBox vbViewPagoAdelantado;
+    @FXML
     private Label lblEfectivo;
     @FXML
     private Label lblCredito;
     @FXML
+    private VBox vbPagoAdelantado;
+    @FXML
+    private Label lblPagoAdelantado;
+    @FXML
     private Label lblMonedaLetras;
     @FXML
-    private TextField txtTarjeta;
-    @FXML
-    private Label lblVueltoNombre;
-    @FXML
     private DatePicker txtFechaVencimiento;
-    @FXML
-    private RadioButton rbEfectivo;
-    @FXML
-    private RadioButton rbTarjeta;
 
-//    private TableView<VentaCreditoTB> tvPlazos;
-//    private TableColumn<VentaCreditoTB, TextField> tcMonto;
-//    private TableColumn<VentaCreditoTB, DatePicker> tcFecha;
-//    private TableColumn<VentaCreditoTB, CheckBox> tcMontoInicial;
-//    private TableColumn<VentaCreditoTB, Button> tcOpcion;
-    //    private TextField txtObservacion;
-//    private Label lblMontoPagar;
-//    private Label lblMontoTotal;
     private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
 
     private ArrayList<SuministroTB> tvList;
@@ -80,98 +80,140 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
     private String moneda_simbolo;
 
-    private double vuelto;
+    private double vueltoContado;
 
-    private boolean estado = false;
+    private boolean estadoCobroContado;
+
+    private double vueltoAdelantado;
+
+    private boolean estadoCobroAdelantado;
 
     private double tota_venta;
 
-    private boolean state_view_pago;
+    private short state_view_pago;
 
-    private boolean provilegios;
+    private boolean privilegios;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_PRESSED);
-        state_view_pago = false;
+        state_view_pago = 0;
+        estadoCobroContado = false;
         tota_venta = 0;
-        vuelto = 0.00;
+        vueltoContado = 0.00;
         monedaCadena = new ConvertMonedaCadena();
         lblVueltoNombre.setText("Su cambio: ");
-        ToggleGroup group = new ToggleGroup();
-        rbEfectivo.setToggleGroup(group);
-        rbTarjeta.setToggleGroup(group);
-//        tcMonto.setCellValueFactory(new PropertyValueFactory<>("tfMonto"));
-//        tcFecha.setCellValueFactory(new PropertyValueFactory<>("dpFecha"));
-//        tcMontoInicial.setCellValueFactory(new PropertyValueFactory<>("cbMontoInicial"));
-//        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
+        lblVueltoNombreAdelantado.setText("Su cambio: ");
     }
 
-    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList, boolean provilegios) {
+    public void setInitComponents(VentaTB ventaTB, ArrayList<SuministroTB> tvList, boolean provilegios, String moneda) {
         this.ventaTB = ventaTB;
         this.tvList = tvList;
         moneda_simbolo = ventaTB.getMonedaName();
         tota_venta = Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 2));
+
         lblTotal.setText("TOTAL A PAGAR: " + moneda_simbolo + " " + Tools.roundingValue(tota_venta, 2));
-//        lblMontoTotal.setText("MONTO TOTAL: " + Tools.roundingValue(tota_venta, 2));
-        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
-        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, ""));
+
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vueltoContado, 2));
+
+        lblVueltoAdelantado.setText(moneda_simbolo + " " + Tools.roundingValue(vueltoAdelantado, 2));
+
+        lblMonedaLetras.setText(monedaCadena.Convertir(Tools.roundingValue(tota_venta, 2), true, moneda));
         hbContenido.setDisable(false);
-        this.provilegios = provilegios;
+        this.privilegios = provilegios;
     }
 
-    private void TotalAPagar() {
-
+    private void TotalAPagarContado() {
         if (txtEfectivo.getText().isEmpty() && txtTarjeta.getText().isEmpty()) {
             lblVuelto.setText(moneda_simbolo + " 0.00");
             lblVueltoNombre.setText("POR PAGAR: ");
-            estado = false;
+            estadoCobroContado = false;
         } else if (txtEfectivo.getText().isEmpty()) {
             if (Double.parseDouble(txtTarjeta.getText()) >= tota_venta) {
-                vuelto = Double.parseDouble(txtTarjeta.getText()) - tota_venta;
+                vueltoContado = Double.parseDouble(txtTarjeta.getText()) - tota_venta;
                 lblVueltoNombre.setText("SU CAMBIO ES: ");
-                estado = true;
+                estadoCobroContado = true;
             } else {
-                vuelto = tota_venta - Double.parseDouble(txtTarjeta.getText());
+                vueltoContado = tota_venta - Double.parseDouble(txtTarjeta.getText());
                 lblVueltoNombre.setText("POR PAGAR: ");
-                estado = false;
+                estadoCobroContado = false;
             }
 
         } else if (txtTarjeta.getText().isEmpty()) {
             if (Double.parseDouble(txtEfectivo.getText()) >= tota_venta) {
-                vuelto = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
+                vueltoContado = Double.parseDouble(txtEfectivo.getText()) - tota_venta;
                 lblVueltoNombre.setText("SU CAMBIO ES: ");
-                estado = true;
+                estadoCobroContado = true;
             } else {
-                vuelto = tota_venta - Double.parseDouble(txtEfectivo.getText());
+                vueltoContado = tota_venta - Double.parseDouble(txtEfectivo.getText());
                 lblVueltoNombre.setText("POR PAGAR: ");
-                estado = false;
+                estadoCobroContado = false;
             }
         } else {
             double suma = (Double.parseDouble(txtEfectivo.getText())) + (Double.parseDouble(txtTarjeta.getText()));
             if (suma >= tota_venta) {
-                vuelto = suma - tota_venta;
+                vueltoContado = suma - tota_venta;
                 lblVueltoNombre.setText("SU CAMBIO ES: ");
-                estado = true;
+                estadoCobroContado = true;
             } else {
-                vuelto = tota_venta - suma;
+                vueltoContado = tota_venta - suma;
                 lblVueltoNombre.setText("POR PAGAR: ");
-                estado = false;
+                estadoCobroContado = false;
             }
         }
 
-        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vuelto, 2));
+        lblVuelto.setText(moneda_simbolo + " " + Tools.roundingValue(vueltoContado, 2));
+    }
 
+    private void TotalAPagarAdelantado() {
+        if (txtEfectivoAdelantado.getText().isEmpty() && txtTarjetaAdelantado.getText().isEmpty()) {
+            lblVueltoAdelantado.setText(moneda_simbolo + " 0.00");
+            lblVueltoNombreAdelantado.setText("POR PAGAR: ");
+            estadoCobroAdelantado = false;
+        } else if (txtEfectivoAdelantado.getText().isEmpty()) {
+            if (Double.parseDouble(txtTarjetaAdelantado.getText()) >= tota_venta) {
+                vueltoAdelantado = Double.parseDouble(txtTarjetaAdelantado.getText()) - tota_venta;
+                lblVueltoNombreAdelantado.setText("SU CAMBIO ES: ");
+                estadoCobroAdelantado = true;
+            } else {
+                vueltoAdelantado = tota_venta - Double.parseDouble(txtTarjetaAdelantado.getText());
+                lblVueltoNombreAdelantado.setText("POR PAGAR: ");
+                estadoCobroAdelantado = false;
+            }
+
+        } else if (txtTarjetaAdelantado.getText().isEmpty()) {
+            if (Double.parseDouble(txtEfectivoAdelantado.getText()) >= tota_venta) {
+                vueltoAdelantado = Double.parseDouble(txtEfectivoAdelantado.getText()) - tota_venta;
+                lblVueltoNombreAdelantado.setText("SU CAMBIO ES: ");
+                estadoCobroAdelantado = true;
+            } else {
+                vueltoAdelantado = tota_venta - Double.parseDouble(txtEfectivoAdelantado.getText());
+                lblVueltoNombreAdelantado.setText("POR PAGAR: ");
+                estadoCobroAdelantado = false;
+            }
+        } else {
+            double suma = (Double.parseDouble(txtEfectivoAdelantado.getText())) + (Double.parseDouble(txtTarjetaAdelantado.getText()));
+            if (suma >= tota_venta) {
+                vueltoAdelantado = suma - tota_venta;
+                lblVueltoNombreAdelantado.setText("SU CAMBIO ES: ");
+                estadoCobroAdelantado = true;
+            } else {
+                vueltoAdelantado = tota_venta - suma;
+                lblVueltoNombreAdelantado.setText("POR PAGAR: ");
+                estadoCobroAdelantado = false;
+            }
+        }
+
+        lblVueltoAdelantado.setText(moneda_simbolo + " " + Tools.roundingValue(vueltoAdelantado, 2));
     }
 
     private void onEventAceptar() {
-        if (state_view_pago) {
+        if (state_view_pago == 1) {
             if (txtFechaVencimiento.getValue() == null) {
                 Tools.AlertMessageWarning(window, "Venta", "Ingrese la fecha de vencimiento.");
                 txtFechaVencimiento.requestFocus();
             } else {
                 ventaTB.setTipo(2);
-                ventaTB.setForma(0);
                 ventaTB.setEstado(2);
                 ventaTB.setVuelto(0);
                 ventaTB.setEfectivo(0);
@@ -179,9 +221,10 @@ public class FxVentaProcesoNuevoController implements Initializable {
                 ventaTB.setObservaciones("");
                 ventaTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
                 ventaTB.setHoraVencimiento(Tools.getHour());
+
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de continuar?");
                 if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaCredito(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante(), provilegios);
+                    ResultTransaction result = VentaADO.registrarVentaCredito(ventaTB, tvList, privilegios);
                     switch (result.getCode()) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
@@ -207,30 +250,25 @@ public class FxVentaProcesoNuevoController implements Initializable {
                 }
 
             }
-        } else {
-            if (!estado) {
+        } else if (state_view_pago == 0) {
+            if (!estadoCobroContado) {
                 Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
-                if (rbEfectivo.isSelected()) {
-                    txtEfectivo.requestFocus();
-                } else {
-                    txtTarjeta.requestFocus();
-                }
+                txtEfectivo.requestFocus();
             } else {
                 ventaTB.setTipo(1);
                 ventaTB.setEstado(1);
-                ventaTB.setVuelto(vuelto);
+                ventaTB.setVuelto(vueltoContado);
                 ventaTB.setObservaciones("");
+
                 ventaTB.setEfectivo(0);
                 ventaTB.setTarjeta(0);
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
                     ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
-                    ventaTB.setForma(1);
                 }
 
                 if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
                     ventaTB.setTarjeta(Double.parseDouble(txtTarjeta.getText()));
-                    ventaTB.setForma(2);
                 }
 
                 if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
@@ -255,7 +293,76 @@ public class FxVentaProcesoNuevoController implements Initializable {
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
                 if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, ventaEstructuraNuevoController.getIdTipoComprobante(), provilegios);
+                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, privilegios);
+                    switch (result.getCode()) {
+                        case "register":
+                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
+                            if (value == 1) {
+                                ventaEstructuraNuevoController.resetVenta();
+                                ventaEstructuraNuevoController.imprimirVenta(result.getResult());
+                                Tools.Dispose(window);
+                            } else {
+                                ventaEstructuraNuevoController.resetVenta();
+                                Tools.Dispose(window);
+                            }
+                            break;
+                        case "nocantidades":
+                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
+                            break;
+                        case "error":
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
+                            break;
+                        default:
+                            Tools.AlertMessageError(window, "Venta", result.getResult());
+                            break;
+                    }
+                }
+
+            }
+        } else {
+            if (!estadoCobroAdelantado) {
+                Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
+                txtEfectivoAdelantado.requestFocus();
+            } else {
+                ventaTB.setTipo(1);
+                ventaTB.setEstado(2);
+                ventaTB.setVuelto(vueltoAdelantado);
+                ventaTB.setObservaciones("");
+
+                ventaTB.setEfectivo(0);
+                ventaTB.setTarjeta(0);
+
+                if (Tools.isNumeric(txtEfectivoAdelantado.getText()) && Double.parseDouble(txtEfectivoAdelantado.getText()) > 0) {
+                    ventaTB.setEfectivo(Double.parseDouble(txtEfectivoAdelantado.getText()));
+                }
+
+                if (Tools.isNumeric(txtTarjetaAdelantado.getText()) && Double.parseDouble(txtTarjetaAdelantado.getText()) > 0) {
+                    ventaTB.setTarjeta(Double.parseDouble(txtTarjetaAdelantado.getText()));
+                }
+
+                if (Tools.isNumeric(txtEfectivoAdelantado.getText()) && Tools.isNumeric(txtTarjetaAdelantado.getText())) {
+                    if ((Double.parseDouble(txtEfectivoAdelantado.getText())) >= tota_venta) {
+                        Tools.AlertMessageWarning(window, "Venta", "Los valores ingresados no son correctos!!");
+                        return;
+                    }
+                    double efectivo = Double.parseDouble(txtEfectivoAdelantado.getText());
+                    double tarjeta = Double.parseDouble(txtTarjetaAdelantado.getText());
+                    if ((efectivo + tarjeta) != tota_venta) {
+                        Tools.AlertMessageWarning(window, "Venta", " El monto a pagar no debe ser mayor al total!!");
+                        return;
+                    }
+                }
+
+                if (!Tools.isNumeric(txtEfectivoAdelantado.getText()) && Tools.isNumeric(txtTarjetaAdelantado.getText())) {
+                    if ((Double.parseDouble(txtTarjetaAdelantado.getText())) > tota_venta) {
+                        Tools.AlertMessageWarning(window, "Venta", "El pago con tarjeta no debe ser mayor al total!!");
+                        return;
+                    }
+                }
+
+                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
+                if (confirmation == 1) {
+                    ResultTransaction result = VentaADO.registrarVentaAdelantado(ventaTB, tvList);
                     switch (result.getCode()) {
                         case "register":
                             short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
@@ -284,71 +391,6 @@ public class FxVentaProcesoNuevoController implements Initializable {
         }
     }
 
-//    private void addElementPlazos() {
-//        VentaCreditoTB vc = new VentaCreditoTB();
-//        vc.setEstado(false);
-//        TextField textField = new TextField();
-//        textField.setPromptText("0.00");
-//        textField.setAlignment(Pos.CENTER);
-//        textField.getStyleClass().add("text-field-normal");
-//        textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-//            double sumaMontos = 0;
-//            if (!newVal) {
-//                if (!Tools.isNumeric(textField.getText())) {
-//                    textField.setText("0.00");
-//                    vc.setMonto(Double.parseDouble(textField.getText()));
-//                }
-//                sumaMontos = tvPlazos.getItems().stream().map(
-//                        (cctb) -> cctb.getMonto())
-//                        .reduce(sumaMontos, (accumulator, _item) -> accumulator + _item);
-//                lblMontoPagar.setText("MONTO A PAGAR: " + Tools.roundingValue(sumaMontos, 2));
-//            }
-//        });
-//        textField.setOnKeyReleased(event -> {
-//            if (Tools.isNumeric(textField.getText())) {
-//                vc.setMonto(Double.parseDouble(textField.getText()));
-//            }
-//        });
-//        textField.setOnKeyTyped(event -> {
-//            char c = event.getCharacter().charAt(0);
-//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-//                event.consume();
-//            }
-//            if (c == '.' && textField.getText().contains(".")) {
-//                event.consume();
-//            }
-//        });
-//        vc.setTfMonto(textField);
-//
-//        DatePicker datePicker = new DatePicker();
-//        datePicker.getStyleClass().add("");
-//        datePicker.setPromptText("00/00/0000");
-//        datePicker.setEditable(false);
-//        datePicker.setOnAction(event -> {
-//            if (datePicker.getValue() != null) {
-//                vc.setFechaPago(datePicker.getValue().toString());
-//            }
-//        });
-//        vc.setDpFecha(datePicker);
-//
-////        CheckBox checkBox = new CheckBox();
-////        checkBox.getStyleClass().add("check-box-contenido");
-////        vc.setCbMontoInicial(checkBox);
-//        Button button = new Button("X");
-//        button.getStyleClass().add("buttonDark");
-//        button.setOnAction(event -> {
-//            tvPlazos.getItems().remove(vc);
-//        });
-//        button.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//                tvPlazos.getItems().remove(vc);
-//            }
-//        });
-//        vc.setBtnQuitar(button);
-//
-//        tvPlazos.getItems().add(vc);
-//
-//    }
     @FXML
     private void onActionAceptar(ActionEvent event) {
         onEventAceptar();
@@ -364,12 +406,12 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private void onKeyReleasedEfectivo(KeyEvent event) {
         if (txtEfectivo.getText().isEmpty()) {
-            vuelto = tota_venta;
-            TotalAPagar();
+            vueltoContado = tota_venta;
+            TotalAPagarContado();
             return;
         }
         if (Tools.isNumeric(txtEfectivo.getText())) {
-            TotalAPagar();
+            TotalAPagarContado();
         }
     }
 
@@ -387,12 +429,12 @@ public class FxVentaProcesoNuevoController implements Initializable {
     @FXML
     private void OnKeyReleasedTarjeta(KeyEvent event) {
         if (txtTarjeta.getText().isEmpty()) {
-            vuelto = tota_venta;
-            TotalAPagar();
+            vueltoContado = tota_venta;
+            TotalAPagarContado();
             return;
         }
         if (Tools.isNumeric(txtTarjeta.getText())) {
-            TotalAPagar();
+            TotalAPagarContado();
         }
     }
 
@@ -408,52 +450,107 @@ public class FxVentaProcesoNuevoController implements Initializable {
     }
 
     @FXML
-    private void onMouseClickedEfectivo(MouseEvent event) {
-        if (state_view_pago) {
-            vbCredito.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
-            vbEfectivo.setStyle("-fx-background-color:  #007bff;-fx-cursor:hand;-fx-padding:  0.5em;");
+    private void onKeyReleasedEfectivoAdelantado(KeyEvent event) {
+        if (txtEfectivoAdelantado.getText().isEmpty()) {
+            vueltoAdelantado = tota_venta;
+            TotalAPagarAdelantado();
+            return;
+        }
+        if (Tools.isNumeric(txtEfectivoAdelantado.getText())) {
+            TotalAPagarAdelantado();
+        }
+    }
 
+    @FXML
+    private void onKeyTypedEfectivoAdelantado(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+        if (c == '.' && txtEfectivoAdelantado.getText().contains(".")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void OnKeyReleasedTarjetaAdelantado(KeyEvent event) {
+        if (txtTarjetaAdelantado.getText().isEmpty()) {
+            vueltoAdelantado = tota_venta;
+            TotalAPagarAdelantado();
+            return;
+        }
+        if (Tools.isNumeric(txtTarjetaAdelantado.getText())) {
+            TotalAPagarAdelantado();
+        }
+    }
+
+    @FXML
+    private void OnKeyTypedTarjetaAdelantado(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            event.consume();
+        }
+        if (c == '.' && txtTarjetaAdelantado.getText().contains(".")) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onMouseClickedEfectivo(MouseEvent event) {
+        if (state_view_pago != 1 || state_view_pago != 2) {
+            vbPagoAdelantado.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbCredito.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbEfectivo.setStyle("-fx-background-color:  #007bff;-fx-cursor:hand;-fx-padding:  0.5em");
+
+            lblPagoAdelantado.setStyle("-fx-text-fill:#1a2226;");
             lblCredito.setStyle("-fx-text-fill:#1a2226;");
             lblEfectivo.setStyle("-fx-text-fill:white;");
 
+            vbViewPagoAdelantado.setVisible(false);
             vbViewCredito.setVisible(false);
             vbViewEfectivo.setVisible(true);
 
             txtEfectivo.requestFocus();
 
-            state_view_pago = false;
+            state_view_pago = 0;
         }
     }
 
     @FXML
     private void onMouseClickedCredito(MouseEvent event) {
-        if (!state_view_pago) {
+        if (state_view_pago == 0 || state_view_pago == 2) {
             vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
-            vbCredito.setStyle("-fx-background-color: #007bff;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbPagoAdelantado.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbCredito.setStyle("-fx-background-color: #007bff;-fx-cursor:hand;-fx-padding:  0.5em");
 
             lblEfectivo.setStyle("-fx-text-fill:#1a2226;");
+            lblPagoAdelantado.setStyle("-fx-text-fill:#1a2226;");
             lblCredito.setStyle("-fx-text-fill:white;");
 
             vbViewEfectivo.setVisible(false);
+            vbViewPagoAdelantado.setVisible(false);
             vbViewCredito.setVisible(true);
-            state_view_pago = true;
+
+            state_view_pago = 1;
         }
     }
 
     @FXML
-    private void onActionMetodo(ActionEvent event) {
-        if (rbEfectivo.isSelected()) {
-            txtTarjeta.setDisable(true);
-            txtEfectivo.setDisable(false);
-            txtTarjeta.setText("");
-            txtEfectivo.setText("");
-            txtEfectivo.requestFocus();
-        } else {
-            txtTarjeta.setDisable(false);
-            txtEfectivo.setDisable(true);
-            txtTarjeta.setText("");
-            txtEfectivo.setText("");
-            txtTarjeta.requestFocus();
+    private void onMouseClickedPagoAdelantado(MouseEvent event) {
+        if (state_view_pago == 0 || state_view_pago == 1) {
+            vbEfectivo.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbCredito.setStyle("-fx-background-color: white;-fx-cursor:hand;-fx-padding:  0.5em;");
+            vbPagoAdelantado.setStyle("-fx-background-color: #007bff;-fx-cursor:hand;-fx-padding:  0.5em");
+
+            lblEfectivo.setStyle("-fx-text-fill:#1a2226;");
+            lblCredito.setStyle("-fx-text-fill:#1a2226;");
+            lblPagoAdelantado.setStyle("-fx-text-fill:white;");
+
+            vbViewEfectivo.setVisible(false);
+            vbViewCredito.setVisible(false);
+            vbViewPagoAdelantado.setVisible(true);
+
+            state_view_pago = 2;
         }
     }
 

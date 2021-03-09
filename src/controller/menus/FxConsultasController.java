@@ -7,6 +7,7 @@ import controller.consultas.pagar.FxCuentasPorPagarController;
 import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.cotizacion.FxCotizacionRealizadasController;
 import controller.operaciones.guiaremision.FxGuiaRemisionRealizadasController;
+import controller.operaciones.notacredito.FxNotaCreditoRealizadasController;
 import controller.operaciones.venta.FxVentaRealizadasController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -54,6 +55,8 @@ public class FxConsultasController implements Initializable {
     private VBox btnCotizaciones;
     @FXML
     private VBox btnGuiaRemision;
+    @FXML
+    private VBox btnNotaCredito;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -125,13 +128,22 @@ public class FxConsultasController implements Initializable {
     private FxCuentasPorPagarController controlleCuentasPorPagar;
 
     /*
-    Controller caja consultas
+    Controller banco consultas
      */
     private FXMLLoader fXMLBancos;
 
     private HBox nodeBancos;
 
     private FxBancosController bancosController;
+
+    /*
+    Controller notacredito consultas
+     */
+    private FXMLLoader fXMLNotaCredito;
+
+    private VBox nodeNotaCredito;
+
+    private FxNotaCreditoRealizadasController notaCreditoController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -167,6 +179,10 @@ public class FxConsultasController implements Initializable {
             fXMLBancos = new FXMLLoader(getClass().getResource(FilesRouters.FX_BANCOS));
             nodeBancos = fXMLBancos.load();
             bancosController = fXMLBancos.getController();
+
+            fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO_REALIZADOS));
+            nodeNotaCredito = fXMLNotaCredito.load();
+            notaCreditoController = fXMLNotaCredito.getController();
 
         } catch (IOException ex) {
             System.out.println("Error en Inventario Controller:" + ex.getLocalizedMessage());
@@ -291,6 +307,16 @@ public class FxConsultasController implements Initializable {
         bancosController.loadTableViewBanco("");
     }
 
+    private void openWindowNotaCredito() {
+        notaCreditoController.setContent(vbPrincipal, vbContent);
+        vbContent.getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeNotaCredito, 0d);
+        AnchorPane.setTopAnchor(nodeNotaCredito, 0d);
+        AnchorPane.setRightAnchor(nodeNotaCredito, 0d);
+        AnchorPane.setBottomAnchor(nodeNotaCredito, 0d);
+        vbContent.getChildren().add(nodeNotaCredito);
+    }
+
     @FXML
     private void onKeyPressedCuentasCobrar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -373,6 +399,18 @@ public class FxConsultasController implements Initializable {
     @FXML
     private void onActionCuentasPagar(ActionEvent event) {
         openWindowCuentasPorPagar();
+    }
+
+    @FXML
+    private void onKeyPressedNotaCredito(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowNotaCredito();
+        }
+    }
+
+    @FXML
+    private void onActionNotaCredito(ActionEvent event) {
+        openWindowNotaCredito();
     }
 
     @FXML
