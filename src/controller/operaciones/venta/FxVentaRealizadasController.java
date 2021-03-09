@@ -25,8 +25,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,6 +39,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.*;
 
@@ -131,7 +135,10 @@ public class FxVentaRealizadasController implements Initializable {
         ));
         tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
-        tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
+        tcSerie.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getComprobanteName() + "\n"
+                + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()
+                + (cellData.getValue().getNotaCreditoTB() != null ? " Modificado(" + cellData.getValue().getNotaCreditoTB().getSerie() + "-" + cellData.getValue().getNotaCreditoTB().getNumeracion() + ")" : "")));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
@@ -143,6 +150,19 @@ public class FxVentaRealizadasController implements Initializable {
         tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
+        tvList.setRowFactory(tv -> new TableRow<VentaTB>() {
+            @Override
+            protected void updateItem(VentaTB item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || item == null) {
+                    setStyle("");
+                } else if (item.getNotaCreditoTB() != null) {                   
+                    setStyle("-fx-background-color: rgba(220, 53, 69, 0.6)");
+                }  else {
+                    setStyle("");
+                }
+            }
+        });
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {

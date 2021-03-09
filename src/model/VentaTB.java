@@ -41,6 +41,7 @@ public class VentaTB {
     private ClienteTB clienteTB;
     private MonedaTB monedaTB;
     private EmpleadoTB empleadoTB;
+    private NotaCreditoTB notaCreditoTB;
     private ArrayList<SuministroTB> suministroTBs;
     private HBox hbOpciones;
     private ArrayList<VentaCreditoTB> ventaCreditoTBs;
@@ -210,7 +211,7 @@ public class VentaTB {
     public void setTipoName(String tipoName) {
         this.tipoName = tipoName;
     }
-    
+
     public double getImpuesto() {
         return impuesto;
     }
@@ -339,6 +340,14 @@ public class VentaTB {
         this.empleadoTB = empleadoTB;
     }
 
+    public NotaCreditoTB getNotaCreditoTB() {
+        return notaCreditoTB;
+    }
+
+    public void setNotaCreditoTB(NotaCreditoTB notaCreditoTB) {
+        this.notaCreditoTB = notaCreditoTB;
+    }
+
     public ArrayList<SuministroTB> getSuministroTBs() {
         return suministroTBs;
     }
@@ -395,5 +404,4 @@ public class VentaTB {
         this.montoRestante = montoRestante;
     }
 
-   
 }

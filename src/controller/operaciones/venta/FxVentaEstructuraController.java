@@ -175,7 +175,7 @@ public class FxVentaEstructuraController implements Initializable {
     private Button btnBuscarReniec;
     @FXML
     private TextField txtCorreoElectronico;
- 
+
     private AnchorPane vbPrincipal;
 
     private String monedaSimbolo;
@@ -230,7 +230,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     private double importeNeto;
 
-    private Alert alert = null;   
+    private Alert alert = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -1259,8 +1259,8 @@ public class FxVentaEstructuraController implements Initializable {
                                             ventaTB.getClienteTB().getDireccion(),
                                             ventaTB.getCodigo(),
                                             monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
-                                            "",
-                                            "",
+                                            ventaTB.getFechaVenta(),
+                                            ventaTB.getHoraVenta(),
                                             "",
                                             "",
                                             "",
@@ -1301,6 +1301,7 @@ public class FxVentaEstructuraController implements Initializable {
                                             Tools.roundingValue(ventaTB.getImpuesto(), 2),
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             Tools.roundingValue(ventaTB.getTotal(), 2),
+                                            Tools.roundingValue(ventaTB.getTarjeta(), 2),
                                             Tools.roundingValue(ventaTB.getEfectivo(), 2),
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
@@ -1419,8 +1420,8 @@ public class FxVentaEstructuraController implements Initializable {
                     ventaTB.getClienteTB().getDireccion(),
                     ventaTB.getCodigo(),
                     monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
-                    "",
-                    "",
+                    ventaTB.getFechaVenta(),
+                    ventaTB.getHoraVenta(),
                     "",
                     "",
                     "",
@@ -1463,6 +1464,7 @@ public class FxVentaEstructuraController implements Initializable {
                     Tools.roundingValue(ventaTB.getImpuesto(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
+                    Tools.roundingValue(ventaTB.getTarjeta(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
@@ -1514,15 +1516,15 @@ public class FxVentaEstructuraController implements Initializable {
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             billPrintable.hbEncebezado(box,
-                                    "SIN NOMBRE",
-                                    "SIN NUMERACIÓN",
+                                    "NOTA DE VENTA",
+                                    "---",
                                     txtNumeroDocumento.getText().trim().toUpperCase(),
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
                                     "00000000",
-                                    "",
-                                    "",
+                                    Tools.getDate(),
+                                    Tools.getHour(),
                                     "",
                                     "",
                                     "",
@@ -1564,6 +1566,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     Tools.roundingValue(impuestoNeto, 2),
                                     Tools.roundingValue(subImporteNeto, 2),
                                     Tools.roundingValue(importeNeto, 2),
+                                    "TARJETA",
                                     "EFECTIVO",
                                     "VUELTO",
                                     txtNumeroDocumento.getText(),
@@ -1606,15 +1609,15 @@ public class FxVentaEstructuraController implements Initializable {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             rows++;
                             lines += billPrintable.hbEncebezado(box,
-                                    "SIN NOMBRE",
-                                    "SIN NUMERACIÓN",
+                                    "NOTA DE VENTA",
+                                    "---",
                                     txtNumeroDocumento.getText().trim().toUpperCase(),
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
                                     "00000000",
-                                    "",
-                                    "",
+                                    Tools.getDate(),
+                                    Tools.getHour(),
                                     "",
                                     "",
                                     "",
@@ -1658,6 +1661,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     Tools.roundingValue(impuestoNeto, 2),
                                     Tools.roundingValue(subImporteNeto, 2),
                                     Tools.roundingValue(importeNeto, 2),
+                                    "TARJETA",
                                     "EFECTIVO",
                                     "VUELTO",
                                     txtNumeroDocumento.getText(),

@@ -951,6 +951,13 @@ public class VentaADO {
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
                 ventaTB.setObservaciones(rsEmps.getString("Observaciones"));
 
+                if (rsEmps.getInt("IdNotaCredito") == 1) {
+                    NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
+                    notaCreditoTB.setSerie(rsEmps.getString("SerieNotaCredito"));
+                    notaCreditoTB.setNumeracion(rsEmps.getString("NumeracionNotaCredito"));
+                    ventaTB.setNotaCreditoTB(notaCreditoTB);
+                }
+
                 Label label = new Label();
                 if (ventaTB.getTipo() == 1 && ventaTB.getEstado() == 1 || ventaTB.getTipo() == 2 && ventaTB.getEstado() == 1) {
                     label.setText("COBRADO");
@@ -1103,7 +1110,7 @@ public class VentaADO {
                     if (resultSetVenta.next()) {
                         ventaTB = new VentaTB();
                         ventaTB.setIdVenta(idVenta);
-                        ventaTB.setFechaVenta(resultSetVenta.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")));
+                        ventaTB.setFechaVenta(resultSetVenta.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                         ventaTB.setHoraVenta(resultSetVenta.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                         //Cliente start
                         ClienteTB clienteTB = new ClienteTB();

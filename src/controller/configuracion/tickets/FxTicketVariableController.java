@@ -118,6 +118,7 @@ public class FxTicketVariableController implements Initializable {
             listPie.add(new TicketTB("Nombre del Impuesto", "M 00.00", "nameimpustos"));
             listPie.add(new TicketTB("Valor del Impuesto", "M 00.00", "valorimpustos"));
             listPie.add(new TicketTB("Importe Neto", "M 00.00", "totalpagar"));
+            listPie.add(new TicketTB("Tarjeta", "M 00.00", "tarjeta"));
             listPie.add(new TicketTB("Efectivo", "M 00.00", "efectivo"));
             listPie.add(new TicketTB("Vuelto", "M 00.00", "vuelto"));
             listPie.add(new TicketTB("Número del documento del cliente", "NUMERO DE DOCUMENTO CLIENTE", "numcliente"));

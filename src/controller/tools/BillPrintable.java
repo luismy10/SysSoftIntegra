@@ -170,17 +170,17 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(montoPagado));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("montorestanten")) {
                     fieldTicket.setText(Tools.AddText2Guines(montoDiferencial));
-                }else if(fieldTicket.getVariable().equalsIgnoreCase("observacion")){
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("observacion")) {
                     fieldTicket.setText(Tools.AddText2Guines(obsevacion_descripción));
-                }else if(fieldTicket.getVariable().equalsIgnoreCase("aperturacaja")){
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("aperturacaja")) {
                     fieldTicket.setText(Tools.AddText2Guines(monto_inicial_caja));
-                }else if(fieldTicket.getVariable().equalsIgnoreCase("ventasefectivocaja")){
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("ventasefectivocaja")) {
                     fieldTicket.setText(Tools.AddText2Guines(monto_efectivo_caja));
-                }else if(fieldTicket.getVariable().equalsIgnoreCase("ventastarjetacaja")){
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("ventastarjetacaja")) {
                     fieldTicket.setText(Tools.AddText2Guines(monto_tarjeta_caja));
-                }else if(fieldTicket.getVariable().equalsIgnoreCase("ingresosefectivocaja")){
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("ingresosefectivocaja")) {
                     fieldTicket.setText(Tools.AddText2Guines(monto_ingreso_caja));
-                }else if(fieldTicket.getVariable().equalsIgnoreCase("egresosefectivocaja")){
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("egresosefectivocaja")) {
                     fieldTicket.setText(Tools.AddText2Guines(monto_egreso_caja));
                 }
                 lines = fieldTicket.getLines();
@@ -389,6 +389,7 @@ public class BillPrintable implements Printable {
             String montoImpuesto,
             String subImporteNeto,
             String importeNeto,
+            String tarjeta,
             String efectivo,
             String vuelto,
             String numCliente,
@@ -420,6 +421,8 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoImpuesto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("totalpagar")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + importeNeto));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("tarjeta")) {
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + tarjeta));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("efectivo")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + efectivo));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("vuelto")) {

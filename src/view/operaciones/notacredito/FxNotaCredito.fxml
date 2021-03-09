@@ -110,7 +110,7 @@
                                           <Label styleClass="labelRoboto13" text="Serie y Número del Comprobante(B001-1)" textFill="#020203" />
                                           <HBox VBox.vgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="txtSerieNumeracion" onAction="#onActionBuscarComprobante" prefHeight="30.0" prefWidth="182.0" promptText="B001-1 F001-1 BB02-1" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="txtSerieNumeracion" onAction="#onActionBuscarComprobante" prefHeight="30.0" promptText="B001-1 F001-1 BB02-1" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                                                 <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBuscarComprobante" onKeyPressed="#onKeyPressedBuscarComprobante" styleClass="buttonLight">
                                                    <graphic>
                                                       <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
