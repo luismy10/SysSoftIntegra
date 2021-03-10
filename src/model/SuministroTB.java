@@ -28,7 +28,6 @@ public class SuministroTB {
     private String unidadVentaName;
     private int presentacion;
     private String presentacionName;
-
     private int estado;
     private String estadoName;
 
@@ -37,6 +36,7 @@ public class SuministroTB {
     private double cantidad;
     private double costoCompra;
     private double costoCompraReal;
+    private double porLlevar;
 
     private double precioVentaGeneral;
     private double precioVentaGeneralReal;
@@ -261,6 +261,7 @@ public class SuministroTB {
         this.estadoName = estadoName;
     }
 
+
     public double getStockMinimo() {
         return stockMinimo;
     }
@@ -291,6 +292,14 @@ public class SuministroTB {
 
     public void setCostoCompraReal(double costoCompraReal) {
         this.costoCompraReal = costoCompraReal;
+    }
+
+    public double getPorLlevar() {
+        return porLlevar;
+    }
+
+    public void setPorLlevar(double porLlevar) {
+        this.porLlevar = porLlevar;
     }
 
     public PreciosTB getPreciosTB() {
