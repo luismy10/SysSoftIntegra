@@ -504,7 +504,6 @@ public class FxVentaEstructuraController implements Initializable {
             double preciocalculado = valor_sin_impuesto - porcentajeRestante;
 
             suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-            suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
             suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
             suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
@@ -515,6 +514,7 @@ public class FxVentaEstructuraController implements Initializable {
             double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
 
             suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
             suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -615,7 +615,7 @@ public class FxVentaEstructuraController implements Initializable {
                 ventaTB.setVendedor(Session.USER_ID);
                 ventaTB.setIdComprobante(cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 ventaTB.setComprobanteName(cbComprobante.getSelectionModel().getSelectedItem().getNombre());
-                ventaTB.setMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
+                ventaTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedIndex() >= 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
                 ventaTB.setMonedaName(monedaSimbolo);
                 ventaTB.setSerie(lblSerie.getText());
                 ventaTB.setNumeracion(lblNumeracion.getText());
@@ -1259,6 +1259,8 @@ public class FxVentaEstructuraController implements Initializable {
                                             ventaTB.getClienteTB().getDireccion(),
                                             ventaTB.getCodigo(),
                                             monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                                            ventaTB.getFechaVenta(),
+                                            ventaTB.getHoraVenta(),
                                             "",
                                             "",
                                             "",
@@ -1272,7 +1274,11 @@ public class FxVentaEstructuraController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -1295,12 +1301,14 @@ public class FxVentaEstructuraController implements Initializable {
                                             Tools.roundingValue(ventaTB.getImpuesto(), 2),
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             Tools.roundingValue(ventaTB.getTotal(), 2),
+                                            Tools.roundingValue(ventaTB.getTarjeta(), 2),
                                             Tools.roundingValue(ventaTB.getEfectivo(), 2),
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
                                             ventaTB.getClienteTB().getCelular(),
                                             monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                                            "",
                                             "",
                                             "",
                                             "",
@@ -1413,6 +1421,8 @@ public class FxVentaEstructuraController implements Initializable {
                     ventaTB.getClienteTB().getDireccion(),
                     ventaTB.getCodigo(),
                     monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                    ventaTB.getFechaVenta(),
+                    ventaTB.getHoraVenta(),
                     "",
                     "",
                     "",
@@ -1426,7 +1436,11 @@ public class FxVentaEstructuraController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -1451,12 +1465,14 @@ public class FxVentaEstructuraController implements Initializable {
                     Tools.roundingValue(ventaTB.getImpuesto(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
+                    Tools.roundingValue(ventaTB.getTarjeta(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
                     ventaTB.getClienteTB().getCelular(),
                     monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                    "",
                     "",
                     "",
                     "",
@@ -1502,13 +1518,15 @@ public class FxVentaEstructuraController implements Initializable {
                         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             billPrintable.hbEncebezado(box,
-                                    "SIN NOMBRE",
-                                    "SIN NUMERACIÓN",
+                                    "NOTA DE VENTA",
+                                    "---",
                                     txtNumeroDocumento.getText().trim().toUpperCase(),
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
                                     "00000000",
+                                    Tools.getDate(),
+                                    Tools.getHour(),
                                     "",
                                     "",
                                     "",
@@ -1523,7 +1541,11 @@ public class FxVentaEstructuraController implements Initializable {
                                     "",
                                     "",
                                     "",
-                                    "");
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0");
                         }
 
                         AnchorPane hbDetalle = new AnchorPane();
@@ -1546,6 +1568,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     Tools.roundingValue(impuestoNeto, 2),
                                     Tools.roundingValue(subImporteNeto, 2),
                                     Tools.roundingValue(importeNeto, 2),
+                                    "TARJETA",
                                     "EFECTIVO",
                                     "VUELTO",
                                     txtNumeroDocumento.getText(),
@@ -1553,6 +1576,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     "CODIGO DE VENTA",
                                     txtCelularCliente.getText().trim(),
                                     monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, ""),
+                                    "",
                                     "",
                                     "",
                                     "",
@@ -1588,13 +1612,15 @@ public class FxVentaEstructuraController implements Initializable {
                             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
                             rows++;
                             lines += billPrintable.hbEncebezado(box,
-                                    "SIN NOMBRE",
-                                    "SIN NUMERACIÓN",
+                                    "NOTA DE VENTA",
+                                    "---",
                                     txtNumeroDocumento.getText().trim().toUpperCase(),
                                     txtDatosCliente.getText().trim().toUpperCase(),
                                     txtCelularCliente.getText().trim().toUpperCase(),
                                     txtDireccionCliente.getText().trim().toUpperCase(),
                                     "00000000",
+                                    Tools.getDate(),
+                                    Tools.getHour(),
                                     "",
                                     "",
                                     "",
@@ -1609,7 +1635,11 @@ public class FxVentaEstructuraController implements Initializable {
                                     "",
                                     "",
                                     "",
-                                    "");
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0");
                         }
 
                         for (int m = 0; m < tvList.getItems().size(); m++) {
@@ -1634,6 +1664,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     Tools.roundingValue(impuestoNeto, 2),
                                     Tools.roundingValue(subImporteNeto, 2),
                                     Tools.roundingValue(importeNeto, 2),
+                                    "TARJETA",
                                     "EFECTIVO",
                                     "VUELTO",
                                     txtNumeroDocumento.getText(),
@@ -1641,6 +1672,7 @@ public class FxVentaEstructuraController implements Initializable {
                                     "CODIGO DE VENTA",
                                     txtCelularCliente.getText().trim(),
                                     monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, ""),
+                                    "",
                                     "",
                                     "",
                                     "",

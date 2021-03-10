@@ -7,14 +7,13 @@ import controller.reporte.FxVentaUtilidadesController;
 import controller.inventario.movimientos.FxMovimientosProcesoController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
-import controller.produccion.producir.FxProducirProcesoController;
+import controller.produccion.producir.FxProducirAgregarController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -97,7 +96,7 @@ public class FxSuministrosListaController implements Initializable {
 
     private FxLoteCambiarController loteCambiarController;
 
-    private FxProducirProcesoController producirProcesoController;
+    private FxProducirAgregarController producirAgregarController;
 
     private boolean status;
 
@@ -155,44 +154,52 @@ public class FxSuministrosListaController implements Initializable {
         tcTipoProducto.setCellValueFactory(new PropertyValueFactory<>("imageValorInventario"));
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoNombre()));
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
         paginacion = 1;
         opcion = 0;
         status = false;
 
-        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterTextInput(1, (short) 1, (short) 1, oldValue, newValue);
-        });
-        txtCategoria.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterTextInput(1, (short) 2, (short) 2, oldValue, newValue);
-        });
-        txtMarca.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterTextInput(1, (short) 3, (short) 3, oldValue, newValue);
-        });
-        txtPresentacion.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterTextInput(1, (short) 4, (short) 4, oldValue, newValue);
-        });
-        txtMedida.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterTextInput(1, (short) 5, (short) 5, oldValue, newValue);
-        });
-    }
-
-    private void filterTextInput(int paginacion, short opcion, short tipo, String oldValue, String newValue) {
-        if (!newValue.trim().equalsIgnoreCase("")) {
-            this.paginacion = paginacion;
-            fillSuministrosTable(tipo, newValue.trim());
-            this.opcion = opcion;
-        } else {
-            if (oldValue.trim().length() > 0) {
-                this.paginacion = 0;
-                tvList.getItems().clear();
-                this.opcion = -1;
-                totalPaginacion = 0;
-                lblPaginaActual.setText(this.paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-                ivPrincipal.setImage(new Image("/view/image/no-image.png"));
+        txtSearch.setOnKeyReleased(e -> {
+            if (!Tools.isText(txtSearch.getText())) {
+                paginacion = 1;
+                fillSuministrosTable((short) 1, txtSearch.getText().trim());
+                opcion = 1;
             }
-        }
+        });
+
+        txtCategoria.setOnKeyReleased(e -> {
+            if (!Tools.isText(txtCategoria.getText())) {
+                paginacion = 1;
+                fillSuministrosTable((short) 2, txtCategoria.getText().trim());
+                opcion = 2;
+            }
+        });
+
+        txtMarca.setOnKeyReleased(e -> {
+            if (!Tools.isText(txtMarca.getText())) {
+                paginacion = 1;
+                fillSuministrosTable((short) 3, txtMarca.getText().trim());
+                opcion = 3;
+            }
+        });
+
+        txtPresentacion.setOnKeyReleased(e -> {
+            if (!Tools.isText(txtPresentacion.getText())) {
+                paginacion = 1;
+                fillSuministrosTable((short) 4, txtPresentacion.getText().trim());
+                opcion = 4;
+            }
+        });
+
+        txtMedida.setOnKeyReleased(e -> {
+            if (!Tools.isText(txtMedida.getText())) {
+                paginacion = 1;
+                fillSuministrosTable((short) 5, txtMedida.getText().trim());
+                opcion = 5;
+            }
+        });
+
     }
 
     public void fillSuministrosTable(short tipo, String value) {
@@ -202,35 +209,48 @@ public class FxSuministrosListaController implements Initializable {
             return t;
         });
 
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 10, 10);
             }
         };
 
-        task.setOnSucceeded(e -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                tvList.setItems((ObservableList<SuministroTB>) objects.get(0));
-                if (!tvList.getItems().isEmpty()) {
-                    tvList.getSelectionModel().select(0);
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<SuministroTB> suministroTBs = (ObservableList<SuministroTB>) objects[0];
+                if (!suministroTBs.isEmpty()) {
+                    tvList.setItems(suministroTBs);
+                    if (!tvList.getItems().isEmpty()) {
+                        tvList.getSelectionModel().select(0);
+                    }
+                    int integer = (int) (Math.ceil(((Integer) objects[1]) / 10.00));
+                    totalPaginacion = integer;
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
                 }
-                int integer = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
-                totalPaginacion = integer;
-                lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-                status = false;
+            } else if (object instanceof String) {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
             } else {
-                tvList.getItems().clear();
-                status = false;
+                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
             }
-        });
-        task.setOnFailed(e -> {
             status = false;
         });
-        task.setOnScheduled(e -> {
+        task.setOnFailed(w -> {
+            status = false;
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
+        });
+        task.setOnScheduled(w -> {
             status = true;
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -330,10 +350,10 @@ public class FxSuministrosListaController implements Initializable {
             loteCambiarController.getTxtArticulo().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
             loteCambiarController.getTxtCantidad().setText("" + tvList.getSelectionModel().getSelectedItem().getCantidad());
             Tools.Dispose(apWindow);
-        } else if (producirProcesoController != null) {
-            producirProcesoController.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
-            producirProcesoController.getTxtProductoFabricar().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
-            Tools.Dispose(apWindow);
+        } else if (producirAgregarController != null) {
+//            producirAgregarController.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
+//            producirAgregarController.getTxtProductoFabricar().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+//            Tools.Dispose(apWindow);
         }
     }
 
@@ -383,7 +403,6 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setDescuentoSumado(0);
 
             suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-            suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
             suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
             suministroTB.setImpuestoOperacion(tvList.getSelectionModel().getSelectedItem().getImpuestoOperacion());
@@ -394,6 +413,7 @@ public class FxSuministrosListaController implements Initializable {
             double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
 
             suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
             suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -418,11 +438,11 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setRemover(button);
             if (ventaEstructuraController.isCerar_modal_agregar_item_lista()) {
                 Tools.Dispose(apWindow);
-                ventaEstructuraController.getAddArticulo(suministroTB,ventaEstructuraController.getWindow().getScene().getWindow());
+                ventaEstructuraController.getAddArticulo(suministroTB, ventaEstructuraController.getWindow().getScene().getWindow());
             } else {
                 txtSearch.selectAll();
                 txtSearch.requestFocus();
-                ventaEstructuraController.getAddArticulo(suministroTB,apWindow.getScene().getWindow());
+                ventaEstructuraController.getAddArticulo(suministroTB, apWindow.getScene().getWindow());
             }
 
         }
@@ -487,7 +507,6 @@ public class FxSuministrosListaController implements Initializable {
             suministroTB.setDescuentoSumado(0);
 
             suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-            suministroTB.setPrecioVentaGeneralAuxiliar(valor_sin_impuesto);
             suministroTB.setPrecioVentaGeneralReal(preciocalculado);
 
             suministroTB.setImpuestoOperacion(tvList.getSelectionModel().getSelectedItem().getImpuestoOperacion());
@@ -498,6 +517,7 @@ public class FxSuministrosListaController implements Initializable {
             double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
             suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
             suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
 
             suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
             suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
@@ -708,8 +728,8 @@ public class FxSuministrosListaController implements Initializable {
         this.loteCambiarController = loteCambiarController;
     }
 
-    public void setInitProducirProcesoController(FxProducirProcesoController producirProcesoController) {
-        this.producirProcesoController = producirProcesoController;
+    public void setInitProducirProcesoController(FxProducirAgregarController producirAgregarController) {
+        this.producirAgregarController = producirAgregarController;
     }
 
 }

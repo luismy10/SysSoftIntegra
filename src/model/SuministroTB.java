@@ -87,8 +87,15 @@ public class SuministroTB {
     private double bonificacion;
 
     public SuministroTB() {
+        
     }
 
+    public SuministroTB(String idSuministro, String clave, String nombreMarca) {
+        this.idSuministro = idSuministro;
+        this.clave = clave;
+        this.nombreMarca = nombreMarca;
+    }   
+    
     public SuministroTB(String clave, String nombreMarca) {
         this.clave = clave;
         this.nombreMarca = nombreMarca;

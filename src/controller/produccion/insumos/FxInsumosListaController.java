@@ -1,6 +1,6 @@
 package controller.produccion.insumos;
 
-import controller.produccion.producir.FxProducirProcesoController;
+import controller.produccion.producir.FxProducirAgregarController;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -47,7 +47,7 @@ public class FxInsumosListaController implements Initializable {
     @FXML
     private Label lblPaginaSiguiente;
 
-    private FxProducirProcesoController producirProcesoController;
+    private FxProducirAgregarController producirAgregarController;
 
     private boolean stateBusqueda;
 
@@ -114,14 +114,14 @@ public class FxInsumosListaController implements Initializable {
     }
 
     private void addInsumoProduccion() {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            if (!validateDuplicate(producirProcesoController.getTvListInsumos(), tvList.getSelectionModel().getSelectedItem())) {
-                producirProcesoController.addElementsTableInsumo(tvList.getSelectionModel().getSelectedItem());
-                Tools.Dispose(window);
-            } else {
-                Tools.AlertMessageWarning(window, "Insumos", "Ya existe un insumos en la lista con las misma caracteristicas.");
-            }
-        }
+//        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+//            if (!validateDuplicate(producirAgregarController.getTvListInsumos(), tvList.getSelectionModel().getSelectedItem())) {
+//                producirAgregarController.addElementsTableInsumo(tvList.getSelectionModel().getSelectedItem());
+//                Tools.Dispose(window);
+//            } else {
+//                Tools.AlertMessageWarning(window, "Insumos", "Ya existe un insumos en la lista con las misma caracteristicas.");
+//            }
+//        }
     }
 
     @FXML
@@ -239,8 +239,8 @@ public class FxInsumosListaController implements Initializable {
 
     }
 
-    public void setInitProducirProcesoController(FxProducirProcesoController producirProcesoController) {
-        this.producirProcesoController = producirProcesoController;
+    public void setInitProducirProcesoController(FxProducirAgregarController producirAgregarController) {
+        this.producirAgregarController = producirAgregarController;
     }
 
 }

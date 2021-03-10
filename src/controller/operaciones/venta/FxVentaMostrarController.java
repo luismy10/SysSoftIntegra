@@ -421,6 +421,9 @@ public class FxVentaMostrarController implements Initializable {
                                             ventaTB.getClienteTB().getCelular(),
                                             ventaTB.getClienteTB().getDireccion(),
                                             ventaTB.getCodigo(),
+                                            monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                                            ventaTB.getFechaVenta(),
+                                            ventaTB.getHoraVenta(),
                                             "",
                                             "",
                                             "",
@@ -434,8 +437,11 @@ public class FxVentaMostrarController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "",
-                                            "");
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -458,12 +464,14 @@ public class FxVentaMostrarController implements Initializable {
                                             Tools.roundingValue(ventaTB.getImpuesto(), 2),
                                             Tools.roundingValue(ventaTB.getSubImporte(), 2),
                                             Tools.roundingValue(ventaTB.getTotal(), 2),
+                                            Tools.roundingValue(ventaTB.getTarjeta(), 2),
                                             Tools.roundingValue(ventaTB.getEfectivo(), 2),
                                             Tools.roundingValue(ventaTB.getVuelto(), 2),
                                             ventaTB.getClienteTB().getNumeroDocumento(),
                                             ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
                                             ventaTB.getClienteTB().getCelular(),
                                             monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                                            "",
                                             "",
                                             "",
                                             "",
@@ -576,6 +584,9 @@ public class FxVentaMostrarController implements Initializable {
                     ventaTB.getClienteTB().getCelular(),
                     ventaTB.getClienteTB().getDireccion(),
                     ventaTB.getCodigo(),
+                    monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                    ventaTB.getFechaVenta(),
+                    ventaTB.getHoraVenta(),
                     "",
                     "",
                     "",
@@ -589,8 +600,11 @@ public class FxVentaMostrarController implements Initializable {
                     "",
                     "",
                     "",
-                    "",
-                    "");
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < suministroTBs.size(); m++) {
@@ -615,12 +629,14 @@ public class FxVentaMostrarController implements Initializable {
                     Tools.roundingValue(ventaTB.getImpuesto(), 2),
                     Tools.roundingValue(ventaTB.getSubImporte(), 2),
                     Tools.roundingValue(ventaTB.getTotal(), 2),
+                    Tools.roundingValue(ventaTB.getTarjeta(), 2),
                     Tools.roundingValue(ventaTB.getEfectivo(), 2),
                     Tools.roundingValue(ventaTB.getVuelto(), 2),
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(), ventaTB.getCodigo(),
                     ventaTB.getClienteTB().getCelular(),
                     monedaCadena.Convertir(Tools.roundingValue(ventaTB.getTotal(), 2), true, ventaTB.getMonedaTB().getNombre()),
+                    "",
                     "",
                     "",
                     "",
@@ -631,7 +647,7 @@ public class FxVentaMostrarController implements Initializable {
 
     private void cancelVenta() {
         try {
-            if (Tools.isText(idVenta)) { 
+            if (Tools.isText(idVenta)) {
                 return;
             }
 

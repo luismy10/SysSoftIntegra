@@ -90,10 +90,7 @@ public class FxContactosController implements Initializable {
         AnchorPane.setTopAnchor(nodeCostumer, 0d);
         AnchorPane.setRightAnchor(nodeCostumer, 0d);
         AnchorPane.setBottomAnchor(nodeCostumer, 0d);
-        vbContent.getChildren().add(nodeCostumer);
-        if (controllerCostumer.getTvList().getItems().isEmpty()) {
-            controllerCostumer.fillCustomersTable("");
-        }
+        vbContent.getChildren().add(nodeCostumer);        
     }
 
     private void openWindowsProviders() {

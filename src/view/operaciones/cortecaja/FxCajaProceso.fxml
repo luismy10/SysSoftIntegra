@@ -18,7 +18,7 @@
                <children>
                   <Label fx:id="lblTitle" styleClass="labelRobotoBold15" text="Titulo de la vista" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/caja_registradora.png" />
                            </image>
@@ -56,7 +56,7 @@
                <children>
                   <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#onActionRegistrar" onKeyPressed="#onKeyPressedRegistrar" styleClass="buttonLightDefault" text="Registrar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/save.png" />
                            </image>
@@ -65,7 +65,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCerrar" onKeyPressed="#onKeyPressedCerrar" styleClass="buttonLight" text="Cerrar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>

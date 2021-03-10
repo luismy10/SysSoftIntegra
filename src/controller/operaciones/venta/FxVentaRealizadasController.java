@@ -27,6 +27,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -83,6 +84,8 @@ public class FxVentaRealizadasController implements Initializable {
     private Label lblPaginaActual;
     @FXML
     private Label lblPaginaSiguiente;
+    @FXML
+    private Label lblMotonTotal;
 
     private AnchorPane vbPrincipal;
 
@@ -95,6 +98,8 @@ public class FxVentaRealizadasController implements Initializable {
     private int totalPaginacion;
 
     private short opcion;
+
+    private boolean buscarTodos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -129,7 +134,10 @@ public class FxVentaRealizadasController implements Initializable {
         ));
         tcTipo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getTipoName()));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
-        tcSerie.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getComprobanteName() + "\n" + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()));
+        tcSerie.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getComprobanteName() + "\n"
+                + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()
+                + (cellData.getValue().getNotaCreditoTB() != null ? " Modificado(" + cellData.getValue().getNotaCreditoTB().getSerie() + "-" + cellData.getValue().getNotaCreditoTB().getNumeracion() + ")" : "")));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
@@ -141,6 +149,19 @@ public class FxVentaRealizadasController implements Initializable {
         tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
+        tvList.setRowFactory(tv -> new TableRow<VentaTB>() {
+            @Override
+            protected void updateItem(VentaTB item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null) {
+                    setStyle("");
+                } else if (item.getNotaCreditoTB() != null) {
+                    setStyle("-fx-background-color: rgba(220, 53, 69, 0.6)");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -164,9 +185,13 @@ public class FxVentaRealizadasController implements Initializable {
         }
         if (privilegioTBs.get(6).getIdPrivilegio() != 0 && !privilegioTBs.get(6).isEstado()) {
             hbVendedor.setDisable(true);
+            lblMotonTotal.setVisible(false);
         }
         if (privilegioTBs.get(7).getIdPrivilegio() != 0 && !privilegioTBs.get(7).isEstado()) {
             txtSearch.setDisable(true);
+        }
+        if (privilegioTBs.get(8).getIdPrivilegio() != 0 && privilegioTBs.get(8).isEstado()) {
+            buscarTodos = true;
         }
     }
 
@@ -200,27 +225,33 @@ public class FxVentaRealizadasController implements Initializable {
                     totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
                     lblPaginaActual.setText(paginacion + "");
                     lblPaginaSiguiente.setText(totalPaginacion + "");
+                    lblMotonTotal.setText(Tools.roundingValue((double) objects[2], 2));
                 } else {
                     tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
                     lblPaginaActual.setText("0");
                     lblPaginaSiguiente.setText("0");
-                }                
+                    lblMotonTotal.setText(Tools.roundingValue(0, 2));
+                }
             } else if (object instanceof String) {
                 tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
+                lblMotonTotal.setText(Tools.roundingValue(0, 2));
             } else {
                 tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
+                lblMotonTotal.setText(Tools.roundingValue(0, 2));
             }
             lblLoad.setVisible(false);
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
             tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
+            lblMotonTotal.setText(Tools.roundingValue(0, 2));
         });
         task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
             tvList.getItems().clear();
             tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
             totalPaginacion = 0;
+            lblMotonTotal.setText(Tools.roundingValue(0, 2));
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -277,7 +308,7 @@ public class FxVentaRealizadasController implements Initializable {
                         cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
                 break;
             case 1:
-                fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
+                fillVentasTable((short) (!buscarTodos ? 1 : 2), txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
                 break;
         }
     }
@@ -331,7 +362,7 @@ public class FxVentaRealizadasController implements Initializable {
             if (!Tools.isText(txtSearch.getText())) {
                 if (!lblLoad.isVisible()) {
                     paginacion = 1;
-                    fillVentasTable((short) 1, txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
+                    fillVentasTable((short) (!buscarTodos ? 1 : 2), txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
                     opcion = 1;
                 }
             }

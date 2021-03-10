@@ -1243,6 +1243,7 @@ public class CompraADO extends DBUtil {
         dbConnect();
         if (getConnection() != null) {
             PreparedStatement statementValidate = null;
+            PreparedStatement statementCompra = null;
             CallableStatement callableIdCompraCredito = null;
             PreparedStatement preparedBanco = null;
             PreparedStatement preparedBancoHistorial = null;
@@ -1251,10 +1252,13 @@ public class CompraADO extends DBUtil {
             try {
                 getConnection().setAutoCommit(false);
 
-                statementValidate = DBUtil.getConnection().prepareStatement("SELECT Total FROM CompraTB WHERE IdCompra = ?");
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT sum(dc.Cantidad * (dc.PrecioCompra-dc.Descuento)) as Total FROM CompraTB AS c \n"
+                        + "INNER JOIN DetalleCompraTB AS dc ON dc.IdCompra = c.IdCompra\n"
+                        + "where c.IdCompra = ?");
                 statementValidate.setString(1, compraCreditoTB.getIdCompra());
                 ResultSet resultSet = statementValidate.executeQuery();
                 if (resultSet.next()) {
+                    double total = resultSet.getDouble("Total");
 
                     callableIdCompraCredito = DBUtil.getConnection().prepareCall("{? = call Fc_Compra_Credito_Codigo_Alfanumerico()}");
                     callableIdCompraCredito.registerOutParameter(1, java.sql.Types.VARCHAR);
@@ -1301,10 +1305,25 @@ public class CompraADO extends DBUtil {
                     preparedCompraCredito.setString(8, compraCreditoTB.getObservacion());
                     preparedCompraCredito.addBatch();
 
+                    statementValidate = DBUtil.getConnection().prepareStatement("SELECT Monto FROM CompraCreditoTB WHERE IdCompra = ?");
+                    statementValidate.setString(1, compraCreditoTB.getIdCompra());
+                    resultSet = statementValidate.executeQuery();
+                    double montoTotal = 0;
+                    while (resultSet.next()) {
+                        montoTotal += resultSet.getDouble("Monto");
+                    }
+
+                    statementCompra = DBUtil.getConnection().prepareStatement("UPDATE CompraTB SET EstadoCompra = 1 WHERE IdCompra = ?");
+                    if ((montoTotal + compraCreditoTB.getMonto()) >= total) {
+                        statementCompra.setString(1, compraCreditoTB.getIdCompra());
+                        statementCompra.addBatch();
+                    }
+
                     preparedBanco.executeBatch();
                     preparedBancoHistorial.executeBatch();
                     preparedCompraCredito.executeBatch();
                     movimiento_caja.executeBatch();
+                    statementCompra.executeBatch();
                     DBUtil.getConnection().commit();
                     result.setId((short) 1);
                     result.setState("inserted");

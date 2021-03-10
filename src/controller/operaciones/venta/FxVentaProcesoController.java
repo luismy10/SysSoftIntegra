@@ -558,4 +558,5 @@ public class FxVentaProcesoController implements Initializable {
         this.ventaEstructuraController = ventaEstructuraController;
     }
 
+
 }

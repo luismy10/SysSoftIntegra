@@ -135,16 +135,16 @@ public class FxCotizacionDetalleController implements Initializable {
             return t;
         });
 
-        Task<CotizacionTB> task = new Task<CotizacionTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            protected CotizacionTB call() {
+            protected Object call() {
                 return CotizacionADO.CargarCotizacionReporte(idCotizacion);
             }
         };
         task.setOnSucceeded(e -> {
-            cotizacionTB = task.getValue();
-            if (cotizacionTB != null) {
-
+            Object object = task.getValue();
+            if (object instanceof CotizacionTB) {
+                cotizacionTB = (CotizacionTB) object;
                 lblNumero.setText("N° " + cotizacionTB.getIdCotizacion());
                 lblFechaVenta.setText(cotizacionTB.getFechaCotizacion());
                 lblCliente.setText(cotizacionTB.getClienteTB().getInformacion());
@@ -305,7 +305,13 @@ public class FxCotizacionDetalleController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            "",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
                                 }
 
                                 AnchorPane hbDetalle = new AnchorPane();
@@ -330,14 +336,16 @@ public class FxCotizacionDetalleController implements Initializable {
                                             Tools.roundingValue(importeTotal, 2),
                                             Tools.roundingValue(0, 2),
                                             Tools.roundingValue(0, 2),
+                                            Tools.roundingValue(0, 2),
                                             cotizacionTB.getClienteTB().getNumeroDocumento(),
                                             cotizacionTB.getClienteTB().getInformacion(),
                                             "---",
-                                            cotizacionTB.getClienteTB().getCelular(),"",
+                                            cotizacionTB.getClienteTB().getCelular(), "",
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            cotizacionTB.getObservaciones());
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -456,7 +464,13 @@ public class FxCotizacionDetalleController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    "",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0");
         }
 
         for (int m = 0; m < arrList.size(); m++) {
@@ -483,14 +497,16 @@ public class FxCotizacionDetalleController implements Initializable {
                     Tools.roundingValue(importeTotal, 2),
                     Tools.roundingValue(0, 2),
                     Tools.roundingValue(0, 2),
+                    Tools.roundingValue(0, 2),
                     cotizacionTB.getClienteTB().getNumeroDocumento(),
                     cotizacionTB.getClienteTB().getInformacion(),
                     "---",
-                    cotizacionTB.getClienteTB().getCelular(),"",
+                    cotizacionTB.getClienteTB().getCelular(), "",
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    cotizacionTB.getObservaciones());
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }
@@ -570,7 +586,7 @@ public class FxCotizacionDetalleController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxReportViewController controller = fXMLLoader.getController();
-            controller.setFileName("COTIZACION N° " + cotizacionTB.getIdCotizacion()); 
+            controller.setFileName("COTIZACION N° " + cotizacionTB.getIdCotizacion());
             controller.setJasperPrint(jasperPrint);
             controller.show();
             Stage stage = WindowStage.StageLoader(parent, "Cotizacion realizada");

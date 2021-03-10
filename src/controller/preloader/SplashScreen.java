@@ -83,6 +83,10 @@ public class SplashScreen extends Preloader {
                     Platform.exit();
                     return;
                 }
+                
+                File licencia = new File("./archivos/connection.json");
+                
+                
 
                 DBUtil.dbConnect();
                 if (DBUtil.getConnection() != null) {
@@ -171,6 +175,19 @@ public class SplashScreen extends Preloader {
                             Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR = false;
                         }
 
+                        String rutaHistorialSuministroLlevar = "./archivos/HISTORIAL DE SALIDA DEL PRODUCTO.properties";
+                        try (InputStream input = new FileInputStream(rutaHistorialSuministroLlevar)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = true;
+                            Session.NOMBRE_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = prop.getProperty("printerNameHistorialSalidaProducto");
+                            Session.CORTAPAPEL_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = Boolean.parseBoolean(prop.getProperty("printerCutPaperHistorialSalidaProducto"));
+                            Session.FORMATO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = prop.getProperty("printerTypeFormatHistorialSalidaProducto");
+                            Session.DESING_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = prop.getProperty("printerTypeDesingHistorialSalidaProducto");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = false;
+                        }
+
                         LoadFont loadFont = new LoadFont();
                         loadFont.loadFont();
 
@@ -226,6 +243,15 @@ public class SplashScreen extends Preloader {
                         } else {
                             Session.TICKET_CUENTA_POR_PAGAR_ID = 0;
                             Session.TICKET_CUENTA_POR_PAGAR_RUTA = "";
+                        }
+
+                        TicketTB ticketHistorialSuministroLlevar = TicketADO.GetTicketRuta(11);
+                        if (ticketHistorialSuministroLlevar != null) {
+                            Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = ticketHistorialSuministroLlevar.getId();
+                            Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = ticketHistorialSuministroLlevar.getRuta();
+                        } else {
+                            Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = 0;
+                            Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = "";
                         }
 
                         EmpresaTB list = EmpresaADO.GetEmpresa();

@@ -466,7 +466,13 @@ public class FxValorInventarioController implements Initializable {
                                     "",
                                     "",
                                     "",
-                                    "");
+                                    "",
+                                    "",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0",
+                                    "0");
                         }
 
                         AnchorPane hbDetalle = new AnchorPane();
@@ -485,7 +491,8 @@ public class FxValorInventarioController implements Initializable {
                             billPrintable.hbPie(box, "",
                                     Tools.roundingValue(0, 2),
                                     "-" + Tools.roundingValue(0, 2),
-                                     Tools.roundingValue(0, 2),
+                                    Tools.roundingValue(0, 2),
+                                    Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
                                     Tools.roundingValue(0, 2),
@@ -493,6 +500,7 @@ public class FxValorInventarioController implements Initializable {
                                     Tools.roundingValue(0, 2),
                                     "SIN DOCUMENTO",
                                     "PUBLICO GENERAL", "SIN CODIGO", "SIN CELULAR", "",
+                                    "",
                                     "",
                                     "",
                                     "",

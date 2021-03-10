@@ -129,8 +129,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         }
     }
 
-    private void fillVentasDetalleTable() {
-        double montoPagado = 0;
+    private void fillVentasDetalleTable() {       
         for (int i = 0; i < ventaTB.getVentaCreditoTBs().size(); i++) {
             gpList.add(addElementGridPane("l1" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getId() + "", Pos.CENTER, null), 0, (i + 1));
             gpList.add(addElementGridPane("l2" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getIdVentaCredito(), Pos.CENTER, null), 1, (i + 1));
@@ -139,7 +138,6 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(ventaTB.getVentaCreditoTBs().get(i).getMonto(), 2), Pos.CENTER, null), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), ventaTB.getVentaCreditoTBs().get(i).getObservacion(), Pos.CENTER, null), 5, (i + 1));
             gpList.add(addElementGridPane("l7" + (i + 1), "", Pos.CENTER, ventaTB.getVentaCreditoTBs().get(i).getBtnImprimir()), 6, (i + 1));
-            montoPagado = ventaTB.getVentaCreditoTBs().get(i).getMonto();
         }
     }
 

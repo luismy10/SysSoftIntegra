@@ -4,6 +4,8 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -217,6 +219,38 @@ public class InsumoADO {
 
             }
         }
+    }
+
+    public static List<InsumoTB> getSearchComboBoxInsumos(String buscar) {
+        String selectStmt = "SELECT IdInsumo,Clave,NombreMarca FROM InsumoTB WHERE Clave LIKE ? OR NombreMarca LIKE ?";
+        PreparedStatement preparedStatement = null;
+        List<InsumoTB> insumoTBs = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, buscar + "%");
+            preparedStatement.setString(2, buscar + "%");
+            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                while (rsEmps.next()) {
+                    InsumoTB insumoTB = new InsumoTB();
+                    insumoTB.setIdInsumo(rsEmps.getString("IdInsumo"));
+                    insumoTB.setClave(rsEmps.getString("Clave"));
+                    insumoTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                    insumoTBs.add(insumoTB);
+                }
+            }
+        } catch (SQLException e) {
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+        return insumoTBs;
     }
 
 }

@@ -22,12 +22,14 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -197,7 +199,12 @@ public class Tools {
         });
     }
 
-    public static void Dispose(AnchorPane window) {
+    public static void Dispose(Node window) {
+        Stage stage = (Stage) window.getScene().getWindow();
+        stage.close();
+    }
+    
+     public static void Dispose(AnchorPane window) {
         Stage stage = (Stage) window.getScene().getWindow();
         stage.close();
     }

@@ -451,8 +451,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     selectionModel.select(1);
                 }
                 txtCosto.requestFocus();
-            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) <= 0) {
-                openAlertMessageWarning("El costo del producto no puede ser menor o igual a 0, por favor.");
+            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) < 0) {
+                openAlertMessageWarning("El costo del producto no puede ser menor que 0, por favor.");
                 if (!selectionModel.isSelected(1)) {
                     selectionModel.select(1);
                 }

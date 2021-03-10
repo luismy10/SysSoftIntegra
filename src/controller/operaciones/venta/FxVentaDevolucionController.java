@@ -89,7 +89,9 @@ public class FxVentaDevolucionController implements Initializable {
                     } else if (result.equalsIgnoreCase("nocaja")) {
                         Tools.AlertMessageWarning(window, "Detalle de venta", "No tienes aperturado ninguna caja para completar la operación.");
                     } else if (result.equalsIgnoreCase("nodate")) {
-                        Tools.AlertMessageWarning(window, "Detalle de venta", "No se puede eliminar la venta porque la fecha es distinta a la fecha de emisión.");
+                        Tools.AlertMessageWarning(window, "Detalle de venta", "No se puede anular la venta porque la fecha es distinta a la fecha de emisión.");
+                    } else if (result.equalsIgnoreCase("ventacredito")) {
+                        Tools.AlertMessageWarning(window, "Detalle de venta", "No se puede anular la venta porque tiene asociados abonos.");
                     } else {
                         Tools.AlertMessageError(window, "Detalle de ventas", result);
                     }

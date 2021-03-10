@@ -759,8 +759,8 @@ public class FxSuministrosProcesoController implements Initializable {
             if (!estadoOrigen && !Tools.isNumeric(txtCosto.getText())) {
                 openAlertMessageWarning("Ingrese el costo del producto, por favor.");
                 txtCosto.requestFocus();
-            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) <= 0) {
-                openAlertMessageWarning("El costo del producto no puede ser menor o igual a 0, por favor.");
+            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) < 0) {
+                openAlertMessageWarning("El costo del producto no puede ser menor que 0, por favor.");
                 txtCosto.requestFocus();
             } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
                 openAlertMessageWarning("Selecciona el estado del producto, por favor.");

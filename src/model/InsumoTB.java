@@ -1,6 +1,8 @@
 package model;
 
+import controller.tools.SearchComboBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class InsumoTB {
@@ -18,12 +20,20 @@ public class InsumoTB {
     private double costo;
     private double stockMinimo;
     private double stockMaximo;
-    
+
+    private ComboBox<InsumoTB> comboBox;
+    private SearchComboBox<?> searchComboBox;
     private Button btnRemove;
     private TextField txtCantidad;
 
     public InsumoTB() {
     }
+
+    public InsumoTB(String idInsumo, String clave, String nombreMarca) {
+        this.idInsumo = idInsumo;
+        this.clave = clave;
+        this.nombreMarca = nombreMarca;
+    }  
 
     public int getId() {
         return id;
@@ -129,6 +139,22 @@ public class InsumoTB {
         this.stockMaximo = stockMaximo;
     }
 
+    public ComboBox<InsumoTB> getComboBox() {
+        return comboBox;
+    }
+
+    public void setComboBox(ComboBox<InsumoTB> comboBox) {
+        this.comboBox = comboBox;
+    }
+
+    public SearchComboBox<?> getSearchComboBox() {
+        return searchComboBox;
+    }
+
+    public void setSearchComboBox(SearchComboBox<?> searchComboBox) {
+        this.searchComboBox = searchComboBox;
+    }
+
     public Button getBtnRemove() {
         return btnRemove;
     }
@@ -143,6 +169,11 @@ public class InsumoTB {
 
     public void setTxtCantidad(TextField txtCantidad) {
         this.txtCantidad = txtCantidad;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + clave + ") " + nombreMarca;
     }
 
 }
