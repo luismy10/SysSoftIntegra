@@ -6,13 +6,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -81,13 +78,13 @@ public class FxComprasRealizadasController implements Initializable {
                 + cellData.getValue().getHoraCompra()
         ));
         tcNumeracion.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getSerie().toUpperCase()+ "-" + cellData.getValue().getNumeracion()));
+                cellData.getValue().getSerie().toUpperCase() + "-" + cellData.getValue().getNumeracion()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getProveedorTB().getNumeroDocumento() + "\n" + cellData.getValue().getProveedorTB().getRazonSocial().toUpperCase()
         ));
         tcTipo.setCellValueFactory(new PropertyValueFactory<>("tipoLabel"));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("estadoLabel"));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre()+ " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaNombre() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
         tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
         tcFechaCompra.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
@@ -100,10 +97,8 @@ public class FxComprasRealizadasController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
 
-        cbEstadoCompra.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));
-        DetalleADO.GetDetailId("0009").forEach(e -> {
-            cbEstadoCompra.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre()));
-        });
+        cbEstadoCompra.getItems().add(new DetalleTB(0, "TODOS"));
+        DetalleADO.GetDetailId("0009").forEach(e -> cbEstadoCompra.getItems().add(e));
         cbEstadoCompra.getSelectionModel().select(0);
 
     }
@@ -261,7 +256,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private void OnActionEstadoCompra(ActionEvent event) {
         if (cbEstadoCompra.getSelectionModel().getSelectedIndex() != 0) {
-            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            fillPurchasesTable((short) 2, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbEstadoCompra.getSelectionModel().getSelectedItem().getIdDetalle());
             this.txtSearch.setText("");
         } else {
             fillPurchasesTable((short) 1, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), 0);

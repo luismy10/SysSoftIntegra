@@ -203,8 +203,8 @@ public class Tools {
         Stage stage = (Stage) window.getScene().getWindow();
         stage.close();
     }
-    
-     public static void Dispose(AnchorPane window) {
+
+    public static void Dispose(AnchorPane window) {
         Stage stage = (Stage) window.getScene().getWindow();
         stage.close();
     }
@@ -401,10 +401,15 @@ public class Tools {
 
     public static void showAlertNotification(String url, String title, String message, Duration duration, Pos pos) {
         Image image = new Image(url);
+        ImageView imageView = new ImageView(image);      
+        double newWidth = Tools.newSizeImagePorcent(image.getWidth(), 20);
+        double nweHeight = Tools.newSizeImagePorcent(image.getHeight(), 20);
+        imageView.setFitWidth(newWidth);
+        imageView.setFitHeight(nweHeight);
         Notifications notifications = Notifications.create()
                 .title(title)
                 .text(message)
-                .graphic(new ImageView(image))
+                .graphic(imageView)
                 .hideAfter(duration)
                 .position(pos)
                 .onAction(n -> {
@@ -445,5 +450,9 @@ public class Tools {
             label.setGraphic(imageView);
         }
         return label;
+    }
+
+    public static double newSizeImagePorcent(double width, double porcent) {
+        return width - (width * (porcent/100));
     }
 }

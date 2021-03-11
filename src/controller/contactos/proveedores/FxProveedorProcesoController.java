@@ -104,7 +104,7 @@ public class FxProveedorProcesoController implements Initializable {
             idProveedor = proveedorTB.getIdProveedor();
             ObservableList<DetalleTB> lstypefa = cbDocumentTypeFactura.getItems();
             for (int i = 0; i < lstypefa.size(); i++) {
-                if (proveedorTB.getTipoDocumento() == lstypefa.get(i).getIdDetalle().get()) {
+                if (proveedorTB.getTipoDocumento() == lstypefa.get(i).getIdDetalle()) {
                     cbDocumentTypeFactura.getSelectionModel().select(i);
                     break;
                 }
@@ -115,7 +115,7 @@ public class FxProveedorProcesoController implements Initializable {
             if (proveedorTB.getAmbito() != 0) {
                 ObservableList<DetalleTB> lstamb = cbAmbito.getItems();
                 for (int i = 0; i < lstamb.size(); i++) {
-                    if (proveedorTB.getAmbito() == lstamb.get(i).getIdDetalle().get()) {
+                    if (proveedorTB.getAmbito() == lstamb.get(i).getIdDetalle()) {
                         cbAmbito.getSelectionModel().select(i);
                         break;
                     }
@@ -124,7 +124,7 @@ public class FxProveedorProcesoController implements Initializable {
 
             ObservableList<DetalleTB> lstest = cbEstado.getItems();
             for (int i = 0; i < lstest.size(); i++) {
-                if (proveedorTB.getEstado() == lstest.get(i).getIdDetalle().get()) {
+                if (proveedorTB.getEstado() == lstest.get(i).getIdDetalle()) {
                     cbEstado.getSelectionModel().select(i);
                     break;
                 }
@@ -162,14 +162,14 @@ public class FxProveedorProcesoController implements Initializable {
             if (confirmation == 1) {
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setIdProveedor(idProveedor);
-                proveedorTB.setTipoDocumento(cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                proveedorTB.setTipoDocumento(cbDocumentTypeFactura.getSelectionModel().getSelectedItem().getIdDetalle());
                 proveedorTB.setNumeroDocumento(txtDocumentNumberFactura.getText().trim());
                 proveedorTB.setRazonSocial(txtBusinessName.getText().trim());
                 proveedorTB.setNombreComercial(txtTradename.getText().trim());
                 proveedorTB.setAmbito(cbAmbito.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbAmbito.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbAmbito.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
-                proveedorTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                proveedorTB.setEstado(cbEstado.getSelectionModel().getSelectedItem().getIdDetalle());
                 proveedorTB.setTelefono(txtTelefono.getText().trim());
                 proveedorTB.setCelular(txtCelular.getText().trim());
                 proveedorTB.setEmail(txtEmail.getText().trim());

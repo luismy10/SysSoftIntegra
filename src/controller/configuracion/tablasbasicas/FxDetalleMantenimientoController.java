@@ -9,6 +9,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +53,7 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private TableView<DetalleTB> tvDetail;
     @FXML
-    private TableColumn<DetalleTB, Integer> tcNumero;
+    private TableColumn<DetalleTB, String> tcNumero;
     @FXML
     private TableColumn<DetalleTB, String> tcCodAuxiliar;
     @FXML
@@ -77,11 +78,11 @@ public class FxDetalleMantenimientoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         onAnimationFinished = false;
-        tcNumero.setCellValueFactory(cellData -> cellData.getValue().getIdDetalle().asObject());
-        tcCodAuxiliar.setCellValueFactory(cellData -> cellData.getValue().getIdAuxiliar());
-        tcNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
-        tcDescripcion.setCellValueFactory(cellData -> cellData.getValue().getDescripcion());
-        tcEstado.setCellValueFactory(cellData -> cellData.getValue().getEstado());
+        tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdDetalle()));
+        tcCodAuxiliar.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getIdAuxiliar()));
+        tcNombre.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombre()));
+        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDescripcion()));
+        tcEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstado()));
 
         tcNumero.prefWidthProperty().bind(tvDetail.widthProperty().multiply(0.06));
         tcCodAuxiliar.prefWidthProperty().bind(tvDetail.widthProperty().multiply(0.15));
@@ -218,11 +219,11 @@ public class FxDetalleMantenimientoController implements Initializable {
             stage.show();
             controller.setValueUpdate(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
-                    tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().getValue().toString(),
-                    tvDetail.getSelectionModel().getSelectedItem().getIdAuxiliar().get(),
-                    tvDetail.getSelectionModel().getSelectedItem().getNombre().get(),
-                    tvDetail.getSelectionModel().getSelectedItem().getDescripcion().get(),
-                    tvDetail.getSelectionModel().getSelectedItem().getEstado().get());
+                    tvDetail.getSelectionModel().getSelectedItem().getIdDetalle() + "",
+                    tvDetail.getSelectionModel().getSelectedItem().getIdAuxiliar(),
+                    tvDetail.getSelectionModel().getSelectedItem().getNombre(),
+                    tvDetail.getSelectionModel().getSelectedItem().getDescripcion(),
+                    tvDetail.getSelectionModel().getSelectedItem().getEstado());
 
         } else {
             onAnimationStart = true;
@@ -290,7 +291,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             FxDetalleController controller = fXMLLoader.getController();
             controller.setValueAdd(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
-                    tvDetail.getSelectionModel().getSelectedIndex() >= 0 ? tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().getValue().toString() : "0");
+                    tvDetail.getSelectionModel().getSelectedIndex() >= 0 ? tvDetail.getSelectionModel().getSelectedItem().getIdDetalle() + "" : "0");
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar detalle del item", window.getScene().getWindow());
             stage.setResizable(false);
@@ -322,7 +323,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             short confirmation = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Mantenimiento", "¿Esta seguro de continuar?", true);
             if (confirmation == 1) {
                 DetalleTB detalleTB = new DetalleTB();
-                detalleTB.setIdDetalle(tvDetail.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                detalleTB.setIdDetalle(tvDetail.getSelectionModel().getSelectedItem().getIdDetalle());
                 detalleTB.setIdMantenimiento(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento());
                 String result = DetalleADO.DeleteDetail(detalleTB);
                 switch (result) {

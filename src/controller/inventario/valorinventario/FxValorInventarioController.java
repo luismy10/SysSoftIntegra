@@ -234,7 +234,7 @@ public class FxValorInventarioController implements Initializable {
         });
 
         searchComboBoxCategoria = new SearchComboBox<>(cbCategoria, true);
-        searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
+        searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxCategoria.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0006"));
         searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
             if (null == t.getCode()) {
@@ -247,7 +247,7 @@ public class FxValorInventarioController implements Initializable {
                     case ESCAPE:
                         if (!lblLoad.isVisible()) {
                             paginacion = 1;
-                            fillInventarioTable("", (short) 0, "", (short) 4, ((DetalleTB) searchComboBoxCategoria.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle().get(), 0);
+                            fillInventarioTable("", (short) 0, "", (short) 4, ((DetalleTB) searchComboBoxCategoria.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle(), 0);
                             opcion = 4;
                         }
                         searchComboBoxCategoria.getComboBox().hide();
@@ -271,7 +271,7 @@ public class FxValorInventarioController implements Initializable {
                 if (searchComboBoxCategoria.getSearchComboBoxSkin().isClickSelection()) {
                     if (!lblLoad.isVisible()) {
                         paginacion = 1;
-                        fillInventarioTable("", (short) 0, "", (short) 4, ((DetalleTB) searchComboBoxCategoria.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle().get(), 0);
+                        fillInventarioTable("", (short) 0, "", (short) 4, ((DetalleTB) searchComboBoxCategoria.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle(), 0);
                         opcion = 4;
                     }
                     searchComboBoxCategoria.getComboBox().hide();
@@ -280,7 +280,7 @@ public class FxValorInventarioController implements Initializable {
         });
 
         searchComboBoxMarca = new SearchComboBox<>(cbMarca, true);
-        searchComboBoxMarca.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
+        searchComboBoxMarca.setFilter((item, text) -> item.getNombre().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxMarca.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0007"));
         searchComboBoxMarca.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
             if (null == t.getCode()) {
@@ -293,7 +293,7 @@ public class FxValorInventarioController implements Initializable {
                     case ESCAPE:
                         if (!lblLoad.isVisible()) {
                             paginacion = 1;
-                            fillInventarioTable("", (short) 0, "", (short) 5, 0, ((DetalleTB) searchComboBoxMarca.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle().get());
+                            fillInventarioTable("", (short) 0, "", (short) 5, 0, ((DetalleTB) searchComboBoxMarca.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle());
                             opcion = 5;
                         }
                         searchComboBoxMarca.getComboBox().hide();
@@ -318,7 +318,7 @@ public class FxValorInventarioController implements Initializable {
                 if (searchComboBoxMarca.getSearchComboBoxSkin().isClickSelection()) {
                     if (!lblLoad.isVisible()) {
                         paginacion = 1;
-                        fillInventarioTable("", (short) 0, "", (short) 5, 0, ((DetalleTB) searchComboBoxMarca.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle().get());
+                        fillInventarioTable("", (short) 0, "", (short) 5, 0, ((DetalleTB) searchComboBoxMarca.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle());
                         opcion = 5;
                     }
                     searchComboBoxMarca.getComboBox().hide();
@@ -393,10 +393,10 @@ public class FxValorInventarioController implements Initializable {
                 fillInventarioTable("", (short) searchComboBoxExistencias.getComboBox().getSelectionModel().getSelectedIndex(), "", (short) 3, 0, 0);
                 break;
             case 4:
-                fillInventarioTable("", (short) 0, "", (short) 4, ((DetalleTB) searchComboBoxCategoria.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle().get(), 0);
+                fillInventarioTable("", (short) 0, "", (short) 4, ((DetalleTB) searchComboBoxCategoria.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle(), 0);
                 break;
             default:
-                fillInventarioTable("", (short) 0, "", (short) 5, 0, ((DetalleTB) searchComboBoxMarca.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle().get());
+                fillInventarioTable("", (short) 0, "", (short) 5, 0, ((DetalleTB) searchComboBoxMarca.getComboBox().getSelectionModel().getSelectedItem()).getIdDetalle());
                 break;
         }
     }

@@ -88,13 +88,13 @@ public class FxDetalleListaController implements Initializable {
             //Controlller here
             FxDetalleProcesoController controller = fXMLLoader.getController();
             controller.setControllerDetalleLista(this);
-            controller.updateDetalle(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+            controller.updateDetalle(lvList.getSelectionModel().getSelectedItem().getNombre());
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Detalle Editar", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
             stage.show();
-            controller.setInitComponents(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get(),
+            controller.setInitComponents(lvList.getSelectionModel().getSelectedItem().getIdDetalle(),
                     idMantenimiento);
         } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Detalle lista", "Seleccione un elemento de la lista para editarlo", false);
@@ -106,48 +106,48 @@ public class FxDetalleListaController implements Initializable {
     private void selectDetail() {
         if (suministrosProcesoController != null) {
             if (idMantenimiento.equalsIgnoreCase("0006")) {
-                suministrosProcesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             } else if (idMantenimiento.equalsIgnoreCase("0013")) {
-                suministrosProcesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             } else if (idMantenimiento.equalsIgnoreCase("0007")) {
-                suministrosProcesoController.setIdMarca(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoController.getTxtMarca().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoController.setIdMarca(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoController.getTxtMarca().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             } else if (idMantenimiento.equalsIgnoreCase("0008")) {
-                suministrosProcesoController.setIdPresentacion(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoController.getTxtPresentacion().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoController.setIdPresentacion(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoController.getTxtPresentacion().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             }
         } else if (suministrosProcesoModalController != null) {
             if (idMantenimiento.equalsIgnoreCase("0006")) {
-                suministrosProcesoModalController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoModalController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoModalController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoModalController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             } else if (idMantenimiento.equalsIgnoreCase("0013")) {
-                suministrosProcesoModalController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoModalController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoModalController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoModalController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             } else if (idMantenimiento.equalsIgnoreCase("0007")) {
-                suministrosProcesoModalController.setIdMarca(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoModalController.getTxtMarca().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoModalController.setIdMarca(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoModalController.getTxtMarca().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             } else if (idMantenimiento.equalsIgnoreCase("0008")) {
-                suministrosProcesoModalController.setIdPresentacion(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                suministrosProcesoModalController.getTxtPresentacion().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                suministrosProcesoModalController.setIdPresentacion(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                suministrosProcesoModalController.getTxtPresentacion().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             }
         } else if (insumoProcesoController != null) {
             if (idMantenimiento.equalsIgnoreCase("0006")) {
-                insumoProcesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                insumoProcesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                insumoProcesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                insumoProcesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             } else if (idMantenimiento.equalsIgnoreCase("0013")) {
-                insumoProcesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                insumoProcesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre().get());
+                insumoProcesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
+                insumoProcesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             }
         }

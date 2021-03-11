@@ -166,9 +166,9 @@ public class FxVentaUtilidadesController implements Initializable {
                         Tools.getDatePicker(dpFechaInicial),
                         Tools.getDatePicker(dpFechaFinal),
                         idSuministro,
-                        cbCategoriaSeleccionar.isSelected() ? 0 : cbCategorias.getSelectionModel().getSelectedItem().getIdDetalle().get(),
-                        cbMarcaSeleccionar.isSelected() ? 0 : cbMarcas.getSelectionModel().getSelectedItem().getIdDetalle().get(),
-                        cbPresentacionSeleccionar.isSelected() ? 0 : cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                        cbCategoriaSeleccionar.isSelected() ? 0 : cbCategorias.getSelectionModel().getSelectedItem().getIdDetalle(),
+                        cbMarcaSeleccionar.isSelected() ? 0 : cbMarcas.getSelectionModel().getSelectedItem().getIdDetalle(),
+                        cbPresentacionSeleccionar.isSelected() ? 0 : cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle());
                 if (detalle_list.isEmpty()) {
                     Tools.AlertMessageWarning(vbWindow, "Utilidades", "No hay registros para mostrar en el reporte.");
                     return;
@@ -238,9 +238,9 @@ public class FxVentaUtilidadesController implements Initializable {
                 Map map = new HashMap();
                 map.put("RANGO_FECHA", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("PRODUCTOS", cbProductosSeleccionar.isSelected() ? "TODOS" : txtProducto.getText());
-                map.put("CATEGORIA", cbCategoriaSeleccionar.isSelected() ? "TODOS" : cbCategorias.getSelectionModel().getSelectedItem().getNombre().get());
-                map.put("MARCA", cbMarcaSeleccionar.isSelected() ? "TODOS" : cbMarcas.getSelectionModel().getSelectedItem().getNombre().get());
-                map.put("PRESENTACION", cbPresentacionSeleccionar.isSelected() ? "TODOS" : cbPresentacion.getSelectionModel().getSelectedItem().getNombre().get());
+                map.put("CATEGORIA", cbCategoriaSeleccionar.isSelected() ? "TODOS" : cbCategorias.getSelectionModel().getSelectedItem().getNombre());
+                map.put("MARCA", cbMarcaSeleccionar.isSelected() ? "TODOS" : cbMarcas.getSelectionModel().getSelectedItem().getNombre());
+                map.put("PRESENTACION", cbPresentacionSeleccionar.isSelected() ? "TODOS" : cbPresentacion.getSelectionModel().getSelectedItem().getNombre());
                 map.put("ORDEN", "");
                 map.put("COSTO_TOTAL", Tools.roundingValue(costoTotal, 2));
                 map.put("PRECIO_TOTAL", Tools.roundingValue(precioTotal, 2));

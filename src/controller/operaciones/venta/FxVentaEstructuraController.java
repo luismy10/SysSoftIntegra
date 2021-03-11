@@ -278,7 +278,7 @@ public class FxVentaEstructuraController implements Initializable {
         }
 
         cbTipoDocumento.getItems().clear();
-        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
+        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(e));
 
         idCliente = Session.CLIENTE_ID;
         txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
@@ -292,7 +292,7 @@ public class FxVentaEstructuraController implements Initializable {
 
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
-                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                if (detalleTB.getIdDetalle() == Session.CLIENTE_TIPO_DOCUMENTO) {
                     cbTipoDocumento.getSelectionModel().select(detalleTB);
                     break;
                 }
@@ -604,7 +604,7 @@ public class FxVentaEstructuraController implements Initializable {
 
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(idCliente);
-                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle());
                 clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
                 clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
                 clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
@@ -1047,7 +1047,7 @@ public class FxVentaEstructuraController implements Initializable {
             if (cotizacionTB != null) {
 
                 for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
-                    if (detalleTB.getIdDetalle().get() == cotizacionTB.getClienteTB().getTipoDocumento()) {
+                    if (detalleTB.getIdDetalle() == cotizacionTB.getClienteTB().getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(detalleTB);
                         break;
                     }
@@ -1759,6 +1759,7 @@ public class FxVentaEstructuraController implements Initializable {
         };
 
         task.setOnScheduled(e -> {
+            cbTipoDocumento.setDisable(true);
             txtNumeroDocumento.setDisable(true);
             txtDatosCliente.setDisable(true);
             txtCelularCliente.setDisable(true);
@@ -1796,6 +1797,7 @@ public class FxVentaEstructuraController implements Initializable {
                         "Se completo la busqueda con exito.",
                         Duration.seconds(5),
                         Pos.TOP_RIGHT);
+                cbTipoDocumento.setDisable(false);
                 txtNumeroDocumento.setDisable(false);
                 txtDatosCliente.setDisable(false);
                 txtCelularCliente.setDisable(false);
@@ -1811,7 +1813,7 @@ public class FxVentaEstructuraController implements Initializable {
                 txtCorreoElectronico.setText(clienteTB.getEmail());
                 txtDireccionCliente.setText(clienteTB.getDireccion());
                 for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
@@ -1860,6 +1862,7 @@ public class FxVentaEstructuraController implements Initializable {
         };
 
         task.setOnScheduled(e -> {
+            cbTipoDocumento.setDisable(true);
             txtNumeroDocumento.setDisable(true);
             txtDatosCliente.setDisable(true);
             txtCelularCliente.setDisable(true);
@@ -1913,6 +1916,7 @@ public class FxVentaEstructuraController implements Initializable {
                                 "Se completo la busqueda con exito.",
                                 Duration.seconds(5),
                                 Pos.TOP_RIGHT);
+                        cbTipoDocumento.setDisable(false);
                         txtNumeroDocumento.setDisable(false);
                         txtDatosCliente.setDisable(false);
                         txtCelularCliente.setDisable(false);
@@ -1936,7 +1940,7 @@ public class FxVentaEstructuraController implements Initializable {
                             txtCelularCliente.setText(clienteTB.getCelular());
                             txtCorreoElectronico.setText(clienteTB.getEmail());
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -1991,6 +1995,7 @@ public class FxVentaEstructuraController implements Initializable {
         };
 
         task.setOnScheduled(e -> {
+            cbTipoDocumento.setDisable(true);
             txtNumeroDocumento.setDisable(true);
             txtDatosCliente.setDisable(true);
             txtCelularCliente.setDisable(true);
@@ -2042,6 +2047,7 @@ public class FxVentaEstructuraController implements Initializable {
                                 "Se completo la busqueda con exito.",
                                 Duration.seconds(5),
                                 Pos.TOP_RIGHT);
+                        cbTipoDocumento.setDisable(false);
                         txtNumeroDocumento.setDisable(false);
                         txtDatosCliente.setDisable(false);
                         txtCelularCliente.setDisable(false);
@@ -2052,6 +2058,7 @@ public class FxVentaEstructuraController implements Initializable {
                         btnBuscarReniec.setDisable(false);
                         if (sONObject.get("dni") != null) {
                             txtNumeroDocumento.setText(sONObject.get("dni").toString());
+
                         }
                         if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
                             txtDatosCliente.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
@@ -2064,7 +2071,7 @@ public class FxVentaEstructuraController implements Initializable {
                             txtDireccionCliente.setText(clienteTB.getDireccion());
 
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -2097,6 +2104,7 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     private void clearDataClient() {
+        cbTipoDocumento.setDisable(false);
         txtNumeroDocumento.setDisable(false);
         txtDatosCliente.setDisable(false);
         txtCelularCliente.setDisable(false);

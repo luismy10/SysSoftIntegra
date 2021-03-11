@@ -175,7 +175,7 @@ public class FxNotaCreditoController implements Initializable {
                 }
 
                 for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == ventaTB.getClienteTB().getTipoDocumento()) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle() == ventaTB.getClienteTB().getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
@@ -390,7 +390,7 @@ public class FxNotaCreditoController implements Initializable {
                 notaCreditoTB.setIdCliente(idCliente);
                 notaCreditoTB.setIdComprobante(cbNotaCredito.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 notaCreditoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
-                notaCreditoTB.setIdMotivo(cbMotivo.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                notaCreditoTB.setIdMotivo(cbMotivo.getSelectionModel().getSelectedItem().getIdDetalle());
                 notaCreditoTB.setFechaRegistro(Tools.getDatePicker(txtFechaRegistro));
                 notaCreditoTB.setHoraRegistro(Tools.getHour());
                 notaCreditoTB.setEstado(1);

@@ -525,7 +525,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             suministroTB.setPrecioVentaGeneral(precioValidado);
 
             suministroTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                    ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle()
                     : 0);
 
             int se_vende;

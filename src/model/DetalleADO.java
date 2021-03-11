@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,25 +57,25 @@ public class DetalleADO {
             try {
                 DBUtil.getConnection().setAutoCommit(false);
                 statementValidate = DBUtil.getConnection().prepareStatement("select IdDetalle,IdMantenimiento from DetalleTB where IdDetalle=? and IdMantenimiento=?");
-                statementValidate.setInt(1, detalleTB.getIdDetalle().get());
-                statementValidate.setString(2, detalleTB.getIdMantenimiento().get());
+                statementValidate.setInt(1, detalleTB.getIdDetalle());
+                statementValidate.setString(2, detalleTB.getIdMantenimiento());
                 if(statementValidate.executeQuery().next()){
 
                     statementDetalle = DBUtil.getConnection().prepareStatement("select IdDetalle,IdMantenimiento from DetalleTB where IdDetalle<>? and IdMantenimiento=? and Nombre = ?");
-                    statementDetalle.setInt(1, detalleTB.getIdDetalle().get());
-                    statementDetalle.setString(2, detalleTB.getIdMantenimiento().get());
-                    statementDetalle.setString(3, detalleTB.getNombre().get());
+                    statementDetalle.setInt(1, detalleTB.getIdDetalle());
+                    statementDetalle.setString(2, detalleTB.getIdMantenimiento());
+                    statementDetalle.setString(3, detalleTB.getNombre());
                     if(statementDetalle.executeQuery().next()){
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     }else{
                         statementDetalle = DBUtil.getConnection().prepareStatement("update DetalleTB set IdAuxiliar=UPPER(?),Nombre=UPPER(?),Descripcion=UPPER(?),Estado=? where IdDetalle =? and IdMantenimiento = ?");
-                        statementDetalle.setString(1, detalleTB.getIdAuxiliar().get());
-                        statementDetalle.setString(2, detalleTB.getNombre().get());
-                        statementDetalle.setString(3, detalleTB.getDescripcion().get());
-                        statementDetalle.setString(4, detalleTB.getEstado().get());
-                        statementDetalle.setInt(5, detalleTB.getIdDetalle().get());
-                        statementDetalle.setString(6, detalleTB.getIdMantenimiento().get());
+                        statementDetalle.setString(1, detalleTB.getIdAuxiliar());
+                        statementDetalle.setString(2, detalleTB.getNombre());
+                        statementDetalle.setString(3, detalleTB.getDescripcion());
+                        statementDetalle.setString(4, detalleTB.getEstado());
+                        statementDetalle.setInt(5, detalleTB.getIdDetalle());
+                        statementDetalle.setString(6, detalleTB.getIdMantenimiento());
                         statementDetalle.addBatch();
                         
                         statementDetalle.executeBatch();
@@ -85,19 +84,19 @@ public class DetalleADO {
                     }
                 }else{
                     statementDetalle = DBUtil.getConnection().prepareStatement("select Nombre from DetalleTB where IdMantenimiento = ? and Nombre = ?");
-                    statementDetalle.setString(1, detalleTB.getIdMantenimiento().get());
-                    statementDetalle.setString(2, detalleTB.getNombre().get());
+                    statementDetalle.setString(1, detalleTB.getIdMantenimiento());
+                    statementDetalle.setString(2, detalleTB.getNombre());
                     if(statementDetalle.executeQuery().next()){
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     }else{
                         statementDetalle = DBUtil.getConnection().prepareStatement("insert into DetalleTB(IdMantenimiento,IdAuxiliar,Nombre,Descripcion,Estado,UsuarioRegistro) values(?,?,?,?,?,?)");
-                        statementDetalle.setString(1, detalleTB.getIdMantenimiento().get());
-                        statementDetalle.setString(2, detalleTB.getIdAuxiliar().get());
-                        statementDetalle.setString(3, detalleTB.getNombre().get().trim().toUpperCase());
-                        statementDetalle.setString(4, detalleTB.getDescripcion().get().trim().toUpperCase());
-                        statementDetalle.setString(5, detalleTB.getEstado().get());
-                        statementDetalle.setString(6, detalleTB.getUsuarioRegistro().get());
+                        statementDetalle.setString(1, detalleTB.getIdMantenimiento());
+                        statementDetalle.setString(2, detalleTB.getIdAuxiliar());
+                        statementDetalle.setString(3, detalleTB.getNombre().trim().toUpperCase());
+                        statementDetalle.setString(4, detalleTB.getDescripcion().trim().toUpperCase());
+                        statementDetalle.setString(5, detalleTB.getEstado());
+                        statementDetalle.setString(6, detalleTB.getUsuarioRegistro());
                         statementDetalle.addBatch();
                         
                         statementDetalle.executeBatch();
@@ -138,8 +137,8 @@ public class DetalleADO {
             try {
                 DBUtil.getConnection().setAutoCommit(false);
                 preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-                preparedStatement.setInt(1, detalleTB.getIdDetalle().get());
-                preparedStatement.setString(2, detalleTB.getIdMantenimiento().get());
+                preparedStatement.setInt(1, detalleTB.getIdDetalle());
+                preparedStatement.setString(2, detalleTB.getIdMantenimiento());
                 preparedStatement.addBatch();
                 preparedStatement.executeBatch();
                 DBUtil.getConnection().commit();
@@ -182,6 +181,7 @@ public class DetalleADO {
                 DetalleTB detalleTB = new DetalleTB();
                 detalleTB.setIdDetalle(resultSet.getInt("IdDetalle"));
                 detalleTB.setNombre(resultSet.getString("Nombre"));
+                detalleTB.setIdAuxiliar(resultSet.getString("IdAuxiliar"));
                 empList.add(detalleTB);
             }
 

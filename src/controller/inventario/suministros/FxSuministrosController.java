@@ -206,7 +206,7 @@ public class FxSuministrosController implements Initializable {
 
     private void filtercbCategoria() {
         SearchComboBox<DetalleTB> searchComboBoxCategoria = new SearchComboBox<>(cbCategoria, true);
-        searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
+        searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxCategoria.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0006"));
         searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
             if (null == t.getCode()) {
@@ -219,7 +219,7 @@ public class FxSuministrosController implements Initializable {
                     case ESCAPE:
                         if (!lblLoad.isVisible()) {
                             paginacion = 1;
-                            fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get(), 0);
+                            fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle(), 0);
                             opcion = 3;
                         }
                         searchComboBoxCategoria.getComboBox().hide();
@@ -242,7 +242,7 @@ public class FxSuministrosController implements Initializable {
                 if (searchComboBoxCategoria.getSearchComboBoxSkin().isClickSelection()) {
                     if (!lblLoad.isVisible()) {
                         paginacion = 1;
-                        fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get(), 0);
+                        fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle(), 0);
                         opcion = 3;
                     }
                     searchComboBoxCategoria.getComboBox().hide();
@@ -251,7 +251,7 @@ public class FxSuministrosController implements Initializable {
         });
 
         SearchComboBox<DetalleTB> searchComboBoxMarca = new SearchComboBox<>(cbMarca, true);
-        searchComboBoxMarca.setFilter((item, text) -> item.getNombre().get().toLowerCase().contains(text.toLowerCase()));
+        searchComboBoxMarca.setFilter((item, text) -> item.getNombre().toLowerCase().contains(text.toLowerCase()));
         searchComboBoxMarca.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0007"));
         searchComboBoxMarca.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
             if (null == t.getCode()) {
@@ -264,7 +264,7 @@ public class FxSuministrosController implements Initializable {
                     case ESCAPE:
                         if (!lblLoad.isVisible()) {
                             paginacion = 1;
-                            fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                            fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle());
                             opcion = 4;
                         }
                         searchComboBoxMarca.getComboBox().hide();
@@ -287,7 +287,7 @@ public class FxSuministrosController implements Initializable {
                 if (searchComboBoxMarca.getSearchComboBoxSkin().isClickSelection()) {
                     if (!lblLoad.isVisible()) {
                         paginacion = 1;
-                        fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                        fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle());
                         opcion = 4;
                     }
                     searchComboBoxMarca.getComboBox().hide();
@@ -308,10 +308,10 @@ public class FxSuministrosController implements Initializable {
                 fillTableSuministros((short) 2, "", txtNombre.getText().trim(), 0, 0);
                 break;
             case 3:
-                fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle().get(), 0);
+                fillTableSuministros((short) 3, "", "", cbCategoria.getSelectionModel().getSelectedItem().getIdDetalle(), 0);
                 break;
             default:
-                fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                fillTableSuministros((short) 4, "", "", 0, cbMarca.getSelectionModel().getSelectedItem().getIdDetalle());
                 break;
         }
     }

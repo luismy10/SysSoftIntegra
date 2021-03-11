@@ -482,7 +482,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 ObservableList<DetalleTB> lsest = cbEstado.getItems();
                 if (suministroTB.getEstado() != 0) {
                     for (int i = 0; i < lsest.size(); i++) {
-                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle()) {
                             cbEstado.getSelectionModel().select(i);
                             break;
                         }
@@ -644,7 +644,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 ObservableList<DetalleTB> lsest = cbEstado.getItems();
                 if (suministroTB.getEstado() != 0) {
                     for (int i = 0; i < lsest.size(); i++) {
-                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle()) {
                             cbEstado.getSelectionModel().select(i);
                             break;
                         }
@@ -827,7 +827,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setPrecioVentaGeneral(precioValidado);
 
                 suministroTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
 
                 int se_vende;

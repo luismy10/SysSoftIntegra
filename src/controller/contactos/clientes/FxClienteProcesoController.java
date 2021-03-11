@@ -2,7 +2,6 @@ package controller.contactos.clientes;
 
 import controller.tools.ApiPeru;
 import controller.tools.Json;
-import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.text.ParseException;
@@ -87,7 +86,7 @@ public class FxClienteProcesoController implements Initializable {
             this.idCliente = clienteTB.getIdCliente();
             ObservableList<DetalleTB> lstype = cbDocumentType.getItems();
             for (int i = 0; i < lstype.size(); i++) {
-                if (clienteTB.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
+                if (clienteTB.getTipoDocumento() == lstype.get(i).getIdDetalle()) {
                     cbDocumentType.getSelectionModel().select(i);
                     break;
                 }
@@ -127,7 +126,7 @@ public class FxClienteProcesoController implements Initializable {
 
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(idCliente);
-                clienteTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setTipoDocumento(cbDocumentType.getSelectionModel().getSelectedItem().getIdDetalle());
                 clienteTB.setInformacion(txtInformacion.getText().trim().toUpperCase());
                 clienteTB.setNumeroDocumento(txtDocumentNumber.getText().trim().toUpperCase());
 //              clienteTB.setFechaNacimiento(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(Tools.getDatePicker(dpBirthdate)).getTime()));

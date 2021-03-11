@@ -685,12 +685,12 @@ public class FxGuiaRemisionController implements Initializable {
                 guiaRemisionTB.setIdVendedor(Session.USER_ID);
                 guiaRemisionTB.setIdComprobante(cbDocumentoGuia.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 guiaRemisionTB.setEmail(txtEmail.getText().trim());
-                guiaRemisionTB.setIdMotivoTraslado(cbMotivoTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                guiaRemisionTB.setIdModalidadTraslado(cbModalidadTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                guiaRemisionTB.setIdMotivoTraslado(cbMotivoTraslado.getSelectionModel().getSelectedItem().getIdDetalle());
+                guiaRemisionTB.setIdModalidadTraslado(cbModalidadTraslado.getSelectionModel().getSelectedItem().getIdDetalle());
                 guiaRemisionTB.setFechaTraslado(Tools.getDatePicker(dtFechaTraslado));
                 guiaRemisionTB.setPesoBruto(Double.parseDouble(txtPesoBruto.getText()));
                 guiaRemisionTB.setNumeroBultos(Integer.parseInt(txtNumeroBultos.getText()));
-                guiaRemisionTB.setTipoDocumentoConducto(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                guiaRemisionTB.setTipoDocumentoConducto(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle());
                 guiaRemisionTB.setNumeroConductor(txtNumeroDocumento.getText().trim());
                 guiaRemisionTB.setNombreConductor(txtNombreConducto.getText().trim());
                 guiaRemisionTB.setTelefonoCelularConducto(txtTelefonoCelular.getText());

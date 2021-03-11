@@ -234,7 +234,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
-                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                if (detalleTB.getIdDetalle() == Session.CLIENTE_TIPO_DOCUMENTO) {
                     cbTipoDocumento.getSelectionModel().select(detalleTB);
                     break;
                 }
@@ -1307,7 +1307,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(idCliente);
-                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle());
                 clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
                 clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
                 clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
@@ -1407,7 +1407,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 txtCorreoElectronico.setText(clienteTB.getEmail());
                 txtDireccionCliente.setText(clienteTB.getDireccion());
                 for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
@@ -1531,7 +1531,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             txtCelularCliente.setText(clienteTB.getCelular());
                             txtCorreoElectronico.setText(clienteTB.getEmail());
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -1658,7 +1658,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             txtDireccionCliente.setText(clienteTB.getDireccion());
 
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
