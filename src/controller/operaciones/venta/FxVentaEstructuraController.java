@@ -26,6 +26,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -231,6 +232,8 @@ public class FxVentaEstructuraController implements Initializable {
     private double importeNeto;
 
     private Alert alert = null;
+    @FXML
+    private HBox hbLoadCliente;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -1939,8 +1942,16 @@ public class FxVentaEstructuraController implements Initializable {
                             ClienteTB clienteTB = (ClienteTB) result.get(1);
                             txtCelularCliente.setText(clienteTB.getCelular());
                             txtCorreoElectronico.setText(clienteTB.getEmail());
+
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
                                 if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdAuxiliar().equals("6")) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -1957,7 +1968,12 @@ public class FxVentaEstructuraController implements Initializable {
                     clearDataClient();
                 }
             } else {
-
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Hubo un problema interno, intente nuevamente.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
             }
         });
 
@@ -2058,7 +2074,6 @@ public class FxVentaEstructuraController implements Initializable {
                         btnBuscarReniec.setDisable(false);
                         if (sONObject.get("dni") != null) {
                             txtNumeroDocumento.setText(sONObject.get("dni").toString());
-
                         }
                         if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
                             txtDatosCliente.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
@@ -2072,6 +2087,13 @@ public class FxVentaEstructuraController implements Initializable {
 
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
                                 if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdAuxiliar().equals("1")) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -2118,6 +2140,14 @@ public class FxVentaEstructuraController implements Initializable {
         txtCelularCliente.setText("");
         txtCorreoElectronico.setText("");
         txtDireccionCliente.setText("");
+
+        for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+            if (cbTipoDocumento.getItems().get(i).getIdAuxiliar().equals("0")) {
+                cbTipoDocumento.getSelectionModel().select(i);
+                break;
+            }
+        }
+
     }
 
     private void learnWord(String text) {

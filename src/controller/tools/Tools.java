@@ -402,8 +402,8 @@ public class Tools {
     public static void showAlertNotification(String url, String title, String message, Duration duration, Pos pos) {
         Image image = new Image(url);
         ImageView imageView = new ImageView(image);      
-        double newWidth = Tools.newSizeImagePorcent(image.getWidth(), 20);
-        double nweHeight = Tools.newSizeImagePorcent(image.getHeight(), 20);
+        double newWidth = Tools.newSizeImagePorcent(image.getWidth(), 30);
+        double nweHeight = Tools.newSizeImagePorcent(image.getHeight(), 30);
         imageView.setFitWidth(newWidth);
         imageView.setFitHeight(nweHeight);
         Notifications notifications = Notifications.create()
