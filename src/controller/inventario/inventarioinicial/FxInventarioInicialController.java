@@ -1,7 +1,7 @@
 package controller.inventario.inventarioinicial;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.File;
@@ -27,11 +27,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.SuministroTB;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -73,9 +71,7 @@ public class FxInventarioInicialController implements Initializable {
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -247,7 +243,7 @@ public class FxInventarioInicialController implements Initializable {
 
     @FXML
     private void onActionSubir(ActionEvent event) throws IOException {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         URL url = getClass().getResource(FilesRouters.FX_IMPORTAR_INVENTARIO);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -256,9 +252,7 @@ public class FxInventarioInicialController implements Initializable {
         //
         Stage stage = WindowStage.StageLoader(parent, "Importar inventario");
         stage.setResizable(true);
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
+        stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
         stage.show();
 
     }
@@ -268,9 +262,8 @@ public class FxInventarioInicialController implements Initializable {
 
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

@@ -1,7 +1,7 @@
 package controller.inventario.movimientos;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -80,9 +80,7 @@ public class FxMovimientosController implements Initializable {
 
     private ObservableList<PrivilegioTB> privilegioTBs;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private short opcion;
 
@@ -193,7 +191,7 @@ public class FxMovimientosController implements Initializable {
 
     private void openWindowMovimientoDetalle(String idMovimiento) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = FxMovimientosController.class.getClassLoader().getClass().getResource(FilesRouters.FX_MOVIMIENTOS_DETALLE);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -204,9 +202,7 @@ public class FxMovimientosController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Detalle del movimiento", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -215,13 +211,13 @@ public class FxMovimientosController implements Initializable {
     }
 
     private void openWindowRealizarMovimientoProducto() {
-        controllerMovimientoDetalle.setContent(this, vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerMovimientoDetalle.setContent(this, fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeMovimientoDetalle, 0d);
         AnchorPane.setTopAnchor(nodeMovimientoDetalle, 0d);
         AnchorPane.setRightAnchor(nodeMovimientoDetalle, 0d);
         AnchorPane.setBottomAnchor(nodeMovimientoDetalle, 0d);
-        vbContent.getChildren().add(nodeMovimientoDetalle);
+        fxPrincipalController.getVbContent().getChildren().add(nodeMovimientoDetalle);
     }
 
     public void onEventPaginacion() {
@@ -348,9 +344,9 @@ public class FxMovimientosController implements Initializable {
         return tvList;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;     
     }
+
 
 }

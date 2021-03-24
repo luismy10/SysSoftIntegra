@@ -1258,7 +1258,7 @@ public class CompraADO extends DBUtil {
                 statementValidate.setString(1, compraCreditoTB.getIdCompra());
                 ResultSet resultSet = statementValidate.executeQuery();
                 if (resultSet.next()) {
-                    double total = resultSet.getDouble("Total");
+                    double total = Double.parseDouble(Tools.roundingValue(resultSet.getDouble("Total"), 2));
 
                     callableIdCompraCredito = DBUtil.getConnection().prepareCall("{? = call Fc_Compra_Credito_Codigo_Alfanumerico()}");
                     callableIdCompraCredito.registerOutParameter(1, java.sql.Types.VARCHAR);

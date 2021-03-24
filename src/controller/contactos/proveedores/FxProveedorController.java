@@ -1,7 +1,7 @@
 package controller.contactos.proveedores;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -27,7 +27,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ProveedorADO;
@@ -58,7 +57,7 @@ public class FxProveedorController implements Initializable {
     @FXML
     private TableColumn<ProveedorTB, String> tcRepresentante;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -148,7 +147,7 @@ public class FxProveedorController implements Initializable {
 
     private void openInsertWindow() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_PROCESO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -158,7 +157,7 @@ public class FxProveedorController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Proveedor", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.setValueAdd();
         } catch (IOException ix) {
@@ -169,7 +168,7 @@ public class FxProveedorController implements Initializable {
     private void openUpdateWindow() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_PROCESO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -179,7 +178,7 @@ public class FxProveedorController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Editr Proveedor", window.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                 stage.show();
                 controller.setValueUpdate(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento());
 
@@ -336,8 +335,8 @@ public class FxProveedorController implements Initializable {
         return tvList;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

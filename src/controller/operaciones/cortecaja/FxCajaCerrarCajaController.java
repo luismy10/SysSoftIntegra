@@ -1,5 +1,6 @@
 package controller.operaciones.cortecaja;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.io.IOException;
@@ -35,6 +36,8 @@ public class FxCajaCerrarCajaController implements Initializable {
     @FXML
     private ComboBox<BancoTB> cbCuentasTarjeta;
 
+    private FxPrincipalController fxPrincipalController;
+
     private FxCajaController cajaController;
 
     private String idActual;
@@ -42,8 +45,6 @@ public class FxCajaCerrarCajaController implements Initializable {
     private double calculado;
 
     private double valorTarjeta;
-
-    private AnchorPane vbPrincipal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -60,7 +61,7 @@ public class FxCajaCerrarCajaController implements Initializable {
         cbCuentasTarjeta.getItems().addAll(BancoADO.GetBancoComboBoxForma((short) 2));
     }
 
-    private void onEventAceptar()  {
+    private void onEventAceptar() {
         if (!Tools.isNumeric(txtEfectivo.getText())) {
             Tools.AlertMessageWarning(window, "Corte de caja", "Ingrese el monto actual de caja.");
             txtEfectivo.requestFocus();
@@ -99,7 +100,7 @@ public class FxCajaCerrarCajaController implements Initializable {
                 }
 
                 String result = CajaADO.CerrarAperturaCaja(idActual, bancoHistorialEfectivo, bancoHistorialTarjeta, Double.parseDouble(txtEfectivo.getText()), calculado);
-                if (result.equalsIgnoreCase("completed")) {     
+                if (result.equalsIgnoreCase("completed")) {
                     Tools.Dispose(window);
                     cajaController.openModalImpresion(idActual);
                 } else {
@@ -133,9 +134,9 @@ public class FxCajaCerrarCajaController implements Initializable {
         }
     }
 
-    public void setInitCerrarCajaController(FxCajaController cajaController, AnchorPane vbPrincipal) {
+    public void setInitCerrarCajaController(FxCajaController cajaController, FxPrincipalController fxPrincipalController) {
         this.cajaController = cajaController;
-        this.vbPrincipal = vbPrincipal;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

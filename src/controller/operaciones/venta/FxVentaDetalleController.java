@@ -1,5 +1,6 @@
 package controller.operaciones.venta;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
@@ -118,9 +119,7 @@ public class FxVentaDetalleController implements Initializable {
     @FXML
     private Text lbClienteInformacion;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private String idVenta;
 
@@ -256,7 +255,7 @@ public class FxVentaDetalleController implements Initializable {
 
     private void onEventCancelar() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_DEVOLUCION);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -268,7 +267,7 @@ public class FxVentaDetalleController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Error en venta detalle: " + ex.getLocalizedMessage());
@@ -427,7 +426,7 @@ public class FxVentaDetalleController implements Initializable {
 
     private void openWindowLlevar(String idSuministro, double costo) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_LLEVAR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -439,7 +438,7 @@ public class FxVentaDetalleController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Producto a llevar", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -449,7 +448,7 @@ public class FxVentaDetalleController implements Initializable {
 
     private void openWindowHistorial(SuministroTB suministroTB) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_LLEVAR_HISTORIAL);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -461,7 +460,7 @@ public class FxVentaDetalleController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Historial de Salida", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -894,13 +893,13 @@ public class FxVentaDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) throws IOException {
-        vbContent.getChildren().remove(window);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(window);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(ventaRealizadasController.getWindow(), 0d);
         AnchorPane.setTopAnchor(ventaRealizadasController.getWindow(), 0d);
         AnchorPane.setRightAnchor(ventaRealizadasController.getWindow(), 0d);
         AnchorPane.setBottomAnchor(ventaRealizadasController.getWindow(), 0d);
-        vbContent.getChildren().add(ventaRealizadasController.getWindow());
+        fxPrincipalController.getVbContent().getChildren().add(ventaRealizadasController.getWindow());
     }
 
     @FXML
@@ -915,9 +914,9 @@ public class FxVentaDetalleController implements Initializable {
         openWindowReporte();
     }
 
-    public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitVentasController(FxVentaRealizadasController ventaRealizadasController, FxPrincipalController fxPrincipalController) {
         this.ventaRealizadasController = ventaRealizadasController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
+
 }

@@ -1,5 +1,6 @@
 package controller.operaciones.notacredito;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
@@ -37,7 +38,6 @@ import model.NotaCreditoADO;
 import model.NotaCreditoDetalleTB;
 import model.NotaCreditoTB;
 import model.SuministroTB;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -84,9 +84,7 @@ public class FxNotaCreditoDetalleController implements Initializable {
 
     private FxNotaCreditoRealizadasController creditoRealizadasController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private NotaCreditoTB notaCreditoTB;
 
@@ -293,13 +291,13 @@ public class FxNotaCreditoDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        vbContent.getChildren().remove(spWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(spWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(creditoRealizadasController.getVbWindow(), 0d);
         AnchorPane.setTopAnchor(creditoRealizadasController.getVbWindow(), 0d);
         AnchorPane.setRightAnchor(creditoRealizadasController.getVbWindow(), 0d);
         AnchorPane.setBottomAnchor(creditoRealizadasController.getVbWindow(), 0d);
-        vbContent.getChildren().add(creditoRealizadasController.getVbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(creditoRealizadasController.getVbWindow());
     }
 
     @FXML
@@ -326,10 +324,9 @@ public class FxNotaCreditoDetalleController implements Initializable {
         Tools.println("i");
     }
 
-    public void setInitNotaCreditoRealizadasController(FxNotaCreditoRealizadasController creditoRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitNotaCreditoRealizadasController(FxNotaCreditoRealizadasController creditoRealizadasController,FxPrincipalController fxPrincipalController) {
         this.creditoRealizadasController = creditoRealizadasController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

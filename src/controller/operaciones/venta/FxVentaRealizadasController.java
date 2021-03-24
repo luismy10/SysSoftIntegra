@@ -1,8 +1,8 @@
 package controller.operaciones.venta;
 
 import controller.configuracion.empleados.FxEmpleadosListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -87,9 +86,7 @@ public class FxVentaRealizadasController implements Initializable {
     @FXML
     private Label lblMotonTotal;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private String idEmpleado;
 
@@ -232,18 +229,15 @@ public class FxVentaRealizadasController implements Initializable {
                     lblPaginaSiguiente.setText("0");
                     lblMotonTotal.setText(Tools.roundingValue(0, 2));
                 }
-            } else if (object instanceof String) {
-                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
-                lblMotonTotal.setText(Tools.roundingValue(0, 2));
             } else {
-                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
                 lblMotonTotal.setText(Tools.roundingValue(0, 2));
             }
             lblLoad.setVisible(false);
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
-            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
             lblMotonTotal.setText(Tools.roundingValue(0, 2));
         });
         task.setOnScheduled(w -> {
@@ -265,15 +259,15 @@ public class FxVentaRealizadasController implements Initializable {
             ScrollPane node = fXMLLoader.load();
             //Controlller here
             FxVentaDetalleController controller = fXMLLoader.getController();
-            controller.setInitVentasController(this, vbPrincipal, vbContent);
+            controller.setInitVentasController(this, fxPrincipalController);
             controller.setInitComponents(tvList.getSelectionModel().getSelectedItem().getIdVenta());
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
         } else {
             Tools.AlertMessageWarning(window, "Compra", "Debe seleccionar una compra de la lista");
         }
@@ -281,7 +275,7 @@ public class FxVentaRealizadasController implements Initializable {
 
     private void openWindowVendedores() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_EMPLEADO_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -292,7 +286,7 @@ public class FxVentaRealizadasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Elija un vendedor", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillEmpleadosTable("");
         } catch (IOException ex) {
@@ -559,9 +553,8 @@ public class FxVentaRealizadasController implements Initializable {
         this.idEmpleado = idEmpleado;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+   
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
-
 }

@@ -1,5 +1,6 @@
 package controller.produccion.producir;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.SearchComboBox;
 import controller.tools.Tools;
 import java.net.URL;
@@ -60,9 +61,7 @@ public class FxFormulaAgregarController implements Initializable {
     @FXML
     private Label lblMessageLoad;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private FxFormulaController formulaController;
 
@@ -346,13 +345,13 @@ public class FxFormulaAgregarController implements Initializable {
                     String result = FormulaADO.Crud_Formula(formulaTB);
                     if (result.equalsIgnoreCase("inserted")) {
                         Tools.AlertMessageInformation(apWindow, "Formula", "Se registró correctamente la formula.");
-                        vbContent.getChildren().remove(apWindow);
-                        vbContent.getChildren().clear();
+                        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+                        fxPrincipalController.getVbContent().getChildren().clear();
                         AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
                         AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
                         AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
                         AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
-                        vbContent.getChildren().add(formulaController.getHbWindow());
+                        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
                     } else {
                         Tools.AlertMessageError(apWindow, "Formula", result);
                     }
@@ -433,22 +432,21 @@ public class FxFormulaAgregarController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        vbContent.getChildren().remove(apWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
         AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
         AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
-        vbContent.getChildren().add(formulaController.getHbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
     }
 
     public void setInitFormulaController(FxFormulaController formulaController) {
         this.formulaController = formulaController;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

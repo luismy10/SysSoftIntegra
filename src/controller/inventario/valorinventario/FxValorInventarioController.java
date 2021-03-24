@@ -1,9 +1,9 @@
 package controller.inventario.valorinventario;
 
 import controller.configuracion.tickets.FxTicketBusquedaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.BillPrintable;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -92,7 +92,7 @@ public class FxValorInventarioController implements Initializable {
     @FXML
     private Label lblCantidadTotal;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private AnchorPane apEncabezado;
 
@@ -330,7 +330,7 @@ public class FxValorInventarioController implements Initializable {
     private void openWindowAjuste() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_INVENTARIO_AJUSTE);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -346,9 +346,7 @@ public class FxValorInventarioController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Inventario general", vbWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding((w) -> {
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-                });
+                stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
                 stage.show();
             } catch (IOException ex) {
                 System.out.println(ex.getLocalizedMessage());
@@ -358,7 +356,7 @@ public class FxValorInventarioController implements Initializable {
 
     private void generarReporte() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_OPCIONES_INVENTARIO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -369,9 +367,7 @@ public class FxValorInventarioController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Inventario general", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
@@ -403,7 +399,7 @@ public class FxValorInventarioController implements Initializable {
 
     private void onEventTicketBusqueda() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_TICKET_BUSQUEDA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -415,7 +411,7 @@ public class FxValorInventarioController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -827,8 +823,8 @@ public class FxValorInventarioController implements Initializable {
         return apPie;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

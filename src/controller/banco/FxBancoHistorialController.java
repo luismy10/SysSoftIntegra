@@ -1,7 +1,7 @@
 package controller.banco;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -57,9 +57,7 @@ public class FxBancoHistorialController implements Initializable {
 
     private FxBancosController bancosController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private  FxPrincipalController fxPrincipalController;
 
     private String idBanco;
 
@@ -125,18 +123,18 @@ public class FxBancoHistorialController implements Initializable {
     }
 
     private void getOutWindow() {
-        vbContent.getChildren().remove(hbWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(hbWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(bancosController.getHbWindow(), 0d);
         AnchorPane.setTopAnchor(bancosController.getHbWindow(), 0d);
         AnchorPane.setRightAnchor(bancosController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(bancosController.getHbWindow(), 0d);
-        vbContent.getChildren().add(bancosController.getHbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(bancosController.getHbWindow());
     }
 
     private void eventAdd() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_BANCO_AGREGAR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -148,7 +146,7 @@ public class FxBancoHistorialController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Ingreso de dinero", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -158,7 +156,7 @@ public class FxBancoHistorialController implements Initializable {
 
     private void eventRetirar() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_BANCO_RETIRAR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -170,7 +168,7 @@ public class FxBancoHistorialController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Salida de dinero", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -239,10 +237,10 @@ public class FxBancoHistorialController implements Initializable {
         getOutWindow();
     }
 
-    public void setInitComptrasController(FxBancosController bancosController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitComptrasController(FxBancosController bancosController, FxPrincipalController fxPrincipalController) {
         this.bancosController = bancosController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
+
 
 }

@@ -145,7 +145,7 @@ public class FxOpcionesImprimirController implements Initializable {
             Tools.Dispose(apWindow);
         } else if (cajaController != null) {
             Tools.Dispose(apWindow);
-            Tools.Dispose(cajaController.getVbPrincipal());
+            Tools.Dispose(cajaController.getFxPrincipalController().getSpWindow());
             cajaController.openWindowLogin();
         } else if (cajaConsultasController != null) {
             Tools.Dispose(apWindow);
@@ -165,7 +165,7 @@ public class FxOpcionesImprimirController implements Initializable {
         } else if (cajaController != null) {
             printEventCorteCajaTicket();
             Tools.Dispose(apWindow);
-            Tools.Dispose(cajaController.getVbPrincipal());
+            Tools.Dispose(cajaController.getFxPrincipalController().getSpWindow());
             cajaController.openWindowLogin();
         } else if (cajaConsultasController != null) {
             printEventCajaConsultas();
@@ -262,7 +262,7 @@ public class FxOpcionesImprimirController implements Initializable {
             if (Session.TICKET_CORTE_CAJA_ID == 0 && Session.TICKET_CORTE_CAJA_RUTA.equalsIgnoreCase("")) {
                 Tools.AlertMessageWarning(apWindow, "Abono", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
                 Tools.Dispose(apWindow);
-                Tools.Dispose(cajaController.getVbPrincipal());
+                Tools.Dispose(cajaController.getFxPrincipalController().getSpWindow());
                 cajaController.openWindowLogin();
             } else {
                 executeProcessPrinterCorteCaja(
@@ -1752,7 +1752,7 @@ public class FxOpcionesImprimirController implements Initializable {
             } else {
                 Tools.showAlertNotification("/view/image/error_large.png",
                         "Generando reporte",
-                        (String)object,
+                        (String) object,
                         Duration.seconds(10),
                         Pos.CENTER);
             }

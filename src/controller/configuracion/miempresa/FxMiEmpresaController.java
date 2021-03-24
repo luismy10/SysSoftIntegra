@@ -1,5 +1,6 @@
 package controller.configuracion.miempresa;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -66,7 +67,7 @@ public class FxMiEmpresaController implements Initializable {
     @FXML
     private ComboBox<UbigeoTB> cbUbigeo;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private boolean validate;
 
@@ -412,8 +413,8 @@ public class FxMiEmpresaController implements Initializable {
         clearImage();
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent( FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

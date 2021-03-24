@@ -1,5 +1,6 @@
 package controller.operaciones.notacredito;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import java.io.IOException;
@@ -59,9 +60,7 @@ public class FxNotaCreditoRealizadasController implements Initializable {
     @FXML
     private Label lblPaginaSiguiente;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private int paginacion;
 
@@ -191,14 +190,14 @@ public class FxNotaCreditoRealizadasController implements Initializable {
             //Controlller here
             FxNotaCreditoDetalleController controller = fXMLLoader.getController();
             controller.loadInitData(tvList.getSelectionModel().getSelectedItem().getIdNotaCredito());
-            controller.setInitNotaCreditoRealizadasController(this, vbPrincipal, vbContent);
+            controller.setInitNotaCreditoRealizadasController(this, fxPrincipalController);
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
         } else {
             Tools.AlertMessageWarning(vbWindow, "Nota de Crédito", "Debe seleccionar una compra de la lista");
         }
@@ -377,9 +376,8 @@ public class FxNotaCreditoRealizadasController implements Initializable {
         return vbWindow;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

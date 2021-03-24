@@ -1,7 +1,7 @@
 package controller.tools;
 
-import controller.inventario.suministros.FxSuministrosCompraController;
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.menus.FxPrincipalController;
 import controller.operaciones.compras.FxComprasController;
 import java.io.IOException;
 import java.net.URL;
@@ -11,11 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import model.SuministroTB;
 
 public class WindowStage {
 
@@ -47,9 +45,9 @@ public class WindowStage {
         return stage;
     }
 
-    public static void openWindowSuministrasAdd(AnchorPane vbPrincipal, ScrollPane scrollPane, FxComprasController comprasController) {
+    public static void openWindowSuministrasAdd(FxPrincipalController fxPrincipalController, ScrollPane scrollPane, FxComprasController comprasController) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = WindowStage.class.getClassLoader().getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -60,7 +58,7 @@ public class WindowStage {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", scrollPane.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillSuministrosTable((short)0,""); 
         } catch (IOException ex) {

@@ -1,5 +1,6 @@
 package controller.consultas.compras;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import java.io.IOException;
@@ -66,9 +67,7 @@ public class FxComprasRealizadasController implements Initializable {
     @FXML
     private ComboBox<DetalleTB> cbEstadoCompra;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -139,15 +138,15 @@ public class FxComprasRealizadasController implements Initializable {
             ScrollPane node = fXMLPrincipal.load();
 
             FxComprasDetalleController controller = fXMLPrincipal.getController();
-            controller.setInitComptrasController(this, vbPrincipal, vbContent);
+            controller.setInitComptrasController(this, fxPrincipalController);
             controller.setLoadDetalle(tvList.getSelectionModel().getSelectedItem().getIdCompra());
 
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
 
         } else {
             Tools.AlertMessage(vbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Compra", "Debe seleccionar una compra de la lista", false);
@@ -273,9 +272,9 @@ public class FxComprasRealizadasController implements Initializable {
         return tvList;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+   
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

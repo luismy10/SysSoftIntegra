@@ -1,12 +1,11 @@
 package controller.inventario.suministros;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,7 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.KardexADO;
@@ -81,7 +79,7 @@ public class FxSuministrosKardexController implements Initializable {
 
     private String idSuministro;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private int paginacion;
 
@@ -104,6 +102,7 @@ public class FxSuministrosKardexController implements Initializable {
         tcDebe.setCellValueFactory(new PropertyValueFactory<>("lblDebe"));
         tcHaber.setCellValueFactory(new PropertyValueFactory<>("lblHaber"));
         tcSaldo.setCellValueFactory(new PropertyValueFactory<>("lblSaldo"));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
         //
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
         tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
@@ -130,44 +129,54 @@ public class FxSuministrosKardexController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return KardexADO.List_Kardex_By_Id_Suministro(opcion, value, fechaInicial, fechaFinal, (paginacion - 1) * 10, 10);
             }
         };
-        task.setOnSucceeded(w -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
 
-                tvList.setItems((ObservableList<KardexTB>) objects.get(0));
-
-                lblCantidadActual.setText((objects.get(1) != null ? Tools.roundingValue((double) objects.get(1), 2) : "0.00"));
-                lblValorActual.setText((objects.get(2) != null ? Tools.roundingValue((double) objects.get(2), 2) : "0.00"));
-//                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
-//
-//                totalPaginacion = integer;
-//                lblPaginaActual.setText(paginacion + "");
-//                lblPaginaSiguiente.setText(totalPaginacion + "");
-//                
-//                cantidad += (double) objects.get(2);
-//                total += (double) objects.get(3);
-                //System.out.println("Cantidad: "+cantidad );
-                lblLoad.setVisible(false);
-            } else {
-                tvList.getItems().clear();
-                lblCantidadActual.setText("0");
-                lblValorActual.setText("0");
-                lblLoad.setVisible(false);
-            }
-
-        });
-        task.setOnFailed(w -> {
-            lblLoad.setVisible(false);
-        });
         task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
+            lblCantidadActual.setText(Tools.roundingValue(0, 2));
+            lblValorActual.setText(Tools.roundingValue(0, 2));
         });
+
+        task.setOnFailed(w -> {
+            lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
+        });
+
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<KardexTB> kardexTBs = (ObservableList<KardexTB>) objects[0];
+                if (!kardexTBs.isEmpty()) {
+                    tvList.setItems(kardexTBs);
+                    double cantidad = (double) objects[1];
+                    double saldo = (double) objects[2];
+                    lblCantidadActual.setText(Tools.roundingValue(cantidad, 2));
+                    lblValorActual.setText(Tools.roundingValue(saldo, 2));
+//                int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 10.00)));
+//                totalPaginacion = integer;
+//                lblPaginaActual.setText(paginacion + "");
+//                lblPaginaSiguiente.setText(totalPaginacion + "");             
+//                cantidad += (double) objects.get(2);
+//                total += (double) objects.get(3);
+
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                }
+            } else {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
+            }
+            lblLoad.setVisible(false);
+        });
+
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -176,7 +185,7 @@ public class FxSuministrosKardexController implements Initializable {
 
     private void openWindowSuministros() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -187,7 +196,7 @@ public class FxSuministrosKardexController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministro", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
@@ -271,8 +280,8 @@ public class FxSuministrosKardexController implements Initializable {
         lblProducto.setText(value);
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this. fxPrincipalController = fxPrincipalController;
     }
 
 }

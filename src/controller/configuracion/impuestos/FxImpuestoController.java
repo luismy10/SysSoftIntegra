@@ -1,7 +1,7 @@
 package controller.configuracion.impuestos;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -26,7 +26,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ImpuestoADO;
@@ -53,7 +52,7 @@ public class FxImpuestoController implements Initializable {
     @FXML
     private TableColumn<ImpuestoTB, String> tcCodigoAlterno;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -103,7 +102,7 @@ public class FxImpuestoController implements Initializable {
     }
 
     private void openWindowImpuestoRegister() throws IOException {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         URL url = getClass().getResource(FilesRouters.FX_IMPUESTO_PROCESO);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -114,9 +113,7 @@ public class FxImpuestoController implements Initializable {
         Stage stage = WindowStage.StageLoaderModal(parent, "Registre su impuesto", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.setOnHiding(w -> {
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
+        stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
         stage.show();
 
     }
@@ -124,7 +121,7 @@ public class FxImpuestoController implements Initializable {
     private void openWindowImpuestoUpdate() {
         try {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_IMPUESTO_PROCESO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -136,7 +133,7 @@ public class FxImpuestoController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar su impuesto", window.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                 stage.show();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Impuesto", "Seleccione un elemento de la lista.", false);
@@ -282,8 +279,8 @@ public class FxImpuestoController implements Initializable {
         fillTabletTax();
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent( FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

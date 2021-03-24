@@ -1,14 +1,12 @@
 package controller.produccion.producir;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.SearchComboBox;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,8 +33,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.EmpleadoTB;
-import model.FormulaADO;
-import model.FormulaTB;
 import model.InsumoADO;
 import model.InsumoTB;
 import model.ProduccionADO;
@@ -81,9 +77,7 @@ public class FxProducirAgregarController implements Initializable {
 
     private FxProducirController producirController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private ArrayList<InsumoTB> insumoTBs;
 
@@ -373,13 +367,13 @@ public class FxProducirAgregarController implements Initializable {
     }
 
     private void closeWindow() {
-        vbContent.getChildren().remove(apWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(producirController.getWindow(), 0d);
         AnchorPane.setTopAnchor(producirController.getWindow(), 0d);
         AnchorPane.setRightAnchor(producirController.getWindow(), 0d);
         AnchorPane.setBottomAnchor(producirController.getWindow(), 0d);
-        vbContent.getChildren().add(producirController.getWindow());
+        fxPrincipalController.getVbContent().getChildren().add(producirController.getWindow());
     }
 
     private void registrarProduccion() {
@@ -530,10 +524,9 @@ public class FxProducirAgregarController implements Initializable {
         }
     }
 
-    public void setInitControllerProducir(FxProducirController producirController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitControllerProducir(FxProducirController producirController, FxPrincipalController fxPrincipalController) {
         this.producirController = producirController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

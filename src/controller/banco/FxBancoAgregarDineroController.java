@@ -28,7 +28,7 @@ public class FxBancoAgregarDineroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
+        Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);      
     }
 
     private void eventGuardar() {

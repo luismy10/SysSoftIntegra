@@ -2,8 +2,8 @@ package controller.inventario.movimientos;
 
 import controller.operaciones.compras.FxComprasListaController;
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.awt.HeadlessException;
@@ -88,9 +88,7 @@ public class FxMovimientosProcesoController implements Initializable {
     @FXML
     private CheckBox cbCaja;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private FxMovimientosController movimientosController;
 
@@ -136,9 +134,9 @@ public class FxMovimientosProcesoController implements Initializable {
     }
 
     private void openAlertMessageWarning(String message) {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Movimiento", message, false);
-        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        fxPrincipalController.closeFondoModal();
     }
 
     private void registrarMovimiento() {
@@ -166,12 +164,12 @@ public class FxMovimientosProcesoController implements Initializable {
                 if (cbCaja.isSelected()) {
                     openWindowMovimientoCaja(rbIncremento.isSelected(), inventarioTB, tvList);
                 } else {
-                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                    fxPrincipalController.openFondoModal();
                     short validate = Tools.AlertMessageConfirmation(hbWindow, "Movimiento", "¿Está seguro de continuar?");
                     if (validate == 1) {
                         ejecutarConsulta(inventarioTB, tvList);
                     } else {
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                       fxPrincipalController.closeFondoModal();
                     }
                 }
             }
@@ -254,11 +252,11 @@ public class FxMovimientosProcesoController implements Initializable {
             String result = task.getValue();
             if (result.equalsIgnoreCase("registered")) {
                 Tools.AlertMessageInformation(hbWindow, "Proceso", "Se completo el registro correctamente.");
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+               fxPrincipalController.closeFondoModal();
                 clearComponents();
             } else {
                 Tools.AlertMessageError(hbWindow, "Proceso", result);
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                fxPrincipalController.closeFondoModal();
             }
         });
         exec.execute(task);
@@ -346,7 +344,7 @@ public class FxMovimientosProcesoController implements Initializable {
 
     private void openWindowSuministros() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -357,7 +355,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
@@ -367,7 +365,7 @@ public class FxMovimientosProcesoController implements Initializable {
 
     private void openWindowCompras() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_COMPRAS_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -378,7 +376,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Compra", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.loadListCompras("", "", (short) 0);
         } catch (IOException ex) {
@@ -388,7 +386,7 @@ public class FxMovimientosProcesoController implements Initializable {
 
     private void openWindowMovimientoCaja(boolean tipoMovimiento, AjusteInventarioTB inventarioTB, TableView<SuministroTB> tableView) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_MOVIMIENTO_CAJA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -400,7 +398,7 @@ public class FxMovimientosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento caja", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
@@ -466,13 +464,13 @@ public class FxMovimientosProcesoController implements Initializable {
     }
 
     private void closeWindow() {
-        vbContent.getChildren().remove(hbWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(hbWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(movimientosController.getHbWindow(), 0d);
         AnchorPane.setTopAnchor(movimientosController.getHbWindow(), 0d);
         AnchorPane.setRightAnchor(movimientosController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(movimientosController.getHbWindow(), 0d);
-        vbContent.getChildren().add(movimientosController.getHbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(movimientosController.getHbWindow());
     }
 
     @FXML
@@ -594,10 +592,9 @@ public class FxMovimientosProcesoController implements Initializable {
         return tvList;
     }
 
-    public void setContent(FxMovimientosController movimientosController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setContent(FxMovimientosController movimientosController, FxPrincipalController fxPrincipalController) {
         this.movimientosController = movimientosController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

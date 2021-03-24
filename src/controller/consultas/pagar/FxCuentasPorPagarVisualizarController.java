@@ -1,9 +1,9 @@
 package controller.consultas.pagar;
 
 import controller.configuracion.impresoras.FxOpcionesImprimirController;
+import controller.menus.FxPrincipalController;
 import controller.operaciones.compras.FxAmortizarPagosController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -64,9 +64,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     @FXML
     private Label lblMontoTotal;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private FxCuentasPorPagarController cuentasPorPagarController;
 
@@ -163,7 +161,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     private void onEventAmortizar() {
         if (compraTB != null) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_AMARTIZAR_PAGOS);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -175,7 +173,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Generar Pago", spWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w ->fxPrincipalController.closeFondoModal());
                 stage.show();
             } catch (IOException ex) {
                 System.out.println("Controller banco" + ex.getLocalizedMessage());
@@ -187,7 +185,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
 
     public void openModalImpresion(String idCompra, String idCompraCredito) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -199,7 +197,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w ->fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Controller banco" + ex.getLocalizedMessage());
@@ -312,13 +310,13 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        vbContent.getChildren().remove(spWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(spWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(cuentasPorPagarController.getVbWindow(), 0d);
         AnchorPane.setTopAnchor(cuentasPorPagarController.getVbWindow(), 0d);
         AnchorPane.setRightAnchor(cuentasPorPagarController.getVbWindow(), 0d);
         AnchorPane.setBottomAnchor(cuentasPorPagarController.getVbWindow(), 0d);
-        vbContent.getChildren().add(cuentasPorPagarController.getVbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(cuentasPorPagarController.getVbWindow());
     }
 
     @FXML
@@ -353,9 +351,8 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
         }
     }
 
-    public void setInitCuentasPorPagar(AnchorPane vbPrincipal, AnchorPane vbContent, FxCuentasPorPagarController cuentasPorPagarController) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setInitCuentasPorPagar(FxPrincipalController fxPrincipalController, FxCuentasPorPagarController cuentasPorPagarController) {
+        this.fxPrincipalController = fxPrincipalController;
         this.cuentasPorPagarController = cuentasPorPagarController;
     }
 

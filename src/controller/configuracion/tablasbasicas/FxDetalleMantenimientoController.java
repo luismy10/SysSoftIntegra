@@ -1,7 +1,7 @@
 package controller.configuracion.tablasbasicas;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -26,7 +26,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -71,7 +70,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     private boolean onAnimationStart, onAnimationFinished;
 
-    private AnchorPane content;
+    private  FxPrincipalController fxPrincipalController;
 
     private String validarProceso;
 
@@ -116,7 +115,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     @FXML
     private void onMouseClickedAgregar(MouseEvent event) throws IOException {
-        ObjectGlobal.InitializationTransparentBackground(content);
+        fxPrincipalController.openFondoModal();
         URL url = getClass().getResource(FilesRouters.FX_MENTANIMIENTO);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -126,9 +125,7 @@ public class FxDetalleMantenimientoController implements Initializable {
         Stage stage = WindowStage.StageLoaderModal(parent, "Agregar item de mantenimiento", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            content.getChildren().remove(ObjectGlobal.PANE);
-        });
+        stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
         stage.show();
         controller.initWindow();
     }
@@ -136,7 +133,7 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private void onMouseClickedEditar(MouseEvent event) throws IOException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && lvMaintenance.isFocused()) {
-            ObjectGlobal.InitializationTransparentBackground(content);
+          fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_MENTANIMIENTO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -145,13 +142,10 @@ public class FxDetalleMantenimientoController implements Initializable {
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Editar item de mantenimiento", window.getScene().getWindow());
             stage.setResizable(false);
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((WindowEvent WindowEvent) -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.setValues(lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(), lvMaintenance.getSelectionModel().getSelectedItem().getNombre());
         }
-
     }
 
     @FXML
@@ -202,7 +196,7 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     private void onActionEditDetail() throws IOException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && tvDetail.getSelectionModel().getSelectedIndex() >= 0) {
-            ObjectGlobal.InitializationTransparentBackground(content);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_DETALLE);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -213,9 +207,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar detalle del item", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.setValueUpdate(lvMaintenance.getSelectionModel().getSelectedItem().getNombre(),
                     lvMaintenance.getSelectionModel().getSelectedItem().getIdMantenimiento(),
@@ -283,7 +275,7 @@ public class FxDetalleMantenimientoController implements Initializable {
     @FXML
     private void onActionAdd(ActionEvent event) throws IOException {
         if (lvMaintenance.getSelectionModel().getSelectedIndex() >= 0 && validarProceso.equals("0")) {
-            ObjectGlobal.InitializationTransparentBackground(content);
+           fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_DETALLE);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -296,9 +288,7 @@ public class FxDetalleMantenimientoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar detalle del item", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                content.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } else {
@@ -343,8 +333,8 @@ public class FxDetalleMantenimientoController implements Initializable {
 
     }
 
-    public void setContent(AnchorPane content) {
-        this.content = content;
+    public void setContent( FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

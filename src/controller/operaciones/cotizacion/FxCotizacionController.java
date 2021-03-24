@@ -3,9 +3,9 @@ package controller.operaciones.cotizacion;
 import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -37,7 +37,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -94,7 +93,7 @@ public class FxCotizacionController implements Initializable {
     @FXML
     private Label lblProceso;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private String idCotizacion;
 
@@ -272,7 +271,7 @@ public class FxCotizacionController implements Initializable {
 
     private void onEventCliente() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_CLIENTE_PROCESO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -282,7 +281,7 @@ public class FxCotizacionController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.setValueAdd();
         } catch (IOException ex) {
@@ -292,7 +291,7 @@ public class FxCotizacionController implements Initializable {
 
     private void openWindowSuministro() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -303,7 +302,7 @@ public class FxCotizacionController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
@@ -518,31 +517,26 @@ public class FxCotizacionController implements Initializable {
                 }
                 calculateTotales();
                 Tools.AlertMessageInformation(hbWindow, "Ventas", "Los datos se cargaron correctamente.");
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-
+                fxPrincipalController.closeFondoModal();
             } else {
                 Tools.AlertMessageWarning(hbWindow, "Ventas", "Se produjo un problema intente nuevamente.");
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                fxPrincipalController.closeFondoModal();
             }
 
-        }
-        );
+        });
         task.setOnFailed(w
                 -> {
             if (alert != null) {
                 ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
             }
             Tools.AlertMessageError(hbWindow, "Venta", "Error en la ejecución, intente nuevamente.");
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        }
-        );
-        task.setOnScheduled(w
-                -> {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.closeFondoModal();
+        });
+        task.setOnScheduled(w -> {
+            fxPrincipalController.openFondoModal();
             alert = Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.NONE, "Procesando Información...");
 
-        }
-        );
+        });
         exec.execute(task);
 
         if (!exec.isShutdown()) {
@@ -552,7 +546,7 @@ public class FxCotizacionController implements Initializable {
 
     public void openModalImpresion(String idCotizacion) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -564,7 +558,7 @@ public class FxCotizacionController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Controller Modal Impresión: " + ex.getLocalizedMessage());
@@ -646,7 +640,7 @@ public class FxCotizacionController implements Initializable {
 
     public void openWindowCotizaciones() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_COTIZACION_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -657,7 +651,7 @@ public class FxCotizacionController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar Cotizaciones", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.loadTable((short) 1, "", Tools.getDate(), Tools.getDate());
         } catch (IOException ex) {
@@ -798,8 +792,8 @@ public class FxCotizacionController implements Initializable {
         return tvList;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

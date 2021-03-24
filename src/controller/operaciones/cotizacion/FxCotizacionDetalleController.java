@@ -1,5 +1,6 @@
 package controller.operaciones.cotizacion;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
@@ -90,9 +91,7 @@ public class FxCotizacionDetalleController implements Initializable {
 
     private FxCotizacionRealizadasController cotizacionRealizadasController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private CotizacionTB cotizacionTB;
 
@@ -601,13 +600,13 @@ public class FxCotizacionDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        vbContent.getChildren().remove(spWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(spWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setTopAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setRightAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
-        vbContent.getChildren().add(cotizacionRealizadasController.getHbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(cotizacionRealizadasController.getHbWindow());
     }
 
     @FXML
@@ -650,10 +649,9 @@ public class FxCotizacionDetalleController implements Initializable {
         }
     }
 
-    public void setInitCotizacionesRealizadasController(FxCotizacionRealizadasController cotizacionRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitCotizacionesRealizadasController(FxCotizacionRealizadasController cotizacionRealizadasController,FxPrincipalController  fxPrincipalController) {
         this.cotizacionRealizadasController = cotizacionRealizadasController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

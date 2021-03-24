@@ -4,7 +4,6 @@ import com.sun.javafx.application.LauncherImpl;
 import controller.login.FxLoginController;
 import controller.tools.FilesRouters;
 import controller.tools.WindowStage;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
@@ -15,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.DBUtil;
@@ -28,7 +26,7 @@ public class SysSoftIntegra extends Application {
 
     @Override
     public void init() throws Exception {
-        ObjectGlobal.PANE = new AnchorPane();
+       
     }
 
     @Override

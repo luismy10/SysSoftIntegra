@@ -1,7 +1,7 @@
 package controller.configuracion.moneda;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -26,7 +26,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -52,7 +51,7 @@ public class FxMonedaController implements Initializable {
     @FXML
     private Label lblLoad;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private boolean stateRequest;
 
@@ -111,7 +110,7 @@ public class FxMonedaController implements Initializable {
     }
 
     private void openWindowMoneyRegister() throws IOException {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         URL url = getClass().getResource(FilesRouters.FX_MONEDA_PROCESO);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -122,16 +121,14 @@ public class FxMonedaController implements Initializable {
         Stage stage = WindowStage.StageLoaderModal(parent, "Registre su moneda", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
+        stage.setOnHiding((WindowEvent WindowEvent) -> fxPrincipalController.closeFondoModal());
         stage.show();
 
     }
 
     private void openWindowMoneyUpdate() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_MONEDA_PROCESO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -148,9 +145,7 @@ public class FxMonedaController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar su moneda", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((WindowEvent WindowEvent) -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } else {
@@ -256,8 +251,8 @@ public class FxMonedaController implements Initializable {
 
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

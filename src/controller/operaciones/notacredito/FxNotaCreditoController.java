@@ -1,7 +1,7 @@
 package controller.operaciones.notacredito;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -92,9 +92,7 @@ public class FxNotaCreditoController implements Initializable {
     @FXML
     private Label lblImpuesto;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController principalController;
 
     private String idVenta;
 
@@ -384,44 +382,44 @@ public class FxNotaCreditoController implements Initializable {
         } else if (detalleVentaTBs.isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "No hay datos en el detalle para guardar el documento.");
         } else {
-            
-                NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
-                notaCreditoTB.setIdVendedor(Session.USER_ID);
-                notaCreditoTB.setIdCliente(idCliente);
-                notaCreditoTB.setIdComprobante(cbNotaCredito.getSelectionModel().getSelectedItem().getIdTipoDocumento());
-                notaCreditoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
-                notaCreditoTB.setIdMotivo(cbMotivo.getSelectionModel().getSelectedItem().getIdDetalle());
-                notaCreditoTB.setFechaRegistro(Tools.getDatePicker(txtFechaRegistro));
-                notaCreditoTB.setHoraRegistro(Tools.getHour());
-                notaCreditoTB.setEstado(1);
-                notaCreditoTB.setIdVenta(idVenta);
-                ArrayList<NotaCreditoDetalleTB> creditoDetalleTBs = new ArrayList<>();
-                detalleVentaTBs.forEach(f -> {
-                    NotaCreditoDetalleTB ncdtb = new NotaCreditoDetalleTB();
-                    ncdtb.setIdSuministro(f.getIdArticulo());
-                    ncdtb.setCantidad(f.getSuministroTB().getCantidad());
-                    ncdtb.setPrecio(f.getSuministroTB().getPrecioVentaGeneral());
-                    ncdtb.setDescuento(f.getSuministroTB().getDescuento());
-                    ncdtb.setValorImpuesto(f.getSuministroTB().getImpuestoValor());
-                    creditoDetalleTBs.add(ncdtb);
-                });
-                notaCreditoTB.setNotaCreditoDetalleTBs(creditoDetalleTBs);
 
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_NOTA_CREDITO_PROCESO);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxNotaCreditoProcesoController controller = fXMLLoader.getController();
-                controller.setInitNotaCreditoController(this);
-                controller.loadDataComponents(notaCreditoTB);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Nota de Crédito", apWindow.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-                stage.show();
-            
+            NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
+            notaCreditoTB.setIdVendedor(Session.USER_ID);
+            notaCreditoTB.setIdCliente(idCliente);
+            notaCreditoTB.setIdComprobante(cbNotaCredito.getSelectionModel().getSelectedItem().getIdTipoDocumento());
+            notaCreditoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
+            notaCreditoTB.setIdMotivo(cbMotivo.getSelectionModel().getSelectedItem().getIdDetalle());
+            notaCreditoTB.setFechaRegistro(Tools.getDatePicker(txtFechaRegistro));
+            notaCreditoTB.setHoraRegistro(Tools.getHour());
+            notaCreditoTB.setEstado(1);
+            notaCreditoTB.setIdVenta(idVenta);
+            ArrayList<NotaCreditoDetalleTB> creditoDetalleTBs = new ArrayList<>();
+            detalleVentaTBs.forEach(f -> {
+                NotaCreditoDetalleTB ncdtb = new NotaCreditoDetalleTB();
+                ncdtb.setIdSuministro(f.getIdArticulo());
+                ncdtb.setCantidad(f.getSuministroTB().getCantidad());
+                ncdtb.setPrecio(f.getSuministroTB().getPrecioVentaGeneral());
+                ncdtb.setDescuento(f.getSuministroTB().getDescuento());
+                ncdtb.setValorImpuesto(f.getSuministroTB().getImpuestoValor());
+                creditoDetalleTBs.add(ncdtb);
+            });
+            notaCreditoTB.setNotaCreditoDetalleTBs(creditoDetalleTBs);
+
+            principalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_NOTA_CREDITO_PROCESO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxNotaCreditoProcesoController controller = fXMLLoader.getController();
+            controller.setInitNotaCreditoController(this);
+            controller.loadDataComponents(notaCreditoTB);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Nota de Crédito", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> principalController.closeFondoModal());
+            stage.show();
+
         }
     }
 
@@ -463,7 +461,7 @@ public class FxNotaCreditoController implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) throws IOException {
-        registrarNotaCredito(); 
+        registrarNotaCredito();
     }
 
     @FXML
@@ -484,12 +482,10 @@ public class FxNotaCreditoController implements Initializable {
 
     public HBox getHbLoad() {
         return hbLoad;
-    }  
-    
+    }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController principalController) {
+        this.principalController = principalController;
     }
 
 }

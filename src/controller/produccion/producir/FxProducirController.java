@@ -1,5 +1,6 @@
 package controller.produccion.producir;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -65,9 +66,7 @@ public class FxProducirController implements Initializable {
 
     private FxProducirAgregarController controller;
 
-    private AnchorPane vbContent;
-
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private int paginacion;
 
@@ -209,13 +208,13 @@ public class FxProducirController implements Initializable {
     }
 
     private void onViewProducirProceso() {
-        controller.setInitControllerProducir(this, vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controller.setInitControllerProducir(this, fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);
+        fxPrincipalController.getVbContent().getChildren().add(node);
     }
 
     @FXML
@@ -336,9 +335,8 @@ public class FxProducirController implements Initializable {
         return window;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

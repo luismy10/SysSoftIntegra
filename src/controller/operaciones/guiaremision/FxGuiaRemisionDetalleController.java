@@ -1,5 +1,6 @@
 package controller.operaciones.guiaremision;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -93,9 +94,7 @@ public class FxGuiaRemisionDetalleController implements Initializable {
 
     private FxGuiaRemisionRealizadasController guiaRemisionRealizadasController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private String idGuiaRemision;
 
@@ -302,13 +301,13 @@ public class FxGuiaRemisionDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        vbContent.getChildren().remove(spWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(spWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(guiaRemisionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setTopAnchor(guiaRemisionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setRightAnchor(guiaRemisionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(guiaRemisionRealizadasController.getHbWindow(), 0d);
-        vbContent.getChildren().add(guiaRemisionRealizadasController.getHbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(guiaRemisionRealizadasController.getHbWindow());
     }
 
     @FXML
@@ -323,10 +322,9 @@ public class FxGuiaRemisionDetalleController implements Initializable {
         onExecuteImpresion(idGuiaRemision);
     }
 
-    public void setInitGuiaRemisionRealizadasController(FxGuiaRemisionRealizadasController guiaRemisionRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitGuiaRemisionRealizadasController(FxGuiaRemisionRealizadasController guiaRemisionRealizadasController, FxPrincipalController fxPrincipalController) {
         this.guiaRemisionRealizadasController = guiaRemisionRealizadasController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

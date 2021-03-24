@@ -1,8 +1,8 @@
 package controller.inventario.suministros;
 
 import controller.configuracion.etiquetas.FxEtiquetasBusquedaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -106,9 +106,7 @@ public class FxSuministrosController implements Initializable {
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     /*
     Controller suministros     
@@ -317,9 +315,9 @@ public class FxSuministrosController implements Initializable {
     }
 
     private void openAlertMessageWarning(String message) {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Productos", message, false);
-        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+       fxPrincipalController.closeFondoModal();
     }
 
     public void fillTableSuministros(short opcion, String clave, String nombreMarca, int categoria, int marca) {
@@ -361,14 +359,14 @@ public class FxSuministrosController implements Initializable {
     }
 
     private void openWindowAdd() {
-        suministrosProcesoController.setInitControllerSuministros(this, vbPrincipal, vbContent);
+        suministrosProcesoController.setInitControllerSuministros(this, fxPrincipalController);
         //
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeSuministrosProceso, 0d);
         AnchorPane.setTopAnchor(nodeSuministrosProceso, 0d);
         AnchorPane.setRightAnchor(nodeSuministrosProceso, 0d);
         AnchorPane.setBottomAnchor(nodeSuministrosProceso, 0d);
-        vbContent.getChildren().add(nodeSuministrosProceso);
+        fxPrincipalController.getVbContent().getChildren().add(nodeSuministrosProceso);
         //
         suministrosProcesoController.setInitArticulo();
     }
@@ -376,14 +374,14 @@ public class FxSuministrosController implements Initializable {
     private void openWindowEdit() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             suministrosProcesoController.loadPrivilegios(privilegioTBs);
-            suministrosProcesoController.setInitControllerSuministros(this, vbPrincipal, vbContent);
+            suministrosProcesoController.setInitControllerSuministros(this, fxPrincipalController);
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(nodeSuministrosProceso, 0d);
             AnchorPane.setTopAnchor(nodeSuministrosProceso, 0d);
             AnchorPane.setRightAnchor(nodeSuministrosProceso, 0d);
             AnchorPane.setBottomAnchor(nodeSuministrosProceso, 0d);
-            vbContent.getChildren().add(nodeSuministrosProceso);
+            fxPrincipalController.getVbContent().getChildren().add(nodeSuministrosProceso);
             //
             suministrosProcesoController.setValueEdit(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
         } else {
@@ -394,14 +392,14 @@ public class FxSuministrosController implements Initializable {
 
     private void onViewArticuloClone() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            suministrosProcesoController.setInitControllerSuministros(this, vbPrincipal, vbContent);
+            suministrosProcesoController.setInitControllerSuministros(this, fxPrincipalController);
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(nodeSuministrosProceso, 0d);
             AnchorPane.setTopAnchor(nodeSuministrosProceso, 0d);
             AnchorPane.setRightAnchor(nodeSuministrosProceso, 0d);
             AnchorPane.setBottomAnchor(nodeSuministrosProceso, 0d);
-            vbContent.getChildren().add(nodeSuministrosProceso);
+            fxPrincipalController.getVbContent().getChildren().add(nodeSuministrosProceso);
             //
             suministrosProcesoController.setValueClone(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
         } else {
@@ -413,7 +411,7 @@ public class FxSuministrosController implements Initializable {
     private void eventEtiqueta() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_ETIQUETA_BUSQUEDA);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -425,7 +423,7 @@ public class FxSuministrosController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Buscar etiquetas", hbWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                 stage.show();
             } catch (IOException ex) {
                 System.out.println(ex.getLocalizedMessage());
@@ -437,29 +435,29 @@ public class FxSuministrosController implements Initializable {
 
     private void removedArticulo() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             short value = Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Productos", "¿Está seguro de eliminar el producto?", true);
             if (value == 1) {
                 String result = SuministroADO.RemoverSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
 
                 if (result.equalsIgnoreCase("compra")) {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Productos", "El producto esta ligado a una compra, no se puede eliminar hasta que la compra sea borrada.", false);
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    fxPrincipalController.closeFondoModal();
                 } else if (result.equalsIgnoreCase("kardex_compra")) {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Productos", "El producto tiene un kardex ligado, no se puede eliminar hasta que el karder sea borrado.", false);
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                fxPrincipalController.closeFondoModal();
                 } else if (result.equalsIgnoreCase("venta")) {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Productos", "El producto esta ligado a una venta, no se puede eliminar hasta que la venta sea borrada.", false);
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    fxPrincipalController.closeFondoModal();
                 } else if (result.equalsIgnoreCase("removed")) {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.INFORMATION, "Productos", "Se elimino correctamente", false);
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                  fxPrincipalController.closeFondoModal();
                 } else {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.ERROR, "Productos", result, false);
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                   fxPrincipalController.closeFondoModal();
                 }
             } else {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                fxPrincipalController.closeFondoModal();
             }
         } else {
             openAlertMessageWarning("Seleccione un item para eliminarlo");
@@ -800,9 +798,8 @@ public class FxSuministrosController implements Initializable {
         return hbWindow;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

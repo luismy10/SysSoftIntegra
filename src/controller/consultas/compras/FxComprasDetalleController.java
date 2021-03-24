@@ -1,5 +1,6 @@
 package controller.consultas.compras;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
@@ -42,7 +43,6 @@ import model.CompraADO;
 import model.CompraCreditoTB;
 import model.CompraTB;
 import model.DetalleCompraTB;
-import model.SuministroTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -101,9 +101,7 @@ public class FxComprasDetalleController implements Initializable {
 
     private FxComprasRealizadasController comprascontroller;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private String idCompra;
 
@@ -386,14 +384,14 @@ public class FxComprasDetalleController implements Initializable {
 
             FxComprasEditarController controller = fXMLPrincipal.getController();
             controller.setInitComprasEditar(idCompra);
-            controller.setInitContentComprasEditar(this, vbPrincipal, vbContent);
+            controller.setInitContentComprasEditar(this, fxPrincipalController);
 
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
         }
 
 //        if (estadoCompra.equals("anulado".toUpperCase())) {
@@ -426,7 +424,7 @@ public class FxComprasDetalleController implements Initializable {
     private void eventCancelarVenta() {
         if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CANCELAR);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -438,7 +436,7 @@ public class FxComprasDetalleController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Anular su compra", cpWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                 stage.show();
             } catch (IOException ex) {
                 System.out.println("Controller compras" + ex.getLocalizedMessage());
@@ -461,13 +459,13 @@ public class FxComprasDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) throws IOException {
-        vbContent.getChildren().remove(cpWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(cpWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(comprascontroller.getWindow(), 0d);
         AnchorPane.setTopAnchor(comprascontroller.getWindow(), 0d);
         AnchorPane.setRightAnchor(comprascontroller.getWindow(), 0d);
         AnchorPane.setBottomAnchor(comprascontroller.getWindow(), 0d);
-        vbContent.getChildren().add(comprascontroller.getWindow());
+        fxPrincipalController.getVbContent().getChildren().add(comprascontroller.getWindow());
     }
 
     @FXML
@@ -510,10 +508,9 @@ public class FxComprasDetalleController implements Initializable {
         return listComprasCredito;
     }
 
-    public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitComptrasController(FxComprasRealizadasController comprascontroller, FxPrincipalController fxPrincipalController) {
         this.comprascontroller = comprascontroller;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

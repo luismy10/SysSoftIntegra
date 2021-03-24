@@ -1008,9 +1008,11 @@ public class VentaADO {
             objects[0] = empList;
             objects[1] = cantidadTotal;
             objects[2] = montoTotal;
-            
+
             return objects;
         } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
             return ex.getLocalizedMessage();
         } finally {
             try {
@@ -1720,7 +1722,7 @@ public class VentaADO {
                 statementValidate.setString(1, ventaCreditoTB.getIdVenta());
                 ResultSet resultSet = statementValidate.executeQuery();
                 if (resultSet.next()) {
-                    double total = resultSet.getDouble("Total");
+                    double total = Double.parseDouble(Tools.roundingValue(resultSet.getDouble("Total"), 2));
 
                     statementCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Venta_Credito_Codigo_Alfanumerico()}");
                     statementCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
@@ -1770,6 +1772,7 @@ public class VentaADO {
                     statementValidate = DBUtil.getConnection().prepareStatement("SELECT Monto FROM VentaCreditoTB WHERE IdVenta = ?");
                     statementValidate.setString(1, ventaCreditoTB.getIdVenta());
                     resultSet = statementValidate.executeQuery();
+
                     double montoTotal = 0;
                     while (resultSet.next()) {
                         montoTotal += resultSet.getDouble("Monto");
@@ -1779,7 +1782,7 @@ public class VentaADO {
                     if ((montoTotal + ventaCreditoTB.getMonto()) >= total) {
                         statementVenta.setString(1, ventaCreditoTB.getIdVenta());
                         statementVenta.addBatch();
-                    }
+                    }                
 
                     statementAbono.executeBatch();
                     preparedBanco.executeBatch();

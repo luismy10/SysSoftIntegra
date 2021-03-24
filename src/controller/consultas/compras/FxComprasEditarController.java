@@ -1,10 +1,10 @@
 package controller.consultas.compras;
 
 import controller.contactos.proveedores.FxProveedorListaController;
+import controller.menus.FxPrincipalController;
 import controller.operaciones.compras.FxComprasProcesoController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
-import controller.tools.Session;
+  import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -108,9 +108,7 @@ public class FxComprasEditarController implements Initializable {
 
     private FxComprasDetalleController comprasDetalleController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private String idProveedor;
 
@@ -253,9 +251,9 @@ public class FxComprasEditarController implements Initializable {
     }
 
     private void openAlertMessageWarning(String message) {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         Tools.AlertMessageWarning(spWindow, "Compras", message);
-        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        fxPrincipalController.closeFondoModal();
     }
 
     private void openWindowRegister() {
@@ -291,7 +289,7 @@ public class FxComprasEditarController implements Initializable {
                 compraTB.setNotas(txtNotas.getText().trim().isEmpty() ? "" : txtNotas.getText().trim());
                 compraTB.setUsuario(Session.USER_ID);
 
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_COMPRAS_PROCESO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -303,7 +301,7 @@ public class FxComprasEditarController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Pago de la compra", spWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding((w) -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
                 stage.show();
 
             }
@@ -401,7 +399,7 @@ public class FxComprasEditarController implements Initializable {
 
     private void openWindowProvedores() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -412,9 +410,7 @@ public class FxComprasEditarController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillCustomersTable("");
         } catch (IOException ex) {
@@ -579,13 +575,13 @@ public class FxComprasEditarController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        vbContent.getChildren().remove(spWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(spWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(comprasDetalleController.getCpWindow(), 0d);
         AnchorPane.setTopAnchor(comprasDetalleController.getCpWindow(), 0d);
         AnchorPane.setRightAnchor(comprasDetalleController.getCpWindow(), 0d);
         AnchorPane.setBottomAnchor(comprasDetalleController.getCpWindow(), 0d);
-        vbContent.getChildren().add(comprasDetalleController.getCpWindow());
+        fxPrincipalController.getVbContent().getChildren().add(comprasDetalleController.getCpWindow());
     }
 
     public TableView<DetalleCompraTB> getTvList() {
@@ -600,10 +596,9 @@ public class FxComprasEditarController implements Initializable {
         return hbAgregarImpuesto;
     }
 
-    public void setInitContentComprasEditar(FxComprasDetalleController comprasDetalleController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitContentComprasEditar(FxComprasDetalleController comprasDetalleController, FxPrincipalController fxPrincipalController) {
         this.comprasDetalleController = comprasDetalleController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }
