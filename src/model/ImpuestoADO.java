@@ -62,7 +62,7 @@ public class ImpuestoADO {
                         statementImpuesto.setString(6, impuestoTB.getNombreImpuesto());
                         statementImpuesto.setString(7, impuestoTB.getLetra());
                         statementImpuesto.setString(8, impuestoTB.getCategoria());
-                        statementImpuesto.setBoolean(9, impuestoTB.getPredeterminado());
+                        statementImpuesto.setBoolean(9, impuestoTB.isPredeterminado());
                         statementImpuesto.setBoolean(10, impuestoTB.isSistema());
                         statementImpuesto.addBatch();
                         statementImpuesto.executeBatch();
@@ -94,45 +94,59 @@ public class ImpuestoADO {
         return result;
     }
 
-    public static ObservableList<ImpuestoTB> ListImpuestos() {
-        ObservableList<ImpuestoTB> observableList = FXCollections.observableArrayList();
-        DBUtil.dbConnect();
-        if (DBUtil.getConnection() != null) {
-            PreparedStatement statementList = null;
-            try {
-                statementList = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Impuestos()}");
-                try (ResultSet resultSet = statementList.executeQuery()) {
-                    while (resultSet.next()) {
-                        ImpuestoTB impuestoTB = new ImpuestoTB();
-                        impuestoTB.setId(resultSet.getRow());
-                        impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
-                        impuestoTB.setNombreOperacion(resultSet.getString("Operacion"));
-                        impuestoTB.setNombre(resultSet.getString("Nombre"));
-                        impuestoTB.setValor(resultSet.getDouble("Valor"));
-                        impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
-                        impuestoTB.setCodigo(resultSet.getString("Codigo"));
-                        impuestoTB.setImagePredeterminado(resultSet.getBoolean("Predeterminado")
-                                ? new ImageView(new Image("/view/image/checked.png", 22, 22, false, false))
-                                : new ImageView(new Image("/view/image/unchecked.png", 22, 22, false, false)));
-                        impuestoTB.setSistema(resultSet.getBoolean("Sistema"));
-                        observableList.add(impuestoTB);
-                    }
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error en ImpuestoADO:" + ex.getLocalizedMessage());
-            } finally {
-                try {
-                    if (statementList != null) {
-                        statementList.close();
-                    }
-                    DBUtil.dbDisconnect();
-                } catch (SQLException ex) {
-                    System.out.println("Error en ImpuestoADO:" + ex.getLocalizedMessage());
+    public static Object ListImpuestos(int posicionPagina, int filasPorPagina) {
+        PreparedStatement statementList = null;
+        try {
+            DBUtil.dbConnect();
+            Object[] object = new Object[2];            
+            ObservableList<ImpuestoTB> observableList = FXCollections.observableArrayList();
+            statementList = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Impuestos(?,?)}");
+            statementList.setInt(1, posicionPagina);
+            statementList.setInt(2, filasPorPagina);
+            try (ResultSet resultSet = statementList.executeQuery()) {
+                while (resultSet.next()) {
+                    ImpuestoTB impuestoTB = new ImpuestoTB();
+                    impuestoTB.setId(resultSet.getRow());
+                    impuestoTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
+                    impuestoTB.setNombreOperacion(resultSet.getString("Operacion"));
+                    impuestoTB.setNombre(resultSet.getString("Nombre"));
+                    impuestoTB.setValor(resultSet.getDouble("Valor"));
+                    impuestoTB.setPredeterminado(resultSet.getBoolean("Predeterminado"));
+                    impuestoTB.setCodigo(resultSet.getString("Codigo"));
+                    impuestoTB.setImagePredeterminado(resultSet.getBoolean("Predeterminado")
+                            ? new ImageView(new Image("/view/image/checked.png", 22, 22, false, false))
+                            : new ImageView(new Image("/view/image/unchecked.png", 22, 22, false, false)));
+                    impuestoTB.setSistema(resultSet.getBoolean("Sistema"));
+                    observableList.add(impuestoTB);
                 }
             }
-        }
 
-        return observableList;
+            statementList = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Impuestos_Count()}");
+            Integer cantidadTotal = 0;
+            try (ResultSet resultSet = statementList.executeQuery()) {
+                if (resultSet.next()) {
+                    cantidadTotal = resultSet.getInt("Total");
+                }
+            }
+
+            object[0] = observableList;
+            object[1] = cantidadTotal;
+
+            return object;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementList != null) {
+                    statementList.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
     }
 
     public static ObservableList<ImpuestoTB> GetTipoImpuestoCombBox() {

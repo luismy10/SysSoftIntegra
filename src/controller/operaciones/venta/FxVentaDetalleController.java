@@ -177,7 +177,7 @@ public class FxVentaDetalleController implements Initializable {
             protected VentaTB call() {
                 arrayArticulos.clear();
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+                    arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.isPredeterminado()));
                 });
                 return VentaADO.ListCompletaVentasDetalle(idVenta);
             }

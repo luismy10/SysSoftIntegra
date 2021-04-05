@@ -149,6 +149,7 @@ public class FxSuministrosController implements Initializable {
             tcMarcar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCosto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
             tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+            tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
             paginacion = 1;
             opcion = 0;
@@ -294,7 +295,7 @@ public class FxSuministrosController implements Initializable {
         });
     }
 
-    public void onEventPaginacion() {
+    private void onEventPaginacion() {
         switch (opcion) {
             case 0:
                 fillTableSuministros((short) 0, "", "", 0, 0);
@@ -317,7 +318,7 @@ public class FxSuministrosController implements Initializable {
     private void openAlertMessageWarning(String message) {
         fxPrincipalController.openFondoModal();
         Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Productos", message, false);
-       fxPrincipalController.closeFondoModal();
+        fxPrincipalController.closeFondoModal();
     }
 
     public void fillTableSuministros(short opcion, String clave, String nombreMarca, int categoria, int marca) {
@@ -327,31 +328,49 @@ public class FxSuministrosController implements Initializable {
             return t;
         });
 
-        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ArrayList<Object> call() {
+            public Object call() {
                 return SuministroADO.ListarSuministros(opcion, clave, nombreMarca, categoria, marca, (paginacion - 1) * 20, 20);
             }
         };
 
         task.setOnSucceeded((e) -> {
-            ArrayList<Object> objects = task.getValue();
-            if (!objects.isEmpty()) {
-                tvList.setItems((ObservableList<SuministroTB>) objects.get(0));
-                if (!tvList.getItems().isEmpty()) {
-                    tvList.getSelectionModel().select(0);
-                    onViewDetailSuministro();
+            Object result = task.getValue();
+            if (result instanceof Object[]) {
+                Object[] object = (Object[]) result;
+                ObservableList<SuministroTB> empList = (ObservableList<SuministroTB>) object[0];
+                if (!empList.isEmpty()) {
+                    tvList.setItems(empList);
+                    if (!tvList.getItems().isEmpty()) {
+                        tvList.getSelectionModel().select(0);
+                        onViewDetailSuministro();
+                    }
+                    totalPaginacion = (int) (Math.ceil((double) (((Integer) object[1]) / 20.00)));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
                 }
-                totalPaginacion = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
-                lblPaginaActual.setText(paginacion + "");
-                lblPaginaSiguiente.setText(totalPaginacion + "");
-                lblLoad.setVisible(false);
             } else {
-                lblLoad.setVisible(false);
+
             }
+            lblLoad.setVisible(false);
         });
-        task.setOnFailed((e) -> lblLoad.setVisible(false));
-        task.setOnScheduled((e) -> lblLoad.setVisible(true));
+        task.setOnFailed((e) -> {
+            lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
+
+        });
+        task.setOnScheduled((e) -> {
+            lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
+
+        });
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -445,16 +464,16 @@ public class FxSuministrosController implements Initializable {
                     fxPrincipalController.closeFondoModal();
                 } else if (result.equalsIgnoreCase("kardex_compra")) {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Productos", "El producto tiene un kardex ligado, no se puede eliminar hasta que el karder sea borrado.", false);
-                fxPrincipalController.closeFondoModal();
+                    fxPrincipalController.closeFondoModal();
                 } else if (result.equalsIgnoreCase("venta")) {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.WARNING, "Productos", "El producto esta ligado a una venta, no se puede eliminar hasta que la venta sea borrada.", false);
                     fxPrincipalController.closeFondoModal();
                 } else if (result.equalsIgnoreCase("removed")) {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.INFORMATION, "Productos", "Se elimino correctamente", false);
-                  fxPrincipalController.closeFondoModal();
+                    fxPrincipalController.closeFondoModal();
                 } else {
                     Tools.AlertMessage(hbWindow.getScene().getWindow(), Alert.AlertType.ERROR, "Productos", result, false);
-                   fxPrincipalController.closeFondoModal();
+                    fxPrincipalController.closeFondoModal();
                 }
             } else {
                 fxPrincipalController.closeFondoModal();
@@ -467,7 +486,6 @@ public class FxSuministrosController implements Initializable {
     public void onViewDetailSuministro() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             SuministroTB suministroTB = tvList.getSelectionModel().getSelectedItem();
-
             //File fileImage = new File(suministroTB.getNuevaImagen());
             if (suministroTB.getNuevaImagen() == null) {
                 ivPrincipal.setImage(new Image("/view/image/no-image.png"));
@@ -476,10 +494,7 @@ public class FxSuministrosController implements Initializable {
             }
 
             lblName.setText(suministroTB.getNombreMarca());
-            lblPrice.setText(
-                    Session.MONEDA_SIMBOLO + " "
-                    + Tools.roundingValue(suministroTB.getPrecioVentaGeneral(),2)
-            );
+            lblPrice.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(suministroTB.getPrecioVentaGeneral(), 2));
             lblImpuesto.setText("Impuesto: " + suministroTB.getImpuestoTB().getNombre());
             lblQuantity.setText(Tools.roundingValue(suministroTB.getCantidad(), 2) + " " + suministroTB.getUnidadCompraName());
         }

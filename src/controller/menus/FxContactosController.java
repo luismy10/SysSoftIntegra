@@ -98,11 +98,7 @@ public class FxContactosController implements Initializable {
         AnchorPane.setTopAnchor(nodeProviders, 0d);
         AnchorPane.setRightAnchor(nodeProviders, 0d);
         AnchorPane.setBottomAnchor(nodeProviders, 0d);
-        fxPrincipalController.getVbContent().getChildren().add(nodeProviders);
-        if (controllerProviders.getTvList().getItems().isEmpty()) {
-            controllerProviders.fillCustomersTable("");
-        }
-
+        fxPrincipalController.getVbContent().getChildren().add(nodeProviders);        
     }
 
     @FXML

@@ -5,6 +5,7 @@ import controller.operaciones.cortecaja.FxCajaController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.notacredito.FxNotaCreditoController;
+import controller.operaciones.pedidos.FxPedidosController;
 import controller.operaciones.venta.FxVentaController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -110,6 +111,15 @@ public class FxOperacionesController implements Initializable {
 
     private FxNotaCreditoController controllerNotaCredito;
 
+    /*
+    Controller pedidos
+     */
+    private FXMLLoader fXMLPedido;
+
+    private AnchorPane nodePedido;
+
+    private FxPedidosController controllerPedido;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -144,6 +154,10 @@ public class FxOperacionesController implements Initializable {
             fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO));
             nodeNotaCredito = fXMLNotaCredito.load();
             controllerNotaCredito = fXMLNotaCredito.getController();
+
+            fXMLPedido = new FXMLLoader(getClass().getResource(FilesRouters.FX_PEDIDOS));
+            nodePedido = fXMLPedido.load();
+            controllerPedido = fXMLPedido.getController();
 
         } catch (IOException ex) {
             System.out.println("Error en Ingresos Controller:" + ex.getLocalizedMessage());
@@ -257,7 +271,16 @@ public class FxOperacionesController implements Initializable {
         AnchorPane.setRightAnchor(nodeNotaCredito, 0d);
         AnchorPane.setBottomAnchor(nodeNotaCredito, 0d);
         fxPrincipalController.getVbContent().getChildren().add(nodeNotaCredito);
+    }
 
+    private void openWindowPedidos() {
+        controllerPedido.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodePedido, 0d);
+        AnchorPane.setTopAnchor(nodePedido, 0d);
+        AnchorPane.setRightAnchor(nodePedido, 0d);
+        AnchorPane.setBottomAnchor(nodePedido, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodePedido);
     }
 
     @FXML
@@ -342,6 +365,18 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private void onActioNotaCredito(ActionEvent event) {
         openWindowNotaCredito();
+    }
+
+    @FXML
+    private void onKeyPressedPedidos(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowPedidos();
+        }
+    }
+
+    @FXML
+    private void onActioPedidos(ActionEvent event) {
+        openWindowPedidos();
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {

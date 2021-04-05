@@ -42,6 +42,8 @@ public class FxPrincipalController implements Initializable {
     @FXML
     private HBox hbFondoModal;
     @FXML
+    private HBox hbLoadModulos;
+    @FXML
     private AnchorPane vbContent;
     @FXML
     private Label lblPuesto;
@@ -181,11 +183,13 @@ public class FxPrincipalController implements Initializable {
             };
 
             task.setOnScheduled(e -> {
-                openFondoModal();
+                hbLoadModulos.setVisible(true);
             });
-            task.setOnRunning(e -> {
 
+            task.setOnFailed(e -> {
+                hbLoadModulos.setVisible(false);
             });
+
             task.setOnSucceeded(e -> {
                 ObservableList<MenuTB> menuTBs = task.getValue();
                 if (menuTBs.get(0).getIdMenu() != 0 && !menuTBs.get(0).isEstado()) {
@@ -238,11 +242,7 @@ public class FxPrincipalController implements Initializable {
                     configuracionController.loadSubMenus(subMenusTBs);
                 }
 
-               closeFondoModal();
-            });
-
-            task.setOnFailed(e -> {
-                closeFondoModal();
+                hbLoadModulos.setVisible(false);
             });
 
             executor.execute(task);
@@ -251,7 +251,7 @@ public class FxPrincipalController implements Initializable {
             }
 
         } catch (Exception ex) {
-            closeFondoModal();
+             hbLoadModulos.setVisible(false);
         }
     }
 
@@ -288,7 +288,7 @@ public class FxPrincipalController implements Initializable {
 
         setNode(fxInicio);
 
-    } 
+    }
 
     public void initUserSession(String value) {
         lblPuesto.setText(value);

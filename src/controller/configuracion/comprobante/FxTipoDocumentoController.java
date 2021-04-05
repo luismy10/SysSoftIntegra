@@ -138,11 +138,8 @@ public class FxTipoDocumentoController implements Initializable {
                     lblPaginaSiguiente.setText("0");
                     lblPredeterminado.setText("Ninguno");
                 }
-            } else if (object instanceof String) {
-                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
-                lblPredeterminado.setText("Ninguno");
             } else {
-                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
                 lblPredeterminado.setText("Ninguno");
             }
             lblLoad.setVisible(false);
@@ -174,7 +171,7 @@ public class FxTipoDocumentoController implements Initializable {
                 break;
 
         }
-    } 
+    }
 
     private void openWindowAdd() throws IOException {
         fxPrincipalController.openFondoModal();
@@ -369,7 +366,7 @@ public class FxTipoDocumentoController implements Initializable {
         }
     }
 
-     public void setContent( FxPrincipalController fxPrincipalController) {
+    public void setContent(FxPrincipalController fxPrincipalController) {
         this.fxPrincipalController = fxPrincipalController;
     }
 

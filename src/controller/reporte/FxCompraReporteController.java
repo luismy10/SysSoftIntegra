@@ -83,7 +83,7 @@ public class FxCompraReporteController implements Initializable {
                         Tools.getDatePicker(dpFechaInicial),
                         Tools.getDatePicker(dpFechaFinal),
                         idProveedor,
-                        cbFormasPagoSeleccionar.isSelected()? 0 : rbContado.isSelected() ? 1 : 2);
+                        cbFormasPagoSeleccionar.isSelected() ? 0 : rbContado.isSelected() ? 1 : 2);
                 if (list.isEmpty()) {
                     Tools.AlertMessageWarning(vbWindow, "Repsorte General de Compras", "No hay registros para mostrar en el reporte.");
                     return;
@@ -91,16 +91,15 @@ public class FxCompraReporteController implements Initializable {
                 double totalContado = 0;
                 double totalCredito = 0;
                 double totalAnulados = 0;
-                for(CompraTB c : list){
-                    if(c.getEstado() == 1){
-                        totalContado+=c.getTotal();
-                    }else if(c.getEstado() == 2){
-                        totalCredito+=c.getTotal();
-                    }else if(c.getEstado() == 3){
-                        totalAnulados+=c.getTotal();
+                for (CompraTB c : list) {
+                    if (c.getEstado() == 1) {
+                        totalContado += c.getTotal();
+                    } else if (c.getEstado() == 2) {
+                        totalCredito += c.getTotal();
+                    } else if (c.getEstado() == 3) {
+                        totalAnulados += c.getTotal();
                     }
                 }
-                
 
                 Map map = new HashMap();
                 map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
@@ -145,8 +144,8 @@ public class FxCompraReporteController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.initTable());
             stage.show();
-            controller.fillCustomersTable("");
         } catch (IOException ex) {
             System.out.println("Controller reporte" + ex.getLocalizedMessage());
         }

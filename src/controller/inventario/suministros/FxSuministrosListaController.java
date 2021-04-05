@@ -7,6 +7,7 @@ import controller.reporte.FxVentaUtilidadesController;
 import controller.inventario.movimientos.FxMovimientosProcesoController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
+import controller.operaciones.pedidos.FxPedidosController;
 import controller.produccion.producir.FxProducirAgregarController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -40,6 +41,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.GuiaRemisionDetalleTB;
+import model.PedidoDetalleTB;
 import model.SuministroADO;
 import model.SuministroTB;
 
@@ -97,6 +99,8 @@ public class FxSuministrosListaController implements Initializable {
     private FxLoteCambiarController loteCambiarController;
 
     private FxProducirAgregarController producirAgregarController;
+
+    private FxPedidosController pedidosController;
 
     private boolean status;
 
@@ -354,6 +358,49 @@ public class FxSuministrosListaController implements Initializable {
 //            producirAgregarController.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
 //            producirAgregarController.getTxtProductoFabricar().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
 //            Tools.Dispose(apWindow);
+        } else if (pedidosController != null) {
+            PedidoDetalleTB pedidoDetalleTB = new PedidoDetalleTB();
+            pedidoDetalleTB.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
+            pedidoDetalleTB.setSuministroTB(new SuministroTB(tvList.getSelectionModel().getSelectedItem().getClave(), tvList.getSelectionModel().getSelectedItem().getNombreMarca()));
+            pedidoDetalleTB.setExistencia(tvList.getSelectionModel().getSelectedItem().getCantidad());
+            pedidoDetalleTB.setStock(tvList.getSelectionModel().getSelectedItem().getStockMinimo() + "/" + tvList.getSelectionModel().getSelectedItem().getStockMaximo());
+            pedidoDetalleTB.setCosto(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
+
+            Button button = new Button();
+            button.getStyleClass().add("buttonDark");
+            ImageView view = new ImageView(new Image("/view/image/remove.png"));
+            view.setFitWidth(22);
+            view.setFitHeight(22);
+            button.setGraphic(view);
+            pedidoDetalleTB.setBtnQuitar(button);
+
+            TextField textField = new TextField();
+            textField.getStyleClass().add("text-field-normal");
+            textField.setPromptText("0.00");
+            textField.setPrefWidth(220);
+            textField.setPrefHeight(30);
+            textField.setOnKeyReleased(event -> {
+                if (Tools.isNumeric(textField.getText().trim())) {
+                    double cantidad = Double.parseDouble(textField.getText().trim());
+                    double importe = cantidad * pedidoDetalleTB.getCosto();            
+                    pedidoDetalleTB.setImporte(importe);
+                    pedidosController.getTvList().refresh();
+                }
+            });
+            textField.setOnKeyTyped(event -> {
+                char c = event.getCharacter().charAt(0);
+                if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                    event.consume();
+                }
+                if (c == '.' && textField.getText().contains(".")) {
+                    event.consume();
+                }
+            });
+            pedidoDetalleTB.setTxtCantidad(textField);
+
+            pedidoDetalleTB.setImporte(0);
+            pedidosController.getAddArticulo(pedidoDetalleTB);
+            Tools.Dispose(apWindow);
         }
     }
 
@@ -730,6 +777,10 @@ public class FxSuministrosListaController implements Initializable {
 
     public void setInitProducirProcesoController(FxProducirAgregarController producirAgregarController) {
         this.producirAgregarController = producirAgregarController;
+    }
+
+    public void setInitPedidosController(FxPedidosController pedidosController) {
+        this.pedidosController = pedidosController;
     }
 
 }

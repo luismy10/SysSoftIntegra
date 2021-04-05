@@ -36,9 +36,9 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #cccccc;">
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar (F1)">
+                  <Button mnemonicParsing="false" onAction="#onActionGuardar" onKeyPressed="#onKeyPressedGuardar" styleClass="buttonLightDefault" text="Guardar (F1)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -47,7 +47,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Productos (F2)">
+                  <Button mnemonicParsing="false" onAction="#onActionArticulo" onKeyPressed="#onKeyPressedArticulo" styleClass="buttonLight" text="Productos (F2)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -56,7 +56,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCotizaciones" onKeyPressed="#onKeyPressedCotizaciones" styleClass="buttonLight" text="Cotizaciones (F3)">
+                  <Button mnemonicParsing="false" onAction="#onActionCotizaciones" onKeyPressed="#onKeyPressedCotizaciones" styleClass="buttonLight" text="Cotizaciones (F3)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -65,7 +65,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Limpiar (F4)">
+                  <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Limpiar (F4)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -76,9 +76,9 @@
                   </Button>
                </children>
             </HBox>
-            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-background-color: #e7e6e6;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox style="-fx-spacing: 0.5em; -fx-padding: 0.5em; -fx-border-color: #999999;" HBox.hgrow="ALWAYS">
+                  <VBox style="-fx-spacing: 0.5em; -fx-padding: 0.5em; -fx-border-color: #cccccc; -fx-background-color: white;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>

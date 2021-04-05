@@ -88,17 +88,17 @@ public class FxMonedaController implements Initializable {
             }
         };
 
-        task.setOnSucceeded((WorkerStateEvent e) -> {
+        task.setOnSucceeded(w -> {
             tvList.setItems(task.getValue());
             lblLoad.setVisible(false);
             stateRequest = true;
         });
-        task.setOnFailed((WorkerStateEvent event) -> {
+        task.setOnFailed(w -> {
             lblLoad.setVisible(false);
             stateRequest = false;
         });
 
-        task.setOnScheduled((WorkerStateEvent event) -> {
+        task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
             stateRequest = false;
         });
@@ -121,7 +121,7 @@ public class FxMonedaController implements Initializable {
         Stage stage = WindowStage.StageLoaderModal(parent, "Registre su moneda", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> fxPrincipalController.closeFondoModal());
+        stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
         stage.show();
 
     }
@@ -145,7 +145,7 @@ public class FxMonedaController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar su moneda", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((WindowEvent WindowEvent) -> fxPrincipalController.closeFondoModal());
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } else {

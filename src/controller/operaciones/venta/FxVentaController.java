@@ -2,7 +2,6 @@ package controller.operaciones.venta;
 
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.WindowStage;
 import java.io.IOException;

@@ -1,11 +1,10 @@
 package model;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class ProveedorTB {
 
-    private SimpleIntegerProperty id;
+    private int id;
     private String idProveedor;
     private int tipoDocumento;
     private String tipoDocumentoName;
@@ -44,12 +43,12 @@ public class ProveedorTB {
         this.razonSocial = razonSocial;
     }
 
-    public SimpleIntegerProperty getId() {
+    public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id;
     }
 
     public String getIdProveedor() {

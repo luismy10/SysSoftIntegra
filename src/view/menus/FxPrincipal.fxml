@@ -357,6 +357,23 @@
                   </VBox>
                </children>
             </HBox>
+            <HBox fx:id="hbLoadModulos" layoutX="10.0" layoutY="10.0" style="-fx-background-color: rgba(255,255,255,0.7);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRobotoBold17" text="Cargando modulos, espere porfavavor." textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/load.gif" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </content>

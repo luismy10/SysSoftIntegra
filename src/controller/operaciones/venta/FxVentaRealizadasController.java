@@ -294,7 +294,7 @@ public class FxVentaRealizadasController implements Initializable {
         }
     }
 
-    public void onEventPaginacion() {
+    private void onEventPaginacion() {
         switch (opcion) {
             case 0:
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),

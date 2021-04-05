@@ -1,6 +1,5 @@
 package controller.operaciones.compras;
 
-import controller.consultas.compras.FxComprasEditarController;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
@@ -55,8 +54,6 @@ public class FxComprasProcesoController implements Initializable {
     private DatePicker txtFechaVencimiento;
 
     private FxComprasController comprasController;
-
-    private FxComprasEditarController comprasEditarController;
 
     private CompraTB compraTB = null;
 
@@ -117,11 +114,7 @@ public class FxComprasProcesoController implements Initializable {
                 if (result.equalsIgnoreCase("register")) {
                     Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
                     Tools.Dispose(apWindow);
-                    if (comprasController != null) {
-                        comprasController.clearComponents();
-                    } else if (comprasEditarController != null) {
-
-                    }
+                    comprasController.clearComponents();
                 } else {
                     Tools.AlertMessageError(apWindow, "Compra", result);
                 }
@@ -140,11 +133,8 @@ public class FxComprasProcesoController implements Initializable {
                 if (result.equalsIgnoreCase("register")) {
                     Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
                     Tools.Dispose(apWindow);
-                    if (comprasController != null) {
-                        comprasController.clearComponents();
-                    } else if (comprasEditarController != null) {
 
-                    }
+                    comprasController.clearComponents();
                 } else {
                     Tools.AlertMessageError(apWindow, "Compra", result);
                 }
@@ -159,11 +149,7 @@ public class FxComprasProcesoController implements Initializable {
             if (result.equalsIgnoreCase("register")) {
                 Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra como guardado.");
                 Tools.Dispose(apWindow);
-                if (comprasController != null) {
-                    comprasController.clearComponents();
-                } else if (comprasEditarController != null) {
-
-                }
+                comprasController.clearComponents();
             } else {
                 Tools.AlertMessageError(apWindow, "Compra", result);
             }
@@ -227,13 +213,8 @@ public class FxComprasProcesoController implements Initializable {
         vbPagoBorrado.setDisable(false);
     }
 
-
     public void setInitComprasController(FxComprasController comprasController) {
         this.comprasController = comprasController;
-    }
-
-    public void setInitComprasEditarController(FxComprasEditarController comprasEditarController) {
-        this.comprasEditarController = comprasEditarController;
     }
 
 }

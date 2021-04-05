@@ -287,8 +287,7 @@ public class FxConfiguracionController implements Initializable {
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            fxPrincipalController.getVbContent().getChildren().add(node);
-            controller.fillTabletTax();
+            fxPrincipalController.getVbContent().getChildren().add(node);           
         } catch (IOException ex) {
             System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
         }

@@ -155,6 +155,8 @@ public class TipoDocumentoADO {
             return objects;
         } catch (SQLException ex) {
             return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statement != null) {

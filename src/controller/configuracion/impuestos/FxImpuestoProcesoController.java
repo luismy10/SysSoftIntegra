@@ -129,11 +129,11 @@ public class FxImpuestoProcesoController implements Initializable {
                 txtNombreImpuesto.requestFocus();
             } else if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessageInformation(window, "Impuesto", "Se actualizó correctamente.");
-                impuestoController.fillTabletTax();
+                impuestoController.loadInitTable();
                 Tools.Dispose(window);
             } else if (result.equalsIgnoreCase("inserted")) {
                 Tools.AlertMessageInformation(window, "Impuesto", "Se ingreso correctamente.");
-                impuestoController.fillTabletTax();
+                impuestoController.loadInitTable();
                 Tools.Dispose(window);
             } else {
                 Tools.AlertMessageError(window, "Impuesto", result);

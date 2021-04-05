@@ -2526,7 +2526,8 @@ public class FxVentaEstructuraController implements Initializable {
             }
             event.consume();
         } else if (event.getCode() == KeyCode.ESCAPE) {
-            fxPrincipalController.closeFondoModal();
+            fxPrincipalController.closeFondoModal();           
+            event.consume();
         }
     }
 

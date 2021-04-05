@@ -159,7 +159,6 @@ public class FxComprasController implements Initializable {
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
 
         SearchComboBox<ProveedorTB> searchComboBox = new SearchComboBox<>(cbProveedor, false);
-//        searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
@@ -266,7 +265,7 @@ public class FxComprasController implements Initializable {
 
         cbImpuestos.getItems().clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            cbImpuestos.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            cbImpuestos.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.isPredeterminado()));
         });
     }
 
@@ -476,8 +475,8 @@ public class FxComprasController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.initTable());
             stage.show();
-            controller.fillCustomersTable("");
         } catch (IOException ex) {
             System.out.println("Controller compras" + ex.getLocalizedMessage());
         }

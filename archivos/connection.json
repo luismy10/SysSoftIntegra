@@ -2,7 +2,7 @@
     "body":{
         "addres":"localhost",
         "port":"1433",
-        "dbname":"FerreteriaDiamante",
+        "dbname":"PuntoVentaSysSoftDBDesarrollo",
         "user":"sa",
         "password":"Qz0966lb"
     }

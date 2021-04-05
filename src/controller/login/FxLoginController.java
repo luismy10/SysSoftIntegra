@@ -108,11 +108,14 @@ public class FxLoginController implements Initializable {
                         stage.setTitle(FilesRouters.TITLE_APP);
                         stage.centerOnScreen();
                         stage.setMaximized(true);
+                        stage.setOnShown(s -> {
+                            controller.initLoadMenus();
+                            controller.initInicioController();
+                            controller.initUserSession((Session.USER_PUESTO.substring(0, 1).toUpperCase() + Session.USER_PUESTO.substring(1).toLowerCase()));
+                        });
                         stage.show();
                         stage.requestFocus();
-                        controller.initLoadMenus();
-                        controller.initInicioController();                     
-                        controller.initUserSession((Session.USER_PUESTO.substring(0, 1).toUpperCase() + Session.USER_PUESTO.substring(1).toLowerCase()));
+
                     } catch (IOException exception) {
                         System.out.println("Error en la vista principal:" + exception.getLocalizedMessage());
                     }
