@@ -177,6 +177,11 @@ public class FxNotaCreditoController implements Initializable {
                         break;
                     }
                 }
+
+                if (cbNotaCredito.getItems().size() == 1) {
+                    cbNotaCredito.getSelectionModel().select(0);
+                }
+
                 txtNumeroDocumento.setText(ventaTB.getClienteTB().getNumeroDocumento());
                 txtRazonsocial.setText(ventaTB.getClienteTB().getInformacion());
                 txtDireccion.setText(ventaTB.getClienteTB().getDireccion());
