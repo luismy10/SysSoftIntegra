@@ -1,6 +1,7 @@
 package controller.operaciones.notacredito;
 
 import controller.menus.FxPrincipalController;
+import controller.operaciones.venta.FxVentaListaController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -436,6 +437,28 @@ public class FxNotaCreditoController implements Initializable {
         }
     }
 
+    private void openWindowVentas() {
+        try {
+            principalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaListaController controller = fXMLLoader.getController();
+            controller.setInitNotaCreditoController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione una venta", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> principalController.closeFondoModal());
+            stage.setOnShown(w -> controller.getTxtBuscar().requestFocus());
+            stage.show();
+            controller.loadInit();
+        } catch (IOException ex) {
+            System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
+        }
+    }
+
     @FXML
     private void onActionBuscarComprobante(ActionEvent event) {
         loadComponents(txtSerieNumeracion.getText().trim());
@@ -487,6 +510,18 @@ public class FxNotaCreditoController implements Initializable {
     @FXML
     private void onActionLimpiar(ActionEvent event) {
         clearElements();
+    }
+
+    @FXML
+    private void onKeyPressedVentas(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVentas();
+        }
+    }
+
+    @FXML
+    private void onActionVentas(ActionEvent event) {
+        openWindowVentas();
     }
 
     public ScrollPane getSpBody() {

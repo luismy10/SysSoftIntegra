@@ -1,6 +1,7 @@
 package controller.operaciones.venta;
 
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
+import controller.operaciones.notacredito.FxNotaCreditoController;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ArrayList;
@@ -58,6 +59,8 @@ public class FxVentaListaController implements Initializable {
     private Label lblPaginaSiguiente;
 
     private FxGuiaRemisionController guiaRemisionController;
+
+    private FxNotaCreditoController notaCreditoController;
 
     private int paginacion;
 
@@ -153,6 +156,21 @@ public class FxVentaListaController implements Initializable {
                 fillVentasTable((short) 2, txtBuscar.getText().trim(), "", "", 0, 0, "");
                 break;
         }
+    }
+
+    private void onEventAceptar() {
+        if (guiaRemisionController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                guiaRemisionController.loadVentaById(tvList.getSelectionModel().getSelectedItem().getIdVenta());
+                Tools.Dispose(apWindow);
+            }
+        } else if (notaCreditoController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                notaCreditoController.loadComponents(tvList.getSelectionModel().getSelectedItem().getSerie() + "-" + tvList.getSelectionModel().getSelectedItem().getNumeracion());
+                Tools.Dispose(apWindow);
+            }
+        }
+
     }
 
     @FXML
@@ -270,39 +288,27 @@ public class FxVentaListaController implements Initializable {
     @FXML
     private void onKeyPressedList(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                guiaRemisionController.loadVentaById(tvList.getSelectionModel().getSelectedItem().getIdVenta());
-                Tools.Dispose(apWindow);
-            }
+            onEventAceptar();
         }
     }
 
     @FXML
     private void onMouseClickedList(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                guiaRemisionController.loadVentaById(tvList.getSelectionModel().getSelectedItem().getIdVenta());
-                Tools.Dispose(apWindow);
-            }
+            onEventAceptar();
         }
     }
 
     @FXML
     private void onKeyPressedAceptar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                guiaRemisionController.loadVentaById(tvList.getSelectionModel().getSelectedItem().getIdVenta());
-                Tools.Dispose(apWindow);
-            }
+            onEventAceptar();
         }
     }
 
     @FXML
     private void onActionAceptar(ActionEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            guiaRemisionController.loadVentaById(tvList.getSelectionModel().getSelectedItem().getIdVenta());
-            Tools.Dispose(apWindow);
-        }
+        onEventAceptar();
     }
 
     @FXML
@@ -361,8 +367,16 @@ public class FxVentaListaController implements Initializable {
         }
     }
 
+    public TextField getTxtBuscar() {
+        return txtBuscar;
+    }
+
     public void setInitGuiaRemisionController(FxGuiaRemisionController guiaRemisionController) {
         this.guiaRemisionController = guiaRemisionController;
+    }
+
+    public void setInitNotaCreditoController(FxNotaCreditoController notaCreditoController) {
+        this.notaCreditoController = notaCreditoController;
     }
 
 }
