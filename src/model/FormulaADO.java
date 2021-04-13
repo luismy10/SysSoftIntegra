@@ -175,7 +175,7 @@ public class FormulaADO {
         }
     }
 
-    public static Object Obtener_Formula_ById(String idFormula) {
+    public static Object Obtener_Formula_ById(String idFormula, Double cantidad) {
         PreparedStatement statementFormula = null;
         PreparedStatement statementDetalle = null;
         ResultSet resultSet = null;
@@ -266,7 +266,7 @@ public class FormulaADO {
                     insumoTB.getComboBox().getItems().add(new InsumoTB(resultSet.getString("IdInsumo"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
                     insumoTB.getComboBox().getSelectionModel().select(0);
 
-                    TextField textField = new TextField(Tools.roundingValue(insumoTB.getCantidad(), 2));
+                    TextField textField = new TextField(Tools.roundingValue(insumoTB.getCantidad()* cantidad, 2));
                     textField.setPromptText("0.00");
                     textField.getStyleClass().add("text-field-normal");
                     textField.setPrefWidth(220);
@@ -303,13 +303,19 @@ public class FormulaADO {
             }
         } catch (SQLException ex) {
             return ex.getLocalizedMessage();
-        } finally {
+        } catch(Exception ex){
+            return ex.getLocalizedMessage();
+        } 
+        finally {
             try {
                 if (statementFormula != null) {
                     statementFormula.close();
                 }
                 if (statementDetalle != null) {
                     statementDetalle.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
@@ -340,6 +346,9 @@ public class FormulaADO {
             try {
                 if (statementFormula != null) {
                     statementFormula.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {

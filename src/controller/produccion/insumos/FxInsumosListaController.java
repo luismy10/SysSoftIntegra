@@ -1,8 +1,12 @@
 package controller.produccion.insumos;
 
-import controller.produccion.producir.FxProducirAgregarController;
+import controller.produccion.compras.FxComprasInsumosController;
+import controller.tools.FilesRouters;
 import controller.tools.Tools;
+import controller.tools.WindowStage;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,7 +16,9 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,6 +27,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.InsumoADO;
 import model.InsumoTB;
 
@@ -47,9 +54,15 @@ public class FxInsumosListaController implements Initializable {
     @FXML
     private Label lblPaginaSiguiente;
 
-    private FxProducirAgregarController producirAgregarController;
+    private FxComprasInsumosController comprasInsumosController;
+
+    private int paginacion;
 
     private boolean stateBusqueda;
+
+    private int totalPaginacion;
+
+    private short opcion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -69,33 +82,78 @@ public class FxInsumosListaController implements Initializable {
         tcCategoriaMarca.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getCategoriaName()
         ));
+
+        paginacion = 1;
         stateBusqueda = false;
+        opcion = 0;
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTextInput(1, (short) 1, (short) 1, oldValue, newValue);
+        });
     }
 
     public void loadInitComponents() {
         if (!stateBusqueda) {
-            fillTableInsumos("");
+            paginacion = 1;
+            fillTableInsumos((short) 0, "");
+            opcion = 0;
         }
     }
 
-    private void fillTableInsumos(String busqueda) {
+    private void filterTextInput(int paginacion, short opcion, short tipo, String oldValue, String newValue) {
+        if (!newValue.trim().equalsIgnoreCase("")) {
+            this.paginacion = paginacion;
+            fillTableInsumos(tipo, newValue.trim());
+            this.opcion = opcion;
+        } else {
+            if (oldValue.trim().length() > 0) {
+                this.paginacion = 0;
+                tvList.getItems().clear();
+                this.opcion = -1;
+                totalPaginacion = 0;
+                lblPaginaActual.setText(this.paginacion + "");
+                lblPaginaSiguiente.setText(totalPaginacion + "");
+            }
+        }
+    }
+
+    public void fillTableInsumos(short tipo, String busqueda) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
-        Task<ObservableList<InsumoTB>> task = new Task<ObservableList<InsumoTB>>() {
+
+        Task<ArrayList<Object>> task = new Task<ArrayList<Object>>() {
             @Override
-            public ObservableList<InsumoTB> call() {
-                return InsumoADO.ListarInsumos(busqueda);
+            public ArrayList<Object> call() {
+                return InsumoADO.ListarInsumosListaView(tipo, busqueda, (paginacion - 1) * 10, 10);
             }
         };
-        task.setOnSucceeded(w -> {
-            tvList.setItems(task.getValue());
+
+        task.setOnSucceeded(e -> {
+            ArrayList<Object> objects = task.getValue();
+            if (!objects.isEmpty()) {
+                tvList.setItems((ObservableList<InsumoTB>) objects.get(0));
+                if (!tvList.getItems().isEmpty()) {
+                    tvList.getSelectionModel().select(0);
+                }
+                int integer = (int) (Math.ceil(((Integer) objects.get(1)) / 10.00));
+                totalPaginacion = integer;
+                lblPaginaActual.setText(paginacion + "");
+                lblPaginaSiguiente.setText(totalPaginacion + "");
+                stateBusqueda = false;
+            } else {
+                tvList.getItems().clear();
+                stateBusqueda = false;
+            }
+        });
+        task.setOnFailed(e -> {
             stateBusqueda = false;
         });
-        task.setOnFailed(w -> stateBusqueda = false);
-        task.setOnScheduled(w -> stateBusqueda = true);
+        task.setOnScheduled(e -> {
+            stateBusqueda = true;
+        });
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
@@ -114,14 +172,27 @@ public class FxInsumosListaController implements Initializable {
     }
 
     private void addInsumoProduccion() {
-//        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-//            if (!validateDuplicate(producirAgregarController.getTvListInsumos(), tvList.getSelectionModel().getSelectedItem())) {
-//                producirAgregarController.addElementsTableInsumo(tvList.getSelectionModel().getSelectedItem());
-//                Tools.Dispose(window);
-//            } else {
-//                Tools.AlertMessageWarning(window, "Insumos", "Ya existe un insumos en la lista con las misma caracteristicas.");
-//            }
-//        }
+        if (comprasInsumosController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                try {
+                    URL url = WindowStage.class.getClassLoader().getClass().getResource(FilesRouters.FX_INSUMOS_COMPRA);
+                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                    Parent parent = fXMLLoader.load(url.openStream());
+                    //Controlller here
+                    FxInsumosCompraController controller = fXMLLoader.getController();
+                    controller.setInitComprasInsumosController(comprasInsumosController);
+                    controller.loadComponents(tvList.getSelectionModel().getSelectedItem());
+                    //
+                    Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", window.getScene().getWindow());
+                    stage.setResizable(false);
+                    stage.sizeToScene();
+                    stage.show();
+                } catch (IOException ix) {
+                    System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
+                }
+            }
+        }
+
     }
 
     @FXML
@@ -172,7 +243,7 @@ public class FxInsumosListaController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE
                 && event.getCode() != KeyCode.ENTER) {
             if (!stateBusqueda) {
-                fillTableInsumos(txtSearch.getText().trim());
+                fillTableInsumos((short) 1, txtSearch.getText().trim());
             }
         }
     }
@@ -198,9 +269,19 @@ public class FxInsumosListaController implements Initializable {
 
     @FXML
     private void onKeyPressedList(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            addInsumoProduccion();
+        if (null != event.getCode()) {
+            switch (event.getCode()) {
+                case ENTER:
+                    addInsumoProduccion();
+                    break;
+                default:
+                    break;
+            }
         }
+    }
+
+    @FXML
+    private void onKeyReleasedList(KeyEvent event) {
     }
 
     @FXML
@@ -239,8 +320,8 @@ public class FxInsumosListaController implements Initializable {
 
     }
 
-    public void setInitProducirProcesoController(FxProducirAgregarController producirAgregarController) {
-        this.producirAgregarController = producirAgregarController;
+    public void setInitComprasController(FxComprasInsumosController comprasInsumosController) {
+        this.comprasInsumosController = comprasInsumosController;
     }
 
 }

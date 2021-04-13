@@ -1030,15 +1030,15 @@ public class VentaADO {
 
     }
 
-    public static ObservableList<VentaTB> ListVentasMostrar(String search) {
-        String selectStmt = "{call Sp_Listar_Ventas_Mostrar(?)}";
+    public static Object ListVentasMostrar(int opcion,String search) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        ObservableList<VentaTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, search);
+            ObservableList<VentaTB> empList = FXCollections.observableArrayList();
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Mostrar(?,?)}");
+            preparedStatement.setInt(1, opcion);
+            preparedStatement.setString(2, search);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
@@ -1051,49 +1051,30 @@ public class VentaADO {
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
                 ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
-                empList.add(ventaTB);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (rsEmps != null) {
-                    rsEmps.close();
-                }
-                DBUtil.dbDisconnect();
-            } catch (SQLException e) {
-            }
-        }
-        return empList;
-    }
 
-    public static ObservableList<VentaTB> ListVentas10Primeras() {
-        String selectStmt = "{call Sp_Listar_Ventas_10_Primeras()}";
-        PreparedStatement preparedStatement = null;
-        ResultSet rsEmps = null;
-        ObservableList<VentaTB> empList = FXCollections.observableArrayList();
-        try {
-            DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            rsEmps = preparedStatement.executeQuery();
-            while (rsEmps.next()) {
-                VentaTB ventaTB = new VentaTB();
-                ventaTB.setId(rsEmps.getRow());
-                ventaTB.setClienteTB(new ClienteTB(rsEmps.getString("Cliente")));
-                ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
-                ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
-                ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                ventaTB.setSerie(rsEmps.getString("Serie"));
-                ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
-                ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
-                ventaTB.setTotal(rsEmps.getDouble("Total"));
+                Button btnImprimir = new Button();
+                ImageView imageViewPrint = new ImageView(new Image("/view/image/print.png"));
+                imageViewPrint.setFitWidth(24);
+                imageViewPrint.setFitHeight(24);
+                btnImprimir.setGraphic(imageViewPrint);
+                btnImprimir.getStyleClass().add("buttonLight");
+                ventaTB.setBtnImprimir(btnImprimir);
+
+                Button btnAddVenta = new Button();
+                ImageView imageViewPlus = new ImageView(new Image("/view/image/plus.png"));
+                imageViewPlus.setFitWidth(24);
+                imageViewPlus.setFitHeight(24);
+                btnAddVenta.setGraphic(imageViewPlus);
+                btnAddVenta.getStyleClass().add("buttonLight");
+                ventaTB.setBtnVenta(btnAddVenta);
+
                 empList.add(ventaTB);
             }
+            return empList;
         } catch (SQLException ex) {
-            System.out.println(ex.getLocalizedMessage());
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -1103,10 +1084,10 @@ public class VentaADO {
                     rsEmps.close();
                 }
                 DBUtil.dbDisconnect();
-            } catch (SQLException e) {
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
             }
         }
-        return empList;
     }
 
     public static VentaTB ListCompletaVentasDetalle(String idVenta) {
@@ -1782,7 +1763,7 @@ public class VentaADO {
                     if ((montoTotal + ventaCreditoTB.getMonto()) >= total) {
                         statementVenta.setString(1, ventaCreditoTB.getIdVenta());
                         statementVenta.addBatch();
-                    }                
+                    }
 
                     statementAbono.executeBatch();
                     preparedBanco.executeBatch();
@@ -1826,6 +1807,12 @@ public class VentaADO {
                     }
                     if (statementCodigo != null) {
                         statementCodigo.close();
+                    }
+                    if (statementValidate != null) {
+                        statementValidate.close();
+                    }
+                    if (statementVenta != null) {
+                        statementVenta.close();
                     }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {

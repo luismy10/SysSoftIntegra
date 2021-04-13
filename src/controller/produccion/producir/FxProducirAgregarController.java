@@ -1,17 +1,26 @@
 package controller.produccion.producir;
 
 import controller.menus.FxPrincipalController;
+import controller.tools.FilesRouters;
+import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
 import controller.tools.Tools;
+import controller.tools.WindowStage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -32,10 +41,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.EmpleadoTB;
+import model.FormulaADO;
+import model.FormulaTB;
 import model.InsumoADO;
 import model.InsumoTB;
-import model.ProduccionADO;
 import model.ProduccionTB;
 import model.SuministroADO;
 import model.SuministroTB;
@@ -74,6 +86,8 @@ public class FxProducirAgregarController implements Initializable {
     private HBox hbLoad;
     @FXML
     private Label lblMessageLoad;
+    @FXML
+    private Button btnAceptarLoad;
 
     private FxProducirController producirController;
 
@@ -183,8 +197,8 @@ public class FxProducirAgregarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<InsumoTB> insumoTBs = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-                insumoTBs.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
+                List<InsumoTB> insumoTBss = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                insumoTBss.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
             }
         });
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -215,7 +229,7 @@ public class FxProducirAgregarController implements Initializable {
         });
         insumoTB.setSearchComboBox(searchComboBox);
 
-        TextField textField = new TextField();
+        TextField textField = new TextField(Tools.roundingValue(Double.parseDouble(txtCantidad.getText()), 2));
         textField.setPromptText("0.00");
         textField.getStyleClass().add("text-field-normal");
         textField.setPrefWidth(220);
@@ -264,7 +278,7 @@ public class FxProducirAgregarController implements Initializable {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
                     searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();                   
+                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
                 }
             } else if (t.getCode() == KeyCode.ESCAPE) {
                 searchComboBox.getComboBox().hide();
@@ -299,11 +313,11 @@ public class FxProducirAgregarController implements Initializable {
             if (item != null) {
                 searchComboBox.getComboBox().getSelectionModel().select(item);
                 if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
-                    searchComboBox.getComboBox().hide();                   
+                    searchComboBox.getComboBox().hide();
                 }
             }
         });
-    }   
+    }
 
     private void comboBoxEmpleados() {
         SearchComboBox<EmpleadoTB> searchComboBox = new SearchComboBox<>(cbPersonaEncargada, false);
@@ -352,13 +366,16 @@ public class FxProducirAgregarController implements Initializable {
         });
     }
 
-    private void clearComponentes() {
+    public void clearComponentes() {
         Tools.actualDate(Tools.getDate(), txtFechaInicio);
+        insumoTBs.clear();
+        addElementPaneHead();
+        addElementPaneBody();
         txtDias.clear();
         txtHoras.clear();
         txtMinutos.clear();
         cbProducto.getItems().clear();
-        cbProducto.getSelectionModel().select(null);  
+        cbProducto.getSelectionModel().select(null);
         cbInterno.setSelected(true);
         cbPersonaEncargada.getItems().clear();
         cbPersonaEncargada.getSelectionModel().select(null);
@@ -366,7 +383,7 @@ public class FxProducirAgregarController implements Initializable {
         txtCantidad.clear();
     }
 
-    private void closeWindow() {
+    public void closeWindow() {
         fxPrincipalController.getVbContent().getChildren().remove(apWindow);
         fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(producirController.getWindow(), 0d);
@@ -374,6 +391,28 @@ public class FxProducirAgregarController implements Initializable {
         AnchorPane.setRightAnchor(producirController.getWindow(), 0d);
         AnchorPane.setBottomAnchor(producirController.getWindow(), 0d);
         fxPrincipalController.getVbContent().getChildren().add(producirController.getWindow());
+    }
+
+    private void modalEstado(ProduccionTB produccionTB) {
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_MODAL_ESTADO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+
+            FXModalEstadoController controller = fXMLLoader.getController();
+            controller.setInitControllerProducirAgregar(this);
+            controller.setProduccionTB(produccionTB);
+
+            Stage stage = WindowStage.StageLoaderModal(parent, "Confirmacion de Producción", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println("Controller modal estado" + ex.getLocalizedMessage());
+        }
     }
 
     private void registrarProduccion() {
@@ -431,20 +470,103 @@ public class FxProducirAgregarController implements Initializable {
                 produccionTB.setFechaRegistro(Tools.getDate());
                 produccionTB.setHoraRegistro(Tools.getHour());
                 produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-                produccionTB.setEstado(1);
+//                produccionTB.setEstado(1);
                 produccionTB.setInsumoTBs(insumoTBs);
-                short value = Tools.AlertMessageConfirmation(apWindow, "Producción", "¿Está seguro de continuar?");
-                if (value == 1) {
-                    String result = ProduccionADO.Registrar_Produccion(produccionTB);
-                    if (result.equalsIgnoreCase("registrado")) {
-                        Tools.AlertMessageInformation(apWindow, "Producción", "Se registró correctamente la produccón.");
-                        clearComponentes();
-                        closeWindow();
-                    } else {
-                        Tools.AlertMessageWarning(apWindow, "Producción", result);
-                    }
-                }
+
+                modalEstado(produccionTB);
+
             }
+        }
+    }
+
+    public void selectFormula(String idFormula) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<Object> task = new Task<Object>() {
+            @Override
+            public Object call() {
+                return FormulaADO.Obtener_Formula_ById(idFormula, Double.parseDouble(txtCantidad.getText()));
+            }
+        };
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+
+            if (object instanceof FormulaTB) {
+                FormulaTB formulaTB = (FormulaTB) object;
+                insumoTBs.addAll(formulaTB.getInsumoTBs());
+                for (InsumoTB insumoTB : insumoTBs) {
+                    insumoTB.getBtnRemove().setOnAction(event -> {
+                        insumoTBs.remove(insumoTB);
+                        addElementPaneHead();
+                        addElementPaneBody();
+                    });
+                    insumoTB.getBtnRemove().setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            insumoTBs.remove(insumoTB);
+                            addElementPaneHead();
+                            addElementPaneBody();
+                        }
+                    });
+                }
+                addElementPaneHead();
+                addElementPaneBody();
+                hbLoad.setVisible(false);
+                vbBody.setDisable(false);
+            } else if (object instanceof String) {
+                lblMessageLoad.setGraphic(null);
+                lblMessageLoad.setText((String) object);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+            } else {
+                lblMessageLoad.setGraphic(null);
+                lblMessageLoad.setText("Se produjo un error interno, comuníquese con su proveedor del sistema.");
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+            }
+        });
+        task.setOnFailed(w -> {
+            lblMessageLoad.setGraphic(null);
+            lblMessageLoad.setText(task.getMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            btnAceptarLoad.setVisible(true);
+        });
+        task.setOnScheduled(w -> {
+            hbLoad.setVisible(true);
+            vbBody.setDisable(true);
+            btnAceptarLoad.setVisible(false);
+            lblMessageLoad.setText("Cargando datos...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void openWindowFormulas(String title, String idProducto, boolean valor) {
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_FORMULA_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FXFormulaListaController controller = fXMLLoader.getController();
+            controller.setProducirAgregarController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, title, apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.show();
+            if (valor == false) {
+                controller.initListFormulas(idProducto, "");
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
         }
     }
 
@@ -468,25 +590,45 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private void onKeyPressedLimpiar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            clearComponentes();
         }
     }
 
     @FXML
     private void onActionLimpiar(ActionEvent event) {
-
+        clearComponentes();
     }
 
     @FXML
     private void onKeyPressedAgregar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            addElementsTableInsumo();
+            if (cbProducto.getSelectionModel().getSelectedIndex() >= 0) {
+                if (!txtCantidad.getText().equalsIgnoreCase("") && Double.parseDouble(txtCantidad.getText()) > 0) {
+                    addElementsTableInsumo();
+                } else {
+                    Tools.AlertMessageWarning(apWindow, "Formula", "Ingrese la cantidad de productos a producir y que sea mayor a 0");
+                    txtCantidad.requestFocus();
+                }
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Formula", "Seleccione un producto para añadir insumos a la producción");
+                cbProducto.requestFocus();
+            }
         }
     }
 
     @FXML
     private void onActonAgregar(ActionEvent event) {
-        addElementsTableInsumo();
+        if (cbProducto.getSelectionModel().getSelectedIndex() >= 0) {
+            if (!txtCantidad.getText().equalsIgnoreCase("") && Double.parseDouble(txtCantidad.getText()) > 0) {
+                addElementsTableInsumo();
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Formula", "Ingrese la cantidad de productos a producir y que sea mayor a 0");
+                txtCantidad.requestFocus();
+            }
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Formula", "Seleccione un producto para añadir insumos a la producción");
+            cbProducto.requestFocus();
+        }
     }
 
     @FXML
@@ -522,6 +664,38 @@ public class FxProducirAgregarController implements Initializable {
         if (c == '.' && txtCantidad.getText().contains(".")) {
             event.consume();
         }
+    }
+
+    @FXML
+    private void onMouseClickedFormula(MouseEvent event) {
+        if (event.getClickCount() == 1) {
+            if (cbProducto.getSelectionModel().getSelectedIndex() >= 0) {
+                if (!txtCantidad.getText().equalsIgnoreCase("") && Double.parseDouble(txtCantidad.getText()) > 0) {
+                    String idSuministro = cbProducto.getSelectionModel().getSelectedItem().getIdSuministro();
+                    openWindowFormulas("Agregar Formula", idSuministro, false);
+                } else {
+                    Tools.AlertMessageWarning(apWindow, "Formula", "Ingrese la cantidad de productos a producir y que sea mayor a 0");
+                    txtCantidad.requestFocus();
+                }
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Formula", "Seleccione un producto para asociar una formula");
+                cbProducto.requestFocus();
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedAceptarLoad(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            hbLoad.setVisible(false);
+            vbBody.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void onActionAceptarLoad(ActionEvent event) {
+        hbLoad.setVisible(false);
+        vbBody.setDisable(false);
     }
 
     public void setInitControllerProducir(FxProducirController producirController, FxPrincipalController fxPrincipalController) {

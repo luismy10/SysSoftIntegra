@@ -12,27 +12,53 @@ import javafx.collections.ObservableList;
 
 public class InsumoADO {
 
-    public static ObservableList<InsumoTB> ListarInsumos(String clave) {
+    public static ArrayList<Object> ListarInsumosListaView(short tipo, String busqueda, int posicionPagina, int filasPorPagina) {
         PreparedStatement statementLista = null;
         ObservableList<InsumoTB> empList = FXCollections.observableArrayList();
+        ResultSet rsEmps = null;
+        ArrayList<Object> objects = new ArrayList<>();
         try {
             DBUtil.dbConnect();
-            statementLista = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Insumo(?)}");
-            statementLista.setString(1, clave);
-            ResultSet resultSet = statementLista.executeQuery();
-            while (resultSet.next()) {
+            statementLista = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Insumo(?,?,?,?,?,?,?,?)}");
+            statementLista.setShort(1, tipo);
+            statementLista.setString(2, busqueda);
+            statementLista.setInt(3, 0);
+            statementLista.setString(4, "");
+            statementLista.setString(5, "");
+            statementLista.setString(6, "");
+            statementLista.setInt(7, posicionPagina);
+            statementLista.setInt(8, filasPorPagina);
+            rsEmps = statementLista.executeQuery();
+
+            while (rsEmps.next()) {
                 InsumoTB insumoTB = new InsumoTB();
-                insumoTB.setId(resultSet.getRow());
-                insumoTB.setIdInsumo(resultSet.getString("IdInsumo"));
-                insumoTB.setClaveAlterna(resultSet.getString("ClaveAlterna"));
-                insumoTB.setClave(resultSet.getString("Clave"));
-                insumoTB.setNombreMarca(resultSet.getString("NombreMarca"));
-                insumoTB.setMedidaName(resultSet.getString("Medida"));
-                insumoTB.setCategoriaName(resultSet.getString("Categoria"));
-                insumoTB.setCosto(resultSet.getDouble("Costo"));
-                insumoTB.setCantidad(resultSet.getDouble("Cantidad"));
+                insumoTB.setId(rsEmps.getRow());
+                insumoTB.setIdInsumo(rsEmps.getString("IdInsumo"));
+                insumoTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
+                insumoTB.setClave(rsEmps.getString("Clave"));
+                insumoTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                insumoTB.setMedidaName(rsEmps.getString("Medida"));
+                insumoTB.setCategoriaName(rsEmps.getString("Categoria"));
+                insumoTB.setCosto(rsEmps.getDouble("Costo"));
+                insumoTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 empList.add(insumoTB);
             }
+
+            objects.add(empList);
+
+            statementLista = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Insumos_Count(?,?,?,?,?,?)}");
+            statementLista.setShort(1, tipo);
+            statementLista.setString(2, busqueda);
+            statementLista.setInt(3, 0);
+            statementLista.setString(4, "");
+            statementLista.setString(5, "");
+            statementLista.setString(6, "");
+            rsEmps = statementLista.executeQuery();
+            Integer integer = 0;
+            if (rsEmps.next()) {
+                integer = rsEmps.getInt("Total");
+            }
+            objects.add(integer);
         } catch (SQLException ex) {
             System.out.println("Error en listar insumos: " + ex.getLocalizedMessage());
         } finally {
@@ -40,12 +66,93 @@ public class InsumoADO {
                 if (statementLista != null) {
                     statementLista.close();
                 }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
 
             }
         }
-        return empList;
+        return objects;
+    }
+    
+    public static Object ListarInsumos(short opcion, String clave, int categoria, String clase, String subClase, String subSubClase, int posicionPagina, int filasPorPagina) {
+
+        PreparedStatement preparedInsumos = null;
+        PreparedStatement preparedTotales = null;
+        ResultSet rsEmps = null;
+
+        try {
+            DBUtil.dbConnect();
+            Object[] object = new Object[2];
+
+            preparedInsumos = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Insumo(?,?,?,?,?,?,?,?)}");
+            preparedInsumos.setShort(1, opcion);
+            preparedInsumos.setString(2, clave);
+            preparedInsumos.setInt(3, categoria);
+            preparedInsumos.setString(4, clase);
+            preparedInsumos.setString(5, subClase);
+            preparedInsumos.setString(6, subSubClase);
+            preparedInsumos.setInt(7, posicionPagina);
+            preparedInsumos.setInt(8, filasPorPagina);
+            rsEmps = preparedInsumos.executeQuery();
+            ObservableList<InsumoTB> empList = FXCollections.observableArrayList();
+            while (rsEmps.next()) {
+                InsumoTB insumosTB = new InsumoTB();
+                insumosTB.setId(rsEmps.getRow() + posicionPagina);
+                insumosTB.setIdInsumo(rsEmps.getString("IdInsumo"));
+                insumosTB.setClave(rsEmps.getString("Clave"));
+                insumosTB.setClaveAlterna(rsEmps.getString("ClaveAlterna"));
+                insumosTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                insumosTB.setMedidaName(rsEmps.getString("Medida"));
+                insumosTB.setCategoriaName(rsEmps.getString("NombreCategoria"));
+                insumosTB.setNombreClase(rsEmps.getString("Clase"));
+                insumosTB.setNombreSubClase(rsEmps.getString("SubClase"));
+                insumosTB.setNombreSubSubClase(rsEmps.getString("SubSubClase"));
+                insumosTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                insumosTB.setCosto(rsEmps.getDouble("Costo"));
+                insumosTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
+                insumosTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
+                empList.add(insumosTB);
+            }
+            object[0] = empList;
+
+            preparedTotales = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Insumos_Count(?,?,?,?,?,?)}");
+            preparedTotales.setShort(1, opcion);
+            preparedTotales.setString(2, clave);
+            preparedTotales.setInt(3, categoria);
+            preparedTotales.setString(4, clase);
+            preparedTotales.setString(5, subClase);
+            preparedTotales.setString(6, subSubClase);
+            rsEmps = preparedTotales.executeQuery();
+            Integer integer = 0;
+            if (rsEmps.next()) {
+                integer = rsEmps.getInt("Total");
+            }
+
+            object[1] = integer;
+
+            return object;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (preparedInsumos != null) {
+                    preparedInsumos.close();
+                }
+                if (preparedTotales != null) {
+                    preparedTotales.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+
     }
 
     public static InsumoTB GetInsumoById(String idInsumo) {
@@ -65,6 +172,12 @@ public class InsumoADO {
                 insumoTB.setMedida(resultSet.getInt("Medida"));
                 insumoTB.setMedidaName(resultSet.getString("MedidaName"));
                 insumoTB.setCategoria(resultSet.getInt("Categoria"));
+                insumoTB.setIdClase(resultSet.getString("IdClase"));
+                insumoTB.setNombreClase(resultSet.getString("Clase"));
+                insumoTB.setIdSubClase(resultSet.getString("IdSubClase"));
+                insumoTB.setNombreSubClase(resultSet.getString("SubClase"));
+                insumoTB.setIdSubSubClase(resultSet.getString("IdSubSubClase"));
+                insumoTB.setNombreSubSubClase(resultSet.getString("SubSubClase"));
                 insumoTB.setCategoriaName(resultSet.getString("CategoriaName"));
                 insumoTB.setCosto(resultSet.getDouble("Costo"));
                 insumoTB.setStockMinimo(resultSet.getDouble("StockMinimo"));
@@ -109,16 +222,19 @@ public class InsumoADO {
                         DBUtil.getConnection().rollback();
                         return "nombre";
                     } else {
-                        statementRegistrar = DBUtil.getConnection().prepareStatement("UPDATE InsumoTB SET Clave = ?,ClaveAlterna = ?,NombreMarca = ?,Medida = ?,Categoria=?,Costo=?,StockMinimo=?,StockMaximo=? WHERE IdInsumo = ?");
+                        statementRegistrar = DBUtil.getConnection().prepareStatement("UPDATE InsumoTB SET Clave = ?,ClaveAlterna = ?,NombreMarca = ?,Medida = ?,Categoria=?,Clase=?,SubClase=?,SubSubClase=?,Costo=?,StockMinimo=?,StockMaximo=? WHERE IdInsumo = ?");
                         statementRegistrar.setString(1, insumoTB.getClave());
                         statementRegistrar.setString(2, insumoTB.getClaveAlterna());
                         statementRegistrar.setString(3, insumoTB.getNombreMarca());
                         statementRegistrar.setInt(4, insumoTB.getMedida());
                         statementRegistrar.setInt(5, insumoTB.getCategoria());
-                        statementRegistrar.setDouble(6, insumoTB.getCosto());
-                        statementRegistrar.setDouble(7, insumoTB.getStockMinimo());
-                        statementRegistrar.setDouble(8, insumoTB.getStockMaximo());
-                        statementRegistrar.setString(9, insumoTB.getIdInsumo());
+                        statementRegistrar.setString(6, insumoTB.getIdClase());
+                        statementRegistrar.setString(7, insumoTB.getIdSubClase());
+                        statementRegistrar.setString(8, insumoTB.getIdSubSubClase());
+                        statementRegistrar.setDouble(9, insumoTB.getCosto());
+                        statementRegistrar.setDouble(10, insumoTB.getStockMinimo());
+                        statementRegistrar.setDouble(11, insumoTB.getStockMaximo());
+                        statementRegistrar.setString(12, insumoTB.getIdInsumo());
                         statementRegistrar.addBatch();
 
                         statementRegistrar.executeBatch();
@@ -144,16 +260,19 @@ public class InsumoADO {
                         codigoInsumo.execute();
                         String idInsumo = codigoInsumo.getString(1);
 
-                        statementRegistrar = DBUtil.getConnection().prepareStatement("INSERT INTO InsumoTB(IdInsumo,Clave,ClaveAlterna,NombreMarca,Medida,Categoria,Cantidad,Costo,StockMinimo,StockMaximo) VALUES(?,?,?,?,?,?,0,?,?,?)");
+                        statementRegistrar = DBUtil.getConnection().prepareStatement("INSERT INTO InsumoTB(IdInsumo,Clave,ClaveAlterna,NombreMarca,Medida,Categoria,Clase,SubClase,SubSubClase,Costo,StockMinimo,StockMaximo) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
                         statementRegistrar.setString(1, idInsumo);
                         statementRegistrar.setString(2, insumoTB.getClave());
                         statementRegistrar.setString(3, insumoTB.getClaveAlterna());
                         statementRegistrar.setString(4, insumoTB.getNombreMarca());
                         statementRegistrar.setInt(5, insumoTB.getMedida());
                         statementRegistrar.setInt(6, insumoTB.getCategoria());
-                        statementRegistrar.setDouble(7, insumoTB.getCosto());
-                        statementRegistrar.setDouble(8, insumoTB.getStockMinimo());
-                        statementRegistrar.setDouble(9, insumoTB.getStockMaximo());
+                        statementRegistrar.setString(7, insumoTB.getIdClase());
+                        statementRegistrar.setString(8, insumoTB.getIdSubClase());
+                        statementRegistrar.setString(9, insumoTB.getIdSubSubClase());
+                        statementRegistrar.setDouble(10, insumoTB.getCosto());
+                        statementRegistrar.setDouble(11, insumoTB.getStockMinimo());
+                        statementRegistrar.setDouble(12, insumoTB.getStockMaximo());
                         statementRegistrar.addBatch();
 
                         statementRegistrar.executeBatch();

@@ -810,7 +810,8 @@ public class FxVentaEstructuraController implements Initializable {
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-            //  FxVentaMostrarController controller = fXMLLoader.getController();
+             FxVentaMostrarController controller = fXMLLoader.getController();
+             controller.setInitControllerVentaEstructura(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar ventas", window.getScene().getWindow());
             stage.setResizable(false);
@@ -1108,6 +1109,34 @@ public class FxVentaEstructuraController implements Initializable {
             fxPrincipalController.openFondoModal();
             alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Procesando Información...");
 
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+    
+    public void loadVenta(String idVenta){
+        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        Task<CotizacionTB> task = new Task<CotizacionTB>() {
+            @Override
+            public CotizacionTB call() {
+                return null;
+            }
+        };
+        task.setOnSucceeded(w -> {
+            
+
+        });
+        task.setOnFailed(w -> {
+           
+        });
+        task.setOnScheduled(w -> {
+            
         });
         exec.execute(task);
         if (!exec.isShutdown()) {

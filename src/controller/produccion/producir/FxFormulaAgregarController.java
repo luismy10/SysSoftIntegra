@@ -97,8 +97,8 @@ public class FxFormulaAgregarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<InsumoTB> insumoTBs = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-                insumoTBs.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
+                List<InsumoTB> insumoTBss = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                insumoTBss.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
             }
         });
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -446,7 +446,8 @@ public class FxFormulaAgregarController implements Initializable {
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {
-        this.fxPrincipalController = fxPrincipalController;
+        this.fxPrincipalController=fxPrincipalController;
     }
+
 
 }

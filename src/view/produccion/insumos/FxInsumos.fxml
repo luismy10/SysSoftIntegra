@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
@@ -98,7 +99,47 @@
                                     </Label>
                                     <HBox style="-fx-spacing: 0.4166666666666667em;">
                                        <children>
-                                          <TextField fx:id="txtBuscar" onAction="#onActionBuscar" onKeyReleased="#onKeyReleasedBuscar" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
+                                          <TextField fx:id="txtBuscar" onAction="#onActionBuscar" onKeyPressed="#onKeyPressedBuscar" onKeyReleased="#onKeyReleasedBuscar" prefHeight="30.0" prefWidth="400.0" promptText="Buscar...." styleClass="text-field-normal" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Filtrar por categoria" textFill="#1a2226" />
+                                    <HBox>
+                                       <children>
+                                          <ComboBox fx:id="cbCategoria" prefHeight="30.0" prefWidth="250.0" promptText="-- Seleccione --" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="340.0" layoutY="10.0" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Filtrar por Clase" textFill="#1a2226" />
+                                    <HBox>
+                                       <children>
+                                          <ComboBox fx:id="cbClase" prefHeight="30.0" prefWidth="250.0" promptText=" -- Seleccione --" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="510.0" layoutY="10.0" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Filtrar por Sub Clase" textFill="#1a2226" />
+                                    <HBox>
+                                       <children>
+                                          <ComboBox fx:id="cbSubClase" prefHeight="30.0" prefWidth="250.0" promptText="-- Seleccione --" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="720.0" layoutY="10.0" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label styleClass="labelRoboto14" text="Filtrar por Sub Sub Clase" textFill="#1a2226" />
+                                    <HBox>
+                                       <children>
+                                          <ComboBox fx:id="cbSubSubClase" prefHeight="30.0" prefWidth="250.0" promptText="-- Seleccione --" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -115,14 +156,46 @@
                      <children>
                         <TableView fx:id="tvList" onMouseClicked="#onMouseClickList" prefHeight="260.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                            <columns>
-                              <TableColumn fx:id="tcNumero" prefWidth="75.0" style="-fx-alignment: CENTER;" text="N°" />
-                              <TableColumn fx:id="tcDescripcion" prefWidth="204.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
-                              <TableColumn fx:id="tcCategoria" prefWidth="163.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
-                              <TableColumn fx:id="tcCosto" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
-                              <TableColumn fx:id="tcCantidad" prefWidth="163.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                              <TableColumn fx:id="tcNumero" prefWidth="40.0" style="-fx-alignment: CENTER;" text="N°" />
+                              <TableColumn fx:id="tcDescripcion" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Clave/Descripción" />
+                              <TableColumn fx:id="tcCategoria" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
+                              <TableColumn fx:id="tcClase" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Clase" />
+                              <TableColumn fx:id="tcSubClase" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Sub-Clase" />
+                              <TableColumn fx:id="tcSubSubClase" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Sub-Sub-cCase" />
+                              <TableColumn fx:id="tcCosto" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo" />
+                              <TableColumn fx:id="tcCantidad" prefWidth="70.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
                               <TableColumn fx:id="tcUnidad" prefWidth="132.0" style="-fx-alignment: CENTER-RIGHT;" text="U/M" />
                            </columns>
                         </TableView>
+                        <HBox alignment="CENTER" style="-fx-background-color: cccccc;">
+                           <children>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
+                                       <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/left.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" textFill="#020203" />
+                                    <Label styleClass="labelBorder" text="de" textFill="#020203" />
+                                    <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203" />
+                                    <Button mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
+                                       <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/right.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

@@ -90,7 +90,7 @@ public class FxFormulaEditarController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             protected Object call() {
-                return FormulaADO.Obtener_Formula_ById(idFormula);
+                return FormulaADO.Obtener_Formula_ById(idFormula,Double.parseDouble("1"));
             }
         };
 
@@ -100,7 +100,7 @@ public class FxFormulaEditarController implements Initializable {
         });
         task.setOnFailed(w -> {
             lblMessageLoad.setGraphic(null);
-            lblMessageLoad.setText(task.getMessage());
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
             lblMessageLoad.setTextFill(Color.web("ea4242"));
         });
         task.setOnSucceeded(w -> {
@@ -520,7 +520,7 @@ public class FxFormulaEditarController implements Initializable {
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {
-        this.fxPrincipalController = fxPrincipalController;
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

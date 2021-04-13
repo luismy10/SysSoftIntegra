@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.produccion.insumos.FxInsumosListaController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.insumos.FxInsumosListaController">
    <children>
       <VBox>
          <children>
@@ -48,7 +47,7 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="340.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onKeyReleased="#onKeyReleasedList" onMouseClicked="#onMouseClickedList" prefHeight="340.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcId" prefWidth="50.0" style="-fx-alignment: CENTER;" text="N°" />
                               <TableColumn fx:id="tcNombre" prefWidth="280.0" style="fx-alignment: CENTER-LEFT;" text="Clave/Nombre" />

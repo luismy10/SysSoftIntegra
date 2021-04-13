@@ -17,6 +17,9 @@ public class InsumoTB {
     private String medidaName;
     private String categoriaName;
     private double cantidad;
+    private double cantidadUtilizada;
+    private double cantidadAUtilizar;
+    private double merma;
     private double costo;
     private double stockMinimo;
     private double stockMaximo;
@@ -25,6 +28,16 @@ public class InsumoTB {
     private SearchComboBox<?> searchComboBox;
     private Button btnRemove;
     private TextField txtCantidad;
+    private TextField txtCantidadUtilizada;
+    private TextField txtCantidadAUtilizar;
+    private TextField txtMerma;
+    
+    private String idClase;
+    private String nombreClase;
+    private String idSubClase;
+    private String nombreSubClase;
+    private String idSubSubClase;
+    private String nombreSubSubClase;
 
     public InsumoTB() {
     }
@@ -115,6 +128,30 @@ public class InsumoTB {
         this.cantidad = cantidad;
     }
 
+    public double getCantidadUtilizada() {
+        return cantidadUtilizada;
+    }
+
+    public void setCantidadUtilizada(double cantidadUtilizada) {
+        this.cantidadUtilizada = cantidadUtilizada;
+    }
+
+    public double getCantidadAUtilizar() {
+        return cantidadAUtilizar;
+    }
+
+    public void setCantidadAUtilizar(double cantidadAUtilizar) {
+        this.cantidadAUtilizar = cantidadAUtilizar;
+    }
+    
+     public double getMerma() {
+        return merma;
+    }
+
+    public void setMerma(double merma) {
+        this.merma = merma;
+    }
+
     public double getCosto() {
         return costo;
     }
@@ -171,6 +208,78 @@ public class InsumoTB {
         this.txtCantidad = txtCantidad;
     }
 
+    public TextField getTxtCantidadUtilizada() {
+        return txtCantidadUtilizada;
+    }
+
+    public void setTxtCantidadUtilizada(TextField txtCantidadUtilizada) {
+        this.txtCantidadUtilizada = txtCantidadUtilizada;
+    }
+
+    public TextField getTxtCantidadAUtilizar() {
+        return txtCantidadAUtilizar;
+    }
+
+    public void setTxtCantidadAUtilizar(TextField txtCantidadAUtilizar) {
+        this.txtCantidadAUtilizar = txtCantidadAUtilizar;
+    }
+
+    public TextField getTxtMerma() {
+        return txtMerma;
+    }
+
+    public void setTxtMerma(TextField txtMerma) {
+        this.txtMerma = txtMerma;
+    }
+    
+    public String getIdClase() {
+        return idClase;
+    }
+
+    public void setIdClase(String idClase) {
+        this.idClase = idClase;
+    }
+
+    public String getNombreClase() {
+        return nombreClase;
+    }
+
+    public void setNombreClase(String nombreClase) {
+        this.nombreClase = nombreClase;
+    }
+
+    public String getIdSubClase() {
+        return idSubClase;
+    }
+
+    public void setIdSubClase(String idSubClase) {
+        this.idSubClase = idSubClase;
+    }
+
+    public String getNombreSubClase() {
+        return nombreSubClase;
+    }
+
+    public void setNombreSubClase(String nombreSubClase) {
+        this.nombreSubClase = nombreSubClase;
+    }
+
+    public String getIdSubSubClase() {
+        return idSubSubClase;
+    }
+
+    public void setIdSubSubClase(String idSubSubClase) {
+        this.idSubSubClase = idSubSubClase;
+    }
+
+    public String getNombreSubSubClase() {
+        return nombreSubSubClase;
+    }
+
+    public void setNombreSubSubClase(String nombreSubSubClase) {
+        this.nombreSubSubClase = nombreSubSubClase;
+    }
+    
     @Override
     public String toString() {
         return "(" + clave + ") " + nombreMarca;

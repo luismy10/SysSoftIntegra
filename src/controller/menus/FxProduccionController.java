@@ -46,8 +46,8 @@ public class FxProduccionController implements Initializable {
     private HBox nodeInsumo;
 
     private FxInsumoController controllerInsumo;
-    
-      /*
+
+    /*
     Controller formula     
      */
     private FXMLLoader fXMLFormula;
@@ -66,7 +66,7 @@ public class FxProduccionController implements Initializable {
             fXMLInsumo = new FXMLLoader(getClass().getResource(FilesRouters.FX_INSUMOS));
             nodeInsumo = fXMLInsumo.load();
             controllerInsumo = fXMLInsumo.getController();
-            
+
             fXMLFormula = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA));
             nodeFormula = fXMLFormula.load();
             controllerFormula = fXMLFormula.getController();
@@ -82,7 +82,7 @@ public class FxProduccionController implements Initializable {
         AnchorPane.setTopAnchor(nodeProducir, 0d);
         AnchorPane.setRightAnchor(nodeProducir, 0d);
         AnchorPane.setBottomAnchor(nodeProducir, 0d);
-        fxPrincipalController.getVbContent().getChildren().add(nodeProducir);    
+        fxPrincipalController.getVbContent().getChildren().add(nodeProducir);
     }
 
     private void openWindowInsumo() {
@@ -93,7 +93,7 @@ public class FxProduccionController implements Initializable {
         AnchorPane.setRightAnchor(nodeInsumo, 0d);
         AnchorPane.setBottomAnchor(nodeInsumo, 0d);
         fxPrincipalController.getVbContent().getChildren().add(nodeInsumo);
-        controllerInsumo.loadInitComponents();
+        //controllerInsumo.loadInitComponents();
     }
 
     private void openWindowFormula() {
@@ -103,7 +103,7 @@ public class FxProduccionController implements Initializable {
         AnchorPane.setTopAnchor(nodeFormula, 0d);
         AnchorPane.setRightAnchor(nodeFormula, 0d);
         AnchorPane.setBottomAnchor(nodeFormula, 0d);
-        fxPrincipalController.getVbContent().getChildren().add(nodeFormula);        
+        fxPrincipalController.getVbContent().getChildren().add(nodeFormula);
     }
 
     @FXML
@@ -140,9 +140,9 @@ public class FxProduccionController implements Initializable {
     @FXML
     private void onActionFormula(ActionEvent event) {
         openWindowFormula();
-    }   
+    }
 
-     public void setContent(FxPrincipalController fxPrincipalController) {
+    public void setContent(FxPrincipalController fxPrincipalController) {
         this.fxPrincipalController = fxPrincipalController;
     }
 

@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.ClasesTB;
 import model.DetalleADO;
 import model.DetalleTB;
 
@@ -37,7 +38,11 @@ public class FxDetalleController implements Initializable {
 
     private FxDetalleMantenimientoController detalleMantenimientoController;
 
+    private FxDetalleClasesListaController detalleClasesListaController;
+
     private int idDetalle;
+
+    private String clase;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -58,6 +63,16 @@ public class FxDetalleController implements Initializable {
         });
         cbEstado.setValue(new Estado("1", "Habilitado"));
 
+    }
+
+    public void setAddClase(String titulo, String idClase) {
+        lblTitle.setText("Agregar una nueva " + titulo);
+        txtCode.setText(idClase);
+        txtCodigoAuxiliar.setText("");
+        txtName.setText("");
+        txtDescripcion.setText("");
+
+        clase = titulo;
     }
 
     public void setValueAdd(String... values) {
@@ -118,6 +133,18 @@ public class FxDetalleController implements Initializable {
             }
         }
     }
+    
+    public void updateDetalle(ClasesTB clasesTB, String titulo) {
+        this.clase = titulo.toLowerCase();
+        txtCode.setText(clasesTB.getIdClase());
+        txtName.setText(clasesTB.getNombreClase().get());
+        txtCodigoAuxiliar.setText(clasesTB.getCodigoAuxiliar());
+        txtDescripcion.setText(clasesTB.getDescripcion());
+        cbEstado.setValue(clasesTB.getEstado().equals("1") ? new Estado("1", "Habilitado") : new Estado("0", "Inhabilitado"));
+        
+        btnToAction.setText("Actualizar");
+        btnToAction.getStyleClass().add("buttonLightWarning");
+    }
 
     @FXML
     private void onKeyPressedToRegister(KeyEvent event) {
@@ -159,8 +186,12 @@ public class FxDetalleController implements Initializable {
         }
     }
 
-    void initConfiguracion(FxDetalleMantenimientoController detalleMantenimientoController) {
+    public void initConfiguracion(FxDetalleMantenimientoController detalleMantenimientoController) {
         this.detalleMantenimientoController = detalleMantenimientoController;
+    }
+
+    public void setInitiDetalleClaseListaController(FxDetalleClasesListaController detalleClasesListaController) {
+        this.detalleClasesListaController = detalleClasesListaController;
     }
 
     public class Estado {

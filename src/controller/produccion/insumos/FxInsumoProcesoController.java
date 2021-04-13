@@ -1,5 +1,7 @@
 package controller.produccion.insumos;
 
+import controller.configuracion.tablasbasicas.FxDetalleClasesListaController;
+import controller.configuracion.tablasbasicas.FxDetalleController;
 import controller.configuracion.tablasbasicas.FxDetalleListaController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -22,6 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.DetalleADO;
 import model.InsumoADO;
 import model.InsumoTB;
 
@@ -47,12 +50,22 @@ public class FxInsumoProcesoController implements Initializable {
     private TextField txtInventarioMinimo;
     @FXML
     private TextField txtInventarioMaximo;
+    @FXML
+    private TextField txtClase;
+    @FXML
+    private TextField txtSubClase;
+    @FXML
+    private TextField txtSubSubClase;
 
     private String idInsumo;
 
     private int idMedida;
 
     private int idCategoria;
+    
+    private String idClase;
+    private String idSubClase;
+    private String idSubSubClase;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -88,9 +101,15 @@ public class FxInsumoProcesoController implements Initializable {
                 idMedida = insumoTB.getMedida();
                 txtCategoria.setText(insumoTB.getCategoriaName());
                 idCategoria = insumoTB.getCategoria();
-                txtCosto.setText(""+insumoTB.getCosto());
-                txtInventarioMinimo.setText(""+insumoTB.getStockMinimo());
-                txtInventarioMaximo.setText(""+insumoTB.getStockMaximo());
+                txtClase.setText(insumoTB.getNombreClase());
+                idSubClase = insumoTB.getIdSubClase();
+                txtSubClase.setText(insumoTB.getNombreSubClase());
+                idSubSubClase = insumoTB.getIdSubSubClase();
+                txtSubSubClase.setText(insumoTB.getNombreSubSubClase());
+                idClase = insumoTB.getIdClase();
+                txtCosto.setText("" + insumoTB.getCosto());
+                txtInventarioMinimo.setText("" + insumoTB.getStockMinimo());
+                txtInventarioMaximo.setText("" + insumoTB.getStockMaximo());
             }
         });
         task.setOnFailed(w -> {
@@ -142,7 +161,7 @@ public class FxInsumoProcesoController implements Initializable {
                 InsumoTB insumoTB = new InsumoTB();
                 insumoTB.setIdInsumo(idInsumo);
                 insumoTB.setClave(txtClave.getText().trim());
-                insumoTB.setClaveAlterna(txtClaveAlterna.getText().trim());
+                insumoTB.setClaveAlterna(txtClaveAlterna.getText() == null ? "" : txtClaveAlterna.getText().trim());
                 insumoTB.setNombreMarca(txtDescripcion.getText().trim().toUpperCase());
                 insumoTB.setMedida(idMedida != 0
                         ? idMedida
@@ -157,6 +176,9 @@ public class FxInsumoProcesoController implements Initializable {
                 insumoTB.setStockMaximo(Tools.isNumeric(txtInventarioMaximo.getText())
                         ? Double.parseDouble(txtInventarioMaximo.getText().trim())
                         : 0);
+                insumoTB.setIdClase(idClase);
+                insumoTB.setIdSubClase(idSubClase);
+                insumoTB.setIdSubSubClase(idSubSubClase);
 
                 String result = InsumoADO.CrudInsumo(insumoTB);
                 if (result.equalsIgnoreCase("inserted")) {
@@ -173,6 +195,26 @@ public class FxInsumoProcesoController implements Initializable {
                     Tools.AlertMessageError(apWindow, "Insumo", result);
                 }
             }
+        }
+    }
+
+    private void openWindowClases(String titulo) {
+        try {
+            URL url = getClass().getResource(FilesRouters.FX_DETALLE_CLASES_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            
+            FxDetalleClasesListaController controller = fXMLLoader.getController();
+            controller.setControllerInsumoModal(this);
+            controller.initListClassDetail(titulo);
+            
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar "+titulo+" al nuevo insumo", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
         }
     }
 
@@ -244,6 +286,204 @@ public class FxInsumoProcesoController implements Initializable {
         Tools.Dispose(apWindow);
     }
 
+    @FXML
+    private void onActionAddClase(ActionEvent event) throws IOException {
+        try {
+            String IdClase = DetalleADO.ListarClases(1);
+//            ObjectGlobal.InitializationTransparentBackground(apWindow);
+            URL url = getClass().getResource(FilesRouters.FX_DETALLE);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxDetalleController controller = fXMLLoader.getController();
+            controller.setAddClase("Clase", IdClase);
+
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar clase", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("openWindowInsumo():" + ex.getLocalizedMessage());
+        }
+    }
+
+    @FXML
+    private void onMouseClickedClase(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            openWindowClases("Clase");
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedClase(KeyEvent event) {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowClases("Clase");
+        }
+    }
+
+    @FXML
+    private void onKeyTypedClase(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if (c != '\b') {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedClase(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            try {
+                String IdClase = DetalleADO.ListarClases(1);
+//            ObjectGlobal.InitializationTransparentBackground(apWindow);
+                URL url = getClass().getResource(FilesRouters.FX_DETALLE);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxDetalleController controller = fXMLLoader.getController();
+                controller.setAddClase("Clase", IdClase);
+
+                Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Clase", apWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("openWindowInsumo():" + ex.getLocalizedMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void onActionAddSubClase(ActionEvent event) {
+        try {
+            String IdClase = DetalleADO.ListarClases(2);
+//            ObjectGlobal.InitializationTransparentBackground(apWindow);
+            URL url = getClass().getResource(FilesRouters.FX_DETALLE);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxDetalleController controller = fXMLLoader.getController();
+            controller.setAddClase("Sub-Clase", IdClase);
+
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Sub-Clase", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("openWindowInsumo():" + ex.getLocalizedMessage());
+        }
+    }
+
+    @FXML
+    private void onMouseClickedSubClase(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            openWindowClases("Sub-Clase");
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSubClase(KeyEvent event) {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowClases("Sub-Clase");
+        }
+    }
+
+    @FXML
+    private void onKeyTypedSubClase(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if (c != '\b') {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSubClase(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            try {
+                String IdClase = DetalleADO.ListarClases(2);
+//            ObjectGlobal.InitializationTransparentBackground(apWindow);
+                URL url = getClass().getResource(FilesRouters.FX_DETALLE);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxDetalleController controller = fXMLLoader.getController();
+                controller.setAddClase("Sub-Clase", IdClase);
+
+                Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Sub-Clase", apWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("openWindowInsumo():" + ex.getLocalizedMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void onActionAddSubSubClase(ActionEvent event) {
+        try {
+            String IdClase = DetalleADO.ListarClases(3);
+//            ObjectGlobal.InitializationTransparentBackground(apWindow);
+            URL url = getClass().getResource(FilesRouters.FX_DETALLE);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxDetalleController controller = fXMLLoader.getController();
+            controller.setAddClase("Sub-Sub-Clase", IdClase);
+
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Sub-Sub-Clase", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("openWindowInsumo():" + ex.getLocalizedMessage());
+        }
+    }
+
+    @FXML
+    private void onMouseClickedSubSubClase(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            openWindowClases("Sub-Sub-Clase");
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedSubSubClase(KeyEvent event) {
+        if (event.getCode() == KeyCode.SPACE) {
+            openWindowClases("Sub-Sub-Clase");
+        }
+    }
+
+    @FXML
+    private void onKeyTypedSubSubClase(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if (c != '\b') {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSubSubClase(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            try {
+                String IdClase = DetalleADO.ListarClases(3);
+//            ObjectGlobal.InitializationTransparentBackground(apWindow);
+                URL url = getClass().getResource(FilesRouters.FX_DETALLE);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxDetalleController controller = fXMLLoader.getController();
+                controller.setAddClase("Sub-Sub-Clase", IdClase);
+
+                Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Sub-Sub-Clase", apWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("openWindowInsumo():" + ex.getLocalizedMessage());
+            }
+        }
+    }
+
     public void setIdMedida(int idMedida) {
         this.idMedida = idMedida;
     }
@@ -260,4 +500,27 @@ public class FxInsumoProcesoController implements Initializable {
         return txtMedida;
     }
 
+    public void setIdClase(String idClase) {
+        this.idClase = idClase;
+    }
+
+    public TextField getTxtClase() {
+        return txtClase;
+    }
+
+    public void setIdSubClase(String idSubClase) {
+        this.idSubClase = idSubClase;
+    }
+
+    public TextField getTxtSubClase() {
+        return txtSubClase;
+    }
+
+    public void setIdSubSubClase(String idSubSubClase) {
+        this.idSubSubClase = idSubSubClase;
+    }
+
+    public TextField getTxtSubSubClase() {
+        return txtSubSubClase;
+    }
 }

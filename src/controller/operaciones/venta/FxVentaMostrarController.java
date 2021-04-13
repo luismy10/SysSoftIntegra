@@ -6,7 +6,6 @@ import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
-import controller.tools.WindowStage;
 import java.awt.print.Book;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -26,21 +25,18 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
@@ -50,7 +46,6 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.PrinterName;
-import model.EmpleadoTB;
 import model.SuministroTB;
 import model.VentaADO;
 import model.VentaTB;
@@ -71,7 +66,7 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private Label lblLoad;
     @FXML
-    private TableView<VentaTB> tvVentas;
+    private TableView<VentaTB> tvList;
     @FXML
     private TableColumn<VentaTB, String> tcNumero;
     @FXML
@@ -83,31 +78,11 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private TableColumn<VentaTB, String> tcTotal;
     @FXML
-    private Label lblCliente;
+    private TableColumn<VentaTB, Button> tcImprimir;
     @FXML
-    private Label lblComprobante;
-    @FXML
-    private Label lblTipo;
-    @FXML
-    private Label lblVendedor;
-    @FXML
-    private Label lblEstado;
-    @FXML
-    private Label lblTotal;
-    @FXML
-    private TableView<SuministroTB> tvDetalleVenta;
-    @FXML
-    private TableColumn<SuministroTB, String> tcCantidad;
-    @FXML
-    private TableColumn<SuministroTB, String> tcDescripcion;
-    @FXML
-    private TableColumn<SuministroTB, String> tcImporte;
-    @FXML
-    private HBox hbContenidoTabla;
-    @FXML
-    private Button btnCancelarVenta;
+    private TableColumn<VentaTB, Button> tcSumVenta;
 
-    private ObservableList<SuministroTB> arrList = null;
+    private FxVentaEstructuraController ventaEstructuraController;
 
     private BillPrintable billPrintable;
 
@@ -119,10 +94,6 @@ public class FxVentaMostrarController implements Initializable {
 
     private AnchorPane hbPie;
 
-    private String idVenta;
-
-    private VentaTB ventaTB;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
@@ -133,26 +104,12 @@ public class FxVentaMostrarController implements Initializable {
                 + cellData.getValue().getHoraVenta()
         ));
         tcDocumento.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getSerie() + "\n"
-                + cellData.getValue().getNumeracion()
+                cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()
         ));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
-
-        tcNumero.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.08));
-        tcCliente.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.24));
-        tcDocumento.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.3));
-        tcFechaHora.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.18));
-        tcTotal.prefWidthProperty().bind(tvVentas.widthProperty().multiply(0.18));
-
-        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getCantidad(), 2)
-        ));
-        tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()
-        ));
-        tcImporte.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral() * cellData.getValue().getCantidad(), 2)
-        ));
+        tcImprimir.setCellValueFactory(new PropertyValueFactory<>("btnImprimir"));
+        tcSumVenta.setCellValueFactory(new PropertyValueFactory<>("btnVenta"));
+        tvList.setPlaceholder(Tools.placeHolderTableView("Ingrese la información a buscar.", "-fx-text-fill:#020203;", false));
 
         billPrintable = new BillPrintable();
         monedaCadena = new ConvertMonedaCadena();
@@ -161,29 +118,62 @@ public class FxVentaMostrarController implements Initializable {
         hbPie = new AnchorPane();
     }
 
-    private void fillVentasTable(String value) {
+    private void fillVentasTable(int opcion, String value) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
-        Task<ObservableList<VentaTB>> task = new Task<ObservableList<VentaTB>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ObservableList<VentaTB> call() {
-                return VentaADO.ListVentasMostrar(value);
+            public Object call() {
+                return VentaADO.ListVentasMostrar(opcion, value);
             }
         };
 
         task.setOnSucceeded(e -> {
-            tvVentas.setItems(task.getValue());
+            Object result = task.getValue();
+            if (result instanceof ObservableList) {
+                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) result;
+                if (!ventaTBs.isEmpty()) {
+                    ventaTBs.forEach(f -> {
+                        f.getBtnImprimir().setOnAction(event -> {
+                            imprimirVenta(f.getIdVenta());
+                        });
+                        f.getBtnImprimir().setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                imprimirVenta(f.getIdVenta());
+                            }
+                            event.consume();
+                        });
+                        f.getBtnVenta().setOnAction(event -> {
+                            sumarVenta(f.getIdVenta());
+                        });
+                        f.getBtnVenta().setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                sumarVenta(f.getIdVenta());
+                            }
+                            event.consume();
+                        });
+                    });
+                    tvList.setItems(ventaTBs);
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                }
+            } else {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) result, "-fx-text-fill:#a70820;", false));
+            }
             lblLoad.setVisible(false);
         });
         task.setOnFailed(e -> {
             lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
         });
 
         task.setOnScheduled(e -> {
             lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -191,102 +181,11 @@ public class FxVentaMostrarController implements Initializable {
         }
     }
 
-    private void fillVentasTable10Primeras() {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-        Task<ObservableList<VentaTB>> task = new Task<ObservableList<VentaTB>>() {
-            @Override
-            public ObservableList<VentaTB> call() {
-                return VentaADO.ListVentas10Primeras();
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            tvVentas.setItems(task.getValue());
-            lblLoad.setVisible(false);
-        });
-        task.setOnFailed(e -> {
-            lblLoad.setVisible(false);
-        });
-
-        task.setOnScheduled(e -> {
-            lblLoad.setVisible(true);
-        });
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
+    public void sumarVenta(String idVenta) {
+        if (ventaEstructuraController != null) {
+            Tools.Dispose(apWindow);
+            ventaEstructuraController.loadVenta(idVenta);
         }
-    }
-
-    public void setInitComponents(String idVenta) {
-        this.idVenta = idVenta;
-        try {
-
-            ExecutorService executor = Executors.newCachedThreadPool((runnable) -> {
-                Thread t = new Thread(runnable);
-                t.setDaemon(true);
-                return t;
-            });
-
-            Task<VentaTB> task = new Task<VentaTB>() {
-                @Override
-                protected VentaTB call() {
-                    return VentaADO.ListCompletaVentasDetalle(idVenta);
-                }
-            };
-
-            task.setOnScheduled(e -> {
-                lblLoad.setVisible(true);
-            });
-            task.setOnRunning(e -> {
-                lblLoad.setVisible(true);
-            });
-            task.setOnFailed(e -> {
-                lblLoad.setVisible(false);
-            });
-            task.setOnSucceeded(e -> {
-                ventaTB = task.getValue();
-                if (ventaTB != null) {
-                    EmpleadoTB empleadoTB = ventaTB.getEmpleadoTB();
-                    ObservableList<SuministroTB> empList = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
-                    lblCliente.setText(ventaTB.getClienteTB().getNumeroDocumento() + " " + ventaTB.getClienteTB().getInformacion());
-                    lblComprobante.setText(ventaTB.getComprobanteName());
-                    lblComprobante.setText(ventaTB.getSerie() + "-" + ventaTB.getNumeracion());
-                    lblTipo.setText(ventaTB.getTipoName());
-                    lblEstado.setText(ventaTB.getEstadoName());
-                    if (ventaTB.getEstadoName().equalsIgnoreCase("ANULADO")) {
-                        btnCancelarVenta.setDisable(true);
-                        hbContenidoTabla.getStyleClass().add("hbBoxBackgroundImage");
-                    } else {
-                        btnCancelarVenta.setDisable(false);
-                        hbContenidoTabla.getStyleClass().remove("hbBoxBackgroundImage");
-                    }
-                    lblTotal.setText(ventaTB.getMonedaTB().getSimbolo() + " " + Tools.roundingValue(Double.parseDouble(Tools.roundingValue(ventaTB.getTotal(), 1)), 2));
-                    if (empleadoTB != null) {
-                        lblVendedor.setText(empleadoTB.getApellidos() + " " + empleadoTB.getNombres());
-                    }
-                    fillVentasDetalleTable(empList);
-                }
-                lblLoad.setVisible(false);
-            });
-
-            executor.execute(task);
-            if (!executor.isShutdown()) {
-                executor.shutdown();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getLocalizedMessage());
-            lblLoad.setVisible(false);
-        }
-
-    }
-
-    private void fillVentasDetalleTable(ObservableList<SuministroTB> empList) {
-        arrList = empList;
-        tvDetalleVenta.setItems(empList);
     }
 
     public void imprimirVenta(String idVenta) {
@@ -645,37 +544,11 @@ public class FxVentaMostrarController implements Initializable {
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }
 
-    private void cancelVenta() {
-        try {
-            if (Tools.isText(idVenta)) {
-                return;
-            }
-
-            URL url = getClass().getResource(FilesRouters.FX_VENTA_DEVOLUCION);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxVentaDevolucionController controller = fXMLLoader.getController();
-            controller.setInitVentaMostrar(this);
-            controller.setLoadVentaDevolucion(idVenta, arrList, lblComprobante.getText(), Tools.roundingValue(ventaTB.getTotal(), 2));
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Cancelar la venta", apWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                idVenta = "";
-            });
-            stage.show();
-        } catch (IOException ex) {
-
-        }
-    }
-
     @FXML
     private void onKeyPressed10PrimerasVentas(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
-                fillVentasTable10Primeras();
+                fillVentasTable(1, "");
             }
         }
     }
@@ -683,7 +556,7 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onAction10PrimerasVentas(ActionEvent event) {
         if (!lblLoad.isVisible()) {
-            fillVentasTable10Primeras();
+            fillVentasTable(1, "");
         }
     }
 
@@ -723,56 +596,16 @@ public class FxVentaMostrarController implements Initializable {
                 && event.getCode() != KeyCode.PRINTSCREEN
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
-            if (!lblLoad.isVisible()) {
-                fillVentasTable(txtSearch.getText().trim());
-            }
-        }
-    }
-
-    @FXML
-    private void onMouseClickedTvVentas(MouseEvent event) {
-        if (event.getClickCount() == 2) {
-            if (tvVentas.getSelectionModel().getSelectedIndex() >= 0) {
+            if (!Tools.isText(txtSearch.getText())) {
                 if (!lblLoad.isVisible()) {
-                    setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
+                    fillVentasTable(0, txtSearch.getText().trim());
                 }
             }
         }
     }
 
-    @FXML
-    private void onKeyPressedTvVentas(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            if (tvVentas.getSelectionModel().getSelectedIndex() >= 0) {
-                if (!lblLoad.isVisible()) {
-                    setInitComponents(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
-                }
-            }
-        }
-    }
-
-    @FXML
-    private void onKeyPressedCancelar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            cancelVenta();
-        }
-    }
-
-    @FXML
-    private void onActionCancelar(ActionEvent event) {
-        cancelVenta();
-    }
-
-    @FXML
-    private void onKeyPressedImprimir(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            imprimirVenta(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
-        }
-    }
-
-    @FXML
-    private void onActionImprimir(ActionEvent event) {
-        imprimirVenta(tvVentas.getSelectionModel().getSelectedItem().getIdVenta());
+    public void setInitControllerVentaEstructura(FxVentaEstructuraController ventaEstructuraController) {
+        this.ventaEstructuraController = ventaEstructuraController;
     }
 
 }

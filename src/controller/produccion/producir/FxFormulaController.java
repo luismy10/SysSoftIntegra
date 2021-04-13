@@ -181,8 +181,7 @@ public class FxFormulaController implements Initializable {
     }
 
     private void openWindowFormulaProcesoEdit(String idFormula) {
-        try {
-            Tools.println(idFormula);
+        try {            
             FXMLLoader fXMLFormulaProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA_EDITAR));
             AnchorPane nodeFormulaProceso = fXMLFormulaProceso.load();
             FxFormulaEditarController formulaProcesoController = fXMLFormulaProceso.getController();
@@ -390,8 +389,8 @@ public class FxFormulaController implements Initializable {
         return hbWindow;
     }
 
-     public void setContent(FxPrincipalController fxPrincipalController) {
-        this.fxPrincipalController = fxPrincipalController;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

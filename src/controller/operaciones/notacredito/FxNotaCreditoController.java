@@ -401,25 +401,36 @@ public class FxNotaCreditoController implements Initializable {
                 ncdtb.setPrecio(f.getSuministroTB().getPrecioVentaGeneral());
                 ncdtb.setDescuento(f.getSuministroTB().getDescuento());
                 ncdtb.setValorImpuesto(f.getSuministroTB().getImpuestoValor());
+                ncdtb.setSuministroTB(f.getSuministroTB());
                 creditoDetalleTBs.add(ncdtb);
             });
             notaCreditoTB.setNotaCreditoDetalleTBs(creditoDetalleTBs);
 
-            principalController.openFondoModal();
-            URL url = getClass().getResource(FilesRouters.FX_NOTA_CREDITO_PROCESO);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxNotaCreditoProcesoController controller = fXMLLoader.getController();
-            controller.setInitNotaCreditoController(this);
-            controller.loadDataComponents(notaCreditoTB);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Nota de Crédito", apWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> principalController.closeFondoModal());
-            stage.show();
+            short value = Tools.AlertMessageConfirmation(apWindow, "Nota de Crédito", "¿Está seguro de continuar?");
+            if (value == 1) {
+                String result = NotaCreditoADO.Registrar_NotaCredito(notaCreditoTB);
+                if (result.equalsIgnoreCase("registrado")) {
+                    Tools.AlertMessageInformation(apWindow, "Nota de Crédito", "Se registró correctamente la nota de crédito.");
+                    clearElements();
+                } else {
+                    Tools.AlertMessageError(apWindow, "Nota de Crédito", result);
+                }
+            }
 
+//            principalController.openFondoModal();
+//            URL url = getClass().getResource(FilesRouters.FX_NOTA_CREDITO_PROCESO);
+//            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//            Parent parent = fXMLLoader.load(url.openStream());
+//            //Controlller here
+//            FxNotaCreditoProcesoController controller = fXMLLoader.getController();
+//            controller.setInitNotaCreditoController(this);
+//            controller.loadDataComponents(notaCreditoTB);
+//            //
+//            Stage stage = WindowStage.StageLoaderModal(parent, "Nota de Crédito", apWindow.getScene().getWindow());
+//            stage.setResizable(false);
+//            stage.sizeToScene();
+//            stage.setOnHiding(w -> principalController.closeFondoModal());
+//            stage.show();
         }
     }
 

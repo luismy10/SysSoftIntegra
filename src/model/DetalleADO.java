@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -276,6 +277,100 @@ public class DetalleADO {
             }
         }
         return empList;
-
     }
+    
+    public static ObservableList<ClasesTB> GetDetailClass(String titulo) {
+        String selectStmt = "{call Sp_Get_Clases_SubClases_SubSubClases(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ObservableList<ClasesTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, titulo);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                ClasesTB clasesTB = new ClasesTB();
+                clasesTB.setIdClase(resultSet.getString("IdClase"));
+                clasesTB.setNombreClase(resultSet.getString("Nombre"));
+                clasesTB.setCodigoAuxiliar(resultSet.getString("Abreviado"));
+                clasesTB.setDescripcion(resultSet.getString("Descripcion"));
+                clasesTB.setEstado(resultSet.getString("Estado"));
+//                if (value[0].equalsIgnoreCase("3")) {
+//                    detalleTB.setDescripcion(resultSet.getString("Descripcion"));
+//                }
+                empList.add(clasesTB);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+    
+    public static String ListarClases(int tipo) {
+        CallableStatement codigo_clase = null;
+        String id = null;
+
+        try {
+            DBUtil.dbConnect();
+            if (tipo == 1) {
+                codigo_clase = DBUtil.getConnection().prepareCall("{? = call Fc_Clase_Codigo_Alfanumerico()}");
+                codigo_clase.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigo_clase.execute();
+                id = codigo_clase.getString(1);
+                return id;
+            } else if (tipo == 2) {
+                codigo_clase = DBUtil.getConnection().prepareCall("{? = call Fc_Sub_Clase_Codigo_Alfanumerico()}");
+                codigo_clase.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigo_clase.execute();
+                id = codigo_clase.getString(1);
+                return id;
+            } else if (tipo == 3) {
+                codigo_clase = DBUtil.getConnection().prepareCall("{? = call Fc_Sub_Sub_Clase_Codigo_Alfanumerico()}");
+                codigo_clase.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigo_clase.execute();
+                id = codigo_clase.getString(1);
+                return id;
+            }
+
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+                return ex.getLocalizedMessage();
+            } catch (SQLException ex1) {
+                return ex1.getLocalizedMessage();
+            }
+        } finally {
+            try {
+                if (codigo_clase != null) {
+                    codigo_clase.close();
+                }
+                if (codigo_clase != null) {
+                    codigo_clase.close();
+                }
+                if (codigo_clase != null) {
+                    codigo_clase.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return id;
+    }
+    
 }
