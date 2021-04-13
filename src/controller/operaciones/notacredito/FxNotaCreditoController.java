@@ -130,7 +130,6 @@ public class FxNotaCreditoController implements Initializable {
             clearElements();
         });
         task.setOnFailed(w -> {
-            lblMessageLoad.setGraphic(null);
             lblMessageLoad.setText(task.getMessage());
             lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
             btnAceptarLoad.setVisible(true);
@@ -205,12 +204,10 @@ public class FxNotaCreditoController implements Initializable {
                 hbLoad.setVisible(false);
                 spBody.setDisable(false);
             } else if (object instanceof String) {
-                lblMessageLoad.setGraphic(null);
                 lblMessageLoad.setText((String) object);
                 lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
                 btnAceptarLoad.setVisible(true);
             } else {
-                lblMessageLoad.setGraphic(null);
                 lblMessageLoad.setText("Se produjo un error interno, comuníquese con su proveedor del sistema.");
                 lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
                 btnAceptarLoad.setVisible(true);

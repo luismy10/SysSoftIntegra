@@ -172,9 +172,9 @@ public class FxVentaDetalleController implements Initializable {
             return t;
         });
 
-        Task<VentaTB> task = new Task<VentaTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            protected VentaTB call() {
+            protected Object call() {
                 arrayArticulos.clear();
                 ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
                     arrayArticulos.add(new ImpuestoTB(e.getIdImpuesto(), e.getNombreOperacion(), e.getNombre(), e.getValor(), e.isPredeterminado()));
@@ -188,8 +188,9 @@ public class FxVentaDetalleController implements Initializable {
         });
 
         task.setOnSucceeded(e -> {
-            ventaTB = task.getValue();
-            if (ventaTB != null) {
+            Object result = task.getValue();
+            if (result instanceof VentaTB) {
+                ventaTB = (VentaTB) result;
                 EmpleadoTB empleadoTB = ventaTB.getEmpleadoTB();
                 ObservableList<SuministroTB> empList = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
                 lblFechaVenta.setText(ventaTB.getFechaVenta() + " " + ventaTB.getHoraVenta());
@@ -222,7 +223,6 @@ public class FxVentaDetalleController implements Initializable {
                 btnImprimir.setDisable(true);
                 lblLoad.setVisible(false);
             }
-
         });
         task.setOnFailed(e -> {
             lblLoad.setVisible(false);

@@ -80,7 +80,9 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private TableColumn<VentaTB, Button> tcImprimir;
     @FXML
-    private TableColumn<VentaTB, Button> tcSumVenta;
+    private TableColumn<VentaTB, Button> tcAgregarVenta;
+    @FXML
+    private TableColumn<VentaTB, Button> tcSumarVenta;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
@@ -108,7 +110,8 @@ public class FxVentaMostrarController implements Initializable {
         ));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcImprimir.setCellValueFactory(new PropertyValueFactory<>("btnImprimir"));
-        tcSumVenta.setCellValueFactory(new PropertyValueFactory<>("btnVenta"));
+        tcAgregarVenta.setCellValueFactory(new PropertyValueFactory<>("btnAgregar"));
+        tcSumarVenta.setCellValueFactory(new PropertyValueFactory<>("btnSumar"));
         tvList.setPlaceholder(Tools.placeHolderTableView("Ingrese la información a buscar.", "-fx-text-fill:#020203;", false));
 
         billPrintable = new BillPrintable();
@@ -146,14 +149,23 @@ public class FxVentaMostrarController implements Initializable {
                             }
                             event.consume();
                         });
-                        f.getBtnVenta().setOnAction(event -> {
-                            sumarVenta(f.getIdVenta());
+                        f.getBtnAgregar().setOnAction(event -> {
+                            addVenta(f.getIdVenta());
                         });
-                        f.getBtnVenta().setOnKeyPressed(event -> {
+                        f.getBtnAgregar().setOnKeyPressed(event -> {
                             if (event.getCode() == KeyCode.ENTER) {
-                                sumarVenta(f.getIdVenta());
+                                addVenta(f.getIdVenta());
                             }
                             event.consume();
+                        });
+
+                        f.getBtnSumar().setOnAction(event -> {
+                            plusVenta(f.getIdVenta());
+                        });
+                        f.getBtnSumar().setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                plusVenta(f.getIdVenta());
+                            }
                         });
                     });
                     tvList.setItems(ventaTBs);
@@ -181,10 +193,18 @@ public class FxVentaMostrarController implements Initializable {
         }
     }
 
-    public void sumarVenta(String idVenta) {
+    public void addVenta(String idVenta) {
+        if (ventaEstructuraController != null) {
+            ventaEstructuraController.resetVenta();
+            Tools.Dispose(apWindow);
+            ventaEstructuraController.loadAddVenta(idVenta);
+        }
+    }
+    
+    public void plusVenta(String idVenta){
         if (ventaEstructuraController != null) {
             Tools.Dispose(apWindow);
-            ventaEstructuraController.loadVenta(idVenta);
+            ventaEstructuraController.loadPlusVenta(idVenta);
         }
     }
 
@@ -269,9 +289,10 @@ public class FxVentaMostrarController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                VentaTB ventaTB = VentaADO.ListCompletaVentasDetalle(idVenta);
+                Object object = VentaADO.ListCompletaVentasDetalle(idVenta);
                 try {
-                    if (ventaTB != null) {
+                    if (object instanceof VentaTB) {
+                        VentaTB ventaTB = (VentaTB) object;
                         ObservableList<SuministroTB> suministroTBs = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
                         if (format.equalsIgnoreCase("a4")) {
                             ArrayList<SuministroTB> list = new ArrayList();
@@ -402,7 +423,7 @@ public class FxVentaMostrarController implements Initializable {
                             }
                         }
                     } else {
-                        return "empty";
+                        return (String) object;
                     }
                 } catch (PrinterException | IOException | PrintException | JRException ex) {
                     return "Error en imprimir: " + ex.getLocalizedMessage();

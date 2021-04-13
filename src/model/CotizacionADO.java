@@ -230,30 +230,28 @@ public class CotizacionADO {
         return cotizacionTBs;
     }
 
-    public static CotizacionTB CargarCotizacionVenta(String idCotizacion) {
-        CotizacionTB cotizacionTB = null;
+    public static Object CargarCotizacionVenta(String idCotizacion) {
+
         ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
         PreparedStatement statementCotizacione = null;
         PreparedStatement statementDetalleCotizacione = null;
+        ResultSet result = null;
         try {
             DBUtil.dbConnect();
-
             statementCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Cotizacion_ById(?)}");
             statementCotizacione.setString(1, idCotizacion);
-            try (ResultSet result = statementCotizacione.executeQuery()) {
-                if (result.next()) {
-                    cotizacionTB = new CotizacionTB();
-                    cotizacionTB.setId(result.getRow());
-                    cotizacionTB.setIdCotizacion(result.getString("IdCotizacion"));
-                    cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
-                    cotizacionTB.setIdMoneda(result.getInt("IdMoneda"));
-                    cotizacionTB.setObservaciones(result.getString("Observaciones"));
-                }
-            }
+            result = statementCotizacione.executeQuery();
+            if (result.next()) {
+                CotizacionTB cotizacionTB = new CotizacionTB();
+                cotizacionTB.setId(result.getRow());
+                cotizacionTB.setIdCotizacion(result.getString("IdCotizacion"));
+                cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
+                cotizacionTB.setIdMoneda(result.getInt("IdMoneda"));
+                cotizacionTB.setObservaciones(result.getString("Observaciones"));
 
-            statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_ById(?)}");
-            statementDetalleCotizacione.setString(1, idCotizacion);
-            try (ResultSet result = statementDetalleCotizacione.executeQuery()) {
+                statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_ById(?)}");
+                statementDetalleCotizacione.setString(1, idCotizacion);
+                result = statementDetalleCotizacione.executeQuery();
                 while (result.next()) {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setId(result.getRow());
@@ -299,13 +297,17 @@ public class CotizacionADO {
 
                     suministroTB.setRemover(button);
                     cotizacionTBs.add(suministroTB);
+                    cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
                 }
+                return cotizacionTB;
+            } else {
+                throw new Exception("No se puedo contrar la cotización, intente nuevamente por favor.");
             }
 
-            cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
-
         } catch (SQLException ex) {
-            Tools.println(ex.getLocalizedMessage());
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statementCotizacione != null) {
@@ -314,15 +316,17 @@ public class CotizacionADO {
                 if (statementDetalleCotizacione != null) {
                     statementDetalleCotizacione.close();
                 }
+                if (result != null) {
+                    result.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return cotizacionTB;
     }
 
-    public static Object CargarCotizacionReporte(String idCotizacion) {        
+    public static Object CargarCotizacionReporte(String idCotizacion) {
         PreparedStatement statementCotizacione = null;
         PreparedStatement statementDetalleCotizacione = null;
         try {
@@ -340,7 +344,7 @@ public class CotizacionADO {
                 cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Telefono"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
                 cotizacionTB.setMonedaTB(new MonedaTB(result.getString("Nombre"), result.getString("Simbolo")));
                 cotizacionTB.setObservaciones(result.getString("Observaciones"));
-                
+
                 ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
                 statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_Reporte_ById(?)}");
                 statementDetalleCotizacione.setString(1, idCotizacion);

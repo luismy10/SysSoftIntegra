@@ -1030,7 +1030,7 @@ public class VentaADO {
 
     }
 
-    public static Object ListVentasMostrar(int opcion,String search) {
+    public static Object ListVentasMostrar(int opcion, String search) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         try {
@@ -1057,16 +1057,24 @@ public class VentaADO {
                 imageViewPrint.setFitWidth(24);
                 imageViewPrint.setFitHeight(24);
                 btnImprimir.setGraphic(imageViewPrint);
-                btnImprimir.getStyleClass().add("buttonLight");
+                btnImprimir.getStyleClass().add("buttonLightError");
                 ventaTB.setBtnImprimir(btnImprimir);
 
                 Button btnAddVenta = new Button();
+                ImageView imageViewAccept = new ImageView(new Image("/view/image/accept.png"));
+                imageViewAccept.setFitWidth(24);
+                imageViewAccept.setFitHeight(24);
+                btnAddVenta.setGraphic(imageViewAccept);
+                btnAddVenta.getStyleClass().add("buttonLightError");
+                ventaTB.setBtnAgregar(btnAddVenta);
+                
+                Button btnPlusVenta = new Button();
                 ImageView imageViewPlus = new ImageView(new Image("/view/image/plus.png"));
                 imageViewPlus.setFitWidth(24);
                 imageViewPlus.setFitHeight(24);
-                btnAddVenta.setGraphic(imageViewPlus);
-                btnAddVenta.getStyleClass().add("buttonLight");
-                ventaTB.setBtnVenta(btnAddVenta);
+                btnPlusVenta.setGraphic(imageViewPlus);
+                btnPlusVenta.getStyleClass().add("buttonLightError");
+                ventaTB.setBtnSumar(btnPlusVenta);
 
                 empList.add(ventaTB);
             }
@@ -1090,165 +1098,176 @@ public class VentaADO {
         }
     }
 
-    public static VentaTB ListCompletaVentasDetalle(String idVenta) {
+    public static Object ListCompletaVentasDetalle(String idVenta) {
         PreparedStatement statementVenta = null;
         PreparedStatement statementEmpleado = null;
         PreparedStatement statementVentaDetalle = null;
-        VentaTB ventaTB = null;
-        DBUtil.dbConnect();
-        if (DBUtil.getConnection() != null) {
+        try {
+            DBUtil.dbConnect();
+            statementVenta = DBUtil.getConnection().prepareStatement("{call Sp_Obtener_Venta_ById(?)}");
+            statementVenta.setString(1, idVenta);
+            ResultSet resultSetVenta = statementVenta.executeQuery();
+            if (resultSetVenta.next()) {
+                VentaTB ventaTB = new VentaTB();
+                ventaTB.setIdVenta(idVenta);
+                ventaTB.setFechaVenta(resultSetVenta.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                ventaTB.setHoraVenta(resultSetVenta.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                //Cliente start
+                ClienteTB clienteTB = new ClienteTB();
+                clienteTB.setIdCliente(resultSetVenta.getString("IdCliente"));
+                clienteTB.setIdAuxiliar(resultSetVenta.getString("IdAuxiliar"));
+                clienteTB.setTipoDocumento(resultSetVenta.getInt("TipoDocumento"));
+                clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
+                clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
+                clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
+                clienteTB.setTelefono(resultSetVenta.getString("Telefono"));
+                clienteTB.setCelular(resultSetVenta.getString("Celular"));
+                clienteTB.setEmail(resultSetVenta.getString("Email"));
+                clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
+                ventaTB.setClienteTB(clienteTB);
+                //Cliente end
+                ventaTB.setIdMoneda(resultSetVenta.getInt("IdMoneda"));
+                ventaTB.setCodigoAlterno(resultSetVenta.getString("CodigoAlterno"));
+                ventaTB.setIdComprobante(resultSetVenta.getInt("IdComprobante"));
+                ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
+                ventaTB.setSerie(resultSetVenta.getString("Serie"));
+                ventaTB.setNumeracion(resultSetVenta.getString("Numeracion"));
+                ventaTB.setObservaciones(resultSetVenta.getString("Observaciones"));
+                ventaTB.setTipo(resultSetVenta.getInt("Tipo"));
+                ventaTB.setEstado(resultSetVenta.getInt("Estado"));
+                ventaTB.setEfectivo(resultSetVenta.getDouble("Efectivo"));
+                ventaTB.setVuelto(resultSetVenta.getDouble("Vuelto"));
+                ventaTB.setTarjeta(resultSetVenta.getDouble("Tarjeta"));
+                ventaTB.setSubTotal(resultSetVenta.getDouble("SubTotal"));
+                ventaTB.setDescuento(resultSetVenta.getDouble("Descuento"));
+                ventaTB.setSubImporte(ventaTB.getSubTotal() - ventaTB.getDescuento());
+                ventaTB.setImpuesto(resultSetVenta.getDouble("Impuesto"));
+                ventaTB.setTotal(resultSetVenta.getDouble("Total"));
+                ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
+
+                if (ventaTB.getTipo() == 1) {
+                    ventaTB.setTipoName("CONTADO");
+                } else {
+                    ventaTB.setTipoName("CRÉDITO");
+                }
+
+                if (ventaTB.getTipo() == 1 && ventaTB.getEstado() == 1) {
+                    ventaTB.setEstadoName("COBRADO");
+                } else if (ventaTB.getTipo() == 2 && ventaTB.getEstado() == 2) {
+                    ventaTB.setEstadoName("POR COBRAR");
+                } else if (ventaTB.getTipo() == 1 && ventaTB.getEstado() == 2) {
+                    ventaTB.setEstadoName("POR LLEVAR");
+                } else {
+                    ventaTB.setEstadoName("ANULADO");
+                }
+                //moneda start
+                MonedaTB monedaTB = new MonedaTB();
+                monedaTB.setNombre(resultSetVenta.getString("Nombre"));
+                monedaTB.setAbreviado(resultSetVenta.getString("Abreviado"));
+                monedaTB.setSimbolo(resultSetVenta.getString("Simbolo"));
+                ventaTB.setMonedaTB(monedaTB);
+                //moneda end
+
+                //empleado start
+                statementEmpleado = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"
+                        + "from VentaTB as v inner join EmpleadoTB as e \n"
+                        + "on v.Vendedor = e.IdEmpleado\n"
+                        + "where v.IdVenta = ?");
+                statementEmpleado.setString(1, idVenta);
+                try (ResultSet resultSetEmpleado = statementEmpleado.executeQuery()) {
+                    EmpleadoTB empleadoTB = null;
+                    if (resultSetEmpleado.next()) {
+                        empleadoTB = new EmpleadoTB();
+                        empleadoTB.setApellidos(resultSetEmpleado.getString("Apellidos"));
+                        empleadoTB.setNombres(resultSetEmpleado.getString("Nombres"));
+                    }
+                    ventaTB.setEmpleadoTB(empleadoTB);
+                }
+
+                //empleado end
+                //detalle venta start
+                statementVentaDetalle = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Detalle_By_Id(?)}");
+                statementVentaDetalle.setString(1, idVenta);
+                ResultSet resultSetLista = statementVentaDetalle.executeQuery();
+                ArrayList<SuministroTB> empList = new ArrayList();
+                while (resultSetLista.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setId(resultSetLista.getRow());
+                    suministroTB.setIdSuministro(resultSetLista.getString("IdSuministro"));
+                    suministroTB.setClave(resultSetLista.getString("Clave"));
+                    suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca") + (resultSetLista.getDouble("Bonificacion") <= 0 ? "" : "\nBONIFICACIÓN: " + resultSetLista.getDouble("Bonificacion")));
+                    suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
+                    suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
+                    suministroTB.setUnidadCompraName(resultSetLista.getString("UnidadCompra"));
+                    suministroTB.setEstadoName(resultSetLista.getString("Estado"));
+
+                    suministroTB.setPorLlevar(resultSetLista.getDouble("PorLlevar"));
+                    suministroTB.setCantidad(resultSetLista.getDouble("Cantidad"));
+                    suministroTB.setBonificacion(resultSetLista.getDouble("Bonificacion"));
+                    suministroTB.setCostoCompra(resultSetLista.getDouble("CostoVenta"));
+
+                    suministroTB.setImpuestoOperacion(resultSetLista.getInt("Operacion"));
+                    suministroTB.setImpuestoNombre(resultSetLista.getString("NombreImpuesto"));
+                    suministroTB.setImpuestoId(resultSetLista.getInt("IdImpuesto"));
+                    suministroTB.setImpuestoValor(resultSetLista.getDouble("ValorImpuesto"));
+
+                    double valor_sin_impuesto = resultSetLista.getDouble("PrecioVenta") / ((suministroTB.getImpuestoValor() / 100.00) + 1);
+                    double descuento = suministroTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                    suministroTB.setDescuento(descuento);
+                    suministroTB.setDescuentoCalculado(porcentajeRestante);
+                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+
+                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+                    suministroTB.setPrecioVentaGeneralReal(preciocalculado);
+
+                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+                    suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
+
+                    suministroTB.setImporteBruto(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+
+                    suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
+                    suministroTB.setUnidadVenta(resultSetLista.getInt("UnidadVenta"));
+                    suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
+
+                    Button button = new Button("X");
+                    button.getStyleClass().add("buttonDark");
+                    suministroTB.setRemover(button);
+
+                    empList.add(suministroTB);
+                }
+                ventaTB.setSuministroTBs(empList);
+                return ventaTB;
+            } else {
+                throw new Exception("No se puedo obtener el detalle de la venta, intente nuvemante por favor.");
+            }
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
+        } finally {
             try {
-                statementVenta = DBUtil.getConnection().prepareStatement("{call Sp_Obtener_Venta_ById(?)}");
-                statementVenta.setString(1, idVenta);
-                try (ResultSet resultSetVenta = statementVenta.executeQuery()) {
-                    if (resultSetVenta.next()) {
-                        ventaTB = new VentaTB();
-                        ventaTB.setIdVenta(idVenta);
-                        ventaTB.setFechaVenta(resultSetVenta.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                        ventaTB.setHoraVenta(resultSetVenta.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                        //Cliente start
-                        ClienteTB clienteTB = new ClienteTB();
-                        clienteTB.setIdCliente(resultSetVenta.getString("IdCliente"));
-                        clienteTB.setIdAuxiliar(resultSetVenta.getString("IdAuxiliar"));
-                        clienteTB.setTipoDocumentoName(resultSetVenta.getString("NombreDocumento"));
-                        clienteTB.setNumeroDocumento(resultSetVenta.getString("NumeroDocumento"));
-                        clienteTB.setInformacion(resultSetVenta.getString("Informacion"));
-                        clienteTB.setTelefono(resultSetVenta.getString("Telefono"));
-                        clienteTB.setCelular(resultSetVenta.getString("Celular"));
-                        clienteTB.setEmail(resultSetVenta.getString("Email"));
-                        clienteTB.setDireccion(resultSetVenta.getString("Direccion"));
-                        ventaTB.setClienteTB(clienteTB);
-                        //Cliente end
-                        ventaTB.setCodigoAlterno(resultSetVenta.getString("CodigoAlterno"));
-                        ventaTB.setIdComprobante(resultSetVenta.getInt("IdComprobante"));
-                        ventaTB.setComprobanteName(resultSetVenta.getString("Comprobante"));
-                        ventaTB.setSerie(resultSetVenta.getString("Serie"));
-                        ventaTB.setNumeracion(resultSetVenta.getString("Numeracion"));
-                        ventaTB.setObservaciones(resultSetVenta.getString("Observaciones"));
-                        ventaTB.setTipo(resultSetVenta.getInt("Tipo"));
-                        ventaTB.setEstado(resultSetVenta.getInt("Estado"));
-                        ventaTB.setEfectivo(resultSetVenta.getDouble("Efectivo"));
-                        ventaTB.setVuelto(resultSetVenta.getDouble("Vuelto"));
-                        ventaTB.setTarjeta(resultSetVenta.getDouble("Tarjeta"));
-                        ventaTB.setSubTotal(resultSetVenta.getDouble("SubTotal"));
-                        ventaTB.setDescuento(resultSetVenta.getDouble("Descuento"));
-                        ventaTB.setSubImporte(ventaTB.getSubTotal() - ventaTB.getDescuento());
-                        ventaTB.setImpuesto(resultSetVenta.getDouble("Impuesto"));
-                        ventaTB.setTotal(resultSetVenta.getDouble("Total"));
-                        ventaTB.setCodigo(resultSetVenta.getString("Codigo"));
-
-                        if (ventaTB.getTipo() == 1) {
-                            ventaTB.setTipoName("CONTADO");
-                        } else {
-                            ventaTB.setTipoName("CRÉDITO");
-                        }
-
-                        if (ventaTB.getTipo() == 1 && ventaTB.getEstado() == 1) {
-                            ventaTB.setEstadoName("COBRADO");
-                        } else if (ventaTB.getTipo() == 2 && ventaTB.getEstado() == 2) {
-                            ventaTB.setEstadoName("POR COBRAR");
-                        } else if (ventaTB.getTipo() == 1 && ventaTB.getEstado() == 2) {
-                            ventaTB.setEstadoName("POR LLEVAR");
-                        } else {
-                            ventaTB.setEstadoName("ANULADO");
-                        }
-                        //moneda start
-                        MonedaTB monedaTB = new MonedaTB();
-                        monedaTB.setNombre(resultSetVenta.getString("Nombre"));
-                        monedaTB.setAbreviado(resultSetVenta.getString("Abreviado"));
-                        monedaTB.setSimbolo(resultSetVenta.getString("Simbolo"));
-                        ventaTB.setMonedaTB(monedaTB);
-                        //moneda end
-
-                        //empleado start
-                        statementEmpleado = DBUtil.getConnection().prepareStatement("select e.Apellidos,e.Nombres \n"
-                                + "from VentaTB as v inner join EmpleadoTB as e \n"
-                                + "on v.Vendedor = e.IdEmpleado\n"
-                                + "where v.IdVenta = ?");
-                        statementEmpleado.setString(1, idVenta);
-                        try (ResultSet resultSetEmpleado = statementEmpleado.executeQuery()) {
-                            EmpleadoTB empleadoTB = null;
-                            if (resultSetEmpleado.next()) {
-                                empleadoTB = new EmpleadoTB();
-                                empleadoTB.setApellidos(resultSetEmpleado.getString("Apellidos"));
-                                empleadoTB.setNombres(resultSetEmpleado.getString("Nombres"));
-                            }
-                            ventaTB.setEmpleadoTB(empleadoTB);
-                        }
-
-                        //empleado end
-                        //detalle venta start
-                        statementVentaDetalle = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Detalle_By_Id(?)}");
-                        statementVentaDetalle.setString(1, idVenta);
-                        try (ResultSet resultSetLista = statementVentaDetalle.executeQuery()) {
-                            ArrayList<SuministroTB> empList = new ArrayList();
-                            while (resultSetLista.next()) {
-                                SuministroTB suministroTB = new SuministroTB();
-                                suministroTB.setId(resultSetLista.getRow());
-                                suministroTB.setIdSuministro(resultSetLista.getString("IdSuministro"));
-                                suministroTB.setClave(resultSetLista.getString("Clave"));
-                                suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca") + (resultSetLista.getDouble("Bonificacion") <= 0 ? "" : "\nBONIFICACIÓN: " + resultSetLista.getDouble("Bonificacion")));
-                                suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
-                                suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
-                                suministroTB.setUnidadCompraName(resultSetLista.getString("UnidadCompra"));
-                                suministroTB.setEstadoName(resultSetLista.getString("Estado"));
-
-                                suministroTB.setPorLlevar(resultSetLista.getDouble("PorLlevar"));
-                                suministroTB.setCantidad(resultSetLista.getDouble("Cantidad"));
-                                suministroTB.setBonificacion(resultSetLista.getDouble("Bonificacion"));
-                                suministroTB.setCostoCompra(resultSetLista.getDouble("CostoVenta"));
-
-                                suministroTB.setImpuestoNombre(resultSetLista.getString("NombreImpuesto"));
-                                suministroTB.setImpuestoId(resultSetLista.getInt("IdImpuesto"));
-                                suministroTB.setImpuestoValor(resultSetLista.getDouble("ValorImpuesto"));
-
-                                double valor_sin_impuesto = resultSetLista.getDouble("PrecioVenta") / ((suministroTB.getImpuestoValor() / 100.00) + 1);
-                                double descuento = suministroTB.getDescuento();
-                                double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
-                                double preciocalculado = valor_sin_impuesto - porcentajeRestante;
-
-                                suministroTB.setDescuento(descuento);
-                                suministroTB.setDescuentoCalculado(porcentajeRestante);
-                                suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-
-                                suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-                                suministroTB.setPrecioVentaGeneralReal(preciocalculado);
-
-                                double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
-                                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
-                                suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
-
-                                suministroTB.setImporteBruto(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-                                suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                                suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
-
-                                empList.add(suministroTB);
-                            }
-                            ventaTB.setSuministroTBs(empList);
-                        }
-                        //datelle venta end
-                    }
+                if (statementVenta != null) {
+                    statementVenta.close();
                 }
-            } catch (SQLException e) {
-                System.out.println("ListCompletaVentasDetalle() La operación de selección de SQL ha fallado: " + e.getLocalizedMessage());
-            } finally {
-                try {
-                    if (statementVenta != null) {
-                        statementVenta.close();
-                    }
-                    if (statementEmpleado != null) {
-                        statementEmpleado.close();
-                    }
-                    if (statementVentaDetalle != null) {
-                        statementVentaDetalle.close();
-                    }
-                    DBUtil.dbDisconnect();
-                } catch (SQLException ex) {
-
+                if (statementEmpleado != null) {
+                    statementEmpleado.close();
                 }
+                if (statementVentaDetalle != null) {
+                    statementVentaDetalle.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
             }
         }
-        return ventaTB;
+
     }
 
     public static String CancelTheSale(String idVenta, ObservableList<SuministroTB> arrList) {

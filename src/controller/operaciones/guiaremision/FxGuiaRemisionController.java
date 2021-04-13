@@ -126,7 +126,7 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private TableColumn<GuiaRemisionDetalleTB, Button> tcOpcion;
 
-     private FxPrincipalController fxPrincipalController;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -364,7 +364,7 @@ public class FxGuiaRemisionController implements Initializable {
                 if (objects.get(4) != null) {
                     ArrayList<TipoDocumentoTB> documentoTBs = (ArrayList<TipoDocumentoTB>) objects.get(4);
                     documentoTBs.forEach(cbDocumentoGuia.getItems()::add);
-                    if(cbDocumentoGuia.getItems().size()==1){
+                    if (cbDocumentoGuia.getItems().size() == 1) {
                         cbDocumentoGuia.getSelectionModel().select(0);
                     }
                 }
@@ -750,15 +750,16 @@ public class FxGuiaRemisionController implements Initializable {
             return t;
         });
 
-        Task<VentaTB> task = new Task<VentaTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            protected VentaTB call() {
+            protected Object call() {
                 return VentaADO.ListCompletaVentasDetalle(idVenta);
             }
         };
         task.setOnSucceeded(e -> {
-            VentaTB ventaTB = task.getValue();
-            if (ventaTB != null) {
+            Object object = task.getValue();
+            if (object instanceof VentaTB) {
+                VentaTB ventaTB = (VentaTB) object;
                 ArrayList<SuministroTB> empList = ventaTB.getSuministroTBs();
 
                 for (int i = 0; i < cbTipoComprobante.getItems().size(); i++) {

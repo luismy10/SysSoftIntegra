@@ -37,7 +37,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -53,6 +52,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -182,6 +182,14 @@ public class FxVentaEstructuraController implements Initializable {
     private VBox vbBodyCliente;
     @FXML
     private Button btnCancelarProceso;
+    @FXML
+    private VBox vbBody;
+    @FXML
+    private HBox hbLoad;
+    @FXML
+    private Label lblMessageLoad;
+    @FXML
+    private Button btnAceptarLoad;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -236,8 +244,6 @@ public class FxVentaEstructuraController implements Initializable {
     private double impuestoNeto;
 
     private double importeNeto;
-
-    private Alert alert = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -810,8 +816,8 @@ public class FxVentaEstructuraController implements Initializable {
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
-             FxVentaMostrarController controller = fXMLLoader.getController();
-             controller.setInitControllerVentaEstructura(this);
+            FxVentaMostrarController controller = fXMLLoader.getController();
+            controller.setInitControllerVentaEstructura(this);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar ventas", window.getScene().getWindow());
             stage.setResizable(false);
@@ -1036,21 +1042,16 @@ public class FxVentaEstructuraController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<CotizacionTB> task = new Task<CotizacionTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public CotizacionTB call() {
+            public Object call() {
                 return CotizacionADO.CargarCotizacionVenta(idCotizacion);
             }
         };
         task.setOnSucceeded(w -> {
-            if (!task.isRunning()) {
-                if (alert != null) {
-                    ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
-                }
-            }
-            CotizacionTB cotizacionTB = task.getValue();
-            if (cotizacionTB != null) {
-
+            Object result = task.getValue();
+            if (result instanceof CotizacionTB) {
+                CotizacionTB cotizacionTB = (CotizacionTB) result;
                 for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
                     if (detalleTB.getIdDetalle() == cotizacionTB.getClienteTB().getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(detalleTB);
@@ -1090,53 +1091,204 @@ public class FxVentaEstructuraController implements Initializable {
                     tvList.setItems(cotizacionTBs);
                     calculateTotales();
                 }
-                Tools.AlertMessageInformation(window, "Ventas", "Los datos se cargaron correctamente.");
-                fxPrincipalController.closeFondoModal();
+                vbBody.setDisable(false);
+                hbLoad.setVisible(false);
             } else {
-                Tools.AlertMessageWarning(window, "Ventas", "Se produjo un problema intente nuevamente.");
-                fxPrincipalController.closeFondoModal();
+                lblMessageLoad.setText((String) result);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
             }
-
         });
         task.setOnFailed(w -> {
-            if (alert != null) {
-                ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
-            }
-            Tools.AlertMessageError(window, "Venta", "Error en la ejecución, intente nuevamente.");
-            fxPrincipalController.closeFondoModal();
+            vbBody.setDisable(false);
+            hbLoad.setVisible(false);
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            btnAceptarLoad.setVisible(true);
         });
         task.setOnScheduled(w -> {
-            fxPrincipalController.openFondoModal();
-            alert = Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.NONE, "Procesando Información...");
-
+            vbBody.setDisable(true);
+            hbLoad.setVisible(true);
+            btnAceptarLoad.setVisible(false);
+            lblMessageLoad.setText("Cargando datos...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
             exec.shutdown();
         }
     }
-    
-    public void loadVenta(String idVenta){
+
+    public void loadAddVenta(String idVenta) {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
-        Task<CotizacionTB> task = new Task<CotizacionTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public CotizacionTB call() {
-                return null;
+            public Object call() {
+                return VentaADO.ListCompletaVentasDetalle(idVenta);
             }
         };
         task.setOnSucceeded(w -> {
-            
+            Object object = task.getValue();
+            if (object instanceof VentaTB) {
+                VentaTB ventaTB = (VentaTB) object;
+                for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle() == ventaTB.getClienteTB().getTipoDocumento()) {
+                        cbTipoDocumento.getSelectionModel().select(i);
+                        break;
+                    }
+                }
 
+                for (MonedaTB monedaTB : cbMoneda.getItems()) {
+                    if (monedaTB.getIdMoneda() == ventaTB.getIdMoneda()) {
+                        cbMoneda.getSelectionModel().select(monedaTB);
+                        monedaSimbolo = cbMoneda.getSelectionModel().getSelectedItem().getSimbolo();
+                        break;
+                    }
+                }
+
+                txtNumeroDocumento.setText(ventaTB.getClienteTB().getNumeroDocumento());
+                txtDatosCliente.setText(ventaTB.getClienteTB().getInformacion());
+                txtCelularCliente.setText(ventaTB.getClienteTB().getCelular());
+                txtCorreoElectronico.setText(ventaTB.getClienteTB().getEmail());
+                txtDireccionCliente.setText(ventaTB.getClienteTB().getDireccion());
+
+                ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
+                for (int i = 0; i < ventaTB.getSuministroTBs().size(); i++) {
+                    SuministroTB suministroTB = ventaTB.getSuministroTBs().get(i);
+                    suministroTB.getRemover().setOnAction(e -> {
+                        tvList.getItems().remove(suministroTB);
+                        calculateTotales();
+                    });
+                    suministroTB.getRemover().setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.ENTER) {
+                            tvList.getItems().remove(suministroTB);
+                            calculateTotales();
+                        }
+                    });
+                    cotizacionTBs.add(suministroTB);
+                }
+
+                tvList.setItems(cotizacionTBs);
+                calculateTotales();
+
+                vbBody.setDisable(false);
+                hbLoad.setVisible(false);
+            } else {
+                lblMessageLoad.setText((String) object);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+            }
         });
         task.setOnFailed(w -> {
-           
+            vbBody.setDisable(false);
+            hbLoad.setVisible(false);
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            btnAceptarLoad.setVisible(true);
         });
         task.setOnScheduled(w -> {
-            
+            vbBody.setDisable(true);
+            hbLoad.setVisible(true);
+            btnAceptarLoad.setVisible(false);
+            lblMessageLoad.setText("Cargando datos...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    public void loadPlusVenta(String idVenta) {
+        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        Task<Object> task = new Task<Object>() {
+            @Override
+            public Object call() {
+                return VentaADO.ListCompletaVentasDetalle(idVenta);
+            }
+        };
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+            if (object instanceof VentaTB) {
+                VentaTB ventaTB = (VentaTB) object;
+
+                ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
+                for (int i = 0; i < ventaTB.getSuministroTBs().size(); i++) {
+                    SuministroTB suministroTB = ventaTB.getSuministroTBs().get(i);
+                    suministroTB.getRemover().setOnAction(e -> {
+                        tvList.getItems().remove(suministroTB);
+                        calculateTotales();
+                    });
+                    suministroTB.getRemover().setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.ENTER) {
+                            tvList.getItems().remove(suministroTB);
+                            calculateTotales();
+                        }
+                    });
+                    cotizacionTBs.add(suministroTB);
+                }
+
+                cotizacionTBs.forEach(s -> {
+                    if (validateDuplicateArticulo(tvList, s)) {
+                        for (int i = 0; i < tvList.getItems().size(); i++) {
+                            if (tvList.getItems().get(i).getIdSuministro().equalsIgnoreCase(s.getIdSuministro())) {
+
+                                SuministroTB suministroTB = tvList.getItems().get(i);
+                                suministroTB.setCantidad(suministroTB.getCantidad() + s.getCantidad());
+                                double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
+
+                                suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+                                suministroTB.setImpuestoSumado(suministroTB.getCantidad() * (suministroTB.getPrecioVentaGeneralReal() * (suministroTB.getImpuestoValor() / 100.00)));
+
+                                suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+                                suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                                suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+
+                                tvList.refresh();
+                                tvList.getSelectionModel().select(i);
+                                calculateTotales();
+                                break;
+
+                            }
+                        }
+                    } else {
+                        tvList.getItems().add(s);
+                        int index = tvList.getItems().size() - 1;
+                        tvList.getSelectionModel().select(index);
+                        calculateTotales();
+                    }
+                });
+
+                vbBody.setDisable(false);
+                hbLoad.setVisible(false);
+                txtSearch.requestFocus();
+            } else {
+                lblMessageLoad.setText((String) object);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+            }
+        });
+        task.setOnFailed(w -> {
+            vbBody.setDisable(false);
+            hbLoad.setVisible(false);
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            btnAceptarLoad.setVisible(true);
+        });
+        task.setOnScheduled(w -> {
+            vbBody.setDisable(true);
+            hbLoad.setVisible(true);
+            btnAceptarLoad.setVisible(false);
+            lblMessageLoad.setText("Cargando datos...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -1237,9 +1389,10 @@ public class FxVentaEstructuraController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                VentaTB ventaTB = VentaADO.ListCompletaVentasDetalle(idVenta);
+                Object result = VentaADO.ListCompletaVentasDetalle(idVenta);
                 try {
-                    if (ventaTB != null) {
+                    if (result instanceof VentaTB) {
+                        VentaTB ventaTB = (VentaTB) result;
                         ObservableList<SuministroTB> suministroTBs = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
 
                         if (format.equalsIgnoreCase("a4")) {
@@ -1372,7 +1525,7 @@ public class FxVentaEstructuraController implements Initializable {
                             }
                         }
                     } else {
-                        return "empty";
+                        return (String) result;
                     }
                 } catch (PrinterException | IOException | PrintException | JRException ex) {
                     return "Error en imprimir: " + ex.getLocalizedMessage();
@@ -2555,9 +2708,23 @@ public class FxVentaEstructuraController implements Initializable {
             }
             event.consume();
         } else if (event.getCode() == KeyCode.ESCAPE) {
-            fxPrincipalController.closeFondoModal();           
+            fxPrincipalController.closeFondoModal();
             event.consume();
         }
+    }
+
+    @FXML
+    private void onKeyPressedAceptarLoad(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            vbBody.setDisable(false);
+            hbLoad.setVisible(false);
+        }
+    }
+
+    @FXML
+    private void onActionAceptarLoad(ActionEvent event) {
+        vbBody.setDisable(false);
+        hbLoad.setVisible(false);
     }
 
     public TextField getTxtSearch() {

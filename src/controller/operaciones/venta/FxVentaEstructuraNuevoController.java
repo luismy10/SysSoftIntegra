@@ -694,9 +694,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                VentaTB ventaTB = VentaADO.ListCompletaVentasDetalle(idVenta);
+                Object result = VentaADO.ListCompletaVentasDetalle(idVenta);
                 try {
-                    if (ventaTB != null) {
+                    if (result instanceof VentaTB) {
+                        VentaTB ventaTB = (VentaTB) result;
                         ObservableList<SuministroTB> suministroTBs = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
 
                         if (format.equalsIgnoreCase("a4")) {
@@ -829,7 +830,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             }
                         }
                     } else {
-                        return "empty";
+                        return (String) result;
                     }
                 } catch (PrinterException | IOException | PrintException | JRException ex) {
                     return "Error en imprimir: " + ex.getLocalizedMessage();

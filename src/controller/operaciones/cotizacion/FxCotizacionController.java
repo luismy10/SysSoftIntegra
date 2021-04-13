@@ -469,9 +469,9 @@ public class FxCotizacionController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<CotizacionTB> task = new Task<CotizacionTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public CotizacionTB call() {
+            public Object call() {
                 return CotizacionADO.CargarCotizacionVenta(idCotizacion);
             }
         };
@@ -481,9 +481,9 @@ public class FxCotizacionController implements Initializable {
                     ((Stage) (alert.getDialogPane().getScene().getWindow())).close();
                 }
             }
-            CotizacionTB cotizacionTB = task.getValue();
-            if (cotizacionTB != null && !cotizacionTB.getDetalleSuministroTBs().isEmpty()) {
-
+            Object object = task.getValue();
+            if (object instanceof CotizacionTB) {
+                CotizacionTB cotizacionTB = (CotizacionTB) object;
                 this.idCotizacion = idCotizacion;
                 for (MonedaTB monedaTB : cbMoneda.getItems()) {
                     if (monedaTB.getIdMoneda() == cotizacionTB.getIdMoneda()) {
@@ -519,7 +519,7 @@ public class FxCotizacionController implements Initializable {
                 Tools.AlertMessageInformation(hbWindow, "Ventas", "Los datos se cargaron correctamente.");
                 fxPrincipalController.closeFondoModal();
             } else {
-                Tools.AlertMessageWarning(hbWindow, "Ventas", "Se produjo un problema intente nuevamente.");
+                Tools.AlertMessageWarning(hbWindow, "Ventas", (String) object);
                 fxPrincipalController.closeFondoModal();
             }
 

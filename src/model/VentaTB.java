@@ -46,7 +46,8 @@ public class VentaTB {
     private ArrayList<SuministroTB> suministroTBs;
     private HBox hbOpciones;
     private Button btnImprimir;
-    private Button btnVenta;
+    private Button btnAgregar;
+    private Button btnSumar;
     private ArrayList<VentaCreditoTB> ventaCreditoTBs;
     private String clienteName;
     private double montoTotal;
@@ -375,13 +376,23 @@ public class VentaTB {
         this.btnImprimir = btnImprimir;
     }
 
-    public Button getBtnVenta() {
-        return btnVenta;
+    public Button getBtnAgregar() {
+        return btnAgregar;
     }
 
-    public void setBtnVenta(Button btnVenta) {
-        this.btnVenta = btnVenta;
+    public void setBtnAgregar(Button btnAgregar) {
+        this.btnAgregar = btnAgregar;
     }
+
+    public Button getBtnSumar() {
+        return btnSumar;
+    }
+
+    public void setBtnSumar(Button btnSumar) {
+        this.btnSumar = btnSumar;
+    }
+
+  
 
     public ArrayList<VentaCreditoTB> getVentaCreditoTBs() {
         return ventaCreditoTBs;

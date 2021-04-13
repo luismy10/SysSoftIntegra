@@ -83,7 +83,7 @@
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvList" prefHeight="320.0" prefWidth="900.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvList" prefHeight="320.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                   <TableColumn fx:id="tcCliente" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />
@@ -91,7 +91,8 @@
                                     <TableColumn fx:id="tcFechaHora" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha y Hora" />
                                     <TableColumn fx:id="tcTotal" prefWidth="120.0" style="-fx-alignment: CENTER-RIGHT;" text="Total" />
                                     <TableColumn fx:id="tcImprimir" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Imprimir" />
-                                    <TableColumn fx:id="tcSumVenta" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Sumar Venta" />
+                                    <TableColumn fx:id="tcAgregarVenta" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Agregar V." />
+                                    <TableColumn fx:id="tcSumarVenta" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Sumar V." />
                                 </columns>
                               </TableView>
                            </children>
