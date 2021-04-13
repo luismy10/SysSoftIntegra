@@ -706,6 +706,10 @@ public class FxVentaMostrarController implements Initializable {
         }
     }
 
+    public TextField getTxtSearch() {
+        return txtSearch;
+    }
+
     public void setInitControllerVentaEstructura(FxVentaEstructuraController ventaEstructuraController) {
         this.ventaEstructuraController = ventaEstructuraController;
     }

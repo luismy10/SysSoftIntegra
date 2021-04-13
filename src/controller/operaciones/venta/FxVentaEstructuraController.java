@@ -823,6 +823,9 @@ public class FxVentaEstructuraController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w->{
+                controller.getTxtSearch().requestFocus();
+            });
             stage.show();
 
         } catch (IOException ex) {
