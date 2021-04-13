@@ -1030,19 +1030,23 @@ public class VentaADO {
 
     }
 
-    public static Object ListVentasMostrar(int opcion, String search) {
+    public static Object ListVentasMostrar(int opcion, String search, int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
         try {
             DBUtil.dbConnect();
+            Object[] object = new Object[2];
+
             ObservableList<VentaTB> empList = FXCollections.observableArrayList();
-            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Mostrar(?,?)}");
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Mostrar(?,?,?,?)}");
             preparedStatement.setInt(1, opcion);
             preparedStatement.setString(2, search);
+            preparedStatement.setInt(3, posicionPagina);
+            preparedStatement.setInt(4, filasPorPagina);
             rsEmps = preparedStatement.executeQuery();
             while (rsEmps.next()) {
                 VentaTB ventaTB = new VentaTB();
-                ventaTB.setId(rsEmps.getRow());
+                ventaTB.setId(rsEmps.getRow() + posicionPagina);
                 ventaTB.setClienteTB(new ClienteTB(rsEmps.getString("Cliente")));
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
                 ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
@@ -1067,7 +1071,7 @@ public class VentaADO {
                 btnAddVenta.setGraphic(imageViewAccept);
                 btnAddVenta.getStyleClass().add("buttonLightError");
                 ventaTB.setBtnAgregar(btnAddVenta);
-                
+
                 Button btnPlusVenta = new Button();
                 ImageView imageViewPlus = new ImageView(new Image("/view/image/plus.png"));
                 imageViewPlus.setFitWidth(24);
@@ -1078,7 +1082,20 @@ public class VentaADO {
 
                 empList.add(ventaTB);
             }
-            return empList;
+
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Mostrar_Count(?,?)}");
+            preparedStatement.setInt(1, opcion);
+            preparedStatement.setString(2, search);
+            rsEmps = preparedStatement.executeQuery();
+            Integer cantidadTotal = 0;
+            if (rsEmps.next()) {
+                cantidadTotal = rsEmps.getInt("Total");
+            }
+
+            object[0] = empList;
+            object[1] = cantidadTotal;
+
+            return object;
         } catch (SQLException ex) {
             return ex.getLocalizedMessage();
         } catch (Exception ex) {

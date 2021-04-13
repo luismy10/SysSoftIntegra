@@ -96,6 +96,16 @@ public class FxVentaMostrarController implements Initializable {
 
     private AnchorPane hbPie;
 
+    private int paginacion;
+
+    private int totalPaginacion;
+
+    private short opcion;
+    @FXML
+    private Label lblPaginaActual;
+    @FXML
+    private Label lblPaginaSiguiente;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
@@ -119,6 +129,9 @@ public class FxVentaMostrarController implements Initializable {
         hbEncabezado = new AnchorPane();
         hbDetalleCabecera = new AnchorPane();
         hbPie = new AnchorPane();
+
+        paginacion = 1;
+        opcion = 0;
     }
 
     private void fillVentasTable(int opcion, String value) {
@@ -130,14 +143,15 @@ public class FxVentaMostrarController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return VentaADO.ListVentasMostrar(opcion, value);
+                return VentaADO.ListVentasMostrar(opcion, value, (paginacion - 1) * 10, 10);
             }
         };
 
         task.setOnSucceeded(e -> {
             Object result = task.getValue();
-            if (result instanceof ObservableList) {
-                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) result;
+            if (result instanceof Object[]) {
+                Object[] object = (Object[]) result;
+                ObservableList<VentaTB> ventaTBs = (ObservableList<VentaTB>) object[0];
                 if (!ventaTBs.isEmpty()) {
                     ventaTBs.forEach(f -> {
                         f.getBtnImprimir().setOnAction(event -> {
@@ -169,8 +183,13 @@ public class FxVentaMostrarController implements Initializable {
                         });
                     });
                     tvList.setItems(ventaTBs);
+                    totalPaginacion = (int) (Math.ceil(((Integer) object[1]) / 10.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
                 } else {
                     tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
                 }
             } else {
                 tvList.setPlaceholder(Tools.placeHolderTableView((String) result, "-fx-text-fill:#a70820;", false));
@@ -186,6 +205,7 @@ public class FxVentaMostrarController implements Initializable {
             lblLoad.setVisible(true);
             tvList.getItems().clear();
             tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -200,8 +220,8 @@ public class FxVentaMostrarController implements Initializable {
             ventaEstructuraController.loadAddVenta(idVenta);
         }
     }
-    
-    public void plusVenta(String idVenta){
+
+    public void plusVenta(String idVenta) {
         if (ventaEstructuraController != null) {
             Tools.Dispose(apWindow);
             ventaEstructuraController.loadPlusVenta(idVenta);
@@ -565,11 +585,24 @@ public class FxVentaMostrarController implements Initializable {
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }
 
+    private void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillVentasTable(0, "");
+                break;
+            case 1:
+                fillVentasTable(1, txtSearch.getText().trim());
+                break;
+        }
+    }
+
     @FXML
     private void onKeyPressed10PrimerasVentas(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
-                fillVentasTable(1, "");
+                paginacion = 1;
+                fillVentasTable(1, txtSearch.getText().trim());
+                opcion = 1;
             }
         }
     }
@@ -577,7 +610,9 @@ public class FxVentaMostrarController implements Initializable {
     @FXML
     private void onAction10PrimerasVentas(ActionEvent event) {
         if (!lblLoad.isVisible()) {
-            fillVentasTable(1, "");
+            paginacion = 1;
+            fillVentasTable(1, txtSearch.getText().trim());
+            opcion = 1;
         }
     }
 
@@ -619,8 +654,54 @@ public class FxVentaMostrarController implements Initializable {
                 && event.getCode() != KeyCode.PAUSE) {
             if (!Tools.isText(txtSearch.getText())) {
                 if (!lblLoad.isVisible()) {
+                    paginacion = 1;
                     fillVentasTable(0, txtSearch.getText().trim());
+                    opcion = 0;
                 }
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedAnterior(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                if (paginacion > 1) {
+                    paginacion--;
+                    onEventPaginacion();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onActionAnterior(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            if (paginacion > 1) {
+                paginacion--;
+                onEventPaginacion();
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSiguiente(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                if (paginacion < totalPaginacion) {
+                    paginacion++;
+                    onEventPaginacion();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onActionSiguiente(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            if (paginacion < totalPaginacion) {
+                paginacion++;
+                onEventPaginacion();
             }
         }
     }
