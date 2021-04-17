@@ -116,7 +116,7 @@ public class FxVentaMostrarController implements Initializable {
                 + cellData.getValue().getHoraVenta()
         ));
         tcDocumento.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()
+                cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion() + "\n" + (cellData.getValue().getNotaCreditoTB() != null ? " Modificado(" + cellData.getValue().getNotaCreditoTB().getSerie() + "-" + cellData.getValue().getNotaCreditoTB().getNumeracion() + ")" : "")
         ));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
         tcImprimir.setCellValueFactory(new PropertyValueFactory<>("btnImprimir"));

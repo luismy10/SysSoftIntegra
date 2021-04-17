@@ -48,7 +48,7 @@
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/search.png" />
+                              <Image url="@../../image/producto.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -88,7 +88,7 @@
                      <children>
                         <HBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <VBox style="-fx-spacing: 0.3333333333333333em;">
+                              <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="labelRoboto13" text="Proveedor" textFill="#020203">
                                        <graphic>
@@ -138,13 +138,13 @@
                                  <children>
                                     <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" prefHeight="320.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">
                                        <columns>
-                                          <TableColumn fx:id="tcQuitar" prefWidth="75.0" text="Quitar" />
-                                          <TableColumn fx:id="tcCantidad" prefWidth="120.0" text="Cantidad" />
-                                          <TableColumn fx:id="tcExistencia" prefWidth="120.0" text="Existenia" />
-                                          <TableColumn fx:id="tcStock" prefWidth="120.0" text="Stock Min./Max." />
-                                          <TableColumn fx:id="tcProducto" prefWidth="240.0" text="Producto" />
-                                          <TableColumn fx:id="tcCostoProveedor" prefWidth="150.0" text="Costo Proveedor" />
-                                          <TableColumn fx:id="tcImporte" prefWidth="150.0" text="Importe" />
+                                          <TableColumn fx:id="tcQuitar" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Quitar" />
+                                          <TableColumn fx:id="tcCantidad" prefWidth="120.0" style="-fx-alignment: BASELINE_CENTER;" text="Cantidad" />
+                                          <TableColumn fx:id="tcExistencia" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Existenia" />
+                                          <TableColumn fx:id="tcStock" prefWidth="120.0" style="-fx-alignment: BASELINE_CENTER;" text="Stock Min./Max." />
+                                          <TableColumn fx:id="tcProducto" prefWidth="240.0" style="-fx-alignment: BASELINE_LEFT;" text="Producto" />
+                                          <TableColumn fx:id="tcCostoProveedor" prefWidth="150.0" style="-fx-alignment: BASELINE_RIGHT;" text="Costo Proveedor" />
+                                          <TableColumn fx:id="tcImporte" prefWidth="150.0" style="-fx-alignment: BASELINE_RIGHT;" text="Importe" />
                                        </columns>
                                     </TableView>
                                  </children>
@@ -175,7 +175,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtObservacion" maxHeight="1.7976931348623157E308" prefHeight="30.0" promptText="Ingrese alguna observación" styleClass="text-field-normal" GridPane.columnIndex="1" />
+                                          <TextField fx:id="txtObservacion" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese alguna observación" styleClass="text-field-normal" GridPane.columnIndex="1" />
                                           <Label styleClass="labelRoboto13" text="Moneda:" textFill="#020203" GridPane.rowIndex="1">
                                              <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -216,16 +216,16 @@
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Importe Total:" textFill="#020203" GridPane.rowIndex="2" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label styleClass="labelRoboto15" text="Sub Importe:" textFill="#020203" GridPane.rowIndex="2" />
+                                          <Label fx:id="lblSubImporte" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label styleClass="labelRoboto15" text="Descuento Total:" textFill="#020203" GridPane.rowIndex="1" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label fx:id="lblDescuentoTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label styleClass="labelRoboto15" text="Importe Bruto:" textFill="#020203" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" />
+                                          <Label fx:id="lblImporteBruto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" />
                                           <Label styleClass="labelRoboto15" text="Impuesto (%):" textFill="#020203" GridPane.rowIndex="3" />
                                           <Label styleClass="labelRobotoBold17" text="Importe Neto:" textFill="#020203" GridPane.rowIndex="4" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold17" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label fx:id="lblImpuesto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label fx:id="lblImporteNeto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold17" text="0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                        </children>
                                     </GridPane>
                                  </children>

@@ -18,9 +18,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import model.InsumoTB;
 import model.ProduccionADO;
 import model.ProduccionTB;
+import model.SuministroTB;
 
 public class FXVisualizarController implements Initializable {
 
@@ -61,7 +61,7 @@ public class FXVisualizarController implements Initializable {
 
     private String idProduccion;
 
-    private ArrayList<InsumoTB> insumoTBs;
+    private ArrayList<SuministroTB> insumoTBs;
 
     private Double costo;
     
@@ -144,17 +144,17 @@ public class FXVisualizarController implements Initializable {
 
     private void fillProduccionDetalleTable() {
 
-        for (int i = 0; i < insumoTBs.size(); i++) {
-            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
-            gpList.add(addElementGridPaneLabel("l2" + (i + 1), Tools.roundingValue(insumoTBs.get(i).getCantidadUtilizada(), 2), Pos.CENTER), 1, (i + 1));
-            gpList.add(addElementGridPaneLabel("l3" + (i + 1), insumoTBs.get(i).getMedidaName(), Pos.CENTER), 2, (i + 1));
-            gpList.add(addElementGridPaneLabel("l4" + (i + 1), Tools.roundingValue(insumoTBs.get(i).getCosto(), 2), Pos.CENTER), 3, (i + 1));
-            gpList.add(addElementGridPaneLabel("l5" + (i + 1), Tools.roundingValue((insumoTBs.get(i).getCosto() * insumoTBs.get(i).getCantidadUtilizada()), 2), Pos.CENTER), 4, (i + 1));
-            gpList.add(addElementGridPaneLabel("l6" + (i + 1), insumoTBs.get(i).getNombreMarca(), Pos.CENTER), 5, (i + 1));
-            gpList.add(addElementGridPaneLabel("l7" + (i + 1), "S/C", Pos.CENTER), 6, (i + 1));
-
-            costo += (insumoTBs.get(i).getCosto() * insumoTBs.get(i).getCantidadUtilizada());
-        }
+//        for (int i = 0; i < insumoTBs.size(); i++) {
+//            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+//            gpList.add(addElementGridPaneLabel("l2" + (i + 1), Tools.roundingValue(insumoTBs.get(i).getCantidadUtilizada(), 2), Pos.CENTER), 1, (i + 1));
+//            gpList.add(addElementGridPaneLabel("l3" + (i + 1), insumoTBs.get(i).getMedidaName(), Pos.CENTER), 2, (i + 1));
+//            gpList.add(addElementGridPaneLabel("l4" + (i + 1), Tools.roundingValue(insumoTBs.get(i).getCosto(), 2), Pos.CENTER), 3, (i + 1));
+//            gpList.add(addElementGridPaneLabel("l5" + (i + 1), Tools.roundingValue((insumoTBs.get(i).getCosto() * insumoTBs.get(i).getCantidadUtilizada()), 2), Pos.CENTER), 4, (i + 1));
+//            gpList.add(addElementGridPaneLabel("l6" + (i + 1), insumoTBs.get(i).getNombreMarca(), Pos.CENTER), 5, (i + 1));
+//            gpList.add(addElementGridPaneLabel("l7" + (i + 1), "S/C", Pos.CENTER), 6, (i + 1));
+//
+//            costo += (insumoTBs.get(i).getCosto() * insumoTBs.get(i).getCantidadUtilizada());
+//        }
         total = costo;
     }
 

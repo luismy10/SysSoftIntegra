@@ -8,6 +8,7 @@ import controller.inventario.movimientos.FxMovimientosProcesoController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.pedidos.FxPedidosController;
+import controller.operaciones.pedidos.FxPedidosModalCantidadController;
 import controller.produccion.producir.FxProducirAgregarController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -158,7 +159,7 @@ public class FxSuministrosListaController implements Initializable {
         tcTipoProducto.setCellValueFactory(new PropertyValueFactory<>("imageValorInventario"));
         tcImpuesto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getImpuestoNombre()));
         tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
-        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+        tvList.setPlaceholder(Tools.placeHolderTableView("Ingrese datos para iniciar la busqueda.", "-fx-text-fill:#020203;", false));
 
         paginacion = 1;
         opcion = 0;
@@ -310,6 +311,32 @@ public class FxSuministrosListaController implements Initializable {
         }
     }
 
+    private void openWindowPedido() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (tvList.getSelectionModel().getSelectedItem().isInventario()) {
+                try {
+                    URL url = WindowStage.class.getClassLoader().getClass().getResource(FilesRouters.FX_PEDIDO_MODAL_CANTIDAD);
+                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                    Parent parent = fXMLLoader.load(url.openStream());
+                    //Controlller here
+                    FxPedidosModalCantidadController controller = fXMLLoader.getController();
+                    controller.setInitPedidosController(pedidosController);
+                    controller.initComponents(tvList.getSelectionModel().getSelectedItem());
+                    //
+                    Stage stage = WindowStage.StageLoaderModal(parent, "Cambiar cantidades", apWindow.getScene().getWindow());
+                    stage.setResizable(false);
+                    stage.sizeToScene();
+                    stage.setOnShown(w -> controller.getTxtCantidad().requestFocus());
+                    stage.show();
+                } catch (IOException ix) {
+                    System.out.println("Error Producto Lista Controller:" + ix.getLocalizedMessage());
+                }
+            } else {
+                Tools.AlertMessageWarning(apWindow, "Compra", "El producto no es inventariado, actualize sus campos.");
+            }
+        }
+    }
+
     private void executeEvent() {
         if (ventaEstructuraController != null) {
             addArticuloToList();
@@ -334,10 +361,8 @@ public class FxSuministrosListaController implements Initializable {
                 }
             }
         } else if (comprasController != null) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                openWindowCompra();
-                txtSearch.requestFocus();
-            }
+            openWindowCompra();
+            txtSearch.requestFocus();
         } else if (suministrosKardexController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 suministrosKardexController.setLoadProducto(tvList.getSelectionModel().getSelectedItem().getIdSuministro(), tvList.getSelectionModel().getSelectedItem().getClave() + " " + tvList.getSelectionModel().getSelectedItem().getNombreMarca());
@@ -359,48 +384,8 @@ public class FxSuministrosListaController implements Initializable {
 //            producirAgregarController.getTxtProductoFabricar().setText(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
 //            Tools.Dispose(apWindow);
         } else if (pedidosController != null) {
-            PedidoDetalleTB pedidoDetalleTB = new PedidoDetalleTB();
-            pedidoDetalleTB.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
-            pedidoDetalleTB.setSuministroTB(new SuministroTB(tvList.getSelectionModel().getSelectedItem().getClave(), tvList.getSelectionModel().getSelectedItem().getNombreMarca()));
-            pedidoDetalleTB.setExistencia(tvList.getSelectionModel().getSelectedItem().getCantidad());
-            pedidoDetalleTB.setStock(tvList.getSelectionModel().getSelectedItem().getStockMinimo() + "/" + tvList.getSelectionModel().getSelectedItem().getStockMaximo());
-            pedidoDetalleTB.setCosto(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
-
-            Button button = new Button();
-            button.getStyleClass().add("buttonDark");
-            ImageView view = new ImageView(new Image("/view/image/remove.png"));
-            view.setFitWidth(22);
-            view.setFitHeight(22);
-            button.setGraphic(view);
-            pedidoDetalleTB.setBtnQuitar(button);
-
-            TextField textField = new TextField();
-            textField.getStyleClass().add("text-field-normal");
-            textField.setPromptText("0.00");
-            textField.setPrefWidth(220);
-            textField.setPrefHeight(30);
-            textField.setOnKeyReleased(event -> {
-                if (Tools.isNumeric(textField.getText().trim())) {
-                    double cantidad = Double.parseDouble(textField.getText().trim());
-                    double importe = cantidad * pedidoDetalleTB.getCosto();            
-                    pedidoDetalleTB.setImporte(importe);
-                    pedidosController.getTvList().refresh();
-                }
-            });
-            textField.setOnKeyTyped(event -> {
-                char c = event.getCharacter().charAt(0);
-                if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                    event.consume();
-                }
-                if (c == '.' && textField.getText().contains(".")) {
-                    event.consume();
-                }
-            });
-            pedidoDetalleTB.setTxtCantidad(textField);
-
-            pedidoDetalleTB.setImporte(0);
-            pedidosController.getAddArticulo(pedidoDetalleTB);
-            Tools.Dispose(apWindow);
+            openWindowPedido();
+            txtSearch.requestFocus();
         }
     }
 
@@ -741,6 +726,10 @@ public class FxSuministrosListaController implements Initializable {
                 onEventPaginacion();
             }
         }
+    }
+
+    public TextField getTxtSearch() {
+        return txtSearch;
     }
 
     public void setInitMovimientoProcesoController(FxMovimientosProcesoController movimientosProcesoController) {

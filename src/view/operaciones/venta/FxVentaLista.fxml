@@ -53,7 +53,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtBuscar" onKeyPressed="#onKeyPressedBuscar" onKeyReleased="#onKeyReleasedBuscar" prefHeight="30.0" prefWidth="220.0" promptText="Buscar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
+                              <TextField fx:id="txtBuscar" onKeyPressed="#onKeyPressedBuscar" onKeyReleased="#onKeyReleasedBuscar" prefHeight="30.0" prefWidth="240.0" promptText="Buscar" styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.5em;">
@@ -104,10 +104,10 @@
                         <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="320.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
-                              <TableColumn fx:id="tcFecha" prefWidth="145.0" style="-fx-alignment: center;" text="Fecha de Venta" />
-                              <TableColumn fx:id="tcComprobante" prefWidth="145.0" style="-fx-alignment: center-left;" text="Comprobante" />
-                              <TableColumn fx:id="tcCliente" prefWidth="230.0" style="-fx-alignment: center-left;" text="Cliente" />
-                              <TableColumn fx:id="tcEstado" prefWidth="170.0" style="-fx-alignment: center-left;" text="Estado" />
+                              <TableColumn fx:id="tcFecha" prefWidth="160.0" style="-fx-alignment: center;" text="Fecha de Venta" />
+                              <TableColumn fx:id="tcComprobante" prefWidth="160.0" style="-fx-alignment: center-left;" text="Comprobante" />
+                              <TableColumn fx:id="tcCliente" prefWidth="250.0" style="-fx-alignment: center-left;" text="Cliente" />
+                              <TableColumn fx:id="tcEstado" prefWidth="160.0" style="-fx-alignment: center-left;" text="Estado" />
                               <TableColumn fx:id="tcTotal" prefWidth="150.0" style="-fx-alignment: center-left;" text="Total" />
                            </columns>
                         </TableView>
@@ -121,7 +121,7 @@
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
                                        <graphic>
-                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/left.png" />
                                              </image>
@@ -133,7 +133,7 @@
                                     <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203" />
                                     <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                                        <graphic>
-                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../image/right.png" />
                                              </image>
@@ -148,7 +148,7 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" prefHeight="30.0" styleClass="buttonLight" text="Aceptar">
                                  <graphic>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/accept.png" />
                                        </image>
@@ -157,7 +157,7 @@
                               </Button>
                               <Button mnemonicParsing="false" onAction="#onActionCerrar" onKeyPressed="#onKeyPressedCerrar" prefHeight="30.0" styleClass="buttonLight" text="Cerrar">
                                  <graphic>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/error.png" />
                                        </image>

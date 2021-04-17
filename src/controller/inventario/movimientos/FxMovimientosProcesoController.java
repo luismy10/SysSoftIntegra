@@ -160,7 +160,7 @@ public class FxMovimientosProcesoController implements Initializable {
                 inventarioTB.setTipoMovimientoName(cbAjuste.getSelectionModel().getSelectedItem().getNombre());
                 inventarioTB.setObservacion(txtObservacion.getText().trim());
                 inventarioTB.setSuministro(true);
-                inventarioTB.setEstado((short)1);
+                inventarioTB.setEstado((short) 1);
                 if (cbCaja.isSelected()) {
                     openWindowMovimientoCaja(rbIncremento.isSelected(), inventarioTB, tvList);
                 } else {
@@ -169,7 +169,7 @@ public class FxMovimientosProcesoController implements Initializable {
                     if (validate == 1) {
                         ejecutarConsulta(inventarioTB, tvList);
                     } else {
-                       fxPrincipalController.closeFondoModal();
+                        fxPrincipalController.closeFondoModal();
                     }
                 }
             }
@@ -252,7 +252,7 @@ public class FxMovimientosProcesoController implements Initializable {
             String result = task.getValue();
             if (result.equalsIgnoreCase("registered")) {
                 Tools.AlertMessageInformation(hbWindow, "Proceso", "Se completo el registro correctamente.");
-               fxPrincipalController.closeFondoModal();
+                fxPrincipalController.closeFondoModal();
                 clearComponents();
             } else {
                 Tools.AlertMessageError(hbWindow, "Proceso", result);
@@ -321,7 +321,7 @@ public class FxMovimientosProcesoController implements Initializable {
                             suministroTB.setDiferencia(newDiferencia);
                             suministroTB.setCambios(true);
                         }
-                    } 
+                    }
                     tvList.refresh();
                 });
                 suministroTB.getTxtMovimiento().focusedProperty().addListener((obs, oldVal, newVal) -> {
@@ -356,8 +356,8 @@ public class FxMovimientosProcesoController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.getTxtSearch().requestFocus());
             stage.show();
-            controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
         }

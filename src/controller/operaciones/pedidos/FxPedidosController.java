@@ -84,10 +84,30 @@ public class FxPedidosController implements Initializable {
     private ComboBox<FormaPagoTB> cbFormaPago;
     @FXML
     private TextField txtObservacion;
+    @FXML
+    private Label lblSubImporte;
+    @FXML
+    private Label lblDescuentoTotal;
+    @FXML
+    private Label lblImporteBruto;
+    @FXML
+    private Label lblImpuesto;
+    @FXML
+    private Label lblImporteNeto;
 
     private FxPrincipalController fxPrincipalController;
 
     private String monedaSimbolo;
+
+    private double importeBruto;
+
+    private double descuentoTotal;
+
+    private double subImporte;
+
+    private double impuestoGenerado;
+
+    private double importeNeto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -157,6 +177,12 @@ public class FxPedidosController implements Initializable {
                 }
             }
         }
+
+        lblImporteBruto.setText(monedaSimbolo + " 0.00");
+        lblDescuentoTotal.setText(monedaSimbolo + " 0.00");
+        lblSubImporte.setText(monedaSimbolo + " 0.00");
+        lblImpuesto.setText(monedaSimbolo + " 0.00");
+        lblImporteNeto.setText(monedaSimbolo + " 0.00");
     }
 
     private void loadComponentFormaPago() {
@@ -172,7 +198,7 @@ public class FxPedidosController implements Initializable {
         tcStock.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getStock()));
         tcProducto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSuministroTB().getClave() + "\n" + cellData.getValue().getSuministroTB().getNombreMarca()));
         tcCostoProveedor.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCosto(), 2)));
-        tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(),2)));
+        tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
 
         tcQuitar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
         tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
@@ -197,19 +223,19 @@ public class FxPedidosController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.getTxtSearch().requestFocus());
             stage.show();
-            controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
             System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }
     }
 
     public void getAddArticulo(PedidoDetalleTB pedidoDetalleTB) {
-          if (validateDuplicateArticulo(tvList, pedidoDetalleTB)) {
-              
-          }else{
-               tvList.getItems().add(pedidoDetalleTB);
-          }
+        if (validateDuplicateArticulo(tvList, pedidoDetalleTB)) {
+
+        } else {
+            tvList.getItems().add(pedidoDetalleTB);
+        }
     }
 
     private boolean validateDuplicateArticulo(TableView<PedidoDetalleTB> view, PedidoDetalleTB pedidoDetalleTB) {
@@ -221,6 +247,19 @@ public class FxPedidosController implements Initializable {
             }
         }
         return ret;
+    }
+
+    public void calculateTotales() {
+        importeBruto = 0;
+        descuentoTotal = 0;
+        subImporte = 0;
+        impuestoGenerado = 0;
+        importeNeto = 0;
+        lblImporteBruto.setText(monedaSimbolo + Tools.roundingValue(importeBruto, 2));
+        lblDescuentoTotal.setText(monedaSimbolo + Tools.roundingValue(descuentoTotal, 2));
+        lblSubImporte.setText(monedaSimbolo + Tools.roundingValue(subImporte, 2));
+        lblImpuesto.setText(monedaSimbolo + Tools.roundingValue(impuestoGenerado, 2));
+        lblImporteNeto.setText(monedaSimbolo + Tools.roundingValue(importeNeto, 2));
     }
 
     private void clearElements() {

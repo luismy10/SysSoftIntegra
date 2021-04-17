@@ -41,7 +41,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <TextField fx:id="txtCantidad" alignment="CENTER" maxHeight="1.7976931348623157E308" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedCantidad" prefWidth="240.0" styleClass="text-field-normal" text="1.00" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtCantidad" alignment="CENTER" maxHeight="1.7976931348623157E308" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="1.00" HBox.hgrow="ALWAYS" />
                   <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onActionMenos" onKeyPressed="#onKeyPressedMenos" styleClass="buttonBorder" text="''">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">

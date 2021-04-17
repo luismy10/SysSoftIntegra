@@ -83,7 +83,7 @@
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvList" prefHeight="320.0" prefWidth="1000.0" styleClass="table-view-secundario" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvList" prefHeight="320.0" prefWidth="1000.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="tcNumero" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
                                   <TableColumn fx:id="tcCliente" prefWidth="180.0" style="-fx-alignment: CENTER-LEFT;" text="Cliente" />

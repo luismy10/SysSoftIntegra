@@ -2,6 +2,7 @@ package controller.operaciones.compras;
 
 import controller.contactos.proveedores.FxProveedorListaController;
 import controller.inventario.suministros.FxSuministrosCompraController;
+import controller.inventario.suministros.FxSuministrosListaController;
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.SearchComboBox;
@@ -352,7 +353,24 @@ public class FxComprasController implements Initializable {
     }
 
     private void openWindowSuministrasAdd() {
-        WindowStage.openWindowSuministrasAdd(fxPrincipalController, spWindow, this);
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = WindowStage.class.getClassLoader().getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxSuministrosListaController controller = fXMLLoader.getController();
+            controller.setInitComprasController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", spWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.getTxtSearch().requestFocus());
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Controller compras" + ex.getLocalizedMessage());
+        }
     }
 
     private void openWindowSuministroEdit() {
