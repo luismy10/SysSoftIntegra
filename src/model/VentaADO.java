@@ -1049,12 +1049,19 @@ public class VentaADO {
                 ventaTB.setId(rsEmps.getRow() + posicionPagina);
                 ventaTB.setClienteTB(new ClienteTB(rsEmps.getString("Cliente")));
                 ventaTB.setIdVenta(rsEmps.getString("IdVenta"));
-                ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+                ventaTB.setFechaVenta(rsEmps.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 ventaTB.setHoraVenta(rsEmps.getTime("HoraVenta").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
                 ventaTB.setSerie(rsEmps.getString("Serie"));
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
                 ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
+                
+                if (rsEmps.getInt("IdNotaCredito") == 1) {
+                    NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
+                    notaCreditoTB.setSerie(rsEmps.getString("SerieNotaCredito"));
+                    notaCreditoTB.setNumeracion(rsEmps.getString("NumeracionNotaCredito"));
+                    ventaTB.setNotaCreditoTB(notaCreditoTB);
+                }
 
                 Button btnImprimir = new Button();
                 ImageView imageViewPrint = new ImageView(new Image("/view/image/print.png"));

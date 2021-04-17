@@ -1,6 +1,5 @@
 package controller.menus;
 
-import controller.produccion.insumos.FxInsumoController;
 import controller.produccion.producir.FxFormulaController;
 import controller.produccion.producir.FxProducirController;
 import controller.tools.FilesRouters;
@@ -39,15 +38,6 @@ public class FxProduccionController implements Initializable {
     private FxProducirController controllerProducir;
 
     /*
-    Controller insumos     
-     */
-    private FXMLLoader fXMLInsumo;
-
-    private HBox nodeInsumo;
-
-    private FxInsumoController controllerInsumo;
-
-    /*
     Controller formula     
      */
     private FXMLLoader fXMLFormula;
@@ -62,10 +52,6 @@ public class FxProduccionController implements Initializable {
             fXMLProducir = new FXMLLoader(getClass().getResource(FilesRouters.FX_PRODUCIR));
             nodeProducir = fXMLProducir.load();
             controllerProducir = fXMLProducir.getController();
-
-            fXMLInsumo = new FXMLLoader(getClass().getResource(FilesRouters.FX_INSUMOS));
-            nodeInsumo = fXMLInsumo.load();
-            controllerInsumo = fXMLInsumo.getController();
 
             fXMLFormula = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA));
             nodeFormula = fXMLFormula.load();
@@ -83,17 +69,6 @@ public class FxProduccionController implements Initializable {
         AnchorPane.setRightAnchor(nodeProducir, 0d);
         AnchorPane.setBottomAnchor(nodeProducir, 0d);
         fxPrincipalController.getVbContent().getChildren().add(nodeProducir);
-    }
-
-    private void openWindowInsumo() {
-        controllerInsumo.setContent(fxPrincipalController);
-        fxPrincipalController.getVbContent().getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeInsumo, 0d);
-        AnchorPane.setTopAnchor(nodeInsumo, 0d);
-        AnchorPane.setRightAnchor(nodeInsumo, 0d);
-        AnchorPane.setBottomAnchor(nodeInsumo, 0d);
-        fxPrincipalController.getVbContent().getChildren().add(nodeInsumo);
-        //controllerInsumo.loadInitComponents();
     }
 
     private void openWindowFormula() {
@@ -116,18 +91,6 @@ public class FxProduccionController implements Initializable {
     @FXML
     private void onActionProducir(ActionEvent event) {
         openWindowProducir();
-    }
-
-    @FXML
-    private void onKeyPressedInsumos(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowInsumo();
-        }
-    }
-
-    @FXML
-    private void onActionInsumos(ActionEvent event) {
-        openWindowInsumo();
     }
 
     @FXML

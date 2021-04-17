@@ -195,7 +195,7 @@
                                                       <HBox VBox.vgrow="ALWAYS">
                                                          <children>
                                                             <TextField disable="true" prefHeight="30.0" prefWidth="320.0" styleClass="text-field-normal" />
-                                                            <Button mnemonicParsing="false" onMouseClicked="#onMouseClickedFormula" styleClass="buttonLight">
+                                                            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onMouseClickedFormula" styleClass="buttonLight">
                                                                <graphic>
                                                                   <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -224,7 +224,7 @@
                                                 </VBox>
                                                 <VBox alignment="BOTTOM_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Button mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Agregar">
+                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Agregar">
                                                          <graphic>
                                                             <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>

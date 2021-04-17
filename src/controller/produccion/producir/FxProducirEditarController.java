@@ -44,8 +44,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.EmpleadoTB;
-import model.InsumoADO;
-import model.InsumoTB;
 import model.ProduccionADO;
 import model.ProduccionTB;
 import model.SuministroADO;
@@ -94,11 +92,11 @@ public class FxProducirEditarController implements Initializable {
 
     private String idProduccion;
 
-    private ArrayList<InsumoTB> insumoTBs;
+    private ArrayList<SuministroTB> suministroTBs;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        insumoTBs = new ArrayList();
+        suministroTBs = new ArrayList();
         ToggleGroup toggleGroup = new ToggleGroup();
         cbInterno.setToggleGroup(toggleGroup);
         cbExterno.setToggleGroup(toggleGroup);
@@ -260,15 +258,15 @@ public class FxProducirEditarController implements Initializable {
     }
 
     private void addElementPaneBody() {
-        for (int i = 0; i < insumoTBs.size(); i++) {
-            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
-            gpList.add(insumoTBs.get(i).getComboBox(), 1, (i + 1));
-            gpList.add(insumoTBs.get(i).getTxtCantidad(), 2, (i + 1));
-            gpList.add(insumoTBs.get(i).getTxtCantidadUtilizada(), 3, (i + 1));
-            gpList.add(insumoTBs.get(i).getTxtCantidadAUtilizar(), 4, (i + 1));
-            gpList.add(insumoTBs.get(i).getTxtMerma(), 5, (i + 1));
-            gpList.add(addElementGridPaneLabel("l4" + (i + 1), "UNIDAD", Pos.CENTER), 6, (i + 1));
-            gpList.add(insumoTBs.get(i).getBtnRemove(), 7, (i + 1));
+        for (int i = 0; i < suministroTBs.size(); i++) {
+//            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+//            gpList.add(insumoTBs.get(i).getComboBox(), 1, (i + 1));
+//            gpList.add(insumoTBs.get(i).getTxtCantidad(), 2, (i + 1));
+//            gpList.add(insumoTBs.get(i).getTxtCantidadUtilizada(), 3, (i + 1));
+//            gpList.add(insumoTBs.get(i).getTxtCantidadAUtilizar(), 4, (i + 1));
+//            gpList.add(insumoTBs.get(i).getTxtMerma(), 5, (i + 1));
+//            gpList.add(addElementGridPaneLabel("l4" + (i + 1), "UNIDAD", Pos.CENTER), 6, (i + 1));
+//            gpList.add(insumoTBs.get(i).getBtnRemove(), 7, (i + 1));
         }
     }
 
@@ -301,162 +299,162 @@ public class FxProducirEditarController implements Initializable {
     }
 
     private void addElementsTableInsumo() {
-        InsumoTB insumoTB = new InsumoTB();
-        insumoTB.setCosto(0);
-        insumoTB.setCantidad(1);
-        insumoTB.setCantidadAUtilizar(0);
-        insumoTB.setMerma(0);
-        insumoTB.setCantidadUtilizada(Double.parseDouble(txtCantidad.getText()));
-        ComboBox<InsumoTB> comboBox = new ComboBox();
-        comboBox.setPromptText("-- Selecionar --");
-        comboBox.setPrefWidth(220);
-        comboBox.setPrefHeight(30);
-        comboBox.setMaxWidth(Double.MAX_VALUE);
-        insumoTB.setComboBox(comboBox);
-
-        SearchComboBox<InsumoTB> searchComboBox = new SearchComboBox<>(insumoTB.getComboBox(), false);
-        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
-                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
-                }
-            } else if (t.getCode() == KeyCode.ESCAPE) {
-                searchComboBox.getComboBox().hide();
-            }
-        });
-        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
-                searchComboBox.getComboBox().getItems().clear();
-                List<InsumoTB> insumoTBss = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-                insumoTBss.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
-            }
-        });
-        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-            switch (t.getCode()) {
-                case ENTER:
-                case SPACE:
-                case ESCAPE:
-                    searchComboBox.getComboBox().hide();
-                    break;
-                case UP:
-                case DOWN:
-                case LEFT:
-                case RIGHT:
-                    break;
-                default:
-                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
-                    break;
-            }
-        });
-        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-            if (item != null) {
-                searchComboBox.getComboBox().getSelectionModel().select(item);
-                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
-                    searchComboBox.getComboBox().hide();
-                }
-            }
-        });
-        insumoTB.setSearchComboBox(searchComboBox);
-
-        TextField textField = new TextField(Tools.roundingValue(insumoTB.getCantidad(), 2));
-        textField.setDisable(true);
-        textField.setPromptText("0.00");
-        textField.getStyleClass().add("text-field-normal");
-        textField.setPrefWidth(220);
-        textField.setPrefHeight(30);
-        textField.setOnKeyTyped(event -> {
-            char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                event.consume();
-            }
-            if (c == '.' && textField.getText().contains(".")) {
-                event.consume();
-            }
-        });
-        insumoTB.setTxtCantidad(textField);
-
-        TextField textFieldCU = new TextField(Tools.roundingValue(insumoTB.getCantidadUtilizada(), 2));
-        textFieldCU.setDisable(true);
-        textFieldCU.setPromptText("0.00");
-        textFieldCU.getStyleClass().add("text-field-normal");
-        textFieldCU.setPrefWidth(220);
-        textFieldCU.setPrefHeight(30);
-        textFieldCU.setOnKeyTyped(event -> {
-            char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                event.consume();
-            }
-            if (c == '.' && textFieldCU.getText().contains(".")) {
-                event.consume();
-            }
-        });
-        insumoTB.setTxtCantidadUtilizada(textFieldCU);
-
-        TextField textFieldCaU = new TextField(Tools.roundingValue(insumoTB.getCantidadAUtilizar(), 2));
-        textFieldCaU.setPromptText("0.00");
-        textFieldCaU.getStyleClass().add("text-field-normal");
-        textFieldCaU.setPrefWidth(220);
-        textFieldCaU.setPrefHeight(30);
-        textFieldCaU.setOnKeyTyped(event -> {
-            char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-                event.consume();
-            }
-            if (c == '.' && textFieldCaU.getText().contains(".") && (c != '.')) {
-                event.consume();
-            }
-        });
-        insumoTB.setTxtCantidadAUtilizar(textFieldCaU);
-
-        TextField textMerma = new TextField(Tools.roundingValue(insumoTB.getMerma(), 2));
-        textMerma.setPromptText("0.00");
-        textMerma.getStyleClass().add("text-field-normal");
-        textMerma.setPrefWidth(220);
-        textMerma.setPrefHeight(30);
-        textMerma.setOnKeyTyped(event -> {
-            char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-                event.consume();
-            }
-            if (c == '.' && textMerma.getText().contains(".") && (c != '.')) {
-                event.consume();
-            }
-        });
-        insumoTB.setTxtMerma(textMerma);
-
-        Button button = new Button();
-        button.getStyleClass().add("buttonLightError");
-        button.setAlignment(Pos.CENTER);
-        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
-        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
-        button.setGraphic(imageView);
-
-        button.setOnAction(event -> {
-            insumoTBs.remove(insumoTB);
-            addElementPaneHead();
-            addElementPaneBody();
-        });
-        button.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                insumoTBs.remove(insumoTB);
-                addElementPaneHead();
-                addElementPaneBody();
-            }
-        });
-        insumoTB.setBtnRemove(button);
-        insumoTBs.add(insumoTB);
-        addElementPaneHead();
-        addElementPaneBody();
+//        InsumoTB insumoTB = new InsumoTB();
+//        insumoTB.setCosto(0);
+//        insumoTB.setCantidad(1);
+//        insumoTB.setCantidadAUtilizar(0);
+//        insumoTB.setMerma(0);
+//        insumoTB.setCantidadUtilizada(Double.parseDouble(txtCantidad.getText()));
+//        ComboBox<InsumoTB> comboBox = new ComboBox();
+//        comboBox.setPromptText("-- Selecionar --");
+//        comboBox.setPrefWidth(220);
+//        comboBox.setPrefHeight(30);
+//        comboBox.setMaxWidth(Double.MAX_VALUE);
+//        insumoTB.setComboBox(comboBox);
+//
+//        SearchComboBox<InsumoTB> searchComboBox = new SearchComboBox<>(insumoTB.getComboBox(), false);
+//        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+//            if (t.getCode() == KeyCode.ENTER) {
+//                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+//                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+//                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+//                }
+//            } else if (t.getCode() == KeyCode.ESCAPE) {
+//                searchComboBox.getComboBox().hide();
+//            }
+//        });
+//        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+//            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+//                searchComboBox.getComboBox().getItems().clear();
+//                List<InsumoTB> insumoTBss = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+//                insumoTBss.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
+//            }
+//        });
+//        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+//            switch (t.getCode()) {
+//                case ENTER:
+//                case SPACE:
+//                case ESCAPE:
+//                    searchComboBox.getComboBox().hide();
+//                    break;
+//                case UP:
+//                case DOWN:
+//                case LEFT:
+//                case RIGHT:
+//                    break;
+//                default:
+//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+//                    break;
+//            }
+//        });
+//        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+//            if (item != null) {
+//                searchComboBox.getComboBox().getSelectionModel().select(item);
+//                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+//                    searchComboBox.getComboBox().hide();
+//                }
+//            }
+//        });
+//        insumoTB.setSearchComboBox(searchComboBox);
+//
+//        TextField textField = new TextField(Tools.roundingValue(insumoTB.getCantidad(), 2));
+//        textField.setDisable(true);
+//        textField.setPromptText("0.00");
+//        textField.getStyleClass().add("text-field-normal");
+//        textField.setPrefWidth(220);
+//        textField.setPrefHeight(30);
+//        textField.setOnKeyTyped(event -> {
+//            char c = event.getCharacter().charAt(0);
+//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+//                event.consume();
+//            }
+//            if (c == '.' && textField.getText().contains(".")) {
+//                event.consume();
+//            }
+//        });
+//        insumoTB.setTxtCantidad(textField);
+//
+//        TextField textFieldCU = new TextField(Tools.roundingValue(insumoTB.getCantidadUtilizada(), 2));
+//        textFieldCU.setDisable(true);
+//        textFieldCU.setPromptText("0.00");
+//        textFieldCU.getStyleClass().add("text-field-normal");
+//        textFieldCU.setPrefWidth(220);
+//        textFieldCU.setPrefHeight(30);
+//        textFieldCU.setOnKeyTyped(event -> {
+//            char c = event.getCharacter().charAt(0);
+//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+//                event.consume();
+//            }
+//            if (c == '.' && textFieldCU.getText().contains(".")) {
+//                event.consume();
+//            }
+//        });
+//        insumoTB.setTxtCantidadUtilizada(textFieldCU);
+//
+//        TextField textFieldCaU = new TextField(Tools.roundingValue(insumoTB.getCantidadAUtilizar(), 2));
+//        textFieldCaU.setPromptText("0.00");
+//        textFieldCaU.getStyleClass().add("text-field-normal");
+//        textFieldCaU.setPrefWidth(220);
+//        textFieldCaU.setPrefHeight(30);
+//        textFieldCaU.setOnKeyTyped(event -> {
+//            char c = event.getCharacter().charAt(0);
+//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+//                event.consume();
+//            }
+//            if (c == '.' && textFieldCaU.getText().contains(".") && (c != '.')) {
+//                event.consume();
+//            }
+//        });
+//        insumoTB.setTxtCantidadAUtilizar(textFieldCaU);
+//
+//        TextField textMerma = new TextField(Tools.roundingValue(insumoTB.getMerma(), 2));
+//        textMerma.setPromptText("0.00");
+//        textMerma.getStyleClass().add("text-field-normal");
+//        textMerma.setPrefWidth(220);
+//        textMerma.setPrefHeight(30);
+//        textMerma.setOnKeyTyped(event -> {
+//            char c = event.getCharacter().charAt(0);
+//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+//                event.consume();
+//            }
+//            if (c == '.' && textMerma.getText().contains(".") && (c != '.')) {
+//                event.consume();
+//            }
+//        });
+//        insumoTB.setTxtMerma(textMerma);
+//
+//        Button button = new Button();
+//        button.getStyleClass().add("buttonLightError");
+//        button.setAlignment(Pos.CENTER);
+//        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+//        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+//        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+//        imageView.setFitWidth(20);
+//        imageView.setFitHeight(20);
+//        button.setGraphic(imageView);
+//
+//        button.setOnAction(event -> {
+//            insumoTBs.remove(insumoTB);
+//            addElementPaneHead();
+//            addElementPaneBody();
+//        });
+//        button.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.ENTER) {
+//                insumoTBs.remove(insumoTB);
+//                addElementPaneHead();
+//                addElementPaneBody();
+//            }
+//        });
+//        insumoTB.setBtnRemove(button);
+//        insumoTBs.add(insumoTB);
+//        addElementPaneHead();
+//        addElementPaneBody();
     }
 
     public void clearComponentes() {
         Tools.actualDate(Tools.getDate(), txtFechaInicio);
-        insumoTBs.clear();
+        suministroTBs.clear();
         addElementPaneHead();
         addElementPaneBody();
         txtDias.clear();
@@ -514,21 +512,21 @@ public class FxProducirEditarController implements Initializable {
                 cbPersonaEncargada.setDisable(true);
                 txtGlosaDescriptiva.setText(produccionTB.getDescripcion());
                 txtCantidad.setText(Tools.roundingValue(produccionTB.getCantidad(), 2));
-                insumoTBs.addAll(produccionTB.getInsumoTBs());
-                for (InsumoTB insumoTB : insumoTBs) {
-                    insumoTB.getBtnRemove().setOnAction(event -> {
-                        insumoTBs.remove(insumoTB);
-                        addElementPaneHead();
-                        addElementPaneBody();
-                    });
-                    insumoTB.getBtnRemove().setOnKeyPressed(event -> {
-                        if (event.getCode() == KeyCode.ENTER) {
-                            insumoTBs.remove(insumoTB);
-                            addElementPaneHead();
-                            addElementPaneBody();
-                        }
-                    });
-                }
+//                insumoTBs.addAll(produccionTB.getInsumoTBs());
+//                for (InsumoTB insumoTB : insumoTBs) {
+//                    insumoTB.getBtnRemove().setOnAction(event -> {
+//                        insumoTBs.remove(insumoTB);
+//                        addElementPaneHead();
+//                        addElementPaneBody();
+//                    });
+//                    insumoTB.getBtnRemove().setOnKeyPressed(event -> {
+//                        if (event.getCode() == KeyCode.ENTER) {
+//                            insumoTBs.remove(insumoTB);
+//                            addElementPaneHead();
+//                            addElementPaneBody();
+//                        }
+//                    });
+//                }
 
                 addElementPaneHead();
                 addElementPaneBody();
@@ -582,19 +580,19 @@ public class FxProducirEditarController implements Initializable {
         } else {
             int cantidad = 0;
             int insumo = 0;
-            for (InsumoTB insumoTB : insumoTBs) {
-                if (Tools.isNumeric(insumoTB.getTxtCantidad().getText()) && Double.parseDouble(insumoTB.getTxtCantidad().getText()) > 0) {
-                    cantidad += 0;
-                } else {
-                    cantidad += 1;
-                }
-
-                if (insumoTB.getSearchComboBox().getComboBox().getSelectionModel().getSelectedIndex() >= 0) {
-                    insumo += 0;
-                } else {
-                    insumo += 1;
-                }
-            }
+//            for (InsumoTB insumoTB : insumoTBs) {
+//                if (Tools.isNumeric(insumoTB.getTxtCantidad().getText()) && Double.parseDouble(insumoTB.getTxtCantidad().getText()) > 0) {
+//                    cantidad += 0;
+//                } else {
+//                    cantidad += 1;
+//                }
+//
+//                if (insumoTB.getSearchComboBox().getComboBox().getSelectionModel().getSelectedIndex() >= 0) {
+//                    insumo += 0;
+//                } else {
+//                    insumo += 1;
+//                }
+//            }
 
             if (cantidad > 0) {
                 Tools.AlertMessageWarning(apWindow, "Producción", "Hay cantidades en 0 en la lista de insumos.");
@@ -614,7 +612,7 @@ public class FxProducirEditarController implements Initializable {
                 produccionTB.setDescripcion(txtGlosaDescriptiva.getText());
                 produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
                 produccionTB.setIdProduccion(idProduccion);
-                produccionTB.setInsumoTBs(insumoTBs);
+//                produccionTB.setInsumoTBs(insumoTBs);
 
                 modalEstado(produccionTB);
             }

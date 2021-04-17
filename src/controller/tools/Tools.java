@@ -399,7 +399,7 @@ public class Tools {
 
     public static void showAlertNotification(String url, String title, String message, Duration duration, Pos pos) {
         Image image = new Image(url);
-        ImageView imageView = new ImageView(image);      
+        ImageView imageView = new ImageView(image);
         double newWidth = Tools.newSizeImagePorcent(image.getWidth(), 30);
         double nweHeight = Tools.newSizeImagePorcent(image.getHeight(), 30);
         imageView.setFitWidth(newWidth);
@@ -451,6 +451,10 @@ public class Tools {
     }
 
     public static double newSizeImagePorcent(double width, double porcent) {
-        return width - (width * (porcent/100));
+        return width - (width * (porcent / 100));
+    }
+
+    public static int convertEmToPx(double em) {
+        return (int) ((12 * em) / 1);
     }
 }

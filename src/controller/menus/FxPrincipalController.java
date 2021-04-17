@@ -158,7 +158,6 @@ public class FxPrincipalController implements Initializable {
 
     public void initLoadMenus() {
         try {
-
             ExecutorService executor = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);

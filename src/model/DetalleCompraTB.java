@@ -22,7 +22,6 @@ public class DetalleCompraTB {
     private double impuestoSumado;
     private double importe;
     private boolean lote;
-    private InsumoTB insumoTB;
     private ArrayList<LoteTB> listLote;
     private SuministroTB suministroTB;
     private ArrayList<PreciosTB> listPrecios;
@@ -197,14 +196,6 @@ public class DetalleCompraTB {
 
     public void setMedida(String medida) {
         this.medida = medida;
-    }
-
-    public InsumoTB getInsumoTB() {
-        return insumoTB;
-    }
-
-    public void setInsumoTB(InsumoTB insumoTB) {
-        this.insumoTB = insumoTB;
     }
 
 }

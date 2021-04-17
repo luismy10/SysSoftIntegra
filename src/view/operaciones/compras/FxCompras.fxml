@@ -130,7 +130,7 @@
                                     <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
                                           <ComboBox fx:id="cbImpuestos" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="150.0" promptText="- Seleccione -" HBox.hgrow="ALWAYS" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSumarImpuesto" onKeyPressed="#onKeyPressedSumarImpuesto" prefHeight="30.0" styleClass="buttonLight" text="Procesar">
+                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSumarImpuesto" onKeyPressed="#onKeyPressedSumarImpuesto" prefHeight="30.0" styleClass="buttonLight" text="Procesar">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

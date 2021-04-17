@@ -2,7 +2,6 @@ package controller.configuracion.tablasbasicas;
 
 import controller.inventario.suministros.FxSuministrosProcesoController;
 import controller.inventario.suministros.FxSuministrosProcesoModalController;
-import controller.produccion.insumos.FxInsumoProcesoController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -39,8 +38,6 @@ public class FxDetalleListaController implements Initializable {
     private FxSuministrosProcesoController suministrosProcesoController;
 
     private FxSuministrosProcesoModalController suministrosProcesoModalController;
-
-    private FxInsumoProcesoController insumoProcesoController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -140,16 +137,6 @@ public class FxDetalleListaController implements Initializable {
                 suministrosProcesoModalController.getTxtPresentacion().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
                 Tools.Dispose(window);
             }
-        } else if (insumoProcesoController != null) {
-            if (idMantenimiento.equalsIgnoreCase("0006")) {
-                insumoProcesoController.setIdCategoria(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
-                insumoProcesoController.getTxtCategoria().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
-                Tools.Dispose(window);
-            } else if (idMantenimiento.equalsIgnoreCase("0013")) {
-                insumoProcesoController.setIdMedida(lvList.getSelectionModel().getSelectedItem().getIdDetalle());
-                insumoProcesoController.getTxtMedida().setText(lvList.getSelectionModel().getSelectedItem().getNombre());
-                Tools.Dispose(window);
-            }
         }
     }
 
@@ -215,10 +202,6 @@ public class FxDetalleListaController implements Initializable {
 
     public void setControllerSuministroModal(FxSuministrosProcesoModalController suministrosProcesoModalController) {
         this.suministrosProcesoModalController = suministrosProcesoModalController;
-    }
-
-    public void setControllerInsumoModal(FxInsumoProcesoController insumoProcesoController) {
-        this.insumoProcesoController = insumoProcesoController;
     }
 
 }

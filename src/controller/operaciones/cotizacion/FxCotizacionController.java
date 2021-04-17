@@ -303,8 +303,8 @@ public class FxCotizacionController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.getTxtSearch().requestFocus());
             stage.show();
-            controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
             System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }

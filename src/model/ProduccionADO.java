@@ -5,7 +5,7 @@ import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.SQLException; 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,21 +76,21 @@ public class ProduccionADO {
             statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad,Costo,CantidadUtilizada,CantidadAUtilizar, Merma)VALUES(?,?,?,?,?,?,?)");
 
             double CostoTotal = 0;
-            for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
-                statementValidate.setString(1, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-                ResultSet resultSet = statementValidate.executeQuery();
-                if (resultSet.next()) {
-                    statementDetalle.setString(1, id_produccion);
-                    statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-                    statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()) / produccionTB.getCantidad());
-                    statementDetalle.setDouble(4, resultSet.getDouble("Costo"));
-                    statementDetalle.setDouble(5, (Double.parseDouble(insumoTB.getTxtCantidad().getText()) / produccionTB.getCantidad()) * produccionTB.getCantidad());
-                    statementDetalle.setDouble(6, 0);
-                    statementDetalle.setDouble(7, 0);
-                    statementDetalle.addBatch();
-                    CostoTotal += (Double.parseDouble(insumoTB.getTxtCantidad().getText()) * resultSet.getDouble("Costo"));
-                }
-            }
+//            for (SuministroTB suministroTB : produccionTB.getSuministroTB()) {
+//                statementValidate.setString(1, suministroTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+//                ResultSet resultSet = statementValidate.executeQuery();
+//                if (resultSet.next()) {
+//                    statementDetalle.setString(1, id_produccion);
+//                    statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+//                    statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()) / produccionTB.getCantidad());
+//                    statementDetalle.setDouble(4, resultSet.getDouble("Costo"));
+//                    statementDetalle.setDouble(5, (Double.parseDouble(insumoTB.getTxtCantidad().getText()) / produccionTB.getCantidad()) * produccionTB.getCantidad());
+//                    statementDetalle.setDouble(6, 0);
+//                    statementDetalle.setDouble(7, 0);
+//                    statementDetalle.addBatch();
+//                    CostoTotal += (Double.parseDouble(insumoTB.getTxtCantidad().getText()) * resultSet.getDouble("Costo"));
+//                }
+//            }
 
             if (produccionTB.getEstado() == 1) {
                 statementInventario = DBUtil.getConnection().prepareStatement("update SuministroTB set Cantidad = Cantidad + ?, PrecioCompra = ? where IdSuministro = ?");
@@ -100,11 +100,11 @@ public class ProduccionADO {
                 statementInventario.addBatch();
 
                 statementInsumo = DBUtil.getConnection().prepareStatement("UPDATE InsumoTB set Cantidad = (Cantidad - ?) where IdInsumo = ?");
-                for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
-                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidad().getText()) * produccionTB.getCantidad());
-                    statementInsumo.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-                    statementInsumo.addBatch();
-                }
+//                for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
+//                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidad().getText()) * produccionTB.getCantidad());
+//                    statementInsumo.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+//                    statementInsumo.addBatch();
+//                }
                 statementInventario.executeBatch();
                 statementInsumo.executeBatch();
             }
@@ -181,22 +181,22 @@ public class ProduccionADO {
             statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad,Costo,CantidadUtilizada,CantidadAUtilizar,Merma)VALUES(?,?,?,?,?,?,?)");
 
             double CostoTotal = 0;
-            for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
-                statementValidate.setString(1, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-                ResultSet resultSet = statementValidate.executeQuery();
-                if (resultSet.next()) {
-                    Tools.println(insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-                    statementDetalle.setString(1, produccionTB.getIdProduccion());
-                    statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-                    statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()));
-                    statementDetalle.setDouble(4, resultSet.getDouble("Costo"));
-                    statementDetalle.setDouble(5, Double.parseDouble(insumoTB.getTxtCantidadUtilizada().getText()) + Double.parseDouble(insumoTB.getTxtCantidadAUtilizar().getText()));
-                    statementDetalle.setDouble(6, 0);
-                    statementDetalle.setDouble(7, Double.parseDouble(insumoTB.getTxtMerma().getText().equalsIgnoreCase("") ? "0" : insumoTB.getTxtMerma().getText()));
-                    statementDetalle.addBatch();
-                    CostoTotal += (Double.parseDouble(insumoTB.getTxtCantidad().getText()) * resultSet.getDouble("Costo"));
-                }
-            }
+//            for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
+//                statementValidate.setString(1, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+//                ResultSet resultSet = statementValidate.executeQuery();
+//                if (resultSet.next()) {
+//                    Tools.println(insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+//                    statementDetalle.setString(1, produccionTB.getIdProduccion());
+//                    statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+//                    statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()));
+//                    statementDetalle.setDouble(4, resultSet.getDouble("Costo"));
+//                    statementDetalle.setDouble(5, Double.parseDouble(insumoTB.getTxtCantidadUtilizada().getText()) + Double.parseDouble(insumoTB.getTxtCantidadAUtilizar().getText()));
+//                    statementDetalle.setDouble(6, 0);
+//                    statementDetalle.setDouble(7, Double.parseDouble(insumoTB.getTxtMerma().getText().equalsIgnoreCase("") ? "0" : insumoTB.getTxtMerma().getText()));
+//                    statementDetalle.addBatch();
+//                    CostoTotal += (Double.parseDouble(insumoTB.getTxtCantidad().getText()) * resultSet.getDouble("Costo"));
+//                }
+//            }
 
             if (produccionTB.getEstado() == 1) {
                 statementInventario = DBUtil.getConnection().prepareStatement("update SuministroTB set Cantidad = Cantidad + ?, PrecioCompra = ? where IdSuministro = ?");
@@ -206,12 +206,12 @@ public class ProduccionADO {
                 statementInventario.addBatch();
 
                 statementInsumo = DBUtil.getConnection().prepareStatement("UPDATE InsumoTB set Cantidad = (Cantidad - ?) where IdInsumo = ?");
-                for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
-//                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidad().getText()) * produccionTB.getCantidad());
-                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidadUtilizada().getText()));
-                    statementInsumo.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-                    statementInsumo.addBatch();
-                }
+//                for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
+////                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidad().getText()) * produccionTB.getCantidad());
+//                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidadUtilizada().getText()));
+//                    statementInsumo.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
+//                    statementInsumo.addBatch();
+//                }
 
                 statementInventario.executeBatch();
                 statementInsumo.executeBatch();
@@ -384,155 +384,155 @@ public class ProduccionADO {
                 statementDetalleProduccion.setString(1, idProduccion);
                 resultSet = statementDetalleProduccion.executeQuery();
 
-                ArrayList<InsumoTB> insumoTBs = new ArrayList();
+                ArrayList<SuministroTB> insumoTBs = new ArrayList();
 
                 while (resultSet.next()) {
-                    InsumoTB insumoTB = new InsumoTB();
-                    insumoTB.setCosto(resultSet.getDouble("Costo"));
-                    insumoTB.setMedidaName(resultSet.getString("Medida"));
-                    insumoTB.setCantidad(resultSet.getDouble("Cantidad"));
-                    insumoTB.setNombreMarca(resultSet.getString("NombreMarca"));
-                    insumoTB.setCantidadUtilizada(resultSet.getDouble("CantidadUtilizada"));
-                    insumoTB.setCantidadAUtilizar(resultSet.getDouble("CantidadAUtilizar"));
-                    insumoTB.setMerma(resultSet.getDouble("Merma"));
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setCostoCompra(resultSet.getDouble("Costo"));
+                    suministroTB.setUnidadCompraName(resultSet.getString("Medida"));
+                    suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
+                    suministroTB.setNombreMarca(resultSet.getString("NombreMarca"));
+//                    suministroTB.setCantidadUtilizada(resultSet.getDouble("CantidadUtilizada"));
+//                    suministroTB.setCantidadAUtilizar(resultSet.getDouble("CantidadAUtilizar"));
+//                    suministroTB.setMerma(resultSet.getDouble("Merma"));
+//
+//                    ComboBox<SuministroTB> comboBox = new ComboBox();
+//                    comboBox.setPromptText("-- Selecionar --");
+//                    comboBox.setPrefWidth(220);
+//                    comboBox.setPrefHeight(30);
+//                    comboBox.setMaxWidth(Double.MAX_VALUE);
+//                    suministroTB.setComboBox(comboBox);
 
-                    ComboBox<InsumoTB> comboBox = new ComboBox();
-                    comboBox.setPromptText("-- Selecionar --");
-                    comboBox.setPrefWidth(220);
-                    comboBox.setPrefHeight(30);
-                    comboBox.setMaxWidth(Double.MAX_VALUE);
-                    insumoTB.setComboBox(comboBox);
+//                    SearchComboBox<SuministroTB> searchComboBox = new SearchComboBox<>(insumoTB.getComboBox(), false);
+//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+//                        if (t.getCode() == KeyCode.ENTER) {
+//                            if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+//                                searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+//                                searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+//                            }
+//                        } else if (t.getCode() == KeyCode.ESCAPE) {
+//                            searchComboBox.getComboBox().hide();
+//                        }
+//                    });
+//
+//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+//                        if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+//                            searchComboBox.getComboBox().getItems().clear();
+//                            List<InsumoTB> list = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+//                            list.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
+//                        }
+//                    });
 
-                    SearchComboBox<InsumoTB> searchComboBox = new SearchComboBox<>(insumoTB.getComboBox(), false);
-                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-                        if (t.getCode() == KeyCode.ENTER) {
-                            if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-                                searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-                                searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
-                            }
-                        } else if (t.getCode() == KeyCode.ESCAPE) {
-                            searchComboBox.getComboBox().hide();
-                        }
-                    });
-
-                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-                        if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
-                            searchComboBox.getComboBox().getItems().clear();
-                            List<InsumoTB> list = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-                            list.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
-                        }
-                    });
-
-                    searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-                        switch (t.getCode()) {
-                            case ENTER:
-                            case SPACE:
-                            case ESCAPE:
-                                searchComboBox.getComboBox().hide();
-                                break;
-                            case UP:
-                            case DOWN:
-                            case LEFT:
-                            case RIGHT:
-                                break;
-                            default:
-                                searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
-                                searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
-                                break;
-                        }
-                    });
-                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-                        if (item != null) {
-                            searchComboBox.getComboBox().getSelectionModel().select(item);
-                            if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
-                                searchComboBox.getComboBox().hide();
-                            }
-                        }
-                    });
-
-                    insumoTB.setSearchComboBox(searchComboBox);
-                    insumoTB.getComboBox().getItems().add(new InsumoTB(resultSet.getString("IdInsumo"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
-                    insumoTB.getComboBox().getSelectionModel().select(0);
-
-                    TextField textField = new TextField(Tools.roundingValue(insumoTB.getCantidad(), 2));
-                    textField.setDisable(true);
-                    textField.setPromptText("0.00");
-                    textField.getStyleClass().add("text-field-normal");
-                    textField.setPrefWidth(220);
-                    textField.setPrefHeight(30);
-                    textField.setOnKeyTyped(event -> {
-                        char c = event.getCharacter().charAt(0);
-                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                            event.consume();
-                        }
-                        if (c == '.' && textField.getText().contains(".")) {
-                            event.consume();
-                        }
-                    });
-                    insumoTB.setTxtCantidad(textField);
-
-                    TextField textFieldCU = new TextField(Tools.roundingValue(insumoTB.getCantidadUtilizada(), 2));
-                    textFieldCU.setDisable(true);
-                    textFieldCU.setPromptText("0.00");
-                    textFieldCU.getStyleClass().add("text-field-normal");
-                    textFieldCU.setPrefWidth(220);
-                    textFieldCU.setPrefHeight(30);
-                    textFieldCU.setOnKeyTyped(event -> {
-                        char c = event.getCharacter().charAt(0);
-                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                            event.consume();
-                        }
-                        if (c == '.' && textFieldCU.getText().contains(".")) {
-                            event.consume();
-                        }
-                    });
-                    insumoTB.setTxtCantidadUtilizada(textFieldCU);
-
-                    TextField textFieldCaU = new TextField(Tools.roundingValue(insumoTB.getCantidadAUtilizar(), 2));
-                    textFieldCaU.setPromptText("0.00");
-                    textFieldCaU.getStyleClass().add("text-field-normal");
-                    textFieldCaU.setPrefWidth(220);
-                    textFieldCaU.setPrefHeight(30);
-                    textFieldCaU.setOnKeyTyped(event -> {
-                        char c = event.getCharacter().charAt(0);
-                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-                            event.consume();
-                        }
-                        if (c == '.' && textFieldCaU.getText().contains(".") && (c != '.')) {
-                            event.consume();
-                        }
-                    });
-                    insumoTB.setTxtCantidadAUtilizar(textFieldCaU);
-
-                    TextField textFieldMerma = new TextField(Tools.roundingValue(insumoTB.getMerma(), 2));
-                    textFieldMerma.setPromptText("0.00");
-                    textFieldMerma.getStyleClass().add("text-field-normal");
-                    textFieldMerma.setPrefWidth(220);
-                    textFieldMerma.setPrefHeight(30);
-                    textFieldMerma.setOnKeyTyped(event -> {
-                        char c = event.getCharacter().charAt(0);
-                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
-                            event.consume();
-                        }
-                        if (c == '.' && textFieldMerma.getText().contains(".") && (c != '.')) {
-                            event.consume();
-                        }
-                    });
-                    insumoTB.setTxtMerma(textFieldMerma);
-
-                    Button button = new Button();
-                    button.getStyleClass().add("buttonLightError");
-                    button.setAlignment(Pos.CENTER);
-                    button.setPrefWidth(Control.USE_COMPUTED_SIZE);
-                    button.setPrefHeight(Control.USE_COMPUTED_SIZE);
-//                    button.setMaxWidth(Double.MAX_VALUE);
-//                    button.setMaxHeight(Double.MAX_VALUE);
-                    ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
-                    imageView.setFitWidth(20);
-                    imageView.setFitHeight(20);
-                    button.setGraphic(imageView);
-                    insumoTB.setBtnRemove(button);
-                    insumoTBs.add(insumoTB);
+//                    searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+//                        switch (t.getCode()) {
+//                            case ENTER:
+//                            case SPACE:
+//                            case ESCAPE:
+//                                searchComboBox.getComboBox().hide();
+//                                break;
+//                            case UP:
+//                            case DOWN:
+//                            case LEFT:
+//                            case RIGHT:
+//                                break;
+//                            default:
+//                                searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+//                                searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+//                                break;
+//                        }
+//                    });
+//                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+//                        if (item != null) {
+//                            searchComboBox.getComboBox().getSelectionModel().select(item);
+//                            if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+//                                searchComboBox.getComboBox().hide();
+//                            }
+//                        }
+//                    });
+//
+////                    insumoTB.setSearchComboBox(searchComboBox);
+////                    insumoTB.getComboBox().getItems().add(new InsumoTB(resultSet.getString("IdInsumo"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
+////                    insumoTB.getComboBox().getSelectionModel().select(0);
+//
+//                    TextField textField = new TextField(Tools.roundingValue(insumoTB.getCantidad(), 2));
+//                    textField.setDisable(true);
+//                    textField.setPromptText("0.00");
+//                    textField.getStyleClass().add("text-field-normal");
+//                    textField.setPrefWidth(220);
+//                    textField.setPrefHeight(30);
+//                    textField.setOnKeyTyped(event -> {
+//                        char c = event.getCharacter().charAt(0);
+//                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+//                            event.consume();
+//                        }
+//                        if (c == '.' && textField.getText().contains(".")) {
+//                            event.consume();
+//                        }
+//                    });
+//                    insumoTB.setTxtCantidad(textField);
+//
+//                    TextField textFieldCU = new TextField(Tools.roundingValue(insumoTB.getCantidadUtilizada(), 2));
+//                    textFieldCU.setDisable(true);
+//                    textFieldCU.setPromptText("0.00");
+//                    textFieldCU.getStyleClass().add("text-field-normal");
+//                    textFieldCU.setPrefWidth(220);
+//                    textFieldCU.setPrefHeight(30);
+//                    textFieldCU.setOnKeyTyped(event -> {
+//                        char c = event.getCharacter().charAt(0);
+//                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+//                            event.consume();
+//                        }
+//                        if (c == '.' && textFieldCU.getText().contains(".")) {
+//                            event.consume();
+//                        }
+//                    });
+//                    insumoTB.setTxtCantidadUtilizada(textFieldCU);
+//
+//                    TextField textFieldCaU = new TextField(Tools.roundingValue(insumoTB.getCantidadAUtilizar(), 2));
+//                    textFieldCaU.setPromptText("0.00");
+//                    textFieldCaU.getStyleClass().add("text-field-normal");
+//                    textFieldCaU.setPrefWidth(220);
+//                    textFieldCaU.setPrefHeight(30);
+//                    textFieldCaU.setOnKeyTyped(event -> {
+//                        char c = event.getCharacter().charAt(0);
+//                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+//                            event.consume();
+//                        }
+//                        if (c == '.' && textFieldCaU.getText().contains(".") && (c != '.')) {
+//                            event.consume();
+//                        }
+//                    });
+//                    insumoTB.setTxtCantidadAUtilizar(textFieldCaU);
+//
+//                    TextField textFieldMerma = new TextField(Tools.roundingValue(insumoTB.getMerma(), 2));
+//                    textFieldMerma.setPromptText("0.00");
+//                    textFieldMerma.getStyleClass().add("text-field-normal");
+//                    textFieldMerma.setPrefWidth(220);
+//                    textFieldMerma.setPrefHeight(30);
+//                    textFieldMerma.setOnKeyTyped(event -> {
+//                        char c = event.getCharacter().charAt(0);
+//                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+//                            event.consume();
+//                        }
+//                        if (c == '.' && textFieldMerma.getText().contains(".") && (c != '.')) {
+//                            event.consume();
+//                        }
+//                    });
+//                    insumoTB.setTxtMerma(textFieldMerma);
+//
+//                    Button button = new Button();
+//                    button.getStyleClass().add("buttonLightError");
+//                    button.setAlignment(Pos.CENTER);
+//                    button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+//                    button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+////                    button.setMaxWidth(Double.MAX_VALUE);
+////                    button.setMaxHeight(Double.MAX_VALUE);
+//                    ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+//                    imageView.setFitWidth(20);
+//                    imageView.setFitHeight(20);
+//                    button.setGraphic(imageView);
+//                    insumoTB.setBtnRemove(button);
+//                    insumoTBs.add(insumoTB);
                 }
 
                 produccionTB.setInsumoTBs(insumoTBs);
