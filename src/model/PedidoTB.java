@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 
 public class PedidoTB {
     
@@ -12,6 +14,7 @@ public class PedidoTB {
     private int idMoneda;
     private int idFormaPago;
     private String Observacion;
+    private ArrayList<PedidoDetalleTB> pedidoDetalleTBs;
 
     public PedidoTB() {
     }    
@@ -86,6 +89,14 @@ public class PedidoTB {
 
     public void setObservacion(String Observacion) {
         this.Observacion = Observacion;
+    }
+
+    public ArrayList<PedidoDetalleTB> getPedidoDetalleTBs() {
+        return pedidoDetalleTBs;
+    }
+
+    public void setPedidoDetalleTBs(ArrayList<PedidoDetalleTB> pedidoDetalleTBs) {
+        this.pedidoDetalleTBs = pedidoDetalleTBs;
     }
     
 }

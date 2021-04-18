@@ -1,5 +1,6 @@
 package controller.operaciones.pedidos;
 
+import controller.contactos.proveedores.FxProveedorProcesoController;
 import controller.inventario.suministros.FxSuministrosListaController;
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
@@ -8,6 +9,7 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -77,6 +79,10 @@ public class FxPedidosController implements Initializable {
     @FXML
     private TableColumn<PedidoDetalleTB, String> tcCostoProveedor;
     @FXML
+    private TableColumn<PedidoDetalleTB, String> txtDescuento;
+    @FXML
+    private TableColumn<PedidoDetalleTB, String> txtImpuesto;
+    @FXML
     private TableColumn<PedidoDetalleTB, String> tcImporte;
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
@@ -94,6 +100,8 @@ public class FxPedidosController implements Initializable {
     private Label lblImpuesto;
     @FXML
     private Label lblImporteNeto;
+    @FXML
+    private Button btnProducto;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -117,6 +125,7 @@ public class FxPedidosController implements Initializable {
         loadComponentMoneda();
         loadComponentFormaPago();
         initTable();
+
     }
 
     private void loadComponentProveedor() {
@@ -198,15 +207,19 @@ public class FxPedidosController implements Initializable {
         tcStock.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getStock()));
         tcProducto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSuministroTB().getClave() + "\n" + cellData.getValue().getSuministroTB().getNombreMarca()));
         tcCostoProveedor.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCosto(), 2)));
+        txtDescuento.setCellValueFactory(cellData -> Bindings.concat("-" + Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
+        txtImpuesto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImpuesto(), 2) + " %"));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
 
-        tcQuitar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcStock.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcProducto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
-        tcCostoProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
-        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcQuitar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+        tcExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+        tcStock.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+        tcProducto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.21));
+        tcCostoProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        txtDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        txtImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
     }
 
     private void openWindowSuministro() {
@@ -230,11 +243,32 @@ public class FxPedidosController implements Initializable {
         }
     }
 
+    private void openWindowProveedor() {
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_PROCESO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxProveedorProcesoController controller = fXMLLoader.getController();
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Proveedor", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.show();
+            controller.setValueAdd();
+        } catch (IOException ix) {
+            System.out.println("Error en Proveedor Controller:" + ix.getLocalizedMessage());
+        }
+    }
+
     public void getAddArticulo(PedidoDetalleTB pedidoDetalleTB) {
         if (validateDuplicateArticulo(tvList, pedidoDetalleTB)) {
-
+            Tools.AlertMessageWarning(apWindow, "Pedido", "Ya existe un producto con los mismos datos.");
         } else {
             tvList.getItems().add(pedidoDetalleTB);
+            calculateTotales();
         }
     }
 
@@ -251,15 +285,44 @@ public class FxPedidosController implements Initializable {
 
     public void calculateTotales() {
         importeBruto = 0;
+        tvList.getItems().forEach(e -> {
+            double descuento = e.getDescuento();
+            double costoDescuento = e.getCosto() - descuento;
+            double subCosto = Tools.calculateTaxBruto(e.getImpuesto(), costoDescuento);
+            double costoBruto = subCosto + descuento;
+            importeBruto += costoBruto * e.getCantidad();
+        });
+
         descuentoTotal = 0;
+        tvList.getItems().forEach(e -> {
+            double descuento = e.getDescuento();
+            descuentoTotal += e.getCantidad() * descuento;
+        });
+
         subImporte = 0;
+        tvList.getItems().forEach(e -> {
+            double descuento = e.getDescuento();
+            double costoDescuento = e.getCosto() - descuento;
+            double subCosto = Tools.calculateTaxBruto(e.getImpuesto(), costoDescuento);
+            subImporte += e.getCantidad() * subCosto;
+        });
+
         impuestoGenerado = 0;
-        importeNeto = 0;
-        lblImporteBruto.setText(monedaSimbolo + Tools.roundingValue(importeBruto, 2));
-        lblDescuentoTotal.setText(monedaSimbolo + Tools.roundingValue(descuentoTotal, 2));
-        lblSubImporte.setText(monedaSimbolo + Tools.roundingValue(subImporte, 2));
-        lblImpuesto.setText(monedaSimbolo + Tools.roundingValue(impuestoGenerado, 2));
-        lblImporteNeto.setText(monedaSimbolo + Tools.roundingValue(importeNeto, 2));
+        tvList.getItems().forEach(e -> {
+            double descuento = e.getDescuento();
+            double costoDescuento = e.getCosto() - descuento;
+            double subCosto = Tools.calculateTaxBruto(e.getImpuesto(), costoDescuento);
+            double impuesto = Tools.calculateTax(e.getImpuesto(), subCosto);
+            impuestoGenerado += e.getCantidad() * impuesto;
+        });
+
+        importeNeto = subImporte + impuestoGenerado;
+
+        lblImporteBruto.setText(monedaSimbolo + " " + Tools.roundingValue(importeBruto, 2));
+        lblDescuentoTotal.setText(monedaSimbolo + " -" + Tools.roundingValue(descuentoTotal, 2));
+        lblSubImporte.setText(monedaSimbolo + " " + Tools.roundingValue(subImporte, 2));
+        lblImpuesto.setText(monedaSimbolo + " " + Tools.roundingValue(impuestoGenerado, 2));
+        lblImporteNeto.setText(monedaSimbolo + " " + Tools.roundingValue(importeNeto, 2));
     }
 
     private void clearElements() {
@@ -269,7 +332,12 @@ public class FxPedidosController implements Initializable {
         txtObservacion.clear();
         loadComponentMoneda();
         loadComponentFormaPago();
-        lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/load.gif")));
+        tvList.getItems().clear();
+        calculateTotales();
+        ImageView imageView = new ImageView(new Image("/view/image/load.gif"));
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(120);
+        lblMessageLoad.setGraphic(imageView);
         lblMessageLoad.setText("");
         btnAceptarLoad.setVisible(false);
     }
@@ -290,6 +358,9 @@ public class FxPedidosController implements Initializable {
         } else if (cbFormaPago.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(apWindow, "Pedido", "Selecciona la forma de pago.");
             cbFormaPago.requestFocus();
+        } else if (tvList.getItems().isEmpty()) {
+            Tools.AlertMessageWarning(apWindow, "Pedido", "No hay items para completa el pedido.");
+            btnProducto.requestFocus();
         } else {
             PedidoTB pedidoTB = new PedidoTB();
             pedidoTB.setIdProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
@@ -300,6 +371,7 @@ public class FxPedidosController implements Initializable {
             pedidoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
             pedidoTB.setIdFormaPago(cbFormaPago.getSelectionModel().getSelectedItem().getIdFormaPago());
             pedidoTB.setObservacion(txtObservacion.getText().trim());
+            pedidoTB.setPedidoDetalleTBs(new ArrayList<>(tvList.getItems()));
 
             short value = Tools.AlertMessageConfirmation(apWindow, "Pedido", "¿Está seguro de continuar?");
             if (value == 1) {
@@ -374,15 +446,27 @@ public class FxPedidosController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedProveedor(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowProveedor();
+        }
+    }
+
+    @FXML
+    private void onActionProveedor(ActionEvent event) {
+        openWindowProveedor();
+    }
+
+    @FXML
     private void onKeyPressedLimpiar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            clearElements();
         }
     }
 
     @FXML
     private void onActionLimpiar(ActionEvent event) {
-
+        clearElements();
     }
 
     @FXML
@@ -399,6 +483,31 @@ public class FxPedidosController implements Initializable {
         hbLoad.setVisible(false);
         vbBody.setDisable(false);
         clearElements();
+    }
+
+    @FXML
+    private void onKeyReleasedWindow(KeyEvent event) {
+        if (null != event.getCode()) {
+            switch (event.getCode()) {
+                case F1:
+                    onEventRegistrar();
+                    break;
+                case F2:
+                    openWindowSuministro();
+                    break;
+                case F3:
+                    openWindowProveedor();
+                    break;
+                case F4:
+
+                    break;
+                case F5:
+                    clearElements();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public TableView<PedidoDetalleTB> getTvList() {

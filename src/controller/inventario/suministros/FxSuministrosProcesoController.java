@@ -117,7 +117,6 @@ public class FxSuministrosProcesoController implements Initializable {
     private RadioButton rbValorCosto;
     @FXML
     private RadioButton rbValorMedida;
-//    private CheckBox cbAceptar;
     @FXML
     private Label lblTitle;
     @FXML

@@ -171,7 +171,7 @@ public class FxNotaCreditoDetalleController implements Initializable {
             gpList.add(addElementGridPane("l8" + (i + 1), Tools.roundingValue(creditoDetalleTBs.get(i).getImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
 
             double valorCantidad = creditoDetalleTBs.get(i).getCantidad();
-            double valorBruto = Tools.calculateValueNeto(creditoDetalleTBs.get(i).getValorImpuesto(), creditoDetalleTBs.get(i).getPrecio());
+            double valorBruto = Tools.calculateTaxBruto(creditoDetalleTBs.get(i).getValorImpuesto(), creditoDetalleTBs.get(i).getPrecio());
             double valorDescuento = creditoDetalleTBs.get(i).getDescuento();
             double valorSubNeto = valorBruto - valorDescuento;
             double valorImpuesto = Tools.calculateTax(creditoDetalleTBs.get(i).getValorImpuesto(), valorSubNeto);

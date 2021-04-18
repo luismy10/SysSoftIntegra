@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.pedidos.FxPedidosController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" onKeyReleased="#onKeyReleasedWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.pedidos.FxPedidosController">
    <children>
       <VBox fx:id="vbBody" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -44,7 +44,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionProducto" onKeyPressed="#onKeyPressedProducto" styleClass="buttonLight" text="Producto(F2)">
+                  <Button fx:id="btnProducto" mnemonicParsing="false" onAction="#onActionProducto" onKeyPressed="#onKeyPressedProducto" styleClass="buttonLight" text="Producto(F2)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -53,7 +53,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Proveedor(F3)">
+                  <Button mnemonicParsing="false" onAction="#onActionProveedor" onKeyPressed="#onKeyPressedProveedor" styleClass="buttonLight" text="Proveedor(F3)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -82,7 +82,7 @@
                   </Button>
                </children>
             </HBox>
-            <HBox style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" style="-fx-background-color: #e7e6e6; -fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
                   <VBox style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
@@ -143,8 +143,10 @@
                                           <TableColumn fx:id="tcExistencia" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Existenia" />
                                           <TableColumn fx:id="tcStock" prefWidth="120.0" style="-fx-alignment: BASELINE_CENTER;" text="Stock Min./Max." />
                                           <TableColumn fx:id="tcProducto" prefWidth="240.0" style="-fx-alignment: BASELINE_LEFT;" text="Producto" />
-                                          <TableColumn fx:id="tcCostoProveedor" prefWidth="150.0" style="-fx-alignment: BASELINE_RIGHT;" text="Costo Proveedor" />
-                                          <TableColumn fx:id="tcImporte" prefWidth="150.0" style="-fx-alignment: BASELINE_RIGHT;" text="Importe" />
+                                          <TableColumn fx:id="tcCostoProveedor" prefWidth="120.0" style="-fx-alignment: BASELINE_RIGHT;" text="Costo" />
+                                          <TableColumn fx:id="txtDescuento" prefWidth="120.0" style="-fx-alignment: BASELINE_RIGHT;" text="Descuento" />
+                                          <TableColumn fx:id="txtImpuesto" prefWidth="120.0" style="-fx-alignment: BASELINE_RIGHT;" text="Impuesto" />
+                                          <TableColumn fx:id="tcImporte" prefWidth="120.0" style="-fx-alignment: BASELINE_RIGHT;" text="Importe" />
                                        </columns>
                                     </TableView>
                                  </children>

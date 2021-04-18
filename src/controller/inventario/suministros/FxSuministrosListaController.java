@@ -42,7 +42,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.GuiaRemisionDetalleTB;
-import model.PedidoDetalleTB;
 import model.SuministroADO;
 import model.SuministroTB;
 
@@ -323,7 +322,7 @@ public class FxSuministrosListaController implements Initializable {
                     controller.setInitPedidosController(pedidosController);
                     controller.initComponents(tvList.getSelectionModel().getSelectedItem());
                     //
-                    Stage stage = WindowStage.StageLoaderModal(parent, "Cambiar cantidades", apWindow.getScene().getWindow());
+                    Stage stage = WindowStage.StageLoaderModal(parent, "Cambiar datos", apWindow.getScene().getWindow());
                     stage.setResizable(false);
                     stage.sizeToScene();
                     stage.setOnShown(w -> controller.getTxtCantidad().requestFocus());
