@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -16,11 +17,11 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em; -fx-border-width: 0px0px 1px 0px; -fx-border-color: #3c8dbc;">
                <children>
-                  <Label styleClass="labelRobotoBold15" text="Cantidad" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Cambiar información" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/cantidad.png" />
+                              <Image url="@../../image/edit.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -36,8 +37,24 @@
                               <Image url="@../../image/quantities.png" />
                            </image>
                         </ImageView>
-                        <Label styleClass="labelRobotoBold17" text="Editar Cantidades" textFill="#020203" />
                         <Label fx:id="lblArticulo" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="labelOpenSansRegular17" text="Artículo" textAlignment="CENTER" textFill="#037c09" wrapText="true" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+               <children>
+                  <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Ingrese la Cantidad:" textFill="#020203" />
+                        <TextField fx:id="txtCantidad" alignment="CENTER" maxHeight="1.7976931348623157E308" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Ingrese la Cantidad:" textFill="#020203" />
+                        <ComboBox fx:id="cbImpuesto" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="- Impuesto -" />
                      </children>
                   </VBox>
                </children>
@@ -45,25 +62,18 @@
             <Separator prefWidth="200.0" />
             <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                <children>
-                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onActionMas" onKeyPressed="#onKeyPressedMas" styleClass="buttonBorder" text="''">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/plus.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <TextField fx:id="txtCantidad" alignment="CENTER" maxHeight="1.7976931348623157E308" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" text="1.00" HBox.hgrow="ALWAYS" />
-                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onActionMenos" onKeyPressed="#onKeyPressedMenos" styleClass="buttonBorder" text="''">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../image/remove-item.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Ingrese el Costo:" textFill="#020203" />
+                        <TextField fx:id="txtCosto" alignment="CENTER" maxHeight="1.7976931348623157E308" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
+                     </children>
+                  </VBox>
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRoboto13" text="Descuento:" textFill="#020203" />
+                        <TextField fx:id="txtDescuento" alignment="CENTER" maxHeight="1.7976931348623157E308" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="220.0" promptText="0.00" styleClass="text-field-normal" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
@@ -71,7 +81,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Aceptar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/accept.png" />
                            </image>
@@ -80,7 +90,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionCerrar" onKeyPressed="#onKeyPressedCerrar" styleClass="buttonLight" text="Cancelar">
                      <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                            <image>
                               <Image url="@../../image/error.png" />
                            </image>

@@ -1,13 +1,18 @@
 package controller.contactos.proveedores;
 
 import controller.contactos.clientes.FxPerfilController;
+import controller.tools.ApiPeru;
 import controller.tools.FilesRouters;
+import controller.tools.Json;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +32,7 @@ import model.DetalleADO;
 import model.DetalleTB;
 import model.ProveedorADO;
 import model.ProveedorTB;
+import org.json.simple.JSONObject;
 
 public class FxProveedorProcesoController implements Initializable {
 
@@ -68,6 +74,10 @@ public class FxProveedorProcesoController implements Initializable {
     private Tab tab2;
 
     private String idProveedor;
+    @FXML
+    private Button btnBuscarSunat;
+    @FXML
+    private Button btnBuscarReniec;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -216,6 +226,165 @@ public class FxProveedorProcesoController implements Initializable {
         controller.setLoadView(id, value);
     }
 
+    private void getApiSunat() {
+        ApiPeru apiSunat = new ApiPeru();
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return apiSunat.getUrlSunatApisPeru(txtDocumentNumberFactura.getText().trim());
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtDocumentNumberFactura.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+        });
+
+        task.setOnFailed(e -> {
+            txtDocumentNumberFactura.setDisable(false);
+            btnBuscarSunat.setDisable(false);
+            btnBuscarReniec.setDisable(false);
+        });
+
+        task.setOnSucceeded(e -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("200")) {
+                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
+                    txtDocumentNumberFactura.setDisable(false);
+                    btnBuscarSunat.setDisable(false);
+                    btnBuscarReniec.setDisable(false);
+
+                    txtDocumentNumberFactura.clear();
+
+                    Tools.AlertMessageWarning(window, "Cliente", "Hubo un problema en cargar el JSON de la API.");
+                } else {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        txtDocumentNumberFactura.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+
+                        txtDocumentNumberFactura.clear();
+
+                        Tools.AlertMessageWarning(window, "Cliente", "No se puedo obtener el formato del JSON.");
+                    } else {
+                        txtDocumentNumberFactura.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("ruc") != null) {
+                            txtDocumentNumberFactura.setText(sONObject.get("ruc").toString());
+                        }
+                        if (sONObject.get("razonSocial") != null) {
+                            txtBusinessName.setText(sONObject.get("razonSocial").toString());
+                        }
+                        if (sONObject.get("direccion") != null) {
+                            txtDireccion.setText(sONObject.get("direccion").toString());
+                        }
+                    }
+                }
+            } else {
+                txtDocumentNumberFactura.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
+
+                txtDocumentNumberFactura.clear();
+
+                Tools.AlertMessageError(window, "Cliente", result);
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void getApiReniec() {
+        ApiPeru apiSunat = new ApiPeru();
+
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            public String call() {
+                return apiSunat.getUrlReniecApisPeru(txtDocumentNumberFactura.getText().trim());
+            }
+        };
+
+        task.setOnScheduled(e -> {
+            txtDocumentNumberFactura.setDisable(true);
+            btnBuscarSunat.setDisable(true);
+            btnBuscarReniec.setDisable(true);
+        });
+
+        task.setOnFailed(e -> {
+            txtDocumentNumberFactura.setDisable(false);
+            btnBuscarSunat.setDisable(false);
+            btnBuscarReniec.setDisable(false);
+        });
+
+        task.setOnSucceeded(e -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("200")) {
+                if (apiSunat.getJsonURL().equalsIgnoreCase("") || apiSunat.getJsonURL() == null) {
+                    txtDocumentNumberFactura.setDisable(false);
+                    btnBuscarSunat.setDisable(false);
+                    btnBuscarReniec.setDisable(false);
+
+                    txtDocumentNumberFactura.clear();
+
+                    Tools.AlertMessageWarning(window, "Cliente", "Hubo un problema en cargar el JSON de la API.");
+                } else {
+                    JSONObject sONObject = Json.obtenerObjetoJSON(apiSunat.getJsonURL());
+                    if (sONObject == null) {
+                        txtDocumentNumberFactura.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+
+                        txtDocumentNumberFactura.clear();
+
+                        Tools.AlertMessageWarning(window, "Cliente", "No se puedo obtener el formato del JSON.");
+                    } else {
+                        txtDocumentNumberFactura.setDisable(false);
+                        btnBuscarSunat.setDisable(false);
+                        btnBuscarReniec.setDisable(false);
+                        if (sONObject.get("dni") != null) {
+                            txtDocumentNumberFactura.setText(sONObject.get("dni").toString());
+                        }
+                        if (sONObject.get("apellidoPaterno") != null && sONObject.get("apellidoMaterno") != null && sONObject.get("nombres") != null) {
+                            txtBusinessName.setText(sONObject.get("apellidoPaterno").toString() + " " + sONObject.get("apellidoMaterno").toString() + " " + sONObject.get("nombres").toString());
+                        }
+                    }
+                }
+            } else {
+                txtDocumentNumberFactura.setDisable(false);
+                btnBuscarSunat.setDisable(false);
+                btnBuscarReniec.setDisable(false);
+
+                txtDocumentNumberFactura.clear();
+
+                Tools.AlertMessageError(window, "Cliente", result);
+            }
+        });
+
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
     @FXML
     private void onActionToRegister(ActionEvent event) {
         toCrudProvider();
@@ -252,4 +421,27 @@ public class FxProveedorProcesoController implements Initializable {
         Tools.Dispose(window);
     }
 
+    @FXML
+    private void onKeyPressedSunat(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiSunat();
+        }
+    }
+
+    @FXML
+    private void onActionSunat(ActionEvent event) {
+        getApiSunat();
+    }
+
+    @FXML
+    private void onKeyPressedReniec(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            getApiReniec();
+        }
+    }
+
+    @FXML
+    private void onActionReniec(ActionEvent event) {
+        getApiReniec();
+    }
 }

@@ -273,7 +273,7 @@ public class Tools {
         return Double.parseDouble(Tools.roundingValue(totalimporte, 1));
     }
 
-    public static double calculateValueNeto(double porcentaje, double value) {
+    public static double calculateTaxBruto(double porcentaje, double value) {
         double subprimer = (porcentaje + 100);
         return value / (subprimer * 0.01);
     }

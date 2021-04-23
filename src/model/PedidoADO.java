@@ -9,6 +9,7 @@ public class PedidoADO {
     public static String CrudPedido(PedidoTB pedidoTB) {
         CallableStatement statementIdPedido = null;
         PreparedStatement statementPedido = null;
+        PreparedStatement statementPedidoDetalle = null;
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -30,7 +31,19 @@ public class PedidoADO {
             statementPedido.setString(9, pedidoTB.getObservacion());
             statementPedido.addBatch();
 
+            statementPedidoDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO PedidoDetalleTB(IdPedido,IdSuministro,Cantidad,Costo,Descuento,IdImpuesto)VALUES(?,?,?,?,?,?)");
+            for (PedidoDetalleTB pedidoDetalleTB : pedidoTB.getPedidoDetalleTBs()) {
+                statementPedidoDetalle.setString(1, idPedido);
+                statementPedidoDetalle.setString(2, pedidoDetalleTB.getIdSuministro());
+                statementPedidoDetalle.setDouble(3, pedidoDetalleTB.getCantidad());
+                statementPedidoDetalle.setDouble(4, pedidoDetalleTB.getCosto());
+                statementPedidoDetalle.setDouble(5, pedidoDetalleTB.getDescuento());
+                statementPedidoDetalle.setInt(6, pedidoDetalleTB.getIdImpuesto());
+                statementPedidoDetalle.addBatch();
+            }
+
             statementPedido.executeBatch();
+            statementPedidoDetalle.executeBatch();
             DBUtil.getConnection().commit();
             return "inserted";
         } catch (SQLException ex) {
