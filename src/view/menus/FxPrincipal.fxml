@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
 <ScrollPane fx:id="spWindow" fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" styleClass="scroll-pane-primary" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxPrincipalController">
    <content>
@@ -22,15 +21,7 @@
                      <children>
                         <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.6666666666666666em; -fx-border-color: rgba(0,0,0,.12); -fx-border-width: 0 1px 0 0;">
                            <children>
-                              <Label styleClass="labelRobotoBold17" text="SysSoft Integra" textFill="WHITE">
-                                 <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Label>
+                              <Label styleClass="labelRobotoBold22" text="SysSoft Integra" textFill="WHITE" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-padding: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
@@ -94,51 +85,16 @@
                            <children>
                               <HBox alignment="CENTER" style="-fx-padding: 1.6666666666666667em  1.6666666666666667em   0.8333333333333334em 1.6666666666666667em;">
                                  <children>
-                                    <VBox alignment="CENTER">
+                                    <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../image/client.png" />
+                                                <Image url="@../image/logo.png" />
                                              </image>
-                                             <effect>
-                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
-                                                   <bumpInput>
-                                                      <Shadow />
-                                                   </bumpInput>
-                                                   <light>
-                                                      <Light.Distant />
-                                                   </light>
-                                                </Lighting>
-                                             </effect>
                                           </ImageView>
                                           <Label fx:id="lblPuesto" contentDisplay="TOP" styleClass="labelRoboto15" text="Administrador" textFill="WHITE" />
                                        </children>
                                     </VBox>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                                 <children>
-                                    <ImageView fx:id="imState" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/connected.png" />
-                                       </image>
-                                       <effect>
-                                          <Lighting diffuseConstant="1.5" specularConstant="0.0">
-                                             <bumpInput>
-                                                <Shadow />
-                                             </bumpInput>
-                                             <light>
-                                                <Light.Distant />
-                                             </light>
-                                          </Lighting>
-                                       </effect>
-                                    </ImageView>
-                                    <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Conectado" />
-                                 </children>
-                              </HBox>
-                              <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1.25em;">
-                                 <children>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Menú principal" />
                                  </children>
                               </HBox>
                               <VBox fx:id="hbMenus" minWidth="-Infinity">

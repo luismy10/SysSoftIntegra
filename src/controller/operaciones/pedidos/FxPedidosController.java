@@ -116,7 +116,7 @@ public class FxPedidosController implements Initializable {
     private double impuestoGenerado;
 
     private double importeNeto;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.actualDate(Tools.getDate(), txtFechaEmision);
@@ -211,15 +211,15 @@ public class FxPedidosController implements Initializable {
         txtImpuesto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImpuesto(), 2) + " %"));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
 
-        tcQuitar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
-        tcStock.prefWidthProperty().bind(tvList.widthProperty().multiply(0.08));
+        tcQuitar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
+        tcExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
+        tcStock.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
         tcProducto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.21));
-        tcCostoProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
-        txtDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
-        txtImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
-        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcCostoProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
+        txtDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
+        txtImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
+        tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
     }
 
     private void openWindowSuministro() {

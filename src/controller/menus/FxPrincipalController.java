@@ -22,12 +22,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.DBUtil;
@@ -47,10 +45,6 @@ public class FxPrincipalController implements Initializable {
     private AnchorPane vbContent;
     @FXML
     private Label lblPuesto;
-    @FXML
-    private ImageView imState;
-    @FXML
-    private Text lblEstado;
     @FXML
     private VBox hbMenus;
     @FXML
@@ -108,8 +102,6 @@ public class FxPrincipalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lblEstado.setText(Session.CONNECTION_SESSION == true ? "Conectado" : "Desconectado");
-        imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/image/connected.png") : new Image("/view/image/disconnected.png"));
         hbReferent = btnInicio;
         hbReferent.getStyleClass().add("buttonMenuActivate");
         ((Label) btnInicio.getChildren().get(0)).getStyleClass().add("buttonMenuActivateText");

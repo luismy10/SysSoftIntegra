@@ -28,7 +28,7 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelNormal" text="Cargando..." textOverrun="CLIP" visible="false">
+                  <Label fx:id="lblLoad" contentDisplay="RIGHT" styleClass="labelRoboto13" text="Cargando..." textOverrun="CLIP" visible="false">
                      <font>
                         <Font name="Roboto" size="14.0" />
                      </font>

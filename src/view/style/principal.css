@@ -1,14 +1,13 @@
 @font-face {
-    -fx-font-family: 'Roboto Medium'; 
     src: url('Roboto-Medium.ttf'); 
 } 
+
 @font-face { 
-    -fx-font-family: 'Roboto Bold'; 
     src: url('Roboto-Bold.ttf'); 
 } 
 
 @font-face {
-    -fx-font-family : 'Roboto';
+
     src: url('Roboto-Regular.ttf');
 }
 
@@ -17,14 +16,20 @@
     src: url('Monospace.ttf'); 
 } 
 
+@font-face {   
+    src: url('OpenSans-Regular.ttf'); 
+} 
+
 .labelForm{
-    -fx-font-family:"Roboto";  
-    -fx-font-size:1.0833333333333333em;/*13px*/
+    -fx-font-family: "Roboto";  
+    -fx-font-weight: normal;
+    -fx-font-size: 1.0833333333333333em;/*13px*/
 }
 
 .labelBorder{
     -fx-padding: 0.3333333333333333em 2.5em 0.3333333333333333em 2.5em;/*4px 30px 4px 30px*/  
-    -fx-font-family:"Roboto Bold";  
+    -fx-font-family:"Roboto";  
+    -fx-font-weight: bold;
     -fx-font-size:1.0833333333333333em; /*13px*/
 }
 
@@ -127,183 +132,103 @@
 
 /*******************************************************************************
  *                                                                             *
- * Label roboto medium sizes                                                  *
- *                                                                             *
- ******************************************************************************/
-.labelRobotoMedium10{
-    -fx-font-size:0.8333333333333334em; /*10px*/    
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium12{
-    -fx-font-size:1em; /*12px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium13{
-    -fx-font-size:1.0833333333333333em; /*13px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium14{
-    -fx-font-size:1.1666666666666667em; /*14px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium15{
-    -fx-font-size:1.25em; /*15px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium16{
-    -fx-font-size:1.3333333333333333em; /*16px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium17{
-    -fx-font-size:1.4166666666666667em; /*17px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium18{
-    -fx-font-size:1.5em; /*18px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium20{
-    -fx-font-size:1.6666666666666667em; /*20px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium22{
-    -fx-font-size:1.8333333333333333em; /*22px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium24{
-    -fx-font-size:2em;/*24px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium26{
-    -fx-font-size:2.1666666666666665em; /*26px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium27{
-    -fx-font-size:2.25em; /*27px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium28{
-    -fx-font-size:2.3333333333333335em; /*28px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-.labelRobotoMedium30{
-    -fx-font-size:2.5em; /*30px*/
-    -fx-font-family:"Roboto Medium"; 
-    -fx-font-smoothing-type: lcd;
-}
-
-/*******************************************************************************
- *                                                                             *
  * Label roboto bold sizes                                                  *
  *                                                                             *
  ******************************************************************************/
 .labelRobotoBold10{
     -fx-font-size:0.8333333333333334em; /*10px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold12{
     -fx-font-size:1em; /*12px*/
-    -fx-font-family:"Roboto Bold";
+    -fx-font-family:"Roboto";
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold13{
     -fx-font-size:1.0833333333333333em; /*14px*/
-    -fx-font-family:"Roboto Bold";
-    -fx-font-smoothing-type: lcd;
+    -fx-font-family:"Roboto";
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold14{
     -fx-font-size:1.1666666666666667em; /*14px*/
-    -fx-font-family:"Roboto Bold";
+    -fx-font-family:"Roboto";
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold15{
     -fx-font-size:1.25em; /*15px*/
-    -fx-font-family:"Roboto Bold";
+    -fx-font-family:"Roboto";
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold16{
     -fx-font-size:1.3333333333333333em; /*16px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold17{
     -fx-font-size:1.4166666666666667em; /*17px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold18{
     -fx-font-size:1.5em; /*18px*/
-    -fx-font-family:"Roboto Bold"; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-family:"Roboto"; 
+    -fx-font-weight: bold;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold19{
     -fx-font-size:1.5833333333333333em; /*20px*/
-    -fx-font-family:"Roboto Bold";
+    -fx-font-family:"Roboto";
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold20{
     -fx-font-size:1.6666666666666667em; /*20px*/
-    -fx-font-family:"Roboto Bold";
+    -fx-font-family:"Roboto";
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold21{
     -fx-font-size:1.75em; /*21px*/
-    -fx-font-family:"Roboto Bold";
+    -fx-font-family:"Roboto";
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold22{
     -fx-font-size:1.8333333333333333em; /*22px*/
-    -fx-font-family:"Roboto Bold";
+    -fx-font-family:"Roboto";
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold24{
     -fx-font-size:2em;/*24px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold26{
     -fx-font-size:2.1666666666666665em; /*26px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold28{
     -fx-font-size:2.3333333333333335em; /*28px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 .labelRobotoBold30{
     -fx-font-size:2.5em; /*30px*/
-    -fx-font-family:"Roboto Bold"; 
+    -fx-font-family:"Roboto"; 
     -fx-font-weight: bold; 
-    -fx-font-smoothing-type: lcd;
+    -fx-font-smoothing-type: gray;
 }
 
 /*******************************************************************************
@@ -313,12 +238,12 @@
  ******************************************************************************/
 .labelOpenSansRegular10{
     -fx-font-size:0.8333333333333334em; /*10px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular11{
     -fx-font-size:0.9166666666666666em; /*11px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular12{
@@ -328,67 +253,67 @@
 }
 .labelOpenSansRegular13{
     -fx-font-size:1.0833333333333333em; /*13px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular14{
     -fx-font-size:1.1666666666666667em; /*14px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular15{
     -fx-font-size:1.25em; /*15px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular16{
     -fx-font-size:1.3333333333333333em; /*16px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular17{
     -fx-font-size:1.4166666666666667em; /*17px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular18{
     -fx-font-size:1.5em; /*18px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular20{
     -fx-font-size:1.6666666666666667em; /*20px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular21{
     -fx-font-size:1.75em; /*21px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular22{
     -fx-font-size:1.8333333333333333em; /*22px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular24{
     -fx-font-size:2em;/*24px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular26{
     -fx-font-size:2.1666666666666665em; /*26px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular28{
     -fx-font-size:2.3333333333333335em; /*28px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelOpenSansRegular30{
     -fx-font-size:2.5em; /*30px*/
-    -fx-font-family:"Open Regular"; 
+    -fx-font-family: "Open Sans"; 
     -fx-font-smoothing-type: lcd;
 }
 
@@ -467,6 +392,7 @@
     -fx-border-color: #020203;
     -fx-font-size:1.0833333333333333em;/*13px*/ 
     -fx-font-family:"Roboto"; 
+    -fx-font-weight: normal;
     -fx-text-fill: #020203;
 }
 .text-field-login:hover{
@@ -501,6 +427,7 @@
     -fx-border-color: #999999;
     -fx-font-size:1.0833333333333333em;/*13px */ 
     -fx-font-family:"Roboto"; 
+    -fx-font-weight: normal;
     -fx-text-fill: TEXT_COLOR;
 }
 .text-field-normal:hover{
@@ -534,6 +461,7 @@
 
     -fx-font-size:1.0833333333333333em;/*13px*/
     -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
 
     -fx-background-color: BORDER, BACKGROUND;
     -fx-border-width:1;
@@ -583,7 +511,8 @@
     -fx-background-insets: 0px;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto Medium";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-text-fill: TEXT;
 
@@ -652,7 +581,8 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto Medium";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-text-fill: TEXT;
     -fx-cursor: hand;
@@ -721,7 +651,8 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto Medium";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-text-fill: TEXT;
 
@@ -791,7 +722,8 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto Medium";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-text-fill: TEXT;
 
@@ -860,7 +792,8 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto Medium";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-text-fill: TEXT;
 
@@ -930,7 +863,8 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto Medium";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-text-fill: TEXT;
 
@@ -979,6 +913,7 @@
     -fx-background-color: transparent;
     -fx-padding: 0.8333333333333334em 1.3333333333333333em 0.8333333333333334em 1.3333333333333333em;
     -fx-font-family:"Roboto";  
+    -fx-font-weight: normal;
     -fx-font-size:1.25em ;/*15px*/ 
 }
 .buttonTransparent:hover{
@@ -1029,7 +964,8 @@
     -fx-background-insets: 0;
     -fx-background-color: BACKGROUND;
 
-    -fx-font-family:"Roboto Medium";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13*/
     -fx-text-fill: TEXT;
 
@@ -1083,7 +1019,8 @@
     -fx-background-insets: 0;
     -fx-background-color: #020203;
 
-    -fx-font-family:"Roboto bold";
+    -fx-font-family:"Roboto";
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-text-fill: white;
 
@@ -1111,6 +1048,7 @@
     -fx-alignment: CENTER;
     -fx-text-fill: rgb(241,241,241);
     -fx-font-family:"Roboto";  
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
 }
 .tab {
@@ -1424,8 +1362,8 @@
 
 .table-view-principal .column-header .label{
     -fx-text-fill:  white;
-    -fx-font-family:"Roboto Bold"; 
-     -fx-font-weight: normal;
+    -fx-font-family:"Roboto"; 
+    -fx-font-weight: bold;
     -fx-font-smoothing-type: lcd;
     -fx-font-weight: 100;
     -fx-font-size: 1.0833333333333333em; /* 13px */
@@ -1441,7 +1379,7 @@
 .table-view-principal .table-cell {
     -fx-font-family:"Roboto"; 
     -fx-font-size: 1.0833333333333333em;/*13px*/
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-padding: 0.75em 0.3333333333333333em 0.75em 0.3333333333333333em;
     -fx-text-fill: #020203;
 }
@@ -1502,7 +1440,7 @@
 .table-view-secundario .column-header .label{
     -fx-text-fill: #1a2226;
     -fx-font-family:"Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/   
     -fx-alignment: center;
     -fx-padding: 0.75em 0.3333333333333333em 0.75em 0.3333333333333333em;      
@@ -1553,7 +1491,7 @@
 .table-view-secundario .table-cell{   
     -fx-text-fill:#1a2226;
     -fx-font-family:"Roboto";    
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/   
     -fx-padding: 0.75em 0.16666666666666666em 0.75em 0.16666666666666666em;
 }
@@ -1595,7 +1533,7 @@
     -fx-background-color: transparent, transparent, transparent, transparent;
     -fx-font-size:1.0833333333333333em;/*13px*/ 
     -fx-font-family:"Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-background-color:white;
     -fx-border-color:#999999;
     -fx-border-width:1;
@@ -1691,7 +1629,7 @@
 .date-picker-popup > * > .week-number-cell {
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-font-family: "Roboto";
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-padding: 0.583333em;
 }
 .date-picker:disabled{
@@ -1711,7 +1649,7 @@
     -fx-border-width:1;
     -fx-border-color: #999999;
     -fx-font-family:"Roboto";  
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-padding: 0.16666666666666666em 0.16666666666666666em 0.16666666666666666em 0.16666666666666666em; /*2px 2px 2px 2px*/
 }
@@ -1732,7 +1670,7 @@
 
 .combo-box.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
     -fx-font-family:"Roboto";  
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-padding: 0.5em;
 }
@@ -1789,7 +1727,7 @@
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
     -fx-padding: 0.6666666666666666em;
     -fx-font-family: "Roboto";
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/  
     -fx-text-fill: #020203;
 }
@@ -1850,7 +1788,7 @@
     -fx-border-color: transparent;
     -fx-font-size:1.0833333333333333em;/*13px*/ 
     -fx-font-family:"Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
 }
 
 .spinner .increment-arrow-button {
@@ -1960,7 +1898,7 @@
     -fx-text-fill: #020203;
     -fx-font-size: 1.0833333333333333em;/*13px*/ 
     -fx-font-family: "Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-text-fill: #020203;
 }
 
@@ -2029,7 +1967,7 @@
 .check-box-contenido {
     -fx-text-fill:  #020203;
     -fx-font-family:"Roboto";  
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
     -fx-cursor:hand;
 }
@@ -2171,8 +2109,8 @@
 
 .check-box-ticket {
     -fx-text-fill:  #0f67a1;
-    -fx-font-family:"Roboto Bold";  
-     -fx-font-weight: bold;
+    -fx-font-family:"Roboto";  
+    -fx-font-weight: bold;
     -fx-font-size: 1.25em;/**/
 }
 
@@ -2311,8 +2249,8 @@
 
 .check-box-movimiento {
     -fx-text-fill:  #0f67a1;
-    -fx-font-family:"Roboto Bold";  
-     -fx-font-weight: bold;
+    -fx-font-family:"Roboto";  
+    -fx-font-weight: bold;
     -fx-font-size: 1.25em;/*15px*/
 }
 
@@ -2462,7 +2400,7 @@
     -fx-margin:30px;
     -fx-font-size:1.0833333333333333em; /*13px*/
     -fx-font-family:"Open Regular"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-smoothing-type: lcd;
 }
 
@@ -2497,7 +2435,7 @@
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
     -fx-text-fill: #309c40; 
     -fx-font-family: "Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
 }
 
@@ -2512,7 +2450,7 @@
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
     -fx-text-fill: #990000; 
     -fx-font-family: "Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13*/
 }
 
@@ -2527,7 +2465,7 @@
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
     -fx-text-fill: #6D5F02 ; 
     -fx-font-family: "Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
 }
 
@@ -2542,7 +2480,7 @@
     -fx-padding: 0.5em 1.666666em 0.5em 1.666666em; 
     -fx-text-fill: white; 
     -fx-font-family: "Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-font-size: 1.0833333333333333em;/*13px*/
 }
 
@@ -2640,7 +2578,7 @@ TextFieldTableCell > * {
     -fx-border-color: #999999;
     -fx-font-size:1.0833333333333333em;/*13px */ 
     -fx-font-family:"Roboto"; 
-     -fx-font-weight: normal;
+    -fx-font-weight: normal;
     -fx-text-fill:  #020203;
 }
 

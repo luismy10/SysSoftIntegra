@@ -789,13 +789,15 @@ public class FxVentaEstructuraController implements Initializable {
                     Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window);
                     stage.setResizable(false);
                     stage.sizeToScene();
+                    stage.setOnShown(w -> {
+                        controller.getTxtCantidad().requestFocus();
+                    });
                     stage.setOnHiding(w -> {
                         if (isClose) {
                             fxPrincipalController.closeFondoModal();
                         }
                     });
                     stage.show();
-                    controller.getTxtCantidad().requestFocus();
                 } catch (IOException ex) {
                     Tools.println("Venta estructura openWindowCantidad:" + ex.getLocalizedMessage());
                 }
@@ -823,7 +825,7 @@ public class FxVentaEstructuraController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
-            stage.setOnShown(w->{
+            stage.setOnShown(w -> {
                 controller.getTxtSearch().requestFocus();
             });
             stage.show();
@@ -1023,7 +1025,7 @@ public class FxVentaEstructuraController implements Initializable {
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#020203;");
-        label.getStyleClass().add("labelRobotoMedium15");
+        label.getStyleClass().add("labelRoboto15");
         label.setAlignment(pos);
         label.setPrefWidth(Control.USE_COMPUTED_SIZE);
         label.setPrefHeight(Control.USE_COMPUTED_SIZE);
