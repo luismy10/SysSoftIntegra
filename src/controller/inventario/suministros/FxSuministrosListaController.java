@@ -165,42 +165,88 @@ public class FxSuministrosListaController implements Initializable {
         status = false;
 
         txtSearch.setOnKeyReleased(e -> {
-            if (!Tools.isText(txtSearch.getText())) {
-                paginacion = 1;
-                fillSuministrosTable((short) 1, txtSearch.getText().trim());
-                opcion = 1;
+            if (e.getCode() != KeyCode.ESCAPE
+                    && e.getCode() != KeyCode.F1
+                    && e.getCode() != KeyCode.F2
+                    && e.getCode() != KeyCode.F3
+                    && e.getCode() != KeyCode.F4
+                    && e.getCode() != KeyCode.F5
+                    && e.getCode() != KeyCode.F6
+                    && e.getCode() != KeyCode.F7
+                    && e.getCode() != KeyCode.F8
+                    && e.getCode() != KeyCode.F9
+                    && e.getCode() != KeyCode.F10
+                    && e.getCode() != KeyCode.F11
+                    && e.getCode() != KeyCode.F12
+                    && e.getCode() != KeyCode.ALT
+                    && e.getCode() != KeyCode.CONTROL
+                    && e.getCode() != KeyCode.UP
+                    && e.getCode() != KeyCode.DOWN
+                    && e.getCode() != KeyCode.RIGHT
+                    && e.getCode() != KeyCode.LEFT
+                    && e.getCode() != KeyCode.TAB
+                    && e.getCode() != KeyCode.CAPS
+                    && e.getCode() != KeyCode.SHIFT
+                    && e.getCode() != KeyCode.HOME
+                    && e.getCode() != KeyCode.WINDOWS
+                    && e.getCode() != KeyCode.ALT_GRAPH
+                    && e.getCode() != KeyCode.CONTEXT_MENU
+                    && e.getCode() != KeyCode.END
+                    && e.getCode() != KeyCode.INSERT
+                    && e.getCode() != KeyCode.PAGE_UP
+                    && e.getCode() != KeyCode.PAGE_DOWN
+                    && e.getCode() != KeyCode.NUM_LOCK
+                    && e.getCode() != KeyCode.PRINTSCREEN
+                    && e.getCode() != KeyCode.SCROLL_LOCK
+                    && e.getCode() != KeyCode.PAUSE
+                    && e.getCode() != KeyCode.ENTER) {
+                if (!status) {
+                    if (!Tools.isText(txtSearch.getText())) {
+                        paginacion = 1;
+                        fillSuministrosTable((short) 1, txtSearch.getText().trim());
+                        opcion = 1;
+                    }
+                }
             }
         });
 
         txtCategoria.setOnKeyReleased(e -> {
-            if (!Tools.isText(txtCategoria.getText())) {
-                paginacion = 1;
-                fillSuministrosTable((short) 2, txtCategoria.getText().trim());
-                opcion = 2;
+            if (!status) {
+                if (!Tools.isText(txtCategoria.getText())) {
+                    paginacion = 1;
+                    fillSuministrosTable((short) 2, txtCategoria.getText().trim());
+                    opcion = 2;
+                }
             }
         });
 
         txtMarca.setOnKeyReleased(e -> {
-            if (!Tools.isText(txtMarca.getText())) {
-                paginacion = 1;
-                fillSuministrosTable((short) 3, txtMarca.getText().trim());
-                opcion = 3;
+            if (!status) {
+                if (!Tools.isText(txtMarca.getText())) {
+                    paginacion = 1;
+                    fillSuministrosTable((short) 3, txtMarca.getText().trim());
+                    opcion = 3;
+                }
             }
         });
 
         txtPresentacion.setOnKeyReleased(e -> {
-            if (!Tools.isText(txtPresentacion.getText())) {
-                paginacion = 1;
-                fillSuministrosTable((short) 4, txtPresentacion.getText().trim());
-                opcion = 4;
+            if (!status) {
+                if (!Tools.isText(txtPresentacion.getText())) {
+                    paginacion = 1;
+                    fillSuministrosTable((short) 4, txtPresentacion.getText().trim());
+                    opcion = 4;
+                }
             }
         });
 
         txtMedida.setOnKeyReleased(e -> {
-            if (!Tools.isText(txtMedida.getText())) {
-                paginacion = 1;
-                fillSuministrosTable((short) 5, txtMedida.getText().trim());
-                opcion = 5;
+            if (!status) {
+                if (!Tools.isText(txtMedida.getText())) {
+                    paginacion = 1;
+                    fillSuministrosTable((short) 5, txtMedida.getText().trim());
+                    opcion = 5;
+                }
             }
         });
 
@@ -215,7 +261,7 @@ public class FxSuministrosListaController implements Initializable {
 
         Task<Object> task = new Task<Object>() {
             @Override
-            public Object call() {
+            public Object call(){
                 return SuministroADO.ListSuministrosListaView(tipo, value, (paginacion - 1) * 10, 10);
             }
         };

@@ -73,7 +73,7 @@ public class FxVentaCantidadesController implements Initializable {
         double cantidad = Tools.isNumeric(txtCantidad.getText().trim())
                 ? (Double.parseDouble(txtCantidad.getText()) <= 0 ? oldCantidad : Double.parseDouble(txtCantidad.getText()))
                 : oldCantidad;
-        suministroTB.setCantidad(cantidad);
+        suministroTB.setCantidad(suministroTB.getCantidad() + cantidad);
         double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
 
         suministroTB.setDescuentoCalculado(porcentajeRestante);
