@@ -30,16 +30,20 @@ public class FxVentaCantidadesController implements Initializable {
 
     private boolean tipoVenta;
 
+    private boolean primerLlamado;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
+        primerLlamado = false;
     }
 
-    public void initComponents(SuministroTB suministroTB, boolean tipoVenta) {
+    public void initComponents(SuministroTB suministroTB, boolean tipoVenta, boolean primerLlamado) {
         lblArticulo.setText(suministroTB.getNombreMarca());
         this.suministroTB = suministroTB;
         this.oldCantidad = suministroTB.getCantidad();
         this.tipoVenta = tipoVenta;
+        this.primerLlamado = primerLlamado;
         txtCantidad.setText(Tools.roundingValue(suministroTB.getCantidad(), 2));
     }
 
@@ -73,7 +77,7 @@ public class FxVentaCantidadesController implements Initializable {
         double cantidad = Tools.isNumeric(txtCantidad.getText().trim())
                 ? (Double.parseDouble(txtCantidad.getText()) <= 0 ? oldCantidad : Double.parseDouble(txtCantidad.getText()))
                 : oldCantidad;
-        suministroTB.setCantidad(suministroTB.getCantidad() + cantidad);
+        suministroTB.setCantidad(primerLlamado ? cantidad : suministroTB.getCantidad() + cantidad);
         double porcentajeRestante = suministroTB.getPrecioVentaGeneralUnico() * (suministroTB.getDescuento() / 100.00);
 
         suministroTB.setDescuentoCalculado(porcentajeRestante);

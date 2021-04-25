@@ -315,9 +315,11 @@ public class FxPrincipalController implements Initializable {
     @FXML
     private void onMouseClickedSiderBar(MouseEvent event) {
         if (isExpand) {
+            vbSiderBar.setMinWidth(0);
             vbSiderBar.setPrefWidth(0);
             isExpand = false;
         } else {
+             vbSiderBar.setMinWidth(200);
             vbSiderBar.setPrefWidth(width_siderbar);
             isExpand = true;
         }

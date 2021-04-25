@@ -19,9 +19,9 @@
                <children>
                   <HBox style="-fx-spacing: 0.4166666666666667em; -fx-background-color: #007bff;">
                      <children>
-                        <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.6666666666666666em; -fx-border-color: rgba(0,0,0,.12); -fx-border-width: 0 1px 0 0;">
+                        <HBox alignment="CENTER" minWidth="200.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.6666666666666666em; -fx-border-color: rgba(0,0,0,.12); -fx-border-width: 0 1px 0 0;">
                            <children>
-                              <Label styleClass="labelRobotoBold22" text="SysSoft Integra" textFill="WHITE" />
+                              <Label styleClass="labelRobotoBold20" text="SysSoft Integra" textFill="WHITE" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-padding: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
@@ -81,7 +81,7 @@
                   </HBox>
                   <HBox VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="vbSiderBar" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-color: #020203;">
+                        <VBox fx:id="vbSiderBar" minWidth="200.0" style="-fx-background-color: #020203;">
                            <children>
                               <HBox alignment="CENTER" style="-fx-padding: 1.6666666666666667em  1.6666666666666667em   0.8333333333333334em 1.6666666666666667em;">
                                  <children>

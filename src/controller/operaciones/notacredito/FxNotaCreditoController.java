@@ -131,7 +131,7 @@ public class FxNotaCreditoController implements Initializable {
             clearElements();
         });
         task.setOnFailed(w -> {
-            lblMessageLoad.setText(task.getMessage());
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
             lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
             btnAceptarLoad.setVisible(true);
         });

@@ -20,7 +20,7 @@ import model.ImpuestoTB;
 import model.PedidoDetalleTB;
 import model.SuministroTB;
 
-public class FxPedidosModalCantidadController implements Initializable {
+public class FxPedidosModalController implements Initializable {
 
     @FXML
     private AnchorPane apWindow;
@@ -116,14 +116,14 @@ public class FxPedidosModalCantidadController implements Initializable {
 
             pedidoDetalleTB.setBtnQuitar(button);
 
-            TextField txtCantidad = new TextField(String.valueOf(pedidoDetalleTB.getCantidad()));
-            txtCantidad.getStyleClass().add("text-field-normal");
-            txtCantidad.setPromptText("0.00");
-            txtCantidad.setPrefWidth(220);
-            txtCantidad.setPrefHeight(30);
-            txtCantidad.setOnKeyReleased(event -> {
-                if (Tools.isNumeric(txtCantidad.getText().trim())) {
-                    double cantidad = Double.parseDouble(txtCantidad.getText().trim());
+            TextField txtFieldCantidad = new TextField(String.valueOf(pedidoDetalleTB.getCantidad()));
+            txtFieldCantidad.getStyleClass().add("text-field-normal");
+            txtFieldCantidad.setPromptText("0.00");
+            txtFieldCantidad.setPrefWidth(220);
+            txtFieldCantidad.setPrefHeight(30);
+            txtFieldCantidad.setOnKeyReleased(event -> {
+                if (Tools.isNumeric(txtFieldCantidad.getText().trim())) {
+                    double cantidad = Double.parseDouble(txtFieldCantidad.getText().trim());
                     double importe = cantidad * (pedidoDetalleTB.getCosto() - pedidoDetalleTB.getDescuento());
                     pedidoDetalleTB.setCantidad(cantidad);
                     pedidoDetalleTB.setImporte(importe);
@@ -138,16 +138,16 @@ public class FxPedidosModalCantidadController implements Initializable {
                     pedidosController.calculateTotales();
                 }
             });
-            txtCantidad.setOnKeyTyped(event -> {
+            txtFieldCantidad.setOnKeyTyped(event -> {
                 char c = event.getCharacter().charAt(0);
                 if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
                     event.consume();
                 }
-                if (c == '.' && txtCantidad.getText().contains(".")) {
+                if (c == '.' && txtFieldCantidad.getText().contains(".")) {
                     event.consume();
                 }
             });
-            pedidoDetalleTB.setTxtCantidad(txtCantidad);
+            pedidoDetalleTB.setTxtCantidad(txtFieldCantidad);
 
 //        TextField txtCosto = new TextField(String.valueOf(pedidoDetalleTB.getCosto()));
 //        txtCosto.getStyleClass().add("text-field-normal");

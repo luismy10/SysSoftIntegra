@@ -767,7 +767,7 @@ public class FxVentaEstructuraController implements Initializable {
 
     }
 
-    public void openWindowCantidad(boolean isClose, Window window) {
+    public void openWindowCantidad(boolean isClose, Window window, boolean primerLlamado) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (!unidades_cambio_cantidades && tvList.getSelectionModel().getSelectedItem().getValorInventario() == 1
                     || !valormonetario_cambio_cantidades && tvList.getSelectionModel().getSelectedItem().getValorInventario() == 2
@@ -784,7 +784,8 @@ public class FxVentaEstructuraController implements Initializable {
                     //Controlller here
                     FxVentaCantidadesController controller = fXMLLoader.getController();
                     controller.setInitVentaEstructuraController(this);
-                    controller.initComponents(tvList.getSelectionModel().getSelectedItem(), false);
+                    controller.initComponents(tvList.getSelectionModel().getSelectedItem(), false, primerLlamado);
+
                     //
                     Stage stage = WindowStage.StageLoaderModal(parent, "Modificar cantidades", window);
                     stage.setResizable(false);
@@ -849,8 +850,8 @@ public class FxVentaEstructuraController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.initLoad());
             stage.show();
-            controller.loadTable((short) 1, "", Tools.getDate(), Tools.getDate());
         } catch (IOException ex) {
             Tools.println("Error en la funcioón openWindowCotizaciones():" + ex.getLocalizedMessage());
         }
@@ -864,7 +865,7 @@ public class FxVentaEstructuraController implements Initializable {
                         case 3:
                             tvList.requestFocus();
                             tvList.getSelectionModel().select(i);
-                            openWindowCantidad(cerar_modal_agregar_item_lista, window);
+                            openWindowCantidad(cerar_modal_agregar_item_lista, window, false);
                             break;
                         case 2:
                             tvList.requestFocus();
@@ -888,6 +889,7 @@ public class FxVentaEstructuraController implements Initializable {
                             calculateTotales();
                             break;
                     }
+                    break;
                 }
             }
         } else {
@@ -897,7 +899,7 @@ public class FxVentaEstructuraController implements Initializable {
                     int index = tvList.getItems().size() - 1;
                     tvList.requestFocus();
                     tvList.getSelectionModel().select(index);
-                    openWindowCantidad(cerar_modal_agregar_item_lista, window);
+                    openWindowCantidad(cerar_modal_agregar_item_lista, window, true);
                     calculateTotales();
                     break;
                 }
@@ -2387,13 +2389,13 @@ public class FxVentaEstructuraController implements Initializable {
     @FXML
     private void onKeyPressedCantidad(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openWindowCantidad(true, window.getScene().getWindow());
+            openWindowCantidad(true, window.getScene().getWindow(), false);
         }
     }
 
     @FXML
     private void onActionCantidad(ActionEvent event) {
-        openWindowCantidad(true, window.getScene().getWindow());
+        openWindowCantidad(true, window.getScene().getWindow(), false);
     }
 
     @FXML
@@ -2668,7 +2670,7 @@ public class FxVentaEstructuraController implements Initializable {
             openWindowListaPrecios();
             event.consume();
         } else if (event.getCode() == KeyCode.F4) {
-            openWindowCantidad(true, window.getScene().getWindow());
+            openWindowCantidad(true, window.getScene().getWindow(), false);
             event.consume();
         } else if (event.getCode() == KeyCode.F5) {
             openWindowCambiarPrecio("Cambiar precio al Artículo", false, true, window.getScene().getWindow());

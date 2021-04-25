@@ -12,8 +12,8 @@ import javafx.scene.control.Button;
 
 public class CotizacionADO {
 
-    public static String[] GuardarCotizacion(CotizacionTB cotizacionTB) {
-        String result[] = new String[2];
+    public static Object GuardarCotizacion(CotizacionTB cotizacionTB) {
+
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             CallableStatement statementCodigoCotizacion = null;
@@ -22,7 +22,7 @@ public class CotizacionADO {
             PreparedStatement statementDetalleCotizacion = null;
             PreparedStatement statementDetalleCotizacionBorrar = null;
             try {
-
+                String result[] = new String[2];
                 DBUtil.getConnection().setAutoCommit(false);
 
                 statementValidacion = DBUtil.getConnection().prepareStatement("SELECT * FROM CotizacionTB WHERE IdCotizacion = ?");
@@ -90,6 +90,7 @@ public class CotizacionADO {
                     DBUtil.getConnection().commit();
                     result[0] = "1";
                     result[1] = cotizacionTB.getIdCotizacion();
+                    return result;
                 } else {
 
                     statementCodigoCotizacion = DBUtil.getConnection().prepareCall("{? = call Fc_Cotizacion_Codigo_Alfanumerico()}");
@@ -106,13 +107,9 @@ public class CotizacionADO {
                             + ",HoraCotizacion"
                             + ",FechaVencimiento"
                             + ",HoraVencimiento"
-                            + ",SubTotal"
-                            + ",Descuento"
-                            + ",Impuesto"
-                            + ",Total"
                             + ",Estado"
                             + ",Observaciones)"
-                            + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                            + "VALUES(?,?,?,?,?,?,?,?,?,?)");
                     statementCotizacion.setString(1, idCotizacion);
                     statementCotizacion.setString(2, cotizacionTB.getIdCliente());
                     statementCotizacion.setString(3, cotizacionTB.getIdVendedor());
@@ -121,12 +118,8 @@ public class CotizacionADO {
                     statementCotizacion.setString(6, cotizacionTB.getHoraCotizacion());
                     statementCotizacion.setString(7, cotizacionTB.getFechaVencimiento());
                     statementCotizacion.setString(8, cotizacionTB.getHoraVencimiento());
-                    statementCotizacion.setDouble(9, cotizacionTB.getSubTotal());
-                    statementCotizacion.setDouble(10, cotizacionTB.getDescuento());
-                    statementCotizacion.setDouble(11, cotizacionTB.getImpuesto());
-                    statementCotizacion.setDouble(12, cotizacionTB.getTotal());
-                    statementCotizacion.setShort(13, cotizacionTB.getEstado());
-                    statementCotizacion.setString(14, cotizacionTB.getObservaciones());
+                    statementCotizacion.setShort(9, cotizacionTB.getEstado());
+                    statementCotizacion.setString(10, cotizacionTB.getObservaciones());
                     statementCotizacion.addBatch();
 
                     statementDetalleCotizacion = DBUtil.getConnection().prepareStatement("INSERT INTO DetalleCotizacionTB"
@@ -153,15 +146,17 @@ public class CotizacionADO {
                     DBUtil.getConnection().commit();
                     result[0] = "0";
                     result[1] = idCotizacion;
+                    return result;
                 }
             } catch (SQLException ex) {
                 try {
                     DBUtil.getConnection().rollback();
                 } catch (SQLException e) {
-
+                    return e.getLocalizedMessage();
                 }
-                result[0] = "2";
-                result[1] = ex.getLocalizedMessage();
+                return ex.getLocalizedMessage();
+            } catch (Exception ex) {
+                return ex.getLocalizedMessage();
             } finally {
                 try {
                     if (statementCodigoCotizacion != null) {
@@ -180,54 +175,75 @@ public class CotizacionADO {
                         statementDetalleCotizacionBorrar.close();
                     }
                     DBUtil.dbDisconnect();
-                } catch (SQLException e) {
-
+                } catch (SQLException ex) {
+                    return ex.getLocalizedMessage();
                 }
             }
         } else {
-            result[0] = "3";
-            result[1] = "No se pudo conectar con el servidor, intente nuevamente";
+            return "No se pudo conectar con el servidor, intente nuevamente";
         }
-        return result;
     }
 
-    public static ObservableList<CotizacionTB> CargarCotizacion(short opcion, String buscar, String fechaInicio, String fechaFinal) {
-        ObservableList<CotizacionTB> cotizacionTBs = FXCollections.observableArrayList();
+    public static Object CargarCotizacion(short opcion, String buscar, String fechaInicio, String fechaFinal, int posicionPagina, int filasPorPagina) {
+
         PreparedStatement statementCotizaciones = null;
+        ResultSet result = null;
         try {
             DBUtil.dbConnect();
-            statementCotizaciones = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Cotizacion(?,?,?,?)}");
+            Object[] object = new Object[2];
+
+            ObservableList<CotizacionTB> cotizacionTBs = FXCollections.observableArrayList();
+            statementCotizaciones = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Cotizacion(?,?,?,?,?,?)}");
             statementCotizaciones.setShort(1, opcion);
             statementCotizaciones.setString(2, buscar);
             statementCotizaciones.setString(3, fechaInicio);
             statementCotizaciones.setString(4, fechaFinal);
-            try (ResultSet result = statementCotizaciones.executeQuery()) {
-                while (result.next()) {
-                    CotizacionTB cotizacionTB = new CotizacionTB();
-                    cotizacionTB.setId(result.getRow());
-                    cotizacionTB.setIdCotizacion(result.getString("IdCotizacion"));
-                    cotizacionTB.setFechaCotizacion(result.getDate("FechaCotizacion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                    cotizacionTB.setHoraCotizacion(result.getTime("HoraCotizacion").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
-                    cotizacionTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
-                    cotizacionTB.setClienteTB(new ClienteTB(result.getString("Informacion")));
-                    cotizacionTB.setMonedaTB(new MonedaTB(result.getString("SimboloMoneda")));
-                    cotizacionTB.setTotal(result.getDouble("Total"));
-                    cotizacionTBs.add(cotizacionTB);
-                }
+            statementCotizaciones.setInt(5, posicionPagina);
+            statementCotizaciones.setInt(6, filasPorPagina);
+            result = statementCotizaciones.executeQuery();
+            while (result.next()) {
+                CotizacionTB cotizacionTB = new CotizacionTB();
+                cotizacionTB.setId(result.getRow());
+                cotizacionTB.setIdCotizacion(result.getString("IdCotizacion"));
+                cotizacionTB.setFechaCotizacion(result.getDate("FechaCotizacion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                cotizacionTB.setHoraCotizacion(result.getTime("HoraCotizacion").toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
+                cotizacionTB.setEmpleadoTB(new EmpleadoTB(result.getString("Apellidos"), result.getString("Nombres")));
+                cotizacionTB.setClienteTB(new ClienteTB(result.getString("Informacion")));
+                cotizacionTB.setMonedaTB(new MonedaTB(result.getString("SimboloMoneda")));
+                cotizacionTB.setTotal(result.getDouble("Total"));
+                cotizacionTBs.add(cotizacionTB);
             }
-        } catch (SQLException ex) {
 
+            statementCotizaciones = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Cotizacion_Count(?,?,?,?,?,?,?)}");
+            statementCotizaciones.setShort(1, opcion);
+            statementCotizaciones.setString(2, buscar);
+            statementCotizaciones.setString(3, fechaInicio);
+            statementCotizaciones.setString(4, fechaFinal);
+            result = statementCotizaciones.executeQuery();
+            Integer cantidadTotal = 0;
+            if (result.next()) {
+                cantidadTotal = result.getInt("Total");
+            }
+
+            object[0] = cotizacionTBs;
+            object[1] = cantidadTotal;
+
+            return object;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statementCotizaciones != null) {
                     statementCotizaciones.close();
                 }
+                if (result != null) {
+                    result.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return cotizacionTBs;
     }
 
     public static Object CargarCotizacionVenta(String idCotizacion) {
