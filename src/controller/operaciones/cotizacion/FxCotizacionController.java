@@ -47,7 +47,6 @@ import model.CotizacionTB;
 import model.DetalleCotizacionTB;
 import model.MonedaADO;
 import model.MonedaTB;
-import model.SuministroADO;
 import model.SuministroTB;
 
 public class FxCotizacionController implements Initializable {
@@ -59,9 +58,9 @@ public class FxCotizacionController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private DatePicker dtFechaCotizacion;
+    private DatePicker dtFechaEmision;
     @FXML
-    private TextField txtSearch;
+    private DatePicker dtFechaCotizacion;
     @FXML
     private TableView<SuministroTB> tvList;
     @FXML
@@ -99,15 +98,13 @@ public class FxCotizacionController implements Initializable {
     @FXML
     private Label lblMessageLoad;
     @FXML
-    private Button btnAceptarLoad;
+    private Button btnAceptarLoad;    
 
     private FxPrincipalController fxPrincipalController;
 
     private String idCotizacion;
 
     private ConvertMonedaCadena monedaCadena;
-
-    private boolean stateSearch;
 
     private double importeBruto;
 
@@ -125,8 +122,8 @@ public class FxCotizacionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         monedaSimbolo = "M";
         idCotizacion = "";
-        stateSearch = false;
         monedaCadena = new ConvertMonedaCadena();
+        Tools.actualDate(Tools.getDate(), dtFechaEmision);
         Tools.actualDate(Tools.getDate(), dtFechaCotizacion);
         loadTableView();
         loadComboBoxCliente();
@@ -304,7 +301,7 @@ public class FxCotizacionController implements Initializable {
             System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }
     }
-    
+
     private void openModalImpresion(String idCotizacion) {
         try {
             fxPrincipalController.openFondoModal();
@@ -347,60 +344,6 @@ public class FxCotizacionController implements Initializable {
         }
     }
 
-    private void filterSuministro(String search) {
-        SuministroTB a = SuministroADO.Get_Suministro_By_Search(search);
-        if (a != null) {
-            SuministroTB suministroTB = new SuministroTB();
-            suministroTB.setIdSuministro(a.getIdSuministro());
-            suministroTB.setClave(a.getClave());
-            suministroTB.setNombreMarca(a.getNombreMarca());
-            suministroTB.setCantidad(1);
-            suministroTB.setCostoCompra(a.getCostoCompra());
-
-            suministroTB.setDescuento(0);
-            suministroTB.setDescuentoCalculado(0);
-            suministroTB.setDescuentoSumado(0);
-
-            suministroTB.setPrecioVentaGeneralUnico(a.getPrecioVentaGeneral());
-            suministroTB.setPrecioVentaGeneralReal(a.getPrecioVentaGeneral());
-            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneralReal());
-
-            suministroTB.setImpuestoOperacion(a.getImpuestoOperacion());
-            suministroTB.setImpuestoId(a.getImpuestoId());
-            suministroTB.setImpuestoNombre(a.getImpuestoNombre());
-            suministroTB.setImpuestoValor(a.getImpuestoValor());
-            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal()));
-
-            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + suministroTB.getImpuestoSumado());
-
-            suministroTB.setImporteBruto(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
-            suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-            suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
-
-            suministroTB.setInventario(a.isInventario());
-            suministroTB.setUnidadVenta(a.getUnidadVenta());
-            suministroTB.setValorInventario(a.getValorInventario());
-
-            Button button = new Button("X");
-            button.getStyleClass().add("buttonDark");
-            button.setOnAction(b -> {
-                tvList.getItems().remove(suministroTB);
-                calculateTotales();
-            });
-            button.setOnKeyPressed(b -> {
-                if (b.getCode() == KeyCode.ENTER) {
-                    tvList.getItems().remove(suministroTB);
-                    calculateTotales();
-                }
-            });
-            suministroTB.setRemover(button);
-
-            getAddArticulo(suministroTB);
-            txtSearch.clear();
-            txtSearch.requestFocus();
-        }
-    }
-
     public void getAddArticulo(SuministroTB suministro) {
         if (validateDuplicateArticulo(suministro)) {
             for (int i = 0; i < tvList.getItems().size(); i++) {
@@ -422,7 +365,6 @@ public class FxCotizacionController implements Initializable {
             int index = tvList.getItems().size() - 1;
             tvList.getSelectionModel().select(index);
             calculateTotales();
-            txtSearch.requestFocus();
         }
     }
 
@@ -488,9 +430,8 @@ public class FxCotizacionController implements Initializable {
 
     public void resetVenta() {
         tvList.getItems().clear();
-        txtSearch.setText("");
-        txtSearch.requestFocus();
         cbCliente.getItems().clear();
+        Tools.actualDate(Tools.getDate(), dtFechaEmision);
         Tools.actualDate(Tools.getDate(), dtFechaCotizacion);
         txtObservacion.setText("");
         idCotizacion = "";
@@ -619,7 +560,6 @@ public class FxCotizacionController implements Initializable {
             dtFechaCotizacion.requestFocus();
         } else if (tvList.getItems().isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Cotización", "Ingrese productos a la lista.");
-            txtSearch.requestFocus();
         } else if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(apWindow, "Cotización", "Seleccione la moneda a usar.");
             cbMoneda.requestFocus();
@@ -750,48 +690,6 @@ public class FxCotizacionController implements Initializable {
     }
 
     @FXML
-    private void onKeyReleasedSearch(KeyEvent event) {
-        if (event.getCode() != KeyCode.ESCAPE
-                && event.getCode() != KeyCode.F1
-                && event.getCode() != KeyCode.F2
-                && event.getCode() != KeyCode.F3
-                && event.getCode() != KeyCode.F4
-                && event.getCode() != KeyCode.F5
-                && event.getCode() != KeyCode.F6
-                && event.getCode() != KeyCode.F7
-                && event.getCode() != KeyCode.F8
-                && event.getCode() != KeyCode.F9
-                && event.getCode() != KeyCode.F10
-                && event.getCode() != KeyCode.F11
-                && event.getCode() != KeyCode.F12
-                && event.getCode() != KeyCode.ALT
-                && event.getCode() != KeyCode.CONTROL
-                && event.getCode() != KeyCode.UP
-                && event.getCode() != KeyCode.DOWN
-                && event.getCode() != KeyCode.RIGHT
-                && event.getCode() != KeyCode.LEFT
-                && event.getCode() != KeyCode.TAB
-                && event.getCode() != KeyCode.CAPS
-                && event.getCode() != KeyCode.SHIFT
-                && event.getCode() != KeyCode.HOME
-                && event.getCode() != KeyCode.WINDOWS
-                && event.getCode() != KeyCode.ALT_GRAPH
-                && event.getCode() != KeyCode.CONTEXT_MENU
-                && event.getCode() != KeyCode.END
-                && event.getCode() != KeyCode.INSERT
-                && event.getCode() != KeyCode.PAGE_UP
-                && event.getCode() != KeyCode.PAGE_DOWN
-                && event.getCode() != KeyCode.NUM_LOCK
-                && event.getCode() != KeyCode.PRINTSCREEN
-                && event.getCode() != KeyCode.SCROLL_LOCK
-                && event.getCode() != KeyCode.PAUSE) {
-            if (!stateSearch) {
-                filterSuministro(txtSearch.getText().trim());
-            }
-        }
-    }
-
-    @FXML
     private void onKeyPressedGuardar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             onEventGuardar();
@@ -866,19 +764,6 @@ public class FxCotizacionController implements Initializable {
         }
     }
 
-//    private void onKeyPressedAceptarLoad(KeyEvent event) {
-//        if (event.getCode() == KeyCode.ENTER) {
-//            hbBody.setDisable(false);
-//            hbLoad.setVisible(false);
-//            resetVenta();
-//        }
-//    }
-//
-//    private void onActionAceptarLoad(ActionEvent event) {
-//        hbBody.setDisable(false);
-//        hbLoad.setVisible(false);
-//        resetVenta();
-//    }
     public TableView<SuministroTB> getTvList() {
         return tvList;
     }

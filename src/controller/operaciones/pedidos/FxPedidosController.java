@@ -104,6 +104,8 @@ public class FxPedidosController implements Initializable {
     private Label lblImporteNeto;
     @FXML
     private Button btnProducto;
+    @FXML
+    private Label lblProceso;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -421,6 +423,8 @@ public class FxPedidosController implements Initializable {
 
     private void clearElements() {
         idPedido = "";
+        lblProceso.setText("Pedido en proceso de registrar");
+        lblProceso.setTextFill(Color.web("#ffffff"));
         cbProveedor.getItems().clear();
         Tools.actualDate(Tools.getDate(), txtFechaEmision);
         Tools.actualDate(Tools.getDate(), txtFechaVencimiento);
@@ -429,10 +433,6 @@ public class FxPedidosController implements Initializable {
         loadComponentFormaPago();
         tvList.getItems().clear();
         calculateTotales();
-//        ImageView imageView = new ImageView(new Image("/view/image/load.gif"));
-//        imageView.setFitWidth(120);
-//        imageView.setFitHeight(120);
-//        lblMessageLoad.setGraphic(imageView);
         lblMessageLoad.setText("");
         btnAceptarLoad.setVisible(false);
     }
@@ -513,6 +513,10 @@ public class FxPedidosController implements Initializable {
                         event.consume();
                     });
                 }
+
+                lblProceso.setText("Pedido en proceso de actualizar");
+                lblProceso.setTextFill(Color.web("#c52700"));
+
                 calculateTotales();
                 hbLoad.setDisable(false);
                 hbLoad.setVisible(false);

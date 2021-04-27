@@ -113,7 +113,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Label>
-                                    <DatePicker fx:id="txtFechaEmision" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Ingrese la Fecha de Emisión" />
+                                    <DatePicker fx:id="txtFechaEmision" disable="true" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Ingrese la Fecha de Emisión" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.3333333333333333em;">
@@ -128,6 +128,15 @@
                                        </graphic>
                                     </Label>
                                     <DatePicker fx:id="txtFechaVencimiento" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Ingrese la Fecha de Vencimiento" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <Label fx:id="lblProceso" styleClass="labelRobotoBold15" text="Pedido en proceso de registrar" textFill="#0060e8" />
                                  </children>
                               </VBox>
                            </children>

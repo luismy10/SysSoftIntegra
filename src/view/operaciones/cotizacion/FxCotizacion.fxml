@@ -85,7 +85,7 @@
                            <children>
                               <HBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label styleClass="labelRoboto14" text="Cliente:" textFill="#020203">
                                              <graphic>
@@ -113,27 +113,18 @@
                                           <VBox style="-fx-spacing: 0.8333333333333334em;" />
                                        </children>
                                     </VBox>
-                                    <VBox style="-fx-spacing: 0.8333333333333334em;">
-                                       <children>
-                                          <Label fx:id="lblProceso" styleClass="labelRobotoBold15" text="Cotización en proceso de registrar" textFill="#0060e8" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                 <children>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Ctrl + d:" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Fecha de Emisión:" textFill="#020203">
                                              <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../image/barcode.png" />
+                                                      <Image url="@../../image/calendar.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " styleClass="text-field-normal" />
+                                          <DatePicker fx:id="dtFechaEmision" disable="true" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" promptText="Ingrese la Fecha de Emisión" />
                                        </children>
                                     </VBox>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;">
@@ -148,6 +139,15 @@
                                              </graphic>
                                           </Label>
                                           <DatePicker fx:id="dtFechaCotizacion" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese la Fecha" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <Label fx:id="lblProceso" styleClass="labelRobotoBold15" text="Cotización en proceso de registrar" textFill="#0060e8" />
                                        </children>
                                     </VBox>
                                  </children>
