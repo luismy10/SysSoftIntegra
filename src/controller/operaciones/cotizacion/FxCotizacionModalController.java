@@ -44,9 +44,9 @@ public class FxCotizacionModalController implements Initializable {
 
     public void initComponents(SuministroTB suministroTB, boolean exists) {
         this.suministroTB = suministroTB;
-        this.oldCantidad = exists ? suministroTB.getCantidad() : 0;
+        this.oldCantidad = exists ? suministroTB.getCantidad() : 1;
         this.oldPrecio = suministroTB.getPrecioVentaGeneral();
-        this.oldDescuento = suministroTB.getDescuento();
+        this.oldDescuento = exists ? suministroTB.getDescuento() : 0;
         txtCantidad.setText(Tools.roundingValue(oldCantidad, 2));
         txtPrecio.setText(Tools.roundingValue(oldPrecio, 2));
         txtDescuento.setText(Tools.roundingValue(oldDescuento, 2));
@@ -63,7 +63,7 @@ public class FxCotizacionModalController implements Initializable {
                 : oldPrecio;
 
         double descuentoActual = Tools.isNumeric(txtDescuento.getText().trim())
-                ? (Double.parseDouble(txtDescuento.getText()) <= 0 ? oldDescuento : Double.parseDouble(txtDescuento.getText()))
+                ? (Double.parseDouble(txtDescuento.getText()) < 0 ? oldDescuento : Double.parseDouble(txtDescuento.getText()))
                 : oldDescuento;
 
         SuministroTB newSuministro = new SuministroTB();

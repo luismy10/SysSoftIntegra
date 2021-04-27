@@ -1,6 +1,5 @@
 package model;
 
-import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,7 @@ import javafx.scene.control.Button;
 
 public class CotizacionADO {
 
-    public static Object GuardarCotizacion(CotizacionTB cotizacionTB) {
+    public static Object CrudCotizacion(CotizacionTB cotizacionTB) {
 
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
@@ -37,10 +36,6 @@ public class CotizacionADO {
                             + ",HoraCotizacion=?"
                             + ",FechaVencimiento=?"
                             + ",HoraVencimiento=?"
-                            + ",SubTotal=?"
-                            + ",Descuento=?"
-                            + ",Impuesto=?"
-                            + ",Total=?"
                             + ",Estado=?"
                             + ",Observaciones=? "
                             + "WHERE IdCotizacion = ?");
@@ -52,13 +47,9 @@ public class CotizacionADO {
                     statementCotizacion.setString(5, cotizacionTB.getHoraCotizacion());
                     statementCotizacion.setString(6, cotizacionTB.getFechaVencimiento());
                     statementCotizacion.setString(7, cotizacionTB.getHoraVencimiento());
-                    statementCotizacion.setDouble(8, cotizacionTB.getSubTotal());
-                    statementCotizacion.setDouble(9, cotizacionTB.getDescuento());
-                    statementCotizacion.setDouble(10, cotizacionTB.getImpuesto());
-                    statementCotizacion.setDouble(11, cotizacionTB.getTotal());
-                    statementCotizacion.setShort(12, cotizacionTB.getEstado());
-                    statementCotizacion.setString(13, cotizacionTB.getObservaciones());
-                    statementCotizacion.setString(14, cotizacionTB.getIdCotizacion());
+                    statementCotizacion.setShort(6, cotizacionTB.getEstado());
+                    statementCotizacion.setString(7, cotizacionTB.getObservaciones());
+                    statementCotizacion.setString(8, cotizacionTB.getIdCotizacion());
                     statementCotizacion.addBatch();
 
                     statementDetalleCotizacionBorrar = DBUtil.getConnection().prepareStatement("DELETE FROM DetalleCotizacionTB WHERE IdCotizacion = ?");
@@ -184,7 +175,7 @@ public class CotizacionADO {
         }
     }
 
-    public static Object CargarCotizacion(short opcion, String buscar, String fechaInicio, String fechaFinal, int posicionPagina, int filasPorPagina) {
+    public static Object ListarCotizacion(int opcion, String buscar, String fechaInicio, String fechaFinal, int posicionPagina, int filasPorPagina) {
 
         PreparedStatement statementCotizaciones = null;
         ResultSet result = null;
@@ -194,7 +185,7 @@ public class CotizacionADO {
 
             ObservableList<CotizacionTB> cotizacionTBs = FXCollections.observableArrayList();
             statementCotizaciones = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Cotizacion(?,?,?,?,?,?)}");
-            statementCotizaciones.setShort(1, opcion);
+            statementCotizaciones.setInt(1, opcion);
             statementCotizaciones.setString(2, buscar);
             statementCotizaciones.setString(3, fechaInicio);
             statementCotizaciones.setString(4, fechaFinal);
@@ -214,8 +205,8 @@ public class CotizacionADO {
                 cotizacionTBs.add(cotizacionTB);
             }
 
-            statementCotizaciones = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Cotizacion_Count(?,?,?,?,?,?,?)}");
-            statementCotizaciones.setShort(1, opcion);
+            statementCotizaciones = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Cotizacion_Count(?,?,?,?)}");
+            statementCotizaciones.setInt(1, opcion);
             statementCotizaciones.setString(2, buscar);
             statementCotizaciones.setString(3, fechaInicio);
             statementCotizaciones.setString(4, fechaFinal);
@@ -246,7 +237,7 @@ public class CotizacionADO {
         }
     }
 
-    public static Object CargarCotizacionVenta(String idCotizacion) {
+    private static Object CargarCotizacionVenta(String idCotizacion) {
 
         ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
         PreparedStatement statementCotizacione = null;
@@ -278,36 +269,36 @@ public class CotizacionADO {
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
                     suministroTB.setCostoCompra(result.getDouble("PrecioCompra"));
 
-                    double valor_sin_impuesto = result.getDouble("Precio") / ((result.getDouble("Valor") / 100.00) + 1);
-                    double descuento = suministroTB.getDescuento();
-                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
-                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
-
-                    suministroTB.setDescuento(result.getDouble("Descuento"));
-                    suministroTB.setDescuentoCalculado(porcentajeRestante);
-                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
-
-                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-                    suministroTB.setPrecioVentaGeneralReal(preciocalculado);
-
-                    suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
-                    suministroTB.setImpuestoId(result.getInt("Impuesto"));
-                    suministroTB.setImpuestoNombre(result.getString("ImpuestoNombre"));
-                    suministroTB.setImpuestoValor(result.getDouble("Valor"));
-
-                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
-                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
-                    suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
-
-                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
-                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
-
-                    suministroTB.setInventario(result.getBoolean("Inventario"));
-                    suministroTB.setUnidadVenta(result.getInt("UnidadVenta"));
-                    suministroTB.setValorInventario(result.getShort("ValorInventario"));
-
+//
+//                    double valor_sin_impuesto = result.getDouble("Precio") / ((result.getDouble("Valor") / 100.00) + 1);
+//                    double descuento = suministroTB.getDescuento();
+//                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+//                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+//
+//                    suministroTB.setDescuento(result.getDouble("Descuento"));
+//                    suministroTB.setDescuentoCalculado(porcentajeRestante);
+//                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+//
+//                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+//                    suministroTB.setPrecioVentaGeneralReal(preciocalculado);
+//
+//                    suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
+//                    suministroTB.setImpuestoId(result.getInt("Impuesto"));
+//                    suministroTB.setImpuestoNombre(result.getString("ImpuestoNombre"));
+//                    suministroTB.setImpuestoValor(result.getDouble("Valor"));
+//
+//                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+//                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+//                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+//                    suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
+//
+//                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+//                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+//                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+//
+//                    suministroTB.setInventario(result.getBoolean("Inventario"));
+//                    suministroTB.setUnidadVenta(result.getInt("UnidadVenta"));
+//                    suministroTB.setValorInventario(result.getShort("ValorInventario"));
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");
 
@@ -315,6 +306,86 @@ public class CotizacionADO {
                     cotizacionTBs.add(suministroTB);
                     cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
                 }
+                return cotizacionTB;
+            } else {
+                throw new Exception("No se puedo contrar la cotización, intente nuevamente por favor.");
+            }
+
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementCotizacione != null) {
+                    statementCotizacione.close();
+                }
+                if (statementDetalleCotizacione != null) {
+                    statementDetalleCotizacione.close();
+                }
+                if (result != null) {
+                    result.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+    }
+
+    public static Object CargarCotizacionEditar(String idCotizacion) {
+
+        ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
+        PreparedStatement statementCotizacione = null;
+        PreparedStatement statementDetalleCotizacione = null;
+        ResultSet result = null;
+        try {
+            DBUtil.dbConnect();
+            statementCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Cotizacion_ById(?)}");
+            statementCotizacione.setString(1, idCotizacion);
+            result = statementCotizacione.executeQuery();
+            if (result.next()) {
+                CotizacionTB cotizacionTB = new CotizacionTB();
+                cotizacionTB.setId(result.getRow());
+                cotizacionTB.setIdCotizacion(result.getString("IdCotizacion"));
+                cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
+                cotizacionTB.setIdMoneda(result.getInt("IdMoneda"));
+                cotizacionTB.setObservaciones(result.getString("Observaciones"));
+
+                statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_ById(?)}");
+                statementDetalleCotizacione.setString(1, idCotizacion);
+                result = statementDetalleCotizacione.executeQuery();
+                while (result.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setId(result.getRow());
+                    suministroTB.setIdSuministro(result.getString("IdSuministro"));
+                    suministroTB.setClave(result.getString("Clave"));
+                    suministroTB.setNombreMarca(result.getString("NombreMarca"));
+//                    suministroTB.setUnidadCompraName(result.getString("UnidadCompraNombre"));
+                    suministroTB.setCantidad(result.getDouble("Cantidad"));
+                    suministroTB.setCostoCompra(result.getDouble("PrecioCompra"));
+                    suministroTB.setDescuento(result.getDouble("Descuento"));
+                    suministroTB.setPrecioVentaGeneral(result.getDouble("Precio"));
+                    double descuento = suministroTB.getDescuento();
+                    double precioDescuento = suministroTB.getPrecioVentaGeneral() - descuento;
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * precioDescuento);
+
+                    suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
+                    suministroTB.setImpuestoId(result.getInt("Impuesto"));
+                    suministroTB.setImpuestoNombre(result.getString("ImpuestoNombre"));
+                    suministroTB.setImpuestoValor(result.getDouble("Valor"));
+
+                    suministroTB.setInventario(result.getBoolean("Inventario"));
+                    suministroTB.setUnidadVenta(result.getInt("UnidadVenta"));
+                    suministroTB.setValorInventario(result.getShort("ValorInventario"));
+
+                    Button button = new Button("X");
+                    button.getStyleClass().add("buttonDark");
+                    suministroTB.setRemover(button);
+                    
+                    cotizacionTBs.add(suministroTB);
+                }
+                cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
                 return cotizacionTB;
             } else {
                 throw new Exception("No se puedo contrar la cotización, intente nuevamente por favor.");
@@ -373,32 +444,12 @@ public class CotizacionADO {
                     suministroTB.setNombreMarca(result.getString("NombreMarca"));
                     suministroTB.setUnidadCompraName(result.getString("UnidadCompraNombre"));
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
-
-                    double valor_sin_impuesto = result.getDouble("Precio") / ((result.getDouble("Valor") / 100.00) + 1);
-                    double descuento = suministroTB.getDescuento();
-                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
-                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
-
-                    suministroTB.setDescuento(descuento);
-                    suministroTB.setDescuentoCalculado(porcentajeRestante);
-                    suministroTB.setDescuentoSumado(descuento * suministroTB.getCantidad());
-
-                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
-                    suministroTB.setPrecioVentaGeneralReal(preciocalculado);
-
-                    suministroTB.setImpuestoOperacion(result.getInt("Operacion"));
-                    suministroTB.setImpuestoId(result.getInt("Impuesto"));
-                    suministroTB.setImpuestoNombre(result.getString("ImpuestoNombre"));
+                    suministroTB.setPrecioVentaGeneral(result.getDouble("Precio"));
+                    suministroTB.setDescuento(result.getDouble("Descuento"));
                     suministroTB.setImpuestoValor(result.getDouble("Valor"));
-
-                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
-                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
-                    suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
-
-                    suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
-                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
-                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+                    double descuento = suministroTB.getDescuento();
+                    double precioDescuento = suministroTB.getPrecioVentaGeneral() - descuento;
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * precioDescuento);
 
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");

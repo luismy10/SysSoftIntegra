@@ -208,9 +208,9 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
-                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getDescuento(), 0) + "%"));
+                    fieldTicket.setText(Tools.AddText2Guines("-" + Tools.roundingValue(arrList.get(m).getDescuento(), 0)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
-                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral() * arrList.get(m).getCantidad(), 2)));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getImporteNeto(), 2)));
                 }
                 hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
                 lines = fieldTicket.getLines();
@@ -411,11 +411,11 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
-                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + importeBruto));
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subImporteNeto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("dscttotal")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + descuentoBruto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("imptotal")) {
-                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subImporteNeto));
+                    fieldTicket.setText(Tools.AddText2Guines(moneda + " " + importeBruto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("valoroperacion")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + montoOperacion));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("valorimpustos")) {

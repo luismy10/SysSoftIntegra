@@ -167,7 +167,7 @@ public class FxNotaCreditoDetalleController implements Initializable {
             gpList.add(addElementGridPane("l4" + (i + 1), creditoDetalleTBs.get(i).getSuministroTB().getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(creditoDetalleTBs.get(i).getValorImpuesto(), 0) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(creditoDetalleTBs.get(i).getPrecio(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
-            gpList.add(addElementGridPane("l7" + (i + 1), Tools.roundingValue(creditoDetalleTBs.get(i).getDescuento(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+            gpList.add(addElementGridPane("l7" + (i + 1), "-"+Tools.roundingValue(creditoDetalleTBs.get(i).getDescuento(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
             gpList.add(addElementGridPane("l8" + (i + 1), Tools.roundingValue(creditoDetalleTBs.get(i).getImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
 
             double valorCantidad = creditoDetalleTBs.get(i).getCantidad();

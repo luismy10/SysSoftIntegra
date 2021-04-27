@@ -6,7 +6,9 @@ import java.util.ArrayList;
 public class PedidoTB {
     
     private int id;
+    private String idPedido;
     private String idProveedor;
+    private String idVendedor;
     private String fechaEmision;
     private String horaEmision;
     private String fechaVencimiento;
@@ -14,6 +16,14 @@ public class PedidoTB {
     private int idMoneda;
     private int idFormaPago;
     private String Observacion;
+    private double importeBruto;
+    private double descuentoTotal;
+    private double subImporte;
+    private double impuestoGenerado;
+    private double importeNeto;
+    private MonedaTB monedaTB;
+    private ProveedorTB proveedorTB;
+    private EmpleadoTB empleadoTB;
     private ArrayList<PedidoDetalleTB> pedidoDetalleTBs;
 
     public PedidoTB() {
@@ -27,12 +37,28 @@ public class PedidoTB {
         this.id = id;
     }
 
+    public String getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(String idPedido) {
+        this.idPedido = idPedido;
+    }
+
     public String getIdProveedor() {
         return idProveedor;
     }
 
     public void setIdProveedor(String idProveedor) {
         this.idProveedor = idProveedor;
+    }
+
+    public String getIdVendedor() {
+        return idVendedor;
+    }
+
+    public void setIdVendedor(String idVendedor) {
+        this.idVendedor = idVendedor;
     }
 
     public String getFechaEmision() {
@@ -91,6 +117,70 @@ public class PedidoTB {
         this.Observacion = Observacion;
     }
 
+    public double getImporteBruto() {
+        return importeBruto;
+    }
+
+    public void setImporteBruto(double importeBruto) {
+        this.importeBruto = importeBruto;
+    }
+
+    public double getDescuentoTotal() {
+        return descuentoTotal;
+    }
+
+    public void setDescuentoTotal(double descuentoTotal) {
+        this.descuentoTotal = descuentoTotal;
+    }
+
+    public double getSubImporte() {
+        return subImporte;
+    }
+
+    public void setSubImporte(double subImporte) {
+        this.subImporte = subImporte;
+    }
+
+    public double getImpuestoGenerado() {
+        return impuestoGenerado;
+    }
+
+    public void setImpuestoGenerado(double impuestoGenerado) {
+        this.impuestoGenerado = impuestoGenerado;
+    }
+
+    public double getImporteNeto() {
+        return importeNeto;
+    }
+
+    public void setImporteNeto(double importeNeto) {
+        this.importeNeto = importeNeto;
+    }
+
+    public MonedaTB getMonedaTB() {
+        return monedaTB;
+    }
+
+    public void setMonedaTB(MonedaTB monedaTB) {
+        this.monedaTB = monedaTB;
+    }
+
+    public ProveedorTB getProveedorTB() {
+        return proveedorTB;
+    }
+
+    public void setProveedorTB(ProveedorTB proveedorTB) {
+        this.proveedorTB = proveedorTB;
+    }
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
+    }
+
     public ArrayList<PedidoDetalleTB> getPedidoDetalleTBs() {
         return pedidoDetalleTBs;
     }
@@ -98,5 +188,6 @@ public class PedidoTB {
     public void setPedidoDetalleTBs(ArrayList<PedidoDetalleTB> pedidoDetalleTBs) {
         this.pedidoDetalleTBs = pedidoDetalleTBs;
     }
+
     
 }

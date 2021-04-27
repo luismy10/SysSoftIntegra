@@ -5,6 +5,7 @@ import controller.consultas.pagar.FxCuentasPorPagarVisualizarController;
 import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.cortecaja.FxCajaController;
 import controller.operaciones.cotizacion.FxCotizacionController;
+import controller.operaciones.pedidos.FxPedidosController;
 import controller.operaciones.venta.FxVentaLlevarControllerHistorial;
 import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
@@ -78,6 +79,8 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private FxVentaLlevarControllerHistorial ventaLlevarControllerHistorial;
 
+    private FxPedidosController pedidosController;
+    
     private ConvertMonedaCadena monedaCadena;
 
     private BillPrintable billPrintable;
@@ -99,6 +102,8 @@ public class FxOpcionesImprimirController implements Initializable {
     private String idCaja;
 
     private String idCotizacion;
+    
+    private String idPedido;
 
     private String idSuministro;
 
@@ -131,6 +136,10 @@ public class FxOpcionesImprimirController implements Initializable {
 
     public void loadDataCotizacion(String idCotizacion) {
         this.idCotizacion = idCotizacion;
+    }
+
+    public void loadDataPedido(String idPedido) {
+        this.idPedido = idPedido;
     }
 
     public void loadDataHistorialSuministroLlevar(String idVenta, String idSuministro) {
@@ -2199,6 +2208,10 @@ public class FxOpcionesImprimirController implements Initializable {
 
     public void setInitOpcionesVentaLlevar(FxVentaLlevarControllerHistorial ventaLlevarControllerHistorial) {
         this.ventaLlevarControllerHistorial = ventaLlevarControllerHistorial;
+    }
+
+    public void setInitOpcionesImprimirPedido(FxPedidosController pedidosController) {
+        this.pedidosController=pedidosController;
     }
 
 }

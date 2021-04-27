@@ -373,5 +373,7 @@ public final class FilesRouters {
     public static final String FX_PEDIDO_MODAL = "/view/operaciones/pedidos/FxPedidosModal.fxml";
     
     public static final String FX_COTIZACION_MODAL = "/view/operaciones/cotizacion/FxCotizacionModal.fxml";
+    
+    public static final String FX_PEDIDO_LISTA = "/view/operaciones/pedidos/FxPedidosLista.fxml";
 
 }

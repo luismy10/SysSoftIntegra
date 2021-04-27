@@ -17,7 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -108,7 +107,7 @@ public class FxCotizacionRealizadasController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return CotizacionADO.CargarCotizacion(opcion, buscar, fechaInicio, fechaFinal, (paginacion - 1) * 10, 10);
+                return CotizacionADO.ListarCotizacion(opcion, buscar, fechaInicio, fechaFinal, (paginacion - 1) * 10, 10);
             }
         };
         task.setOnSucceeded(w -> {
@@ -150,7 +149,7 @@ public class FxCotizacionRealizadasController implements Initializable {
     private void openWindowDetalleCotizacion() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_COTIZACION_DETALLE));
-            ScrollPane node = fXMLLoader.load();
+            AnchorPane node = fXMLLoader.load();
             //Controlller here
             FxCotizacionDetalleController controller = fXMLLoader.getController();
             controller.setInitCotizacionesRealizadasController(this, fxPrincipalController);

@@ -1,6 +1,5 @@
-package controller.operaciones.cotizacion;
+package controller.operaciones.pedidos;
 
-import controller.operaciones.venta.FxVentaEstructuraController;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,10 +20,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import model.CotizacionADO;
-import model.CotizacionTB;
+import model.PedidoADO;
+import model.PedidoTB;
 
-public class FxCotizacionListaController implements Initializable {
+public class FxPedidosListaController implements Initializable {
 
     @FXML
     private AnchorPane apWindow;
@@ -37,27 +36,25 @@ public class FxCotizacionListaController implements Initializable {
     @FXML
     private DatePicker txtFechaFinal;
     @FXML
-    private TableView<CotizacionTB> tvList;
+    private TableView<PedidoTB> tvList;
     @FXML
-    private TableColumn<CotizacionTB, String> tcNumero;
+    private TableColumn<PedidoTB, String> tcNumero;
     @FXML
-    private TableColumn<CotizacionTB, String> tcVendedor;
+    private TableColumn<PedidoTB, String> tcVendedor;
     @FXML
-    private TableColumn<CotizacionTB, String> tcCotizacion;
+    private TableColumn<PedidoTB, String> tcCotizacion;
     @FXML
-    private TableColumn<CotizacionTB, String> tcFecha;
+    private TableColumn<PedidoTB, String> tcFecha;
     @FXML
-    private TableColumn<CotizacionTB, String> tcCliente;
+    private TableColumn<PedidoTB, String> tcProveedor;
     @FXML
-    private TableColumn<CotizacionTB, String> tcTotal;
+    private TableColumn<PedidoTB, String> tcTotal;
     @FXML
     private Label lblPaginaActual;
     @FXML
     private Label lblPaginaSiguiente;
 
-    private FxVentaEstructuraController ventaEstructuraController;
-
-    private FxCotizacionController cotizacionController;
+    private FxPedidosController pedidosController;
 
     private int paginacion;
 
@@ -68,12 +65,13 @@ public class FxCotizacionListaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
+
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcVendedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEmpleadoTB().getApellidos() + "\n" + cellData.getValue().getEmpleadoTB().getNombres()));
-        tcCotizacion.setCellValueFactory(cellData -> Bindings.concat("COTIZACIÓN N° " + cellData.getValue().getIdCotizacion()));
-        tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCotizacion() + "\n" + cellData.getValue().getHoraCotizacion()));
-        tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClienteTB().getInformacion()));
-        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaTB().getSimbolo() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tcCotizacion.setCellValueFactory(cellData -> Bindings.concat("COTIZACIÓN N° " + cellData.getValue().getIdPedido()));
+        tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaEmision() + "\n" + cellData.getValue().getHoraEmision()));
+        tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getProveedorTB().getRazonSocial()));
+        tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaTB().getSimbolo() + " " + Tools.roundingValue(cellData.getValue().getImporteNeto(), 2)));
         tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
         Tools.actualDate(Tools.getDate(), txtFechaInicio);
@@ -85,12 +83,12 @@ public class FxCotizacionListaController implements Initializable {
         Tools.actualDate(Tools.getDate(), txtFechaFinal);
         if (!lblLoad.isVisible()) {
             paginacion = 1;
-            fillTableCotizacion(1, "", "", "");
+            fillTablePedido(0, "", "", "");
             opcion = 0;
         }
     }
 
-    private void fillTableCotizacion(int opcion, String buscar, String fechaInicio, String fechaFinal) {
+    private void fillTablePedido(int opcion, String search, String fechaInicio, String fechaFinal) {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -99,16 +97,16 @@ public class FxCotizacionListaController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return CotizacionADO.ListarCotizacion(opcion, buscar, fechaInicio, fechaFinal, (paginacion - 1) * 10, 10);
+                return PedidoADO.ListarPedidos(opcion, search, fechaInicio, fechaFinal, (paginacion - 1) * 10, 10);
             }
         };
         task.setOnSucceeded(w -> {
             Object object = task.getValue();
             if (object instanceof Object[]) {
                 Object[] objects = (Object[]) object;
-                ObservableList<CotizacionTB> cotizacionTBs = (ObservableList<CotizacionTB>) objects[0];
-                if (!cotizacionTBs.isEmpty()) {
-                    tvList.setItems(cotizacionTBs);
+                ObservableList<PedidoTB> pedidoTBs = (ObservableList<PedidoTB>) objects[0];
+                if (!pedidoTBs.isEmpty()) {
+                    tvList.setItems(pedidoTBs);
                     totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 10.00));
                     lblPaginaActual.setText(paginacion + "");
                     lblPaginaSiguiente.setText(totalPaginacion + "");
@@ -138,33 +136,23 @@ public class FxCotizacionListaController implements Initializable {
         }
     }
 
-    private void onEventPaginacion() {
-        switch (opcion) {
-            case 0:
-                fillTableCotizacion(1, "", "", "");
-                break;
-            case 1:
-                fillTableCotizacion(2, txtBuscar.getText().trim(), "", "");
-                break;
-            case 2:
-                fillTableCotizacion(3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
-                break;
+    private void onEventAceptar() {
+        if(pedidosController != null){
+            Tools.Dispose(apWindow);
         }
     }
-
-    private void onEventAceptar() {
-        if (ventaEstructuraController != null) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                ventaEstructuraController.resetVenta();
-                Tools.Dispose(apWindow);
-                ventaEstructuraController.loadCotizacion(tvList.getSelectionModel().getSelectedItem().getIdCotizacion());
-            }
-        } else if (cotizacionController != null) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                cotizacionController.resetVenta();
-                Tools.Dispose(apWindow);
-                cotizacionController.loadCotizacion(tvList.getSelectionModel().getSelectedItem().getIdCotizacion());
-            }
+    
+     private void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillTablePedido(0, "", "","");
+                break;
+            case 1:
+                fillTablePedido( 1, txtBuscar.getText().trim(), "", "");
+                break;
+            case 2:
+                fillTablePedido( 2, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                break;
         }
     }
 
@@ -181,9 +169,11 @@ public class FxCotizacionListaController implements Initializable {
     @FXML
     private void onKeyReleasedBuscar(KeyEvent event) {
         if (!lblLoad.isVisible()) {
-            paginacion = 1;
-            fillTableCotizacion(2, txtBuscar.getText().trim(), "", "");
-            opcion = 1;
+            if (!Tools.isText(txtBuscar.getText())) {
+                paginacion = 1;
+                fillTablePedido(1, txtBuscar.getText().trim(), "", "");
+                opcion = 1;
+            }
         }
     }
 
@@ -192,7 +182,7 @@ public class FxCotizacionListaController implements Initializable {
         if (!lblLoad.isVisible()) {
             if (txtFechaInicio.getValue() != null && txtFechaFinal.getValue() != null) {
                 paginacion = 1;
-                fillTableCotizacion(3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                fillTablePedido(2, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
                 opcion = 2;
             }
         }
@@ -203,7 +193,7 @@ public class FxCotizacionListaController implements Initializable {
         if (!lblLoad.isVisible()) {
             if (txtFechaInicio.getValue() != null && txtFechaFinal.getValue() != null) {
                 paginacion = 1;
-                fillTableCotizacion(3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                fillTablePedido(2, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
                 opcion = 2;
             }
         }
@@ -277,6 +267,7 @@ public class FxCotizacionListaController implements Initializable {
                 }
             }
         }
+
     }
 
     @FXML
@@ -311,12 +302,8 @@ public class FxCotizacionListaController implements Initializable {
         }
     }
 
-    public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
-        this.ventaEstructuraController = ventaEstructuraController;
-    }
-
-    public void setInitCotizacionListaController(FxCotizacionController cotizacionController) {
-        this.cotizacionController = cotizacionController;
+    public void setInitPedidoListaController(FxPedidosController pedidosController) {
+        this.pedidosController = pedidosController;
     }
 
 }

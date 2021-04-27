@@ -62,7 +62,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Pedidos(F4)">
+                  <Button mnemonicParsing="false" onAction="#onActionPedido" onKeyPressed="#onKeyPressedPedido" styleClass="buttonLight" text="Pedidos(F4)">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -253,7 +253,7 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <Button fx:id="btnAceptarLoad" mnemonicParsing="false" onAction="#onActionAceptarLoad" onKeyPressed="#onKeyPressedAceptarLoad" styleClass="buttonLight" text="Aceptar" visible="false">
+                  <Button fx:id="btnAceptarLoad" mnemonicParsing="false" styleClass="buttonLight" text="Aceptar" visible="false">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>

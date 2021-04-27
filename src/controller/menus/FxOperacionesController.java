@@ -81,7 +81,7 @@ public class FxOperacionesController implements Initializable {
      */
     private FXMLLoader fXMLCotizacion;
 
-    private HBox nodeCotizacion;
+    private AnchorPane nodeCotizacion;
 
     private FxCotizacionController controllerCotizacion;
 

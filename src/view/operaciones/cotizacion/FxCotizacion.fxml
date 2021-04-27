@@ -138,7 +138,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Fecha de Venc.:" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Fecha de Vencimiento:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -253,7 +253,7 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <Button fx:id="btnAceptarLoad" mnemonicParsing="false" onAction="#onActionAceptarLoad" onKeyPressed="#onKeyPressedAceptarLoad" styleClass="buttonLight" text="Aceptar" visible="false">
+                  <Button fx:id="btnAceptarLoad" mnemonicParsing="false" styleClass="buttonLight" text="Aceptar" visible="false">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>

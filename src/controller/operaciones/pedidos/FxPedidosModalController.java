@@ -10,8 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -82,7 +80,7 @@ public class FxPedidosModalController implements Initializable {
                     : oldCosto;
 
             double descuentoActual = Tools.isNumeric(txtDescuento.getText().trim())
-                    ? (Double.parseDouble(txtDescuento.getText()) <= 0 ? oldDescuento : Double.parseDouble(txtDescuento.getText()))
+                    ? (Double.parseDouble(txtDescuento.getText()) < 0 ? oldDescuento : Double.parseDouble(txtDescuento.getText()))
                     : oldDescuento;
 
             PedidoDetalleTB pedidoDetalleTB = new PedidoDetalleTB();
@@ -95,13 +93,12 @@ public class FxPedidosModalController implements Initializable {
             pedidoDetalleTB.setDescuento(descuentoActual);
             pedidoDetalleTB.setIdImpuesto(cbImpuesto.getSelectionModel().getSelectedItem().getIdImpuesto());
             pedidoDetalleTB.setImpuesto(cbImpuesto.getSelectionModel().getSelectedItem().getValor());
+            double descuento = pedidoDetalleTB.getDescuento();
+            double costoDescuento = pedidoDetalleTB.getCosto() - descuento;
+            pedidoDetalleTB.setImporte(costoDescuento * pedidoDetalleTB.getCantidad());
 
-            Button button = new Button();
+            Button button = new Button("X");
             button.getStyleClass().add("buttonDark");
-            ImageView view = new ImageView(new Image("/view/image/remove.png"));
-            view.setFitWidth(22);
-            view.setFitHeight(22);
-            button.setGraphic(view);
             button.setOnAction(e -> {
                 pedidosController.getTvList().getItems().remove(pedidoDetalleTB);
                 pedidosController.calculateTotales();
@@ -115,110 +112,6 @@ public class FxPedidosModalController implements Initializable {
             });
 
             pedidoDetalleTB.setBtnQuitar(button);
-
-            TextField txtFieldCantidad = new TextField(String.valueOf(pedidoDetalleTB.getCantidad()));
-            txtFieldCantidad.getStyleClass().add("text-field-normal");
-            txtFieldCantidad.setPromptText("0.00");
-            txtFieldCantidad.setPrefWidth(220);
-            txtFieldCantidad.setPrefHeight(30);
-            txtFieldCantidad.setOnKeyReleased(event -> {
-                if (Tools.isNumeric(txtFieldCantidad.getText().trim())) {
-                    double cantidad = Double.parseDouble(txtFieldCantidad.getText().trim());
-                    double importe = cantidad * (pedidoDetalleTB.getCosto() - pedidoDetalleTB.getDescuento());
-                    pedidoDetalleTB.setCantidad(cantidad);
-                    pedidoDetalleTB.setImporte(importe);
-                    pedidosController.getTvList().refresh();
-                    pedidosController.calculateTotales();
-                } else {
-                    double cantidad = 0;
-                    double importe = cantidad * (pedidoDetalleTB.getCosto() - pedidoDetalleTB.getDescuento());
-                    pedidoDetalleTB.setCantidad(cantidad);
-                    pedidoDetalleTB.setImporte(importe);
-                    pedidosController.getTvList().refresh();
-                    pedidosController.calculateTotales();
-                }
-            });
-            txtFieldCantidad.setOnKeyTyped(event -> {
-                char c = event.getCharacter().charAt(0);
-                if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-                    event.consume();
-                }
-                if (c == '.' && txtFieldCantidad.getText().contains(".")) {
-                    event.consume();
-                }
-            });
-            pedidoDetalleTB.setTxtCantidad(txtFieldCantidad);
-
-//        TextField txtCosto = new TextField(String.valueOf(pedidoDetalleTB.getCosto()));
-//        txtCosto.getStyleClass().add("text-field-normal");
-//        txtCosto.setPromptText("0.00");
-//        txtCosto.setPrefWidth(220);
-//        txtCosto.setPrefHeight(30);
-//        txtCosto.setOnKeyReleased(event -> {
-//            if (Tools.isNumeric(txtCosto.getText().trim())) {
-//                double costo = Double.parseDouble(txtCosto.getText().trim());
-//                double importe = (costo - pedidoDetalleTB.getDescuento()) * pedidoDetalleTB.getCantidad();
-//                pedidoDetalleTB.setCosto(costo);
-//                pedidoDetalleTB.setImporte(importe);
-//                pedidosController.getTvList().refresh();
-//                pedidosController.calculateTotales();
-//            } else {
-//                double costo = 0;
-//                double importe = (costo - pedidoDetalleTB.getDescuento()) * pedidoDetalleTB.getCantidad();
-//                pedidoDetalleTB.setCosto(costo);
-//                pedidoDetalleTB.setImporte(importe);
-//                pedidosController.getTvList().refresh();
-//                pedidosController.calculateTotales();
-//            }
-//        });
-//        txtCosto.setOnKeyTyped(event -> {
-//            char c = event.getCharacter().charAt(0);
-//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-//                event.consume();
-//            }
-//            if (c == '.' && txtCosto.getText().contains(".")) {
-//                event.consume();
-//            }
-//        });
-//
-//        pedidoDetalleTB.setTxtCosto(txtCosto);
-//
-//        TextField txtDescuento = new TextField(String.valueOf(pedidoDetalleTB.getDescuento()));
-//        txtDescuento.getStyleClass().add("text-field-normal");
-//        txtDescuento.setPromptText("0.00");
-//        txtDescuento.setPrefWidth(220);
-//        txtDescuento.setPrefHeight(30);
-//        txtDescuento.setOnKeyReleased(event -> {
-//            if (Tools.isNumeric(txtDescuento.getText().trim())) {
-//                double descuento = Double.parseDouble(txtDescuento.getText().trim());
-//                double importe = (pedidoDetalleTB.getCosto() - descuento) * pedidoDetalleTB.getCantidad();
-//                pedidoDetalleTB.setDescuento(descuento);
-//                pedidoDetalleTB.setImporte(importe);
-//                pedidosController.getTvList().refresh();
-//                pedidosController.calculateTotales();
-//            } else {
-//                double descuento = 0;
-//                double importe = (pedidoDetalleTB.getCosto() - descuento) * pedidoDetalleTB.getCantidad();
-//                pedidoDetalleTB.setDescuento(descuento);
-//                pedidoDetalleTB.setImporte(importe);
-//                pedidosController.getTvList().refresh();
-//                pedidosController.calculateTotales();
-//            }
-//        });
-//        txtDescuento.setOnKeyTyped(event -> {
-//            char c = event.getCharacter().charAt(0);
-//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-//                event.consume();
-//            }
-//            if (c == '.' && txtDescuento.getText().contains(".")) {
-//                event.consume();
-//            }
-//        });
-//
-//        pedidoDetalleTB.setTxtDescuento(txtDescuento);
-            double descuento = pedidoDetalleTB.getDescuento();
-            double costoDescuento = pedidoDetalleTB.getCosto() - descuento;
-            pedidoDetalleTB.setImporte(costoDescuento * pedidoDetalleTB.getCantidad());
             pedidosController.getAddArticulo(pedidoDetalleTB);
             Tools.Dispose(apWindow);
         } else {

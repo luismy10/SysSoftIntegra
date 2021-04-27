@@ -1,10 +1,12 @@
 package controller.operaciones.pedidos;
 
+import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.contactos.proveedores.FxProveedorProcesoController;
 import controller.inventario.suministros.FxSuministrosListaController;
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.SearchComboBox;
+import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -29,13 +31,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.FormaPagoTB;
 import model.MonedaADO;
@@ -69,7 +71,7 @@ public class FxPedidosController implements Initializable {
     @FXML
     private TableColumn<PedidoDetalleTB, Button> tcQuitar;
     @FXML
-    private TableColumn<PedidoDetalleTB, TextField> tcCantidad;
+    private TableColumn<PedidoDetalleTB, String> tcCantidad;
     @FXML
     private TableColumn<PedidoDetalleTB, String> tcExistencia;
     @FXML
@@ -105,6 +107,8 @@ public class FxPedidosController implements Initializable {
 
     private FxPrincipalController fxPrincipalController;
 
+    private String idPedido;
+
     private String monedaSimbolo;
 
     private double importeBruto;
@@ -116,7 +120,7 @@ public class FxPedidosController implements Initializable {
     private double impuestoGenerado;
 
     private double importeNeto;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.actualDate(Tools.getDate(), txtFechaEmision);
@@ -202,7 +206,7 @@ public class FxPedidosController implements Initializable {
 
     private void initTable() {
         tcQuitar.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
-        tcCantidad.setCellValueFactory(new PropertyValueFactory<>("txtCantidad"));
+        tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
         tcExistencia.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getExistencia(), 2)));
         tcStock.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getStock()));
         tcProducto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSuministroTB().getClave() + "\n" + cellData.getValue().getSuministroTB().getNombreMarca()));
@@ -210,6 +214,54 @@ public class FxPedidosController implements Initializable {
         txtDescuento.setCellValueFactory(cellData -> Bindings.concat("-" + Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
         txtImpuesto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImpuesto(), 2) + " %"));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
+
+        tcCantidad.setCellFactory(TextFieldTableCell.forTableColumn());
+        tcCantidad.setOnEditCommit(data -> {
+            final Double newCantidad = Tools.isNumeric(data.getNewValue())
+                    ? (Double.parseDouble(data.getNewValue()) <= 0 ? Double.parseDouble(data.getOldValue()) : Double.parseDouble(data.getNewValue()))
+                    : Double.parseDouble(data.getOldValue());
+
+            PedidoDetalleTB pedidoDetalleTB = data.getTableView().getItems().get(data.getTablePosition().getRow());
+            pedidoDetalleTB.setCantidad(newCantidad);
+            double descuento = pedidoDetalleTB.getDescuento();
+            double costoDescuento = pedidoDetalleTB.getCosto() - descuento;
+            pedidoDetalleTB.setImporte(costoDescuento * pedidoDetalleTB.getCantidad());
+
+            tvList.refresh();
+            calculateTotales();
+        });
+
+        tcCostoProveedor.setCellFactory(TextFieldTableCell.forTableColumn());
+        tcCostoProveedor.setOnEditCommit(data -> {
+            final Double newCosto = Tools.isNumeric(data.getNewValue())
+                    ? (Double.parseDouble(data.getNewValue()) <= 0 ? Double.parseDouble(data.getOldValue()) : Double.parseDouble(data.getNewValue()))
+                    : Double.parseDouble(data.getOldValue());
+
+            PedidoDetalleTB pedidoDetalleTB = data.getTableView().getItems().get(data.getTablePosition().getRow());
+            pedidoDetalleTB.setCosto(newCosto);
+            double descuento = pedidoDetalleTB.getDescuento();
+            double costoDescuento = pedidoDetalleTB.getCosto() - descuento;
+            pedidoDetalleTB.setImporte(costoDescuento * pedidoDetalleTB.getCantidad());
+
+            tvList.refresh();
+            calculateTotales();
+        });
+
+        txtDescuento.setCellFactory(TextFieldTableCell.forTableColumn());
+        txtDescuento.setOnEditCommit(data -> {
+            final Double newDescuento = Tools.isNumeric(data.getNewValue())
+                    ? (Double.parseDouble(data.getNewValue()) < 0 ? Double.parseDouble(data.getOldValue()) : Double.parseDouble(data.getNewValue()))
+                    : Double.parseDouble(data.getOldValue());
+
+            PedidoDetalleTB pedidoDetalleTB = data.getTableView().getItems().get(data.getTablePosition().getRow());
+            pedidoDetalleTB.setDescuento(newDescuento);
+            double descuento = pedidoDetalleTB.getDescuento();
+            double costoDescuento = pedidoDetalleTB.getCosto() - descuento;
+            pedidoDetalleTB.setImporte(costoDescuento * pedidoDetalleTB.getCantidad());
+
+            tvList.refresh();
+            calculateTotales();
+        });
 
         tcQuitar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
         tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.09));
@@ -260,6 +312,48 @@ public class FxPedidosController implements Initializable {
             controller.setValueAdd();
         } catch (IOException ix) {
             System.out.println("Error en Proveedor Controller:" + ix.getLocalizedMessage());
+        }
+    }
+
+    private void openModalImpresion(String idPedido) {
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxOpcionesImprimirController controller = fXMLLoader.getController();
+            controller.loadDataPedido(idPedido);
+            controller.setInitOpcionesImprimirPedido(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Controller Modal Impresión: " + ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowPedido() {
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_PEDIDO_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxPedidosListaController controller = fXMLLoader.getController();
+            controller.setInitPedidoListaController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar Pedidos", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.initLoad());
+            stage.show();
+        } catch (IOException ex) {
+            Tools.println("Error en la funcioón openWindowPedido():" + ex.getLocalizedMessage());
         }
     }
 
@@ -334,10 +428,10 @@ public class FxPedidosController implements Initializable {
         loadComponentFormaPago();
         tvList.getItems().clear();
         calculateTotales();
-        ImageView imageView = new ImageView(new Image("/view/image/load.gif"));
-        imageView.setFitWidth(120);
-        imageView.setFitHeight(120);
-        lblMessageLoad.setGraphic(imageView);
+//        ImageView imageView = new ImageView(new Image("/view/image/load.gif"));
+//        imageView.setFitWidth(120);
+//        imageView.setFitHeight(120);
+//        lblMessageLoad.setGraphic(imageView);
         lblMessageLoad.setText("");
         btnAceptarLoad.setVisible(false);
     }
@@ -362,17 +456,6 @@ public class FxPedidosController implements Initializable {
             Tools.AlertMessageWarning(apWindow, "Pedido", "No hay items para completa el pedido.");
             btnProducto.requestFocus();
         } else {
-            PedidoTB pedidoTB = new PedidoTB();
-            pedidoTB.setIdProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
-            pedidoTB.setFechaEmision(Tools.getDatePicker(txtFechaEmision));
-            pedidoTB.setHoraEmision(Tools.getHour());
-            pedidoTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
-            pedidoTB.setHoraVencimiento(Tools.getHour());
-            pedidoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
-            pedidoTB.setIdFormaPago(cbFormaPago.getSelectionModel().getSelectedItem().getIdFormaPago());
-            pedidoTB.setObservacion(txtObservacion.getText().trim());
-            pedidoTB.setPedidoDetalleTBs(new ArrayList<>(tvList.getItems()));
-
             short value = Tools.AlertMessageConfirmation(apWindow, "Pedido", "¿Está seguro de continuar?");
             if (value == 1) {
 
@@ -382,33 +465,80 @@ public class FxPedidosController implements Initializable {
                     return t;
                 });
 
-                Task<String> task = new Task<String>() {
+                Task<Object> task = new Task<Object>() {
                     @Override
-                    public String call() {
+                    public Object call() {
+                        PedidoTB pedidoTB = new PedidoTB();
+                        pedidoTB.setIdPedido(idPedido);
+                        pedidoTB.setIdProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
+                        pedidoTB.setIdVendedor(Session.USER_ID);
+                        pedidoTB.setFechaEmision(Tools.getDatePicker(txtFechaEmision));
+                        pedidoTB.setHoraEmision(Tools.getHour());
+                        pedidoTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
+                        pedidoTB.setHoraVencimiento(Tools.getHour());
+                        pedidoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
+                        pedidoTB.setIdFormaPago(cbFormaPago.getSelectionModel().getSelectedItem().getIdFormaPago());
+                        pedidoTB.setObservacion(txtObservacion.getText().trim());
+                        pedidoTB.setPedidoDetalleTBs(new ArrayList<>(tvList.getItems()));
+
                         return PedidoADO.CrudPedido(pedidoTB);
                     }
                 };
                 task.setOnScheduled(w -> {
                     hbLoad.setVisible(true);
                     vbBody.setDisable(true);
-                    lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/load.gif")));
+                    btnAceptarLoad.setVisible(false);
+//                    lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/load.gif")));
                     lblMessageLoad.setText("Procesando petición...");
+                    lblMessageLoad.setTextFill(Color.web("#ffffff"));
                 });
                 task.setOnFailed(w -> {
-                    lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/error_large.png")));
-                    lblMessageLoad.setText(task.getException().getLocalizedMessage());
+//                    lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/error_large.png")));
                     btnAceptarLoad.setVisible(true);
+                    btnAceptarLoad.setOnAction(event -> {
+                        hbLoad.setVisible(false);
+                        vbBody.setDisable(false);
+                        clearElements();
+                    });
+                    btnAceptarLoad.setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            hbLoad.setVisible(false);
+                            vbBody.setDisable(false);
+                            clearElements();
+                        }
+                        event.consume();
+                    });
+                    lblMessageLoad.setText(task.getException().getLocalizedMessage());
+                    lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
                 });
                 task.setOnSucceeded(w -> {
-                    String result = task.getValue();
-                    if (result.equalsIgnoreCase("inserted")) {
-                        lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/information_large.png")));
-                        lblMessageLoad.setText("Se registro correctamente el pedido.");
-                        btnAceptarLoad.setVisible(true);
+                    Object object = task.getValue();
+                    if (object instanceof Object[]) {
+                        String[] result = (String[]) object;
+                        if (result[0].equalsIgnoreCase("0")) {
+
+                        }
+//                        lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/information_large.png")));
+//                        lblMessageLoad.setText("Se registro correctamente el pedido.");
+
                     } else {
-                        lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/warning_large.png")));
-                        lblMessageLoad.setText(result);
+//                        lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/warning_large.png")));
+                        lblMessageLoad.setText((String) object);
+                        lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
                         btnAceptarLoad.setVisible(true);
+                        btnAceptarLoad.setOnAction(event -> {
+                            hbLoad.setVisible(false);
+                            vbBody.setDisable(false);
+                            clearElements();
+                        });
+                        btnAceptarLoad.setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                hbLoad.setVisible(false);
+                                vbBody.setDisable(false);
+                                clearElements();
+                            }
+                            event.consume();
+                        });
                     }
                 });
                 exec.execute(task);
@@ -458,6 +588,18 @@ public class FxPedidosController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedPedido(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowPedido();
+        }
+    }
+
+    @FXML
+    private void onActionPedido(ActionEvent event) {
+        openWindowPedido();
+    }
+
+    @FXML
     private void onKeyPressedLimpiar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             clearElements();
@@ -466,22 +608,6 @@ public class FxPedidosController implements Initializable {
 
     @FXML
     private void onActionLimpiar(ActionEvent event) {
-        clearElements();
-    }
-
-    @FXML
-    private void onKeyPressedAceptarLoad(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            hbLoad.setVisible(false);
-            vbBody.setDisable(false);
-            clearElements();
-        }
-    }
-
-    @FXML
-    private void onActionAceptarLoad(ActionEvent event) {
-        hbLoad.setVisible(false);
-        vbBody.setDisable(false);
         clearElements();
     }
 

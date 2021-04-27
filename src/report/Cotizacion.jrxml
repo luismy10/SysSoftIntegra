@@ -491,7 +491,7 @@
 					<font fontName="Arial" size="6"/>
 					<paragraph rightIndent="5" spacingBefore="1"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{descuento})).setScale(2, RoundingMode.HALF_UP)+"%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["-"+new BigDecimal(new Double($F{descuento})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="495" y="0" width="60" height="18" forecolor="#000000" uuid="92223993-9f63-48b7-bc03-8f655b957744">
