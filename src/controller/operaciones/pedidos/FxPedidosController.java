@@ -11,7 +11,7 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -420,6 +420,7 @@ public class FxPedidosController implements Initializable {
     }
 
     private void clearElements() {
+        idPedido = "";
         cbProveedor.getItems().clear();
         Tools.actualDate(Tools.getDate(), txtFechaEmision);
         Tools.actualDate(Tools.getDate(), txtFechaVencimiento);
@@ -434,6 +435,112 @@ public class FxPedidosController implements Initializable {
 //        lblMessageLoad.setGraphic(imageView);
         lblMessageLoad.setText("");
         btnAceptarLoad.setVisible(false);
+    }
+
+    public void loadPedido(String idPedido) {
+        ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+        Task<Object> task = new Task<Object>() {
+            @Override
+            public Object call() {
+                return PedidoADO.CargarPedidoEditar(idPedido);
+            }
+        };
+        task.setOnScheduled(w -> {
+            hbLoad.setVisible(true);
+            vbBody.setDisable(true);
+            btnAceptarLoad.setVisible(false);
+            lblMessageLoad.setText("Cargando información...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+        });
+        task.setOnFailed(w -> {
+            btnAceptarLoad.setVisible(true);
+            btnAceptarLoad.setOnAction(event -> {
+                hbLoad.setVisible(false);
+                vbBody.setDisable(false);
+                clearElements();
+            });
+            btnAceptarLoad.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    hbLoad.setVisible(false);
+                    vbBody.setDisable(false);
+                    clearElements();
+                }
+                event.consume();
+            });
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+        });
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+            if (object instanceof PedidoTB) {
+                PedidoTB pedidoTB = (PedidoTB) object;
+                this.idPedido = pedidoTB.getIdPedido();
+                txtFechaEmision.setValue(LocalDate.parse(pedidoTB.getFechaEmision()));
+                txtFechaVencimiento.setValue(LocalDate.parse(pedidoTB.getFechaVencimiento()));
+                for (int i = 0; i < cbMoneda.getItems().size(); i++) {
+                    if (cbMoneda.getItems().get(i).getIdMoneda() == pedidoTB.getIdMoneda()) {
+                        cbMoneda.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < cbFormaPago.getItems().size(); i++) {
+                    if (cbFormaPago.getItems().get(i).getIdFormaPago() == pedidoTB.getIdFormaPago()) {
+                        cbFormaPago.getSelectionModel().select(i);
+                        break;
+                    }
+                }
+
+                txtObservacion.setText(pedidoTB.getObservacion());
+
+                cbProveedor.getItems().add(pedidoTB.getProveedorTB());
+                cbProveedor.getSelectionModel().select(0);
+
+                for (PedidoDetalleTB pedidoDetalleTB : pedidoTB.getPedidoDetalleTBs()) {
+                    pedidoDetalleTB.getBtnQuitar().setOnAction(event -> {
+                        getTvList().getItems().remove(pedidoDetalleTB);
+                        calculateTotales();
+                    });
+                    pedidoDetalleTB.getBtnQuitar().setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            getTvList().getItems().remove(pedidoDetalleTB);
+                            calculateTotales();
+                        }
+                        event.consume();
+                    });
+                }
+                calculateTotales();
+                hbLoad.setDisable(false);
+                hbLoad.setVisible(false);
+            } else {
+                lblMessageLoad.setText((String) object);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+                btnAceptarLoad.setOnAction(event -> {
+                    hbLoad.setVisible(false);
+                    vbBody.setDisable(false);
+                    clearElements();
+                });
+                btnAceptarLoad.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        hbLoad.setVisible(false);
+                        vbBody.setDisable(false);
+                        clearElements();
+                    }
+                    event.consume();
+                });
+            }
+        });
+
+        exec.execute(task);
+
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
     }
 
     private void onEventRegistrar() {
@@ -479,7 +586,7 @@ public class FxPedidosController implements Initializable {
                         pedidoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
                         pedidoTB.setIdFormaPago(cbFormaPago.getSelectionModel().getSelectedItem().getIdFormaPago());
                         pedidoTB.setObservacion(txtObservacion.getText().trim());
-                        pedidoTB.setPedidoDetalleTBs(new ArrayList<>(tvList.getItems()));
+                        pedidoTB.setPedidoDetalleTBs(tvList.getItems());
 
                         return PedidoADO.CrudPedido(pedidoTB);
                     }

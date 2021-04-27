@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 
 public class PedidoADO {
 
@@ -191,6 +192,78 @@ public class PedidoADO {
                 }
             } catch (SQLException ex) {
                 return ex.getLocalizedMessage();
+            }
+        }
+    }
+
+    public static Object CargarPedidoEditar(String idPedido) {
+
+        PreparedStatement statementPedido = null;
+        PreparedStatement statementPedidoDetalle = null;
+        ResultSet resultSet = null;
+        try {
+            DBUtil.dbConnect();
+
+            statementPedido = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Pedido_ById(?)}");
+            statementPedido.setString(1, idPedido);
+            resultSet = statementPedido.executeQuery();
+            if (resultSet.next()) {
+                PedidoTB pedidoTB = new PedidoTB();
+                pedidoTB.setIdPedido(idPedido);
+                pedidoTB.setFechaEmision(resultSet.getString("FechaEmision"));
+                pedidoTB.setFechaVencimiento(resultSet.getString("FechaVencimiento"));
+                pedidoTB.setIdFormaPago(resultSet.getInt("IdFormaPago"));
+                pedidoTB.setIdMoneda(resultSet.getInt("IdMoneda"));
+                pedidoTB.setObservacion(resultSet.getString("Observacion"));
+                pedidoTB.setProveedorTB(new ProveedorTB(resultSet.getString("IdProveedor"), resultSet.getString("NumeroDocumento"), resultSet.getString("RazonSocial")));
+
+                statementPedidoDetalle = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Pedido_ById(?)}");
+                statementPedido.setString(1, idPedido);
+                resultSet = statementPedido.executeQuery();
+                ObservableList<PedidoDetalleTB> pedidoDetalleTBs = FXCollections.observableArrayList();
+                while (resultSet.next()) {
+                    PedidoDetalleTB pedidoDetalleTB = new PedidoDetalleTB();
+                    pedidoDetalleTB.setIdSuministro(resultSet.getString("IdSuministro"));
+                    pedidoDetalleTB.setSuministroTB(new SuministroTB(resultSet.getString(""),resultSet.getString("")));
+                    pedidoDetalleTB.setExistencia(resultSet.getDouble(""));
+                    pedidoDetalleTB.setStock(resultSet.getDouble("") + "/" + resultSet.getDouble(""));
+                    pedidoDetalleTB.setCantidad(resultSet.getDouble(""));
+                    pedidoDetalleTB.setCosto(resultSet.getDouble(""));
+                    pedidoDetalleTB.setDescuento(resultSet.getDouble(""));
+                    pedidoDetalleTB.setIdImpuesto(resultSet.getInt(""));
+                    pedidoDetalleTB.setImpuesto(resultSet.getDouble(""));
+                    double descuento = pedidoDetalleTB.getDescuento();
+                    double costoDescuento = pedidoDetalleTB.getCosto() - descuento;
+                    pedidoDetalleTB.setImporte(costoDescuento * pedidoDetalleTB.getCantidad());
+
+                    Button button = new Button("X");
+                    button.getStyleClass().add("buttonDark");
+
+                    pedidoDetalleTB.setBtnQuitar(button);
+                    pedidoDetalleTBs.add(pedidoDetalleTB);
+                }
+                pedidoTB.setPedidoDetalleTBs(pedidoDetalleTBs);
+                return pedidoTB;
+            } else {
+                throw new Exception("No se puedo contrar el pedido, intente nuevamente por favor.");
+            }
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementPedido != null) {
+                    statementPedido.close();
+                }
+                if (statementPedidoDetalle != null) {
+                    statementPedidoDetalle.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException ex) {
+
             }
         }
     }

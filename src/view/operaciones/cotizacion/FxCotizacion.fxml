@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.cotizacion.FxCotizacionController">
    <children>
       <HBox fx:id="hbBody" onKeyReleased="#onKeyReleasedWindow" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -86,7 +85,7 @@
                            <children>
                               <HBox style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
                                           <Label styleClass="labelRoboto14" text="Cliente:" textFill="#020203">
                                              <graphic>
@@ -97,7 +96,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <HBox HBox.hgrow="ALWAYS">
+                                          <HBox>
                                              <children>
                                                 <ComboBox fx:id="cbCliente" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="- - Cliente - -" HBox.hgrow="ALWAYS" />
                                                 <Button contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonBorder">
@@ -111,18 +110,19 @@
                                                 </Button>
                                              </children>
                                           </HBox>
+                                          <VBox style="-fx-spacing: 0.8333333333333334em;" />
                                        </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
                                           <Label fx:id="lblProceso" styleClass="labelRobotoBold15" text="Cotización en proceso de registrar" textFill="#0060e8" />
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
                                           <Label styleClass="labelRoboto13" text="Ctrl + d:" textFill="#020203">
                                              <graphic>
@@ -133,10 +133,10 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="txtSearch" maxHeight="1.7976931348623157E308" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" promptText="Ingrese el código de barras o clave alterna... " styleClass="text-field-normal" />
                                        </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                    </VBox>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
                                        <children>
                                           <Label styleClass="labelRoboto13" text="Fecha de Vencimiento:" textFill="#020203">
                                              <graphic>
@@ -149,7 +149,7 @@
                                           </Label>
                                           <DatePicker fx:id="dtFechaCotizacion" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese la Fecha" />
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <TableView fx:id="tvList" editable="true" fixedCellSize="-0.0" prefHeight="300.0" prefWidth="850.0" styleClass="table-view-principal" VBox.vgrow="ALWAYS">

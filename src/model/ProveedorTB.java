@@ -24,12 +24,18 @@ public class ProveedorTB {
     public ProveedorTB() {
 
     }
-
+    
     public ProveedorTB(String numeroDocumento, String razonSocial) {
         this.numeroDocumento = numeroDocumento;
         this.razonSocial = razonSocial;
     }
-
+    
+    public ProveedorTB(String idProveedor, String numeroDocumento, String razonSocial) {
+        this.idProveedor = idProveedor;
+        this.numeroDocumento = numeroDocumento;
+        this.razonSocial = razonSocial;
+    }
+    
     public ProveedorTB(String numeroDocumento, String razonSocial, String telefono, String celular, String email, String direccion) {
         this.numeroDocumento = numeroDocumento;
         this.razonSocial = razonSocial;

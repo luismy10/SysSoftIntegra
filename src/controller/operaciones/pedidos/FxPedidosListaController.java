@@ -137,21 +137,24 @@ public class FxPedidosListaController implements Initializable {
     }
 
     private void onEventAceptar() {
-        if(pedidosController != null){
-            Tools.Dispose(apWindow);
+        if (pedidosController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                Tools.Dispose(apWindow);
+                pedidosController.loadPedido(tvList.getSelectionModel().getSelectedItem().getIdPedido());
+            }
         }
     }
-    
-     private void onEventPaginacion() {
+
+    private void onEventPaginacion() {
         switch (opcion) {
             case 0:
-                fillTablePedido(0, "", "","");
+                fillTablePedido(0, "", "", "");
                 break;
             case 1:
-                fillTablePedido( 1, txtBuscar.getText().trim(), "", "");
+                fillTablePedido(1, txtBuscar.getText().trim(), "", "");
                 break;
             case 2:
-                fillTablePedido( 2, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                fillTablePedido(2, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
                 break;
         }
     }

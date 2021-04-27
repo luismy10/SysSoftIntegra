@@ -335,12 +335,12 @@ public class CotizacionADO {
 
     public static Object CargarCotizacionEditar(String idCotizacion) {
 
-        ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
         PreparedStatement statementCotizacione = null;
         PreparedStatement statementDetalleCotizacione = null;
         ResultSet result = null;
         try {
             DBUtil.dbConnect();
+            
             statementCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Cotizacion_ById(?)}");
             statementCotizacione.setString(1, idCotizacion);
             result = statementCotizacione.executeQuery();
@@ -355,6 +355,7 @@ public class CotizacionADO {
                 statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_ById(?)}");
                 statementDetalleCotizacione.setString(1, idCotizacion);
                 result = statementDetalleCotizacione.executeQuery();
+                ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
                 while (result.next()) {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setId(result.getRow());
@@ -413,7 +414,7 @@ public class CotizacionADO {
         }
     }
 
-    public static Object CargarCotizacionReporte(String idCotizacion) {
+    public static Object CargarCotizacionById(String idCotizacion) {
         PreparedStatement statementCotizacione = null;
         PreparedStatement statementDetalleCotizacione = null;
         try {
