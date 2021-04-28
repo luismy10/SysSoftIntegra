@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -20,7 +21,7 @@ public class PedidoADO {
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
-            Object[] object = new Object[2];
+            String[] result = new String[2];
 
             statementValidar = DBUtil.getConnection().prepareCall("SELECT * FROM PedidoTB WHERE IdPedido = ?");
             statementValidar.setString(1, pedidoTB.getIdPedido());
@@ -57,9 +58,9 @@ public class PedidoADO {
                 statementPedido.executeBatch();
                 statementPedidoDetalle.executeBatch();
                 DBUtil.getConnection().commit();
-                object[0] = "1";
-                object[1] = pedidoTB.getIdPedido();
-                return object;
+                result[0] = "1";
+                result[1] = pedidoTB.getIdPedido();
+                return result;
             } else {
 
                 statementIdPedido = DBUtil.getConnection().prepareCall("{? = call Fc_Pedido_Codigo_Alfanumerico()}");
@@ -93,9 +94,9 @@ public class PedidoADO {
                 statementPedido.executeBatch();
                 statementPedidoDetalle.executeBatch();
                 DBUtil.getConnection().commit();
-                object[0] = "0";
-                object[1] = idPedido;
-                return object;
+                result[0] = "0";
+                result[1] = idPedido;
+                return result;
             }
         } catch (SQLException ex) {
             try {
@@ -154,12 +155,17 @@ public class PedidoADO {
             while (result.next()) {
                 PedidoTB pedidoTB = new PedidoTB();
                 pedidoTB.setId(result.getRow());
-                pedidoTB.setIdPedido(result.getString(""));
+                pedidoTB.setIdPedido(result.getString("IdPedido"));
                 pedidoTB.setFechaEmision(result.getDate("FechaEmision").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 pedidoTB.setHoraEmision(result.getTime("HoraEmision").toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss a")));
                 pedidoTB.setProveedorTB(new ProveedorTB(result.getString("NumeroDocumento"), result.getString("RazonSocial")));
                 pedidoTB.setEmpleadoTB(new EmpleadoTB(result.getString("NumeroDocumento"), result.getString("Apellidos"), result.getString("Nombres")));
-                pedidoTB.setMonedaTB(new MonedaTB(result.getInt("IdMoneda"), result.getString("Simbolo")));
+
+                MonedaTB monedaTB = new MonedaTB();
+                monedaTB.setIdMoneda(result.getInt("IdMoneda"));
+                monedaTB.setNombre(result.getString("Moneda"));
+                monedaTB.setSimbolo(result.getString("Simbolo"));
+                pedidoTB.setMonedaTB(monedaTB);
                 pedidoTB.setImporteNeto(result.getDouble("Total"));
                 pedidoTBs.add(pedidoTB);
             }
@@ -221,7 +227,7 @@ public class PedidoADO {
                 while (resultSet.next()) {
                     PedidoDetalleTB pedidoDetalleTB = new PedidoDetalleTB();
                     pedidoDetalleTB.setIdSuministro(resultSet.getString("IdSuministro"));
-                    pedidoDetalleTB.setSuministroTB(new SuministroTB(resultSet.getString(""),resultSet.getString("")));
+                    pedidoDetalleTB.setSuministroTB(new SuministroTB(resultSet.getString(""), resultSet.getString("")));
                     pedidoDetalleTB.setExistencia(resultSet.getDouble(""));
                     pedidoDetalleTB.setStock(resultSet.getDouble("") + "/" + resultSet.getDouble(""));
                     pedidoDetalleTB.setCantidad(resultSet.getDouble(""));
@@ -261,6 +267,78 @@ public class PedidoADO {
                 }
             } catch (SQLException ex) {
 
+            }
+        }
+    }
+
+    public static Object CargarPedidoById(String idPedido) {
+        PreparedStatement statementPedido = null;
+        PreparedStatement statementPedidoDetalle = null;
+        ResultSet result = null;
+        try {
+            DBUtil.dbConnect();
+            statementPedido = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Pedido_ById(?)}");
+            statementPedido.setString(1, idPedido);
+            result = statementPedido.executeQuery();
+            if (result.next()) {
+                PedidoTB pedidoTB = new PedidoTB();
+                pedidoTB.setIdPedido(result.getString("IdPedido"));
+                pedidoTB.setFechaEmision(result.getDate("FechaEmision").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                pedidoTB.setHoraEmision(result.getTime("HoraEmision").toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss a")));
+                pedidoTB.setFechaVencimiento(result.getDate("FechaVencimiento").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                pedidoTB.setObservacion(result.getString("Observacion"));
+                pedidoTB.setIdMoneda(result.getInt("IdMoneda"));
+
+                ProveedorTB proveedorTB = new ProveedorTB();
+                proveedorTB.setIdProveedor(result.getString("IdProveedor"));
+                proveedorTB.setNumeroDocumento(result.getString("NumeroDocumento"));
+                proveedorTB.setRazonSocial(result.getString("RazonSocial"));
+                pedidoTB.setProveedorTB(proveedorTB);
+                
+                EmpleadoTB empleadoTB = new EmpleadoTB();
+                empleadoTB.setIdEmpleado(result.getString("IdEmpleado"));
+                empleadoTB.setNumeroDocumento(result.getString("NumeroDocumento"));
+                empleadoTB.setApellidos(result.getString("Apellidos"));
+                empleadoTB.setNombres(result.getString("Nombres"));
+                pedidoTB.setEmpleadoTB(empleadoTB);
+
+                ArrayList<SuministroTB> suministroTBs = new ArrayList();
+                statementPedidoDetalle = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Pedido_ById(?)}");
+                statementPedidoDetalle.setString(1, idPedido);
+                result = statementPedidoDetalle.executeQuery();
+                while (result.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setIdSuministro(result.getString("IdSuministro"));
+                    suministroTB.setClave(result.getString("Clave"));
+                    suministroTB.setNombreMarca(result.getString("NombreGenerico"));
+                    suministroTB.setCantidad(result.getDouble("Cantidad"));
+                    suministroTB.setCostoCompra(result.getDouble("Costo"));
+                    suministroTB.setDescuento(result.getDouble("Descuento"));
+                    suministroTB.setImpuestoValor(result.getDouble("Valor"));
+                    suministroTBs.add(suministroTB);
+                }
+                pedidoTB.setSuministroTBs(suministroTBs);
+                return pedidoTB;
+            } else {
+                throw new Exception("No se pudo encontrar datos para mostrar.");
+            }
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementPedido != null) {
+                    statementPedido.close();
+                }
+                if (statementPedidoDetalle != null) {
+                    statementPedidoDetalle.close();
+                }
+                if (result != null) {
+                    result.close();
+                }
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
             }
         }
     }

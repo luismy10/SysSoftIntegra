@@ -334,13 +334,12 @@ public class CotizacionADO {
     }
 
     public static Object CargarCotizacionEditar(String idCotizacion) {
-
         PreparedStatement statementCotizacione = null;
         PreparedStatement statementDetalleCotizacione = null;
         ResultSet result = null;
         try {
             DBUtil.dbConnect();
-            
+
             statementCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Cotizacion_ById(?)}");
             statementCotizacione.setString(1, idCotizacion);
             result = statementCotizacione.executeQuery();
@@ -385,7 +384,7 @@ public class CotizacionADO {
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");
                     suministroTB.setRemover(button);
-                    
+
                     cotizacionTBs.add(suministroTB);
                 }
                 cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
@@ -419,11 +418,12 @@ public class CotizacionADO {
     public static Object CargarCotizacionById(String idCotizacion) {
         PreparedStatement statementCotizacione = null;
         PreparedStatement statementDetalleCotizacione = null;
+        ResultSet result = null;
         try {
             DBUtil.dbConnect();
             statementCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Cotizacion_Reporte_ById(?)}");
             statementCotizacione.setString(1, idCotizacion);
-            ResultSet result = statementCotizacione.executeQuery();
+            result = statementCotizacione.executeQuery();
             if (result.next()) {
                 CotizacionTB cotizacionTB = new CotizacionTB();
                 cotizacionTB.setId(result.getRow());
@@ -478,6 +478,9 @@ public class CotizacionADO {
                 }
                 if (statementDetalleCotizacione != null) {
                     statementDetalleCotizacione.close();
+                }
+                if (result != null) {
+                    result.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {

@@ -66,7 +66,7 @@ public class FxCotizacionDetalleController implements Initializable {
     @FXML
     private Text lblCliente;
     @FXML
-    private Text lbClienteInformacion;
+    private Text lblCelularTelefono;
     @FXML
     private Text lbCorreoElectronico;
     @FXML
@@ -124,6 +124,7 @@ public class FxCotizacionDetalleController implements Initializable {
 
     private double importeTotal = 0;
 
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         monedaCadena = new ConvertMonedaCadena();
@@ -168,7 +169,7 @@ public class FxCotizacionDetalleController implements Initializable {
                 lblNumero.setText("N° " + cotizacionTB.getIdCotizacion());
                 lblFechaVenta.setText(cotizacionTB.getFechaCotizacion());
                 lblCliente.setText(cotizacionTB.getClienteTB().getInformacion());
-                lbClienteInformacion.setText("TEL.: " + cotizacionTB.getClienteTB().getTelefono() + " CEL.: " + cotizacionTB.getClienteTB().getCelular());
+                lblCelularTelefono.setText("TEL.: " + cotizacionTB.getClienteTB().getTelefono() + " CEL.: " + cotizacionTB.getClienteTB().getCelular());
                 lbCorreoElectronico.setText(cotizacionTB.getClienteTB().getEmail());
                 lbDireccion.setText(cotizacionTB.getClienteTB().getDireccion());
                 lblObservaciones.setText(cotizacionTB.getObservaciones());

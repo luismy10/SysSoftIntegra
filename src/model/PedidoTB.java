@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import javafx.collections.ObservableList;
 
 public class PedidoTB {
@@ -22,6 +23,7 @@ public class PedidoTB {
     private MonedaTB monedaTB;
     private ProveedorTB proveedorTB;
     private EmpleadoTB empleadoTB;
+    private ArrayList<SuministroTB> suministroTBs;
     private ObservableList<PedidoDetalleTB> pedidoDetalleTBs;
 
     public PedidoTB() {
@@ -169,6 +171,14 @@ public class PedidoTB {
 
     public void setEmpleadoTB(EmpleadoTB empleadoTB) {
         this.empleadoTB = empleadoTB;
+    }
+
+    public ArrayList<SuministroTB> getSuministroTBs() {
+        return suministroTBs;
+    }
+
+    public void setSuministroTBs(ArrayList<SuministroTB> suministroTBs) {
+        this.suministroTBs = suministroTBs;
     }
 
     public ObservableList<PedidoDetalleTB> getPedidoDetalleTBs() {

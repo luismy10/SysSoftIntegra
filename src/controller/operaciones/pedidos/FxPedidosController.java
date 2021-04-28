@@ -600,14 +600,23 @@ public class FxPedidosController implements Initializable {
                 });
                 task.setOnSucceeded(w -> {
                     Object object = task.getValue();
-                    if (object instanceof Object[]) {
+                    if (object instanceof String[]) {
                         String[] result = (String[]) object;
                         if (result[0].equalsIgnoreCase("0")) {
-
+                            lblMessageLoad.setText("Se actualizó correctamente la pedido.");
+                            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                            hbLoad.setDisable(false);
+                            hbLoad.setVisible(false);
+                            openModalImpresion(result[1]);
+                            clearElements();
+                        } else {
+                            lblMessageLoad.setText("Se actualizó correctamente la pedido.");
+                            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                            hbLoad.setDisable(false);
+                            hbLoad.setVisible(false);
+                            openModalImpresion(result[1]);
+                            clearElements();
                         }
-//                        lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/information_large.png")));
-//                        lblMessageLoad.setText("Se registro correctamente el pedido.");
-
                     } else {
 //                        lblMessageLoad.setGraphic(new ImageView(new Image("/view/image/warning_large.png")));
                         lblMessageLoad.setText((String) object);
