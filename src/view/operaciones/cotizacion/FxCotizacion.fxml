@@ -138,7 +138,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
-                                          <DatePicker fx:id="dtFechaCotizacion" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese la Fecha" />
+                                          <DatePicker fx:id="dtFechaVencimiento" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" promptText="Ingrese la Fecha" />
                                        </children>
                                     </VBox>
                                  </children>

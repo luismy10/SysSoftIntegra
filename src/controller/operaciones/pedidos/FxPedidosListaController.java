@@ -270,7 +270,6 @@ public class FxPedidosListaController implements Initializable {
                 }
             }
         }
-
     }
 
     @FXML

@@ -8,6 +8,7 @@ import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.cotizacion.FxCotizacionRealizadasController;
 import controller.operaciones.guiaremision.FxGuiaRemisionRealizadasController;
 import controller.operaciones.notacredito.FxNotaCreditoRealizadasController;
+import controller.operaciones.pedidos.FxPedidosRealizadosController;
 import controller.operaciones.venta.FxVentaRealizadasController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -57,6 +58,8 @@ public class FxConsultasController implements Initializable {
     private VBox btnGuiaRemision;
     @FXML
     private VBox btnNotaCredito;
+    @FXML
+    private VBox btnPedidos;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
@@ -143,6 +146,15 @@ public class FxConsultasController implements Initializable {
 
     private FxNotaCreditoRealizadasController notaCreditoController;
 
+    /*
+    Controller pedidos consultas
+     */
+    private FXMLLoader fXMLPedidos;
+
+    private VBox nodePedidos;
+
+    private FxPedidosRealizadosController pedidosRealizadosController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -181,6 +193,10 @@ public class FxConsultasController implements Initializable {
             fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO_REALIZADOS));
             nodeNotaCredito = fXMLNotaCredito.load();
             notaCreditoController = fXMLNotaCredito.getController();
+
+            fXMLPedidos = new FXMLLoader(getClass().getResource(FilesRouters.FX_PEDIDO_REALIZADOS));
+            nodePedidos = fXMLPedidos.load();
+            pedidosRealizadosController = fXMLPedidos.getController();
 
         } catch (IOException ex) {
             System.out.println("Error en Inventario Controller:" + ex.getLocalizedMessage());
@@ -273,7 +289,7 @@ public class FxConsultasController implements Initializable {
     }
 
     private void openWindowCuentasPorCobrar() {
-        controlleCuentasPorCobrar.setContent(fxPrincipalController );
+        controlleCuentasPorCobrar.setContent(fxPrincipalController);
         fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setTopAnchor(nodeCuentasPorCobrar, 0d);
@@ -313,6 +329,16 @@ public class FxConsultasController implements Initializable {
         AnchorPane.setRightAnchor(nodeNotaCredito, 0d);
         AnchorPane.setBottomAnchor(nodeNotaCredito, 0d);
         fxPrincipalController.getVbContent().getChildren().add(nodeNotaCredito);
+    }
+
+    private void openWindowPedidos() {
+        pedidosRealizadosController.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodePedidos, 0d);
+        AnchorPane.setTopAnchor(nodePedidos, 0d);
+        AnchorPane.setRightAnchor(nodePedidos, 0d);
+        AnchorPane.setBottomAnchor(nodePedidos, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodePedidos);
     }
 
     @FXML
@@ -421,6 +447,18 @@ public class FxConsultasController implements Initializable {
     @FXML
     private void onActionBanco(ActionEvent event) {
         openWindowBancos();
+    }
+
+    @FXML
+    private void onKeyPressedPedidos(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowPedidos();
+        }
+    }
+
+    @FXML
+    private void onActionPedidos(ActionEvent event) {
+        openWindowPedidos();
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {

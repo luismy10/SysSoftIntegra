@@ -348,6 +348,8 @@ public class CotizacionADO {
                 CotizacionTB cotizacionTB = new CotizacionTB();
                 cotizacionTB.setId(result.getRow());
                 cotizacionTB.setIdCotizacion(result.getString("IdCotizacion"));
+                cotizacionTB.setFechaCotizacion(result.getString("FechaCotizacion"));
+                cotizacionTB.setFechaVencimiento(result.getString("FechaVencimiento"));
                 cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
                 cotizacionTB.setIdMoneda(result.getInt("IdMoneda"));
                 cotizacionTB.setObservaciones(result.getString("Observaciones"));

@@ -591,7 +591,6 @@ public class FxPedidosController implements Initializable {
                         pedidoTB.setIdFormaPago(cbFormaPago.getSelectionModel().getSelectedItem().getIdFormaPago());
                         pedidoTB.setObservacion(txtObservacion.getText().trim());
                         pedidoTB.setPedidoDetalleTBs(tvList.getItems());
-
                         return PedidoADO.CrudPedido(pedidoTB);
                     }
                 };

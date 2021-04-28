@@ -12,6 +12,7 @@ import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -60,7 +61,7 @@ public class FxCotizacionController implements Initializable {
     @FXML
     private DatePicker dtFechaEmision;
     @FXML
-    private DatePicker dtFechaCotizacion;
+    private DatePicker dtFechaVencimiento;
     @FXML
     private TableView<SuministroTB> tvList;
     @FXML
@@ -124,7 +125,7 @@ public class FxCotizacionController implements Initializable {
         idCotizacion = "";
         monedaCadena = new ConvertMonedaCadena();
         Tools.actualDate(Tools.getDate(), dtFechaEmision);
-        Tools.actualDate(Tools.getDate(), dtFechaCotizacion);
+        Tools.actualDate(Tools.getDate(), dtFechaVencimiento);
         loadTableView();
         loadComboBoxCliente();
         cbMoneda.getItems().clear();
@@ -432,7 +433,7 @@ public class FxCotizacionController implements Initializable {
         tvList.getItems().clear();
         cbCliente.getItems().clear();
         Tools.actualDate(Tools.getDate(), dtFechaEmision);
-        Tools.actualDate(Tools.getDate(), dtFechaCotizacion);
+        Tools.actualDate(Tools.getDate(), dtFechaVencimiento);
         txtObservacion.setText("");
         idCotizacion = "";
         lblProceso.setText("Cotización en proceso de registrar");
@@ -502,6 +503,9 @@ public class FxCotizacionController implements Initializable {
                 cbCliente.getItems().clear();
                 cbCliente.getItems().add(new ClienteTB(cotizacionTB.getClienteTB().getIdCliente(), cotizacionTB.getClienteTB().getNumeroDocumento(), cotizacionTB.getClienteTB().getInformacion(), cotizacionTB.getClienteTB().getCelular(), cotizacionTB.getClienteTB().getEmail(), cotizacionTB.getClienteTB().getDireccion()));
                 cbCliente.getSelectionModel().select(0);
+                
+                dtFechaEmision.setValue(LocalDate.parse(cotizacionTB.getFechaCotizacion()));
+                dtFechaVencimiento.setValue(LocalDate.parse(cotizacionTB.getFechaVencimiento()));
 
                 lblProceso.setText("Cotización en proceso de actualizar");
                 lblProceso.setTextFill(Color.web("#c52700"));
@@ -555,9 +559,9 @@ public class FxCotizacionController implements Initializable {
         if (cbCliente.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(apWindow, "Cotización", "Seleccione un cliente.");
             cbCliente.requestFocus();
-        } else if (dtFechaCotizacion.getValue() == null) {
+        } else if (dtFechaVencimiento.getValue() == null) {
             Tools.AlertMessageWarning(apWindow, "Cotización", "Ingrese un fecha valida.");
-            dtFechaCotizacion.requestFocus();
+            dtFechaVencimiento.requestFocus();
         } else if (tvList.getItems().isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Cotización", "Ingrese productos a la lista.");
         } else if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
@@ -580,12 +584,13 @@ public class FxCotizacionController implements Initializable {
                         cotizacionTB.setIdCliente(cbCliente.getSelectionModel().getSelectedItem().getIdCliente());
                         cotizacionTB.setIdVendedor(Session.USER_ID);
                         cotizacionTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
-                        cotizacionTB.setFechaCotizacion(Tools.getDatePicker(dtFechaCotizacion));
+                        cotizacionTB.setFechaCotizacion(Tools.getDatePicker(dtFechaEmision));
+                        cotizacionTB.setFechaVencimiento(Tools.getDatePicker(dtFechaVencimiento));
                         cotizacionTB.setHoraCotizacion(Tools.getHour());
                         cotizacionTB.setFechaVencimiento(Tools.getDate());
                         cotizacionTB.setHoraVencimiento(Tools.getHour());
                         cotizacionTB.setEstado((short) 1);
-                        cotizacionTB.setObservaciones(txtObservacion.getText().trim());
+                        cotizacionTB.setObservaciones(txtObservacion.getText().trim());                        
 
                         ArrayList<DetalleCotizacionTB> detalleCotizacionTBs = new ArrayList();
                         tvList.getItems().stream().map((suministroTB) -> {
