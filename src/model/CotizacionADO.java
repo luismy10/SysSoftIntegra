@@ -47,9 +47,9 @@ public class CotizacionADO {
                     statementCotizacion.setString(5, cotizacionTB.getHoraCotizacion());
                     statementCotizacion.setString(6, cotizacionTB.getFechaVencimiento());
                     statementCotizacion.setString(7, cotizacionTB.getHoraVencimiento());
-                    statementCotizacion.setShort(6, cotizacionTB.getEstado());
-                    statementCotizacion.setString(7, cotizacionTB.getObservaciones());
-                    statementCotizacion.setString(8, cotizacionTB.getIdCotizacion());
+                    statementCotizacion.setShort(8, cotizacionTB.getEstado());
+                    statementCotizacion.setString(9, cotizacionTB.getObservaciones());
+                    statementCotizacion.setString(10, cotizacionTB.getIdCotizacion());
                     statementCotizacion.addBatch();
 
                     statementDetalleCotizacionBorrar = DBUtil.getConnection().prepareStatement("DELETE FROM DetalleCotizacionTB WHERE IdCotizacion = ?");
@@ -237,7 +237,7 @@ public class CotizacionADO {
         }
     }
 
-    private static Object CargarCotizacionVenta(String idCotizacion) {
+    public static Object CargarCotizacionVenta(String idCotizacion) {
 
         ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
         PreparedStatement statementCotizacione = null;

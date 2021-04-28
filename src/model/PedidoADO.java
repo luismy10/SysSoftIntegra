@@ -26,7 +26,7 @@ public class PedidoADO {
             statementValidar.setString(1, pedidoTB.getIdPedido());
             if (statementValidar.executeQuery().next()) {
 
-                statementPedido = DBUtil.getConnection().prepareStatement("UPDATE PedidoTB SET IdProveedor=?,IdVendedor=?,FechaEmision=?,HoraEmision=?,FechaVencimiento=?,HoraVencimiento=?,IdMoneda=?,IdFormaPago=?,Observacion=? WHERE IdPedido = ?");
+                statementPedido = DBUtil.getConnection().prepareStatement("UPDATE PedidoTB SET IdProveedor=?,IdVendedor=?,FechaEmision=?,HoraEmision=?,FechaVencimiento=?,HoraVencimiento=?,IdMoneda=?,Observacion=? WHERE IdPedido = ?");
                 statementPedido.setString(1, pedidoTB.getIdProveedor());
                 statementPedido.setString(2, pedidoTB.getIdVendedor());
                 statementPedido.setString(3, pedidoTB.getFechaEmision());
@@ -34,9 +34,8 @@ public class PedidoADO {
                 statementPedido.setString(5, pedidoTB.getFechaVencimiento());
                 statementPedido.setString(6, pedidoTB.getHoraVencimiento());
                 statementPedido.setInt(7, pedidoTB.getIdMoneda());
-                statementPedido.setInt(8, pedidoTB.getIdFormaPago());
-                statementPedido.setString(9, pedidoTB.getObservacion());
-                statementPedido.setString(10, pedidoTB.getIdPedido());
+                statementPedido.setString(8, pedidoTB.getObservacion());
+                statementPedido.setString(9, pedidoTB.getIdPedido());
                 statementPedido.addBatch();
 
                 statementDetallePedidoBorrar = DBUtil.getConnection().prepareStatement("DELETE FROM PedidoDetalleTB WHERE IdPedido = ?");
@@ -68,7 +67,7 @@ public class PedidoADO {
                 statementIdPedido.execute();
                 String idPedido = statementIdPedido.getString(1);
 
-                statementPedido = DBUtil.getConnection().prepareStatement("INSERT INTO PedidoTB(IdPedido,IdProveedor,IdVendedor,FechaEmision,HoraEmision,FechaVencimiento,HoraVencimiento,IdMoneda,IdFormaPago,Observacion) VALUES(?,?,?,?,?,?,?,?,?,?)");
+                statementPedido = DBUtil.getConnection().prepareStatement("INSERT INTO PedidoTB(IdPedido,IdProveedor,IdVendedor,FechaEmision,HoraEmision,FechaVencimiento,HoraVencimiento,IdMoneda,Observacion) VALUES(?,?,?,?,?,?,?,?,?)");
                 statementPedido.setString(1, idPedido);
                 statementPedido.setString(2, pedidoTB.getIdProveedor());
                 statementPedido.setString(3, pedidoTB.getIdVendedor());
@@ -77,8 +76,7 @@ public class PedidoADO {
                 statementPedido.setString(6, pedidoTB.getFechaVencimiento());
                 statementPedido.setString(7, pedidoTB.getHoraVencimiento());
                 statementPedido.setInt(8, pedidoTB.getIdMoneda());
-                statementPedido.setInt(9, pedidoTB.getIdFormaPago());
-                statementPedido.setString(10, pedidoTB.getObservacion());
+                statementPedido.setString(9, pedidoTB.getObservacion());
                 statementPedido.addBatch();
 
                 statementPedidoDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO PedidoDetalleTB(IdPedido,IdSuministro,Cantidad,Costo,Descuento,IdImpuesto)VALUES(?,?,?,?,?,?)");
@@ -212,7 +210,6 @@ public class PedidoADO {
                 pedidoTB.setIdPedido(idPedido);
                 pedidoTB.setFechaEmision(resultSet.getString("FechaEmision"));
                 pedidoTB.setFechaVencimiento(resultSet.getString("FechaVencimiento"));
-                pedidoTB.setIdFormaPago(resultSet.getInt("IdFormaPago"));
                 pedidoTB.setIdMoneda(resultSet.getInt("IdMoneda"));
                 pedidoTB.setObservacion(resultSet.getString("Observacion"));
                 pedidoTB.setProveedorTB(new ProveedorTB(resultSet.getString("IdProveedor"), resultSet.getString("NumeroDocumento"), resultSet.getString("RazonSocial")));

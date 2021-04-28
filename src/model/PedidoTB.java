@@ -13,7 +13,6 @@ public class PedidoTB {
     private String fechaVencimiento;
     private String horaVencimiento;
     private int idMoneda;
-    private int idFormaPago;
     private String Observacion;
     private double importeBruto;
     private double descuentoTotal;
@@ -98,14 +97,6 @@ public class PedidoTB {
 
     public void setIdMoneda(int idMoneda) {
         this.idMoneda = idMoneda;
-    }
-
-    public int getIdFormaPago() {
-        return idFormaPago;
-    }
-
-    public void setIdFormaPago(int idFormaPago) {
-        this.idFormaPago = idFormaPago;
     }
 
     public String getObservacion() {

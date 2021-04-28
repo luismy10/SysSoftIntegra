@@ -39,7 +39,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.FormaPagoTB;
 import model.MonedaADO;
 import model.MonedaTB;
 import model.PedidoADO;
@@ -89,8 +88,6 @@ public class FxPedidosController implements Initializable {
     @FXML
     private ComboBox<MonedaTB> cbMoneda;
     @FXML
-    private ComboBox<FormaPagoTB> cbFormaPago;
-    @FXML
     private TextField txtObservacion;
     @FXML
     private Label lblSubImporte;
@@ -129,9 +126,7 @@ public class FxPedidosController implements Initializable {
         Tools.actualDate(Tools.getDate(), txtFechaVencimiento);
         loadComponentProveedor();
         loadComponentMoneda();
-        loadComponentFormaPago();
         initTable();
-
     }
 
     private void loadComponentProveedor() {
@@ -200,12 +195,6 @@ public class FxPedidosController implements Initializable {
         lblImporteNeto.setText(monedaSimbolo + " 0.00");
     }
 
-    private void loadComponentFormaPago() {
-        cbFormaPago.getItems().clear();
-        cbFormaPago.getItems().add(new FormaPagoTB(1, "CONTADO"));
-        cbFormaPago.getItems().add(new FormaPagoTB(2, "CRÉDITO"));
-    }
-
     private void initTable() {
         tcQuitar.setCellValueFactory(new PropertyValueFactory<>("btnQuitar"));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2)));
@@ -213,7 +202,7 @@ public class FxPedidosController implements Initializable {
         tcStock.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getStock()));
         tcProducto.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSuministroTB().getClave() + "\n" + cellData.getValue().getSuministroTB().getNombreMarca()));
         tcCostoProveedor.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCosto(), 2)));
-        txtDescuento.setCellValueFactory(cellData -> Bindings.concat("-" + Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
+        txtDescuento.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getDescuento(), 2)));
         txtImpuesto.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImpuesto(), 2) + " %"));
         tcImporte.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getImporte(), 2)));
 
@@ -430,7 +419,6 @@ public class FxPedidosController implements Initializable {
         Tools.actualDate(Tools.getDate(), txtFechaVencimiento);
         txtObservacion.clear();
         loadComponentMoneda();
-        loadComponentFormaPago();
         tvList.getItems().clear();
         calculateTotales();
         lblMessageLoad.setText("");
@@ -484,13 +472,6 @@ public class FxPedidosController implements Initializable {
                 for (int i = 0; i < cbMoneda.getItems().size(); i++) {
                     if (cbMoneda.getItems().get(i).getIdMoneda() == pedidoTB.getIdMoneda()) {
                         cbMoneda.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-
-                for (int i = 0; i < cbFormaPago.getItems().size(); i++) {
-                    if (cbFormaPago.getItems().get(i).getIdFormaPago() == pedidoTB.getIdFormaPago()) {
-                        cbFormaPago.getSelectionModel().select(i);
                         break;
                     }
                 }
@@ -560,9 +541,6 @@ public class FxPedidosController implements Initializable {
         } else if (cbMoneda.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(apWindow, "Pedido", "Selecciona una moneda.");
             cbMoneda.requestFocus();
-        } else if (cbFormaPago.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(apWindow, "Pedido", "Selecciona la forma de pago.");
-            cbFormaPago.requestFocus();
         } else if (tvList.getItems().isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Pedido", "No hay items para completa el pedido.");
             btnProducto.requestFocus();
@@ -588,7 +566,6 @@ public class FxPedidosController implements Initializable {
                         pedidoTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
                         pedidoTB.setHoraVencimiento(Tools.getHour());
                         pedidoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
-                        pedidoTB.setIdFormaPago(cbFormaPago.getSelectionModel().getSelectedItem().getIdFormaPago());
                         pedidoTB.setObservacion(txtObservacion.getText().trim());
                         pedidoTB.setPedidoDetalleTBs(tvList.getItems());
                         return PedidoADO.CrudPedido(pedidoTB);

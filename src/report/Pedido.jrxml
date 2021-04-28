@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="169"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -33,13 +33,6 @@
 	<parameter name="IMPORTE_TOTAL" class="java.lang.String"/>
 	<parameter name="QRDATA" class="java.lang.String"/>
 	<parameter name="OBSERVACION" class="java.lang.String"/>
-	<field name="id" class="java.lang.Integer"/>
-	<field name="cantidad" class="java.lang.Double"/>
-	<field name="unidadCompraName" class="java.lang.String"/>
-	<field name="nombreMarca" class="java.lang.String"/>
-	<field name="precioVentaGeneral" class="java.lang.Double"/>
-	<field name="descuento" class="java.lang.Double"/>
-	<field name="importeNeto" class="java.lang.Double"/>
 	<background>
 		<band height="802">
 			<rectangle>
@@ -151,7 +144,7 @@
 					<font fontName="Arial" size="7" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[CLIENTE:]]></text>
+				<text><![CDATA[EMPRESA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="110" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="e4b9e70d-8b1c-4a30-83b7-8bae8d155ddc"/>
@@ -405,109 +398,6 @@
 					<pen lineWidth="0.25" lineColor="#373B46"/>
 				</graphicElement>
 			</rectangle>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="18" forecolor="#000000" uuid="b383cd7e-3744-42ad-abe5-6fadaa04375a">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="6"/>
-					<paragraph spacingBefore="1"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="65" height="18" forecolor="#000000" uuid="a8d79233-4ac4-4cdc-8f4c-07af6255c96e">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="6"/>
-					<paragraph spacingBefore="1"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{cantidad})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="95" y="0" width="70" height="18" forecolor="#000000" uuid="c8bf840e-1143-4e41-b2ed-11f306f649b2">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3da7e1ae-407f-4aa8-93f4-73f7353846ed"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="6"/>
-					<paragraph spacingBefore="1"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{unidadCompraName}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="210" height="18" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="d4feb5c9-c856-4431-adaa-e6e855fa1df7">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="6"/>
-					<paragraph leftIndent="5" spacingBefore="1"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreMarca}]]></textFieldExpression>
-			</textField>
-			<textField pattern="">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="375" y="0" width="60" height="18" forecolor="#000000" uuid="e41fcd1b-e703-4c42-93c1-8b580a36c2c9">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c6e4efc2-4078-4cc3-ba83-e24c26a460f5"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="6"/>
-					<paragraph rightIndent="5" spacingBefore="1"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{precioVentaGeneral})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="435" y="0" width="60" height="18" forecolor="#000000" uuid="9f8e44dc-c91a-4221-8073-dfb3cefc1738"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="6"/>
-					<paragraph rightIndent="5" spacingBefore="1"/>
-				</textElement>
-				<textFieldExpression><![CDATA["-"+new BigDecimal(new Double($F{descuento})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="495" y="0" width="60" height="18" forecolor="#000000" uuid="92223993-9f63-48b7-bc03-8f655b957744">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#373B46"/>
-					<leftPen lineWidth="0.25" lineColor="#373B46"/>
-					<rightPen lineWidth="0.25" lineColor="#373B46"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="6"/>
-					<paragraph rightIndent="5" spacingBefore="1"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(new Double($F{importeNeto})).setScale(2, RoundingMode.HALF_UP)]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<lastPageFooter>

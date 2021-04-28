@@ -80,7 +80,7 @@ public class FxOpcionesImprimirController implements Initializable {
     private FxVentaLlevarControllerHistorial ventaLlevarControllerHistorial;
 
     private FxPedidosController pedidosController;
-    
+
     private ConvertMonedaCadena monedaCadena;
 
     private BillPrintable billPrintable;
@@ -102,7 +102,7 @@ public class FxOpcionesImprimirController implements Initializable {
     private String idCaja;
 
     private String idCotizacion;
-    
+
     private String idPedido;
 
     private String idSuministro;
@@ -158,7 +158,6 @@ public class FxOpcionesImprimirController implements Initializable {
             cajaController.openWindowLogin();
         } else if (cajaConsultasController != null) {
             Tools.Dispose(apWindow);
-
         } else if (cotizacionController != null) {
             Tools.Dispose(apWindow);
         } else if (ventaLlevarControllerHistorial != null) {
@@ -1546,7 +1545,7 @@ public class FxOpcionesImprimirController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                Object object = CotizacionADO.CargarCotizacionReporte(idCotizacion);
+                Object object = CotizacionADO.CargarCotizacionById(idCotizacion);
                 if (object instanceof CotizacionTB) {
                     try {
                         CotizacionTB cotizacionTB = (CotizacionTB) object;
@@ -1668,11 +1667,16 @@ public class FxOpcionesImprimirController implements Initializable {
         double totalNeto = 0;
 
         for (SuministroTB suministroTB : arrList) {
-            totalBruto += suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico();
-            totalDescuento += suministroTB.getDescuentoSumado();
-            totalSubTotal += suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal();
-            totalImpuesto += suministroTB.getImpuestoSumado();
-            totalNeto += suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral();
+            double descuento = suministroTB.getDescuento();
+            double precioDescuento = suministroTB.getPrecioVentaGeneral() - descuento;
+            double subPrecio = Tools.calculateTaxBruto(suministroTB.getImpuestoValor(), precioDescuento);
+            double precioBruto = subPrecio + descuento;
+            totalBruto += precioBruto * suministroTB.getCantidad();
+            totalDescuento += suministroTB.getCantidad() * descuento;
+            totalSubTotal += suministroTB.getCantidad() * subPrecio;
+            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), subPrecio);
+            totalImpuesto += suministroTB.getCantidad() * impuesto;
+            totalNeto = totalSubTotal + totalImpuesto;
         }
 
         for (int i = 0; i < hbPie.getChildren().size(); i++) {
@@ -1730,7 +1734,7 @@ public class FxOpcionesImprimirController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return CotizacionADO.CargarCotizacionReporte(idCotizacion);
+                return CotizacionADO.CargarCotizacionById(idCotizacion);
             }
         };
         task.setOnScheduled(w -> {
@@ -1774,36 +1778,27 @@ public class FxOpcionesImprimirController implements Initializable {
 
     private void printA4WithDesingCotizacion(CotizacionTB cotizacionTB) {
         try {
-            double subTotalReporte = 0;
-            double descuentoTotalReporte = 0;
-            double subTotalImporteReporte = 0;
-            double totalImpuestoReporte = 0;
-            double totalImporteReporte = 0;
-            int count = 0;
+            double importeBruto = 0;
+            double descuentoTotal = 0;
+            double subImporteNeto = 0;
+            double impuestoNeto = 0;
+            double importeNeto = 0;
 
-            ArrayList<SuministroTB> list = new ArrayList();
-            for (SuministroTB suministroTB : cotizacionTB.getDetalleSuministroTBs()) {
-                subTotalReporte += suministroTB.getImporteBruto();
-                descuentoTotalReporte += suministroTB.getDescuentoSumado();
-                subTotalImporteReporte += suministroTB.getSubImporteNeto();
-                totalImpuestoReporte += suministroTB.getImpuestoSumado();
-                totalImporteReporte += suministroTB.getImporteNeto();
+            for (SuministroTB e : cotizacionTB.getDetalleSuministroTBs()) {
+                double descuento = e.getDescuento();
+                double precioDescuento = e.getPrecioVentaGeneral() - descuento;
+                double subPrecio = Tools.calculateTaxBruto(e.getImpuestoValor(), precioDescuento);
+                double precioBruto = subPrecio + descuento;
+                importeBruto += precioBruto * e.getCantidad();
 
-                count++;
-                SuministroTB stb = new SuministroTB();
-                stb.setId(count + 1);
-                stb.setClave(suministroTB.getClave());
-                stb.setNombreMarca(suministroTB.getNombreMarca());
-                stb.setCantidad(suministroTB.getCantidad());
-                stb.setUnidadCompraName(suministroTB.getUnidadCompraName());
-                stb.setImporteBruto(suministroTB.getImporteBruto());
-                stb.setDescuentoSumado(suministroTB.getDescuentoSumado());
-                stb.setSubImporteNeto(suministroTB.getSubImporteNeto());
-                stb.setImpuestoSumado(suministroTB.getImpuestoSumado());
-                stb.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneral());
-                stb.setDescuento(suministroTB.getDescuento());
-                stb.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
-                list.add(stb);
+                descuentoTotal += e.getCantidad() * descuento;
+
+                subImporteNeto += e.getCantidad() * subPrecio;
+
+                double impuesto = Tools.calculateTax(e.getImpuestoValor(), subPrecio);
+                impuestoNeto += e.getCantidad() * impuesto;
+
+                importeNeto = subImporteNeto + impuestoNeto;
             }
 
             InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
@@ -1840,16 +1835,16 @@ public class FxOpcionesImprimirController implements Initializable {
             map.put("CONDICIONPAGO", "");
 
             map.put("SIMBOLO", cotizacionTB.getMonedaTB().getSimbolo());
-            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(totalImporteReporte, 2), true, cotizacionTB.getMonedaTB().getNombre()));
+            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(importeNeto, 2), true, cotizacionTB.getMonedaTB().getNombre()));
 
-            map.put("VALOR_VENTA", Tools.roundingValue(subTotalReporte, 2));
-            map.put("DESCUENTO", Tools.roundingValue(descuentoTotalReporte, 2));
-            map.put("SUB_IMPORTE", Tools.roundingValue(subTotalImporteReporte, 2));
-            map.put("IMPUESTO_TOTAL", Tools.roundingValue(totalImpuestoReporte, 2));
-            map.put("IMPORTE_TOTAL", Tools.roundingValue(totalImporteReporte, 2));
+            map.put("VALOR_VENTA", Tools.roundingValue(importeBruto, 2));
+            map.put("DESCUENTO", Tools.roundingValue(descuentoTotal, 2));
+            map.put("SUB_IMPORTE", Tools.roundingValue(subImporteNeto, 2));
+            map.put("IMPUESTO_TOTAL", Tools.roundingValue(impuestoNeto, 2));
+            map.put("IMPORTE_TOTAL", Tools.roundingValue(importeNeto, 2));
             map.put("OBSERVACION", cotizacionTB.getObservaciones());
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(cotizacionTB.getDetalleSuministroTBs()));
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -2211,7 +2206,7 @@ public class FxOpcionesImprimirController implements Initializable {
     }
 
     public void setInitOpcionesImprimirPedido(FxPedidosController pedidosController) {
-        this.pedidosController=pedidosController;
+        this.pedidosController = pedidosController;
     }
 
 }

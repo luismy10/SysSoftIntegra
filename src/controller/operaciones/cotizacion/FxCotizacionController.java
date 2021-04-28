@@ -401,18 +401,18 @@ public class FxCotizacionController implements Initializable {
         subImporteNeto = 0;
         tvList.getItems().forEach(e -> {
             double descuento = e.getDescuento();
-            double costoDescuento = e.getPrecioVentaGeneral() - descuento;
-            double subCosto = Tools.calculateTaxBruto(e.getImpuestoValor(), costoDescuento);
-            subImporteNeto += e.getCantidad() * subCosto;
+            double precioDescuento = e.getPrecioVentaGeneral() - descuento;
+            double subPrecio = Tools.calculateTaxBruto(e.getImpuestoValor(), precioDescuento);
+            subImporteNeto += e.getCantidad() * subPrecio;
         });
         lblSubImporte.setText(monedaSimbolo + " " + Tools.roundingValue(subImporteNeto, 2));
 
         impuestoNeto = 0;
         tvList.getItems().forEach(e -> {
             double descuento = e.getDescuento();
-            double costoDescuento = e.getPrecioVentaGeneral() - descuento;
-            double subCosto = Tools.calculateTaxBruto(e.getImpuestoValor(), costoDescuento);
-            double impuesto = Tools.calculateTax(e.getImpuestoValor(), subCosto);
+            double precioDescuento = e.getPrecioVentaGeneral() - descuento;
+            double subPrecio = Tools.calculateTaxBruto(e.getImpuestoValor(), precioDescuento);
+            double impuesto = Tools.calculateTax(e.getImpuestoValor(), subPrecio);
             impuestoNeto += e.getCantidad() * impuesto;
         });
 
@@ -587,7 +587,6 @@ public class FxCotizacionController implements Initializable {
                         cotizacionTB.setFechaCotizacion(Tools.getDatePicker(dtFechaEmision));
                         cotizacionTB.setFechaVencimiento(Tools.getDatePicker(dtFechaVencimiento));
                         cotizacionTB.setHoraCotizacion(Tools.getHour());
-                        cotizacionTB.setFechaVencimiento(Tools.getDate());
                         cotizacionTB.setHoraVencimiento(Tools.getHour());
                         cotizacionTB.setEstado((short) 1);
                         cotizacionTB.setObservaciones(txtObservacion.getText().trim());                        
