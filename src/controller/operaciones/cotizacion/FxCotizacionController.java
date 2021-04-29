@@ -105,8 +105,6 @@ public class FxCotizacionController implements Initializable {
 
     private String idCotizacion;
 
-    private ConvertMonedaCadena monedaCadena;
-
     private double importeBruto;
 
     private double descuentoBruto;
@@ -123,7 +121,6 @@ public class FxCotizacionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         monedaSimbolo = "M";
         idCotizacion = "";
-        monedaCadena = new ConvertMonedaCadena();
         Tools.actualDate(Tools.getDate(), dtFechaEmision);
         Tools.actualDate(Tools.getDate(), dtFechaVencimiento);
         loadTableView();
@@ -522,9 +519,10 @@ public class FxCotizacionController implements Initializable {
                             tvList.getItems().remove(suministroTB);
                             calculateTotales();
                         }
-                    });
-                    tvList.setItems(cotizacionTBs);
+                    });                    
                 }
+                tvList.setItems(cotizacionTBs);
+                
                 calculateTotales();
                 hbBody.setDisable(false);
                 hbLoad.setVisible(false);

@@ -1,7 +1,6 @@
 package controller.operaciones.pedidos;
 
 import controller.menus.FxPrincipalController;
-import controller.operaciones.cotizacion.FxCotizacionDetalleController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import java.io.IOException;
@@ -79,8 +78,15 @@ public class FxPedidosRealizadosController implements Initializable {
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaEmision() + "\n" + cellData.getValue().getHoraEmision()));
         tcProveedor.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getProveedorTB().getRazonSocial()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaTB().getSimbolo() + " " + Tools.roundingValue(cellData.getValue().getImporteNeto(), 2)));
-        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
+        tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
+        tcVendedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcCotizacion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.18));
+        tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcProveedor.prefWidthProperty().bind(tvList.widthProperty().multiply(0.30));
+        tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+        loadInit();
     }
 
     public void loadInit() {

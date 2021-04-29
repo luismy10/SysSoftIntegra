@@ -413,7 +413,7 @@ public class FxPedidosController implements Initializable {
     private void clearElements() {
         idPedido = "";
         lblProceso.setText("Pedido en proceso de registrar");
-        lblProceso.setTextFill(Color.web("#ffffff"));
+        lblProceso.setTextFill(Color.web("#0060e8"));
         cbProveedor.getItems().clear();
         Tools.actualDate(Tools.getDate(), txtFechaEmision);
         Tools.actualDate(Tools.getDate(), txtFechaVencimiento);
@@ -461,6 +461,7 @@ public class FxPedidosController implements Initializable {
             });
             lblMessageLoad.setText(task.getException().getLocalizedMessage());
             lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            Tools.println("failed");
         });
         task.setOnSucceeded(w -> {
             Object object = task.getValue();
@@ -494,13 +495,15 @@ public class FxPedidosController implements Initializable {
                         event.consume();
                     });
                 }
-
+                tvList.setItems(pedidoTB.getPedidoDetalleTBs());
+                
+                
                 lblProceso.setText("Pedido en proceso de actualizar");
                 lblProceso.setTextFill(Color.web("#c52700"));
 
                 calculateTotales();
-                hbLoad.setDisable(false);
                 hbLoad.setVisible(false);
+                vbBody.setDisable(false);
             } else {
                 lblMessageLoad.setText((String) object);
                 lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
@@ -603,17 +606,17 @@ public class FxPedidosController implements Initializable {
                     if (object instanceof String[]) {
                         String[] result = (String[]) object;
                         if (result[0].equalsIgnoreCase("0")) {
-                            lblMessageLoad.setText("Se actualizó correctamente la pedido.");
+                            lblMessageLoad.setText("Se registró correctamente la pedido.");
                             lblMessageLoad.setTextFill(Color.web("#ffffff"));
-                            hbLoad.setDisable(false);
                             hbLoad.setVisible(false);
+                            vbBody.setDisable(false);
                             openModalImpresion(result[1]);
                             clearElements();
                         } else {
                             lblMessageLoad.setText("Se actualizó correctamente la pedido.");
                             lblMessageLoad.setTextFill(Color.web("#ffffff"));
-                            hbLoad.setDisable(false);
                             hbLoad.setVisible(false);
+                            vbBody.setDisable(false);
                             openModalImpresion(result[1]);
                             clearElements();
                         }

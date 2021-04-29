@@ -1,5 +1,6 @@
 package model;
 
+import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -221,20 +222,20 @@ public class PedidoADO {
                 pedidoTB.setProveedorTB(new ProveedorTB(resultSet.getString("IdProveedor"), resultSet.getString("NumeroDocumento"), resultSet.getString("RazonSocial")));
 
                 statementPedidoDetalle = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Pedido_ById(?)}");
-                statementPedido.setString(1, idPedido);
-                resultSet = statementPedido.executeQuery();
+                statementPedidoDetalle.setString(1, idPedido);
+                resultSet = statementPedidoDetalle.executeQuery();
                 ObservableList<PedidoDetalleTB> pedidoDetalleTBs = FXCollections.observableArrayList();
                 while (resultSet.next()) {
                     PedidoDetalleTB pedidoDetalleTB = new PedidoDetalleTB();
                     pedidoDetalleTB.setIdSuministro(resultSet.getString("IdSuministro"));
-                    pedidoDetalleTB.setSuministroTB(new SuministroTB(resultSet.getString(""), resultSet.getString("")));
-                    pedidoDetalleTB.setExistencia(resultSet.getDouble(""));
-                    pedidoDetalleTB.setStock(resultSet.getDouble("") + "/" + resultSet.getDouble(""));
-                    pedidoDetalleTB.setCantidad(resultSet.getDouble(""));
-                    pedidoDetalleTB.setCosto(resultSet.getDouble(""));
-                    pedidoDetalleTB.setDescuento(resultSet.getDouble(""));
-                    pedidoDetalleTB.setIdImpuesto(resultSet.getInt(""));
-                    pedidoDetalleTB.setImpuesto(resultSet.getDouble(""));
+                    pedidoDetalleTB.setSuministroTB(new SuministroTB(resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
+                    pedidoDetalleTB.setExistencia(resultSet.getDouble("Existencia"));
+                    pedidoDetalleTB.setStock(resultSet.getDouble("StockMinimo") + "/" + resultSet.getDouble("StockMaximo"));
+                    pedidoDetalleTB.setCantidad(resultSet.getDouble("Cantidad"));
+                    pedidoDetalleTB.setCosto(resultSet.getDouble("Costo"));
+                    pedidoDetalleTB.setDescuento(resultSet.getDouble("Descuento"));
+                    pedidoDetalleTB.setIdImpuesto(resultSet.getInt("IdImpuesto"));
+                    pedidoDetalleTB.setImpuesto(resultSet.getDouble("Valor"));
                     double descuento = pedidoDetalleTB.getDescuento();
                     double costoDescuento = pedidoDetalleTB.getCosto() - descuento;
                     pedidoDetalleTB.setImporte(costoDescuento * pedidoDetalleTB.getCantidad());
@@ -289,12 +290,22 @@ public class PedidoADO {
                 pedidoTB.setObservacion(result.getString("Observacion"));
                 pedidoTB.setIdMoneda(result.getInt("IdMoneda"));
 
+                MonedaTB monedaTB = new MonedaTB();
+                monedaTB.setIdMoneda(result.getInt("IdMoneda"));
+                monedaTB.setNombre(result.getString("Moneda"));
+                monedaTB.setSimbolo(result.getString("Simbolo"));
+                pedidoTB.setMonedaTB(monedaTB);
+
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setIdProveedor(result.getString("IdProveedor"));
                 proveedorTB.setNumeroDocumento(result.getString("NumeroDocumento"));
                 proveedorTB.setRazonSocial(result.getString("RazonSocial"));
+                proveedorTB.setCelular(result.getString("Celular"));
+                proveedorTB.setTelefono(result.getString("Telefono"));
+                proveedorTB.setEmail(result.getString("Email"));
+                proveedorTB.setDireccion(result.getString("Direccion"));
                 pedidoTB.setProveedorTB(proveedorTB);
-                
+
                 EmpleadoTB empleadoTB = new EmpleadoTB();
                 empleadoTB.setIdEmpleado(result.getString("IdEmpleado"));
                 empleadoTB.setNumeroDocumento(result.getString("NumeroDocumento"));
@@ -308,13 +319,17 @@ public class PedidoADO {
                 result = statementPedidoDetalle.executeQuery();
                 while (result.next()) {
                     SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setId(result.getRow());
                     suministroTB.setIdSuministro(result.getString("IdSuministro"));
                     suministroTB.setClave(result.getString("Clave"));
-                    suministroTB.setNombreMarca(result.getString("NombreGenerico"));
+                    suministroTB.setNombreMarca(result.getString("NombreMarca"));
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
                     suministroTB.setCostoCompra(result.getDouble("Costo"));
                     suministroTB.setDescuento(result.getDouble("Descuento"));
                     suministroTB.setImpuestoValor(result.getDouble("Valor"));
+                    double descuento = suministroTB.getDescuento();
+                    double costoDescuento = suministroTB.getCostoCompra() - descuento;
+                    suministroTB.setImporteNeto(costoDescuento * suministroTB.getCantidad());
                     suministroTBs.add(suministroTB);
                 }
                 pedidoTB.setSuministroTBs(suministroTBs);
