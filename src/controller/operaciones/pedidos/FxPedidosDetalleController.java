@@ -1,20 +1,30 @@
 package controller.operaciones.pedidos;
 
 import controller.menus.FxPrincipalController;
+import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
+import controller.tools.FilesRouters;
+import controller.tools.Session;
 import controller.tools.Tools;
+import controller.tools.WindowStage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
@@ -27,9 +37,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.PedidoADO;
 import model.PedidoTB;
 import model.SuministroTB;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class FxPedidosDetalleController implements Initializable {
 
@@ -230,7 +245,7 @@ public class FxPedidosDetalleController implements Initializable {
         importeBruto = 0;
         arrList.forEach(e -> {
             double descuento = e.getDescuento();
-            double costoDescuento = e.getCostoCompra()- descuento;
+            double costoDescuento = e.getCostoCompra() - descuento;
             double subCosto = Tools.calculateTaxBruto(e.getImpuestoValor(), costoDescuento);
             double costoBruto = subCosto + descuento;
             importeBruto += costoBruto * e.getCantidad();
@@ -247,7 +262,7 @@ public class FxPedidosDetalleController implements Initializable {
         subImporteNeto = 0;
         arrList.forEach(e -> {
             double descuento = e.getDescuento();
-            double costoDescuento = e.getCostoCompra()- descuento;
+            double costoDescuento = e.getCostoCompra() - descuento;
             double subCosto = Tools.calculateTaxBruto(e.getImpuestoValor(), costoDescuento);
             subImporteNeto += e.getCantidad() * subCosto;
         });
@@ -257,7 +272,7 @@ public class FxPedidosDetalleController implements Initializable {
         impuestoNeto = 0;
         arrList.forEach(e -> {
             double descuento = e.getDescuento();
-            double costoDescuento = e.getCostoCompra()- descuento;
+            double costoDescuento = e.getCostoCompra() - descuento;
             double subCosto = Tools.calculateTaxBruto(e.getImpuestoValor(), costoDescuento);
             double impuesto = Tools.calculateTax(e.getImpuestoValor(), subCosto);
             impuestoNeto += e.getCantidad() * impuesto;
@@ -282,16 +297,81 @@ public class FxPedidosDetalleController implements Initializable {
         fxPrincipalController.getVbContent().getChildren().add(pedidosRealizadosController.getVbWindow());
     }
 
+    private void reportA4() {
+        try {
+            InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+            InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
+
+            if (Session.COMPANY_IMAGE != null) {
+                imgInputStream = new ByteArrayInputStream(Session.COMPANY_IMAGE);
+            }
+
+            InputStream dir = getClass().getResourceAsStream("/report/Pedido.jasper");
+
+            Map map = new HashMap();
+            map.put("LOGO", imgInputStream);
+            map.put("ICON", imgInputStreamIcon);
+            map.put("EMPRESA", Session.COMPANY_RAZON_SOCIAL);
+            map.put("DIRECCION", Session.COMPANY_DOMICILIO);
+            map.put("TELEFONOCELULAR", "TELÉFONO: " + Session.COMPANY_TELEFONO + " CELULAR: " + Session.COMPANY_CELULAR);
+            map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL);
+
+            map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
+            map.put("NOMBREDOCUMENTO", "COTIZACIÓN");
+            map.put("NUMERODOCUMENTO", "N° " + pedidoTB.getIdPedido());
+
+            map.put("DOCUMENTOCLIENTE", "");
+            map.put("DATOSCLIENTE", pedidoTB.getProveedorTB().getRazonSocial());
+            map.put("NUMERODOCUMENTOCLIENTE", pedidoTB.getProveedorTB().getNumeroDocumento());
+            map.put("CELULARCLIENTE", pedidoTB.getProveedorTB().getCelular() + " " + pedidoTB.getProveedorTB().getTelefono());
+            map.put("EMAILCLIENTE", pedidoTB.getProveedorTB().getEmail());
+            map.put("DIRECCIONCLIENTE", pedidoTB.getProveedorTB().getDireccion());
+
+            map.put("FECHAEMISION", pedidoTB.getFechaEmision());
+            map.put("MONEDA", pedidoTB.getMonedaTB().getNombre());
+            map.put("CONDICIONPAGO", "");
+
+            map.put("SIMBOLO", pedidoTB.getMonedaTB().getSimbolo());
+            map.put("VALORSOLES", monedaCadena.Convertir(Tools.roundingValue(importeTotal, 2), true, pedidoTB.getMonedaTB().getNombre()));
+
+            map.put("VALOR_VENTA", Tools.roundingValue(importeBruto, 2));
+            map.put("DESCUENTO", "-" + Tools.roundingValue(descuentoBruto, 2));
+            map.put("SUB_IMPORTE", Tools.roundingValue(subImporteNeto, 2));
+            map.put("IMPUESTO_TOTAL", Tools.roundingValue(impuestoNeto, 2));
+            map.put("IMPORTE_TOTAL", Tools.roundingValue(importeTotal, 2));
+            map.put("OBSERVACION", pedidoTB.getObservacion());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(arrList));
+
+            URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxReportViewController controller = fXMLLoader.getController();
+            controller.setFileName("PEDIDO N° " + pedidoTB.getIdPedido());
+            controller.setJasperPrint(jasperPrint);
+            controller.show();
+            Stage stage = WindowStage.StageLoader(parent, "Cotizacion realizada");
+            stage.setResizable(true);
+            stage.show();
+            stage.requestFocus();
+
+        } catch (IOException | JRException ex) {
+            Tools.AlertMessageError(apWindow, "Reporte de Cotizacion", "Error al generar el reporte : " + ex.getLocalizedMessage());
+        }
+    }
+
     @FXML
     private void onKeyPressedReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            reportA4();
         }
     }
 
     @FXML
     private void onActionReporte(ActionEvent event) {
-
+        reportA4();
     }
 
     @FXML

@@ -124,7 +124,6 @@ public class FxCotizacionDetalleController implements Initializable {
 
     private double importeTotal = 0;
 
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         monedaCadena = new ConvertMonedaCadena();
@@ -629,41 +628,25 @@ public class FxCotizacionDetalleController implements Initializable {
     @FXML
     private void onKeyPressedReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (cotizacionTB != null) {
-                reportA4();
-            } else {
-                Tools.AlertMessageWarning(apWindow, "Cotización", "No se puede generar el reporte por problemas en cargar los datos.");
-            }
+            reportA4();
         }
     }
 
     @FXML
     private void onActionReporte(ActionEvent event) {
-        if (cotizacionTB != null) {
-            reportA4();
-        } else {
-            Tools.AlertMessageWarning(apWindow, "Cotización", "No se puede generar el reporte por problemas en cargar los datos.");
-        }
+        reportA4();
     }
 
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (cotizacionTB != null) {
-                ticket();
-            } else {
-                Tools.AlertMessageWarning(apWindow, "Cotización", "No se puede imprimir el ticket por problemas en cargar los datos.");
-            }
+            ticket();
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-        if (cotizacionTB != null) {
-            ticket();
-        } else {
-            Tools.AlertMessageWarning(apWindow, "Cotización", "No se puede imprimir el ticket por problemas en cargar los datos.");
-        }
+        ticket();
     }
 
     @FXML
