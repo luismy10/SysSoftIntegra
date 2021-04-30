@@ -357,7 +357,7 @@ public class FxCotizacionDetalleController implements Initializable {
                                         HBox hBox = new HBox();
                                         hBox.setId("dc_" + m + "" + i);
                                         HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                                        billPrintable.hbDetalle(hBox, box, arrList, m);
+                                        billPrintable.hbDetalleCotizacion(hBox, box, arrList, m);
                                         hbDetalle.getChildren().add(hBox);
                                     }
                                 }
@@ -517,7 +517,7 @@ public class FxCotizacionDetalleController implements Initializable {
                 hBox.setId("dc_" + m + "" + i);
                 HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbDetalle(hBox, box, arrList, m);
+                lines += billPrintable.hbDetalleCotizacion(hBox, box, arrList, m);
                 object.add(hBox);
             }
         }

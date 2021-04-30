@@ -193,6 +193,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         monedaSimbolo = "M";
         idCliente = "";
         loadDataComponent();
+        autoCompletionBinding = TextFields.bindAutoCompletion(txtNumeroDocumento, posiblesWord);
+        autoCompletionBinding.setOnAutoCompleted(e -> {
+            if (!Tools.isText(txtNumeroDocumento.getText())) {
+                onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+                txtSearch.requestFocus();
+            }
+        });
     }
 
     private void loadDataComponent() {
@@ -237,7 +244,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
 
         ObjectGlobal.DATA_CLIENTS.forEach(c -> posiblesWord.add(c));
-        autoCompletionBinding = TextFields.bindAutoCompletion(txtNumeroDocumento, posiblesWord);
 
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {

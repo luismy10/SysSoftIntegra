@@ -323,6 +323,7 @@ public class PedidoADO {
                     suministroTB.setIdSuministro(result.getString("IdSuministro"));
                     suministroTB.setClave(result.getString("Clave"));
                     suministroTB.setNombreMarca(result.getString("NombreMarca"));
+                    suministroTB.setUnidadCompraName(result.getString("UnidadCompraNombre"));
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
                     suministroTB.setCostoCompra(result.getDouble("Costo"));
                     suministroTB.setDescuento(result.getDouble("Descuento"));

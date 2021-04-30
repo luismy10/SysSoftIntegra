@@ -78,7 +78,7 @@
                         </HBox>
                         <VBox style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Label fx:id="lblError" styleClass="labelOpenSansRegular14" textFill="#e10606" wrapText="true" />
+                              <Label fx:id="lblError" styleClass="labelOpenSansRegular13" textFill="#e10606" wrapText="true" />
                            </children>
                         </VBox>
                      </children>

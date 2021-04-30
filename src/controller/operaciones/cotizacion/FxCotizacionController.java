@@ -4,7 +4,6 @@ import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosListaController;
 import controller.menus.FxPrincipalController;
-import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;

@@ -318,7 +318,7 @@ public class FxPedidosDetalleController implements Initializable {
             map.put("EMAIL", "EMAIL: " + Session.COMPANY_EMAIL);
 
             map.put("DOCUMENTOEMPRESA", "R.U.C " + Session.COMPANY_NUMERO_DOCUMENTO);
-            map.put("NOMBREDOCUMENTO", "COTIZACIÓN");
+            map.put("NOMBREDOCUMENTO", "PEDIDO");
             map.put("NUMERODOCUMENTO", "N° " + pedidoTB.getIdPedido());
 
             map.put("DOCUMENTOCLIENTE", "");
@@ -352,13 +352,13 @@ public class FxPedidosDetalleController implements Initializable {
             controller.setFileName("PEDIDO N° " + pedidoTB.getIdPedido());
             controller.setJasperPrint(jasperPrint);
             controller.show();
-            Stage stage = WindowStage.StageLoader(parent, "Cotizacion realizada");
+            Stage stage = WindowStage.StageLoader(parent, "Pedido realizados");
             stage.setResizable(true);
             stage.show();
             stage.requestFocus();
 
         } catch (IOException | JRException ex) {
-            Tools.AlertMessageError(apWindow, "Reporte de Cotizacion", "Error al generar el reporte : " + ex.getLocalizedMessage());
+            Tools.AlertMessageError(apWindow, "Reporte de Pedido", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 

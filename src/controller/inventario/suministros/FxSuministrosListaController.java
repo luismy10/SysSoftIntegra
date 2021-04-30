@@ -346,6 +346,7 @@ public class FxSuministrosListaController implements Initializable {
                     //
                     Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", apWindow.getScene().getWindow());
                     stage.setResizable(false);
+                    stage.setOnShown(e -> controller.getTxtCantidad().requestFocus());
                     stage.sizeToScene();
                     stage.show();
                 } catch (IOException ix) {
