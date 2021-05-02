@@ -522,6 +522,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "0.00",
                     ventaCreditoTB.getVentaTB().getClienteTB().getNumeroDocumento(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getInformacion(),
                     "",
@@ -619,6 +620,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "0.00",
                     ventaCreditoTB.getVentaTB().getClienteTB().getNumeroDocumento(),
                     ventaCreditoTB.getVentaTB().getClienteTB().getInformacion(),
                     "",
@@ -684,6 +686,7 @@ public class FxOpcionesImprimirController implements Initializable {
             HBox box = ((HBox) hbPie.getChildren().get(i));
             billPrintable.hbPie(box,
                     "M",
+                    "0.00",
                     "0.00",
                     "0.00",
                     "0.00",
@@ -781,6 +784,7 @@ public class FxOpcionesImprimirController implements Initializable {
             rows++;
             lines += billPrintable.hbPie(box,
                     "M",
+                    "0.00",
                     "0.00",
                     "0.00",
                     "0.00",
@@ -964,6 +968,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "0.00",
                     compraCreditoTB.getCompraTB().getProveedorTB().getNumeroDocumento(),
                     compraCreditoTB.getCompraTB().getProveedorTB().getRazonSocial(),
                     "",
@@ -1061,6 +1066,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "0.00",
                     compraCreditoTB.getProveedorTB().getNumeroDocumento(),
                     compraCreditoTB.getProveedorTB().getRazonSocial(),
                     "",
@@ -1127,6 +1133,7 @@ public class FxOpcionesImprimirController implements Initializable {
 
             billPrintable.hbPie(box,
                     "M",
+                    "0.00",
                     "0.00",
                     "0.00",
                     "0.00",
@@ -1224,6 +1231,7 @@ public class FxOpcionesImprimirController implements Initializable {
             rows++;
             lines += billPrintable.hbPie(box,
                     "M",
+                    "0.00",
                     "0.00",
                     "0.00",
                     "0.00",
@@ -1394,6 +1402,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "0.00",
                     "",
                     "",
                     "",
@@ -1491,6 +1500,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "0.00",
                     "",
                     "",
                     "",
@@ -1517,23 +1527,20 @@ public class FxOpcionesImprimirController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                if (!Tools.isText(idCotizacion)) {
-                    CotizacionTB cotizacionTB = CotizacionADO.CargarCotizacionReporte(idCotizacion);
-                    if (cotizacionTB != null && !cotizacionTB.getDetalleSuministroTBs().isEmpty()) {
-                        try {
-                            if (desing.equalsIgnoreCase("withdesing")) {
-                                return printTicketWithDesingCotizacion(cotizacionTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
-                            } else {
-                                return "empty";
-                            }
-                        } catch (PrinterException | IOException | PrintException ex) {
-                            return "Error en imprimir: " + ex.getLocalizedMessage();
+                Object object = CotizacionADO.CargarCotizacionReporte(idCotizacion);
+                if (object instanceof CotizacionTB) {
+                    try {
+                        CotizacionTB cotizacionTB = (CotizacionTB) object;
+                        if (desing.equalsIgnoreCase("withdesing")) {
+                            return printTicketWithDesingCotizacion(cotizacionTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
+                        } else {
+                            return "empty";
                         }
-                    } else {
-                        return "empty";
+                    } catch (PrinterException | IOException | PrintException ex) {
+                        return "Error en imprimir: " + ex.getLocalizedMessage();
                     }
                 } else {
-                    return "empty";
+                    return (String) object;
                 }
             }
         };
@@ -1659,6 +1666,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     Tools.roundingValue(totalImpuesto, 2),
                     Tools.roundingValue(totalSubTotal, 2),
                     Tools.roundingValue(totalNeto, 2),
+                    "TARJETA",
                     "EFECTIVO",
                     "VUELTO",
                     cotizacionTB.getClienteTB().getNumeroDocumento(),
@@ -1699,9 +1707,9 @@ public class FxOpcionesImprimirController implements Initializable {
             t.setDaemon(true);
             return t;
         });
-        Task<CotizacionTB> task = new Task<CotizacionTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public CotizacionTB call() {
+            public Object call() {
                 return CotizacionADO.CargarCotizacionReporte(idCotizacion);
             }
         };
@@ -1720,8 +1728,9 @@ public class FxOpcionesImprimirController implements Initializable {
                     Pos.BOTTOM_RIGHT);
         });
         task.setOnSucceeded(w -> {
-            CotizacionTB cotizacionTB = task.getValue();
-            if (cotizacionTB != null && !cotizacionTB.getDetalleSuministroTBs().isEmpty()) {
+            Object object = task.getValue();
+            if (object instanceof CotizacionTB) {
+                CotizacionTB cotizacionTB = (CotizacionTB) object;
                 printA4WithDesingCotizacion(cotizacionTB);
                 Tools.showAlertNotification("/view/image/succes_large.png",
                         "Generando reporte",
@@ -1732,7 +1741,7 @@ public class FxOpcionesImprimirController implements Initializable {
             } else {
                 Tools.showAlertNotification("/view/image/error_large.png",
                         "Generando reporte",
-                        "Se producto al obtenener los datos.",
+                        (String)object,
                         Duration.seconds(10),
                         Pos.CENTER);
             }
@@ -1944,9 +1953,7 @@ public class FxOpcionesImprimirController implements Initializable {
         billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
 
         double cantidadActual = 0;
-        for (HistorialSuministroSalidaTB hs : suministroSalidas) {
-            cantidadActual += hs.getCantidad();
-        }
+        cantidadActual = suministroSalidas.stream().map((hs) -> hs.getCantidad()).reduce(cantidadActual, (accumulator, _item) -> accumulator + _item);
 
         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
@@ -2006,6 +2013,7 @@ public class FxOpcionesImprimirController implements Initializable {
                     "0.00",
                     "0.00",
                     "0.00",
+                    "0.00",
                     ventaTB.getClienteTB().getNumeroDocumento(),
                     ventaTB.getClienteTB().getInformacion(),
                     "",
@@ -2040,9 +2048,7 @@ public class FxOpcionesImprimirController implements Initializable {
         ArrayList<HBox> object = new ArrayList<>();
 
         double cantidadActual = 0;
-        for (HistorialSuministroSalidaTB hs : suministroSalidas) {
-            cantidadActual += hs.getCantidad();
-        }
+        cantidadActual = suministroSalidas.stream().map((hs) -> hs.getCantidad()).reduce(cantidadActual, (accumulator, _item) -> accumulator + _item);
 
         int rows = 0;
         int lines = 0;
@@ -2100,6 +2106,7 @@ public class FxOpcionesImprimirController implements Initializable {
             rows++;
             lines += billPrintable.hbPie(box,
                     "M",
+                    "0.00",
                     "0.00",
                     "0.00",
                     "0.00",

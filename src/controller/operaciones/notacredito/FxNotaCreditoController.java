@@ -1,7 +1,11 @@
 package controller.operaciones.notacredito;
 
+import controller.tools.FilesRouters;
+import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
+import controller.tools.WindowStage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -10,9 +14,11 @@ import java.util.concurrent.Executors;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -27,6 +33,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.DetalleTB;
 import model.DetalleVentaTB;
 import model.MonedaTB;
@@ -323,7 +330,7 @@ public class FxNotaCreditoController implements Initializable {
         return label;
     }
 
-    private void clearElements() {
+    public void clearElements() {
         idVenta = "";
         idCliente = "";
         cbNotaCredito.getItems().clear();
@@ -349,7 +356,7 @@ public class FxNotaCreditoController implements Initializable {
         txtSerieNumeracion.requestFocus();
     }
 
-    private void registrarNotaCredito() {
+    private void registrarNotaCredito() throws IOException {
         if (cbNotaCredito.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "Debe seleccionar la nota de crédito.");
             cbNotaCredito.requestFocus();
@@ -377,8 +384,7 @@ public class FxNotaCreditoController implements Initializable {
         } else if (detalleVentaTBs.isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "No hay datos en el detalle para guardar el documento.");
         } else {
-            short value = Tools.AlertMessageConfirmation(apWindow, "Nota de Crédito", "¿Está seguro de continuar?");
-            if (value == 1) {
+            
                 NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
                 notaCreditoTB.setIdVendedor(Session.USER_ID);
                 notaCreditoTB.setIdCliente(idCliente);
@@ -401,16 +407,21 @@ public class FxNotaCreditoController implements Initializable {
                 });
                 notaCreditoTB.setNotaCreditoDetalleTBs(creditoDetalleTBs);
 
-                String result = NotaCreditoADO.Registrar_NotaCredito(notaCreditoTB);
-                if (result.equalsIgnoreCase("registrado")) {
-                    Tools.AlertMessageInformation(apWindow, "Nota de Crédito", "Se registro correctamente la nota de crédito");
-                    clearElements();
-                    hbLoad.setVisible(false);
-                    spBody.setDisable(false);
-                } else {
-                    Tools.AlertMessageError(apWindow, "Nota de Crédito", result);
-                }
-            }
+                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                URL url = getClass().getResource(FilesRouters.FX_NOTA_CREDITO_PROCESO);
+                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                Parent parent = fXMLLoader.load(url.openStream());
+                //Controlller here
+                FxNotaCreditoProcesoController controller = fXMLLoader.getController();
+                controller.setInitNotaCreditoController(this);
+                controller.loadDataComponents(notaCreditoTB);
+                //
+                Stage stage = WindowStage.StageLoaderModal(parent, "Nota de Crédito", apWindow.getScene().getWindow());
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.show();
+            
         }
     }
 
@@ -444,15 +455,15 @@ public class FxNotaCreditoController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedRegistrar(KeyEvent event) {
+    private void onKeyPressedRegistrar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             registrarNotaCredito();
         }
     }
 
     @FXML
-    private void onActionRegistrar(ActionEvent event) {
-        registrarNotaCredito();
+    private void onActionRegistrar(ActionEvent event) throws IOException {
+        registrarNotaCredito(); 
     }
 
     @FXML
@@ -466,6 +477,15 @@ public class FxNotaCreditoController implements Initializable {
     private void onActionLimpiar(ActionEvent event) {
         clearElements();
     }
+
+    public ScrollPane getSpBody() {
+        return spBody;
+    }
+
+    public HBox getHbLoad() {
+        return hbLoad;
+    }  
+    
 
     public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
         this.vbPrincipal = vbPrincipal;

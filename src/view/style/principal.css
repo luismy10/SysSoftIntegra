@@ -114,7 +114,8 @@
  *                                                                             *
  ******************************************************************************/
 .labelRobotoMedium10{
-    -fx-font-size:0.8333333333333334em; /*10px*/    -fx-font-family:"Roboto Medium"; 
+    -fx-font-size:0.8333333333333334em; /*10px*/    
+    -fx-font-family:"Roboto Medium"; 
     -fx-font-smoothing-type: lcd;
 }
 .labelRobotoMedium12{

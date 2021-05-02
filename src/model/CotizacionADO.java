@@ -322,9 +322,7 @@ public class CotizacionADO {
         return cotizacionTB;
     }
 
-    public static CotizacionTB CargarCotizacionReporte(String idCotizacion) {
-        CotizacionTB cotizacionTB = null;
-        ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
+    public static Object CargarCotizacionReporte(String idCotizacion) {        
         PreparedStatement statementCotizacione = null;
         PreparedStatement statementDetalleCotizacione = null;
         try {
@@ -333,7 +331,7 @@ public class CotizacionADO {
             statementCotizacione.setString(1, idCotizacion);
             ResultSet result = statementCotizacione.executeQuery();
             if (result.next()) {
-                cotizacionTB = new CotizacionTB();
+                CotizacionTB cotizacionTB = new CotizacionTB();
                 cotizacionTB.setId(result.getRow());
                 cotizacionTB.setIdCotizacion(idCotizacion);
                 cotizacionTB.setFechaCotizacion(result.getDate("FechaCotizacion").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -342,7 +340,8 @@ public class CotizacionADO {
                 cotizacionTB.setClienteTB(new ClienteTB(result.getString("IdCliente"), result.getInt("TipoDocumento"), result.getString("NumeroDocumento"), result.getString("Informacion"), result.getString("Telefono"), result.getString("Celular"), result.getString("Email"), result.getString("Direccion")));
                 cotizacionTB.setMonedaTB(new MonedaTB(result.getString("Nombre"), result.getString("Simbolo")));
                 cotizacionTB.setObservaciones(result.getString("Observaciones"));
-
+                
+                ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
                 statementDetalleCotizacione = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Cotizacion_Reporte_ById(?)}");
                 statementDetalleCotizacione.setString(1, idCotizacion);
                 result = statementDetalleCotizacione.executeQuery();
@@ -388,10 +387,16 @@ public class CotizacionADO {
                     cotizacionTBs.add(suministroTB);
                 }
                 cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
+
+                return cotizacionTB;
+            } else {
+                throw new Exception("No se pudo encontrar datos para mostrar.");
             }
 
         } catch (SQLException ex) {
-            System.out.println("Error en cotización: " + ex.getLocalizedMessage());
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statementCotizacione != null) {
@@ -402,10 +407,10 @@ public class CotizacionADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return cotizacionTB;
+
     }
 
 }

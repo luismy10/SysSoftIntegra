@@ -362,4 +362,6 @@ public final class FilesRouters {
 
     public static final String FX_FORMULA_EDITAR = "/view/produccion/producir/FxFormulaEditar.fxml";
 
+    public static final String FX_NOTA_CREDITO_PROCESO = "/view/operaciones/notacredito/FxNotaCreditoProceso.fxml";
+
 }
