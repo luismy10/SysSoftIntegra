@@ -205,7 +205,7 @@
                                           <VBox>
                                              <children>
                                                 <Label alignment="CENTER_RIGHT" styleClass="labelRoboto13" text="Notas:" textFill="#020203" wrapText="true" />
-                                                <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto11" text="(Visibles en el documento impreso)" textFill="#020203" wrapText="true" />
+                                                <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto12" text="(Visibles en el documento impreso)" textFill="#020203" wrapText="true" />
                                              </children>
                                           </VBox>
                                           <TextArea fx:id="txtNotas" prefHeight="50.0" prefWidth="200.0" wrapText="true" />
@@ -216,7 +216,7 @@
                                           <VBox>
                                              <children>
                                                 <Label alignment="CENTER_RIGHT" styleClass="labelRoboto13" text="Observaciones:" textFill="#020203" wrapText="true" />
-                                                <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto11" text="(No visibles en el documento impreso)" textFill="#020203" wrapText="true" />
+                                                <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto12" text="(No visibles en el documento impreso)" textFill="#020203" wrapText="true" />
                                              </children>
                                           </VBox>
                                           <TextArea fx:id="txtObservaciones" prefHeight="50.0" prefWidth="206.0" wrapText="true" />
@@ -229,7 +229,7 @@
                                     <GridPane style="-fx-hgap: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                          <ColumnConstraints hgrow="ALWAYS" minWidth="100.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -240,15 +240,15 @@
                                        </rowConstraints>
                                        <children>
                                           <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPORTE BRUTO:" textFill="#020203" />
-                                          <Label fx:id="lblTotalBruto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
+                                          <Label fx:id="lblTotalBruto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
                                           <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="DUSCUENTO TOTAL:" textFill="#020203" GridPane.rowIndex="1" />
-                                          <Label fx:id="lblDescuento" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label fx:id="lblDescuento" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="SUB IMPORTE:" textFill="#020203" GridPane.rowIndex="2" />
-                                          <Label fx:id="lblSubTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label fx:id="lblSubTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPUESTO GENERADO:" textFill="#020203" GridPane.rowIndex="3" />
-                                          <Label fx:id="lblImpuesto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label fx:id="lblImpuesto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPORTE NETO:" textFill="#020203" GridPane.rowIndex="4" />
-                                          <Label fx:id="lblTotalNeto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label fx:id="lblTotalNeto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                        </children>
                                     </GridPane>
                                  </children>
