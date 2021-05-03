@@ -880,8 +880,9 @@ public class FxOpcionesImprimirController implements Initializable {
                         return "empty";
                     }
                 } else if (!Tools.isText(idCompra)) {
-                    CompraTB compraTB = CompraADO.Listar_Compra_Credito(idCompra);
-                    if (compraTB != null) {
+                    Object object = CompraADO.Listar_Compra_Credito(idCompra);
+                    if (object instanceof CompraTB) {
+                        CompraTB compraTB = (CompraTB) object;
                         try {
                             if (desing.equalsIgnoreCase("withdesing")) {
                                 return printTicketWithDesingCuentaPagar(compraTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
@@ -893,7 +894,7 @@ public class FxOpcionesImprimirController implements Initializable {
                             return "Error en imprimir: " + ex.getLocalizedMessage();
                         }
                     } else {
-                        return "empty";
+                        return (String) object;
                     }
                 } else {
                     return "empty";
