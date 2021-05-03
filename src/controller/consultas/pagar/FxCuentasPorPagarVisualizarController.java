@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,6 +34,7 @@ import javafx.stage.Stage;
 import model.CompraADO;
 import model.CompraCreditoTB;
 import model.CompraTB;
+import model.DetalleCompraTB;
 
 public class FxCuentasPorPagarVisualizarController implements Initializable {
 
@@ -62,6 +64,8 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     private Label lblDiferencia;
     @FXML
     private Label lblMontoTotal;
+    @FXML
+    private GridPane gpDetalle;
     @FXML
     private HBox hbLoad;
     @FXML
@@ -137,6 +141,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
                     });
                 }
                 fillVentasDetalleTable();
+                fillArticlesTable(compraTB.getDetalleCompraTBs());
                 spBody.setDisable(false);
                 hbLoad.setVisible(false);
             } else {
@@ -160,7 +165,6 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     }
 
     private void fillVentasDetalleTable() {
-        double montoPagado = 0;
         for (int i = 0; i < compraTB.getCompraCreditoTBs().size(); i++) {
             gpList.add(addElementGridPane("l1" + (i + 1), compraTB.getCompraCreditoTBs().get(i).getId() + "", Pos.CENTER, null), 0, (i + 1));
             gpList.add(addElementGridPane("l2" + (i + 1), compraTB.getCompraCreditoTBs().get(i).getIdCompraCredito(), Pos.CENTER, null), 1, (i + 1));
@@ -169,7 +173,19 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(compraTB.getCompraCreditoTBs().get(i).getMonto(), 2), Pos.CENTER, null), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), compraTB.getCompraCreditoTBs().get(i).getObservacion(), Pos.CENTER, null), 5, (i + 1));
             gpList.add(addElementGridPane("l7" + (i + 1), "", Pos.CENTER, compraTB.getCompraCreditoTBs().get(i).getBtnImprimir()), 6, (i + 1));
-            montoPagado += compraTB.getCompraCreditoTBs().get(i).getMonto();
+        }
+    }
+
+    private void fillArticlesTable(ObservableList<DetalleCompraTB> arrList) {
+        for (int i = 0; i < arrList.size(); i++) {
+            gpDetalle.add(addElementGridPane("l1" + (i + 1), arrList.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
+            gpDetalle.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getSuministroTB().getClave() + "\n" + arrList.get(i).getSuministroTB().getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
+            gpDetalle.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
+            gpDetalle.add(addElementGridPane("l4" + (i + 1), Tools.roundingValue(arrList.get(i).getPrecioCompra(), 2) + "(" + Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%)", Pos.CENTER_RIGHT), 3, (i + 1));
+            gpDetalle.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getValorImpuesto(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
+            gpDetalle.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
+            gpDetalle.add(addElementGridPane("l7" + (i + 1), arrList.get(i).getSuministroTB().getUnidadCompraName(), Pos.CENTER_RIGHT), 6, (i + 1));
+            gpDetalle.add(addElementGridPane("l8" + (i + 1), Tools.roundingValue(arrList.get(i).getImporte(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
         }
     }
 
@@ -177,6 +193,20 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
         Label label = new Label(nombre);
         label.setId(id);
         label.setGraphic(node);
+        label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
+        label.getStyleClass().add("labelRoboto13");
+        label.setAlignment(pos);
+        label.setWrapText(true);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
+    }
+
+    private Label addElementGridPane(String id, String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setId(id);
         label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
         label.getStyleClass().add("labelRoboto13");
         label.setAlignment(pos);

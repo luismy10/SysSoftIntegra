@@ -1125,6 +1125,7 @@ public class CompraADO extends DBUtil {
     public static Object Listar_Compra_Credito(String idCompra) {
         PreparedStatement preparedProveedor = null;
         PreparedStatement preparedCompraCredito = null;
+        PreparedStatement preparedDetalleCompra = null;
         ResultSet resultSet = null;
         try {
             dbConnect();
@@ -1176,9 +1177,51 @@ public class CompraADO extends DBUtil {
 
                     ventaCreditoTBs.add(compraCreditoTB);
                 }
-
                 compraTB.setCompraCreditoTBs(ventaCreditoTBs);
 
+                preparedDetalleCompra = getConnection().prepareStatement("{call Sp_Listar_Detalle_Compra(?)}");
+                preparedDetalleCompra.setString(1, idCompra);
+                ResultSet rsEmps = preparedDetalleCompra.executeQuery();
+                ObservableList<DetalleCompraTB> empList = FXCollections.observableArrayList();
+                while (rsEmps.next()) {
+                    DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
+                    detalleCompraTB.setId(rsEmps.getRow());
+                    detalleCompraTB.setIdArticulo(rsEmps.getString("IdSuministro"));
+                    //
+                    SuministroTB suministrosTB = new SuministroTB();
+                    suministrosTB.setClave(rsEmps.getString("Clave"));
+                    suministrosTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                    suministrosTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                    suministrosTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
+                    detalleCompraTB.setSuministroTB(suministrosTB);
+                    // 
+                    detalleCompraTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                    detalleCompraTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
+                    detalleCompraTB.setDescuento(rsEmps.getDouble("Descuento"));
+                    detalleCompraTB.setIdImpuesto(rsEmps.getInt("IdImpuesto"));
+                    detalleCompraTB.setValorImpuesto(rsEmps.getDouble("ValorImpuesto"));
+
+                    double valor_sin_impuesto = detalleCompraTB.getPrecioCompra() / ((detalleCompraTB.getValorImpuesto() / 100.00) + 1);
+                    double descuento = detalleCompraTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                    detalleCompraTB.setDescuento(descuento);
+                    detalleCompraTB.setDescuentoSumado(descuento * detalleCompraTB.getCantidad());
+
+                    detalleCompraTB.setPrecioCompraUnico(valor_sin_impuesto);
+                    detalleCompraTB.setPrecioCompraReal(preciocalculado);
+
+                    double impuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), detalleCompraTB.getPrecioCompraReal());
+                    detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * impuesto);
+                    detalleCompraTB.setPrecioCompra(detalleCompraTB.getPrecioCompraReal() + impuesto);
+
+                    detalleCompraTB.setImporte(detalleCompraTB.getPrecioCompra() * detalleCompraTB.getCantidad());
+
+                    empList.add(detalleCompraTB);
+                }
+                compraTB.setDetalleCompraTBs(empList);
+                
                 return compraTB;
             } else {
                 throw new Exception("No se pudo carga la información, intente nuevamente.");
@@ -1197,6 +1240,9 @@ public class CompraADO extends DBUtil {
                 }
                 if (preparedProveedor != null) {
                     preparedProveedor.close();
+                }
+                if (preparedDetalleCompra != null) {
+                    preparedDetalleCompra.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {

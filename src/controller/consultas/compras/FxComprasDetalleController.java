@@ -89,7 +89,6 @@ public class FxComprasDetalleController implements Initializable {
     private VBox vbCondicion;
     @FXML
     private Button btnReporte;
-    private Button btnEditar;
     @FXML
     private Button btnAnular;
     @FXML
@@ -173,25 +172,21 @@ public class FxComprasDetalleController implements Initializable {
                     switch (compraTB.getEstado()) {
                         case 2:
                             btnReporte.setDisable(false);
-                            btnEditar.setDisable(true);
                             btnAnular.setDisable(false);
                             break;
                         case 3:
                             btnReporte.setDisable(false);
-                            btnEditar.setDisable(true);
                             btnAnular.setDisable(true);
                             lblEstado.setTextFill(Color.web("#990000"));
                             break;
                         case 4:
                             btnReporte.setDisable(false);
-                            btnEditar.setDisable(false);
                             btnAnular.setDisable(true);
                             vbCondicion.getChildren().add(adddElementCondicion("La compra se encuentra en un estado de guardado"));
                             lblMetodoPago.setText("");
                             break;
                         default:
                             btnReporte.setDisable(false);
-                            btnEditar.setDisable(true);
                             btnAnular.setDisable(false);
                             break;
                     }
