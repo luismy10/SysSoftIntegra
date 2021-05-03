@@ -1122,18 +1122,17 @@ public class CompraADO extends DBUtil {
         return arrayList;
     }
 
-    public static CompraTB Listar_Compra_Credito(String idCompra) {
+    public static Object Listar_Compra_Credito(String idCompra) {
         PreparedStatement preparedProveedor = null;
         PreparedStatement preparedCompraCredito = null;
         ResultSet resultSet = null;
-        CompraTB compraTB = null;
         try {
             dbConnect();
             preparedProveedor = getConnection().prepareStatement("{call Sp_Obtener_Compra_ById_For_Credito(?)}");
             preparedProveedor.setString(1, idCompra);
             resultSet = preparedProveedor.executeQuery();
             if (resultSet.next()) {
-                compraTB = new CompraTB();
+                CompraTB compraTB = new CompraTB();
                 compraTB.setIdCompra(idCompra);
                 compraTB.setSerie(resultSet.getString("Serie"));
                 compraTB.setNumeracion(resultSet.getString("Numeracion"));
@@ -1179,9 +1178,15 @@ public class CompraADO extends DBUtil {
                 }
 
                 compraTB.setCompraCreditoTBs(ventaCreditoTBs);
+
+                return compraTB;
+            } else {
+                throw new Exception("No se pudo carga la información, intente nuevamente.");
             }
-        } catch (SQLException e) {
-            System.out.println("Error SQL en Listar_Compra_Credito(): " + e);
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedCompraCredito != null) {
@@ -1195,10 +1200,9 @@ public class CompraADO extends DBUtil {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return compraTB;
     }
 
     public static ProveedorTB Obtener_Proveedor_Por_Id_Compra(String value) {
