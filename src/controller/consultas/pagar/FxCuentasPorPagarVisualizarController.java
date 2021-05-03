@@ -28,6 +28,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.CompraADO;
 import model.CompraCreditoTB;
@@ -36,7 +37,9 @@ import model.CompraTB;
 public class FxCuentasPorPagarVisualizarController implements Initializable {
 
     @FXML
-    private ScrollPane spWindow;
+    private AnchorPane apWindow;
+    @FXML
+    private ScrollPane spBody;
     @FXML
     private Label lblLoad;
     @FXML
@@ -63,6 +66,12 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     private Button btnAmortizar;
     @FXML
     private Label lblMontoTotal;
+    @FXML
+    private HBox hbLoad;
+    @FXML
+    private Label lblMessageLoad;
+    @FXML
+    private Button btnAceptarLoad;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -159,27 +168,24 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     }
 
     private void onEventAmortizar() {
-        if (compraTB != null) {
-            try {
-                fxPrincipalController.openFondoModal();
-                URL url = getClass().getResource(FilesRouters.FX_AMARTIZAR_PAGOS);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxAmortizarPagosController controller = fXMLLoader.getController();
-                controller.setInitValues(compraTB.getIdCompra());
-                controller.setInitAmortizarPagosController(this);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Generar Pago", spWindow.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w ->fxPrincipalController.closeFondoModal());
-                stage.show();
-            } catch (IOException ex) {
-                System.out.println("Controller banco" + ex.getLocalizedMessage());
-            }
-        } else {
-            Tools.AlertMessageWarning(spWindow, "Generar Pago", "No se puedo cargar los datos, intente nuevamente.");
+
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_AMARTIZAR_PAGOS);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxAmortizarPagosController controller = fXMLLoader.getController();
+            controller.setInitValues(compraTB.getIdCompra());
+            controller.setInitAmortizarPagosController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Generar Pago", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Controller banco" + ex.getLocalizedMessage());
         }
     }
 
@@ -194,10 +200,10 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
             controller.loadDataCuentaPorPagar(idCompra, idCompraCredito);
             controller.setInitOpcionesImprimirCuentasPorPagar(this);
             //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", spWindow.getScene().getWindow());
+            Stage stage = WindowStage.StageLoaderModal(parent, "Imprimir", apWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w ->fxPrincipalController.closeFondoModal());
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Controller banco" + ex.getLocalizedMessage());
@@ -310,7 +316,7 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        fxPrincipalController.getVbContent().getChildren().remove(spWindow);
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
         fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(cuentasPorPagarController.getVbWindow(), 0d);
         AnchorPane.setTopAnchor(cuentasPorPagarController.getVbWindow(), 0d);
@@ -334,21 +340,13 @@ public class FxCuentasPorPagarVisualizarController implements Initializable {
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (compraTB != null) {
-                openModalImpresion(compraTB.getIdCompra(), "");
-            } else {
-                Tools.AlertMessageWarning(spWindow, "Generar Cobro", "No se puede habrir el modal por error en carga de datos.");
-            }
+            openModalImpresion(compraTB.getIdCompra(), "");
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-        if (compraTB != null) {
-            openModalImpresion(compraTB.getIdCompra(), "");
-        } else {
-            Tools.AlertMessageWarning(spWindow, "Generar Cobro", "No se puede habrir el modal por error en carga de datos.");
-        }
+        openModalImpresion(compraTB.getIdCompra(), "");
     }
 
     public void setInitCuentasPorPagar(FxPrincipalController fxPrincipalController, FxCuentasPorPagarController cuentasPorPagarController) {

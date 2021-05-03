@@ -44,8 +44,6 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
     @FXML
     private ScrollPane spBody;
     @FXML
-    private Label lblLoad;
-    @FXML
     private Label lblComprobante;
     @FXML
     private Label lblEstado;
@@ -100,6 +98,25 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
                 return VentaADO.ListarVentasDetalleCredito(idVenta);
             }
         };
+        task.setOnScheduled(w -> {
+            spBody.setDisable(true);
+            hbLoad.setVisible(true);
+            lblMessageLoad.setText("Cargando datos...");
+            btnAceptarLoad.setVisible(false);
+        });
+        task.setOnFailed(w -> {
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            btnAceptarLoad.setVisible(true);
+            btnAceptarLoad.setOnAction(event -> {
+                closeView();
+            });
+            btnAceptarLoad.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    closeView();
+                }
+                event.consume();
+            });
+        });
         task.setOnSucceeded(w -> {
             Object object = task.getValue();
             if (object instanceof VentaTB) {
@@ -127,17 +144,22 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
                 }
                 fillVentasDetalleTable();
                 fillVentasDetalleTable(ventaTB.getSuministroTBs());
+                spBody.setDisable(false);
+                hbLoad.setVisible(false);
             } else {
-
+                lblMessageLoad.setText((String) object);
+                btnAceptarLoad.setVisible(true);
+                btnAceptarLoad.setOnAction(event -> {
+                    closeView();
+                });
+                btnAceptarLoad.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        closeView();
+                    }
+                    event.consume();
+                });
             }
-            lblLoad.setVisible(false);
-        });
-        task.setOnFailed(w -> {
-            lblLoad.setVisible(false);
-        });
 
-        task.setOnScheduled(w -> {
-            lblLoad.setVisible(true);
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -242,8 +264,7 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         }
     }
 
-    @FXML
-    private void onMouseClickedBehind(MouseEvent event) {
+    private void closeView() {
         fxPrincipalController.getVbContent().getChildren().remove(apWindow);
         fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(cuentasPorCobrarController.getVbWindow(), 0d);
@@ -251,6 +272,11 @@ public class FxCuentasPorCobrarVisualizarController implements Initializable {
         AnchorPane.setRightAnchor(cuentasPorCobrarController.getVbWindow(), 0d);
         AnchorPane.setBottomAnchor(cuentasPorCobrarController.getVbWindow(), 0d);
         fxPrincipalController.getVbContent().getChildren().add(cuentasPorCobrarController.getVbWindow());
+    }
+
+    @FXML
+    private void onMouseClickedBehind(MouseEvent event) {
+        closeView();
     }
 
     @FXML

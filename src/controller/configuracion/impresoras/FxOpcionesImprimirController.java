@@ -352,7 +352,7 @@ public class FxOpcionesImprimirController implements Initializable {
         }
     }
 
-    private void printEventTicketPedido(){
+    private void printEventTicketPedido() {
         if (!Session.ESTADO_IMPRESORA_PEDIDO && Tools.isText(Session.NOMBRE_IMPRESORA_PEDIDO) && Tools.isText(Session.FORMATO_IMPRESORA_PEDIDO)) {
             Tools.AlertMessageWarning(apWindow, "Pedido", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             Tools.Dispose(apWindow);
@@ -377,7 +377,7 @@ public class FxOpcionesImprimirController implements Initializable {
             Tools.Dispose(apWindow);
         }
     }
-    
+
     public void printEventHistorialSuministroLlevarTicket() {
         if (!Session.ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS && Tools.isText(Session.NOMBRE_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS) && Tools.isText(Session.FORMATO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS)) {
             Tools.AlertMessageWarning(apWindow, "Salida del Producto", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
@@ -430,8 +430,9 @@ public class FxOpcionesImprimirController implements Initializable {
                         return "empty";
                     }
                 } else if (!Tools.isText(idVenta)) {
-                    VentaTB ventaTB = VentaADO.ListarVentasDetalleCredito(idVenta);
-                    if (ventaTB != null) {
+                    Object object = VentaADO.ListarVentasDetalleCredito(idVenta);
+                    if (object instanceof VentaTB) {
+                        VentaTB ventaTB = (VentaTB) object;
                         try {
                             if (desing.equalsIgnoreCase("withdesing")) {
                                 return printTicketWithDesingCuentaCobrar(ventaTB, ticketId, ticketRuta, nombreImpresora, cortaPapel);
@@ -443,7 +444,7 @@ public class FxOpcionesImprimirController implements Initializable {
                             return "Error en imprimir: " + ex.getLocalizedMessage();
                         }
                     } else {
-                        return "empty";
+                        return (String) object;
                     }
                 } else {
                     return "empty";
@@ -1902,7 +1903,7 @@ public class FxOpcionesImprimirController implements Initializable {
     /**
      * PEDIDO
      */
-    private void executeProcessPedidoTicket(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel){
+    private void executeProcessPedidoTicket(String desing, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -1978,8 +1979,8 @@ public class FxOpcionesImprimirController implements Initializable {
             exec.shutdown();
         }
     }
-    
-    private String printTicketWithDesingPedido(PedidoTB pedidoTB, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException{
+
+    private String printTicketWithDesingPedido(PedidoTB pedidoTB, int ticketId, String ticketRuta, String nombreImpresora, boolean cortaPapel) throws PrinterException, PrintException, IOException {
         billPrintable.loadEstructuraTicket(ticketId, ticketRuta, hbEncabezado, hbDetalleCabecera, hbPie);
 
         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
@@ -2091,7 +2092,7 @@ public class FxOpcionesImprimirController implements Initializable {
             return "error_name";
         }
     }
-    
+
     private void executeProcessPedidoReporte() {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
