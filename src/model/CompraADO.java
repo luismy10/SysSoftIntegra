@@ -1122,18 +1122,18 @@ public class CompraADO extends DBUtil {
         return arrayList;
     }
 
-    public static CompraTB Listar_Compra_Credito(String idCompra) {
+    public static Object Listar_Compra_Credito(String idCompra) {
         PreparedStatement preparedProveedor = null;
         PreparedStatement preparedCompraCredito = null;
+        PreparedStatement preparedDetalleCompra = null;
         ResultSet resultSet = null;
-        CompraTB compraTB = null;
         try {
             dbConnect();
             preparedProveedor = getConnection().prepareStatement("{call Sp_Obtener_Compra_ById_For_Credito(?)}");
             preparedProveedor.setString(1, idCompra);
             resultSet = preparedProveedor.executeQuery();
             if (resultSet.next()) {
-                compraTB = new CompraTB();
+                CompraTB compraTB = new CompraTB();
                 compraTB.setIdCompra(idCompra);
                 compraTB.setSerie(resultSet.getString("Serie"));
                 compraTB.setNumeracion(resultSet.getString("Numeracion"));
@@ -1177,11 +1177,59 @@ public class CompraADO extends DBUtil {
 
                     ventaCreditoTBs.add(compraCreditoTB);
                 }
-
                 compraTB.setCompraCreditoTBs(ventaCreditoTBs);
+
+                preparedDetalleCompra = getConnection().prepareStatement("{call Sp_Listar_Detalle_Compra(?)}");
+                preparedDetalleCompra.setString(1, idCompra);
+                ResultSet rsEmps = preparedDetalleCompra.executeQuery();
+                ObservableList<DetalleCompraTB> empList = FXCollections.observableArrayList();
+                while (rsEmps.next()) {
+                    DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
+                    detalleCompraTB.setId(rsEmps.getRow());
+                    detalleCompraTB.setIdArticulo(rsEmps.getString("IdSuministro"));
+                    //
+                    SuministroTB suministrosTB = new SuministroTB();
+                    suministrosTB.setClave(rsEmps.getString("Clave"));
+                    suministrosTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                    suministrosTB.setUnidadVenta(rsEmps.getInt("UnidadVenta"));
+                    suministrosTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
+                    detalleCompraTB.setSuministroTB(suministrosTB);
+                    // 
+                    detalleCompraTB.setCantidad(rsEmps.getDouble("Cantidad"));
+                    detalleCompraTB.setPrecioCompra(rsEmps.getDouble("PrecioCompra"));
+                    detalleCompraTB.setDescuento(rsEmps.getDouble("Descuento"));
+                    detalleCompraTB.setIdImpuesto(rsEmps.getInt("IdImpuesto"));
+                    detalleCompraTB.setValorImpuesto(rsEmps.getDouble("ValorImpuesto"));
+
+                    double valor_sin_impuesto = detalleCompraTB.getPrecioCompra() / ((detalleCompraTB.getValorImpuesto() / 100.00) + 1);
+                    double descuento = detalleCompraTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                    detalleCompraTB.setDescuento(descuento);
+                    detalleCompraTB.setDescuentoSumado(descuento * detalleCompraTB.getCantidad());
+
+                    detalleCompraTB.setPrecioCompraUnico(valor_sin_impuesto);
+                    detalleCompraTB.setPrecioCompraReal(preciocalculado);
+
+                    double impuesto = Tools.calculateTax(detalleCompraTB.getValorImpuesto(), detalleCompraTB.getPrecioCompraReal());
+                    detalleCompraTB.setImpuestoSumado(detalleCompraTB.getCantidad() * impuesto);
+                    detalleCompraTB.setPrecioCompra(detalleCompraTB.getPrecioCompraReal() + impuesto);
+
+                    detalleCompraTB.setImporte(detalleCompraTB.getPrecioCompra() * detalleCompraTB.getCantidad());
+
+                    empList.add(detalleCompraTB);
+                }
+                compraTB.setDetalleCompraTBs(empList);
+                
+                return compraTB;
+            } else {
+                throw new Exception("No se pudo carga la información, intente nuevamente.");
             }
-        } catch (SQLException e) {
-            System.out.println("Error SQL en Listar_Compra_Credito(): " + e);
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedCompraCredito != null) {
@@ -1193,12 +1241,14 @@ public class CompraADO extends DBUtil {
                 if (preparedProveedor != null) {
                     preparedProveedor.close();
                 }
+                if (preparedDetalleCompra != null) {
+                    preparedDetalleCompra.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return compraTB;
     }
 
     public static ProveedorTB Obtener_Proveedor_Por_Id_Compra(String value) {

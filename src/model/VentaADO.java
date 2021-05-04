@@ -1055,7 +1055,7 @@ public class VentaADO {
                 ventaTB.setNumeracion(rsEmps.getString("Numeracion"));
                 ventaTB.setMonedaName(rsEmps.getString("Simbolo"));
                 ventaTB.setTotal(rsEmps.getDouble("Total"));
-                
+
                 if (rsEmps.getInt("IdNotaCredito") == 1) {
                     NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
                     notaCreditoTB.setSerie(rsEmps.getString("SerieNotaCredito"));
@@ -1661,17 +1661,17 @@ public class VentaADO {
 
     }
 
-    public static VentaTB ListarVentasDetalleCredito(String idVenta) {
+    public static Object ListarVentasDetalleCredito(String idVenta) {
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        VentaTB ventaTB = null;
+        PreparedStatement statementVentaDetalle = null;
+        ResultSet resultSet = null;      
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Obtener_Venta_ById_For_Credito(?)}");
             preparedStatement.setString(1, idVenta);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                ventaTB = new VentaTB();
+                VentaTB ventaTB = new VentaTB();
                 ventaTB.setIdVenta(idVenta);
                 ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Informacion"), resultSet.getString("Celular"), resultSet.getString("Email"), resultSet.getString("Direccion")));
                 ventaTB.setSerie(resultSet.getString("Serie"));
@@ -1708,9 +1708,69 @@ public class VentaADO {
                     ventaCreditoTBs.add(ventaCreditoTB);
                 }
                 ventaTB.setVentaCreditoTBs(ventaCreditoTBs);
+
+                statementVentaDetalle = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Ventas_Detalle_By_Id(?)}");
+                statementVentaDetalle.setString(1, idVenta);
+                ResultSet resultSetLista = statementVentaDetalle.executeQuery();
+                ArrayList<SuministroTB> empList = new ArrayList();
+                while (resultSetLista.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setId(resultSetLista.getRow());
+                    suministroTB.setIdSuministro(resultSetLista.getString("IdSuministro"));
+                    suministroTB.setClave(resultSetLista.getString("Clave"));
+                    suministroTB.setNombreMarca(resultSetLista.getString("NombreMarca") + (resultSetLista.getDouble("Bonificacion") <= 0 ? "" : "\nBONIFICACIÓN: " + resultSetLista.getDouble("Bonificacion")));
+                    suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
+                    suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
+                    suministroTB.setUnidadCompraName(resultSetLista.getString("UnidadCompra"));
+                    suministroTB.setEstadoName(resultSetLista.getString("Estado"));
+
+                    suministroTB.setPorLlevar(resultSetLista.getDouble("PorLlevar"));
+                    suministroTB.setCantidad(resultSetLista.getDouble("Cantidad"));
+                    suministroTB.setBonificacion(resultSetLista.getDouble("Bonificacion"));
+                    suministroTB.setCostoCompra(resultSetLista.getDouble("CostoVenta"));
+
+                    suministroTB.setImpuestoOperacion(resultSetLista.getInt("Operacion"));
+                    suministroTB.setImpuestoNombre(resultSetLista.getString("NombreImpuesto"));
+                    suministroTB.setImpuestoId(resultSetLista.getInt("IdImpuesto"));
+                    suministroTB.setImpuestoValor(resultSetLista.getDouble("ValorImpuesto"));
+
+                    double valor_sin_impuesto = resultSetLista.getDouble("PrecioVenta") / ((suministroTB.getImpuestoValor() / 100.00) + 1);
+                    double descuento = suministroTB.getDescuento();
+                    double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+                    double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+                    suministroTB.setDescuento(descuento);
+                    suministroTB.setDescuentoCalculado(porcentajeRestante);
+                    suministroTB.setDescuentoSumado(porcentajeRestante * suministroTB.getCantidad());
+
+                    suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+                    suministroTB.setPrecioVentaGeneralReal(preciocalculado);
+
+                    double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+                    suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+                    suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
+
+                    suministroTB.setImporteBruto(suministroTB.getPrecioVentaGeneralUnico() * suministroTB.getCantidad());
+                    suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+                    suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+
+                    suministroTB.setInventario(resultSetLista.getBoolean("Inventario"));
+                    suministroTB.setUnidadVenta(resultSetLista.getInt("UnidadVenta"));
+                    suministroTB.setValorInventario(resultSetLista.getShort("ValorInventario"));
+
+                    empList.add(suministroTB);
+                }
+                ventaTB.setSuministroTBs(empList);
+
+                return ventaTB;
+            } else {
+                throw new Exception("No se puedo obtener los datos, intente nuevamente.");
             }
         } catch (SQLException ex) {
-            System.out.println("ListarVentasDetalleCredito:" + ex.getLocalizedMessage());
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -1719,12 +1779,14 @@ public class VentaADO {
                 if (resultSet != null) {
                     resultSet.close();
                 }
+                if (statementVentaDetalle != null) {
+                    statementVentaDetalle.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return ventaTB;
     }
 
     public static ModeloObject RegistrarAbono(VentaCreditoTB ventaCreditoTB, BancoHistorialTB bancoHistorialTB, MovimientoCajaTB movimientoCajaTB) {

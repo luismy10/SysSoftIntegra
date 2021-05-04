@@ -6,10 +6,14 @@ Project build script file jfx-impl.xml in nbproject sub-directory has not been r
 as compliant with this version of NetBeans JavaFX support module. To ensure correct
 and complete functionality within this NetBeans installation the script file has been
 <<<<<<< HEAD
+<<<<<<< HEAD
 backed up to jfx-impl_backup_30.xml and then updated to the currently supported state.
 =======
 backed up to jfx-impl_backup_34.xml and then updated to the currently supported state.
 >>>>>>> a54731cc1269878eee8a835abc797899c5b45b7b
+=======
+backed up to jfx-impl_backup_35.xml and then updated to the currently supported state.
+>>>>>>> d16892682db8c24ced48ddd43c9131565a91c4b7
 
 FX Project build script auto-update may be triggered on project open either after
 NetBeans installation update or by manual changes in jfx-impl.xml. Please note that

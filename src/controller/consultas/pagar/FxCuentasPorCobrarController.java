@@ -218,7 +218,7 @@ public class FxCuentasPorCobrarController implements Initializable {
     private void onEventVisualizar(String idVenta) {
         try {
             FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_CUENTAS_POR_COBRAR_VISUALIZAR));
-            ScrollPane node = fXMLLoader.load();
+            AnchorPane node = fXMLLoader.load();
             //Controlller here
             FxCuentasPorCobrarVisualizarController controller = fXMLLoader.getController();
             controller.loadData(idVenta);
