@@ -101,7 +101,7 @@ public class FxEmpleadosProcesoController implements Initializable {
 
             ObservableList<DetalleTB> lstype = cbTipoDocumento.getItems();
             for (int i = 0; i < lstype.size(); i++) {
-                if (empleadoTB.getTipoDocumento() == lstype.get(i).getIdDetalle().get()) {
+                if (empleadoTB.getTipoDocumento() == lstype.get(i).getIdDetalle()) {
                     cbTipoDocumento.getSelectionModel().select(i);
                     break;
                 }
@@ -114,7 +114,7 @@ public class FxEmpleadosProcesoController implements Initializable {
             if (empleadoTB.getSexo() != 0) {
                 ObservableList<DetalleTB> lstsex = cbSexo.getItems();
                 for (int i = 0; i < lstsex.size(); i++) {
-                    if (empleadoTB.getSexo() == lstsex.get(i).getIdDetalle().get()) {
+                    if (empleadoTB.getSexo() == lstsex.get(i).getIdDetalle()) {
                         cbSexo.getSelectionModel().select(i);
                         break;
                     }
@@ -128,7 +128,7 @@ public class FxEmpleadosProcesoController implements Initializable {
             if (empleadoTB.getPuesto() != 0) {
                 ObservableList<DetalleTB> lstpus = cbPuesto.getItems();
                 for (int i = 0; i < lstpus.size(); i++) {
-                    if (empleadoTB.getPuesto() == lstpus.get(i).getIdDetalle().get()) {
+                    if (empleadoTB.getPuesto() == lstpus.get(i).getIdDetalle()) {
                         cbPuesto.getSelectionModel().select(i);
                         break;
                     }
@@ -138,7 +138,7 @@ public class FxEmpleadosProcesoController implements Initializable {
             if (empleadoTB.getEstado() != 0) {
                 ObservableList<DetalleTB> lstest = cbEstado.getItems();
                 for (int i = 0; i < lstest.size(); i++) {
-                    if (empleadoTB.getEstado() == lstest.get(i).getIdDetalle().get()) {
+                    if (empleadoTB.getEstado() == lstest.get(i).getIdDetalle()) {
                         cbEstado.getSelectionModel().select(i);
                         break;
                     }
@@ -191,13 +191,13 @@ public class FxEmpleadosProcesoController implements Initializable {
                 EmpleadoTB empleadoTB = new EmpleadoTB();
                 empleadoTB.setIdEmpleado(idEmpleado);
                 empleadoTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
                 empleadoTB.setNumeroDocumento(txtNumeroDocumento.getText().trim());
                 empleadoTB.setApellidos(txtApellidos.getText().trim().toUpperCase());
                 empleadoTB.setNombres(txtNombres.getText().trim().toUpperCase());
                 empleadoTB.setSexo(cbSexo.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbSexo.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbSexo.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
 
                 if (dpFechaNacimiento.getValue() != null) {
@@ -207,10 +207,10 @@ public class FxEmpleadosProcesoController implements Initializable {
                 }
 
                 empleadoTB.setPuesto(cbPuesto.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbPuesto.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbPuesto.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
                 empleadoTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
                 empleadoTB.setTelefono(txtTelefono.getText().trim());
                 empleadoTB.setCelular(txtCelular.getText().trim());

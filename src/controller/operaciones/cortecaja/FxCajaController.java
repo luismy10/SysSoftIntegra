@@ -1,8 +1,8 @@
 package controller.operaciones.cortecaja;
 
 import controller.configuracion.impresoras.FxOpcionesImprimirController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -27,7 +27,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -67,7 +66,7 @@ public class FxCajaController implements Initializable {
     @FXML
     private VBox vbVentas;
 
-    private AnchorPane vbPrincipal;
+      private FxPrincipalController fxPrincipalController;
 
     private double totalDineroCaja;
 
@@ -328,7 +327,7 @@ public class FxCajaController implements Initializable {
 
     public void openModalImpresion(String idCaja) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_OPCIONES_IMPRIMIR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -341,10 +340,10 @@ public class FxCajaController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnCloseRequest(w -> {
-                Tools.Dispose(getVbPrincipal());
+                Tools.Dispose(fxPrincipalController.getSpWindow());
                 openWindowLogin();
             });
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Controller banco" + ex.getLocalizedMessage());
@@ -353,19 +352,19 @@ public class FxCajaController implements Initializable {
 
     private void openWindowRealizarCorte() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_CAJA_CERRAR_CAJA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
 
             FxCajaCerrarCajaController controller = fXMLLoader.getController();
             controller.loadDataInit(idActual, totalDineroCaja, totalTarjeta);
-            controller.setInitCerrarCajaController(this, vbPrincipal);
+            controller.setInitCerrarCajaController(this, fxPrincipalController);
 
             Stage stage = WindowStage.StageLoaderModal(parent, "Realizar corte de caja", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -434,12 +433,14 @@ public class FxCajaController implements Initializable {
         onEventTerminarTurno();
     }
 
-    public AnchorPane getVbPrincipal() {
-        return vbPrincipal;
+    public FxPrincipalController getFxPrincipalController() {
+        return fxPrincipalController;
+    }   
+    
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
-
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
-    }
+    
+    
 
 }

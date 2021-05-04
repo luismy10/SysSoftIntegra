@@ -23,7 +23,7 @@ public class ProduccionTB {
     private Label lblEstado;
     private SuministroTB suministroTB;
     private EmpleadoTB empleadoTB;
-    private ArrayList<InsumoTB> insumoTBs;
+    private ArrayList<SuministroTB> insumoTBs;
     
     public ProduccionTB() {
     }
@@ -171,13 +171,15 @@ public class ProduccionTB {
     public void setEmpleadoTB(EmpleadoTB empleadoTB) {
         this.empleadoTB = empleadoTB;
     }
-    
-    public ArrayList<InsumoTB> getInsumoTBs() {
+
+    public ArrayList<SuministroTB> getInsumoTBs() {
         return insumoTBs;
     }
 
-    public void setInsumoTBs(ArrayList<InsumoTB> insumoTBs) {
+    public void setInsumoTBs(ArrayList<SuministroTB> insumoTBs) {
         this.insumoTBs = insumoTBs;
     }
+    
+  
     
 }

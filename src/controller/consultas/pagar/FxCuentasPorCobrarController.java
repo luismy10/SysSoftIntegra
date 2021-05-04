@@ -1,5 +1,6 @@
 package controller.consultas.pagar;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -10,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -85,9 +85,7 @@ public class FxCuentasPorCobrarController implements Initializable {
     @FXML
     private Label lblPaginaSiguiente;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private short opcion;
 
@@ -224,14 +222,14 @@ public class FxCuentasPorCobrarController implements Initializable {
             //Controlller here
             FxCuentasPorCobrarVisualizarController controller = fXMLLoader.getController();
             controller.loadData(idVenta);
-            controller.setInitCuentasPorCobrar(vbPrincipal, vbContent, this);
+            controller.setInitCuentasPorCobrar(fxPrincipalController, this);
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
         } catch (IOException ex) {
             Tools.println("Error en la vista Generar el cobro:" + ex.getLocalizedMessage());
         }
@@ -456,9 +454,9 @@ public class FxCuentasPorCobrarController implements Initializable {
         return vbWindow;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

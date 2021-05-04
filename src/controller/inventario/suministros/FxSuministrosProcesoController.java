@@ -1,8 +1,8 @@
 package controller.inventario.suministros;
 
 import controller.configuracion.tablasbasicas.FxDetalleListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.ByteArrayInputStream;
@@ -117,7 +117,6 @@ public class FxSuministrosProcesoController implements Initializable {
     private RadioButton rbValorCosto;
     @FXML
     private RadioButton rbValorMedida;
-//    private CheckBox cbAceptar;
     @FXML
     private Label lblTitle;
     @FXML
@@ -170,9 +169,7 @@ public class FxSuministrosProcesoController implements Initializable {
 
     private FxSuministrosController suministrosController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private boolean estadoOrigen;
 
@@ -273,9 +270,9 @@ public class FxSuministrosProcesoController implements Initializable {
     }
 
     private void openAlertMessageWarning(String message) {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         Tools.AlertMessageWarning(spWindow, "Producto", message);
-        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        fxPrincipalController.closeFondoModal();
     }
 
     private void addElementsTablePrecios() {
@@ -360,7 +357,7 @@ public class FxSuministrosProcesoController implements Initializable {
         cbImpuesto.getItems().clear();
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
         list1.forEach(e -> {
-            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.isPredeterminado()));
         });
 
         cbEstado.getItems().clear();
@@ -482,7 +479,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 ObservableList<DetalleTB> lsest = cbEstado.getItems();
                 if (suministroTB.getEstado() != 0) {
                     for (int i = 0; i < lsest.size(); i++) {
-                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle()) {
                             cbEstado.getSelectionModel().select(i);
                             break;
                         }
@@ -644,7 +641,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 ObservableList<DetalleTB> lsest = cbEstado.getItems();
                 if (suministroTB.getEstado() != 0) {
                     for (int i = 0; i < lsest.size(); i++) {
-                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle().get()) {
+                        if (suministroTB.getEstado() == lsest.get(i).getIdDetalle()) {
                             cbEstado.getSelectionModel().select(i);
                             break;
                         }
@@ -697,7 +694,7 @@ public class FxSuministrosProcesoController implements Initializable {
                     }
                 }
 
-                 if (suministroTB.getNuevaImagen() == null) {
+                if (suministroTB.getNuevaImagen() == null) {
                     imageBytes = null;
                     lnPrincipal.setImage(new Image("/view/image/no-image.png"));
                     lnPrincipal.setFitWidth(160);
@@ -759,8 +756,8 @@ public class FxSuministrosProcesoController implements Initializable {
             if (!estadoOrigen && !Tools.isNumeric(txtCosto.getText())) {
                 openAlertMessageWarning("Ingrese el costo del producto, por favor.");
                 txtCosto.requestFocus();
-            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) <= 0) {
-                openAlertMessageWarning("El costo del producto no puede ser menor o igual a 0, por favor.");
+            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) < 0) {
+                openAlertMessageWarning("El costo del producto no puede ser menor que 0, por favor.");
                 txtCosto.requestFocus();
             } else if (cbEstado.getSelectionModel().getSelectedIndex() < 0) {
                 openAlertMessageWarning("Selecciona el estado del producto, por favor.");
@@ -778,7 +775,7 @@ public class FxSuministrosProcesoController implements Initializable {
 
     private void crudProducto() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             short confirmation = Tools.AlertMessage(spWindow.getScene().getWindow(), Alert.AlertType.CONFIRMATION, "Movimiento", "¿Está seguro de continuar?", true);
             if (confirmation == 1) {
 
@@ -827,7 +824,7 @@ public class FxSuministrosProcesoController implements Initializable {
                 suministroTB.setPrecioVentaGeneral(precioValidado);
 
                 suministroTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
 
                 int se_vende;
@@ -857,46 +854,46 @@ public class FxSuministrosProcesoController implements Initializable {
                 switch (result) {
                     case "registered":
                         Tools.AlertMessageInformation(spWindow, "Producto", "Registrado correctamente el producto.");
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                        fxPrincipalController.closeFondoModal();
                         closeWindow();
                         break;
                     case "updated":
                         Tools.AlertMessageInformation(spWindow, "Producto", "Actualizado correctamente el producto.");
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                        fxPrincipalController.closeFondoModal();
                         closeWindow();
                         break;
                     case "duplicate":
                         Tools.AlertMessageWarning(spWindow, "Producto", "No se puede haber 2 producto con la misma clave.");
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                        fxPrincipalController.closeFondoModal();
                         txtClave.requestFocus();
                         break;
                     case "duplicatename":
                         Tools.AlertMessageWarning(spWindow, "Producto", "No se puede haber 2 producto con el mismo nombre.");
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                        fxPrincipalController.closeFondoModal();
                         txtNombreMarca.requestFocus();
                         break;
                     case "mayor":
                         Tools.AlertMessageWarning(spWindow, "Producto", "No se puede desleccionar el lote, ya que el producto cuenta con unidades.");
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                        fxPrincipalController.closeFondoModal();
                         cbLote.requestFocus();
                         break;
                     default:
                         Tools.AlertMessageError(spWindow, "Producto", result);
-                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                        fxPrincipalController.closeFondoModal();
                         break;
                 }
             } else {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                fxPrincipalController.closeFondoModal();
             }
         } catch (NumberFormatException ex) {
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+            fxPrincipalController.closeFondoModal();
             System.out.println("Error view: " + ex.getLocalizedMessage());
         }
     }
 
     private void openWindowDetalle(String title, String idDetalle, boolean valor) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_DETALLE_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -907,9 +904,7 @@ public class FxSuministrosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, title, spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
             stage.show();
             if (valor == true) {
                 controller.initListNameImpuesto(idDetalle);
@@ -923,7 +918,7 @@ public class FxSuministrosProcesoController implements Initializable {
 
     private void openWindowGerarCodigoBarras() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_CODIGO_BARRAS);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -934,9 +929,7 @@ public class FxSuministrosProcesoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Generar codigo de barras", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding((w) -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println(ex.getLocalizedMessage());
@@ -965,13 +958,13 @@ public class FxSuministrosProcesoController implements Initializable {
     }
 
     private void closeWindow() {
-        vbContent.getChildren().remove(spWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(spWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(suministrosController.getHbWindow(), 0d);
         AnchorPane.setTopAnchor(suministrosController.getHbWindow(), 0d);
         AnchorPane.setRightAnchor(suministrosController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(suministrosController.getHbWindow(), 0d);
-        vbContent.getChildren().add(suministrosController.getHbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(suministrosController.getHbWindow());
     }
 
     @FXML
@@ -1251,10 +1244,9 @@ public class FxSuministrosProcesoController implements Initializable {
         return txtMedida;
     }
 
-    public void setInitControllerSuministros(FxSuministrosController suministrosController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitControllerSuministros(FxSuministrosController suministrosController, FxPrincipalController fxPrincipalController) {
         this.suministrosController = suministrosController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ccffc00e-6a86-4d26-8f65-08d18f6dc3d5">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="181"/>
-	<property name="ireport.y" value="288"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="NUMERACION_GUIA_REMISION" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="ICON" class="java.io.InputStream"/>
@@ -80,7 +80,7 @@
 				<text><![CDATA[GUIA DE REMISION]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center">
-				<reportElement x="1" y="10" width="98" height="85" uuid="e94278a6-6f5d-490e-89e8-14e70035b004"/>
+				<reportElement x="1" y="1" width="98" height="85" uuid="e94278a6-6f5d-490e-89e8-14e70035b004"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<rectangle>
@@ -96,36 +96,12 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="103" y="12" width="226" height="24" uuid="e02e9acb-f8bc-40d0-a316-0a438e6d11d8"/>
+				<reportElement x="103" y="1" width="226" height="85" uuid="e02e9acb-f8bc-40d0-a316-0a438e6d11d8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{NOMBRE_EMPRESA}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="103" y="40" width="226" height="15" uuid="e8bcb21b-a810-4f28-94c2-c144d206a2b1"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{DIRECCION_EMPRESA}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="103" y="58" width="226" height="15" uuid="b31aebf4-d1db-49f0-8ec9-7b6bb76c938f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TELEFONO_EMPRESA}+"-"+$P{CELULAR_EMPRESA}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="103" y="76" width="226" height="15" uuid="040f33a7-1ed5-4625-b741-835cb4f7d881"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{EMAIL_EMPRESA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{NOMBRE_EMPRESA}+"\n"+$P{DIRECCION_EMPRESA}+"\n"+$P{TELEFONO_EMPRESA}+"-"+$P{CELULAR_EMPRESA}+"\n"+$P{EMAIL_EMPRESA}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="333" y="1" width="221" height="15" forecolor="#F0F3FC" uuid="e8e9f133-1485-4a84-b659-4b9f49a61442"/>

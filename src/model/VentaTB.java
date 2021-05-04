@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -44,6 +45,9 @@ public class VentaTB {
     private NotaCreditoTB notaCreditoTB;
     private ArrayList<SuministroTB> suministroTBs;
     private HBox hbOpciones;
+    private Button btnImprimir;
+    private Button btnAgregar;
+    private Button btnSumar;
     private ArrayList<VentaCreditoTB> ventaCreditoTBs;
     private String clienteName;
     private double montoTotal;
@@ -363,6 +367,32 @@ public class VentaTB {
     public void setHbOpciones(HBox hbOpciones) {
         this.hbOpciones = hbOpciones;
     }
+
+    public Button getBtnImprimir() {
+        return btnImprimir;
+    }
+
+    public void setBtnImprimir(Button btnImprimir) {
+        this.btnImprimir = btnImprimir;
+    }
+
+    public Button getBtnAgregar() {
+        return btnAgregar;
+    }
+
+    public void setBtnAgregar(Button btnAgregar) {
+        this.btnAgregar = btnAgregar;
+    }
+
+    public Button getBtnSumar() {
+        return btnSumar;
+    }
+
+    public void setBtnSumar(Button btnSumar) {
+        this.btnSumar = btnSumar;
+    }
+
+  
 
     public ArrayList<VentaCreditoTB> getVentaCreditoTBs() {
         return ventaCreditoTBs;

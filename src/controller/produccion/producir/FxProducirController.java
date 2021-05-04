@@ -1,5 +1,6 @@
 package controller.produccion.producir;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -17,12 +18,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import model.ProduccionADO;
@@ -65,9 +68,9 @@ public class FxProducirController implements Initializable {
 
     private FxProducirAgregarController controller;
 
-    private AnchorPane vbContent;
+    private FxProducirEditarController producirEditarController;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private int paginacion;
 
@@ -209,13 +212,104 @@ public class FxProducirController implements Initializable {
     }
 
     private void onViewProducirProceso() {
-        controller.setInitControllerProducir(this, vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controller.setInitControllerProducir(this, fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(node, 0d);
         AnchorPane.setTopAnchor(node, 0d);
         AnchorPane.setRightAnchor(node, 0d);
         AnchorPane.setBottomAnchor(node, 0d);
-        vbContent.getChildren().add(node);
+        fxPrincipalController.getVbContent().getChildren().add(node);
+    }
+
+    private void editarProduccion(String idProduccion) {
+        try {
+            String estado;
+            int numberEstado;
+
+            switch (tvList.getSelectionModel().getSelectedItem().getEstado()) {
+                case 3:
+                    estado = "Anulado";
+                    numberEstado = 3;
+                    break;
+                case 2:
+                    estado = "En Produccion";
+                    numberEstado = 2;
+                    break;
+                default:
+                    estado = "Completado";
+                    numberEstado = 1;
+                    break;
+            }
+
+            if (numberEstado == 2) {
+                FXMLLoader fXMLProduccionEditarProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_PRODUCIR_EDITAR));
+                AnchorPane nodeProduccionProceso = fXMLProduccionEditarProceso.load();
+                FxProducirEditarController produccionEditarController = fXMLProduccionEditarProceso.getController();
+                produccionEditarController.setInitControllerProducir(this);
+                produccionEditarController.editarProduccion(idProduccion);
+                fxPrincipalController.getVbContent().getChildren().clear();
+                AnchorPane.setLeftAnchor(nodeProduccionProceso, 0d);
+                AnchorPane.setTopAnchor(nodeProduccionProceso, 0d);
+                AnchorPane.setRightAnchor(nodeProduccionProceso, 0d);
+                AnchorPane.setBottomAnchor(nodeProduccionProceso, 0d);
+                fxPrincipalController.getVbContent().getChildren().add(nodeProduccionProceso);
+            } else {
+                Tools.AlertMessageWarning(window, "Producción", "No se puede editar dicho producto ya que se encuentra en estado " + estado);
+            }
+        } catch (IOException ex) {
+            System.out.println("Controller formula proceso" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void visualizarProduccion() throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_VISUALIZAR_PRODUCCION));
+            ScrollPane node = fXMLLoader.load();
+
+            FXVisualizarController visualizarController = fXMLLoader.getController();
+            visualizarController.setInitControllerProducir(this);
+            visualizarController.setInitComponents(tvList.getSelectionModel().getSelectedItem().getIdProduccion());
+            visualizarController.setContent(fxPrincipalController);
+
+            fxPrincipalController.getVbContent().getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            fxPrincipalController.getVbContent().getChildren().add(node);
+        } else {
+            Tools.AlertMessageWarning(window, "Produccion", "Debe seleccionar una producción de la lista");
+        }
+
+    }
+
+    private void anularProduccion() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            switch (tvList.getSelectionModel().getSelectedItem().getEstado()) {
+                case 1:
+                    Tools.AlertMessageWarning(window, "Produccion", "No se puede anular una producción que ya se encuentra en estado COMPLETADO");
+                    break;
+                case 2:
+                    short value = Tools.AlertMessageConfirmation(window, "Insumo", "¿Está seguro de anular dicha producción?");
+                    if (value == 1) {
+//                        int estado = tvList.getSelectionModel().getSelectedItem().getEstado();
+                        String idProduccion = tvList.getSelectionModel().getSelectedItem().getIdProduccion();
+                        String result = ProduccionADO.AnularProduccion(idProduccion);
+                        if (result.equalsIgnoreCase("anulado")) {
+                            Tools.AlertMessageInformation(window, "Produccion", "Se anuló correctamente la produccion.");
+                            initLoadTable();
+                        } else {
+                            Tools.AlertMessageError(window, "Produccion", result);
+                        }
+                    }
+                    break;
+                default:
+                    Tools.AlertMessageWarning(window, "Produccion", "Dicha producción ya se encuentra anulada");
+                    break;
+            }
+        } else {
+            Tools.AlertMessageError(window, "Produccion", "Debe seleccionar una producción de la lista");
+        }
     }
 
     @FXML
@@ -332,13 +426,82 @@ public class FxProducirController implements Initializable {
         }
     }
 
+    @FXML
+    private void onActionFechaInicial(ActionEvent event) {
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            if (!lblLoad.isVisible()) {
+                paginacion = 1;
+                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 0;
+            }
+        }
+    }
+
+    @FXML
+    private void onActionFechaFinal(ActionEvent event) {
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            if (!lblLoad.isVisible()) {
+                paginacion = 1;
+                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 0;
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedEditarProduccion(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                editarProduccion(tvList.getSelectionModel().getSelectedItem().getIdProduccion());
+            }
+        }
+    }
+
+    @FXML
+    private void onActionEditarProduccion(ActionEvent event) {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            editarProduccion(tvList.getSelectionModel().getSelectedItem().getIdProduccion());
+        }
+    }
+
+    @FXML
+    private void onMouseClickedProducir(MouseEvent event) {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0 && tvList.isFocused()) {
+            if (event.getClickCount() == 2) {
+                editarProduccion(tvList.getSelectionModel().getSelectedItem().getIdProduccion());
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedVisualizar(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            visualizarProduccion();
+        }
+    }
+
+    @FXML
+    private void onActionVisualizar(ActionEvent event) throws IOException {
+        visualizarProduccion();
+    }
+
+    @FXML
+    private void onKeyPressedAnularProduccion(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            anularProduccion();
+        }
+    }
+
+    @FXML
+    private void onActionAnularProduccion(ActionEvent event) {
+        anularProduccion();
+    }
+
     public HBox getWindow() {
         return window;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
-
 }

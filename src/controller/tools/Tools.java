@@ -22,14 +22,12 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -203,8 +201,8 @@ public class Tools {
         Stage stage = (Stage) window.getScene().getWindow();
         stage.close();
     }
-    
-     public static void Dispose(AnchorPane window) {
+
+    public static void Dispose(AnchorPane window) {
         Stage stage = (Stage) window.getScene().getWindow();
         stage.close();
     }
@@ -275,7 +273,7 @@ public class Tools {
         return Double.parseDouble(Tools.roundingValue(totalimporte, 1));
     }
 
-    public static double calculateValueNeto(double porcentaje, double value) {
+    public static double calculateTaxBruto(double porcentaje, double value) {
         double subprimer = (porcentaje + 100);
         return value / (subprimer * 0.01);
     }
@@ -401,10 +399,15 @@ public class Tools {
 
     public static void showAlertNotification(String url, String title, String message, Duration duration, Pos pos) {
         Image image = new Image(url);
+        ImageView imageView = new ImageView(image);
+        double newWidth = Tools.newSizeImagePorcent(image.getWidth(), 30);
+        double nweHeight = Tools.newSizeImagePorcent(image.getHeight(), 30);
+        imageView.setFitWidth(newWidth);
+        imageView.setFitHeight(nweHeight);
         Notifications notifications = Notifications.create()
                 .title(title)
                 .text(message)
-                .graphic(new ImageView(image))
+                .graphic(imageView)
                 .hideAfter(duration)
                 .position(pos)
                 .onAction(n -> {
@@ -445,5 +448,13 @@ public class Tools {
             label.setGraphic(imageView);
         }
         return label;
+    }
+
+    public static double newSizeImagePorcent(double width, double porcent) {
+        return width - (width * (porcent / 100));
+    }
+
+    public static int convertEmToPx(double em) {
+        return (int) ((12 * em) / 1);
     }
 }

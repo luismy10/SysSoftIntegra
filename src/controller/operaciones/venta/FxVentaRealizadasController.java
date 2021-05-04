@@ -1,8 +1,8 @@
 package controller.operaciones.venta;
 
 import controller.configuracion.empleados.FxEmpleadosListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -25,9 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -39,7 +36,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.*;
 
@@ -87,10 +83,10 @@ public class FxVentaRealizadasController implements Initializable {
     private Label lblPaginaActual;
     @FXML
     private Label lblPaginaSiguiente;
+    @FXML
+    private Label lblMotonTotal;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private String idEmpleado;
 
@@ -110,7 +106,7 @@ public class FxVentaRealizadasController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
 
-        cbEstado.getItems().add(new DetalleTB(new SimpleIntegerProperty(0), new SimpleStringProperty("TODOS")));
+        cbEstado.getItems().add(new DetalleTB(0, "TODOS"));
         DetalleADO.GetDetailIdName("2", "0009", "").forEach(e -> cbEstado.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
         cbEstado.getSelectionModel().select(0);
 
@@ -154,11 +150,11 @@ public class FxVentaRealizadasController implements Initializable {
             @Override
             protected void updateItem(VentaTB item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item == null || item == null) {
+                if (item == null) {
                     setStyle("");
-                } else if (item.getNotaCreditoTB() != null) {                   
+                } else if (item.getNotaCreditoTB() != null) {
                     setStyle("-fx-background-color: rgba(220, 53, 69, 0.6)");
-                }  else {
+                } else {
                     setStyle("");
                 }
             }
@@ -186,6 +182,7 @@ public class FxVentaRealizadasController implements Initializable {
         }
         if (privilegioTBs.get(6).getIdPrivilegio() != 0 && !privilegioTBs.get(6).isEstado()) {
             hbVendedor.setDisable(true);
+            lblMotonTotal.setVisible(false);
         }
         if (privilegioTBs.get(7).getIdPrivilegio() != 0 && !privilegioTBs.get(7).isEstado()) {
             txtSearch.setDisable(true);
@@ -198,7 +195,7 @@ public class FxVentaRealizadasController implements Initializable {
     public void loadInit() {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             paginacion = 1;
-            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(), cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+            fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(), cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
             opcion = 0;
         }
     }
@@ -225,27 +222,30 @@ public class FxVentaRealizadasController implements Initializable {
                     totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
                     lblPaginaActual.setText(paginacion + "");
                     lblPaginaSiguiente.setText(totalPaginacion + "");
+                    lblMotonTotal.setText(Tools.roundingValue((double) objects[2], 2));
                 } else {
                     tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
                     lblPaginaActual.setText("0");
                     lblPaginaSiguiente.setText("0");
+                    lblMotonTotal.setText(Tools.roundingValue(0, 2));
                 }
-            } else if (object instanceof String) {
-                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
             } else {
-                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
+                lblMotonTotal.setText(Tools.roundingValue(0, 2));
             }
             lblLoad.setVisible(false);
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
-            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
+            lblMotonTotal.setText(Tools.roundingValue(0, 2));
         });
         task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
             tvList.getItems().clear();
             tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
             totalPaginacion = 0;
+            lblMotonTotal.setText(Tools.roundingValue(0, 2));
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -259,15 +259,15 @@ public class FxVentaRealizadasController implements Initializable {
             ScrollPane node = fXMLLoader.load();
             //Controlller here
             FxVentaDetalleController controller = fXMLLoader.getController();
-            controller.setInitVentasController(this, vbPrincipal, vbContent);
+            controller.setInitVentasController(this, fxPrincipalController);
             controller.setInitComponents(tvList.getSelectionModel().getSelectedItem().getIdVenta());
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
         } else {
             Tools.AlertMessageWarning(window, "Compra", "Debe seleccionar una compra de la lista");
         }
@@ -275,7 +275,7 @@ public class FxVentaRealizadasController implements Initializable {
 
     private void openWindowVendedores() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_EMPLEADO_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -286,7 +286,7 @@ public class FxVentaRealizadasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Elija un vendedor", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillEmpleadosTable("");
         } catch (IOException ex) {
@@ -294,12 +294,12 @@ public class FxVentaRealizadasController implements Initializable {
         }
     }
 
-    public void onEventPaginacion() {
+    private void onEventPaginacion() {
         switch (opcion) {
             case 0:
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
                 break;
             case 1:
                 fillVentasTable((short) (!buscarTodos ? 1 : 2), txtSearch.getText().trim(), "", "", 0, 0, idEmpleado);
@@ -370,7 +370,7 @@ public class FxVentaRealizadasController implements Initializable {
                 paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
                 opcion = 0;
             }
         }
@@ -383,7 +383,7 @@ public class FxVentaRealizadasController implements Initializable {
                 paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
                 opcion = 0;
             }
         }
@@ -432,7 +432,7 @@ public class FxVentaRealizadasController implements Initializable {
                     paginacion = 1;
                     fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                             cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                            cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+                            cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
                     opcion = 0;
                 }
             }
@@ -449,7 +449,7 @@ public class FxVentaRealizadasController implements Initializable {
                 paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
                 opcion = 0;
             }
         }
@@ -462,7 +462,7 @@ public class FxVentaRealizadasController implements Initializable {
                 paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
                 opcion = 0;
             }
         }
@@ -475,7 +475,7 @@ public class FxVentaRealizadasController implements Initializable {
                 paginacion = 1;
                 fillVentasTable((short) 0, "", Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal),
                         cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get(), idEmpleado);
+                        cbEstado.getSelectionModel().getSelectedItem().getIdDetalle(), idEmpleado);
                 opcion = 0;
             }
         }
@@ -553,9 +553,8 @@ public class FxVentaRealizadasController implements Initializable {
         this.idEmpleado = idEmpleado;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+   
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
-
 }

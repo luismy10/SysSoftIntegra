@@ -110,7 +110,7 @@ public class ImpuestoTB {
         this.valor = valor;
     }
 
-    public boolean getPredeterminado() {
+    public boolean isPredeterminado() {
         return predeterminado;
     }
 

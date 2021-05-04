@@ -1,5 +1,6 @@
 package controller.configuracion.miempresa;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -66,7 +67,7 @@ public class FxMiEmpresaController implements Initializable {
     @FXML
     private ComboBox<UbigeoTB> cbUbigeo;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private boolean validate;
 
@@ -124,7 +125,7 @@ public class FxMiEmpresaController implements Initializable {
                         ObservableList<DetalleTB> lsgiro = cbGiroComercial.getItems();
                         if (empresaTb.getGiroComerial() != 0) {
                             for (int i = 0; i < lsgiro.size(); i++) {
-                                if (empresaTb.getGiroComerial() == lsgiro.get(i).getIdDetalle().get()) {
+                                if (empresaTb.getGiroComerial() == lsgiro.get(i).getIdDetalle()) {
                                     cbGiroComercial.getSelectionModel().select(i);
                                     break;
                                 }
@@ -141,7 +142,7 @@ public class FxMiEmpresaController implements Initializable {
                         ObservableList<DetalleTB> lsdoc = cbTipoDocumento.getItems();
                         if (empresaTb.getTipoDocumento() != 0) {
                             for (int i = 0; i < lsdoc.size(); i++) {
-                                if (empresaTb.getTipoDocumento() == lsdoc.get(i).getIdDetalle().get()) {
+                                if (empresaTb.getTipoDocumento() == lsdoc.get(i).getIdDetalle()) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -292,7 +293,7 @@ public class FxMiEmpresaController implements Initializable {
             if (confirmation == 1) {
                 EmpresaTB empresaTB = new EmpresaTB();
                 empresaTB.setIdEmpresa(validate == true ? idEmpresa : 0);
-                empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle());
                 empresaTB.setNombre(txtRepresentante.getText().trim());
                 empresaTB.setTelefono(txtTelefono.getText().trim().isEmpty() ? "" : txtTelefono.getText().trim());
                 empresaTB.setCelular(txtCelular.getText().trim().isEmpty() ? "" : txtCelular.getText().trim());
@@ -300,7 +301,7 @@ public class FxMiEmpresaController implements Initializable {
                 empresaTB.setEmail(txtEmail.getText().trim());
                 empresaTB.setDomicilio(txtDomicilio.getText().trim());
                 empresaTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedIndex() >= 0
-                        ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                        ? cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle()
                         : 0);
                 empresaTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().isEmpty() ? "" : txtNumeroDocumento.getText().trim());
                 empresaTB.setRazonSocial(txtRazonSocial.getText().trim().isEmpty() ? txtRepresentante.getText().trim() : txtRazonSocial.getText().trim());
@@ -412,8 +413,8 @@ public class FxMiEmpresaController implements Initializable {
         clearImage();
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent( FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

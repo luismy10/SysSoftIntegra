@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import javafx.scene.control.Button;
 
 public class DetalleCompraTB {
-    
+
     private int id;
     private String idCompra;
     private String idArticulo;
@@ -26,9 +26,9 @@ public class DetalleCompraTB {
     private SuministroTB suministroTB;
     private ArrayList<PreciosTB> listPrecios;
     private Button remove;
-    
+
     public DetalleCompraTB() {
-    }  
+    }
 
     public int getId() {
         return id;
@@ -37,7 +37,7 @@ public class DetalleCompraTB {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public String getIdCompra() {
         return idCompra;
     }
@@ -53,7 +53,7 @@ public class DetalleCompraTB {
     public void setIdArticulo(String idArticulo) {
         this.idArticulo = idArticulo;
     }
-    
+
     public double getCantidad() {
         return cantidad;
     }
@@ -78,8 +78,6 @@ public class DetalleCompraTB {
         this.precioCompraReal = precioCompraReal;
     }
 
-   
-
     public double getPrecioCompra() {
         return precioCompra;
     }
@@ -95,7 +93,7 @@ public class DetalleCompraTB {
     public void setDescuentoSumado(double descuentoSumado) {
         this.descuentoSumado = descuentoSumado;
     }
-    
+
     public double getDescuento() {
         return descuento;
     }
@@ -142,7 +140,7 @@ public class DetalleCompraTB {
 
     public void setImporte(double importe) {
         this.importe = importe;
-    }    
+    }
 
     public boolean isLote() {
         return lote;
@@ -166,7 +164,7 @@ public class DetalleCompraTB {
 
     public void setListLote(ArrayList<LoteTB> listLote) {
         this.listLote = listLote;
-    }  
+    }
 
     public SuministroTB getSuministroTB() {
         return suministroTB;
@@ -174,7 +172,7 @@ public class DetalleCompraTB {
 
     public void setSuministroTB(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
-    }     
+    }
 
     public ArrayList<PreciosTB> getListPrecios() {
         return listPrecios;

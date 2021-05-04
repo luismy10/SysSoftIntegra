@@ -20,7 +20,7 @@ public class ProveedorADO {
             PreparedStatement preparedValidation = null;
             CallableStatement codigoProveedor = null;
             PreparedStatement preparedProveedor = null;
-            
+
             try {
                 DBUtil.getConnection().setAutoCommit(false);
 
@@ -83,10 +83,10 @@ public class ProveedorADO {
                         preparedProveedor.setString(12, proveedorTB.getDireccion());
                         preparedProveedor.setString(13, Session.USER_ID);
                         preparedProveedor.setTimestamp(14, Timestamp.valueOf(LocalDateTime.now()));
-                        preparedProveedor.setString(15,proveedorTB.getRepresentante());
+                        preparedProveedor.setString(15, proveedorTB.getRepresentante());
                         preparedProveedor.addBatch();
-                        
-                        preparedProveedor.executeBatch();                       
+
+                        preparedProveedor.executeBatch();
                         DBUtil.getConnection().commit();
                         return "registered";
                     }
@@ -109,7 +109,7 @@ public class ProveedorADO {
                     }
                     if (codigoProveedor != null) {
                         codigoProveedor.close();
-                    }                   
+                    }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
                     return ex.getLocalizedMessage();
@@ -166,17 +166,18 @@ public class ProveedorADO {
         }
     }
 
-    public static ObservableList<ProveedorTB> ListProveedor(String... value) {
-        String selectStmt = "{call Sp_Listar_Proveedor(?)}";
+    public static Object ListProveedor(String search, int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        ObservableList<ProveedorTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, value[0]);
+            Object[] object = new Object[2];
+            ObservableList<ProveedorTB> empList = FXCollections.observableArrayList();
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Proveedor(?,?,?)}");
+            preparedStatement.setString(1, search);
+            preparedStatement.setInt(2, posicionPagina);
+            preparedStatement.setInt(3, filasPorPagina);
             rsEmps = preparedStatement.executeQuery();
-
             while (rsEmps.next()) {
                 ProveedorTB proveedorTB = new ProveedorTB();
                 proveedorTB.setId(rsEmps.getRow());
@@ -192,9 +193,22 @@ public class ProveedorADO {
                 proveedorTB.setRepresentante(rsEmps.getString("Representante"));
                 empList.add(proveedorTB);
             }
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
 
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Proveedor_Count(?)}");
+            preparedStatement.setString(1, search);
+            rsEmps = preparedStatement.executeQuery();
+            Integer total = 0;
+            if (rsEmps.next()) {
+                total = rsEmps.getInt("Total");
+            }
+            object[0] = empList;
+            object[1] = total;
+
+            return object;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -205,10 +219,10 @@ public class ProveedorADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return empList;
+
     }
 
     public static ProveedorTB GetIdLisProveedor(String documento) {
@@ -284,33 +298,34 @@ public class ProveedorADO {
     }
 
     public static List<ProveedorTB> getSearchComboBoxProveedores(String search) {
-         String selectStmt = "{call Sp_Obtener_Proveedor_For_ComboBox(?)}";
+        String selectStmt = "{call Sp_Obtener_Proveedor_For_ComboBox(?)}";
         PreparedStatement preparedStatement = null;
         List<ProveedorTB> proveedorTBs = new ArrayList<>();
-          try {
+        try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
             preparedStatement.setString(1, search);
-             try (ResultSet rsEmps = preparedStatement.executeQuery()) {
-                 while (rsEmps.next()) {
-                     ProveedorTB proveedorTB = new ProveedorTB();
-                     proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
-                     proveedorTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
-                     proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
-                     proveedorTBs.add(proveedorTB);
-                 }}
-          }catch(SQLException e){
-              System.out.println("Error en getSearchComboBoxProveedores(): "+e.getLocalizedMessage());
-          }finally{
-              try{
-                  if(preparedStatement != null){
-                      preparedStatement.close();
-                  }
-              }catch(SQLException e){
-                  
-              }
-          }
-          return proveedorTBs;
+            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                while (rsEmps.next()) {
+                    ProveedorTB proveedorTB = new ProveedorTB();
+                    proveedorTB.setIdProveedor(rsEmps.getString("IdProveedor"));
+                    proveedorTB.setNumeroDocumento(rsEmps.getString("NumeroDocumento"));
+                    proveedorTB.setRazonSocial(rsEmps.getString("RazonSocial"));
+                    proveedorTBs.add(proveedorTB);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en getSearchComboBoxProveedores(): " + e.getLocalizedMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+        return proveedorTBs;
     }
 
 }

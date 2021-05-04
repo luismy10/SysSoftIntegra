@@ -1,5 +1,6 @@
 package controller.operaciones.cotizacion;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
@@ -38,6 +39,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -54,11 +56,9 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 public class FxCotizacionDetalleController implements Initializable {
 
     @FXML
-    private ScrollPane spWindow;
+    private AnchorPane apWindow;
     @FXML
     private Label lblLoad;
-    @FXML
-    private Button btnReporte;
     @FXML
     private Text lblNumero;
     @FXML
@@ -66,7 +66,7 @@ public class FxCotizacionDetalleController implements Initializable {
     @FXML
     private Text lblCliente;
     @FXML
-    private Text lbClienteInformacion;
+    private Text lblCelularTelefono;
     @FXML
     private Text lbCorreoElectronico;
     @FXML
@@ -87,12 +87,18 @@ public class FxCotizacionDetalleController implements Initializable {
     private GridPane gpImpuestos;
     @FXML
     private Label lblTotal;
+    @FXML
+    private ScrollPane spBody;
+    @FXML
+    private HBox hbLoad;
+    @FXML
+    private Label lblMessageLoad;
+    @FXML
+    private Button btnAceptarLoad;
 
     private FxCotizacionRealizadasController cotizacionRealizadasController;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private CotizacionTB cotizacionTB;
 
@@ -138,9 +144,23 @@ public class FxCotizacionDetalleController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             protected Object call() {
-                return CotizacionADO.CargarCotizacionReporte(idCotizacion);
+                return CotizacionADO.CargarCotizacionById(idCotizacion);
             }
         };
+        task.setOnScheduled(e -> {
+            lblLoad.setVisible(true);
+            spBody.setDisable(true);
+            hbLoad.setVisible(true);
+            lblMessageLoad.setText("Cargando datos...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+            btnAceptarLoad.setVisible(false);
+        });
+        task.setOnFailed(e -> {
+            lblLoad.setVisible(false);
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            btnAceptarLoad.setVisible(true);
+        });
         task.setOnSucceeded(e -> {
             Object object = task.getValue();
             if (object instanceof CotizacionTB) {
@@ -148,7 +168,7 @@ public class FxCotizacionDetalleController implements Initializable {
                 lblNumero.setText("N° " + cotizacionTB.getIdCotizacion());
                 lblFechaVenta.setText(cotizacionTB.getFechaCotizacion());
                 lblCliente.setText(cotizacionTB.getClienteTB().getInformacion());
-                lbClienteInformacion.setText("TEL.: " + cotizacionTB.getClienteTB().getTelefono() + " CEL.: " + cotizacionTB.getClienteTB().getCelular());
+                lblCelularTelefono.setText("TEL.: " + cotizacionTB.getClienteTB().getTelefono() + " CEL.: " + cotizacionTB.getClienteTB().getCelular());
                 lbCorreoElectronico.setText(cotizacionTB.getClienteTB().getEmail());
                 lbDireccion.setText(cotizacionTB.getClienteTB().getDireccion());
                 lblObservaciones.setText(cotizacionTB.getObservaciones());
@@ -157,16 +177,13 @@ public class FxCotizacionDetalleController implements Initializable {
                 ObservableList<SuministroTB> cotizacionTBs = cotizacionTB.getDetalleSuministroTBs();
                 fillVentasDetalleTable(cotizacionTBs, cotizacionTB.getMonedaTB().getSimbolo());
 
-                lblLoad.setVisible(false);
+                spBody.setDisable(false);
+                hbLoad.setVisible(false);
             } else {
-                btnReporte.setDisable(true);
-                lblLoad.setVisible(false);
+                lblMessageLoad.setText((String) object);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
             }
-        });
-        task.setOnScheduled(e -> {
-            lblLoad.setVisible(true);
-        });
-        task.setOnFailed(e -> {
             lblLoad.setVisible(false);
         });
         executor.execute(task);
@@ -182,10 +199,10 @@ public class FxCotizacionDetalleController implements Initializable {
             gpList.add(addElementGridPane("l2" + (i + 1), arrList.get(i).getClave() + "\n" + arrList.get(i).getNombreMarca(), Pos.CENTER_LEFT), 1, (i + 1));
             gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 2, (i + 1));
             gpList.add(addElementGridPane("l4" + (i + 1), arrList.get(i).getUnidadCompraName(), Pos.CENTER_LEFT), 3, (i + 1));
-            gpList.add(addElementGridPane("l5" + (i + 1), arrList.get(i).getImpuestoNombre(), Pos.CENTER_RIGHT), 4, (i + 1));
+            gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(arrList.get(i).getImpuestoValor(), 2) + "%", Pos.CENTER_RIGHT), 4, (i + 1));
             gpList.add(addElementGridPane("l6" + (i + 1), simbolo + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral(), 2), Pos.CENTER_RIGHT), 5, (i + 1));
-            gpList.add(addElementGridPane("l7" + (i + 1), Tools.roundingValue(arrList.get(i).getDescuento(), 2) + "%", Pos.CENTER_RIGHT), 6, (i + 1));
-            gpList.add(addElementGridPane("l8" + (i + 1), simbolo + "" + Tools.roundingValue(arrList.get(i).getPrecioVentaGeneral() * arrList.get(i).getCantidad(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
+            gpList.add(addElementGridPane("l7" + (i + 1), "-" + Tools.roundingValue(arrList.get(i).getDescuento(), 2), Pos.CENTER_RIGHT), 6, (i + 1));
+            gpList.add(addElementGridPane("l8" + (i + 1), simbolo + "" + Tools.roundingValue(arrList.get(i).getImporteNeto(), 2), Pos.CENTER_RIGHT), 7, (i + 1));
         }
         calculateTotales(simbolo);
     }
@@ -221,7 +238,7 @@ public class FxCotizacionDetalleController implements Initializable {
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#0771d3;");
-        label.getStyleClass().add("labelRobotoMedium15");
+        label.getStyleClass().add("labelRoboto15");
         label.setAlignment(pos);
         label.setMinWidth(Control.USE_COMPUTED_SIZE);
         label.setMinHeight(Control.USE_COMPUTED_SIZE);
@@ -235,20 +252,40 @@ public class FxCotizacionDetalleController implements Initializable {
     public void calculateTotales(String simbolo) {
 
         importeBruto = 0;
-        arrList.forEach(e -> importeBruto += e.getImporteBruto());
+        arrList.forEach(e -> {
+            double descuento = e.getDescuento();
+            double precioDescuento = e.getPrecioVentaGeneral() - descuento;
+            double subPrecio = Tools.calculateTaxBruto(e.getImpuestoValor(), precioDescuento);
+            double precioBruto = subPrecio + descuento;
+            importeBruto += precioBruto * e.getCantidad();
+        });
         lblValorVenta.setText(simbolo + " " + Tools.roundingValue(importeBruto, 2));
 
         descuentoBruto = 0;
-        arrList.forEach(e -> descuentoBruto += e.getDescuentoSumado());
+        arrList.forEach(e -> {
+            double descuento = e.getDescuento();
+            descuentoBruto += e.getCantidad() * descuento;
+        });
         lblDescuento.setText(simbolo + " " + (Tools.roundingValue(descuentoBruto * (-1), 2)));
 
         subImporteNeto = 0;
-        arrList.forEach(e -> subImporteNeto += e.getSubImporteNeto());
+        arrList.forEach(e -> {
+            double descuento = e.getDescuento();
+            double precioDescuento = e.getPrecioVentaGeneral() - descuento;
+            double subPrecio = Tools.calculateTaxBruto(e.getImpuestoValor(), precioDescuento);
+            subImporteNeto += e.getCantidad() * subPrecio;
+        });
         lblSubTotal.setText(simbolo + " " + Tools.roundingValue(subImporteNeto, 2));
 
         gpImpuestos.getChildren().clear();
         impuestoNeto = 0;
-        arrList.forEach(e -> impuestoNeto += e.getImpuestoSumado());
+        arrList.forEach(e -> {
+            double descuento = e.getDescuento();
+            double precioDescuento = e.getPrecioVentaGeneral() - descuento;
+            double subPrecio = Tools.calculateTaxBruto(e.getImpuestoValor(), precioDescuento);
+            double impuesto = Tools.calculateTax(e.getImpuestoValor(), subPrecio);
+            impuestoNeto += e.getCantidad() * impuesto;
+        });
 
         gpImpuestos.add(addLabelTitle("IMPUESTO GENERADO:", Pos.CENTER_LEFT), 0, 0 + 1);
         gpImpuestos.add(addLabelTotal(simbolo + " " + Tools.roundingValue(impuestoNeto, 2), Pos.CENTER_RIGHT), 1, 0 + 1);
@@ -260,13 +297,13 @@ public class FxCotizacionDetalleController implements Initializable {
 
     private void ticket() {
         if (!Session.ESTADO_IMPRESORA_COTIZACION && Tools.isText(Session.NOMBRE_IMPRESORA_COTIZACION) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
-            Tools.AlertMessageWarning(spWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            Tools.AlertMessageWarning(apWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             return;
         }
 
         if (Session.FORMATO_IMPRESORA_COTIZACION.equalsIgnoreCase("ticket")) {
             if (Session.TICKET_COTIZACION_ID == 0 && Session.TICKET_COTIZACION_RUTA.equalsIgnoreCase("")) {
-                Tools.AlertMessageWarning(spWindow, "Venta", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+                Tools.AlertMessageWarning(apWindow, "Venta", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
             } else {
                 ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
                     Thread t = new Thread(runnable);
@@ -320,14 +357,15 @@ public class FxCotizacionDetalleController implements Initializable {
                                         HBox hBox = new HBox();
                                         hBox.setId("dc_" + m + "" + i);
                                         HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                                        billPrintable.hbDetalle(hBox, box, arrList, m);
+                                        billPrintable.hbDetalleCotizacion(hBox, box, arrList, m);
                                         hbDetalle.getChildren().add(hBox);
                                     }
                                 }
 
                                 for (int i = 0; i < hbPie.getChildren().size(); i++) {
                                     HBox box = ((HBox) hbPie.getChildren().get(i));
-                                    billPrintable.hbPie(box, cotizacionTB.getMonedaTB().getSimbolo(),
+                                    billPrintable.hbPie(box,
+                                            cotizacionTB.getMonedaTB().getSimbolo(),
                                             Tools.roundingValue(importeBruto, 2),
                                             "-" + Tools.roundingValue(descuentoBruto, 2),
                                             Tools.roundingValue(subImporteNeto, 2),
@@ -344,7 +382,8 @@ public class FxCotizacionDetalleController implements Initializable {
                                             "",
                                             "",
                                             "",
-                                            "");
+                                            "",
+                                            cotizacionTB.getObservaciones());
                                 }
 
                                 billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
@@ -429,7 +468,7 @@ public class FxCotizacionDetalleController implements Initializable {
 
             }
         } else {
-            Tools.AlertMessageWarning(spWindow, "Venta", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+            Tools.AlertMessageWarning(apWindow, "Venta", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
         }
     }
 
@@ -478,7 +517,7 @@ public class FxCotizacionDetalleController implements Initializable {
                 hBox.setId("dc_" + m + "" + i);
                 HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
                 rows++;
-                lines += billPrintable.hbDetalle(hBox, box, arrList, m);
+                lines += billPrintable.hbDetalleCotizacion(hBox, box, arrList, m);
                 object.add(hBox);
             }
         }
@@ -504,36 +543,14 @@ public class FxCotizacionDetalleController implements Initializable {
                     "",
                     "",
                     "",
-                    "");
+                    "",
+                    cotizacionTB.getObservaciones());
         }
         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
     }
 
     private void reportA4() {
         try {
-            ArrayList<SuministroTB> list = new ArrayList();
-            for (int i = 0; i < arrList.size(); i++) {
-                SuministroTB stb = new SuministroTB();
-                stb.setId(i + 1);
-                stb.setClave(arrList.get(i).getClave());
-                stb.setNombreMarca(arrList.get(i).getNombreMarca());
-                stb.setCantidad(arrList.get(i).getCantidad());
-                stb.setUnidadCompraName(arrList.get(i).getUnidadCompraName());
-                stb.setImporteBruto(arrList.get(i).getImporteBruto());
-                stb.setDescuentoSumado(arrList.get(i).getDescuentoSumado());
-                stb.setSubImporteNeto(arrList.get(i).getSubImporteNeto());
-                stb.setImpuestoSumado(arrList.get(i).getImpuestoSumado());
-                stb.setPrecioVentaGeneral(arrList.get(i).getPrecioVentaGeneral());
-                stb.setDescuento(arrList.get(i).getDescuento());
-                stb.setImporteNeto(arrList.get(i).getCantidad() * arrList.get(i).getPrecioVentaGeneral());
-                list.add(stb);
-            }
-
-            if (list.isEmpty()) {
-                Tools.AlertMessageWarning(spWindow, "Venta realizada", "No hay registros para mostrar en el reporte.");
-                return;
-            }
-
             InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
             InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
@@ -577,7 +594,7 @@ public class FxCotizacionDetalleController implements Initializable {
             map.put("IMPORTE_TOTAL", Tools.roundingValue(importeTotal, 2));
             map.put("OBSERVACION", cotizacionTB.getObservaciones());
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(list));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(dir, map, new JRBeanCollectionDataSource(arrList));
 
             URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
@@ -593,65 +610,72 @@ public class FxCotizacionDetalleController implements Initializable {
             stage.requestFocus();
 
         } catch (IOException | JRException ex) {
-            Tools.AlertMessageError(spWindow, "Reporte de Cotizacion", "Error al generar el reporte : " + ex.getLocalizedMessage());
+            Tools.AlertMessageError(apWindow, "Reporte de Cotizacion", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        vbContent.getChildren().remove(spWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setTopAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setRightAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
         AnchorPane.setBottomAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
-        vbContent.getChildren().add(cotizacionRealizadasController.getHbWindow());
+        fxPrincipalController.getVbContent().getChildren().add(cotizacionRealizadasController.getHbWindow());
     }
 
     @FXML
     private void onKeyPressedReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (cotizacionTB != null) {
-                reportA4();
-            } else {
-                Tools.AlertMessageWarning(spWindow, "Cotización", "No se puede generar el reporte por problemas en cargar los datos.");
-            }
+            reportA4();
         }
     }
 
     @FXML
     private void onActionReporte(ActionEvent event) {
-        if (cotizacionTB != null) {
-            reportA4();
-        } else {
-            Tools.AlertMessageWarning(spWindow, "Cotización", "No se puede generar el reporte por problemas en cargar los datos.");
-        }
+        reportA4();
     }
 
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (cotizacionTB != null) {
-                ticket();
-            } else {
-                Tools.AlertMessageWarning(spWindow, "Cotización", "No se puede imprimir el ticket por problemas en cargar los datos.");
-            }
+            ticket();
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-        if (cotizacionTB != null) {
-            ticket();
-        } else {
-            Tools.AlertMessageWarning(spWindow, "Cotización", "No se puede imprimir el ticket por problemas en cargar los datos.");
+        ticket();
+    }
+
+    @FXML
+    private void onKeyPressedAceptarLoad(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+            fxPrincipalController.getVbContent().getChildren().clear();
+            AnchorPane.setLeftAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+            AnchorPane.setTopAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+            AnchorPane.setRightAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+            AnchorPane.setBottomAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+            fxPrincipalController.getVbContent().getChildren().add(cotizacionRealizadasController.getHbWindow());
         }
     }
 
-    public void setInitCotizacionesRealizadasController(FxCotizacionRealizadasController cotizacionRealizadasController, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    @FXML
+    private void onActionAceptarLoad(ActionEvent event) {
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+        AnchorPane.setTopAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+        AnchorPane.setRightAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+        AnchorPane.setBottomAnchor(cotizacionRealizadasController.getHbWindow(), 0d);
+        fxPrincipalController.getVbContent().getChildren().add(cotizacionRealizadasController.getHbWindow());
+    }
+
+    public void setInitCotizacionesRealizadasController(FxCotizacionRealizadasController cotizacionRealizadasController, FxPrincipalController fxPrincipalController) {
         this.cotizacionRealizadasController = cotizacionRealizadasController;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

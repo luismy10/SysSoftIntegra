@@ -23,23 +23,24 @@ public class CompraTB {
     private double total;
     private String observaciones;
     private String notas;
-    
+    private String destino;
+
     private int tipo;
     private String tipoName;
     private Label tipoLabel;
     private int estado;
     private String estadoName;
     private Label estadoLabel;
-    
+
     private String usuario;
-    
+
     private ProveedorTB proveedorTB;
     private SuministroTB suministroTB;
     private MonedaTB monedaTB;
-    
+
     private ArrayList<CompraCreditoTB> compraCreditoTBs;
     private HBox hbOpciones;
-    
+
     private double montoTotal;
     private double montoPagado;
     private double montoRestante;
@@ -79,7 +80,7 @@ public class CompraTB {
     public void setTipoDocumento(int tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
-   
+
     public String getSerie() {
         return serie;
     }
@@ -144,7 +145,6 @@ public class CompraTB {
         this.horaVencimiento = horaVencimiento;
     }
 
-
     public double getSubTotal() {
         return subTotal;
     }
@@ -183,6 +183,14 @@ public class CompraTB {
 
     public void setNotas(String notas) {
         this.notas = notas == null ? "" : notas;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
 
     public ProveedorTB getProveedorTB() {
@@ -273,7 +281,6 @@ public class CompraTB {
         this.compraCreditoTBs = compraCreditoTBs;
     }
 
-  
     public HBox getHbOpciones() {
         return hbOpciones;
     }
@@ -305,7 +312,5 @@ public class CompraTB {
     public void setMontoRestante(double montoRestante) {
         this.montoRestante = montoRestante;
     }
-    
-    
-    
+
 }

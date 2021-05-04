@@ -1,6 +1,7 @@
 package controller.operaciones.venta;
 
 import controller.inventario.suministros.FxSuministrosProcesoModalController;
+import controller.menus.FxPrincipalController;
 import controller.tools.*;
 
 import java.awt.print.Book;
@@ -128,8 +129,14 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     private TextField txtCorreoElectronico;
     @FXML
     private TextField txtDireccionCliente;
+    @FXML
+    private VBox vbBodyCliente;
+    @FXML
+    private HBox hbLoadCliente;
+    @FXML
+    private Button btnCancelarProceso;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private BillPrintable billPrintable;
 
@@ -186,6 +193,13 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         monedaSimbolo = "M";
         idCliente = "";
         loadDataComponent();
+        autoCompletionBinding = TextFields.bindAutoCompletion(txtNumeroDocumento, posiblesWord);
+        autoCompletionBinding.setOnAutoCompleted(e -> {
+            if (!Tools.isText(txtNumeroDocumento.getText())) {
+                onExecuteCliente((short) 2, txtNumeroDocumento.getText().trim());
+                txtSearch.requestFocus();
+            }
+        });
     }
 
     private void loadDataComponent() {
@@ -220,7 +234,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
 
         cbTipoDocumento.getItems().clear();
-        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(new DetalleTB(e.getIdDetalle(), e.getNombre())));
+        DetalleADO.GetDetailId("0003").forEach(e -> cbTipoDocumento.getItems().add(e));
 
         idCliente = Session.CLIENTE_ID;
         txtNumeroDocumento.setText(Session.CLIENTE_NUMERO_DOCUMENTO);
@@ -230,11 +244,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         txtDireccionCliente.setText(Session.CLIENTE_DIRECCION);
 
         ObjectGlobal.DATA_CLIENTS.forEach(c -> posiblesWord.add(c));
-        autoCompletionBinding = TextFields.bindAutoCompletion(txtNumeroDocumento, posiblesWord);
 
         if (!cbTipoDocumento.getItems().isEmpty()) {
             for (DetalleTB detalleTB : cbTipoDocumento.getItems()) {
-                if (detalleTB.getIdDetalle().get() == Session.CLIENTE_TIPO_DOCUMENTO) {
+                if (detalleTB.getIdDetalle() == Session.CLIENTE_TIPO_DOCUMENTO) {
                     cbTipoDocumento.getSelectionModel().select(detalleTB);
                     break;
                 }
@@ -355,8 +368,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     fpProductos.setAlignment(Pos.CENTER);
                     Label lblLoad = new Label("No hay datos para mostrar.");
                     lblLoad.getStyleClass().add("labelRoboto15");
-                    lblLoad.setTextFill(Color.web("#1a2226"));                          
-                    lblLoad.setContentDisplay(ContentDisplay.TOP);                
+                    lblLoad.setTextFill(Color.web("#1a2226"));
+                    lblLoad.setContentDisplay(ContentDisplay.TOP);
                     fpProductos.getChildren().add(lblLoad);
                 }
             } else if (object instanceof String) {
@@ -687,9 +700,10 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             public String call() {
-                VentaTB ventaTB = VentaADO.ListCompletaVentasDetalle(idVenta);
+                Object result = VentaADO.ListCompletaVentasDetalle(idVenta);
                 try {
-                    if (ventaTB != null) {
+                    if (result instanceof VentaTB) {
+                        VentaTB ventaTB = (VentaTB) result;
                         ObservableList<SuministroTB> suministroTBs = FXCollections.observableArrayList(ventaTB.getSuministroTBs());
 
                         if (format.equalsIgnoreCase("a4")) {
@@ -793,6 +807,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                             "",
                                             "",
                                             "",
+                                            "",
                                             "");
                                 }
 
@@ -821,7 +836,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             }
                         }
                     } else {
-                        return "empty";
+                        return (String) result;
                     }
                 } catch (PrinterException | IOException | PrintException | JRException ex) {
                     return "Error en imprimir: " + ex.getLocalizedMessage();
@@ -957,6 +972,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     "",
                     "",
                     "",
+                    "",
                     "");
         }
         return billPrintable.modelTicket(rows + lines + 1 + 10, lines, object, printerName, printerCut);
@@ -1074,6 +1090,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     "");
                         }
 
@@ -1171,6 +1188,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     "");
                         }
                         return billPrintable.modelTicket(rows + lines + 1 + 5, lines, object, printerName, printerCut);
@@ -1248,7 +1266,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private void openWindowDetalleProducto(int index, BbItemProducto bbItemProducto) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_DETALLE_PRODUCTO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -1260,7 +1278,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Detalle producto", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println("openWindowImpresora():" + ex.getLocalizedMessage());
@@ -1287,7 +1305,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             } else if (importeNeto <= 0) {
                 Tools.AlertMessageWarning(vbWindow, "Venta", "El total de la venta no puede ser menor que 0.");
             } else {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_VENTA_PROCESO_NUEVO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -1298,12 +1316,12 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Completar la venta", vbWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                 stage.show();
 
                 ClienteTB clienteTB = new ClienteTB();
                 clienteTB.setIdCliente(idCliente);
-                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                clienteTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle());
                 clienteTB.setNumeroDocumento(txtNumeroDocumento.getText().trim().toUpperCase());
                 clienteTB.setInformacion(txtDatosCliente.getText().trim().toUpperCase());
                 clienteTB.setCelular(txtCelularCliente.getText().trim().toUpperCase());
@@ -1351,24 +1369,32 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         };
 
         task.setOnScheduled(e -> {
-            txtNumeroDocumento.setDisable(true);
-            txtDatosCliente.setDisable(true);
-            txtCelularCliente.setDisable(true);
-            txtCorreoElectronico.setDisable(true);
-            txtDireccionCliente.setDisable(true);
-            btnBuscarCliente.setDisable(true);
-            btnBuscarSunat.setDisable(true);
-            btnBuscarReniec.setDisable(true);
-
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
             txtCorreoElectronico.setText("");
             txtDireccionCliente.setText("");
-            Tools.showAlertNotification("/view/image/information_large.png",
+            vbBodyCliente.setDisable(true);
+            hbLoadCliente.setVisible(true);
+
+            if (btnCancelarProceso.getOnAction() != null) {
+                btnCancelarProceso.removeEventHandler(ActionEvent.ACTION, btnCancelarProceso.getOnAction());
+            }
+            btnCancelarProceso.setOnAction(event -> {
+                if (task.isRunning()) {
+                    task.cancel();
+                }
+                vbBodyCliente.setDisable(false);
+                hbLoadCliente.setVisible(false);
+            });
+        });
+
+        task.setOnCancelled(e -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
                     "Buscando clíente",
-                    "Se inicio el proceso de busqueda\n del cliente internamente.",
-                    Duration.seconds(5),
+                    "Se canceló la busqueda, \nreintente por favor.",
+                    Duration.seconds(10),
                     Pos.TOP_RIGHT);
+            clearDataClient();
         });
 
         task.setOnFailed(e -> {
@@ -1378,6 +1404,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     Duration.seconds(10),
                     Pos.TOP_RIGHT);
             clearDataClient();
+
+            vbBodyCliente.setDisable(false);
+            hbLoadCliente.setVisible(false);
         });
 
         task.setOnSucceeded(e -> {
@@ -1388,14 +1417,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                         "Se completo la busqueda con exito.",
                         Duration.seconds(5),
                         Pos.TOP_RIGHT);
-                txtNumeroDocumento.setDisable(false);
-                txtDatosCliente.setDisable(false);
-                txtCelularCliente.setDisable(false);
-                txtCorreoElectronico.setDisable(false);
-                txtDireccionCliente.setDisable(false);
-                btnBuscarCliente.setDisable(false);
-                btnBuscarSunat.setDisable(false);
-                btnBuscarReniec.setDisable(false);
 
                 idCliente = clienteTB.getIdCliente();
                 txtDatosCliente.setText(clienteTB.getInformacion());
@@ -1403,7 +1424,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 txtCorreoElectronico.setText(clienteTB.getEmail());
                 txtDireccionCliente.setText(clienteTB.getDireccion());
                 for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
@@ -1416,6 +1437,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                         Pos.TOP_RIGHT);
                 clearDataClient();
             }
+
+            vbBodyCliente.setDisable(false);
+            hbLoadCliente.setVisible(false);
         });
 
         exec.execute(task);
@@ -1424,7 +1448,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-    private void getApiSunat() {
+    private void executeApiSunat() {
         ApiPeru apiSunat = new ApiPeru();
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -1451,25 +1475,33 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         };
 
         task.setOnScheduled(e -> {
-            txtNumeroDocumento.setDisable(true);
-            txtDatosCliente.setDisable(true);
-            txtCelularCliente.setDisable(true);
-            txtCorreoElectronico.setDisable(true);
-            txtDireccionCliente.setDisable(true);
-            btnBuscarCliente.setDisable(true);
-            btnBuscarSunat.setDisable(true);
-            btnBuscarReniec.setDisable(true);
-
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
             txtCorreoElectronico.setText("");
             txtDireccionCliente.setText("");
 
-            Tools.showAlertNotification("/view/image/information_large.png",
+            vbBodyCliente.setDisable(true);
+            hbLoadCliente.setVisible(true);
+
+            if (btnCancelarProceso.getOnAction() != null) {
+                btnCancelarProceso.removeEventHandler(ActionEvent.ACTION, btnCancelarProceso.getOnAction());
+            }
+            btnCancelarProceso.setOnAction(event -> {
+                if (task.isRunning()) {
+                    task.cancel();
+                }
+                vbBodyCliente.setDisable(false);
+                hbLoadCliente.setVisible(false);
+            });
+        });
+
+        task.setOnCancelled(e -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
                     "Buscando clíente",
-                    "Se inicio el proceso de busqueda\n del cliente por su número de ruc.",
-                    Duration.seconds(5),
+                    "Se canceló la busqueda, \nreintente por favor.",
+                    Duration.seconds(10),
                     Pos.TOP_RIGHT);
+            clearDataClient();
         });
 
         task.setOnFailed(e -> {
@@ -1479,6 +1511,9 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     Duration.seconds(10),
                     Pos.TOP_RIGHT);
             clearDataClient();
+
+            vbBodyCliente.setDisable(false);
+            hbLoadCliente.setVisible(false);
         });
 
         task.setOnSucceeded(e -> {
@@ -1504,14 +1539,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                 "Se completo la busqueda con exito.",
                                 Duration.seconds(5),
                                 Pos.TOP_RIGHT);
-                        txtNumeroDocumento.setDisable(false);
-                        txtDatosCliente.setDisable(false);
-                        txtCelularCliente.setDisable(false);
-                        txtCorreoElectronico.setDisable(false);
-                        txtDireccionCliente.setDisable(false);
-                        btnBuscarCliente.setDisable(false);
-                        btnBuscarSunat.setDisable(false);
-                        btnBuscarReniec.setDisable(false);
+
                         if (sONObject.get("ruc") != null) {
                             txtNumeroDocumento.setText(sONObject.get("ruc").toString());
                         }
@@ -1527,7 +1555,14 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             txtCelularCliente.setText(clienteTB.getCelular());
                             txtCorreoElectronico.setText(clienteTB.getEmail());
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdAuxiliar().equals("6")) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -1544,8 +1579,15 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     clearDataClient();
                 }
             } else {
-
+                Tools.showAlertNotification("/view/image/warning_large.png",
+                        "Buscando clíente",
+                        "Hubo un problema interno, intente nuevamente.",
+                        Duration.seconds(5),
+                        Pos.TOP_RIGHT);
+                clearDataClient();
             }
+            vbBodyCliente.setDisable(false);
+            hbLoadCliente.setVisible(false);
         });
 
         exec.execute(task);
@@ -1554,7 +1596,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         }
     }
 
-    private void getApiReniec() {
+    private void executeApiReniec() {
         ApiPeru apiSunat = new ApiPeru();
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
@@ -1581,25 +1623,33 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         };
 
         task.setOnScheduled(e -> {
-            txtNumeroDocumento.setDisable(true);
-            txtDatosCliente.setDisable(true);
-            txtCelularCliente.setDisable(true);
-            txtCorreoElectronico.setDisable(true);
-            txtDireccionCliente.setDisable(true);
-            btnBuscarCliente.setDisable(true);
-            btnBuscarSunat.setDisable(true);
-            btnBuscarReniec.setDisable(true);
-
             txtDatosCliente.setText("");
             txtCelularCliente.setText("");
             txtDireccionCliente.setText("");
             txtDireccionCliente.setText("");
 
-            Tools.showAlertNotification("/view/image/information_large.png",
+            vbBodyCliente.setDisable(true);
+            hbLoadCliente.setVisible(true);
+
+            if (btnCancelarProceso.getOnAction() != null) {
+                btnCancelarProceso.removeEventHandler(ActionEvent.ACTION, btnCancelarProceso.getOnAction());
+            }
+            btnCancelarProceso.setOnAction(event -> {
+                if (task.isRunning()) {
+                    task.cancel();
+                }
+                vbBodyCliente.setDisable(false);
+                hbLoadCliente.setVisible(false);
+            });
+        });
+
+        task.setOnCancelled(e -> {
+            Tools.showAlertNotification("/view/image/warning_large.png",
                     "Buscando clíente",
-                    "Se inicio el proceso de busqueda\n del cliente por su número de dni.",
-                    Duration.seconds(5),
+                    "Se canceló la busqueda, \nreintente por favor.",
+                    Duration.seconds(10),
                     Pos.TOP_RIGHT);
+            clearDataClient();
         });
 
         task.setOnFailed(e -> {
@@ -1609,6 +1659,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                     Duration.seconds(10),
                     Pos.TOP_RIGHT);
             clearDataClient();
+            vbBodyCliente.setDisable(false);
+            hbLoadCliente.setVisible(false);
         });
 
         task.setOnSucceeded(e -> {
@@ -1632,14 +1684,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                 "Se completo la busqueda con exito.",
                                 Duration.seconds(5),
                                 Pos.TOP_RIGHT);
-                        txtNumeroDocumento.setDisable(false);
-                        txtDatosCliente.setDisable(false);
-                        txtCelularCliente.setDisable(false);
-                        txtCorreoElectronico.setDisable(false);
-                        txtDireccionCliente.setDisable(false);
-                        btnBuscarCliente.setDisable(false);
-                        btnBuscarSunat.setDisable(false);
-                        btnBuscarReniec.setDisable(false);
+
                         if (sONObject.get("dni") != null) {
                             txtNumeroDocumento.setText(sONObject.get("dni").toString());
                         }
@@ -1654,7 +1699,14 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                             txtDireccionCliente.setText(clienteTB.getDireccion());
 
                             for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                                if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == clienteTB.getTipoDocumento()) {
+                                if (cbTipoDocumento.getItems().get(i).getIdDetalle() == clienteTB.getTipoDocumento()) {
+                                    cbTipoDocumento.getSelectionModel().select(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+                                if (cbTipoDocumento.getItems().get(i).getIdAuxiliar().equals("1")) {
                                     cbTipoDocumento.getSelectionModel().select(i);
                                     break;
                                 }
@@ -1678,6 +1730,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                         Pos.TOP_RIGHT);
                 clearDataClient();
             }
+            vbBodyCliente.setDisable(false);
+            hbLoadCliente.setVisible(false);
         });
 
         exec.execute(task);
@@ -1687,24 +1741,22 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     }
 
     private void clearDataClient() {
-        txtNumeroDocumento.setDisable(false);
-        txtDatosCliente.setDisable(false);
-        txtCelularCliente.setDisable(false);
-        txtCorreoElectronico.setDisable(false);
-        txtDireccionCliente.setDisable(false);
-        btnBuscarCliente.setDisable(false);
-        btnBuscarSunat.setDisable(false);
-        btnBuscarReniec.setDisable(false);
-
         txtDatosCliente.setText("");
         txtCelularCliente.setText("");
         txtCorreoElectronico.setText("");
         txtDireccionCliente.setText("");
+
+        for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
+            if (cbTipoDocumento.getItems().get(i).getIdAuxiliar().equals("0")) {
+                cbTipoDocumento.getSelectionModel().select(i);
+                break;
+            }
+        }
     }
 
     private void onEventProducto() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_PROCESO_MODAL);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -1714,7 +1766,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Producto", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.setInitArticulo();
         } catch (IOException ex) {
@@ -1724,7 +1776,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     private void onEventMovimientoCaja() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_MOVIMIENTO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -1735,7 +1787,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Movimiento de caja", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             Tools.println("Venta estructura nuevo onEventMovimientoCaja:" + ex.getLocalizedMessage());
@@ -1744,7 +1796,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
 
     public void openWindowMostrarVentas() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_MOSTRAR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -1754,7 +1806,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Mostrar ventas", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -2061,28 +2113,28 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private void onKeyPressedSunat(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            getApiSunat();
+            executeApiSunat();
             learnWord(txtNumeroDocumento.getText().trim());
         }
     }
 
     @FXML
     private void onActionSunat(ActionEvent event) {
-        getApiSunat();
+        executeApiSunat();
         learnWord(txtNumeroDocumento.getText().trim());
     }
 
     @FXML
     private void onKeyPressedReniec(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            getApiReniec();
+            executeApiReniec();
             learnWord(txtNumeroDocumento.getText().trim());
         }
     }
 
     @FXML
     private void onActionReniec(ActionEvent event) {
-        getApiReniec();
+        executeApiReniec();
         learnWord(txtNumeroDocumento.getText().trim());
     }
 
@@ -2102,8 +2154,8 @@ public class FxVentaEstructuraNuevoController implements Initializable {
         return cbComprobante.getSelectionModel().getSelectedItem().getIdTipoDocumento();
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

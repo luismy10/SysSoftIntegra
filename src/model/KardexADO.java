@@ -6,24 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 
 public class KardexADO {
 
-    public static ArrayList<Object> List_Kardex_By_Id_Suministro(short opcion, String value, String fechaInicial, String fechaFinal, int posicionPagina, int filasPorPagina) {
-        String selectStmt = "{call Sp_Listar_Kardex_Suministro_By_Id(?,?,?,?)}";
+    public static Object List_Kardex_By_Id_Suministro(short opcion, String value, String fechaInicial, String fechaFinal, int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-
-        ArrayList<Object> objects = new ArrayList<>();
-        ObservableList<KardexTB> empList = FXCollections.observableArrayList();
-
         try {
+
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            Object[] objects = new Object[3];
+            ObservableList<KardexTB> empList = FXCollections.observableArrayList();
+            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Kardex_Suministro_By_Id(?,?,?,?)}");
             preparedStatement.setShort(1, opcion);
             preparedStatement.setString(2, value);
             preparedStatement.setString(3, fechaInicial);
@@ -92,9 +89,9 @@ public class KardexADO {
                 empList.add(kardexTB);
             }
 
-            objects.add(empList);
-            objects.add(cantidad);
-            objects.add(saldo);
+            objects[0] = empList;
+            objects[1] = cantidad;
+            objects[2] = saldo;
 
 //            preparedStatement = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Kardex_Suministro_By_Id_Count(?,?,?,?)}");
 //            preparedStatement.setShort(1, opcion);
@@ -109,9 +106,11 @@ public class KardexADO {
 //            objects.add(integer);
 //            objects.add(cantidad);
 //            objects.add(total);
-        } catch (SQLException e) {
-            System.out.println("La operación de selección de SQL ha fallado: " + e);
-
+            return objects;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -122,10 +121,9 @@ public class KardexADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return objects;
     }
 
 }

@@ -1,7 +1,7 @@
 package controller.configuracion.comprobante;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -25,7 +25,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -61,7 +60,7 @@ public class FxTipoDocumentoController implements Initializable {
     @FXML
     private Text lblPredeterminado;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private int paginacion;
 
@@ -139,11 +138,8 @@ public class FxTipoDocumentoController implements Initializable {
                     lblPaginaSiguiente.setText("0");
                     lblPredeterminado.setText("Ninguno");
                 }
-            } else if (object instanceof String) {
-                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
-                lblPredeterminado.setText("Ninguno");
             } else {
-                tvList.setPlaceholder(Tools.placeHolderTableView("Error en traer los datos, intente nuevamente.", "-fx-text-fill:#a70820;", false));
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
                 lblPredeterminado.setText("Ninguno");
             }
             lblLoad.setVisible(false);
@@ -178,7 +174,7 @@ public class FxTipoDocumentoController implements Initializable {
     }
 
     private void openWindowAdd() throws IOException {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         URL url = getClass().getResource(FilesRouters.FX_TIPO_DOCUMENTO_PROCESO);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -189,15 +185,13 @@ public class FxTipoDocumentoController implements Initializable {
         Stage stage = WindowStage.StageLoaderModal(parent, "Nuevo comprobante", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.setOnHiding(w -> {
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
+        stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
         stage.show();
     }
 
     private void openWindowEdit() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_TIPO_DOCUMENTO_PROCESO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -217,9 +211,7 @@ public class FxTipoDocumentoController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Actualizar el comprobante", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } else {
             Tools.AlertMessageWarning(window, "Tipo de comprobante", "Seleccione un elemento de la lista.");
@@ -374,8 +366,8 @@ public class FxTipoDocumentoController implements Initializable {
         }
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

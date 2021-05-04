@@ -489,16 +489,15 @@ public class SuministroADO {
         }
     }
 
-    public static ArrayList<Object> ListarSuministros(short opcion, String clave, String nombreMarca, int categoria, int marca, int posicionPagina, int filasPorPagina) {
-        String selectStmt = "{call Sp_Listar_Suministros(?,?,?,?,?,?,?)}";
+    public static Object ListarSuministros(short opcion, String clave, String nombreMarca, int categoria, int marca, int posicionPagina, int filasPorPagina) {
         PreparedStatement preparedSuministros = null;
         PreparedStatement preparedTotales = null;
         ResultSet rsEmps = null;
-        ArrayList<Object> objects = new ArrayList<>();
-        ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
         try {
             DBUtil.dbConnect();
-            preparedSuministros = DBUtil.getConnection().prepareStatement(selectStmt);
+            Object[] objects = new Object[2];
+            ObservableList<SuministroTB> empList = FXCollections.observableArrayList();
+            preparedSuministros = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Suministros(?,?,?,?,?,?,?)}");
             preparedSuministros.setShort(1, opcion);
             preparedSuministros.setString(2, clave);
             preparedSuministros.setString(3, nombreMarca);
@@ -537,7 +536,6 @@ public class SuministroADO {
 
                 empList.add(suministroTB);
             }
-            objects.add(empList);
 
             preparedTotales = DBUtil.getConnection().prepareStatement("{call Sp_Listar_Suministros_Count(?,?,?,?,?)}");
             preparedTotales.setShort(1, opcion);
@@ -550,9 +548,15 @@ public class SuministroADO {
             if (rsEmps.next()) {
                 integer = rsEmps.getInt("Total");
             }
-            objects.add(integer);
-        } catch (SQLException e) {
-            System.out.println("Error en SuministroADO->ListarSuministros: " + e);
+
+            objects[0] = empList;
+            objects[1] = integer;
+
+            return objects;
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (preparedSuministros != null) {
@@ -566,10 +570,10 @@ public class SuministroADO {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-
+                return ex.getLocalizedMessage();
             }
         }
-        return objects;
+
     }
 
     public static SuministroTB Get_Suministros_For_Asignacion_By_Id(String idSuministro) {

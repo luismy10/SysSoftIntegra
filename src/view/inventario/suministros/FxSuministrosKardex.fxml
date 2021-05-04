@@ -97,7 +97,7 @@
                                     <HBox>
                                        <children>
                                           <TextField fx:id="txtSearch" onAction="#onActionSearch" prefHeight="30.0" prefWidth="320.0" promptText="Buscar...." styleClass="text-field-normal" />
-                                          <Button contentDisplay="GRAPHIC_ONLY" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSearchSuministro" onKeyPressed="#onKeyPressedSearchSuministro" prefHeight="30.0" styleClass="buttonBorder" text="0">
+                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSearchSuministro" onKeyPressed="#onKeyPressedSearchSuministro" prefHeight="30.0" styleClass="buttonBorder" text="Buscar">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -216,7 +216,7 @@
                                     </Label>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="lblCantidadActual" styleClass="labelRoboto15" text="0.0" textFill="#0e7ee5" />
+                                          <Label fx:id="lblCantidadActual" styleClass="labelRoboto15" text="0.00" textFill="#0e7ee5" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -234,7 +234,7 @@
                                     </Label>
                                     <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.4166666666666667em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="lblValorActual" styleClass="labelRoboto15" text="0.0" textFill="#0e7ee5" />
+                                          <Label fx:id="lblValorActual" styleClass="labelRoboto15" text="0.00" textFill="#0e7ee5" />
                                        </children>
                                     </HBox>
                                  </children>

@@ -1,14 +1,12 @@
 package controller.contactos.proveedores;
 
 import controller.operaciones.compras.FxComprasController;
-import controller.consultas.compras.FxComprasEditarController;
 import controller.reporte.FxCompraReporteController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -40,21 +39,29 @@ public class FxProveedorListaController implements Initializable {
     @FXML
     private TableView<ProveedorTB> tvList;
     @FXML
-    private TableColumn<ProveedorTB, Integer> tcId;
+    private TableColumn<ProveedorTB, String> tcId;
     @FXML
     private TableColumn<ProveedorTB, String> tcDocument;
     @FXML
     private TableColumn<ProveedorTB, String> tcRepresentative;
     @FXML
     private TableColumn<ProveedorTB, String> tcMovil;
+    @FXML
+    private Label lblPaginaActual;
+    @FXML
+    private Label lblPaginaSiguiente;
 
     private FxComprasController comprasController;
-
-    private FxComprasEditarController comprasEditarController;
 
     private FxCompraReporteController compraReporteController;
 
     private boolean status;
+
+    private int paginacion;
+
+    private int totalPaginacion;
+
+    private short opcion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -79,42 +86,71 @@ public class FxProveedorListaController implements Initializable {
             }
         });
 
-        tcId.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+        tcId.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
         tcDocument.setCellValueFactory(cellData -> Bindings.concat(
-                cellData.getValue().getTipoDocumentoName() + ": " + cellData.getValue().getNumeroDocumento())
+                cellData.getValue().getTipoDocumentoName() + "\n" + cellData.getValue().getNumeroDocumento())
         );
-        tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRazonSocial()
-        ));
+        tcRepresentative.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getRazonSocial()));
         tcMovil.setCellValueFactory(cellData -> Bindings.concat(
                 (cellData.getValue().getTelefono().equals("") ? "Sin N° de Teléfono" : cellData.getValue().getTelefono()).toUpperCase()
                 + "\n"
                 + (cellData.getValue().getCelular().equals("") ? "Sin N° de Celular" : cellData.getValue().getCelular()).toUpperCase()
         ));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+        paginacion = 1;
+        opcion = 0;
     }
 
-    public void fillCustomersTable(String value) {
+    public void initTable() {
+        if (!status) {
+            paginacion = 1;
+            fillCustomersTable("");
+            opcion = 0;
+        }
+    }
+
+    private void fillCustomersTable(String value) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
 
-        Task<List<ProveedorTB>> task = new Task<List<ProveedorTB>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ObservableList<ProveedorTB> call() {
-                return ProveedorADO.ListProveedor(value);
+            public Object call() {
+                return ProveedorADO.ListProveedor(value, (paginacion - 1) * 20, 20);
             }
         };
 
-        task.setOnSucceeded((e) -> {
-            tvList.setItems((ObservableList<ProveedorTB>) task.getValue());
+        task.setOnSucceeded(e -> {
+            Object result = task.getValue();
+            if (result instanceof Object[]) {
+                Object[] objects = (Object[]) result;
+                ObservableList<ProveedorTB> empList = (ObservableList<ProveedorTB>) objects[0];
+                if (!empList.isEmpty()) {
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
+                }
+            } else {
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) result, "-fx-text-fill:#a70820;", false));
+            }
             status = false;
         });
-        task.setOnFailed((e) -> {
+        task.setOnFailed(e -> {
             status = false;
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
         });
-        task.setOnScheduled((e) -> {
+        task.setOnScheduled(e -> {
             status = true;
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
         });
         exec.execute(task);
 
@@ -147,15 +183,22 @@ public class FxProveedorListaController implements Initializable {
             if (comprasController != null) {
                 comprasController.setLoadProveedor(tvList.getSelectionModel().getSelectedItem().getIdProveedor());
                 Tools.Dispose(apWindow);
-            } else if (comprasEditarController != null) {
-                comprasEditarController.setInitComprasValue(tvList.getSelectionModel().getSelectedItem().getNumeroDocumento(),
-                        tvList.getSelectionModel().getSelectedItem().getRazonSocial());
-                Tools.Dispose(apWindow);
             } else if (compraReporteController != null) {
                 compraReporteController.setInitCompraReporteValue(tvList.getSelectionModel().getSelectedItem().getIdProveedor(),
                         tvList.getSelectionModel().getSelectedItem().getRazonSocial());
                 Tools.Dispose(apWindow);
             }
+        }
+    }
+
+    private void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillCustomersTable("");
+                break;
+            case 1:
+                fillCustomersTable(txtSearch.getText());
+                break;
         }
     }
 
@@ -196,7 +239,9 @@ public class FxProveedorListaController implements Initializable {
                 && event.getCode() != KeyCode.SCROLL_LOCK
                 && event.getCode() != KeyCode.PAUSE) {
             if (!status) {
-                fillCustomersTable(txtSearch.getText());
+                paginacion = 1;
+                fillCustomersTable(txtSearch.getText().trim());
+                opcion = 0;
             }
         }
     }
@@ -223,17 +268,13 @@ public class FxProveedorListaController implements Initializable {
     @FXML
     private void onKeyPressedToReload(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (!status) {
-                fillCustomersTable("");
-            }
+            initTable();
         }
     }
 
     @FXML
     private void onActionToReload(ActionEvent event) {
-        if (!status) {
-            fillCustomersTable("");
-        }
+        initTable();
     }
 
     @FXML
@@ -262,12 +303,52 @@ public class FxProveedorListaController implements Initializable {
         executeEvent();
     }
 
-    public void setInitComprasController(FxComprasController comprasController) {
-        this.comprasController = comprasController;
+    @FXML
+    private void onKeyPressedAnterior(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!status) {
+                if (paginacion > 1) {
+                    paginacion--;
+                    onEventPaginacion();
+                }
+            }
+        }
     }
 
-    public void setInitComprasEditarController(FxComprasEditarController comprasEditarController) {
-        this.comprasEditarController = comprasEditarController;
+    @FXML
+    private void onActionAnterior(ActionEvent event) {
+        if (!status) {
+            if (paginacion > 1) {
+                paginacion--;
+                onEventPaginacion();
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSiguiente(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!status) {
+                if (paginacion < totalPaginacion) {
+                    paginacion++;
+                    onEventPaginacion();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onActionSiguiente(ActionEvent event) {
+        if (!status) {
+            if (paginacion < totalPaginacion) {
+                paginacion++;
+                onEventPaginacion();
+            }
+        }
+    }
+
+    public void setInitComprasController(FxComprasController comprasController) {
+        this.comprasController = comprasController;
     }
 
     public void setInitComprasReporteController(FxCompraReporteController compraReporteController) {

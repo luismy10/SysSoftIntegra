@@ -2,10 +2,10 @@ package controller.operaciones.guiaremision;
 
 import controller.contactos.clientes.FxClienteProcesoController;
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.menus.FxPrincipalController;
 import controller.operaciones.venta.FxVentaListaController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -42,7 +42,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.ClienteADO;
@@ -127,7 +126,7 @@ public class FxGuiaRemisionController implements Initializable {
     @FXML
     private TableColumn<GuiaRemisionDetalleTB, Button> tcOpcion;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -365,7 +364,7 @@ public class FxGuiaRemisionController implements Initializable {
                 if (objects.get(4) != null) {
                     ArrayList<TipoDocumentoTB> documentoTBs = (ArrayList<TipoDocumentoTB>) objects.get(4);
                     documentoTBs.forEach(cbDocumentoGuia.getItems()::add);
-                    if(cbDocumentoGuia.getItems().size()==1){
+                    if (cbDocumentoGuia.getItems().size() == 1) {
                         cbDocumentoGuia.getSelectionModel().select(0);
                     }
                 }
@@ -508,7 +507,7 @@ public class FxGuiaRemisionController implements Initializable {
 
     private void onEventCliente() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_CLIENTE_PROCESO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -518,7 +517,7 @@ public class FxGuiaRemisionController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Cliente", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.setValueAdd();
         } catch (IOException ex) {
@@ -528,7 +527,7 @@ public class FxGuiaRemisionController implements Initializable {
 
     private void openWindowSuministro() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -539,7 +538,7 @@ public class FxGuiaRemisionController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillSuministrosTable((short) 0, "");
         } catch (IOException ex) {
@@ -549,7 +548,7 @@ public class FxGuiaRemisionController implements Initializable {
 
     private void openWindowVentas() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -560,7 +559,7 @@ public class FxGuiaRemisionController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione una venta", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.loadInit();
         } catch (IOException ex) {
@@ -685,12 +684,12 @@ public class FxGuiaRemisionController implements Initializable {
                 guiaRemisionTB.setIdVendedor(Session.USER_ID);
                 guiaRemisionTB.setIdComprobante(cbDocumentoGuia.getSelectionModel().getSelectedItem().getIdTipoDocumento());
                 guiaRemisionTB.setEmail(txtEmail.getText().trim());
-                guiaRemisionTB.setIdMotivoTraslado(cbMotivoTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                guiaRemisionTB.setIdModalidadTraslado(cbModalidadTraslado.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                guiaRemisionTB.setIdMotivoTraslado(cbMotivoTraslado.getSelectionModel().getSelectedItem().getIdDetalle());
+                guiaRemisionTB.setIdModalidadTraslado(cbModalidadTraslado.getSelectionModel().getSelectedItem().getIdDetalle());
                 guiaRemisionTB.setFechaTraslado(Tools.getDatePicker(dtFechaTraslado));
                 guiaRemisionTB.setPesoBruto(Double.parseDouble(txtPesoBruto.getText()));
                 guiaRemisionTB.setNumeroBultos(Integer.parseInt(txtNumeroBultos.getText()));
-                guiaRemisionTB.setTipoDocumentoConducto(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                guiaRemisionTB.setTipoDocumentoConducto(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle());
                 guiaRemisionTB.setNumeroConductor(txtNumeroDocumento.getText().trim());
                 guiaRemisionTB.setNombreConductor(txtNombreConducto.getText().trim());
                 guiaRemisionTB.setTelefonoCelularConducto(txtTelefonoCelular.getText());
@@ -751,15 +750,16 @@ public class FxGuiaRemisionController implements Initializable {
             return t;
         });
 
-        Task<VentaTB> task = new Task<VentaTB>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            protected VentaTB call() {
+            protected Object call() {
                 return VentaADO.ListCompletaVentasDetalle(idVenta);
             }
         };
         task.setOnSucceeded(e -> {
-            VentaTB ventaTB = task.getValue();
-            if (ventaTB != null) {
+            Object object = task.getValue();
+            if (object instanceof VentaTB) {
+                VentaTB ventaTB = (VentaTB) object;
                 ArrayList<SuministroTB> empList = ventaTB.getSuministroTBs();
 
                 for (int i = 0; i < cbTipoComprobante.getItems().size(); i++) {
@@ -906,8 +906,7 @@ public class FxGuiaRemisionController implements Initializable {
         return tvList;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
-
 }

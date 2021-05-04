@@ -1,5 +1,6 @@
 package controller.configuracion.impresoras;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FontsPersonalize;
 import controller.tools.PrinterService;
 import controller.tools.Session;
@@ -42,7 +43,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
@@ -94,7 +94,7 @@ public class FxImpresoraController implements Initializable {
 
     private PrinterService printerService;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -468,8 +468,8 @@ public class FxImpresoraController implements Initializable {
         }
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+     public void setContent( FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

@@ -154,7 +154,7 @@ public class FxSuministrosCompraController implements Initializable {
 
         cbImpuesto.getItems().clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.isPredeterminado()));
         });
 
     }

@@ -82,12 +82,8 @@ public class SplashScreen extends Preloader {
                     preloaderStage.hide();
                     Platform.exit();
                     return;
-                }
-                
-                File licencia = new File("./archivos/connection.json");
-                
-                
-
+                }              
+           
                 DBUtil.dbConnect();
                 if (DBUtil.getConnection() != null) {
 
@@ -293,7 +289,7 @@ public class SplashScreen extends Preloader {
 
                     }
                 } else {
-                    Tools.AlertMessageError(preloaderStage.getScene().getRoot(), "Preloader", "No se pudo conectar al servidor, revise su conexión e intente nuevamente.");
+                    Tools.AlertMessageError(preloaderStage.getScene().getRoot(), "Preloader", "No se pudo conectar al servidor, revise su conexión e intente nuevamente ("+DBUtil.dbConnect()+")");
                     preloaderStage.hide();
                     Platform.exit();
                 }

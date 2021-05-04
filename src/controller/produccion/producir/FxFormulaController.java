@@ -1,5 +1,6 @@
 package controller.produccion.producir;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import java.io.IOException;
@@ -57,9 +58,7 @@ public class FxFormulaController implements Initializable {
     @FXML
     private Label lblPaginaSiguiente;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private int paginacion;
 
@@ -169,33 +168,32 @@ public class FxFormulaController implements Initializable {
             AnchorPane nodeFormulaProceso = fXMLFormulaProceso.load();
             FxFormulaAgregarController formulaProcesoController = fXMLFormulaProceso.getController();
             formulaProcesoController.setInitFormulaController(this);
-            formulaProcesoController.setContent(vbPrincipal, vbContent);
-            vbContent.getChildren().clear();
+            formulaProcesoController.setContent(fxPrincipalController);
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(nodeFormulaProceso, 0d);
             AnchorPane.setTopAnchor(nodeFormulaProceso, 0d);
             AnchorPane.setRightAnchor(nodeFormulaProceso, 0d);
             AnchorPane.setBottomAnchor(nodeFormulaProceso, 0d);
-            vbContent.getChildren().add(nodeFormulaProceso);
+            fxPrincipalController.getVbContent().getChildren().add(nodeFormulaProceso);
         } catch (IOException ex) {
             System.out.println("Controller formula proceso" + ex.getLocalizedMessage());
         }
     }
 
     private void openWindowFormulaProcesoEdit(String idFormula) {
-        try {
-            Tools.println(idFormula);
+        try {            
             FXMLLoader fXMLFormulaProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA_EDITAR));
             AnchorPane nodeFormulaProceso = fXMLFormulaProceso.load();
             FxFormulaEditarController formulaProcesoController = fXMLFormulaProceso.getController();
             formulaProcesoController.setInitFormulaController(this);
             formulaProcesoController.editFormulaProceso(idFormula);
-            formulaProcesoController.setContent(vbPrincipal, vbContent);
-            vbContent.getChildren().clear();
+            formulaProcesoController.setContent(fxPrincipalController);
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(nodeFormulaProceso, 0d);
             AnchorPane.setTopAnchor(nodeFormulaProceso, 0d);
             AnchorPane.setRightAnchor(nodeFormulaProceso, 0d);
             AnchorPane.setBottomAnchor(nodeFormulaProceso, 0d);
-            vbContent.getChildren().add(nodeFormulaProceso);
+            fxPrincipalController.getVbContent().getChildren().add(nodeFormulaProceso);
         } catch (IOException ex) {
             System.out.println("Controller formula proceso" + ex.getLocalizedMessage());
         }
@@ -391,9 +389,8 @@ public class FxFormulaController implements Initializable {
         return hbWindow;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

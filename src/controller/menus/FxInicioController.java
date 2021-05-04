@@ -88,7 +88,7 @@ public class FxInicioController implements Initializable {
             new PieChart.Data("Productos Excedentes", 0)
     );
 
-    private short count = 59;
+    private short count = 295;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -130,7 +130,7 @@ public class FxInicioController implements Initializable {
 //                    notificationState("Estado del inventario","Tiene un total de "+((int) arrayList.get(6))+" producto negativos,\n actualize su inventario por favor.","warning_large.png",Pos.TOP_RIGHT);
 //                    notificationState("SysSoftIntegra","Usa la AppSysSoftIntegra para realizar consular\n en tiempo real de sus tiendas.","logo.png",Pos.TOP_LEFT);
                 });
-                count = 59;
+                count = 259;
             }
         }, 0, 1, TimeUnit.SECONDS);
 
@@ -159,14 +159,14 @@ public class FxInicioController implements Initializable {
                 new PieChart.Data("Productos Excedentes", excedentes)
         );
         pcInventario.setData(datas);
-        
+
         vbProductoMasVendidos.getChildren().clear();
-        arrayList.forEach(e -> {        
-            productoModel(e.getNombreMarca(),Tools.roundingValue(e.getPrecioVentaGeneral(),2),Tools.roundingValue(e.getCantidad(),2));
+        arrayList.forEach(e -> {
+            productoModel(e.getNombreMarca(), Tools.roundingValue(e.getPrecioVentaGeneral(), 2), Tools.roundingValue(e.getCantidad(), 2));
         });
     }
 
-    private void productoModel(String product,String price,String quantity) {        
+    private void productoModel(String product, String price, String quantity) {
 
         HBox hBoxDetail = new HBox();
         hBoxDetail.setStyle("-fx-border-color: #cccccc;-fx-border-width: 0px 0px 1px 0px;");
@@ -190,7 +190,7 @@ public class FxInicioController implements Initializable {
         Label lblProducto = new Label(product);
         lblProducto.setStyle("-fx-text-fill:#020203;");
         lblProducto.getStyleClass().add("labelRobotoBold15");
-        Label lblPrice = new Label("Precio: "+price);
+        Label lblPrice = new Label("Precio: " + price);
         lblPrice.setStyle("-fx-text-fill:#545050;");
         lblPrice.getStyleClass().add("labelRoboto13");
         lblPrice.setMinWidth(Control.USE_COMPUTED_SIZE);
@@ -205,7 +205,7 @@ public class FxInicioController implements Initializable {
         HBox.setHgrow(vBoxQuantity, Priority.SOMETIMES);
         vBoxQuantity.setAlignment(Pos.CENTER_RIGHT);
         vBoxQuantity.setStyle("-fx-padding:0.6666666666666666em;");
-        Label lblQuantity = new Label("Cantidad: "+quantity);
+        Label lblQuantity = new Label("Cantidad: " + quantity);
         lblQuantity.setStyle("-fx-background-color: #0766cc;-fx-text-fill: #ffffff;-fx-padding: 10px 15px;-fx-border-radius: 0.25em;-fx-border-color: #0766cc;-fx-background-radius: 0.25em;");
         lblQuantity.getStyleClass().add("labelRoboto13");
         lblQuantity.setMinWidth(Control.USE_COMPUTED_SIZE);

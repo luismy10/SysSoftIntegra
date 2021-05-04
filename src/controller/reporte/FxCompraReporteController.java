@@ -1,8 +1,8 @@
 package controller.reporte;
 
 import controller.contactos.proveedores.FxProveedorListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.awt.HeadlessException;
@@ -26,7 +26,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -60,7 +59,7 @@ public class FxCompraReporteController implements Initializable {
     @FXML
     private HBox hbFormasPago;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private String idProveedor;
 
@@ -84,7 +83,7 @@ public class FxCompraReporteController implements Initializable {
                         Tools.getDatePicker(dpFechaInicial),
                         Tools.getDatePicker(dpFechaFinal),
                         idProveedor,
-                        cbFormasPagoSeleccionar.isSelected()? 0 : rbContado.isSelected() ? 1 : 2);
+                        cbFormasPagoSeleccionar.isSelected() ? 0 : rbContado.isSelected() ? 1 : 2);
                 if (list.isEmpty()) {
                     Tools.AlertMessageWarning(vbWindow, "Repsorte General de Compras", "No hay registros para mostrar en el reporte.");
                     return;
@@ -92,16 +91,15 @@ public class FxCompraReporteController implements Initializable {
                 double totalContado = 0;
                 double totalCredito = 0;
                 double totalAnulados = 0;
-                for(CompraTB c : list){
-                    if(c.getEstado() == 1){
-                        totalContado+=c.getTotal();
-                    }else if(c.getEstado() == 2){
-                        totalCredito+=c.getTotal();
-                    }else if(c.getEstado() == 3){
-                        totalAnulados+=c.getTotal();
+                for (CompraTB c : list) {
+                    if (c.getEstado() == 1) {
+                        totalContado += c.getTotal();
+                    } else if (c.getEstado() == 2) {
+                        totalCredito += c.getTotal();
+                    } else if (c.getEstado() == 3) {
+                        totalAnulados += c.getTotal();
                     }
                 }
-                
 
                 Map map = new HashMap();
                 map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
@@ -134,7 +132,7 @@ public class FxCompraReporteController implements Initializable {
 
     private void openWindowProveedores() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -145,9 +143,9 @@ public class FxCompraReporteController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.initTable());
             stage.show();
-            controller.fillCustomersTable("");
         } catch (IOException ex) {
             System.out.println("Controller reporte" + ex.getLocalizedMessage());
         }
@@ -202,8 +200,8 @@ public class FxCompraReporteController implements Initializable {
         txtProveedor.setText(datosProveedor);
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

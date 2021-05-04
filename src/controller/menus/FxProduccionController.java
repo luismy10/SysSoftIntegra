@@ -1,6 +1,5 @@
 package controller.menus;
 
-import controller.produccion.insumos.FxInsumoController;
 import controller.produccion.producir.FxFormulaController;
 import controller.produccion.producir.FxProducirController;
 import controller.tools.FilesRouters;
@@ -27,9 +26,7 @@ public class FxProduccionController implements Initializable {
     /*
     Objectos de la ventana principal y venta que agrega a los hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     /*
     Controller producir     
@@ -41,15 +38,6 @@ public class FxProduccionController implements Initializable {
     private FxProducirController controllerProducir;
 
     /*
-    Controller insumos     
-     */
-    private FXMLLoader fXMLInsumo;
-
-    private HBox nodeInsumo;
-
-    private FxInsumoController controllerInsumo;
-    
-      /*
     Controller formula     
      */
     private FXMLLoader fXMLFormula;
@@ -65,10 +53,6 @@ public class FxProduccionController implements Initializable {
             nodeProducir = fXMLProducir.load();
             controllerProducir = fXMLProducir.getController();
 
-            fXMLInsumo = new FXMLLoader(getClass().getResource(FilesRouters.FX_INSUMOS));
-            nodeInsumo = fXMLInsumo.load();
-            controllerInsumo = fXMLInsumo.getController();
-            
             fXMLFormula = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA));
             nodeFormula = fXMLFormula.load();
             controllerFormula = fXMLFormula.getController();
@@ -78,34 +62,23 @@ public class FxProduccionController implements Initializable {
     }
 
     private void openWindowProducir() {
-        controllerProducir.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerProducir.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeProducir, 0d);
         AnchorPane.setTopAnchor(nodeProducir, 0d);
         AnchorPane.setRightAnchor(nodeProducir, 0d);
         AnchorPane.setBottomAnchor(nodeProducir, 0d);
-        vbContent.getChildren().add(nodeProducir);    
-    }
-
-    private void openWindowInsumo() {
-        controllerInsumo.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeInsumo, 0d);
-        AnchorPane.setTopAnchor(nodeInsumo, 0d);
-        AnchorPane.setRightAnchor(nodeInsumo, 0d);
-        AnchorPane.setBottomAnchor(nodeInsumo, 0d);
-        vbContent.getChildren().add(nodeInsumo);
-        controllerInsumo.loadInitComponents();
+        fxPrincipalController.getVbContent().getChildren().add(nodeProducir);
     }
 
     private void openWindowFormula() {
-        controllerFormula.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerFormula.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeFormula, 0d);
         AnchorPane.setTopAnchor(nodeFormula, 0d);
         AnchorPane.setRightAnchor(nodeFormula, 0d);
         AnchorPane.setBottomAnchor(nodeFormula, 0d);
-        vbContent.getChildren().add(nodeFormula);        
+        fxPrincipalController.getVbContent().getChildren().add(nodeFormula);
     }
 
     @FXML
@@ -121,18 +94,6 @@ public class FxProduccionController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedInsumos(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowInsumo();
-        }
-    }
-
-    @FXML
-    private void onActionInsumos(ActionEvent event) {
-        openWindowInsumo();
-    }
-
-    @FXML
     private void onKeyPressedFormula(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowFormula();
@@ -144,9 +105,8 @@ public class FxProduccionController implements Initializable {
         openWindowFormula();
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

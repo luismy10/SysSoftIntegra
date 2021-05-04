@@ -5,6 +5,7 @@ import controller.operaciones.cortecaja.FxCajaController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.notacredito.FxNotaCreditoController;
+import controller.operaciones.pedidos.FxPedidosController;
 import controller.operaciones.venta.FxVentaController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -44,11 +45,9 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private VBox btnCorteCaja;
     /*
-    Objectos de la ventana principal y venta que agrega al os hijos
+    Objectos de la ventana principal y venta que agrega a los hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     /*
     Controller ventas
@@ -82,7 +81,7 @@ public class FxOperacionesController implements Initializable {
      */
     private FXMLLoader fXMLCotizacion;
 
-    private HBox nodeCotizacion;
+    private AnchorPane nodeCotizacion;
 
     private FxCotizacionController controllerCotizacion;
 
@@ -111,6 +110,15 @@ public class FxOperacionesController implements Initializable {
     private AnchorPane nodeNotaCredito;
 
     private FxNotaCreditoController controllerNotaCredito;
+
+    /*
+    Controller pedidos
+     */
+    private FXMLLoader fXMLPedido;
+
+    private AnchorPane nodePedido;
+
+    private FxPedidosController controllerPedido;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -146,6 +154,10 @@ public class FxOperacionesController implements Initializable {
             fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO));
             nodeNotaCredito = fXMLNotaCredito.load();
             controllerNotaCredito = fXMLNotaCredito.getController();
+
+            fXMLPedido = new FXMLLoader(getClass().getResource(FilesRouters.FX_PEDIDOS));
+            nodePedido = fXMLPedido.load();
+            controllerPedido = fXMLPedido.getController();
 
         } catch (IOException ex) {
             System.out.println("Error en Ingresos Controller:" + ex.getLocalizedMessage());
@@ -187,79 +199,88 @@ public class FxOperacionesController implements Initializable {
     }
 
     private void openWindowVenta() {
-        controllerVentaOld.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerVentaOld.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeVentaOld, 0d);
         AnchorPane.setTopAnchor(nodeVentaOld, 0d);
         AnchorPane.setRightAnchor(nodeVentaOld, 0d);
         AnchorPane.setBottomAnchor(nodeVentaOld, 0d);
-        vbContent.getChildren().add(nodeVentaOld);
+        fxPrincipalController.getVbContent().getChildren().add(nodeVentaOld);
         controllerVentaOld.loadValidarCaja();
         controllerVentaOld.loadElements();
     }
 
     private void openWindowVentaNueva() {
-        controllerVentaNew.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerVentaNew.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeVentaNew, 0d);
         AnchorPane.setTopAnchor(nodeVentaNew, 0d);
         AnchorPane.setRightAnchor(nodeVentaNew, 0d);
         AnchorPane.setBottomAnchor(nodeVentaNew, 0d);
-        vbContent.getChildren().add(nodeVentaNew);
+        fxPrincipalController.getVbContent().getChildren().add(nodeVentaNew);
         controllerVentaNew.loadValidarCaja();
         controllerVentaNew.loadElements();
     }
 
     private void openWindowCompra() {
-        controllerCompras.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerCompras.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCompra, 0d);
         AnchorPane.setTopAnchor(nodeCompra, 0d);
         AnchorPane.setRightAnchor(nodeCompra, 0d);
         AnchorPane.setBottomAnchor(nodeCompra, 0d);
-        vbContent.getChildren().add(nodeCompra);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCompra);
     }
 
     private void openWindowCotizacion() {
-        controllerCotizacion.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerCotizacion.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCotizacion, 0d);
         AnchorPane.setTopAnchor(nodeCotizacion, 0d);
         AnchorPane.setRightAnchor(nodeCotizacion, 0d);
         AnchorPane.setBottomAnchor(nodeCotizacion, 0d);
-        vbContent.getChildren().add(nodeCotizacion);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCotizacion);
     }
 
     private void openWindowGuiaRemision() {
-        controllerGuiaRemision.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerGuiaRemision.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeGuiaRemision, 0d);
         AnchorPane.setTopAnchor(nodeGuiaRemision, 0d);
         AnchorPane.setRightAnchor(nodeGuiaRemision, 0d);
         AnchorPane.setBottomAnchor(nodeGuiaRemision, 0d);
-        vbContent.getChildren().add(nodeGuiaRemision);
+        fxPrincipalController.getVbContent().getChildren().add(nodeGuiaRemision);
     }
 
     private void openWindowCorteCaja() {
-        controllerCorteCaja.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerCorteCaja.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCorteCaja, 0d);
         AnchorPane.setTopAnchor(nodeCorteCaja, 0d);
         AnchorPane.setRightAnchor(nodeCorteCaja, 0d);
         AnchorPane.setBottomAnchor(nodeCorteCaja, 0d);
-        vbContent.getChildren().add(nodeCorteCaja);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCorteCaja);
 
     }
 
     private void openWindowNotaCredito() {
-        controllerNotaCredito.setContent(vbPrincipal,vbContent);
-        vbContent.getChildren().clear();
+        controllerNotaCredito.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeNotaCredito, 0d);
         AnchorPane.setTopAnchor(nodeNotaCredito, 0d);
         AnchorPane.setRightAnchor(nodeNotaCredito, 0d);
         AnchorPane.setBottomAnchor(nodeNotaCredito, 0d);
-        vbContent.getChildren().add(nodeNotaCredito);
+        fxPrincipalController.getVbContent().getChildren().add(nodeNotaCredito);
+    }
 
+    private void openWindowPedidos() {
+        controllerPedido.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodePedido, 0d);
+        AnchorPane.setTopAnchor(nodePedido, 0d);
+        AnchorPane.setRightAnchor(nodePedido, 0d);
+        AnchorPane.setBottomAnchor(nodePedido, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodePedido);
     }
 
     @FXML
@@ -333,8 +354,8 @@ public class FxOperacionesController implements Initializable {
     private void onActionCotizacion(ActionEvent event) {
         openWindowCotizacion();
     }
-    
-     @FXML
+
+    @FXML
     private void onKeyPresseNotaCredito(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             openWindowNotaCredito();
@@ -346,9 +367,20 @@ public class FxOperacionesController implements Initializable {
         openWindowNotaCredito();
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
-    }   
+    @FXML
+    private void onKeyPressedPedidos(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowPedidos();
+        }
+    }
+
+    @FXML
+    private void onActioPedidos(ActionEvent event) {
+        openWindowPedidos();
+    }
+
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
+    }
 
 }

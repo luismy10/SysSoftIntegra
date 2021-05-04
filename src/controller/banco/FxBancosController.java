@@ -1,7 +1,7 @@
 package controller.banco;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -31,7 +31,6 @@ import model.BancoADO;
 import model.BancoTB;
 
 public class FxBancosController implements Initializable {
-
     @FXML
     private HBox hbWindow;
     @FXML
@@ -51,9 +50,7 @@ public class FxBancosController implements Initializable {
     @FXML
     private TableColumn<BancoTB, String> tcForma;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -113,15 +110,15 @@ public class FxBancosController implements Initializable {
             HBox node = fXMLPrincipal.load();
 
             FxBancoHistorialController controller = fXMLPrincipal.getController();
-            controller.setInitComptrasController(this, vbPrincipal, vbContent);
+            controller.setInitComptrasController(this, fxPrincipalController);
             controller.loadBanco(tvList.getSelectionModel().getSelectedItem().getIdBanco());
 
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
 
         } catch (IOException ex) {
             System.out.println("Controller banco" + ex.getLocalizedMessage());
@@ -130,7 +127,7 @@ public class FxBancosController implements Initializable {
 
     private void eventNewBanco() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_BANCO_PROCESO);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -141,7 +138,7 @@ public class FxBancosController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Registre una nueva cuenta", hbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
 
         } catch (IOException ex) {
@@ -157,7 +154,7 @@ public class FxBancosController implements Initializable {
                     tvList.getSelectionModel().select(0);
                 }
             } else {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_BANCO_PROCESO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -168,7 +165,7 @@ public class FxBancosController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Editar cuenta", hbWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w ->fxPrincipalController.closeFondoModal());
                 stage.show();
                 controller.loadEditBanco(tvList.getSelectionModel().getSelectedItem().getIdBanco());
             }
@@ -311,9 +308,8 @@ public class FxBancosController implements Initializable {
         return hbWindow;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+   
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
-
 }

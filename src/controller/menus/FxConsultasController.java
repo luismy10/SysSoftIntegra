@@ -8,6 +8,7 @@ import controller.operaciones.cortecaja.FxCajaConsultasController;
 import controller.operaciones.cotizacion.FxCotizacionRealizadasController;
 import controller.operaciones.guiaremision.FxGuiaRemisionRealizadasController;
 import controller.operaciones.notacredito.FxNotaCreditoRealizadasController;
+import controller.operaciones.pedidos.FxPedidosRealizadosController;
 import controller.operaciones.venta.FxVentaRealizadasController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -57,12 +58,12 @@ public class FxConsultasController implements Initializable {
     private VBox btnGuiaRemision;
     @FXML
     private VBox btnNotaCredito;
+    @FXML
+    private VBox btnPedidos;
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     /*
     Controller ventas realizadas
@@ -145,6 +146,15 @@ public class FxConsultasController implements Initializable {
 
     private FxNotaCreditoRealizadasController notaCreditoController;
 
+    /*
+    Controller pedidos consultas
+     */
+    private FXMLLoader fXMLPedidos;
+
+    private VBox nodePedidos;
+
+    private FxPedidosRealizadosController pedidosRealizadosController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -184,6 +194,10 @@ public class FxConsultasController implements Initializable {
             nodeNotaCredito = fXMLNotaCredito.load();
             notaCreditoController = fXMLNotaCredito.getController();
 
+            fXMLPedidos = new FXMLLoader(getClass().getResource(FilesRouters.FX_PEDIDO_REALIZADOS));
+            nodePedidos = fXMLPedidos.load();
+            pedidosRealizadosController = fXMLPedidos.getController();
+
         } catch (IOException ex) {
             System.out.println("Error en Inventario Controller:" + ex.getLocalizedMessage());
         }
@@ -219,102 +233,112 @@ public class FxConsultasController implements Initializable {
     }
 
     private void openWindowVentaRealizadas() {
-        ventaRealizadasController.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        ventaRealizadasController.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setTopAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
-        vbContent.getChildren().add(nodeVentaRealizadas);
+        fxPrincipalController.getVbContent().getChildren().add(nodeVentaRealizadas);
         ventaRealizadasController.loadInit();
     }
 
     private void openWindowCotizaciones() {
-        controllerCotizaciones.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerCotizaciones.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCotizaciones, 0d);
         AnchorPane.setTopAnchor(nodeCotizaciones, 0d);
         AnchorPane.setRightAnchor(nodeCotizaciones, 0d);
         AnchorPane.setBottomAnchor(nodeCotizaciones, 0d);
-        vbContent.getChildren().add(nodeCotizaciones);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCotizaciones);
         controllerCotizaciones.loadInit();
     }
 
     private void openWindowGuiaRemision() {
-        controllerGuiaRemision.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerGuiaRemision.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeGuiaRemision, 0d);
         AnchorPane.setTopAnchor(nodeGuiaRemision, 0d);
         AnchorPane.setRightAnchor(nodeGuiaRemision, 0d);
         AnchorPane.setBottomAnchor(nodeGuiaRemision, 0d);
-        vbContent.getChildren().add(nodeGuiaRemision);
+        fxPrincipalController.getVbContent().getChildren().add(nodeGuiaRemision);
         controllerGuiaRemision.loadInit();
     }
 
     private void openWindowPurchasesMade() {
-        controllerComprasRealizadas.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerComprasRealizadas.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeComprasRealizadas, 0d);
         AnchorPane.setTopAnchor(nodeComprasRealizadas, 0d);
         AnchorPane.setRightAnchor(nodeComprasRealizadas, 0d);
         AnchorPane.setBottomAnchor(nodeComprasRealizadas, 0d);
-        vbContent.getChildren().add(nodeComprasRealizadas);
+        fxPrincipalController.getVbContent().getChildren().add(nodeComprasRealizadas);
         if (controllerComprasRealizadas.getTvList().getItems().isEmpty()) {
             controllerComprasRealizadas.fillPurchasesTable((short) 0, "", Tools.getDate(), Tools.getDate(), 0);
         }
     }
 
     private void openWindowCortesCaja() {
-        controlleCajaConsultas.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controlleCajaConsultas.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCajaConsultas, 0d);
         AnchorPane.setTopAnchor(nodeCajaConsultas, 0d);
         AnchorPane.setRightAnchor(nodeCajaConsultas, 0d);
         AnchorPane.setBottomAnchor(nodeCajaConsultas, 0d);
-        vbContent.getChildren().add(nodeCajaConsultas);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCajaConsultas);
     }
 
     private void openWindowCuentasPorCobrar() {
-        controlleCuentasPorCobrar.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controlleCuentasPorCobrar.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setTopAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setRightAnchor(nodeCuentasPorCobrar, 0d);
         AnchorPane.setBottomAnchor(nodeCuentasPorCobrar, 0d);
-        vbContent.getChildren().add(nodeCuentasPorCobrar);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCuentasPorCobrar);
         controlleCuentasPorCobrar.loadTableCuentasPorCobrar();
     }
 
     private void openWindowCuentasPorPagar() {
-        controlleCuentasPorPagar.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controlleCuentasPorPagar.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCuentasPorPagar, 0d);
         AnchorPane.setTopAnchor(nodeCuentasPorPagar, 0d);
         AnchorPane.setRightAnchor(nodeCuentasPorPagar, 0d);
         AnchorPane.setBottomAnchor(nodeCuentasPorPagar, 0d);
-        vbContent.getChildren().add(nodeCuentasPorPagar);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCuentasPorPagar);
         controlleCuentasPorPagar.loadTableCuentasPorPagar();
     }
 
     private void openWindowBancos() {
-        bancosController.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        bancosController.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeBancos, 0d);
         AnchorPane.setTopAnchor(nodeBancos, 0d);
         AnchorPane.setRightAnchor(nodeBancos, 0d);
         AnchorPane.setBottomAnchor(nodeBancos, 0d);
-        vbContent.getChildren().add(nodeBancos);
+        fxPrincipalController.getVbContent().getChildren().add(nodeBancos);
         bancosController.loadTableViewBanco("");
     }
 
     private void openWindowNotaCredito() {
-        notaCreditoController.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        notaCreditoController.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeNotaCredito, 0d);
         AnchorPane.setTopAnchor(nodeNotaCredito, 0d);
         AnchorPane.setRightAnchor(nodeNotaCredito, 0d);
         AnchorPane.setBottomAnchor(nodeNotaCredito, 0d);
-        vbContent.getChildren().add(nodeNotaCredito);
+        fxPrincipalController.getVbContent().getChildren().add(nodeNotaCredito);
+    }
+
+    private void openWindowPedidos() {
+        pedidosRealizadosController.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodePedidos, 0d);
+        AnchorPane.setTopAnchor(nodePedidos, 0d);
+        AnchorPane.setRightAnchor(nodePedidos, 0d);
+        AnchorPane.setBottomAnchor(nodePedidos, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodePedidos);
     }
 
     @FXML
@@ -425,9 +449,20 @@ public class FxConsultasController implements Initializable {
         openWindowBancos();
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    @FXML
+    private void onKeyPressedPedidos(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowPedidos();
+        }
+    }
+
+    @FXML
+    private void onActionPedidos(ActionEvent event) {
+        openWindowPedidos();
+    }
+
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

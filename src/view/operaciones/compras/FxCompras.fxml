@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fx:id="spWindow" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasController">
+<ScrollPane fx:id="spWindow" fitToHeight="true" fitToWidth="true" styleClass="scroll-pane-secundario" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.compras.FxComprasController">
    <content>
       <VBox style="-fx-background-color: white;">
          <children>
@@ -130,7 +130,7 @@
                                     <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
                                           <ComboBox fx:id="cbImpuestos" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="150.0" promptText="- Seleccione -" HBox.hgrow="ALWAYS" />
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSumarImpuesto" onKeyPressed="#onKeyPressedSumarImpuesto" prefHeight="30.0" styleClass="buttonLight" text="Procesar">
+                                          <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSumarImpuesto" onKeyPressed="#onKeyPressedSumarImpuesto" prefHeight="30.0" styleClass="buttonLight" text="Procesar">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -183,7 +183,7 @@
                         </HBox>
                         <HBox style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="340.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="tvList" fixedCellSize="-0.0" onMouseClicked="#onMouseClickedList" prefHeight="280.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="tcAccion" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Acción" />
                                     <TableColumn fx:id="tcCantidad" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Cantidad" />
@@ -208,7 +208,7 @@
                                                 <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto11" text="(Visibles en el documento impreso)" textFill="#020203" wrapText="true" />
                                              </children>
                                           </VBox>
-                                          <TextArea fx:id="txtNotas" prefHeight="100.0" prefWidth="200.0" wrapText="true" />
+                                          <TextArea fx:id="txtNotas" prefHeight="50.0" prefWidth="200.0" wrapText="true" />
                                        </children>
                                     </VBox>
                                     <VBox>
@@ -219,7 +219,7 @@
                                                 <Label alignment="CENTER_RIGHT" prefHeight="35.0" styleClass="labelRoboto11" text="(No visibles en el documento impreso)" textFill="#020203" wrapText="true" />
                                              </children>
                                           </VBox>
-                                          <TextArea fx:id="txtObservaciones" prefHeight="100.0" prefWidth="206.0" wrapText="true" />
+                                          <TextArea fx:id="txtObservaciones" prefHeight="50.0" prefWidth="206.0" wrapText="true" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -236,6 +236,7 @@
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
                                           <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPORTE BRUTO:" textFill="#020203" />
@@ -246,19 +247,8 @@
                                           <Label fx:id="lblSubTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPUESTO GENERADO:" textFill="#020203" GridPane.rowIndex="3" />
                                           <Label fx:id="lblImpuesto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                       </children>
-                                    </GridPane>
-                                    <GridPane style="-fx-hgap: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPORTE NETO:" textFill="#020203" />
-                                          <Label fx:id="lblTotalNeto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
+                                          <Label maxWidth="1.7976931348623157E308" style="-fx-padding: 0.4166666666666667em 0em  0.4166666666666667em 0em;" styleClass="labelRoboto13" text="IMPORTE NETO:" textFill="#020203" GridPane.rowIndex="4" />
+                                          <Label fx:id="lblTotalNeto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                        </children>
                                     </GridPane>
                                  </children>

@@ -2,8 +2,9 @@ package controller.operaciones.compras;
 
 import controller.contactos.proveedores.FxProveedorListaController;
 import controller.inventario.suministros.FxSuministrosCompraController;
+import controller.inventario.suministros.FxSuministrosListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.SearchComboBox;
 import controller.tools.Session;
 import controller.tools.Tools;
@@ -35,7 +36,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.CompraTB;
@@ -107,7 +107,7 @@ public class FxComprasController implements Initializable {
     @FXML
     private ComboBox<ImpuestoTB> cbImpuestos;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private ObservableList<LoteTB> loteTBs;
 
@@ -160,7 +160,6 @@ public class FxComprasController implements Initializable {
         Tools.actualDate(Tools.getDate(), tpFechaCompra);
 
         SearchComboBox<ProveedorTB> searchComboBox = new SearchComboBox<>(cbProveedor, false);
-//        searchComboBox.setFilter((item, text) -> item.getRazonSocial().toLowerCase().contains(text.toLowerCase()) || item.getNumeroDocumento().toLowerCase().contains(text.toLowerCase()));
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
@@ -267,7 +266,7 @@ public class FxComprasController implements Initializable {
 
         cbImpuestos.getItems().clear();
         ImpuestoADO.GetTipoImpuestoCombBox().forEach(e -> {
-            cbImpuestos.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            cbImpuestos.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.isPredeterminado()));
         });
     }
 
@@ -298,9 +297,9 @@ public class FxComprasController implements Initializable {
     }
 
     private void openAlertMessageWarning(String message) {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         Tools.AlertMessageWarning(spWindow, "Compras", message);
-        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+        fxPrincipalController.closeFondoModal();
     }
 
     private void openWindowRegister() {
@@ -333,7 +332,7 @@ public class FxComprasController implements Initializable {
                 compraTB.setNotas(txtNotas.getText().trim().isEmpty() ? "" : txtNotas.getText().trim());
                 compraTB.setUsuario(Session.USER_ID);
 
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_COMPRAS_PROCESO);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -345,7 +344,7 @@ public class FxComprasController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Pago de la compra", spWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding((w) -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding((w) -> fxPrincipalController.closeFondoModal());
                 stage.show();
             } catch (IOException ex) {
                 System.out.println("Controller compras" + ex.getLocalizedMessage());
@@ -354,7 +353,24 @@ public class FxComprasController implements Initializable {
     }
 
     private void openWindowSuministrasAdd() {
-        WindowStage.openWindowSuministrasAdd(vbPrincipal, spWindow, this);
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = WindowStage.class.getClassLoader().getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxSuministrosListaController controller = fXMLLoader.getController();
+            controller.setInitComprasController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Suministros", spWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.getTxtSearch().requestFocus());
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Controller compras" + ex.getLocalizedMessage());
+        }
     }
 
     private void openWindowSuministroEdit() {
@@ -363,7 +379,7 @@ public class FxComprasController implements Initializable {
             detalleCompraTBs = tvList.getSelectionModel().getSelectedItems();
             detalleCompraTBs.forEach(e -> {
                 try {
-                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                    fxPrincipalController.openFondoModal();
                     URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_COMPRA);
                     FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                     Parent parent = fXMLLoader.load(url.openStream());
@@ -374,7 +390,7 @@ public class FxComprasController implements Initializable {
                     Stage stage = WindowStage.StageLoaderModal(parent, "Editar suministro", spWindow.getScene().getWindow());
                     stage.setResizable(false);
                     stage.sizeToScene();
-                    stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                    stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                     stage.show();
 
                     DetalleCompraTB detalleCompraTB = new DetalleCompraTB();
@@ -465,7 +481,7 @@ public class FxComprasController implements Initializable {
 
     private void openWindowProvedores() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_PROVEEDORES_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -476,11 +492,9 @@ public class FxComprasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Proveedor", spWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            });
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.setOnShown(w -> controller.initTable());
             stage.show();
-            controller.fillCustomersTable("");
         } catch (IOException ex) {
             System.out.println("Controller compras" + ex.getLocalizedMessage());
         }
@@ -687,8 +701,8 @@ public class FxComprasController implements Initializable {
         return loteTBs;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController principalController) {
+        this.fxPrincipalController = principalController;
     }
 
 }

@@ -1,5 +1,6 @@
 package controller.reporte;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -40,7 +41,7 @@ public class FxGlobalReporteController implements Initializable {
     @FXML
     private DatePicker dpFechaFinal;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -132,8 +133,8 @@ public class FxGlobalReporteController implements Initializable {
         openWindowReporte();
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

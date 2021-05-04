@@ -18,7 +18,7 @@
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-background-color: white; -fx-padding: 0.8333333333333334em;">
                     <children>
-                        <Text fx:id="lblFechaActual" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="Jueves 12 de Enero del 2018" />
+                        <Text fx:id="lblFechaActual" fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="Jueves 12 de Enero del 2018" />
                     </children>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefHeight="66.0" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
@@ -254,7 +254,7 @@
                 <HBox alignment="BASELINE_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 1.6666666666666667em;" VBox.vgrow="ALWAYS">
                     <children>
 
-                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #6c757d; -fx-border-color: #6c757d; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
@@ -275,7 +275,7 @@
                         
 
 
-                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #6c757d; -fx-border-color: #6c757d; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
@@ -294,7 +294,7 @@
                             </children>
                         </AnchorPane>
 
-                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #6c757d; -fx-border-color: #6c757d; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
@@ -313,7 +313,7 @@
                             </children>
                         </AnchorPane>
 
-                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #607D8B; -fx-border-color: #607D8B; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+                        <AnchorPane prefWidth="240.0" style="-fx-background-color: #6c757d; -fx-border-color: #6c757d; -fx-border-radius: 4; -fx-background-radius: 4;" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
                             <children>
                                 <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
@@ -339,9 +339,9 @@
                     <children>
                   <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" styleClass="labelRoboto17">
+                        <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
                            <children>
-                              <Label text="Los 10 Productos Más Vendidos del Mes y Día" textFill="#020203" />
+                              <Label styleClass="labelRoboto15" text="Los 10 Productos Más Vendidos del Mes y Día" textFill="#020203" />
                            </children>
                         </HBox>
                         <VBox fx:id="vbProductoMasVendidos" />
@@ -349,7 +349,12 @@
                   </VBox>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                              <PieChart fx:id="pcInventario" title="Estado del Inventario" />
+                        <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;">
+                           <children>
+                              <Label styleClass="labelRoboto15" text="Estado del Inventario" textFill="#020203" />
+                           </children>
+                        </HBox>
+                              <PieChart fx:id="pcInventario" styleClass="labelRoboto13" />
                      </children>
                   </VBox>
                     </children>

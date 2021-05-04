@@ -310,14 +310,14 @@ public class FxBienvenidaController implements Initializable {
         } else {
 
             EmpresaTB empresaTB = new EmpresaTB();
-            empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            empresaTB.setGiroComerial(cbGiroComercial.getSelectionModel().getSelectedItem().getIdDetalle());
             empresaTB.setNombre(txtRepresentante.getText());
             empresaTB.setTelefono(txtTelefono.getText());
             empresaTB.setCelular(txtCelular.getText());
             empresaTB.setPaginaWeb(txtPaginasWeb.getText());
             empresaTB.setEmail(txtEmail.getText());
             empresaTB.setDomicilio(txtDomicilio.getText());
-            empresaTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            empresaTB.setTipoDocumento(cbTipoDocumento.getSelectionModel().getSelectedItem().getIdDetalle());
             empresaTB.setNumeroDocumento(txtNumeroDocumento.getText());
             empresaTB.setRazonSocial(txtRazonSocial.getText());
             empresaTB.setNombreComercial(txtNombreComercial.getText());

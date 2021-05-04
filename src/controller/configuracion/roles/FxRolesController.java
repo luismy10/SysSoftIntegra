@@ -1,5 +1,6 @@
 package controller.configuracion.roles;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -17,7 +18,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.MenuADO;
@@ -37,7 +37,7 @@ public class FxRolesController implements Initializable {
     @FXML
     private ListView<CheckBox> lvPrivilegios;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -46,7 +46,7 @@ public class FxRolesController implements Initializable {
 
     private void onViewRolesAgregar() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_ROLES_AGREGAR);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -56,7 +56,7 @@ public class FxRolesController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Rol", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
 
@@ -67,7 +67,7 @@ public class FxRolesController implements Initializable {
     private void onViewRolesEditar() {
         if (lvRol.getSelectionModel().getSelectedIndex() >= 0) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_ROLES_EDITAR);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -78,7 +78,7 @@ public class FxRolesController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Editar Rol", window.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                 stage.show();
             } catch (IOException ex) {
             }
@@ -214,8 +214,8 @@ public class FxRolesController implements Initializable {
         eventReload();
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent( FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

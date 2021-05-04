@@ -55,7 +55,7 @@ public class FxAsignacionController implements Initializable {
             if (confirmation == 1) {
                 DirectorioTB directorioTB = new DirectorioTB();
                 directorioTB.setIdDirectorio(idDirectorio);
-                directorioTB.setAtributo(cbAtributo.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                directorioTB.setAtributo(cbAtributo.getSelectionModel().getSelectedItem().getIdDetalle());
                 directorioTB.setValor(txtValor.getText());
                 directorioTB.setIdPersona(idPersona);
                 String result = DirectorioADO.CrudEntity(directorioTB);
@@ -119,7 +119,7 @@ public class FxAsignacionController implements Initializable {
         btnToAction.getStyleClass().add("buttonFourth");
         ObservableList<DetalleTB> lsatrib = cbAtributo.getItems();
         for (int i = 0; i < lsatrib.size(); i++) {
-            if (idAtributo == lsatrib.get(i).getIdDetalle().get()) {
+            if (idAtributo == lsatrib.get(i).getIdDetalle()) {
                 cbAtributo.getSelectionModel().select(i);
                 break;
             }

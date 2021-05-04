@@ -16,15 +16,16 @@ public class DBUtil {
     private static final String URL = "jdbc:sqlserver://" + ADDRES + ":" + PORT + ";databaseName=" + DATABASENAME + "";
     ///private static final String URL = "jdbc:mysql://"+ ADDRES +":"+PORT+"/"+DATABASENAME+"";
 
-    public static void dbConnect() {
+    public static String dbConnect() {
         try {
             if (connection == null) {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 //Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error en conexión: " + e.getLocalizedMessage());
+            return "ok";
+        } catch (SQLException | ClassNotFoundException ex) {
+            return ex.getLocalizedMessage();
         }
     }
 

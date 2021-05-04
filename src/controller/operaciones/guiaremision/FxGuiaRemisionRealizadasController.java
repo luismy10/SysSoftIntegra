@@ -1,5 +1,6 @@
 package controller.operaciones.guiaremision;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import java.io.IOException;
@@ -62,9 +63,7 @@ public class FxGuiaRemisionRealizadasController implements Initializable {
     @FXML
     private Label lblPaginaSiguiente;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -128,14 +127,14 @@ public class FxGuiaRemisionRealizadasController implements Initializable {
             ScrollPane node = fXMLLoader.load();
             //Controlller here
             FxGuiaRemisionDetalleController controller = fXMLLoader.getController();
-            controller.setInitGuiaRemisionRealizadasController(this, vbPrincipal, vbContent);
+            controller.setInitGuiaRemisionRealizadasController(this,fxPrincipalController);
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
             controller.setInitComponents(tvList.getSelectionModel().getSelectedItem().getIdGuiaRemision());
         } else {
             Tools.AlertMessageWarning(hbWindow, "Cotizaciones", "Debe seleccionar una compra de la lista");
@@ -253,9 +252,9 @@ public class FxGuiaRemisionRealizadasController implements Initializable {
         return hbWindow;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+  
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

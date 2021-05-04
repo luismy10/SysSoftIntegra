@@ -489,7 +489,7 @@ public class GlobalADO {
             statementImpuesto.setString(6, impuestoTB.getNombreImpuesto());
             statementImpuesto.setString(7, impuestoTB.getLetra());
             statementImpuesto.setString(8, impuestoTB.getCategoria());
-            statementImpuesto.setBoolean(9, impuestoTB.getPredeterminado());
+            statementImpuesto.setBoolean(9, impuestoTB.isPredeterminado());
             statementImpuesto.setBoolean(10, impuestoTB.isSistema());
             statementImpuesto.addBatch();
 

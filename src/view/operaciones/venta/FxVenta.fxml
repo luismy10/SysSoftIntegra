@@ -41,7 +41,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRobotoMedium15" text="Caja Actual: PROPIA" textFill="#025379" underline="true">
+                        <Label styleClass="labelRoboto15" text="Caja Actual: PROPIA" textFill="#025379" underline="true">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

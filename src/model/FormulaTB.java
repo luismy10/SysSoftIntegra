@@ -24,9 +24,9 @@ public class FormulaTB {
 
     private SuministroTB suministroTB;
 
-    private ArrayList<InsumoTB> insumoTBs;
+    private ArrayList<SuministroTB> suministroTBs;
 
-    public FormulaTB() {
+    public FormulaTB() { 
     }
 
     public int getId() {
@@ -109,12 +109,12 @@ public class FormulaTB {
         this.suministroTB = suministroTB;
     }
 
-    public ArrayList<InsumoTB> getInsumoTBs() {
-        return insumoTBs;
+    public ArrayList<SuministroTB> getSuministroTBs() {
+        return suministroTBs;
     }
 
-    public void setInsumoTBs(ArrayList<InsumoTB> insumoTBs) {
-        this.insumoTBs = insumoTBs;
+    public void setSuministroTBs(ArrayList<SuministroTB> suministroTBs) {
+        this.suministroTBs = suministroTBs;
     }
 
     @Override

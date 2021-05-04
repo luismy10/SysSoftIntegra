@@ -1,7 +1,6 @@
 package controller.menus;
 
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -12,7 +11,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -24,12 +22,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.DBUtil;
@@ -42,15 +38,13 @@ public class FxPrincipalController implements Initializable {
     @FXML
     private ScrollPane spWindow;
     @FXML
-    private AnchorPane vbPrincipal;
+    private HBox hbFondoModal;
+    @FXML
+    private HBox hbLoadModulos;
     @FXML
     private AnchorPane vbContent;
     @FXML
     private Label lblPuesto;
-    @FXML
-    private ImageView imState;
-    @FXML
-    private Text lblEstado;
     @FXML
     private VBox hbMenus;
     @FXML
@@ -108,9 +102,6 @@ public class FxPrincipalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        lblEstado.setText(Session.CONNECTION_SESSION == true ? "Conectado" : "Desconectado");
-        imState.setImage(Session.CONNECTION_SESSION == true ? new Image("/view/image/connected.png") : new Image("/view/image/disconnected.png"));
         hbReferent = btnInicio;
         hbReferent.getStyleClass().add("buttonMenuActivate");
         ((Label) btnInicio.getChildren().get(0)).getStyleClass().add("buttonMenuActivateText");
@@ -121,37 +112,37 @@ public class FxPrincipalController implements Initializable {
             FXMLLoader fXMLOperaciones = new FXMLLoader(getClass().getResource(FilesRouters.FX_OPERACIONES));
             fxOperaciones = fXMLOperaciones.load();
             operacionesController = fXMLOperaciones.getController();
-            operacionesController.setContent(vbPrincipal, vbContent);
+            operacionesController.setContent(this);
 
             FXMLLoader fXMLConsultas = new FXMLLoader(getClass().getResource(FilesRouters.FX_CONSULTAS));
             fxConsultas = fXMLConsultas.load();
             consultasController = fXMLConsultas.getController();
-            consultasController.setContent(vbPrincipal, vbContent);
+            consultasController.setContent(this);
 
             FXMLLoader fXMLInventario = new FXMLLoader(getClass().getResource(FilesRouters.FX_INVENTARIO));
             fxInventario = fXMLInventario.load();
             inventarioController = fXMLInventario.getController();
-            inventarioController.setContent(vbPrincipal, vbContent);
+            inventarioController.setContent(this);
 
             FXMLLoader fXMLProduccion = new FXMLLoader(getClass().getResource(FilesRouters.FX_PRODUCCION));
             fxProduccion = fXMLProduccion.load();
             FxProduccionController produccionController = fXMLProduccion.getController();
-            produccionController.setContent(vbPrincipal, vbContent);
+            produccionController.setContent(this);
 
             FXMLLoader fXMLContactos = new FXMLLoader(getClass().getResource(FilesRouters.FX_CONTACTOS));
             fxContactos = fXMLContactos.load();
             contactosController = fXMLContactos.getController();
-            contactosController.setContent(vbPrincipal, vbContent);
+            contactosController.setContent(this);
 
             FXMLLoader fXMLReportes = new FXMLLoader(getClass().getResource(FilesRouters.FX_REPORTES));
             fxReportes = fXMLReportes.load();
             FxReportesController controllerReportes = fXMLReportes.getController();
-            controllerReportes.setContent(vbPrincipal, vbContent);
+            controllerReportes.setContent(this);
 
             FXMLLoader fXMLConfiguracion = new FXMLLoader(getClass().getResource(FilesRouters.FX_CONFIGURACION));
             fxConfiguracion = fXMLConfiguracion.load();
             configuracionController = fXMLConfiguracion.getController();
-            configuracionController.setContent(vbPrincipal, vbContent);
+            configuracionController.setContent(this);
         } catch (IOException ex) {
             System.out.println("Error en controller principal:" + ex.getLocalizedMessage());
         }
@@ -159,7 +150,6 @@ public class FxPrincipalController implements Initializable {
 
     public void initLoadMenus() {
         try {
-
             ExecutorService executor = Executors.newCachedThreadPool((runnable) -> {
                 Thread t = new Thread(runnable);
                 t.setDaemon(true);
@@ -184,11 +174,13 @@ public class FxPrincipalController implements Initializable {
             };
 
             task.setOnScheduled(e -> {
-                ObjectGlobal.InitializationTransparentBackgroundPrincipal(vbPrincipal);
+                hbLoadModulos.setVisible(true);
             });
-            task.setOnRunning(e -> {
 
+            task.setOnFailed(e -> {
+                hbLoadModulos.setVisible(false);
             });
+
             task.setOnSucceeded(e -> {
                 ObservableList<MenuTB> menuTBs = task.getValue();
                 if (menuTBs.get(0).getIdMenu() != 0 && !menuTBs.get(0).isEstado()) {
@@ -241,13 +233,7 @@ public class FxPrincipalController implements Initializable {
                     configuracionController.loadSubMenus(subMenusTBs);
                 }
 
-                ObjectGlobal.PANE_PRINCIPAL.getChildren().clear();
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE_PRINCIPAL);
-            });
-
-            task.setOnFailed(e -> {
-                ObjectGlobal.PANE_PRINCIPAL.getChildren().clear();
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE_PRINCIPAL);
+                hbLoadModulos.setVisible(false);
             });
 
             executor.execute(task);
@@ -256,8 +242,7 @@ public class FxPrincipalController implements Initializable {
             }
 
         } catch (Exception ex) {
-            ObjectGlobal.PANE_PRINCIPAL.getChildren().clear();
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE_PRINCIPAL);
+             hbLoadModulos.setVisible(false);
         }
     }
 
@@ -268,7 +253,7 @@ public class FxPrincipalController implements Initializable {
         Stage stage = (Stage) spWindow.getScene().getWindow();
         stage.setOnCloseRequest(c -> {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                openFondoModal();
                 short option = Tools.AlertMessageConfirmation(spWindow, "SysSoft Integra", "¿Está seguro de cerrar la aplicación?");
                 if (option == 1) {
                     try {
@@ -282,7 +267,7 @@ public class FxPrincipalController implements Initializable {
                         Platform.exit();
                     }
                 } else {
-                    vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                    closeFondoModal();
                     c.consume();
                 }
             } catch (Exception ex) {
@@ -294,18 +279,6 @@ public class FxPrincipalController implements Initializable {
 
         setNode(fxInicio);
 
-    }
-
-    public void initWindowSize() {
-        vbPrincipal.widthProperty().addListener((ObservableValue<? extends Number> ob, Number ol, Number newValue) -> {
-            Session.WIDTH_WINDOW = (double) newValue;
-            ObjectGlobal.PANE.setPrefWidth(Session.WIDTH_WINDOW);
-        });
-
-        vbPrincipal.heightProperty().addListener((ObservableValue<? extends Number> ob, Number ol, Number newValue) -> {
-            Session.HEIGHT_WINDOW = (double) newValue;
-            ObjectGlobal.PANE.setPrefHeight(Session.HEIGHT_WINDOW);
-        });
     }
 
     public void initUserSession(String value) {
@@ -342,9 +315,11 @@ public class FxPrincipalController implements Initializable {
     @FXML
     private void onMouseClickedSiderBar(MouseEvent event) {
         if (isExpand) {
+            vbSiderBar.setMinWidth(0);
             vbSiderBar.setPrefWidth(0);
             isExpand = false;
         } else {
+             vbSiderBar.setMinWidth(200);
             vbSiderBar.setPrefWidth(width_siderbar);
             isExpand = true;
         }
@@ -353,7 +328,7 @@ public class FxPrincipalController implements Initializable {
 
     @FXML
     private void onMouseClickedCerrar(MouseEvent event) throws IOException {
-        Tools.Dispose(vbPrincipal);
+        Tools.Dispose(spWindow);
         URL urllogin = getClass().getResource(FilesRouters.FX_LOGIN);
         FXMLLoader fXMLLoaderLogin = WindowStage.LoaderWindow(urllogin);
         Parent parent = fXMLLoaderLogin.load(urllogin.openStream());
@@ -384,6 +359,26 @@ public class FxPrincipalController implements Initializable {
         });
         primaryStage.show();
         primaryStage.requestFocus();
+    }
+
+    public ScrollPane getSpWindow() {
+        return spWindow;
+    }
+
+    public HBox getHbFondoModal() {
+        return hbFondoModal;
+    }
+
+    public AnchorPane getVbContent() {
+        return vbContent;
+    }
+
+    public void openFondoModal() {
+        hbFondoModal.setVisible(true);
+    }
+
+    public void closeFondoModal() {
+        hbFondoModal.setVisible(false);
     }
 
 }

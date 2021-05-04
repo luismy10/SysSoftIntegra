@@ -1,5 +1,6 @@
 package controller.consultas.pagar;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
@@ -81,9 +82,7 @@ public class FxCuentasPorPagarController implements Initializable {
     @FXML
     private DatePicker dpFechaFinal;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -168,14 +167,14 @@ public class FxCuentasPorPagarController implements Initializable {
             //Controlller here
             FxCuentasPorPagarVisualizarController controller = fXMLLoader.getController();
             controller.loadTableCompraCredito(idCompra);
-            controller.setInitCuentasPorPagar(vbPrincipal, vbContent, this);
+            controller.setInitCuentasPorPagar(fxPrincipalController, this);
             //
-            vbContent.getChildren().clear();
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
         } catch (IOException ex) {
             Tools.println("Error en la vista Generar pago:" + ex.getLocalizedMessage());
         }
@@ -351,9 +350,9 @@ public class FxCuentasPorPagarController implements Initializable {
         return vbWindow;
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+   
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController=fxPrincipalController;
     }
 
 }

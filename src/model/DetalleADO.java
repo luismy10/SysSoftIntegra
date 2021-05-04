@@ -58,25 +58,25 @@ public class DetalleADO {
             try {
                 DBUtil.getConnection().setAutoCommit(false);
                 statementValidate = DBUtil.getConnection().prepareStatement("select IdDetalle,IdMantenimiento from DetalleTB where IdDetalle=? and IdMantenimiento=?");
-                statementValidate.setInt(1, detalleTB.getIdDetalle().get());
-                statementValidate.setString(2, detalleTB.getIdMantenimiento().get());
+                statementValidate.setInt(1, detalleTB.getIdDetalle());
+                statementValidate.setString(2, detalleTB.getIdMantenimiento());
                 if(statementValidate.executeQuery().next()){
 
                     statementDetalle = DBUtil.getConnection().prepareStatement("select IdDetalle,IdMantenimiento from DetalleTB where IdDetalle<>? and IdMantenimiento=? and Nombre = ?");
-                    statementDetalle.setInt(1, detalleTB.getIdDetalle().get());
-                    statementDetalle.setString(2, detalleTB.getIdMantenimiento().get());
-                    statementDetalle.setString(3, detalleTB.getNombre().get());
+                    statementDetalle.setInt(1, detalleTB.getIdDetalle());
+                    statementDetalle.setString(2, detalleTB.getIdMantenimiento());
+                    statementDetalle.setString(3, detalleTB.getNombre());
                     if(statementDetalle.executeQuery().next()){
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     }else{
                         statementDetalle = DBUtil.getConnection().prepareStatement("update DetalleTB set IdAuxiliar=UPPER(?),Nombre=UPPER(?),Descripcion=UPPER(?),Estado=? where IdDetalle =? and IdMantenimiento = ?");
-                        statementDetalle.setString(1, detalleTB.getIdAuxiliar().get());
-                        statementDetalle.setString(2, detalleTB.getNombre().get());
-                        statementDetalle.setString(3, detalleTB.getDescripcion().get());
-                        statementDetalle.setString(4, detalleTB.getEstado().get());
-                        statementDetalle.setInt(5, detalleTB.getIdDetalle().get());
-                        statementDetalle.setString(6, detalleTB.getIdMantenimiento().get());
+                        statementDetalle.setString(1, detalleTB.getIdAuxiliar());
+                        statementDetalle.setString(2, detalleTB.getNombre());
+                        statementDetalle.setString(3, detalleTB.getDescripcion());
+                        statementDetalle.setString(4, detalleTB.getEstado());
+                        statementDetalle.setInt(5, detalleTB.getIdDetalle());
+                        statementDetalle.setString(6, detalleTB.getIdMantenimiento());
                         statementDetalle.addBatch();
                         
                         statementDetalle.executeBatch();
@@ -85,19 +85,19 @@ public class DetalleADO {
                     }
                 }else{
                     statementDetalle = DBUtil.getConnection().prepareStatement("select Nombre from DetalleTB where IdMantenimiento = ? and Nombre = ?");
-                    statementDetalle.setString(1, detalleTB.getIdMantenimiento().get());
-                    statementDetalle.setString(2, detalleTB.getNombre().get());
+                    statementDetalle.setString(1, detalleTB.getIdMantenimiento());
+                    statementDetalle.setString(2, detalleTB.getNombre());
                     if(statementDetalle.executeQuery().next()){
                         DBUtil.getConnection().rollback();
                         result = "duplicate";
                     }else{
                         statementDetalle = DBUtil.getConnection().prepareStatement("insert into DetalleTB(IdMantenimiento,IdAuxiliar,Nombre,Descripcion,Estado,UsuarioRegistro) values(?,?,?,?,?,?)");
-                        statementDetalle.setString(1, detalleTB.getIdMantenimiento().get());
-                        statementDetalle.setString(2, detalleTB.getIdAuxiliar().get());
-                        statementDetalle.setString(3, detalleTB.getNombre().get().trim().toUpperCase());
-                        statementDetalle.setString(4, detalleTB.getDescripcion().get().trim().toUpperCase());
-                        statementDetalle.setString(5, detalleTB.getEstado().get());
-                        statementDetalle.setString(6, detalleTB.getUsuarioRegistro().get());
+                        statementDetalle.setString(1, detalleTB.getIdMantenimiento());
+                        statementDetalle.setString(2, detalleTB.getIdAuxiliar());
+                        statementDetalle.setString(3, detalleTB.getNombre().trim().toUpperCase());
+                        statementDetalle.setString(4, detalleTB.getDescripcion().trim().toUpperCase());
+                        statementDetalle.setString(5, detalleTB.getEstado());
+                        statementDetalle.setString(6, detalleTB.getUsuarioRegistro());
                         statementDetalle.addBatch();
                         
                         statementDetalle.executeBatch();
@@ -138,8 +138,8 @@ public class DetalleADO {
             try {
                 DBUtil.getConnection().setAutoCommit(false);
                 preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-                preparedStatement.setInt(1, detalleTB.getIdDetalle().get());
-                preparedStatement.setString(2, detalleTB.getIdMantenimiento().get());
+                preparedStatement.setInt(1, detalleTB.getIdDetalle());
+                preparedStatement.setString(2, detalleTB.getIdMantenimiento());
                 preparedStatement.addBatch();
                 preparedStatement.executeBatch();
                 DBUtil.getConnection().commit();
@@ -182,6 +182,7 @@ public class DetalleADO {
                 DetalleTB detalleTB = new DetalleTB();
                 detalleTB.setIdDetalle(resultSet.getInt("IdDetalle"));
                 detalleTB.setNombre(resultSet.getString("Nombre"));
+                detalleTB.setIdAuxiliar(resultSet.getString("IdAuxiliar"));
                 empList.add(detalleTB);
             }
 
@@ -276,6 +277,100 @@ public class DetalleADO {
             }
         }
         return empList;
-
     }
+    
+    public static ObservableList<ClasesTB> GetDetailClass(String titulo) {
+        String selectStmt = "{call Sp_Get_Clases_SubClases_SubSubClases(?)}";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ObservableList<ClasesTB> empList = FXCollections.observableArrayList();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, titulo);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                ClasesTB clasesTB = new ClasesTB();
+                clasesTB.setIdClase(resultSet.getString("IdClase"));
+                clasesTB.setNombreClase(resultSet.getString("Nombre"));
+                clasesTB.setCodigoAuxiliar(resultSet.getString("Abreviado"));
+                clasesTB.setDescripcion(resultSet.getString("Descripcion"));
+                clasesTB.setEstado(resultSet.getString("Estado"));
+//                if (value[0].equalsIgnoreCase("3")) {
+//                    detalleTB.setDescripcion(resultSet.getString("Descripcion"));
+//                }
+                empList.add(clasesTB);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("La operación de selección de SQL ha fallado: " + e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return empList;
+    }
+    
+    public static String ListarClases(int tipo) {
+        CallableStatement codigo_clase = null;
+        String id = null;
+
+        try {
+            DBUtil.dbConnect();
+            if (tipo == 1) {
+                codigo_clase = DBUtil.getConnection().prepareCall("{? = call Fc_Clase_Codigo_Alfanumerico()}");
+                codigo_clase.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigo_clase.execute();
+                id = codigo_clase.getString(1);
+                return id;
+            } else if (tipo == 2) {
+                codigo_clase = DBUtil.getConnection().prepareCall("{? = call Fc_Sub_Clase_Codigo_Alfanumerico()}");
+                codigo_clase.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigo_clase.execute();
+                id = codigo_clase.getString(1);
+                return id;
+            } else if (tipo == 3) {
+                codigo_clase = DBUtil.getConnection().prepareCall("{? = call Fc_Sub_Sub_Clase_Codigo_Alfanumerico()}");
+                codigo_clase.registerOutParameter(1, java.sql.Types.VARCHAR);
+                codigo_clase.execute();
+                id = codigo_clase.getString(1);
+                return id;
+            }
+
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+                return ex.getLocalizedMessage();
+            } catch (SQLException ex1) {
+                return ex1.getLocalizedMessage();
+            }
+        } finally {
+            try {
+                if (codigo_clase != null) {
+                    codigo_clase.close();
+                }
+                if (codigo_clase != null) {
+                    codigo_clase.close();
+                }
+                if (codigo_clase != null) {
+                    codigo_clase.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return id;
+    }
+    
 }

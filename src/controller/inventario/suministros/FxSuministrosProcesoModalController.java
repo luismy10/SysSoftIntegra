@@ -334,7 +334,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
         cbImpuesto.getItems().clear();
         List<ImpuestoTB> list1 = (List<ImpuestoTB>) objects.get(1);
         list1.forEach(e -> {
-            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.getPredeterminado()));
+            cbImpuesto.getItems().add(new ImpuestoTB(e.getIdImpuesto(), e.getNombre(), e.getValor(), e.isPredeterminado()));
         });
 
         cbEstado.getItems().clear();
@@ -451,8 +451,8 @@ public class FxSuministrosProcesoModalController implements Initializable {
                     selectionModel.select(1);
                 }
                 txtCosto.requestFocus();
-            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) <= 0) {
-                openAlertMessageWarning("El costo del producto no puede ser menor o igual a 0, por favor.");
+            } else if (!estadoOrigen && Double.parseDouble(txtCosto.getText()) < 0) {
+                openAlertMessageWarning("El costo del producto no puede ser menor que 0, por favor.");
                 if (!selectionModel.isSelected(1)) {
                     selectionModel.select(1);
                 }
@@ -525,7 +525,7 @@ public class FxSuministrosProcesoModalController implements Initializable {
             suministroTB.setPrecioVentaGeneral(precioValidado);
 
             suministroTB.setEstado(cbEstado.getSelectionModel().getSelectedIndex() >= 0
-                    ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle().get()
+                    ? cbEstado.getSelectionModel().getSelectedItem().getIdDetalle()
                     : 0);
 
             int se_vende;

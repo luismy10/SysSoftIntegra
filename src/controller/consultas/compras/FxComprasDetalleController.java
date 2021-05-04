@@ -1,9 +1,9 @@
 package controller.consultas.compras;
 
+import controller.menus.FxPrincipalController;
 import controller.reporte.FxReportViewController;
 import controller.tools.ConvertMonedaCadena;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -42,7 +42,6 @@ import model.CompraADO;
 import model.CompraCreditoTB;
 import model.CompraTB;
 import model.DetalleCompraTB;
-import model.SuministroTB;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -90,7 +89,6 @@ public class FxComprasDetalleController implements Initializable {
     private VBox vbCondicion;
     @FXML
     private Button btnReporte;
-    @FXML
     private Button btnEditar;
     @FXML
     private Button btnAnular;
@@ -101,9 +99,7 @@ public class FxComprasDetalleController implements Initializable {
 
     private FxComprasRealizadasController comprascontroller;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
 
     private String idCompra;
 
@@ -377,56 +373,11 @@ public class FxComprasDetalleController implements Initializable {
             Tools.AlertMessageError(cpWindow, "Reporte General de Compras", "Error al generar el reporte : " + ex.getLocalizedMessage());
         }
     }
-
-    private void eventEditarVenta() throws IOException {
-
-        if (compraTB != null && compraTB.getEstado() == 4) {
-            FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_COMPRAS_EDITAR));
-            ScrollPane node = fXMLPrincipal.load();
-
-            FxComprasEditarController controller = fXMLPrincipal.getController();
-            controller.setInitComprasEditar(idCompra);
-            controller.setInitContentComprasEditar(this, vbPrincipal, vbContent);
-
-            vbContent.getChildren().clear();
-            AnchorPane.setLeftAnchor(node, 0d);
-            AnchorPane.setTopAnchor(node, 0d);
-            AnchorPane.setRightAnchor(node, 0d);
-            AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
-        }
-
-//        if (estadoCompra.equals("anulado".toUpperCase())) {
-//            if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
-//                try {
-//                    ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-//                    URL url = getClass().getResource(FilesRouters.FX_COMPRAS_EDITAR);
-//                    FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-//                    Parent parent = fXMLLoader.load(url.openStream());
-//                    //Controlller here
-//                    FxComprasEditarController controller = fXMLLoader.getController();
-//                    controller.setInitComprasValue(idCompra);
-//                    //
-//                    Stage stage = WindowStage.StageLoaderModal(parent, "Editar su compra", cpWindow.getScene().getWindow());
-//                    stage.setResizable(false);
-//                    stage.sizeToScene();
-//                    stage.setOnHiding((w) -> {
-//                        vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-//                    });
-//                    stage.show();
-//                } catch (IOException ex) {
-//                    System.out.println("Controller compras" + ex.getLocalizedMessage());
-//                }
-//            }
-//        } else {
-//            Tools.AlertMessageWarning(cpWindow, "Detalle de Compra", "Debe anular la compra para poder editar.");
-//        }
-    }
-
+  
     private void eventCancelarVenta() {
         if (!idCompra.equalsIgnoreCase("") || idCompra != null) {
             try {
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+                fxPrincipalController.openFondoModal();
                 URL url = getClass().getResource(FilesRouters.FX_COMPRAS_CANCELAR);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
@@ -438,7 +389,7 @@ public class FxComprasDetalleController implements Initializable {
                 Stage stage = WindowStage.StageLoaderModal(parent, "Anular su compra", cpWindow.getScene().getWindow());
                 stage.setResizable(false);
                 stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+                stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
                 stage.show();
             } catch (IOException ex) {
                 System.out.println("Controller compras" + ex.getLocalizedMessage());
@@ -461,13 +412,13 @@ public class FxComprasDetalleController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) throws IOException {
-        vbContent.getChildren().remove(cpWindow);
-        vbContent.getChildren().clear();
+        fxPrincipalController.getVbContent().getChildren().remove(cpWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(comprascontroller.getWindow(), 0d);
         AnchorPane.setTopAnchor(comprascontroller.getWindow(), 0d);
         AnchorPane.setRightAnchor(comprascontroller.getWindow(), 0d);
         AnchorPane.setBottomAnchor(comprascontroller.getWindow(), 0d);
-        vbContent.getChildren().add(comprascontroller.getWindow());
+        fxPrincipalController.getVbContent().getChildren().add(comprascontroller.getWindow());
     }
 
     @FXML
@@ -480,18 +431,6 @@ public class FxComprasDetalleController implements Initializable {
     @FXML
     private void onActionCancelar(ActionEvent event) {
         eventCancelarVenta();
-    }
-
-    @FXML
-    private void onKeyPressedEditar(KeyEvent event) throws IOException {
-        if (event.getCode() == KeyCode.ENTER) {
-            eventEditarVenta();
-        }
-    }
-
-    @FXML
-    private void onActionEditar(ActionEvent event) throws IOException {
-        eventEditarVenta();
     }
 
     public ScrollPane getCpWindow() {
@@ -510,10 +449,9 @@ public class FxComprasDetalleController implements Initializable {
         return listComprasCredito;
     }
 
-    public void setInitComptrasController(FxComprasRealizadasController comprascontroller, AnchorPane vbPrincipal, AnchorPane vbContent) {
+    public void setInitComptrasController(FxComprasRealizadasController comprascontroller, FxPrincipalController fxPrincipalController) {
         this.comprascontroller = comprascontroller;
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

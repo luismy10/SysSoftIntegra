@@ -1,5 +1,6 @@
 package model;
 
+import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -109,10 +110,13 @@ public class NotaCreditoADO {
                     + "            s.NombreMarca,\n"
                     + "            isnull(d.Nombre,'') UnidadMarca,\n"
                     + "            dv.Cantidad,\n"
+                    + "            dv.CostoVenta,\n"
                     + "            dv.PrecioVenta,\n"
                     + "            dv.Descuento,\n"
                     + "            dv.ValorImpuesto,\n"
-                    + "            dv.NombreImpuesto \n"
+                    + "            dv.NombreImpuesto, \n"
+                    + "            s.Inventario, \n"
+                    + "            s.ValorInventario \n"
                     + "            FROM DetalleVentaTB AS dv \n"
                     + "            INNER JOIN SuministroTB AS s ON s.IdSuministro = dv.IdArticulo\n"
                     + "            LEFT JOIN DetalleTB AS d ON d.IdDetalle = s.UnidadCompra AND d.IdMantenimiento = '0013'\n"
@@ -130,12 +134,16 @@ public class NotaCreditoADO {
                     suministroTB.setUnidadCompraName(resultSet.getString("UnidadMarca"));
                     suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
                     suministroTB.setPrecioVentaGeneral(resultSet.getDouble("PrecioVenta"));
+                    suministroTB.setCostoCompra(resultSet.getDouble("CostoVenta"));
                     suministroTB.setDescuento(resultSet.getDouble("Descuento"));
                     suministroTB.setImpuestoValor(resultSet.getDouble("ValorImpuesto"));
                     suministroTB.setImpuestoNombre(resultSet.getString("NombreImpuesto"));
+                    suministroTB.setInventario(resultSet.getBoolean("Inventario"));
+                    suministroTB.setValorInventario(resultSet.getShort("ValorInventario"));
                     detalleVentaTB.setSuministroTB(suministroTB);
 
                     Button button = new Button();
+                    button.setDisable(true);
                     button.getStyleClass().add("buttonLightError");
                     button.setAlignment(Pos.CENTER);
                     button.setPrefWidth(Control.USE_COMPUTED_SIZE);
@@ -338,6 +346,8 @@ public class NotaCreditoADO {
         PreparedStatement statementNotaCredito = null;
         PreparedStatement statementComprobante = null;
         PreparedStatement statementDetalle = null;
+        PreparedStatement statementSuministro = null;
+        PreparedStatement statementKardex = null;
         CallableStatement statementCodigoNotaCredito = null;
         CallableStatement statementCodigoSerieNumeracion = null;
         try {
@@ -382,7 +392,6 @@ public class NotaCreditoADO {
             statementNotaCredito.setString(11, notaCreditoTB.getIdVenta());
             statementNotaCredito.setInt(12, notaCreditoTB.getEstado());
             statementNotaCredito.addBatch();
-            statementNotaCredito.executeBatch();
 
             statementComprobante = DBUtil.getConnection().prepareStatement("INSERT INTO ComprobanteTB(IdTipoDocumento,Serie,Numeracion,FechaRegistro)VALUES(?,?,?,?)");
             statementComprobante.setInt(1, notaCreditoTB.getIdComprobante());
@@ -401,6 +410,23 @@ public class NotaCreditoADO {
                     + "ValorImpuesto)\n "
                     + "VALUES(?,?,?,?,?,?)");
 
+            statementSuministro = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB "
+                    + "SET Cantidad = Cantidad + ? "
+                    + "WHERE IdSuministro = ?");
+
+            statementKardex = DBUtil.getConnection().prepareStatement("INSERT INTO "
+                    + "KardexSuministroTB("
+                    + "IdSuministro,"
+                    + "Fecha,"
+                    + "Hora,"
+                    + "Tipo,"
+                    + "Movimiento,"
+                    + "Detalle,"
+                    + "Cantidad, "
+                    + "Costo, "
+                    + "Total) "
+                    + "VALUES(?,?,?,?,?,?,?,?,?)");
+
             for (NotaCreditoDetalleTB detalleTB : notaCreditoTB.getNotaCreditoDetalleTBs()) {
                 statementDetalle.setString(1, idNotaCredito);
                 statementDetalle.setString(2, detalleTB.getIdSuministro());
@@ -409,8 +435,43 @@ public class NotaCreditoADO {
                 statementDetalle.setDouble(5, detalleTB.getDescuento());
                 statementDetalle.setDouble(6, detalleTB.getValorImpuesto());
                 statementDetalle.addBatch();
+
+                if (detalleTB.getSuministroTB().isInventario() && detalleTB.getSuministroTB().getValorInventario() == 1) {
+                    statementSuministro.setDouble(1, detalleTB.getCantidad());
+                    statementSuministro.setString(2, detalleTB.getIdSuministro());
+                    statementSuministro.addBatch();
+                } else if (detalleTB.getSuministroTB().isInventario() && detalleTB.getSuministroTB().getValorInventario() == 2) {
+                    statementSuministro.setDouble(1, detalleTB.getCantidad());
+                    statementSuministro.setString(2, detalleTB.getIdSuministro());
+                    statementSuministro.addBatch();
+                } else if (detalleTB.getSuministroTB().isInventario() && detalleTB.getSuministroTB().getValorInventario() == 3) {
+                    statementSuministro.setDouble(1, detalleTB.getCantidad());
+                    statementSuministro.setString(2, detalleTB.getIdSuministro());
+                    statementSuministro.addBatch();
+                }
+
+                double cantidadTotal = detalleTB.getSuministroTB().getValorInventario() == 1
+                        ? detalleTB.getCantidad()
+                        : detalleTB.getSuministroTB().getValorInventario() == 2
+                        ? detalleTB.getCantidad()
+                        : detalleTB.getCantidad();
+
+                statementKardex.setString(1, detalleTB.getIdSuministro());
+                statementKardex.setString(2, Tools.getDate());
+                statementKardex.setString(3, Tools.getHour());
+                statementKardex.setShort(4, (short) 1);
+                statementKardex.setInt(5, 2);
+                statementKardex.setString(6, "DEVOLUCIÓN DE PRODUCTO");
+                statementKardex.setDouble(7, cantidadTotal);
+                statementKardex.setDouble(8, detalleTB.getSuministroTB().getCostoCompra());
+                statementKardex.setDouble(9, cantidadTotal * detalleTB.getSuministroTB().getCostoCompra());
+                statementKardex.addBatch();
             }
+
+            statementNotaCredito.executeBatch();
             statementDetalle.executeBatch();
+            statementSuministro.executeBatch();
+            statementKardex.executeBatch();
 
             DBUtil.getConnection().commit();
             return "registrado";
@@ -437,6 +498,12 @@ public class NotaCreditoADO {
                 }
                 if (statementCodigoSerieNumeracion != null) {
                     statementCodigoSerieNumeracion.close();
+                }
+                if (statementSuministro != null) {
+                    statementSuministro.close();
+                }
+                if (statementKardex != null) {
+                    statementKardex.close();
                 }
             } catch (SQLException ex) {
                 return ex.getLocalizedMessage();

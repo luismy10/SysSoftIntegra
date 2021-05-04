@@ -107,10 +107,9 @@
                               </HBox>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" prefWidth="1100.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tvList" fixedCellSize="-0.0" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="298.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcId" prefWidth="60.0" style="-fx-alignment: CENTER;" text="N°" />
-                                          <TableColumn fx:id="tcDocumentType" prefWidth="149.00003051757812" style="-fx-alignment: CENTER;" text="Tipo Documento" />
                                           <TableColumn fx:id="tcDocument" prefWidth="104.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
                                           <TableColumn fx:id="tcBusinessName" prefWidth="232.0" style="-fx-alignment: CENTER-LEFT;" text="Razón social" />
                                           <TableColumn fx:id="tcContacto" prefWidth="145.0" style="-fx-alignment: CENTER-LEFT;" text="Teléfono/Celular" />
@@ -128,7 +127,7 @@
                      <children>
                         <HBox alignment="CENTER" style="-fx-background-color: #cccccc; -fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
+                              <Button mnemonicParsing="false" onAction="#onActionAnterior" onKeyPressed="#onKeyPressedAnterior" styleClass="buttonLight" text="Anterior">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
@@ -139,7 +138,7 @@
                                        </image></ImageView>
                                  </graphic>
                               </Button>
-                              <Label styleClass="labelBorder" text="0" textFill="#020203">
+                              <Label fx:id="lblPaginaActual" styleClass="labelBorder" text="0" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
@@ -149,12 +148,12 @@
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="labelBorder" text="0" textFill="#020203">
+                              <Label fx:id="lblPaginaSiguiente" styleClass="labelBorder" text="0" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                               </Label>
-                              <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
+                              <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onActionSiguiente" onKeyPressed="#onKeyPressedSiguiente" styleClass="buttonLight" text="Siguiente">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>

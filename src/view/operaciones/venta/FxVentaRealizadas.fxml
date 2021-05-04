@@ -137,6 +137,23 @@
                                           <ComboBox fx:id="cbEstado" onAction="#onActionEstado" prefHeight="30.0" prefWidth="220.0" promptText="Seleccione" />
                                        </children>
                                     </VBox>
+                                    <VBox style="-fx-spacing: 0.3333333333333333em;">
+                                       <children>
+                                          <Label styleClass="labelOpenSansRegular13" text="Venta Total" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/cantidad.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                          <Label fx:id="lblMotonTotal" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="labelRobotoBold15" text="0.00" textFill="#020203" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                            </children>

@@ -131,6 +131,7 @@ public class FxTicketVariableController implements Initializable {
             listPie.add(new TicketTB("Información del Empleado", "INFORMACION DEL EMPLEADO", "infoempleado"));
             listPie.add(new TicketTB("Celular del Empleado", "CELULAR DEL EMPLEADO", "celempleado"));
             listPie.add(new TicketTB("Dirección del Empleado", "DIRECCION DEL EMPLEADO", "direcempleado"));
+            listPie.add(new TicketTB("Observación de la operación", "OBSERVACIÓ/DIRECCIÓN DE LA OPERACION", "observacion"));
             lvLista.getItems().addAll(listPie);
         }
     }

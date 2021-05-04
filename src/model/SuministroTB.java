@@ -4,6 +4,7 @@ import java.io.File;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -85,6 +86,7 @@ public class SuministroTB {
     private boolean cambios;
     private ImpuestoTB impuestoTB;
     private double bonificacion;
+    private ComboBox<SuministroTB> cbSuministro;
 
     public SuministroTB() {
         
@@ -635,6 +637,14 @@ public class SuministroTB {
 
     public void setBonificacion(double bonificacion) {
         this.bonificacion = bonificacion;
+    }
+
+    public ComboBox<SuministroTB> getCbSuministro() {
+        return cbSuministro;
+    }
+
+    public void setCbSuministro(ComboBox<SuministroTB> cbSuministro) {
+        this.cbSuministro = cbSuministro;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package controller.reporte;
 
 import controller.inventario.suministros.FxSuministrosListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
@@ -26,7 +27,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.DetalleADO;
@@ -69,7 +69,7 @@ public class FxVentaUtilidadesController implements Initializable {
     @FXML
     private ComboBox<DetalleTB> cbPresentacion;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private String idSuministro;
 
@@ -128,7 +128,7 @@ public class FxVentaUtilidadesController implements Initializable {
 
     private void openWindowSuministros() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -139,7 +139,7 @@ public class FxVentaUtilidadesController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione un Producto", vbWindow.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillSuministrosTable((short)0,""); 
         } catch (IOException ex) {
@@ -166,9 +166,9 @@ public class FxVentaUtilidadesController implements Initializable {
                         Tools.getDatePicker(dpFechaInicial),
                         Tools.getDatePicker(dpFechaFinal),
                         idSuministro,
-                        cbCategoriaSeleccionar.isSelected() ? 0 : cbCategorias.getSelectionModel().getSelectedItem().getIdDetalle().get(),
-                        cbMarcaSeleccionar.isSelected() ? 0 : cbMarcas.getSelectionModel().getSelectedItem().getIdDetalle().get(),
-                        cbPresentacionSeleccionar.isSelected() ? 0 : cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle().get());
+                        cbCategoriaSeleccionar.isSelected() ? 0 : cbCategorias.getSelectionModel().getSelectedItem().getIdDetalle(),
+                        cbMarcaSeleccionar.isSelected() ? 0 : cbMarcas.getSelectionModel().getSelectedItem().getIdDetalle(),
+                        cbPresentacionSeleccionar.isSelected() ? 0 : cbPresentacion.getSelectionModel().getSelectedItem().getIdDetalle());
                 if (detalle_list.isEmpty()) {
                     Tools.AlertMessageWarning(vbWindow, "Utilidades", "No hay registros para mostrar en el reporte.");
                     return;
@@ -238,9 +238,9 @@ public class FxVentaUtilidadesController implements Initializable {
                 Map map = new HashMap();
                 map.put("RANGO_FECHA", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
                 map.put("PRODUCTOS", cbProductosSeleccionar.isSelected() ? "TODOS" : txtProducto.getText());
-                map.put("CATEGORIA", cbCategoriaSeleccionar.isSelected() ? "TODOS" : cbCategorias.getSelectionModel().getSelectedItem().getNombre().get());
-                map.put("MARCA", cbMarcaSeleccionar.isSelected() ? "TODOS" : cbMarcas.getSelectionModel().getSelectedItem().getNombre().get());
-                map.put("PRESENTACION", cbPresentacionSeleccionar.isSelected() ? "TODOS" : cbPresentacion.getSelectionModel().getSelectedItem().getNombre().get());
+                map.put("CATEGORIA", cbCategoriaSeleccionar.isSelected() ? "TODOS" : cbCategorias.getSelectionModel().getSelectedItem().getNombre());
+                map.put("MARCA", cbMarcaSeleccionar.isSelected() ? "TODOS" : cbMarcas.getSelectionModel().getSelectedItem().getNombre());
+                map.put("PRESENTACION", cbPresentacionSeleccionar.isSelected() ? "TODOS" : cbPresentacion.getSelectionModel().getSelectedItem().getNombre());
                 map.put("ORDEN", "");
                 map.put("COSTO_TOTAL", Tools.roundingValue(costoTotal, 2));
                 map.put("PRECIO_TOTAL", Tools.roundingValue(precioTotal, 2));
@@ -338,8 +338,8 @@ public class FxVentaUtilidadesController implements Initializable {
         return txtProducto;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

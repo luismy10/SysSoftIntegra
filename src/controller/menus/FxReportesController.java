@@ -29,9 +29,7 @@ public class FxReportesController implements Initializable {
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
     /*
     Controller global
      */
@@ -74,6 +72,7 @@ public class FxReportesController implements Initializable {
     private VBox nodeUtilidades;
 
     private FxVentaUtilidadesController controllerUtilidades;
+ 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,53 +103,53 @@ public class FxReportesController implements Initializable {
     }
 
     private void openWindowGlobal() {
-        controllerReporteGlobal.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerReporteGlobal.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear(); 
         AnchorPane.setLeftAnchor(nodeGlobal, 0d);
         AnchorPane.setTopAnchor(nodeGlobal, 0d);
         AnchorPane.setRightAnchor(nodeGlobal, 0d);
         AnchorPane.setBottomAnchor(nodeGlobal, 0d);
-        vbContent.getChildren().add(nodeGlobal);
+        fxPrincipalController.getVbContent().getChildren().add(nodeGlobal);
     }
 
     private void openWindowVentas() {
-        controllerReporteVenta.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerReporteVenta.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeVenta, 0d);
         AnchorPane.setTopAnchor(nodeVenta, 0d);
         AnchorPane.setRightAnchor(nodeVenta, 0d);
         AnchorPane.setBottomAnchor(nodeVenta, 0d);
-        vbContent.getChildren().add(nodeVenta);
+        fxPrincipalController.getVbContent().getChildren().add(nodeVenta);
     }
 
     private void openWindowCompras() {
-        controllerReporteCompra.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerReporteCompra.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeCompra, 0d);
         AnchorPane.setTopAnchor(nodeCompra, 0d);
         AnchorPane.setRightAnchor(nodeCompra, 0d);
         AnchorPane.setBottomAnchor(nodeCompra, 0d);
-        vbContent.getChildren().add(nodeCompra);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCompra);
     }
 
     private void openWindowProductos() {
-        controllerReporteProducto.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerReporteProducto.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeProducto, 0d);
         AnchorPane.setTopAnchor(nodeProducto, 0d);
         AnchorPane.setRightAnchor(nodeProducto, 0d);
         AnchorPane.setBottomAnchor(nodeProducto, 0d);
-        vbContent.getChildren().add(nodeProducto);
+        fxPrincipalController.getVbContent().getChildren().add(nodeProducto);
     }
 
     private void openWindowUtilidades() {
-        controllerUtilidades.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerUtilidades.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeUtilidades, 0d);
         AnchorPane.setTopAnchor(nodeUtilidades, 0d);
         AnchorPane.setRightAnchor(nodeUtilidades, 0d);
         AnchorPane.setBottomAnchor(nodeUtilidades, 0d);
-        vbContent.getChildren().add(nodeUtilidades);
+        fxPrincipalController.getVbContent().getChildren().add(nodeUtilidades);
     }
 
     @FXML
@@ -211,11 +210,10 @@ public class FxReportesController implements Initializable {
     @FXML
     private void onActionUtilidades(ActionEvent event) {
         openWindowUtilidades();
-    }
-
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    }   
+  
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

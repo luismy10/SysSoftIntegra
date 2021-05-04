@@ -1,7 +1,7 @@
 package controller.operaciones.venta;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -41,13 +41,13 @@ public class FxVentaController implements Initializable {
     @FXML
     private Button btnAgregarVenta;
 
+    private FxPrincipalController fxPrincipalController;
+
     private FxVentaEstructuraController ventaEstructuraController;
 
     private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
 
     private ObservableList<PrivilegioTB> privilegioTBs;
-
-    private AnchorPane vbPrincipal;
 
     private short tipoVenta;
 
@@ -94,10 +94,10 @@ public class FxVentaController implements Initializable {
 
     public void loadElements() {
         if (tipoVenta == 1) {
-            ventaEstructuraController.setContent(vbPrincipal);
+            ventaEstructuraController.setContent(fxPrincipalController);
             ventaEstructuraController.getTxtSearch().requestFocus();
         } else {
-            ventaEstructuraNuevoController.setContent(vbPrincipal);
+            ventaEstructuraNuevoController.setContent(fxPrincipalController);
         }
     }
 
@@ -106,12 +106,12 @@ public class FxVentaController implements Initializable {
         tbContenedor.getTabs().add(tab);
         if (tipoVenta == 1) {
             FxVentaEstructuraController controller = (FxVentaEstructuraController) addEstructura(tab);
-            controller.setContent(vbPrincipal);
+            controller.setContent(fxPrincipalController);
             controller.getTxtSearch().requestFocus();
             controller.loadPrivilegios(privilegioTBs);
         } else {
             FxVentaEstructuraNuevoController controller = (FxVentaEstructuraNuevoController) addEstructura(tab);
-            controller.setContent(vbPrincipal);
+            controller.setContent(fxPrincipalController);
             controller.getTxtSearch().requestFocus();
             controller.loadPrivilegios(privilegioTBs);
         }
@@ -171,7 +171,7 @@ public class FxVentaController implements Initializable {
 
     public void openWindowCajaNoRegistrada(String mensaje) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_CAJA_NO_REGISTRADA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -183,7 +183,7 @@ public class FxVentaController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+           fxPrincipalController.closeFondoModal();
                 if (aperturaCaja) {
                     aperturaCaja = false;
                     hbContenedorVentas.setDisable(true);
@@ -197,7 +197,7 @@ public class FxVentaController implements Initializable {
 
     public void openWindowFondoInicial() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_FONDO_INICIAL);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -209,7 +209,7 @@ public class FxVentaController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                fxPrincipalController.closeFondoModal();
                 hbContenedorVentas.setDisable(!aperturaCaja);
             });
             stage.show();
@@ -220,7 +220,7 @@ public class FxVentaController implements Initializable {
 
     private void openWindowValidarCaja(String dateTime) {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_VENTA_VALIDAR_CAJA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -232,7 +232,7 @@ public class FxVentaController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> {
-                vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
+                fxPrincipalController.closeFondoModal();
                 if (aperturaCaja) {
                     aperturaCaja = false;
                     hbContenedorVentas.setDisable(true);
@@ -261,8 +261,8 @@ public class FxVentaController implements Initializable {
         this.aperturaCaja = aperturaCaja;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
     public void setTipoVenta(short tipoVenta) {

@@ -80,7 +80,7 @@ public class FxImpuestoProcesoController implements Initializable {
                 ObservableList<DetalleTB> lsori = cbOperaciones.getItems();
                 if (impuestoTB.getOperacion() != 0) {
                     for (int i = 0; i < lsori.size(); i++) {
-                        if (impuestoTB.getOperacion() == lsori.get(i).getIdDetalle().get()) {
+                        if (impuestoTB.getOperacion() == lsori.get(i).getIdDetalle()) {
                             cbOperaciones.getSelectionModel().select(i);
                             break;
                         }
@@ -112,7 +112,7 @@ public class FxImpuestoProcesoController implements Initializable {
         } else {
             ImpuestoTB impuestoTB = new ImpuestoTB();
             impuestoTB.setIdImpuesto(idImpuesto);
-            impuestoTB.setOperacion(cbOperaciones.getSelectionModel().getSelectedItem().getIdDetalle().get());
+            impuestoTB.setOperacion(cbOperaciones.getSelectionModel().getSelectedItem().getIdDetalle());
             impuestoTB.setNombre(txtNombreImpuesto.getText().trim());
             impuestoTB.setValor(Double.parseDouble(txtValor.getText()));
             impuestoTB.setCodigo(txtCodigoAlterno.getText().trim());
@@ -129,11 +129,11 @@ public class FxImpuestoProcesoController implements Initializable {
                 txtNombreImpuesto.requestFocus();
             } else if (result.equalsIgnoreCase("updated")) {
                 Tools.AlertMessageInformation(window, "Impuesto", "Se actualizó correctamente.");
-                impuestoController.fillTabletTax();
+                impuestoController.loadInitTable();
                 Tools.Dispose(window);
             } else if (result.equalsIgnoreCase("inserted")) {
                 Tools.AlertMessageInformation(window, "Impuesto", "Se ingreso correctamente.");
-                impuestoController.fillTabletTax();
+                impuestoController.loadInitTable();
                 Tools.Dispose(window);
             } else {
                 Tools.AlertMessageError(window, "Impuesto", result);

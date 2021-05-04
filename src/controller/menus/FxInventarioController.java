@@ -47,9 +47,7 @@ public class FxInventarioController implements Initializable {
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController fxPrincipalController;
     /*
     Controller suministros     
      */
@@ -170,7 +168,7 @@ public class FxInventarioController implements Initializable {
         }
 
         if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
-           
+
         } else {
 
         }
@@ -183,48 +181,47 @@ public class FxInventarioController implements Initializable {
     }
 
     private void openWindowKardex() {
-        controllerKardex.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerKardex.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeKardex, 0d);
         AnchorPane.setTopAnchor(nodeKardex, 0d);
         AnchorPane.setRightAnchor(nodeKardex, 0d);
         AnchorPane.setBottomAnchor(nodeKardex, 0d);
-        vbContent.getChildren().add(nodeKardex);
+        fxPrincipalController.getVbContent().getChildren().add(nodeKardex);
     }
 
-
     private void openWindowValorInventario() {
-        controllerValorInventario.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerValorInventario.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeValorInventario, 0d);
         AnchorPane.setTopAnchor(nodeValorInventario, 0d);
         AnchorPane.setRightAnchor(nodeValorInventario, 0d);
         AnchorPane.setBottomAnchor(nodeValorInventario, 0d);
-        vbContent.getChildren().add(nodeValorInventario);
+        fxPrincipalController.getVbContent().getChildren().add(nodeValorInventario);
         controllerValorInventario.fillInventarioTable("", (short) 0, "", (short) 0, 0, 0);
     }
 
     private void openWindowSuministros() {
-        controllerSuministros.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerSuministros.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeSuministros, 0d);
         AnchorPane.setTopAnchor(nodeSuministros, 0d);
         AnchorPane.setRightAnchor(nodeSuministros, 0d);
         AnchorPane.setBottomAnchor(nodeSuministros, 0d);
-        vbContent.getChildren().add(nodeSuministros);
+        fxPrincipalController.getVbContent().getChildren().add(nodeSuministros);
         if (controllerSuministros.getTvList().getItems().isEmpty()) {
             controllerSuministros.fillTableSuministros((short) 0, "", "", 0, 0);
         }
     }
 
     private void openWindowMovimientos() {
-        controllerMovimiento.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerMovimiento.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeMovimiento, 0d);
         AnchorPane.setTopAnchor(nodeMovimiento, 0d);
         AnchorPane.setRightAnchor(nodeMovimiento, 0d);
         AnchorPane.setBottomAnchor(nodeMovimiento, 0d);
-        vbContent.getChildren().add(nodeMovimiento);
+        fxPrincipalController.getVbContent().getChildren().add(nodeMovimiento);
         if (controllerMovimiento.getTvList().getItems().isEmpty()) {
             controllerMovimiento.setOpcion((short) 1);
             controllerMovimiento.loadInitTable();
@@ -232,25 +229,25 @@ public class FxInventarioController implements Initializable {
     }
 
     private void openWindowLote() {
-        controllerLote.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerLote.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeLote, 0d);
         AnchorPane.setTopAnchor(nodeLote, 0d);
         AnchorPane.setRightAnchor(nodeLote, 0d);
         AnchorPane.setBottomAnchor(nodeLote, 0d);
-        vbContent.getChildren().add(nodeLote);
+        fxPrincipalController.getVbContent().getChildren().add(nodeLote);
         controllerLote.fillLoteTable((short) 0, "");
 
     }
 
     private void openWindowInventarioInicial() {
-        controllerInventarioInicial.setContent(vbPrincipal, vbContent);
-        vbContent.getChildren().clear();
+        controllerInventarioInicial.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeInventarioInicial, 0d);
         AnchorPane.setTopAnchor(nodeInventarioInicial, 0d);
         AnchorPane.setRightAnchor(nodeInventarioInicial, 0d);
         AnchorPane.setBottomAnchor(nodeInventarioInicial, 0d);
-        vbContent.getChildren().add(nodeInventarioInicial);
+        fxPrincipalController.getVbContent().getChildren().add(nodeInventarioInicial);
     }
 
     @FXML
@@ -325,9 +322,8 @@ public class FxInventarioController implements Initializable {
         openWindowLote();
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

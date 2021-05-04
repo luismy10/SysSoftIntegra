@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.ClasesTB;
 import model.DetalleADO;
 import model.DetalleTB;
 
@@ -29,7 +30,7 @@ public class FxDetalleController implements Initializable {
     @FXML
     public TextArea txtDescripcion;
     @FXML
-    public ComboBox<Estado> cbEstado;
+    public ComboBox<String> cbEstado;
     @FXML
     private Button btnToAction;
     @FXML
@@ -42,22 +43,18 @@ public class FxDetalleController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        cbEstado.getItems().add(new Estado("1", "Habilitado"));
-        cbEstado.getItems().add(new Estado("0", "Inhabilitado"));
-        cbEstado.setConverter(new javafx.util.StringConverter<Estado>() {
-            @Override
-            public String toString(Estado object) {
-                return object.getNombre();
-            }
+        cbEstado.getItems().add("Habilitado");
+        cbEstado.getItems().add("Inhabilitado");
+        cbEstado.setValue("Habilitado");
 
-            @Override
-            public Estado fromString(String string) {
-                return cbEstado.getItems().stream().filter(ap
-                        -> ap.getNombre().equals(string)).findFirst().orElse(null);
-            }
-        });
-        cbEstado.setValue(new Estado("1", "Habilitado"));
+    }
 
+    public void setAddClase(String titulo, String idClase) {
+        lblTitle.setText("Agregar una nueva " + titulo);
+        txtCode.setText(idClase);
+        txtCodigoAuxiliar.setText("");
+        txtName.setText("");
+        txtDescripcion.setText("");
     }
 
     public void setValueAdd(String... values) {
@@ -75,7 +72,7 @@ public class FxDetalleController implements Initializable {
         txtCodigoAuxiliar.setText(values[3]);
         txtName.setText(values[4]);
         txtDescripcion.setText(values[5]);
-        cbEstado.setValue(values[6].equals("1") ? new Estado("1", "Habilitado") : new Estado("0", "Inhabilitado"));
+        cbEstado.setValue(values[6].equals("1") ? "Habilitado" : "Inhabilitado");
     }
 
     private void aValidityProcess() {
@@ -95,7 +92,7 @@ public class FxDetalleController implements Initializable {
                 detalleTB.setIdAuxiliar(txtCodigoAuxiliar.getText().trim());
                 detalleTB.setNombre(txtName.getText().trim());
                 detalleTB.setDescripcion(txtDescripcion.getText().trim());
-                detalleTB.setEstado(cbEstado.getValue().getId());
+                detalleTB.setEstado(cbEstado.getValue().equalsIgnoreCase("Habilitado") ? "1" : "0");
                 detalleTB.setUsuarioRegistro(Session.USER_ID);
                 String result = DetalleADO.CrudEntity(detalleTB);
                 if (result.equalsIgnoreCase("inserted")) {
@@ -117,6 +114,17 @@ public class FxDetalleController implements Initializable {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Detalle", "No hay conexión al servidor.", false);
             }
         }
+    }
+
+    public void updateDetalle(ClasesTB clasesTB, String titulo) {
+        txtCode.setText(clasesTB.getIdClase());
+        txtName.setText(clasesTB.getNombreClase().get());
+        txtCodigoAuxiliar.setText(clasesTB.getCodigoAuxiliar());
+        txtDescripcion.setText(clasesTB.getDescripcion());
+        cbEstado.setValue(clasesTB.getEstado().equals("1") ? "Habilitado" : "Inhabilitado");
+
+        btnToAction.setText("Actualizar");
+        btnToAction.getStyleClass().add("buttonLightWarning");
     }
 
     @FXML
@@ -159,39 +167,8 @@ public class FxDetalleController implements Initializable {
         }
     }
 
-    void initConfiguracion(FxDetalleMantenimientoController detalleMantenimientoController) {
+    public void initConfiguracion(FxDetalleMantenimientoController detalleMantenimientoController) {
         this.detalleMantenimientoController = detalleMantenimientoController;
     }
 
-    public class Estado {
-
-        private String Id;
-        private String Nombre;
-
-        public Estado() {
-
-        }
-
-        public Estado(String Id, String Nombre) {
-            this.Id = Id;
-            this.Nombre = Nombre;
-        }
-
-        public String getId() {
-            return Id;
-        }
-
-        public void setId(String Id) {
-            this.Id = Id;
-        }
-
-        public String getNombre() {
-            return Nombre;
-        }
-
-        public void setNombre(String Nombre) {
-            this.Nombre = Nombre;
-        }
-
-    }
 }

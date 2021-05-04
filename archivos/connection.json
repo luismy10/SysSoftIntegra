@@ -2,9 +2,8 @@
     "body":{
         "addres":"localhost",
         "port":"1433",
-        "dbname":"Actual",
+        "dbname":"FerreteriaDiamanante",
         "user":"sa",
         "password":"123456"
     }
-   
 }

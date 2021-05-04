@@ -1,95 +1,88 @@
 package model;
 
 import java.io.Serializable;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
 public class DetalleTB implements Serializable {
 
-    private SimpleIntegerProperty idDetalle;
-    private SimpleStringProperty idMantenimiento;
-    private SimpleStringProperty idAuxiliar;
-    private SimpleStringProperty nombre;
-    private SimpleStringProperty descripcion;
-    private SimpleStringProperty estado;
-    private SimpleStringProperty usuarioRegistro;
+    private int idDetalle;
+    private String idMantenimiento;
+    private String idAuxiliar;
+    private String nombre;
+    private String descripcion;
+    private String estado;
+    private String usuarioRegistro;
 
     public DetalleTB() {
     }
 
-    public DetalleTB(SimpleStringProperty nombre) {
-        this.nombre = nombre;
-    }
-
-    public DetalleTB(SimpleIntegerProperty idDetalle, SimpleStringProperty nombre) {
-        this.idDetalle = idDetalle;
+    public DetalleTB(String nombre) {
         this.nombre = nombre;
     }
 
     public DetalleTB(int idDetalle, String nombre) {
-        this.idDetalle = new SimpleIntegerProperty(idDetalle);
-        this.nombre = new SimpleStringProperty(nombre);
+        this.idDetalle = idDetalle;
+        this.nombre = nombre;
     }
 
-    public SimpleIntegerProperty getIdDetalle() {
+    public int getIdDetalle() {
         return idDetalle;
     }
 
     public void setIdDetalle(int idDetalle) {
-        this.idDetalle = new SimpleIntegerProperty(idDetalle);
+        this.idDetalle = idDetalle;
     }
 
-    public SimpleStringProperty getIdAuxiliar() {
+    public String getIdAuxiliar() {
         return idAuxiliar;
     }
 
     public void setIdAuxiliar(String idAuxiliar) {
-        this.idAuxiliar = new SimpleStringProperty(idAuxiliar);
+        this.idAuxiliar = idAuxiliar;
     }
 
-    public SimpleStringProperty getIdMantenimiento() {
+    public String getIdMantenimiento() {
         return idMantenimiento;
     }
 
     public void setIdMantenimiento(String idMantenimiento) {
-        this.idMantenimiento = new SimpleStringProperty(idMantenimiento);
+        this.idMantenimiento = idMantenimiento;
     }
 
-    public SimpleStringProperty getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = new SimpleStringProperty(nombre);
+        this.nombre = nombre;
     }
 
-    public SimpleStringProperty getDescripcion() {
+    public String getDescripcion() {
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = new SimpleStringProperty(descripcion);
+        this.descripcion = descripcion;
     }
 
-    public SimpleStringProperty getEstado() {
+    public String getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
-        this.estado = new SimpleStringProperty(estado);
+        this.estado = estado;
     }
 
-    public SimpleStringProperty getUsuarioRegistro() {
+    public String getUsuarioRegistro() {
         return usuarioRegistro;
     }
 
     public void setUsuarioRegistro(String usuarioRegistro) {
-        this.usuarioRegistro = new SimpleStringProperty(usuarioRegistro);
+        this.usuarioRegistro = usuarioRegistro;
     }
 
     @Override
     public String toString() {
-        return nombre.get();
+        return nombre;
     }
 
 }

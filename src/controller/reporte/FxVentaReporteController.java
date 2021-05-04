@@ -2,8 +2,8 @@ package controller.reporte;
 
 import controller.configuracion.empleados.FxEmpleadosListaController;
 import controller.contactos.clientes.FxClienteListaController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -27,7 +27,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.TipoDocumentoADO;
@@ -74,7 +73,7 @@ public class FxVentaReporteController implements Initializable {
     @FXML
     private CheckBox cbMostrarVenta;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     private String idCliente;
 
@@ -101,7 +100,7 @@ public class FxVentaReporteController implements Initializable {
 
     private void openWindowClientes() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_CLIENTE_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -112,7 +111,7 @@ public class FxVentaReporteController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Elija un cliente", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillCustomersTable("");
         } catch (IOException ex) {
@@ -122,7 +121,7 @@ public class FxVentaReporteController implements Initializable {
 
     private void openWindowVendedores() {
         try {
-            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+            fxPrincipalController.openFondoModal();
             URL url = getClass().getResource(FilesRouters.FX_EMPLEADO_LISTA);
             FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
             Parent parent = fXMLLoader.load(url.openStream());
@@ -133,7 +132,7 @@ public class FxVentaReporteController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Elija un vendedor", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
             controller.fillEmpleadosTable("");
         } catch (IOException ex) {
@@ -394,8 +393,8 @@ public class FxVentaReporteController implements Initializable {
         return txtVendedores;
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

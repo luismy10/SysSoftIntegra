@@ -216,47 +216,48 @@ public class EmpleadoADO {
         return empleadoTB;
     }
 
-    public static EmpleadoTB GetValidateUser(String user, String clave) {
-
+    public static Object GetValidateUser(String user, String clave) {
         String selectStmt = "{CALL Sp_Validar_Ingreso(?,?)}";
         PreparedStatement preparedStatement = null;
         ResultSet rsEmps = null;
-        EmpleadoTB empleadoTB = null;
-        DBUtil.dbConnect();
-        if (DBUtil.getConnection() != null) {
-            try {
-                preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-                preparedStatement.setString(1, user);
-                preparedStatement.setString(2, clave);
-                rsEmps = preparedStatement.executeQuery();
-                empleadoTB = new EmpleadoTB();
-                if (rsEmps.next()) {
-                    empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
-                    empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
-                    empleadoTB.setNombres(rsEmps.getString("Nombres"));
-                    empleadoTB.setRolName(rsEmps.getString("RolName"));
-                    empleadoTB.setEstado(rsEmps.getInt("Estado"));
-                    empleadoTB.setRol(rsEmps.getInt("Rol"));
-                }
-            } catch (SQLException e) {
-                System.out.println("La operación de selección de SQL ha fallado: " + e);
-            } finally {
-                try {
-                    if (preparedStatement != null) {
-                        preparedStatement.close();
-                    }
-                    if (rsEmps != null) {
-                        rsEmps.close();
-                    }
-                    DBUtil.dbDisconnect();
-                } catch (SQLException ex) {
-
-                }
-            }
-            return empleadoTB;
-        } else {
-            return empleadoTB;
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, user);
+            preparedStatement.setString(2, clave);
+            rsEmps = preparedStatement.executeQuery();
+            EmpleadoTB empleadoTB = new EmpleadoTB();
+            if (rsEmps.next()) {
+                empleadoTB.setIdEmpleado(rsEmps.getString("IdEmpleado"));
+                empleadoTB.setApellidos(rsEmps.getString("Apellidos"));
+                empleadoTB.setNombres(rsEmps.getString("Nombres"));
+                empleadoTB.setRolName(rsEmps.getString("RolName"));
+                empleadoTB.setEstado(rsEmps.getInt("Estado"));
+                empleadoTB.setRol(rsEmps.getInt("Rol"));
+                return empleadoTB;
+            }else{
+                throw new Exception("No se encontro al cliente, intente nuevamente.");
+            }               
+            
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch(Exception ex){
+            return ex.getLocalizedMessage();
         }
+        finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+
+            }
+        }
+
     }
 
 //    public static void UpdateImage() {
@@ -285,7 +286,6 @@ public class EmpleadoADO {
 //        }
 //
 //    }
-
     public static ObservableList<EmpleadoTB> ListEmployeeInProProduction(String value) {
         String selectStmt = "{call Sp_Listar_Empleados(?)}";
         //String selectStmt = "select * from EmpleadoTB";

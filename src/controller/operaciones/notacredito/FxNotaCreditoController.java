@@ -1,7 +1,8 @@
 package controller.operaciones.notacredito;
 
+import controller.menus.FxPrincipalController;
+import controller.operaciones.venta.FxVentaListaController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
@@ -92,9 +93,7 @@ public class FxNotaCreditoController implements Initializable {
     @FXML
     private Label lblImpuesto;
 
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
+    private FxPrincipalController principalController;
 
     private String idVenta;
 
@@ -132,8 +131,7 @@ public class FxNotaCreditoController implements Initializable {
             clearElements();
         });
         task.setOnFailed(w -> {
-            lblMessageLoad.setGraphic(null);
-            lblMessageLoad.setText(task.getMessage());
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
             lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
             btnAceptarLoad.setVisible(true);
         });
@@ -175,11 +173,16 @@ public class FxNotaCreditoController implements Initializable {
                 }
 
                 for (int i = 0; i < cbTipoDocumento.getItems().size(); i++) {
-                    if (cbTipoDocumento.getItems().get(i).getIdDetalle().get() == ventaTB.getClienteTB().getTipoDocumento()) {
+                    if (cbTipoDocumento.getItems().get(i).getIdDetalle() == ventaTB.getClienteTB().getTipoDocumento()) {
                         cbTipoDocumento.getSelectionModel().select(i);
                         break;
                     }
                 }
+
+                if (cbNotaCredito.getItems().size() == 1) {
+                    cbNotaCredito.getSelectionModel().select(0);
+                }
+
                 txtNumeroDocumento.setText(ventaTB.getClienteTB().getNumeroDocumento());
                 txtRazonsocial.setText(ventaTB.getClienteTB().getInformacion());
                 txtDireccion.setText(ventaTB.getClienteTB().getDireccion());
@@ -207,12 +210,10 @@ public class FxNotaCreditoController implements Initializable {
                 hbLoad.setVisible(false);
                 spBody.setDisable(false);
             } else if (object instanceof String) {
-                lblMessageLoad.setGraphic(null);
                 lblMessageLoad.setText((String) object);
                 lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
                 btnAceptarLoad.setVisible(true);
             } else {
-                lblMessageLoad.setGraphic(null);
                 lblMessageLoad.setText("Se produjo un error interno, comuníquese con su proveedor del sistema.");
                 lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
                 btnAceptarLoad.setVisible(true);
@@ -384,44 +385,77 @@ public class FxNotaCreditoController implements Initializable {
         } else if (detalleVentaTBs.isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "No hay datos en el detalle para guardar el documento.");
         } else {
-            
-                NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
-                notaCreditoTB.setIdVendedor(Session.USER_ID);
-                notaCreditoTB.setIdCliente(idCliente);
-                notaCreditoTB.setIdComprobante(cbNotaCredito.getSelectionModel().getSelectedItem().getIdTipoDocumento());
-                notaCreditoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
-                notaCreditoTB.setIdMotivo(cbMotivo.getSelectionModel().getSelectedItem().getIdDetalle().get());
-                notaCreditoTB.setFechaRegistro(Tools.getDatePicker(txtFechaRegistro));
-                notaCreditoTB.setHoraRegistro(Tools.getHour());
-                notaCreditoTB.setEstado(1);
-                notaCreditoTB.setIdVenta(idVenta);
-                ArrayList<NotaCreditoDetalleTB> creditoDetalleTBs = new ArrayList<>();
-                detalleVentaTBs.forEach(f -> {
-                    NotaCreditoDetalleTB ncdtb = new NotaCreditoDetalleTB();
-                    ncdtb.setIdSuministro(f.getIdArticulo());
-                    ncdtb.setCantidad(f.getSuministroTB().getCantidad());
-                    ncdtb.setPrecio(f.getSuministroTB().getPrecioVentaGeneral());
-                    ncdtb.setDescuento(f.getSuministroTB().getDescuento());
-                    ncdtb.setValorImpuesto(f.getSuministroTB().getImpuestoValor());
-                    creditoDetalleTBs.add(ncdtb);
-                });
-                notaCreditoTB.setNotaCreditoDetalleTBs(creditoDetalleTBs);
 
-                ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-                URL url = getClass().getResource(FilesRouters.FX_NOTA_CREDITO_PROCESO);
-                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                Parent parent = fXMLLoader.load(url.openStream());
-                //Controlller here
-                FxNotaCreditoProcesoController controller = fXMLLoader.getController();
-                controller.setInitNotaCreditoController(this);
-                controller.loadDataComponents(notaCreditoTB);
-                //
-                Stage stage = WindowStage.StageLoaderModal(parent, "Nota de Crédito", apWindow.getScene().getWindow());
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.setOnHiding(w -> vbPrincipal.getChildren().remove(ObjectGlobal.PANE));
-                stage.show();
-            
+            NotaCreditoTB notaCreditoTB = new NotaCreditoTB();
+            notaCreditoTB.setIdVendedor(Session.USER_ID);
+            notaCreditoTB.setIdCliente(idCliente);
+            notaCreditoTB.setIdComprobante(cbNotaCredito.getSelectionModel().getSelectedItem().getIdTipoDocumento());
+            notaCreditoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
+            notaCreditoTB.setIdMotivo(cbMotivo.getSelectionModel().getSelectedItem().getIdDetalle());
+            notaCreditoTB.setFechaRegistro(Tools.getDatePicker(txtFechaRegistro));
+            notaCreditoTB.setHoraRegistro(Tools.getHour());
+            notaCreditoTB.setEstado(1);
+            notaCreditoTB.setIdVenta(idVenta);
+            ArrayList<NotaCreditoDetalleTB> creditoDetalleTBs = new ArrayList<>();
+            detalleVentaTBs.forEach(f -> {
+                NotaCreditoDetalleTB ncdtb = new NotaCreditoDetalleTB();
+                ncdtb.setIdSuministro(f.getIdArticulo());
+                ncdtb.setCantidad(f.getSuministroTB().getCantidad());
+                ncdtb.setPrecio(f.getSuministroTB().getPrecioVentaGeneral());
+                ncdtb.setDescuento(f.getSuministroTB().getDescuento());
+                ncdtb.setValorImpuesto(f.getSuministroTB().getImpuestoValor());
+                ncdtb.setSuministroTB(f.getSuministroTB());
+                creditoDetalleTBs.add(ncdtb);
+            });
+            notaCreditoTB.setNotaCreditoDetalleTBs(creditoDetalleTBs);
+
+            short value = Tools.AlertMessageConfirmation(apWindow, "Nota de Crédito", "¿Está seguro de continuar?");
+            if (value == 1) {
+                String result = NotaCreditoADO.Registrar_NotaCredito(notaCreditoTB);
+                if (result.equalsIgnoreCase("registrado")) {
+                    Tools.AlertMessageInformation(apWindow, "Nota de Crédito", "Se registró correctamente la nota de crédito.");
+                    clearElements();
+                } else {
+                    Tools.AlertMessageError(apWindow, "Nota de Crédito", result);
+                }
+            }
+
+//            principalController.openFondoModal();
+//            URL url = getClass().getResource(FilesRouters.FX_NOTA_CREDITO_PROCESO);
+//            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//            Parent parent = fXMLLoader.load(url.openStream());
+//            //Controlller here
+//            FxNotaCreditoProcesoController controller = fXMLLoader.getController();
+//            controller.setInitNotaCreditoController(this);
+//            controller.loadDataComponents(notaCreditoTB);
+//            //
+//            Stage stage = WindowStage.StageLoaderModal(parent, "Nota de Crédito", apWindow.getScene().getWindow());
+//            stage.setResizable(false);
+//            stage.sizeToScene();
+//            stage.setOnHiding(w -> principalController.closeFondoModal());
+//            stage.show();
+        }
+    }
+
+    private void openWindowVentas() {
+        try {
+            principalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_VENTA_LISTA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxVentaListaController controller = fXMLLoader.getController();
+            controller.setInitNotaCreditoController(this);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccione una venta", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> principalController.closeFondoModal());
+            stage.setOnShown(w -> controller.getTxtBuscar().requestFocus());
+            stage.show();
+            controller.loadInit();
+        } catch (IOException ex) {
+            System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }
     }
 
@@ -463,7 +497,7 @@ public class FxNotaCreditoController implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) throws IOException {
-        registrarNotaCredito(); 
+        registrarNotaCredito();
     }
 
     @FXML
@@ -478,18 +512,28 @@ public class FxNotaCreditoController implements Initializable {
         clearElements();
     }
 
+    @FXML
+    private void onKeyPressedVentas(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVentas();
+        }
+    }
+
+    @FXML
+    private void onActionVentas(ActionEvent event) {
+        openWindowVentas();
+    }
+
     public ScrollPane getSpBody() {
         return spBody;
     }
 
     public HBox getHbLoad() {
         return hbLoad;
-    }  
-    
+    }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController principalController) {
+        this.principalController = principalController;
     }
 
 }

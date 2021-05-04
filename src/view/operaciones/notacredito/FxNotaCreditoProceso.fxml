@@ -32,7 +32,7 @@
                      <children>
                         <HBox>
                            <children>
-                              <RadioButton fx:id="rbGuardarUno" mnemonicParsing="false" selected="true" text="Guardar con salida de dinero e ingreso de productos." />
+                              <RadioButton fx:id="rbGuardarUno" mnemonicParsing="false" selected="true" text="Guardar ajustando inventario." />
                            </children>
                         </HBox>
                         <HBox>

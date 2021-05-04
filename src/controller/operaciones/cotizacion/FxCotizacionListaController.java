@@ -37,7 +37,7 @@ public class FxCotizacionListaController implements Initializable {
     @FXML
     private DatePicker txtFechaFinal;
     @FXML
-    private TableView<CotizacionTB> tvLista;
+    private TableView<CotizacionTB> tvList;
     @FXML
     private TableColumn<CotizacionTB, String> tcNumero;
     @FXML
@@ -50,10 +50,20 @@ public class FxCotizacionListaController implements Initializable {
     private TableColumn<CotizacionTB, String> tcCliente;
     @FXML
     private TableColumn<CotizacionTB, String> tcTotal;
+    @FXML
+    private Label lblPaginaActual;
+    @FXML
+    private Label lblPaginaSiguiente;
 
     private FxVentaEstructuraController ventaEstructuraController;
 
     private FxCotizacionController cotizacionController;
+
+    private int paginacion;
+
+    private int totalPaginacion;
+
+    private short opcion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,37 +74,63 @@ public class FxCotizacionListaController implements Initializable {
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFechaCotizacion() + "\n" + cellData.getValue().getHoraCotizacion()));
         tcCliente.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClienteTB().getInformacion()));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaTB().getSimbolo() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+
         Tools.actualDate(Tools.getDate(), txtFechaInicio);
         Tools.actualDate(Tools.getDate(), txtFechaFinal);
     }
 
-    public void loadTable(short opcion, String buscar, String fechaInicio, String fechaFinal) {
+    public void initLoad() {
+        Tools.actualDate(Tools.getDate(), txtFechaInicio);
+        Tools.actualDate(Tools.getDate(), txtFechaFinal);
+        if (!lblLoad.isVisible()) {
+            paginacion = 1;
+            fillTableCotizacion(1, "", "", "");
+            opcion = 0;
+        }
+    }
+
+    private void fillTableCotizacion(int opcion, String buscar, String fechaInicio, String fechaFinal) {
         ExecutorService exec = Executors.newCachedThreadPool((Runnable runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             return t;
         });
-        Task<ObservableList<CotizacionTB>> task = new Task<ObservableList<CotizacionTB>>() {
+        Task<Object> task = new Task<Object>() {
             @Override
-            public ObservableList<CotizacionTB> call() {
-                return CotizacionADO.CargarCotizacion(opcion, buscar, fechaInicio, fechaFinal);
+            public Object call() {
+                return CotizacionADO.ListarCotizacion(opcion, buscar, fechaInicio, fechaFinal, (paginacion - 1) * 10, 10);
             }
         };
         task.setOnSucceeded(w -> {
-            ObservableList<CotizacionTB> cotizacionTBs = task.getValue();
-            if (!cotizacionTBs.isEmpty()) {
-                tvLista.setItems(cotizacionTBs);
-                lblLoad.setVisible(false);
+            Object object = task.getValue();
+            if (object instanceof Object[]) {
+                Object[] objects = (Object[]) object;
+                ObservableList<CotizacionTB> cotizacionTBs = (ObservableList<CotizacionTB>) objects[0];
+                if (!cotizacionTBs.isEmpty()) {
+                    tvList.setItems(cotizacionTBs);
+                    totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 10.00));
+                    lblPaginaActual.setText(paginacion + "");
+                    lblPaginaSiguiente.setText(totalPaginacion + "");
+                } else {
+                    tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
+                    lblPaginaActual.setText("0");
+                    lblPaginaSiguiente.setText("0");
+                }
             } else {
-                tvLista.getItems().clear();
-                lblLoad.setVisible(false);
+                tvList.setPlaceholder(Tools.placeHolderTableView((String) object, "-fx-text-fill:#a70820;", false));
             }
+            lblLoad.setVisible(false);
         });
         task.setOnFailed(w -> {
             lblLoad.setVisible(false);
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getMessage(), "-fx-text-fill:#a70820;", false));
         });
         task.setOnScheduled(w -> {
             lblLoad.setVisible(true);
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
         });
         exec.execute(task);
         if (!exec.isShutdown()) {
@@ -102,18 +138,32 @@ public class FxCotizacionListaController implements Initializable {
         }
     }
 
+    private void onEventPaginacion() {
+        switch (opcion) {
+            case 0:
+                fillTableCotizacion(1, "", "", "");
+                break;
+            case 1:
+                fillTableCotizacion(2, txtBuscar.getText().trim(), "", "");
+                break;
+            case 2:
+                fillTableCotizacion(3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                break;
+        }
+    }
+
     private void onEventAceptar() {
         if (ventaEstructuraController != null) {
-            if (tvLista.getSelectionModel().getSelectedIndex() >= 0) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 ventaEstructuraController.resetVenta();
                 Tools.Dispose(apWindow);
-                ventaEstructuraController.loadCotizacion(tvLista.getSelectionModel().getSelectedItem().getIdCotizacion());
+                ventaEstructuraController.loadCotizacion(tvList.getSelectionModel().getSelectedItem().getIdCotizacion());
             }
         } else if (cotizacionController != null) {
-            if (tvLista.getSelectionModel().getSelectedIndex() >= 0) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 cotizacionController.resetVenta();
                 Tools.Dispose(apWindow);
-                cotizacionController.loadCotizacion(tvLista.getSelectionModel().getSelectedItem().getIdCotizacion());
+                cotizacionController.loadCotizacion(tvList.getSelectionModel().getSelectedItem().getIdCotizacion());
             }
         }
     }
@@ -121,9 +171,9 @@ public class FxCotizacionListaController implements Initializable {
     @FXML
     private void onKeyPressedBuscar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (!tvLista.getItems().isEmpty()) {
-                tvLista.requestFocus();
-                tvLista.getSelectionModel().select(0);
+            if (!tvList.getItems().isEmpty()) {
+                tvList.requestFocus();
+                tvList.getSelectionModel().select(0);
             }
         }
     }
@@ -131,7 +181,9 @@ public class FxCotizacionListaController implements Initializable {
     @FXML
     private void onKeyReleasedBuscar(KeyEvent event) {
         if (!lblLoad.isVisible()) {
-            loadTable((short) 2, txtBuscar.getText().trim(), "", "");
+            paginacion = 1;
+            fillTableCotizacion(2, txtBuscar.getText().trim(), "", "");
+            opcion = 1;
         }
     }
 
@@ -139,7 +191,9 @@ public class FxCotizacionListaController implements Initializable {
     private void onActionFechaInicio(ActionEvent event) {
         if (!lblLoad.isVisible()) {
             if (txtFechaInicio.getValue() != null && txtFechaFinal.getValue() != null) {
-                loadTable((short) 3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                paginacion = 1;
+                fillTableCotizacion(3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                opcion = 2;
             }
         }
     }
@@ -148,7 +202,9 @@ public class FxCotizacionListaController implements Initializable {
     private void onActionFechaFinal(ActionEvent event) {
         if (!lblLoad.isVisible()) {
             if (txtFechaInicio.getValue() != null && txtFechaFinal.getValue() != null) {
-                loadTable((short) 3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                paginacion = 1;
+                fillTableCotizacion(3, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
+                opcion = 2;
             }
         }
     }
@@ -157,12 +213,7 @@ public class FxCotizacionListaController implements Initializable {
     private void onkeyPressedRecargar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
-                txtBuscar.clear();
-                Tools.actualDate(Tools.getDate(), txtFechaInicio);
-                Tools.actualDate(Tools.getDate(), txtFechaFinal);
-                if (txtFechaInicio.getValue() != null && txtFechaFinal.getValue() != null) {
-                    loadTable((short) 1, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
-                }
+                initLoad();
             }
         }
     }
@@ -170,19 +221,14 @@ public class FxCotizacionListaController implements Initializable {
     @FXML
     private void onActionRecargar(ActionEvent event) {
         if (!lblLoad.isVisible()) {
-            txtBuscar.clear();
-            Tools.actualDate(Tools.getDate(), txtFechaInicio);
-            Tools.actualDate(Tools.getDate(), txtFechaFinal);
-            if (txtFechaInicio.getValue() != null && txtFechaFinal.getValue() != null) {
-                loadTable((short) 1, "", Tools.getDatePicker(txtFechaInicio), Tools.getDatePicker(txtFechaFinal));
-            }
+            initLoad();
         }
     }
 
     @FXML
     private void onKeyPressedList(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (!tvLista.getItems().isEmpty()) {
+            if (!tvList.getItems().isEmpty()) {
                 onEventAceptar();
             }
         }
@@ -190,7 +236,7 @@ public class FxCotizacionListaController implements Initializable {
 
     @FXML
     private void onMouseClickedList(MouseEvent event) {
-        if (!tvLista.getItems().isEmpty()) {
+        if (!tvList.getItems().isEmpty()) {
             if (event.getClickCount() == 2) {
                 onEventAceptar();
             }
@@ -219,6 +265,50 @@ public class FxCotizacionListaController implements Initializable {
     @FXML
     private void onActionCerrar(ActionEvent event) {
         Tools.Dispose(apWindow);
+    }
+
+    @FXML
+    private void onKeyPressedAnterior(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                if (paginacion > 1) {
+                    paginacion--;
+                    onEventPaginacion();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onActionAnterior(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            if (paginacion > 1) {
+                paginacion--;
+                onEventPaginacion();
+            }
+        }
+    }
+
+    @FXML
+    private void onKeyPressedSiguiente(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!lblLoad.isVisible()) {
+                if (paginacion < totalPaginacion) {
+                    paginacion++;
+                    onEventPaginacion();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void onActionSiguiente(ActionEvent event) {
+        if (!lblLoad.isVisible()) {
+            if (paginacion < totalPaginacion) {
+                paginacion++;
+                onEventPaginacion();
+            }
+        }
     }
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {

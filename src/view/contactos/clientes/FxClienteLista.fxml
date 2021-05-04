@@ -51,12 +51,12 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="360.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="tcId" prefWidth="70.0" style="-fx-alignment: CENTER;" text="N°" />
-                        <TableColumn fx:id="tcDocumento" prefWidth="184.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
-                        <TableColumn fx:id="tcPersona" prefWidth="278.0" text="Cliente" />
-                        <TableColumn fx:id="tcDireccion" prefWidth="298.0" text="Dirección" />
+                        <TableColumn fx:id="tcId" prefWidth="50.0" style="-fx-alignment: CENTER;" text="N°" />
+                        <TableColumn fx:id="tcDocumento" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="Documento" />
+                        <TableColumn fx:id="tcPersona" prefWidth="270.0" text="Cliente" />
+                        <TableColumn fx:id="tcDireccion" prefWidth="290.0" text="Dirección" />
                      </columns>
                   </TableView>
                </children>

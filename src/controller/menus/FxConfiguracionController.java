@@ -58,10 +58,8 @@ public class FxConfiguracionController implements Initializable {
     /*
     Objectos de la ventana principal y venta que agrega al os hijos
      */
-    private AnchorPane vbPrincipal;
-
-    private AnchorPane vbContent;
-    /*
+    private FxPrincipalController fxPrincipalController;
+    /*            
     Controller empresa
      */
     private FXMLLoader fXMLEmpresa;
@@ -202,34 +200,34 @@ public class FxConfiguracionController implements Initializable {
     }
 
     private void openWindowTablasBasicas() {
-        controllerTablasBasicas.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerTablasBasicas.setContent(  fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeTablasBasicas, 0d);
         AnchorPane.setTopAnchor(nodeTablasBasicas, 0d);
         AnchorPane.setRightAnchor(nodeTablasBasicas, 0d);
         AnchorPane.setBottomAnchor(nodeTablasBasicas, 0d);
-        vbContent.getChildren().add(nodeTablasBasicas);
+        fxPrincipalController.getVbContent().getChildren().add(nodeTablasBasicas);
         controllerTablasBasicas.reloadListView();
     }
 
     private void openWindowCompany() {
-        controllerMiEmpresa.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerMiEmpresa.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeMiEmpresa, 0d);
         AnchorPane.setTopAnchor(nodeMiEmpresa, 0d);
         AnchorPane.setRightAnchor(nodeMiEmpresa, 0d);
         AnchorPane.setBottomAnchor(nodeMiEmpresa, 0d);
-        vbContent.getChildren().add(nodeMiEmpresa);
+        fxPrincipalController.getVbContent().getChildren().add(nodeMiEmpresa);
     }
 
     private void openWindowPrivileges() {
-        controllerRoles.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerRoles.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeRoles, 0d);
         AnchorPane.setTopAnchor(nodeRoles, 0d);
         AnchorPane.setRightAnchor(nodeRoles, 0d);
         AnchorPane.setBottomAnchor(nodeRoles, 0d);
-        vbContent.getChildren().add(nodeRoles);
+        fxPrincipalController.getVbContent().getChildren().add(nodeRoles);
     }
 
     private void openWindowEmployes() {
@@ -237,13 +235,13 @@ public class FxConfiguracionController implements Initializable {
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_EMPLEADO));
             VBox node = fXMLPrincipal.load();
             FxEmpleadosController controller = fXMLPrincipal.getController();
-            controller.setContent(vbPrincipal);
-            vbContent.getChildren().clear();
+            controller.setContent(fxPrincipalController);
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
             controller.fillEmpleadosTable("");
         } catch (IOException ex) {
             System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
@@ -255,13 +253,13 @@ public class FxConfiguracionController implements Initializable {
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_MONEDA));
             VBox node = fXMLPrincipal.load();
             FxMonedaController controller = fXMLPrincipal.getController();
-            controller.setContent(vbPrincipal);
-            vbContent.getChildren().clear();
+            controller.setContent(fxPrincipalController);
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
+            fxPrincipalController.getVbContent().getChildren().add(node);
             controller.fillTableMonedas();
         } catch (IOException ex) {
             System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
@@ -269,13 +267,13 @@ public class FxConfiguracionController implements Initializable {
     }
 
     private void openWindowVoucher() {
-        controllerTipoDocumento.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerTipoDocumento.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeTipoDocumento, 0d);
         AnchorPane.setTopAnchor(nodeTipoDocumento, 0d);
         AnchorPane.setRightAnchor(nodeTipoDocumento, 0d);
         AnchorPane.setBottomAnchor(nodeTipoDocumento, 0d);
-        vbContent.getChildren().add(nodeTipoDocumento);
+        fxPrincipalController.getVbContent().getChildren().add(nodeTipoDocumento);
     }
 
     private void openWindowTex() {
@@ -283,48 +281,47 @@ public class FxConfiguracionController implements Initializable {
             FXMLLoader fXMLPrincipal = new FXMLLoader(getClass().getResource(FilesRouters.FX_IMPUESTO));
             VBox node = fXMLPrincipal.load();
             FxImpuestoController controller = fXMLPrincipal.getController();
-            controller.setContent(vbPrincipal);
-            vbContent.getChildren().clear();
+            controller.setContent(fxPrincipalController);
+            fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
             AnchorPane.setTopAnchor(node, 0d);
             AnchorPane.setRightAnchor(node, 0d);
             AnchorPane.setBottomAnchor(node, 0d);
-            vbContent.getChildren().add(node);
-            controller.fillTabletTax();
+            fxPrincipalController.getVbContent().getChildren().add(node);           
         } catch (IOException ex) {
             System.out.println("Error en la view configuración:" + ex.getLocalizedMessage());
         }
     }
 
     private void openWindowTickets() {
-        controllerTicket.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerTicket.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeTicketa, 0d);
         AnchorPane.setTopAnchor(nodeTicketa, 0d);
         AnchorPane.setRightAnchor(nodeTicketa, 0d);
         AnchorPane.setBottomAnchor(nodeTicketa, 0d);
-        vbContent.getChildren().add(nodeTicketa);
+        fxPrincipalController.getVbContent().getChildren().add(nodeTicketa);
     }
 
     private void openWindowEtiquetas() {
-        controllerEtiqueta.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerEtiqueta.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeEtiqueta, 0d);
         AnchorPane.setTopAnchor(nodeEtiqueta, 0d);
         AnchorPane.setRightAnchor(nodeEtiqueta, 0d);
         AnchorPane.setBottomAnchor(nodeEtiqueta, 0d);
-        vbContent.getChildren().add(nodeEtiqueta);
+        fxPrincipalController.getVbContent().getChildren().add(nodeEtiqueta);
         //controllerEtiqueta.loadEtiqueta(0, new File("./archivos/etiqueta.json").getAbsolutePath());
     }
 
     private void openWindowImpresora() {
-        controllerImpresora.setContent(vbPrincipal);
-        vbContent.getChildren().clear();
+        controllerImpresora.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(nodeImpresora, 0d);
         AnchorPane.setTopAnchor(nodeImpresora, 0d);
         AnchorPane.setRightAnchor(nodeImpresora, 0d);
         AnchorPane.setBottomAnchor(nodeImpresora, 0d);
-        vbContent.getChildren().add(nodeImpresora);
+        fxPrincipalController.getVbContent().getChildren().add(nodeImpresora);
     }
 
     @FXML
@@ -447,9 +444,8 @@ public class FxConfiguracionController implements Initializable {
         openWindowImpresora();
     }
 
-    public void setContent(AnchorPane vbPrincipal, AnchorPane vbContent) {
-        this.vbPrincipal = vbPrincipal;
-        this.vbContent = vbContent;
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

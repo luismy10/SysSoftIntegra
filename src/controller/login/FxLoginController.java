@@ -66,25 +66,19 @@ public class FxLoginController implements Initializable {
                 return t;
             });
 
-            Task<Short> task = new Task<Short>() {
+            Task<String> task = new Task<String>() {
                 @Override
-                protected Short call() throws Exception {
-
-                    EmpleadoTB empleadoTB = EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim());
-                    if (empleadoTB != null) {
-                        if (empleadoTB.getIdEmpleado() != null) {
-
-                            Session.USER_ROL = empleadoTB.getRol();
-                            Session.USER_ID = empleadoTB.getIdEmpleado();
-                            Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase()) + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase() + empleadoTB.getNombres().substring(1).toLowerCase();
-                            Session.USER_PUESTO = empleadoTB.getRolName();
-
-                            return 3;
-                        } else {
-                            return 2;
-                        }
+                protected String call() throws Exception {
+                    Object object = EmpleadoADO.GetValidateUser(txtUsuario.getText().trim(), txtClave.getText().trim());
+                    if (object instanceof EmpleadoTB) {
+                        EmpleadoTB empleadoTB = (EmpleadoTB) object;
+                        Session.USER_ROL = empleadoTB.getRol();
+                        Session.USER_ID = empleadoTB.getIdEmpleado();
+                        Session.USER_NAME = (empleadoTB.getApellidos().substring(0, 1).toUpperCase() + empleadoTB.getApellidos().substring(1).toLowerCase()) + " " + empleadoTB.getNombres().substring(0, 1).toUpperCase() + empleadoTB.getNombres().substring(1).toLowerCase();
+                        Session.USER_PUESTO = empleadoTB.getRolName();
+                        return "ok";
                     } else {
-                        return 1;
+                        return (String) object;
                     }
                 }
             };
@@ -97,53 +91,42 @@ public class FxLoginController implements Initializable {
                 lblError.setText("Iniciando la autentificación...");
             });
             task.setOnSucceeded(e -> {
-                if (null != task.getValue()) {
-                    switch (task.getValue()) {
-                        case 1:
-                            lblError.setText("Error: No se pudo conectar al servidor, revise su conexión e intente nuevamente.");
-                            lblEntrar.setDisable(false);
-                            break;
-                        case 2:
-                            lblError.setText("Los datos ingresados no son correctos.");
-                            lblEntrar.setDisable(false);
-                            break;
-                        case 3:
-                            lblError.setTextFill(Paint.valueOf("#ed3d1a"));
-                            lblError.setText("Se completo la autentificación correctamente :D");
-                            try {
-                                Tools.Dispose(apLogin);
-                                URL url = getClass().getResource(FilesRouters.FX_PRINCIPAL);
-                                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-                                Parent parent = fXMLLoader.load(url.openStream());
-                                FxPrincipalController controller = fXMLLoader.getController();
-                                Stage stage = new Stage();
-                                Scene scene = new Scene(parent);
-                                stage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
-                                stage.setScene(scene);
-                                stage.setTitle(FilesRouters.TITLE_APP);
-                                stage.centerOnScreen();
-                                stage.setMaximized(true);
-                                stage.show();
-                                stage.requestFocus();
-                                controller.initLoadMenus();
-                                controller.initInicioController();
-                                controller.initWindowSize();
-                                controller.initUserSession((Session.USER_PUESTO.substring(0, 1).toUpperCase() + Session.USER_PUESTO.substring(1).toLowerCase()));
+                String result = task.getValue();
+                if (result.equalsIgnoreCase("ok")) {
+                    lblError.setTextFill(Paint.valueOf("#ed3d1a"));
+                    lblError.setText("Se completo la autentificación correctamente :D");
+                    try {
+                        Tools.Dispose(apLogin);
+                        URL url = getClass().getResource(FilesRouters.FX_PRINCIPAL);
+                        FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+                        Parent parent = fXMLLoader.load(url.openStream());
+                        FxPrincipalController controller = fXMLLoader.getController();
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(parent);
+                        stage.getIcons().add(new Image(FilesRouters.IMAGE_ICON));
+                        stage.setScene(scene);
+                        stage.setTitle(FilesRouters.TITLE_APP);
+                        stage.centerOnScreen();
+                        stage.setMaximized(true);
+                        stage.setOnShown(s -> {
+                            controller.initLoadMenus();
+                            controller.initInicioController();
+                            controller.initUserSession((Session.USER_PUESTO.substring(0, 1).toUpperCase() + Session.USER_PUESTO.substring(1).toLowerCase()));
+                        });
+                        stage.show();
+                        stage.requestFocus();
 
-                                Session.WIDTH_WINDOW = scene.getWidth();
-                                Session.HEIGHT_WINDOW = scene.getHeight();
-                            } catch (IOException exception) {
-                                System.out.println("Error en la vista principal:" + exception.getLocalizedMessage());
-                            }
-                            lblEntrar.setDisable(false);
-                            break;
-                        default:
-                            break;
+                    } catch (IOException exception) {
+                        System.out.println("Error en la vista principal:" + exception.getLocalizedMessage());
                     }
+                    lblEntrar.setDisable(false);
+                } else {
+                    lblError.setText(result);
+                    lblEntrar.setDisable(false);
                 }
             });
             task.setOnFailed(e -> {
-                lblError.setText("No se pudo completar la carga, revise su conexión e intente nuevamente.");
+                lblError.setText("No se pudo completar la carga por valores nulos en la consulta.");
                 lblEntrar.setDisable(false);
             });
             executor.execute(task);
@@ -188,5 +171,5 @@ public class FxLoginController implements Initializable {
     public void initComponents() {
         txtUsuario.requestFocus();
     }
-    
+
 }

@@ -1,7 +1,7 @@
 package controller.configuracion.empleados;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.ObjectGlobal;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.io.IOException;
@@ -27,10 +27,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.EmpleadoADO;
 import model.EmpleadoTB;
 
@@ -57,7 +55,7 @@ public class FxEmpleadosController implements Initializable {
     @FXML
     private TableColumn<EmpleadoTB, String> tcState;
 
-    private AnchorPane vbPrincipal;
+    private FxPrincipalController fxPrincipalController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -124,7 +122,7 @@ public class FxEmpleadosController implements Initializable {
     }
 
     private void openWindowEmpleadosAdd() throws IOException {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         URL url = getClass().getResource(FilesRouters.FX_EMPLEADO_PROCESO);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -134,14 +132,12 @@ public class FxEmpleadosController implements Initializable {
         Stage stage = WindowStage.StageLoaderModal(parent, "Agregar Empleado", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
+        stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
         stage.show();
     }
 
     private void openWindowEmpleadosEdit(String value) throws IOException {
-        ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
+        fxPrincipalController.openFondoModal();
         URL url = getClass().getResource(FilesRouters.FX_EMPLEADO_PROCESO);
         FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
         Parent parent = fXMLLoader.load(url.openStream());
@@ -151,9 +147,7 @@ public class FxEmpleadosController implements Initializable {
         Stage stage = WindowStage.StageLoaderModal(parent, "Editar Empleado", window.getScene().getWindow());
         stage.setResizable(false);
         stage.sizeToScene();
-        stage.setOnHiding((WindowEvent WindowEvent) -> {
-            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
+        stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
         stage.show();
         controller.setEditEmpleado(value);
     }
@@ -241,8 +235,8 @@ public class FxEmpleadosController implements Initializable {
         }
     }
 
-    public void setContent(AnchorPane vbPrincipal) {
-        this.vbPrincipal = vbPrincipal;
+     public void setContent( FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

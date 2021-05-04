@@ -10,30 +10,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
 <ScrollPane fx:id="spWindow" fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" styleClass="scroll-pane-primary" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxPrincipalController">
    <content>
-      <AnchorPane fx:id="vbPrincipal">
+      <AnchorPane>
          <children>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox style="-fx-padding: 0.4166666666666667em; -fx-spacing: 0.4166666666666667em; -fx-background-color: #007bff;">
+                  <HBox style="-fx-spacing: 0.4166666666666667em; -fx-background-color: #007bff;">
                      <children>
-                        <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                        <HBox alignment="CENTER" minWidth="200.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.6666666666666666em; -fx-border-color: rgba(0,0,0,.12); -fx-border-width: 0 1px 0 0;">
                            <children>
-                              <Label styleClass="labelRobotoBold17" text="SysSoft Integra" textFill="WHITE">
-                                 <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Label>
+                              <Label styleClass="labelRobotoBold20" text="SysSoft Integra" textFill="WHITE" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" style="-fx-padding: 0.6666666666666666em;" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
@@ -90,64 +81,29 @@
                   </HBox>
                   <HBox VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="vbSiderBar" minWidth="-Infinity" style="-fx-background-color: #020203;">
+                        <VBox fx:id="vbSiderBar" minWidth="200.0" style="-fx-background-color: #020203;">
                            <children>
                               <HBox alignment="CENTER" style="-fx-padding: 1.6666666666666667em  1.6666666666666667em   0.8333333333333334em 1.6666666666666667em;">
                                  <children>
-                                    <VBox alignment="CENTER">
+                                    <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../image/client.png" />
+                                                <Image url="@../image/logo.png" />
                                              </image>
-                                             <effect>
-                                                <Lighting diffuseConstant="1.5" specularConstant="0.0">
-                                                   <bumpInput>
-                                                      <Shadow />
-                                                   </bumpInput>
-                                                   <light>
-                                                      <Light.Distant />
-                                                   </light>
-                                                </Lighting>
-                                             </effect>
                                           </ImageView>
                                           <Label fx:id="lblPuesto" contentDisplay="TOP" styleClass="labelRoboto15" text="Administrador" textFill="WHITE" />
                                        </children>
                                     </VBox>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                                 <children>
-                                    <ImageView fx:id="imState" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/connected.png" />
-                                       </image>
-                                       <effect>
-                                          <Lighting diffuseConstant="1.5" specularConstant="0.0">
-                                             <bumpInput>
-                                                <Shadow />
-                                             </bumpInput>
-                                             <light>
-                                                <Light.Distant />
-                                             </light>
-                                          </Lighting>
-                                       </effect>
-                                    </ImageView>
-                                    <Text fx:id="lblEstado" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="Conectado" />
-                                 </children>
-                              </HBox>
-                              <HBox minHeight="-Infinity" minWidth="-Infinity" style="-fx-padding: 1.25em;">
-                                 <children>
-                                    <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold15" text="Menú principal" />
-                                 </children>
-                              </HBox>
                               <VBox fx:id="hbMenus" minWidth="-Infinity">
                                  <children>
                                     <HBox fx:id="btnInicio" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Dashboard" textFill="WHITE">
+                                          <Label alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" styleClass="labelRoboto14" text="Dashboard" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/home.png" />
                                                    </image>
@@ -168,9 +124,9 @@
                                     </HBox>
                                     <HBox fx:id="btnOperaciones" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Operaciones" textFill="WHITE">
+                                          <Label styleClass="labelRoboto14" text="Operaciones" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/operaciones.png" />
                                                    </image>
@@ -191,9 +147,9 @@
                                     </HBox>
                                     <HBox fx:id="btnConsultas" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Consultas" textFill="WHITE">
+                                          <Label styleClass="labelRoboto14" text="Consultas" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/consultas.png" />
                                                    </image>
@@ -214,9 +170,9 @@
                                     </HBox>
                                     <HBox fx:id="btnInventario" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Inventario" textFill="WHITE">
+                                          <Label styleClass="labelRoboto14" text="Inventario" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/almacen.png" />
                                                    </image>
@@ -237,9 +193,9 @@
                                     </HBox>
                                     <HBox fx:id="btnProduccion" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Produccion" textFill="WHITE">
+                                          <Label styleClass="labelRoboto14" text="Produccion" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/produccion.png" />
                                                    </image>
@@ -260,9 +216,9 @@
                                     </HBox>
                                     <HBox fx:id="btnContactos" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Contactos" textFill="WHITE">
+                                          <Label styleClass="labelRoboto14" text="Contactos" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/contactos.png" />
                                                    </image>
@@ -283,9 +239,9 @@
                                     </HBox>
                                     <HBox fx:id="btnReportes" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Reportes" textFill="WHITE">
+                                          <Label styleClass="labelRoboto14" text="Reportes" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/reporte.png" />
                                                    </image>
@@ -306,9 +262,9 @@
                                     </HBox>
                                     <HBox fx:id="btnConfiguracion" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
-                                          <Label styleClass="labelRoboto15" text="Configuración" textFill="WHITE">
+                                          <Label styleClass="labelRoboto14" text="Configuración" textFill="WHITE">
                                              <graphic>
-                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../image/configuracion.png" />
                                                    </image>
@@ -333,21 +289,47 @@
                         </VBox>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <HBox VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <VBox HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <AnchorPane fx:id="vbContent" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
+                              <AnchorPane fx:id="vbContent" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                </children>
             </VBox>
+            <HBox fx:id="hbFondoModal" style="-fx-background-color: rgba(0,0,0,0.55);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox style="-fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRobotoBold17" text="Presiona la tecla Esc para cerrar los modales y el fondo." textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/esc.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox fx:id="hbLoadModulos" layoutX="10.0" layoutY="10.0" style="-fx-background-color: rgba(255,255,255,0.7);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="labelRobotoBold17" text="Cargando modulos, espere porfavavor." textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/load.gif" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </content>
