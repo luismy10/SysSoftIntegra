@@ -354,10 +354,12 @@ public class FormulaADO {
                 ArrayList<SuministroTB> suministroTBs = new ArrayList();
                 while (resultSet.next()) {
                     SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setId(resultSet.getRow());
                     suministroTB.setIdSuministro(resultSet.getString("IdSuministro"));
                     suministroTB.setClave(resultSet.getString("Clave"));
                     suministroTB.setNombreMarca(resultSet.getString("NombreMarca"));
                     suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
+                    suministroTB.setUnidadCompraName(resultSet.getString("Medida"));
                     suministroTBs.add(suministroTB);
                 }
                 formulaTB.setSuministroTBs(suministroTBs);

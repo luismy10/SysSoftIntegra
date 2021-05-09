@@ -152,10 +152,13 @@ public class FxFormulaController implements Initializable {
     private void onEventPaginacion() {
         switch (opcion) {
             case 0:
-                fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                fillFormulaTable(0, "", "", "");
                 break;
             case 1:
-                fillFormulaTable(1, "", "", txtSearch.getText().trim());
+                fillFormulaTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                break;
+            case 2:
+                fillFormulaTable(2, "", "", txtSearch.getText().trim());
                 break;
         }
     }
@@ -303,8 +306,8 @@ public class FxFormulaController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
                 paginacion = 1;
-                fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-                opcion = 0;
+                fillFormulaTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 1;
 
             }
         }
@@ -315,8 +318,8 @@ public class FxFormulaController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
                 paginacion = 1;
-                fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-                opcion = 0;
+                fillFormulaTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 1;
 
             }
         }
@@ -361,8 +364,8 @@ public class FxFormulaController implements Initializable {
             if (!Tools.isText(txtSearch.getText())) {
                 if (!lblLoad.isVisible()) {
                     paginacion = 1;
-                    fillFormulaTable(1, "", "", txtSearch.getText().trim());
-                    opcion = 1;
+                    fillFormulaTable(2, "", "", txtSearch.getText().trim());
+                    opcion = 2;
                 }
             }
         }
