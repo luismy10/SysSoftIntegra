@@ -52,7 +52,7 @@ public class FXFormulaListaController implements Initializable {
     private void onKeyPressedList(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (lvList.getSelectionModel().getSelectedIndex() >= 0 && lvList.isFocused()) {
-                producirAgregarController.selectFormula(lvList.getSelectionModel().getSelectedItem().getIdFormula());
+//                producirAgregarController.selectFormula(lvList.getSelectionModel().getSelectedItem().getIdFormula());
                 Tools.Dispose(window);
             }
         }
@@ -62,7 +62,7 @@ public class FXFormulaListaController implements Initializable {
     private void onMouseClickedList(MouseEvent event) {
         if (lvList.getSelectionModel().getSelectedIndex() >= 0 && lvList.isFocused()) {
             if (event.getClickCount() == 2) {
-                producirAgregarController.selectFormula(lvList.getSelectionModel().getSelectedItem().getIdFormula());
+//                producirAgregarController.selectFormula(lvList.getSelectionModel().getSelectedItem().getIdFormula());
                 Tools.Dispose(window);
             }
         }

@@ -269,7 +269,7 @@ public class FxVentaRealizadasController implements Initializable {
             AnchorPane.setBottomAnchor(node, 0d);
             fxPrincipalController.getVbContent().getChildren().add(node);
         } else {
-            Tools.AlertMessageWarning(window, "Compra", "Debe seleccionar una compra de la lista");
+            Tools.AlertMessageWarning(window, "Ventas", "Debe seleccionar una compra de la lista");
         }
     }
 

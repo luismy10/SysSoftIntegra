@@ -250,6 +250,7 @@ public class FxInventarioController implements Initializable {
         fxPrincipalController.getVbContent().getChildren().add(nodeInventarioInicial);
     }
 
+
     @FXML
     private void onKeyPressedInventario(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {

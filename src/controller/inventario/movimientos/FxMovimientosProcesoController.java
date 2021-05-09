@@ -112,7 +112,7 @@ public class FxMovimientosProcesoController implements Initializable {
             }
         });
 
-        tcAccion.setCellValueFactory(new PropertyValueFactory<>("remover"));
+        tcAccion.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
         tcClave.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()));
         tcNuevaExistencia.setCellValueFactory(new PropertyValueFactory<>("txtMovimiento"));
         tcExistenciaActual.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getUnidadCompraName()));
@@ -300,10 +300,10 @@ public class FxMovimientosProcesoController implements Initializable {
             SuministroTB suministroTB = task.getValue();
             if (suministroTB != null) {
                 suministroTB.setId(tvList.getItems().size() + 1);
-                suministroTB.getRemover().setOnAction(event -> {
+                suministroTB.getBtnRemove().setOnAction(event -> {
                     tvList.getItems().remove(suministroTB);
                 });
-                suministroTB.getRemover().setOnKeyPressed(event -> {
+                suministroTB.getBtnRemove().setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.ENTER) {
                         tvList.getItems().remove(suministroTB);
                     }

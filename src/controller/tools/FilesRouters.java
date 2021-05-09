@@ -377,7 +377,8 @@ public final class FilesRouters {
     public static final String FX_PEDIDO_LISTA = "/view/operaciones/pedidos/FxPedidosLista.fxml";
 
     public static final String FX_PEDIDO_REALIZADOS = "/view/operaciones/pedidos/FxPedidosRealizados.fxml";
-    
+
     public static final String FX_PEDIDO_DETALLE = "/view/operaciones/pedidos/FxPedidosDetalle.fxml";
 
+    public static final String FX_FORMULA_VISUALIZAR = "/view/produccion/producir/FxFormulaVisualizar.fxml";
 }

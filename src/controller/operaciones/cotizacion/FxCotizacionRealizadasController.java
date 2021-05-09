@@ -91,6 +91,8 @@ public class FxCotizacionRealizadasController implements Initializable {
     public void loadInit() {
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
+        txtSearch.selectAll();
+        txtSearch.requestFocus();
         if (!lblLoad.isVisible()) {
             paginacion = 1;
             fillTableCotizacion((short) 1, "", "", "");
@@ -180,6 +182,23 @@ public class FxCotizacionRealizadasController implements Initializable {
         }
     }
 
+    private void removeCotizacion() {
+        short value = Tools.AlertMessageConfirmation(hbWindow, "Cotización", "¿Está seguro de eliminar la cotización.");
+        if (value == 1) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                String result = CotizacionADO.removeCotizacionById(tvList.getSelectionModel().getSelectedItem().getIdCotizacion());
+                if (result.equalsIgnoreCase("deleted")) {
+                    Tools.AlertMessageInformation(hbWindow, "Cotización", "Se eliminó correctamente la cotización.");
+                    loadInit();
+                } else if (result.equalsIgnoreCase("noid")) {
+                    Tools.AlertMessageWarning(hbWindow, "Cotización", "No puedo encontrar la cotización a eliminar, intente nuevamente.");
+                } else {
+                    Tools.AlertMessageError(hbWindow, "Cotización", result);
+                }
+            }
+        }
+    }
+
     @FXML
     private void onKeyPressedMostar(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
@@ -193,19 +212,27 @@ public class FxCotizacionRealizadasController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedEliminar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            removeCotizacion();
+        }
+    }
+
+    @FXML
+    private void onActionEliminar(ActionEvent event) {
+        removeCotizacion();
+    }
+
+    @FXML
     private void onKeyPressedRecargar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (!lblLoad.isVisible()) {
-                loadInit();
-            }
+            loadInit();
         }
     }
 
     @FXML
     private void onActionRecargar(ActionEvent event) {
-        if (!lblLoad.isVisible()) {
-            loadInit();
-        }
+        loadInit();
     }
 
     @FXML

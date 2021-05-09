@@ -48,8 +48,8 @@ public class FXModalEstadoController implements Initializable {
                 if (result.equalsIgnoreCase("registrado")) {
                     Tools.AlertMessageInformation(window, "Producción", "Se registró correctamente la produccón.");
                     Tools.Dispose(window);
-                    fxProducirAgregarController.clearComponentes();
-                    fxProducirAgregarController.closeWindow();
+//                    fxProducirAgregarController.clearComponentes();
+//                    fxProducirAgregarController.closeWindow();
                 } else {
                     Tools.AlertMessageWarning(window, "Producción", result);
                 }

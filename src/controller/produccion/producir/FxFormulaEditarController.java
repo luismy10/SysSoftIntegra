@@ -2,6 +2,7 @@ package controller.produccion.producir;
 
 import controller.menus.FxPrincipalController;
 import controller.tools.SearchComboBox;
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class FxFormulaEditarController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             protected Object call() {
-                return FormulaADO.Obtener_Formula_ById(idFormula,Double.parseDouble("1"));
+                return FormulaADO.Obtener_Formula_ById_Editar(idFormula, 1);
             }
         };
 
@@ -97,7 +98,6 @@ public class FxFormulaEditarController implements Initializable {
             vbBody.setDisable(true);
         });
         task.setOnFailed(w -> {
-            lblMessageLoad.setGraphic(null);
             lblMessageLoad.setText(task.getException().getLocalizedMessage());
             lblMessageLoad.setTextFill(Color.web("ea4242"));
         });
@@ -111,32 +111,28 @@ public class FxFormulaEditarController implements Initializable {
                 cbProducto.getSelectionModel().select(formulaTB.getSuministroTB());
                 txtCostoAdicional.setText(Tools.roundingValue(formulaTB.getCostoAdicional(), 2));
                 txtInstrucciones.setText(formulaTB.getInstrucciones());
-//                insumoTBs.addAll(formulaTB.getInsumoTBs());
-//                for (InsumoTB insumoTB : insumoTBs) {
-//                    insumoTB.getBtnRemove().setOnAction(event -> {
-//                        insumoTBs.remove(insumoTB);
-//                        addElementPaneHead();
-//                        addElementPaneBody();
-//                    });
-//                    insumoTB.getBtnRemove().setOnKeyPressed(event -> {
-//                        if (event.getCode() == KeyCode.ENTER) {
-//                            insumoTBs.remove(insumoTB);
-//                            addElementPaneHead();
-//                            addElementPaneBody();
-//                        }
-//                    });
-//                }
+                suministroTBs.addAll(formulaTB.getSuministroTBs());
+                for (SuministroTB suministroTB : suministroTBs) {
+                    suministroTB.getBtnRemove().setOnAction(event -> {
+                        suministroTBs.remove(suministroTB);
+                        addElementPaneHead();
+                        addElementPaneBody();
+                    });
+                    suministroTB.getBtnRemove().setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            suministroTBs.remove(suministroTB);
+                            addElementPaneHead();
+                            addElementPaneBody();
+                        }
+                        event.consume();
+                    });
+                }
                 addElementPaneHead();
                 addElementPaneBody();
                 hbLoad.setVisible(false);
                 vbBody.setDisable(false);
-            } else if (object instanceof String) {
-                lblMessageLoad.setGraphic(null);
-                lblMessageLoad.setText((String) object);
-                lblMessageLoad.setTextFill(Color.web("ea4242"));
             } else {
-                lblMessageLoad.setGraphic(null);
-                lblMessageLoad.setText("Se produjo un error interno, comuníquese con su proveedor del sistema.");
+                lblMessageLoad.setText((String) object);
                 lblMessageLoad.setTextFill(Color.web("ea4242"));
             }
         });
@@ -147,103 +143,103 @@ public class FxFormulaEditarController implements Initializable {
     }
 
     private void addElementsTableInsumo() {
-//        InsumoTB insumoTB = new InsumoTB();
-//        ComboBox<InsumoTB> comboBox = new ComboBox();
-//        comboBox.setPromptText("-- Selecionar --");
-//        comboBox.setPrefWidth(220);
-//        comboBox.setPrefHeight(30);
-//        comboBox.setMaxWidth(Double.MAX_VALUE);
-//        insumoTB.setComboBox(comboBox);
-//
-//        SearchComboBox<InsumoTB> searchComboBox = new SearchComboBox<>(insumoTB.getComboBox(), false);
-//        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-//            if (t.getCode() == KeyCode.ENTER) {
-//                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-//                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-//                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
-//                }
-//            } else if (t.getCode() == KeyCode.ESCAPE) {
-//                searchComboBox.getComboBox().hide();
-//            }
-//        });
-//        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-//            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
-//                searchComboBox.getComboBox().getItems().clear();
-//                List<InsumoTB> insumoTBs = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-//                insumoTBs.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
-//            }
-//        });
-//        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-//            switch (t.getCode()) {
-//                case ENTER:
-//                case SPACE:
-//                case ESCAPE:
-//                    searchComboBox.getComboBox().hide();
-//                    break;
-//                case UP:
-//                case DOWN:
-//                case LEFT:
-//                case RIGHT:
-//                    break;
-//                default:
-//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
-//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
-//                    break;
-//            }
-//        });
-//        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-//            if (item != null) {
-//                searchComboBox.getComboBox().getSelectionModel().select(item);
-//                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
-//                    searchComboBox.getComboBox().hide();
-//                }
-//            }
-//        });
-//        insumoTB.setSearchComboBox(searchComboBox);
-//
-//        TextField textField = new TextField();
-//        textField.setPromptText("0.00");
-//        textField.getStyleClass().add("text-field-normal");
-//        textField.setPrefWidth(220);
-//        textField.setPrefHeight(30);
-//        textField.setOnKeyTyped(event -> {
-//            char c = event.getCharacter().charAt(0);
-//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-//                event.consume();
-//            }
-//            if (c == '.' && textField.getText().contains(".")) {
-//                event.consume();
-//            }
-//        });
-//        insumoTB.setTxtCantidad(textField);
-//
-//        Button button = new Button();
-//        button.getStyleClass().add("buttonLightError");
-//        button.setAlignment(Pos.CENTER);
-//        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
-//        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
-////        button.setMaxWidth(Double.MAX_VALUE);
-////        button.setMaxHeight(Double.MAX_VALUE);
-//        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
-//        imageView.setFitWidth(20);
-//        imageView.setFitHeight(20);
-//        button.setGraphic(imageView);
-//        button.setOnAction(event -> {
-//            insumoTBs.remove(insumoTB);
-//            addElementPaneHead();
-//            addElementPaneBody();
-//        });
-//        button.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//                insumoTBs.remove(insumoTB);
-//                addElementPaneHead();
-//                addElementPaneBody();
-//            }
-//        });
-//        insumoTB.setBtnRemove(button);
-//        insumoTBs.add(insumoTB);
-//        addElementPaneHead();
-//        addElementPaneBody();
+        SuministroTB suministroTB = new SuministroTB();
+        ComboBox<SuministroTB> comboBox = new ComboBox();
+        comboBox.setPromptText("-- Selecionar --");
+        comboBox.setPrefWidth(220);
+        comboBox.setPrefHeight(30);
+        comboBox.setMaxWidth(Double.MAX_VALUE);
+        suministroTB.setCbSuministro(comboBox);
+
+        SearchComboBox<SuministroTB> searchComboBox = new SearchComboBox<>(suministroTB.getCbSuministro(), false);
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBox.getComboBox().hide();
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+                searchComboBox.getComboBox().getItems().clear();
+                List<SuministroTB> insumoTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                insumoTBs.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            switch (t.getCode()) {
+                case ENTER:
+                case SPACE:
+                case ESCAPE:
+                    searchComboBox.getComboBox().hide();
+                    break;
+                case UP:
+                case DOWN:
+                case LEFT:
+                case RIGHT:
+                    break;
+                default:
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+                    break;
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBox.getComboBox().getSelectionModel().select(item);
+                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBox.getComboBox().hide();
+                }
+            }
+        });
+        suministroTB.setSearchComboBox(searchComboBox);
+
+        TextField textField = new TextField();
+        textField.setPromptText("0.00");
+        textField.getStyleClass().add("text-field-normal");
+        textField.setPrefWidth(220);
+        textField.setPrefHeight(30);
+        textField.setOnKeyTyped(event -> {
+            char c = event.getCharacter().charAt(0);
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                event.consume();
+            }
+            if (c == '.' && textField.getText().contains(".")) {
+                event.consume();
+            }
+        });
+        suministroTB.setTxtCantidad(textField);
+
+        Button button = new Button();
+        button.getStyleClass().add("buttonLightError");
+        button.setAlignment(Pos.CENTER);
+        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+//        button.setMaxWidth(Double.MAX_VALUE);
+//        button.setMaxHeight(Double.MAX_VALUE);
+        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        button.setGraphic(imageView);
+        button.setOnAction(event -> {
+            suministroTBs.remove(suministroTB);
+            addElementPaneHead();
+            addElementPaneBody();
+        });
+        button.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                suministroTBs.remove(suministroTB);
+                addElementPaneHead();
+                addElementPaneBody();
+            }
+        });
+        suministroTB.setBtnRemove(button);
+        suministroTBs.add(suministroTB);
+        addElementPaneHead();
+        addElementPaneBody();
     }
 
     private void addElementPaneHead() {
@@ -278,11 +274,11 @@ public class FxFormulaEditarController implements Initializable {
 
     private void addElementPaneBody() {
         for (int i = 0; i < suministroTBs.size(); i++) {
-//            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
-//            gpList.add(insumoTBs.get(i).getComboBox(), 1, (i + 1));
-//            gpList.add(insumoTBs.get(i).getTxtCantidad(), 2, (i + 1));
-//            gpList.add(addElementGridPaneLabel("l4" + (i + 1), "UNIDAD", Pos.CENTER), 3, (i + 1));
-//            gpList.add(insumoTBs.get(i).getBtnRemove(), 4, (i + 1));
+            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+            gpList.add(suministroTBs.get(i).getCbSuministro(), 1, (i + 1));
+            gpList.add(suministroTBs.get(i).getTxtCantidad(), 2, (i + 1));
+            gpList.add(addElementGridPaneLabel("l4" + (i + 1), "MEDIDA", Pos.CENTER), 3, (i + 1));
+            gpList.add(suministroTBs.get(i).getBtnRemove(), 4, (i + 1));
         }
     }
 
@@ -380,20 +376,20 @@ public class FxFormulaEditarController implements Initializable {
         } else {
             int cantidad = 0;
             int insumo = 0;
-//            for (InsumoTB insumoTB : insumoTBs) {
-//                if (Tools.isNumeric(insumoTB.getTxtCantidad().getText()) && Double.parseDouble(insumoTB.getTxtCantidad().getText()) > 0) {
-//                    cantidad += 0;
-//                } else {
-//                    cantidad += 1;
-//                }
-//
-//                if (insumoTB.getSearchComboBox().getComboBox().getSelectionModel().getSelectedIndex() >= 0) {
-//                    insumo += 0;
-//                } else {
-//                    insumo += 1;
-//                }
-//
-//            }
+            for (SuministroTB suministroTB : suministroTBs) {
+                if (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) && Double.parseDouble(suministroTB.getTxtCantidad().getText()) > 0) {
+                    cantidad += 0;
+                } else {
+                    cantidad += 1;
+                }
+
+                if (suministroTB.getSearchComboBox().getComboBox().getSelectionModel().getSelectedIndex() >= 0) {
+                    insumo += 0;
+                } else {
+                    insumo += 1;
+                }
+
+            }
 
             if (cantidad > 0) {
                 Tools.AlertMessageWarning(apWindow, "Formula", "Hay cantidades en 0 en la lista de insumos.");
@@ -413,7 +409,8 @@ public class FxFormulaEditarController implements Initializable {
                     formulaTB.setInstrucciones(txtInstrucciones.getText().trim().toUpperCase());
                     formulaTB.setFecha(Tools.getDate());
                     formulaTB.setHora(Tools.getHour());
-//                    formulaTB.setInsumoTBs(insumoTBs);
+                    formulaTB.setIdUsuario(Session.USER_ID);
+                    formulaTB.setSuministroTBs(suministroTBs);
 
                     String result = FormulaADO.Crud_Formula(formulaTB);
                     if (result.equalsIgnoreCase("updated")) {
@@ -518,7 +515,7 @@ public class FxFormulaEditarController implements Initializable {
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {
-        this.fxPrincipalController=fxPrincipalController;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

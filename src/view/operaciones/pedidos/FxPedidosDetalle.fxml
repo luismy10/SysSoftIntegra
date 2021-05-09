@@ -27,7 +27,7 @@
                      <children>
                         <Label onMouseClicked="#onMouseClickedBehind" style="-fx-cursor: hand;">
                            <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                              <ImageView fitHeight="28.0" fitWidth="28.0" onMouseClicked="#onMouseClickedBehind" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                                  <image>
                                     <Image url="@../../image/right.png" />
                                  </image>

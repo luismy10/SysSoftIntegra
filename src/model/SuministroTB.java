@@ -1,5 +1,6 @@
 package model;
 
+import controller.tools.SearchComboBox;
 import java.io.File;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
@@ -77,17 +78,19 @@ public class SuministroTB {
 
     private String descripcion;
     private Label lblCantidad;
+    private TextField txtCantidad;
     private TextField txtStockMinimo;
     private TextField txtStockMaximo;
     private TextField txtMovimiento;
     private CheckBox validar;
     private Label estadoAsignacion;
-    private Button remover;
+    private Button btnRemove;
     private boolean cambios;
     private ImpuestoTB impuestoTB;
     private double bonificacion;
     private ComboBox<SuministroTB> cbSuministro;
-
+    private SearchComboBox<SuministroTB> searchComboBox;
+    
     public SuministroTB() {
         
     }
@@ -543,6 +546,14 @@ public class SuministroTB {
         this.lblCantidad = lblCantidad;
     }
 
+    public TextField getTxtCantidad() {
+        return txtCantidad;
+    }
+
+    public void setTxtCantidad(TextField txtCantidad) {
+        this.txtCantidad = txtCantidad;
+    }
+
     public TextField getTxtStockMinimo() {
         return txtStockMinimo;
     }
@@ -599,12 +610,12 @@ public class SuministroTB {
         this.tipoPrecio = tipoPrecio;
     }
 
-    public Button getRemover() {
-        return remover;
+    public Button getBtnRemove() {
+        return btnRemove;
     }
 
-    public void setRemover(Button remover) {
-        this.remover = remover;
+    public void setBtnRemove(Button remover) {
+        this.btnRemove = remover;
     }
 
     public boolean isCambios() {
@@ -645,6 +656,14 @@ public class SuministroTB {
 
     public void setCbSuministro(ComboBox<SuministroTB> cbSuministro) {
         this.cbSuministro = cbSuministro;
+    }
+
+    public SearchComboBox<SuministroTB> getSearchComboBox() {
+        return searchComboBox;
+    }
+
+    public void setSearchComboBox(SearchComboBox<SuministroTB> searchComboBox) {
+        this.searchComboBox = searchComboBox;
     }
 
     @Override

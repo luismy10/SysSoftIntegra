@@ -1262,7 +1262,7 @@ public class VentaADO {
 
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");
-                    suministroTB.setRemover(button);
+                    suministroTB.setBtnRemove(button);
 
                     empList.add(suministroTB);
                 }

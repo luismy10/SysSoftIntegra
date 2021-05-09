@@ -138,7 +138,7 @@ public class FxCotizacionController implements Initializable {
     }
 
     private void loadTableView() {
-        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("remover"));
+        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
@@ -509,11 +509,11 @@ public class FxCotizacionController implements Initializable {
                 ObservableList<SuministroTB> cotizacionTBs = cotizacionTB.getDetalleSuministroTBs();
                 for (int i = 0; i < cotizacionTBs.size(); i++) {
                     SuministroTB suministroTB = cotizacionTBs.get(i);
-                    suministroTB.getRemover().setOnAction(e -> {
+                    suministroTB.getBtnRemove().setOnAction(e -> {
                         tvList.getItems().remove(suministroTB);
                         calculateTotales();
                     });
-                    suministroTB.getRemover().setOnKeyPressed(e -> {
+                    suministroTB.getBtnRemove().setOnKeyPressed(e -> {
                         if (e.getCode() == KeyCode.ENTER) {
                             tvList.getItems().remove(suministroTB);
                             calculateTotales();

@@ -116,12 +116,6 @@ public class FxVentaEstructuraNuevoController implements Initializable {
     @FXML
     private TextField txtNumeroDocumento;
     @FXML
-    private Button btnBuscarCliente;
-    @FXML
-    private Button btnBuscarSunat;
-    @FXML
-    private Button btnBuscarReniec;
-    @FXML
     private TextField txtDatosCliente;
     @FXML
     private TextField txtCelularCliente;

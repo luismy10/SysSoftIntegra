@@ -1278,7 +1278,7 @@ public class SuministroADO {
                 view.setFitWidth(24);
                 view.setFitHeight(24);
                 button.setGraphic(view);
-                suministroTB.setRemover(button);
+                suministroTB.setBtnRemove(button);
 
                 suministroTB.setValidar(checkbox);
 

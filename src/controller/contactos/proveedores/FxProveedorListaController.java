@@ -122,7 +122,16 @@ public class FxProveedorListaController implements Initializable {
                 return ProveedorADO.ListProveedor(value, (paginacion - 1) * 20, 20);
             }
         };
-
+        task.setOnScheduled(e -> {
+            status = true;
+            tvList.getItems().clear();
+            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
+            totalPaginacion = 0;
+        });
+        task.setOnFailed(e -> {
+            status = false;
+            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
+        });
         task.setOnSucceeded(e -> {
             Object result = task.getValue();
             if (result instanceof Object[]) {
@@ -132,6 +141,7 @@ public class FxProveedorListaController implements Initializable {
                     totalPaginacion = (int) (Math.ceil(((Integer) objects[1]) / 20.00));
                     lblPaginaActual.setText(paginacion + "");
                     lblPaginaSiguiente.setText(totalPaginacion + "");
+                    tvList.setItems(empList);
                 } else {
                     tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
                     lblPaginaActual.setText("0");
@@ -141,16 +151,6 @@ public class FxProveedorListaController implements Initializable {
                 tvList.setPlaceholder(Tools.placeHolderTableView((String) result, "-fx-text-fill:#a70820;", false));
             }
             status = false;
-        });
-        task.setOnFailed(e -> {
-            status = false;
-            tvList.setPlaceholder(Tools.placeHolderTableView(task.getException().getLocalizedMessage(), "-fx-text-fill:#a70820;", false));
-        });
-        task.setOnScheduled(e -> {
-            status = true;
-            tvList.getItems().clear();
-            tvList.setPlaceholder(Tools.placeHolderTableView("Cargando información...", "-fx-text-fill:#020203;", true));
-            totalPaginacion = 0;
         });
         exec.execute(task);
 

@@ -99,7 +99,7 @@ public class FxCotizacionModalController implements Initializable {
                 cotizacionController.calculateTotales();
             }
         });
-        newSuministro.setRemover(button);
+        newSuministro.setBtnRemove(button);
         Tools.Dispose(apWindow);
         cotizacionController.getAddArticulo(newSuministro);
     }

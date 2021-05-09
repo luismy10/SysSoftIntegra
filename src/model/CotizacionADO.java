@@ -268,7 +268,7 @@ public class CotizacionADO {
                     suministroTB.setNombreMarca(result.getString("NombreMarca"));
 //                    suministroTB.setUnidadCompraName(result.getString("UnidadCompraNombre"));
                     suministroTB.setCantidad(result.getDouble("Cantidad"));
-                    suministroTB.setBonificacion(0); 
+                    suministroTB.setBonificacion(0);
                     suministroTB.setCostoCompra(result.getDouble("PrecioCompra"));
 
                     double valor_sin_impuesto = result.getDouble("Precio") / ((result.getDouble("Valor") / 100.00) + 1);
@@ -300,11 +300,11 @@ public class CotizacionADO {
                     suministroTB.setInventario(result.getBoolean("Inventario"));
                     suministroTB.setUnidadVenta(result.getInt("UnidadVenta"));
                     suministroTB.setValorInventario(result.getShort("ValorInventario"));
-                    
+
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");
 
-                    suministroTB.setRemover(button);
+                    suministroTB.setBtnRemove(button);
                     cotizacionTBs.add(suministroTB);
                     cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
                 }
@@ -385,7 +385,7 @@ public class CotizacionADO {
 
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");
-                    suministroTB.setRemover(button);
+                    suministroTB.setBtnRemove(button);
 
                     cotizacionTBs.add(suministroTB);
                 }
@@ -459,7 +459,7 @@ public class CotizacionADO {
                     Button button = new Button("X");
                     button.getStyleClass().add("buttonDark");
 
-                    suministroTB.setRemover(button);
+                    suministroTB.setBtnRemove(button);
                     cotizacionTBs.add(suministroTB);
                 }
                 cotizacionTB.setDetalleSuministroTBs(cotizacionTBs);
@@ -490,6 +490,51 @@ public class CotizacionADO {
             }
         }
 
+    }
+
+    public static String removeCotizacionById(String idCotizacion) {
+        PreparedStatement statementValidate = null;
+        PreparedStatement statementCotizacion = null;
+        PreparedStatement statementCotizacionDetalle = null;
+
+        try {
+            DBUtil.dbConnect();
+            DBUtil.getConnection().setAutoCommit(false);
+            statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CotizacionTB WHERE IdCotizacion = ?");
+            statementValidate.setString(1, idCotizacion);
+            if (statementValidate.executeQuery().next()) {
+                statementCotizacion = DBUtil.getConnection().prepareStatement("DELETE FROM CotizacionTB WHERE IdCotizacion = ?");
+                statementCotizacion.setString(1, idCotizacion);
+                statementCotizacion.addBatch();
+                statementCotizacion.executeBatch();
+
+                statementCotizacionDetalle = DBUtil.getConnection().prepareStatement("DELETE FROM DetalleCotizacionTB WHERE IdCotizacion = ?");
+                statementCotizacionDetalle.setString(1, idCotizacion);
+                statementCotizacionDetalle.addBatch();
+                statementCotizacionDetalle.executeBatch();
+
+                DBUtil.getConnection().commit();
+                return "deleted";
+            } else {
+                DBUtil.getConnection().rollback();
+                return "noid";
+            }
+        } catch (SQLException ex) {
+            try {
+                DBUtil.getConnection().rollback();
+            } catch (SQLException e) {
+
+            }
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementValidate != null) {
+                    statementValidate.close();
+                }
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
     }
 
 }

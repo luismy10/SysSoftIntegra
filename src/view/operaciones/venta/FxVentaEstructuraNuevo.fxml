@@ -132,7 +132,7 @@
                                           <HBox HBox.hgrow="ALWAYS">
                                              <children>
                                                 <TextField fx:id="txtNumeroDocumento" maxHeight="1.7976931348623157E308" onAction="#onActionCliente" onKeyTyped="#onKeyTypedNumeroDocumento" prefHeight="30.0" prefWidth="220.0" promptText="N° de documento" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
-                                                <Button fx:id="btnBuscarCliente" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonLight">
+                                                <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCliente" onKeyPressed="#onKeyPressedCliente" prefHeight="30.0" styleClass="buttonLight">
                                                    <graphic>
                                                       <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -141,7 +141,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
-                                                <Button fx:id="btnBuscarSunat" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSunat" onKeyPressed="#onKeyPressedSunat" prefHeight="30.0" styleClass="buttonLight">
+                                                <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionSunat" onKeyPressed="#onKeyPressedSunat" prefHeight="30.0" styleClass="buttonLight">
                                                    <graphic>
                                                       <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -150,7 +150,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
-                                                <Button fx:id="btnBuscarReniec" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionReniec" onKeyPressed="#onKeyPressedReniec" prefHeight="30.0" styleClass="buttonLight">
+                                                <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionReniec" onKeyPressed="#onKeyPressedReniec" prefHeight="30.0" styleClass="buttonLight">
                                                    <graphic>
                                                       <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -307,7 +307,7 @@
                                                 </VBox>
                                                 <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblTotal" styleClass="labelRobotoBold19" text="M. 0.00" textFill="WHITE" />
+                                                      <Label fx:id="lblTotal" styleClass="labelRobotoBold21" text="M. 0.00" textFill="WHITE" />
                                                    </children>
                                                 </VBox>
                                              </children>

@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import model.FormulaADO;
@@ -89,13 +90,10 @@ public class FxFormulaController implements Initializable {
     }
 
     private void initLoadTable() {
-        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            if (!lblLoad.isVisible()) {
-                paginacion = 1;
-                fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-                opcion = 0;
-
-            }
+        if (!lblLoad.isVisible()) {
+            paginacion = 1;
+            fillFormulaTable(0, "", "", "");
+            opcion = 0;
         }
     }
 
@@ -181,7 +179,7 @@ public class FxFormulaController implements Initializable {
     }
 
     private void openWindowFormulaProcesoEdit(String idFormula) {
-        try {            
+        try {
             FXMLLoader fXMLFormulaProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA_EDITAR));
             AnchorPane nodeFormulaProceso = fXMLFormulaProceso.load();
             FxFormulaEditarController formulaProcesoController = fXMLFormulaProceso.getController();
@@ -196,6 +194,43 @@ public class FxFormulaController implements Initializable {
             fxPrincipalController.getVbContent().getChildren().add(nodeFormulaProceso);
         } catch (IOException ex) {
             System.out.println("Controller formula proceso" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void openViewVisualizarFormula() throws IOException {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA_VISUALIZAR));
+            AnchorPane node = fXMLLoader.load();
+            //Controlller here
+            FxFormulaVisualizarController controller = fXMLLoader.getController();
+            controller.setInitFormulaController(this, fxPrincipalController);
+            controller.setInitComponents(tvList.getSelectionModel().getSelectedItem().getIdFormula());
+            //
+            fxPrincipalController.getVbContent().getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            fxPrincipalController.getVbContent().getChildren().add(node);
+        } else {
+            Tools.AlertMessageWarning(hbWindow, "Formula", "Debe seleccionar una formula de la lista.");
+        }
+    }
+
+    private void removeFormula() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            short value = Tools.AlertMessageConfirmation(hbWindow, "Formula", "¿Está seguro de eliminar la formula?");
+            if (value == 1) {
+                String result = FormulaADO.Eliminar_Formula_ById(tvList.getSelectionModel().getSelectedItem().getIdFormula());
+                if (result.equalsIgnoreCase("deleted")) {
+                    Tools.AlertMessageInformation(hbWindow, "Formula", "Se eliminó correctamente la formula");
+                    initLoadTable();
+                } else if (result.equalsIgnoreCase("noid")) {
+                    Tools.AlertMessageWarning(lblLoad, "Formula", "No existe el id de la formula, intente nuevamente por favor.");
+                } else {
+                    Tools.AlertMessageError(lblLoad, "Formula", result);
+                }
+            }
         }
     }
 
@@ -230,69 +265,61 @@ public class FxFormulaController implements Initializable {
     @FXML
     private void onKeyPressedEliminarFormula(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                short value = Tools.AlertMessageConfirmation(hbWindow, "Formula", "¿Está seguro de eliminar la formula?");
-                if (value == 1) {
-                    String result = FormulaADO.Eliminar_Formula_ById(tvList.getSelectionModel().getSelectedItem().getIdFormula());
-                    if (result.equalsIgnoreCase("deleted")) {
-                        Tools.AlertMessageInformation(hbWindow, "Formula", "Se eliminó correctamente la formula");
-                        initLoadTable();
-                    } else if (result.equalsIgnoreCase("noid")) {
-                        Tools.AlertMessageWarning(lblLoad, "Formula", "No existe el id de la formula, intente nuevamente por favor.");
-                    } else {
-                        Tools.AlertMessageError(lblLoad, "Formula", result);
-                    }
-                }
-            }
+            removeFormula();
         }
     }
 
     @FXML
     private void onActionEliminarFormula(ActionEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            short value = Tools.AlertMessageConfirmation(hbWindow, "Formula", "¿Está seguro de eliminar la formula?");
-            if (value == 1) {
-                String result = FormulaADO.Eliminar_Formula_ById(tvList.getSelectionModel().getSelectedItem().getIdFormula());
-                if (result.equalsIgnoreCase("deleted")) {
-                    Tools.AlertMessageInformation(hbWindow, "Formula", "Se eliminó correctamente la formula");
-                    initLoadTable();
-                } else if (result.equalsIgnoreCase("noid")) {
-                    Tools.AlertMessageWarning(lblLoad, "Formula", "No existe el id de la formula, intente nuevamente por favor.");
-                } else {
-                    Tools.AlertMessageError(lblLoad, "Formula", result);
-                }
-            }
+        removeFormula();
+    }
+
+    @FXML
+    private void onKeyPressedVisualizarFormula(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            openViewVisualizarFormula();
         }
+    }
+
+    @FXML
+    private void onActionVisualizarFormula(ActionEvent event) throws IOException {
+        openViewVisualizarFormula();
     }
 
     @FXML
     private void onKeyPressedRecargar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            Tools.actualDate(Tools.getDate(), dtFechaInicial);
-            Tools.actualDate(Tools.getDate(), dtFechaFinal);
-            txtSearch.requestFocus();
-            txtSearch.selectAll();
             initLoadTable();
         }
     }
 
     @FXML
     private void onActionRecargar(ActionEvent event) {
-        Tools.actualDate(Tools.getDate(), dtFechaInicial);
-        Tools.actualDate(Tools.getDate(), dtFechaFinal);
-        txtSearch.requestFocus();
-        txtSearch.selectAll();
         initLoadTable();
     }
 
     @FXML
     private void onActionFechaInicial(ActionEvent event) {
-        initLoadTable();
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            if (!lblLoad.isVisible()) {
+                paginacion = 1;
+                fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 0;
+
+            }
+        }
     }
 
     @FXML
     private void onActionFechaFinal(ActionEvent event) {
-        initLoadTable();
+        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
+            if (!lblLoad.isVisible()) {
+                paginacion = 1;
+                fillFormulaTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 0;
+
+            }
+        }
     }
 
     @FXML
@@ -342,6 +369,15 @@ public class FxFormulaController implements Initializable {
     }
 
     @FXML
+    private void onMouseClickedList(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                openWindowFormulaProcesoEdit(tvList.getSelectionModel().getSelectedItem().getIdFormula());
+            }
+        }
+    }
+
+    @FXML
     private void onKeyPressedAnterior(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             if (!lblLoad.isVisible()) {
@@ -385,12 +421,39 @@ public class FxFormulaController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyReleasedWindow(KeyEvent event) throws IOException {
+        if (null != event.getCode()) {
+            switch (event.getCode()) {
+                case F1:
+                    openWindowFormulaProcesoAdd();
+                    break;
+                case F2:
+                    if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                        openWindowFormulaProcesoEdit(tvList.getSelectionModel().getSelectedItem().getIdFormula());
+                    }
+                    break;
+                case F3:
+                    removeFormula();
+                    break;
+                case F4:
+                    openViewVisualizarFormula();
+                    break;
+                case F5:
+                    initLoadTable();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public HBox getHbWindow() {
         return hbWindow;
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {
-        this.fxPrincipalController=fxPrincipalController;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

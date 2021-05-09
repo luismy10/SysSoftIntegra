@@ -24,6 +24,7 @@ public class FormulaADO {
 
     public static Object ListarFormulas(int opcion, String fechaInicio, String fechaFinal, String buscar, int posicionPagina, int filasPorPagina) {
         PreparedStatement statementLista = null;
+        ResultSet resultSet = null;
         try {
             DBUtil.dbConnect();
             Object[] objects = new Object[2];
@@ -36,7 +37,7 @@ public class FormulaADO {
             statementLista.setString(4, buscar);
             statementLista.setInt(5, posicionPagina);
             statementLista.setInt(6, filasPorPagina);
-            ResultSet resultSet = statementLista.executeQuery();
+            resultSet = statementLista.executeQuery();
             while (resultSet.next()) {
                 FormulaTB formulaTB = new FormulaTB();
                 formulaTB.setId(resultSet.getRow() + posicionPagina);
@@ -77,6 +78,9 @@ public class FormulaADO {
                 if (statementLista != null) {
                     statementLista.close();
                 }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
                 return ex.getLocalizedMessage();
@@ -96,13 +100,14 @@ public class FormulaADO {
             statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM FormulaTB WHERE IdFormula = ?");
             statementValidate.setString(1, formulaTB.getIdFormula());
             if (statementValidate.executeQuery().next()) {
-                statementFormula = DBUtil.getConnection().prepareStatement("UPDATE FormulaTB SET Titulo = ?,Cantidad = ?,IdSuministro = ?,CostoAdicional = ?,Instrucciones = ? WHERE IdFormula = ?");
+                statementFormula = DBUtil.getConnection().prepareStatement("UPDATE FormulaTB SET Titulo = ?,Cantidad = ?,IdSuministro = ?,CostoAdicional = ?,Instrucciones = ?,IdUsuario = ? WHERE IdFormula = ?");
                 statementFormula.setString(1, formulaTB.getTitulo());
                 statementFormula.setDouble(2, formulaTB.getCantidad());
                 statementFormula.setString(3, formulaTB.getIdSuministro());
                 statementFormula.setDouble(4, formulaTB.getCostoAdicional());
                 statementFormula.setString(5, formulaTB.getInstrucciones());
-                statementFormula.setString(6, formulaTB.getIdFormula());
+                statementFormula.setString(6, formulaTB.getIdUsuario());
+                statementFormula.setString(7, formulaTB.getIdFormula());
                 statementFormula.addBatch();
                 statementFormula.executeBatch();
 
@@ -111,13 +116,13 @@ public class FormulaADO {
                 statementDetalle.addBatch();
                 statementDetalle.executeBatch();
 
-                statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO FormulaDetalleTB(IdFormula,IdInsumo,Cantidad) VALUES(?,?,?)");
-//                for (InsumoTB insumoTB : formulaTB.getInsumoTBs()) {
-//                    statementDetalle.setString(1, formulaTB.getIdFormula());
-//                    statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-//                    statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()));
-//                    statementDetalle.addBatch();
-//                }
+                statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO FormulaDetalleTB(IdFormula,IdSuministro,Cantidad) VALUES(?,?,?)");
+                for (SuministroTB suministroTB : formulaTB.getSuministroTBs()) {
+                    statementDetalle.setString(1, formulaTB.getIdFormula());
+                    statementDetalle.setString(2, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                    statementDetalle.setDouble(3, Double.parseDouble(suministroTB.getTxtCantidad().getText()));
+                    statementDetalle.addBatch();
+                }
                 statementDetalle.executeBatch();
 
                 DBUtil.getConnection().commit();
@@ -129,7 +134,7 @@ public class FormulaADO {
                 statementCodigo.execute();
                 String id_Formula = statementCodigo.getString(1);
 
-                statementFormula = DBUtil.getConnection().prepareStatement("INSERT INTO FormulaTB(IdFormula,Titulo,Cantidad,IdSuministro,CostoAdicional,Instrucciones,Fecha,Hora) VALUES(?,?,?,?,?,?,?,?)");
+                statementFormula = DBUtil.getConnection().prepareStatement("INSERT INTO FormulaTB(IdFormula,Titulo,Cantidad,IdSuministro,CostoAdicional,Instrucciones,Fecha,Hora,IdUsuario) VALUES(?,?,?,?,?,?,?,?,?)");
                 statementFormula.setString(1, id_Formula);
                 statementFormula.setString(2, formulaTB.getTitulo());
                 statementFormula.setDouble(3, formulaTB.getCantidad());
@@ -138,15 +143,16 @@ public class FormulaADO {
                 statementFormula.setString(6, formulaTB.getInstrucciones());
                 statementFormula.setString(7, formulaTB.getFecha());
                 statementFormula.setString(8, formulaTB.getHora());
+                statementFormula.setString(9, formulaTB.getIdUsuario());
                 statementFormula.addBatch();
 
-                statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO FormulaDetalleTB(IdFormula,IdInsumo,Cantidad) VALUES(?,?,?)");
-//                for (InsumoTB insumoTB : formulaTB.getInsumoTBs()) {
-//                    statementDetalle.setString(1, id_Formula);
-//                    statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-//                    statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()));
-//                    statementDetalle.addBatch();
-//                }
+                statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO FormulaDetalleTB(IdFormula,IdSuministro,Cantidad) VALUES(?,?,?)");
+                for (SuministroTB suministroTB : formulaTB.getSuministroTBs()) {
+                    statementDetalle.setString(1, id_Formula);
+                    statementDetalle.setString(2, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                    statementDetalle.setDouble(3, Double.parseDouble(suministroTB.getTxtCantidad().getText()));
+                    statementDetalle.addBatch();
+                }
 
                 statementFormula.executeBatch();
                 statementDetalle.executeBatch();
@@ -175,17 +181,13 @@ public class FormulaADO {
         }
     }
 
-    public static Object Obtener_Formula_ById(String idFormula, Double cantidad) {
+    public static Object Obtener_Formula_ById_Editar(String idFormula, double cantidad) {
         PreparedStatement statementFormula = null;
         PreparedStatement statementDetalle = null;
         ResultSet resultSet = null;
         try {
             DBUtil.dbConnect();
-            statementFormula = DBUtil.getConnection().prepareStatement("select f.IdFormula,f.Titulo,f.Cantidad,f.CostoAdicional,f.CostoAdicional,\n"
-                    + "f.Instrucciones,f.Fecha,f.Hora,s.IdSuministro,s.Clave,s.NombreMarca\n"
-                    + "from FormulaTB as f \n"
-                    + "inner join SuministroTB as s on s.IdSuministro = f.IdSuministro\n"
-                    + "where f.IdFormula = ?");
+            statementFormula = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Formula_ById(?)}");
             statementFormula.setString(1, idFormula);
             resultSet = statementFormula.executeQuery();
             if (resultSet.next()) {
@@ -200,115 +202,176 @@ public class FormulaADO {
                 formulaTB.setFecha(resultSet.getDate("Fecha").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 formulaTB.setHora(resultSet.getTime("Hora").toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss a")));
 
-                statementDetalle = DBUtil.getConnection().prepareStatement("select i.IdInsumo,i.Clave,i.NombreMarca,fd.Cantidad from\n"
-                        + "FormulaDetalleTB as fd \n"
-                        + "inner join InsumoTB as i on fd.IdInsumo = i.IdInsumo\n"
-                        + "where fd.IdFormula = ?");
+                statementDetalle = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Formula_ById(?)}");
                 statementDetalle.setString(1, idFormula);
                 resultSet = statementDetalle.executeQuery();
-                ArrayList<SuministroTB> insumoTBs = new ArrayList();
-//                while (resultSet.next()) {
-//                    InsumoTB insumoTB = new InsumoTB();
-//                    insumoTB.setCantidad(resultSet.getDouble("Cantidad"));
-//
-//                    ComboBox<InsumoTB> comboBox = new ComboBox();
-//                    comboBox.setPromptText("-- Selecionar --");
-//                    comboBox.setPrefWidth(220);
-//                    comboBox.setPrefHeight(30);
-//                    comboBox.setMaxWidth(Double.MAX_VALUE);
-//                    insumoTB.setComboBox(comboBox);
-//
-//                    SearchComboBox<InsumoTB> searchComboBox = new SearchComboBox<>(insumoTB.getComboBox(), false);
-//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
-//                        if (t.getCode() == KeyCode.ENTER) {
-//                            if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
-//                                searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
-//                                searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
-//                            }
-//                        } else if (t.getCode() == KeyCode.ESCAPE) {
-//                            searchComboBox.getComboBox().hide();
-//                        }
-//                    });
-//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
-//                        if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
-//                            searchComboBox.getComboBox().getItems().clear();
-//                            List<InsumoTB> list = InsumoADO.getSearchComboBoxInsumos(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-//                            list.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
-//                        }
-//                    });
-//                    searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
-//                        switch (t.getCode()) {
-//                            case ENTER:
-//                            case SPACE:
-//                            case ESCAPE:
-//                                searchComboBox.getComboBox().hide();
-//                                break;
-//                            case UP:
-//                            case DOWN:
-//                            case LEFT:
-//                            case RIGHT:
-//                                break;
-//                            default:
-//                                searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
-//                                searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
-//                                break;
-//                        }
-//                    });
-//                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
-//                        if (item != null) {
-//                            searchComboBox.getComboBox().getSelectionModel().select(item);
-//                            if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
-//                                searchComboBox.getComboBox().hide();
-//                            }
-//                        }
-//                    });
-//                    insumoTB.setSearchComboBox(searchComboBox);
-//                    insumoTB.getComboBox().getItems().add(new InsumoTB(resultSet.getString("IdInsumo"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
-//                    insumoTB.getComboBox().getSelectionModel().select(0);
-//
-//                    TextField textField = new TextField(Tools.roundingValue(insumoTB.getCantidad()* cantidad, 2));
-//                    textField.setPromptText("0.00");
-//                    textField.getStyleClass().add("text-field-normal");
-//                    textField.setPrefWidth(220);
-//                    textField.setPrefHeight(30);
-//                    textField.setOnKeyTyped(event -> {
-//                        char c = event.getCharacter().charAt(0);
-//                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
-//                            event.consume();
-//                        }
-//                        if (c == '.' && textField.getText().contains(".")) {
-//                            event.consume();
-//                        }
-//                    });
-//                    insumoTB.setTxtCantidad(textField);
-//
-//                    Button button = new Button();
-//                    button.getStyleClass().add("buttonLightError");
-//                    button.setAlignment(Pos.CENTER);
-//                    button.setPrefWidth(Control.USE_COMPUTED_SIZE);
-//                    button.setPrefHeight(Control.USE_COMPUTED_SIZE);
-////                    button.setMaxWidth(Double.MAX_VALUE);
-////                    button.setMaxHeight(Double.MAX_VALUE);
-//                    ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
-//                    imageView.setFitWidth(20);
-//                    imageView.setFitHeight(20);
-//                    button.setGraphic(imageView);
-//                    insumoTB.setBtnRemove(button);
-//                    insumoTBs.add(insumoTB);
-//                }
-//                formulaTB.setInsumoTBs(insumoTBs);
+                ArrayList<SuministroTB> suministroTBs = new ArrayList();
+                while (resultSet.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
+
+                    ComboBox<SuministroTB> comboBox = new ComboBox();
+                    comboBox.setPromptText("-- Selecionar --");
+                    comboBox.setPrefWidth(220);
+                    comboBox.setPrefHeight(30);
+                    comboBox.setMaxWidth(Double.MAX_VALUE);
+                    suministroTB.setCbSuministro(comboBox);
+
+                    SearchComboBox<SuministroTB> searchComboBox = new SearchComboBox<>(suministroTB.getCbSuministro(), false);
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+                        if (t.getCode() == KeyCode.ENTER) {
+                            if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                                searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                                searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+                            }
+                        } else if (t.getCode() == KeyCode.ESCAPE) {
+                            searchComboBox.getComboBox().hide();
+                        }
+                    });
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+                        if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+                            searchComboBox.getComboBox().getItems().clear();
+                            List<SuministroTB> list = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                            list.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
+                        }
+                    });
+                    searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+                        switch (t.getCode()) {
+                            case ENTER:
+                            case SPACE:
+                            case ESCAPE:
+                                searchComboBox.getComboBox().hide();
+                                break;
+                            case UP:
+                            case DOWN:
+                            case LEFT:
+                            case RIGHT:
+                                break;
+                            default:
+                                searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                                searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+                                break;
+                        }
+                    });
+                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+                        if (item != null) {
+                            searchComboBox.getComboBox().getSelectionModel().select(item);
+                            if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+                                searchComboBox.getComboBox().hide();
+                            }
+                        }
+                    });
+                    suministroTB.setSearchComboBox(searchComboBox);
+                    suministroTB.getCbSuministro().getItems().add(new SuministroTB(resultSet.getString("IdSuministro"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
+                    suministroTB.getCbSuministro().getSelectionModel().select(0);
+
+                    TextField textField = new TextField(Tools.roundingValue(suministroTB.getCantidad() * cantidad, 2));
+                    textField.setPromptText("0.00");
+                    textField.getStyleClass().add("text-field-normal");
+                    textField.setPrefWidth(220);
+                    textField.setPrefHeight(30);
+                    textField.setOnKeyTyped(event -> {
+                        char c = event.getCharacter().charAt(0);
+                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                            event.consume();
+                        }
+                        if (c == '.' && textField.getText().contains(".")) {
+                            event.consume();
+                        }
+                    });
+                    suministroTB.setTxtCantidad(textField);
+
+                    Button button = new Button();
+                    button.getStyleClass().add("buttonLightError");
+                    button.setAlignment(Pos.CENTER);
+                    button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+                    button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+//                    button.setMaxWidth(Double.MAX_VALUE);
+//                    button.setMaxHeight(Double.MAX_VALUE);
+                    ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+                    imageView.setFitWidth(20);
+                    imageView.setFitHeight(20);
+                    button.setGraphic(imageView);
+                    suministroTB.setBtnRemove(button);
+                    suministroTBs.add(suministroTB);
+                }
+                formulaTB.setSuministroTBs(suministroTBs);
                 return formulaTB;
             } else {
-                return null;
+                throw new Exception("No se puedo obtener los datos de la formula.");
             }
         } catch (SQLException ex) {
             return ex.getLocalizedMessage();
-        } catch(Exception ex){
+        } catch (Exception ex) {
             return ex.getLocalizedMessage();
-        } 
-        finally {
+        } finally {
             try {
-                if (statementFormula != null) { 
+                if (statementFormula != null) {
+                    statementFormula.close();
+                }
+                if (statementDetalle != null) {
+                    statementDetalle.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+    }
+
+    public static Object Obtener_Formula_ById(String idFormula, double cantidad) {
+        PreparedStatement statementFormula = null;
+        PreparedStatement statementDetalle = null;
+        ResultSet resultSet = null;
+        try {
+            DBUtil.dbConnect();
+            statementFormula = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Formula_ById(?)}");
+            statementFormula.setString(1, idFormula);
+            resultSet = statementFormula.executeQuery();
+            if (resultSet.next()) {
+                FormulaTB formulaTB = new FormulaTB();
+                formulaTB.setIdFormula(resultSet.getString("IdFormula"));
+                formulaTB.setTitulo(resultSet.getString("Titulo"));
+                formulaTB.setCantidad(resultSet.getDouble("Cantidad"));
+                formulaTB.setIdSuministro(resultSet.getString("IdSuministro"));
+                formulaTB.setSuministroTB(new SuministroTB(resultSet.getString("IdSuministro"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
+                formulaTB.setCostoAdicional(resultSet.getDouble("CostoAdicional"));
+                formulaTB.setInstrucciones(resultSet.getString("Instrucciones"));
+                formulaTB.setFecha(resultSet.getDate("Fecha").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                formulaTB.setHora(resultSet.getTime("Hora").toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss a")));
+
+                EmpleadoTB empleadoTB = new EmpleadoTB();
+                empleadoTB.setApellidos(resultSet.getString("Apellidos"));
+                empleadoTB.setNombres(resultSet.getString("Nombres"));
+                formulaTB.setEmpleadoTB(empleadoTB);
+
+                statementDetalle = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Formula_ById(?)}");
+                statementDetalle.setString(1, idFormula);
+                resultSet = statementDetalle.executeQuery();
+                ArrayList<SuministroTB> suministroTBs = new ArrayList();
+                while (resultSet.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setIdSuministro(resultSet.getString("IdSuministro"));
+                    suministroTB.setClave(resultSet.getString("Clave"));
+                    suministroTB.setNombreMarca(resultSet.getString("NombreMarca"));
+                    suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
+                    suministroTBs.add(suministroTB);
+                }
+                formulaTB.setSuministroTBs(suministroTBs);
+                return formulaTB;
+            } else {
+                throw new Exception("No se puedo obtener los datos de la formula.");
+            }
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementFormula != null) {
                     statementFormula.close();
                 }
                 if (statementDetalle != null) {

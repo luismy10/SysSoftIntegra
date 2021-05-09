@@ -550,7 +550,7 @@ public class FxSuministrosListaController implements Initializable {
                     ventaEstructuraController.calculateTotales();
                 }
             });
-            suministroTB.setRemover(button);
+            suministroTB.setBtnRemove(button);
             if (ventaEstructuraController.isCerar_modal_agregar_item_lista()) {
                 Tools.Dispose(apWindow);
                 ventaEstructuraController.getAddArticulo(suministroTB, ventaEstructuraController.getWindow().getScene().getWindow());

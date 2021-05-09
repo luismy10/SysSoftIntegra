@@ -321,7 +321,7 @@ public class FxVentaEstructuraController implements Initializable {
     }
 
     private void initTable() {
-        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("remover"));
+        tcOpcion.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
         tcArticulo.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getClave() + "\n" + cellData.getValue().getNombreMarca()));
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
@@ -555,7 +555,7 @@ public class FxVentaEstructuraController implements Initializable {
                     calculateTotales();
                 }
             });
-            suministroTB.setRemover(button);
+            suministroTB.setBtnRemove(button);
 
             getArticuloCodigoBarras(suministroTB);
             txtSearch.clear();
@@ -1090,11 +1090,11 @@ public class FxVentaEstructuraController implements Initializable {
                     ObservableList<SuministroTB> cotizacionTBs = cotizacionTB.getDetalleSuministroTBs();
                     for (int i = 0; i < cotizacionTBs.size(); i++) {
                         SuministroTB suministroTB = cotizacionTBs.get(i);
-                        suministroTB.getRemover().setOnAction(e -> {
+                        suministroTB.getBtnRemove().setOnAction(e -> {
                             tvList.getItems().remove(suministroTB);
                             calculateTotales();
                         });
-                        suministroTB.getRemover().setOnKeyPressed(e -> {
+                        suministroTB.getBtnRemove().setOnKeyPressed(e -> {
                             if (e.getCode() == KeyCode.ENTER) {
                                 tvList.getItems().remove(suministroTB);
                                 calculateTotales();
@@ -1172,11 +1172,11 @@ public class FxVentaEstructuraController implements Initializable {
                 ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
                 for (int i = 0; i < ventaTB.getSuministroTBs().size(); i++) {
                     SuministroTB suministroTB = ventaTB.getSuministroTBs().get(i);
-                    suministroTB.getRemover().setOnAction(e -> {
+                    suministroTB.getBtnRemove().setOnAction(e -> {
                         tvList.getItems().remove(suministroTB);
                         calculateTotales();
                     });
-                    suministroTB.getRemover().setOnKeyPressed(e -> {
+                    suministroTB.getBtnRemove().setOnKeyPressed(e -> {
                         if (e.getCode() == KeyCode.ENTER) {
                             tvList.getItems().remove(suministroTB);
                             calculateTotales();
@@ -1236,11 +1236,11 @@ public class FxVentaEstructuraController implements Initializable {
                 ObservableList<SuministroTB> cotizacionTBs = FXCollections.observableArrayList();
                 for (int i = 0; i < ventaTB.getSuministroTBs().size(); i++) {
                     SuministroTB suministroTB = ventaTB.getSuministroTBs().get(i);
-                    suministroTB.getRemover().setOnAction(e -> {
+                    suministroTB.getBtnRemove().setOnAction(e -> {
                         tvList.getItems().remove(suministroTB);
                         calculateTotales();
                     });
-                    suministroTB.getRemover().setOnKeyPressed(e -> {
+                    suministroTB.getBtnRemove().setOnKeyPressed(e -> {
                         if (e.getCode() == KeyCode.ENTER) {
                             tvList.getItems().remove(suministroTB);
                             calculateTotales();

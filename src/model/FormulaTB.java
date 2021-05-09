@@ -21,10 +21,15 @@ public class FormulaTB {
     private String fecha;
 
     private String hora;
+    
+    private String idUsuario;
 
     private SuministroTB suministroTB;
+    
+    private EmpleadoTB empleadoTB;
 
     private ArrayList<SuministroTB> suministroTBs;
+    
 
     public FormulaTB() { 
     }
@@ -101,12 +106,28 @@ public class FormulaTB {
         this.hora = hora;
     }
 
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public SuministroTB getSuministroTB() {
         return suministroTB;
     }
 
     public void setSuministroTB(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
+    }
+
+    public EmpleadoTB getEmpleadoTB() {
+        return empleadoTB;
+    }
+
+    public void setEmpleadoTB(EmpleadoTB empleadoTB) {
+        this.empleadoTB = empleadoTB;
     }
 
     public ArrayList<SuministroTB> getSuministroTBs() {

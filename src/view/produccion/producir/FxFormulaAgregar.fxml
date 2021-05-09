@@ -55,7 +55,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionCancelar" onKeyPressed="#onKeyPressedCancelar" styleClass="buttonLight" text="Limpiar">
+                  <Button mnemonicParsing="false" onAction="#onActionLimpiar" onKeyPressed="#onKeyPressedLimpiar" styleClass="buttonLight" text="Limpiar">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>

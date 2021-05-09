@@ -71,7 +71,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
+                                          <VBox style="-fx-spacing: 0.5em;">
                                              <children>
                                                 <Label styleClass="labelRoboto13" text="Fecha inicial:" textFill="#020203">
                                                    <font>
@@ -87,8 +87,8 @@
                                                 </Label>
                                                 <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
+                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.5em;">
                                              <children>
                                                 <Label styleClass="labelRoboto13" text="Fecha final:" textFill="#020203">
                                                    <font>
@@ -104,8 +104,8 @@
                                                 </Label>
                                                 <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.3333333333333333em;">
+                                          </VBox>
+                                          <VBox style="-fx-spacing: 0.5em;">
                                              <children>
                                                 <Label styleClass="labelRoboto13" text="Estado:" textFill="#020203">
                                                    <font>
@@ -121,7 +121,7 @@
                                                 </Label>
                                                 <ComboBox fx:id="cbEstadoCompra" onAction="#OnActionEstadoCompra" prefHeight="30.0" prefWidth="240.0" />
                                              </children>
-                                          </HBox>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                     <VBox style="-fx-spacing: 0.5em;" VBox.vgrow="ALWAYS">

@@ -201,7 +201,7 @@
                                                       </VBox>
                                                       <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                                          <children>
-                                                            <Text fx:id="lblTotal" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold19" text="M 0.00" />
+                                                            <Text fx:id="lblTotal" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRobotoBold21" text="M 0.00" />
                                                          </children>
                                                       </VBox>
                                                    </children>

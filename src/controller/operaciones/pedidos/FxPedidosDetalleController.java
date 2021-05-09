@@ -286,17 +286,6 @@ public class FxPedidosDetalleController implements Initializable {
         lblImporteTotal.setText(simbolo + " " + Tools.roundingValue(importeTotal, 2));
     }
 
-    @FXML
-    private void onMouseClickedBehind(MouseEvent event) {
-        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
-        fxPrincipalController.getVbContent().getChildren().clear();
-        AnchorPane.setLeftAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        AnchorPane.setTopAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        AnchorPane.setRightAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        AnchorPane.setBottomAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        fxPrincipalController.getVbContent().getChildren().add(pedidosRealizadosController.getVbWindow());
-    }
-
     private void reportA4() {
         try {
             InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
@@ -362,6 +351,21 @@ public class FxPedidosDetalleController implements Initializable {
         }
     }
 
+    private void closerView() {
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(pedidosRealizadosController.getVbWindow(), 0d);
+        AnchorPane.setTopAnchor(pedidosRealizadosController.getVbWindow(), 0d);
+        AnchorPane.setRightAnchor(pedidosRealizadosController.getVbWindow(), 0d);
+        AnchorPane.setBottomAnchor(pedidosRealizadosController.getVbWindow(), 0d);
+        fxPrincipalController.getVbContent().getChildren().add(pedidosRealizadosController.getVbWindow());
+    }
+
+    @FXML
+    private void onMouseClickedBehind(MouseEvent event) {
+        closerView();
+    }
+
     @FXML
     private void onKeyPressedReporte(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -389,25 +393,13 @@ public class FxPedidosDetalleController implements Initializable {
     @FXML
     private void onKeyPressedAceptarLoad(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            fxPrincipalController.getVbContent().getChildren().remove(apWindow);
-            fxPrincipalController.getVbContent().getChildren().clear();
-            AnchorPane.setLeftAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-            AnchorPane.setTopAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-            AnchorPane.setRightAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-            AnchorPane.setBottomAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-            fxPrincipalController.getVbContent().getChildren().add(pedidosRealizadosController.getVbWindow());
+            closerView();
         }
     }
 
     @FXML
     private void onActionAceptarLoad(ActionEvent event) {
-        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
-        fxPrincipalController.getVbContent().getChildren().clear();
-        AnchorPane.setLeftAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        AnchorPane.setTopAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        AnchorPane.setRightAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        AnchorPane.setBottomAnchor(pedidosRealizadosController.getVbWindow(), 0d);
-        fxPrincipalController.getVbContent().getChildren().add(pedidosRealizadosController.getVbWindow());
+        closerView();
     }
 
     public void setInitPedidosRealizadasController(FxPedidosRealizadosController pedidosRealizadosController, FxPrincipalController fxPrincipalController) {
