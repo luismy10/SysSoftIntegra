@@ -64,10 +64,6 @@ public class FxProducirController implements Initializable {
     @FXML
     private TextField txtSearch;
 
-    private AnchorPane node;
-
-    private FxProducirAgregarController controller;
-
     private FxProducirEditarController producirEditarController;
 
     private FxPrincipalController fxPrincipalController;
@@ -80,19 +76,10 @@ public class FxProducirController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_PRODUCIR_AGREGAR));
-            node = fXMLLoader.load();
-            controller = fXMLLoader.getController();
-
-            paginacion = 1;
-            opcion = 0;
-            loadTableComponents();
-            initLoadTable();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
+        paginacion = 1;
+        opcion = 0;
+        loadTableComponents();
+        initLoadTable();
     }
 
     private void loadTableComponents() {
@@ -212,13 +199,20 @@ public class FxProducirController implements Initializable {
     }
 
     private void onViewProducirProceso() {
-        controller.setInitControllerProducir(this, fxPrincipalController);
-        fxPrincipalController.getVbContent().getChildren().clear();
-        AnchorPane.setLeftAnchor(node, 0d);
-        AnchorPane.setTopAnchor(node, 0d);
-        AnchorPane.setRightAnchor(node, 0d);
-        AnchorPane.setBottomAnchor(node, 0d);
-        fxPrincipalController.getVbContent().getChildren().add(node);
+        try {
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(getClass().getResource(FilesRouters.FX_PRODUCIR_AGREGAR));
+            AnchorPane node = fXMLLoader.load();
+            FxProducirAgregarController controller = fXMLLoader.getController();
+            controller.setInitControllerProducir(this, fxPrincipalController);
+            fxPrincipalController.getVbContent().getChildren().clear();
+            AnchorPane.setLeftAnchor(node, 0d);
+            AnchorPane.setTopAnchor(node, 0d);
+            AnchorPane.setRightAnchor(node, 0d);
+            AnchorPane.setBottomAnchor(node, 0d);
+            fxPrincipalController.getVbContent().getChildren().add(node);
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
     }
 
     private void editarProduccion(String idProduccion) {

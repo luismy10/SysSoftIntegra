@@ -11,11 +11,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import model.EmpleadoTB;
 import model.FormulaADO;
 import model.FormulaTB;
 import model.SuministroADO;
@@ -33,6 +40,18 @@ public class FxProducirAgregarController implements Initializable {
     private TextField txtProyecto;
     @FXML
     private ComboBox<FormulaTB> cbFormula;
+    @FXML
+    private VBox vbPrimero;
+    @FXML
+    private VBox vbSegundo;
+    @FXML
+    private RadioButton cbInterno;
+    @FXML
+    private RadioButton cbExterno;
+    @FXML
+    private ComboBox<EmpleadoTB> cbPersonaEncargada;
+    @FXML
+    private GridPane gpList;
 
     private FxProducirController producirController;
 
@@ -40,11 +59,18 @@ public class FxProducirAgregarController implements Initializable {
 
     private ArrayList<SuministroTB> suministroTBs;
 
+    private SearchComboBox<FormulaTB> searchComboBoxFormula;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         suministroTBs = new ArrayList();
+        searchComboBoxFormula = new SearchComboBox<>(cbFormula, false);
+        ToggleGroup toggleGroup = new ToggleGroup();
+        cbInterno.setToggleGroup(toggleGroup);
+        cbExterno.setToggleGroup(toggleGroup);
         comboBoxProductos();
         comboBoxFormulas();
+        comboBoxEmpleados();
     }
 
     private void comboBoxProductos() {
@@ -95,7 +121,53 @@ public class FxProducirAgregarController implements Initializable {
     }
 
     private void comboBoxFormulas() {
-        SearchComboBox<FormulaTB> searchComboBox = new SearchComboBox<>(cbFormula, false);
+        searchComboBoxFormula.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBoxFormula.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBoxFormula.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBoxFormula.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBoxFormula.getComboBox().hide();
+            }
+        });
+        searchComboBoxFormula.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            if (!Tools.isText(searchComboBoxFormula.getSearchComboBoxSkin().getSearchBox().getText())) {
+                searchComboBoxFormula.getComboBox().getItems().clear();
+                List<FormulaTB> formulaTBs = FormulaADO.getSearchComboBoxFormulas(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro(), searchComboBoxFormula.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                formulaTBs.forEach(p -> cbFormula.getItems().add(p));
+            }
+        });
+        searchComboBoxFormula.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            switch (t.getCode()) {
+                case ENTER:
+                case SPACE:
+                case ESCAPE:
+                    searchComboBoxFormula.getComboBox().hide();
+                    break;
+                case UP:
+                case DOWN:
+                case LEFT:
+                case RIGHT:
+                    break;
+                default:
+                    searchComboBoxFormula.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                    searchComboBoxFormula.getSearchComboBoxSkin().getSearchBox().selectAll();
+                    break;
+            }
+        });
+        searchComboBoxFormula.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxFormula.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxFormula.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBoxFormula.getComboBox().hide();
+                }
+            }
+        });
+    }
+
+    private void comboBoxEmpleados() {
+        SearchComboBox<EmpleadoTB> searchComboBox = new SearchComboBox<>(cbPersonaEncargada, false);
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
                 if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
@@ -109,8 +181,8 @@ public class FxProducirAgregarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<FormulaTB> formulaTBs = FormulaADO.getSearchComboBoxFormulas("",searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-                formulaTBs.forEach(p -> cbFormula.getItems().add(p));
+                List<EmpleadoTB> empleadoTBs = EmpleadoTB.getSearchComboBoxEmpleados(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                empleadoTBs.forEach(p -> cbPersonaEncargada.getItems().add(p));
             }
         });
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -152,6 +224,8 @@ public class FxProducirAgregarController implements Initializable {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese una cantidad mayor a 0");
             txtCantidad.requestFocus();
         } else {
+            vbPrimero.setVisible(false);
+            vbSegundo.setVisible(true);
 
         }
     }
@@ -197,6 +271,22 @@ public class FxProducirAgregarController implements Initializable {
     public void setInitControllerProducir(FxProducirController producirController, FxPrincipalController fxPrincipalController) {
         this.producirController = producirController;
         this.fxPrincipalController = fxPrincipalController;
+    }
+
+    @FXML
+    private void onKeyPressedAgregar(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActonAgregar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onKeyPressedGuardar(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionGuardar(ActionEvent event) {
     }
 
 }
