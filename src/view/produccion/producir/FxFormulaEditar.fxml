@@ -218,17 +218,30 @@
             </TabPane>
          </children>
       </VBox>
-      <HBox fx:id="hbLoad" alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-background-color: rgba(0,0,0,0.8);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox fx:id="hbLoad" alignment="CENTER" style="-fx-background-color: rgba(0,0,0,0.8);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="lblMessageLoad" contentDisplay="TOP" styleClass="labelRobotoBold17" text="Cargando datos..." textFill="WHITE">
-               <graphic>
-                  <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/load.gif" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Label>
+            <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Label fx:id="lblMessageLoad" contentDisplay="TOP" styleClass="labelRobotoBold17" text="Cargando datos..." textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/load.gif" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Button fx:id="btnAceptarLoad" mnemonicParsing="false" styleClass="buttonLight" text="Aceptar" visible="false">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/accept.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>

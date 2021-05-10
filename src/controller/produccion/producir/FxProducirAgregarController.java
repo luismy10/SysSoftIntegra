@@ -10,17 +10,25 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.EmpleadoTB;
 import model.FormulaADO;
@@ -45,11 +53,21 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private VBox vbSegundo;
     @FXML
+    private DatePicker dtFechaProduccion;
+    @FXML
+    private TextField txtDias;
+    @FXML
+    private TextField txtHoras;
+    @FXML
+    private TextField txtMinutos;
+    @FXML
     private RadioButton cbInterno;
     @FXML
     private RadioButton cbExterno;
     @FXML
     private ComboBox<EmpleadoTB> cbPersonaEncargada;
+    @FXML
+    private TextArea txtDescripcion;
     @FXML
     private GridPane gpList;
 
@@ -65,9 +83,11 @@ public class FxProducirAgregarController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         suministroTBs = new ArrayList();
         searchComboBoxFormula = new SearchComboBox<>(cbFormula, false);
+        Tools.actualDate(Tools.getDate(), dtFechaProduccion);
         ToggleGroup toggleGroup = new ToggleGroup();
         cbInterno.setToggleGroup(toggleGroup);
         cbExterno.setToggleGroup(toggleGroup);
+        addElementPaneHead();
         comboBoxProductos();
         comboBoxFormulas();
         comboBoxEmpleados();
@@ -213,6 +233,175 @@ public class FxProducirAgregarController implements Initializable {
         });
     }
 
+    private void addElementsTableInsumo() {
+        SuministroTB suministroTB = new SuministroTB();
+        suministroTB.setCantidad(1);
+        ComboBox<SuministroTB> comboBox = new ComboBox();
+        comboBox.setPromptText("-- Selecionar --");
+        comboBox.setPrefWidth(220);
+        comboBox.setPrefHeight(30);
+        comboBox.setMaxWidth(Double.MAX_VALUE);
+        suministroTB.setCbSuministro(comboBox);
+
+        SearchComboBox<SuministroTB> searchComboBox = new SearchComboBox<>(suministroTB.getCbSuministro(), false);
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBox.getComboBox().hide();
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+                searchComboBox.getComboBox().getItems().clear();
+                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                suministroTBs.forEach(p -> cbProducto.getItems().add(p));
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            switch (t.getCode()) {
+                case ENTER:
+                case SPACE:
+                case ESCAPE:
+                    searchComboBox.getComboBox().hide();
+                    break;
+                case UP:
+                case DOWN:
+                case LEFT:
+                case RIGHT:
+                    break;
+                default:
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+                    break;
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBox.getComboBox().getSelectionModel().select(item);
+                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBox.getComboBox().hide();
+                }
+            }
+        });
+        suministroTB.setSearchComboBox(searchComboBox);
+
+        TextField textField = new TextField(Tools.roundingValue(suministroTB.getCantidad(), 2));
+        textField.setDisable(true);
+        textField.setPromptText("0.00");
+        textField.getStyleClass().add("text-field-normal");
+        textField.setPrefWidth(220);
+        textField.setPrefHeight(30);
+        textField.setOnKeyTyped(event -> {
+            char c = event.getCharacter().charAt(0);
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                event.consume();
+            }
+            if (c == '.' && textField.getText().contains(".")) {
+                event.consume();
+            }
+        });
+        suministroTB.setTxtCantidad(textField);
+
+        Button button = new Button();
+        button.getStyleClass().add("buttonLightError");
+        button.setAlignment(Pos.CENTER);
+        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        button.setGraphic(imageView);
+
+        button.setOnAction(event -> {
+            suministroTBs.remove(suministroTB);
+            addElementPaneHead();
+            addElementPaneBody();
+        });
+        button.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                suministroTBs.remove(suministroTB);
+                addElementPaneHead();
+                addElementPaneBody();
+            }
+        });
+        suministroTB.setBtnRemove(button);
+        suministroTBs.add(suministroTB);
+        addElementPaneHead();
+        addElementPaneBody();
+    }
+
+    private void addElementPaneHead() {
+        gpList.getChildren().clear();
+        gpList.getColumnConstraints().get(0).setMinWidth(10);
+        gpList.getColumnConstraints().get(0).setPrefWidth(40);
+        gpList.getColumnConstraints().get(0).setHgrow(Priority.SOMETIMES);
+
+        gpList.getColumnConstraints().get(1).setMinWidth(10);
+        gpList.getColumnConstraints().get(1).setPrefWidth(320);
+        gpList.getColumnConstraints().get(1).setHgrow(Priority.SOMETIMES);
+
+        gpList.getColumnConstraints().get(2).setMinWidth(10);
+        gpList.getColumnConstraints().get(2).setPrefWidth(60);
+        gpList.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
+
+        gpList.getColumnConstraints().get(3).setMinWidth(10);
+        gpList.getColumnConstraints().get(3).setPrefWidth(60);
+        gpList.getColumnConstraints().get(3).setHgrow(Priority.SOMETIMES);
+
+        gpList.getColumnConstraints().get(4).setMinWidth(10);
+        gpList.getColumnConstraints().get(4).setPrefWidth(60);
+        gpList.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
+        gpList.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
+
+        gpList.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
+        gpList.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
+        gpList.add(addElementGridPaneLabel("l03", "Cantidad"), 2, 0);
+        gpList.add(addElementGridPaneLabel("l04", "Medida"), 3, 0);
+        gpList.add(addElementGridPaneLabel("l05", "Quitar"), 4, 0);
+    }
+
+    private Label addElementGridPaneLabel(String id, String nombre) {
+        Label label = new Label(nombre);
+        label.setId(id);
+        label.setStyle("-fx-background-color: #020203;-fx-text-fill:#ffffff;-fx-padding: 0.6666666666666666em 0.16666666666666666em 0.6666666666666666em 0.16666666666666666em;-fx-font-weight: 100");
+        label.getStyleClass().add("labelOpenSansRegular13");
+        label.setAlignment(Pos.CENTER);
+        label.setWrapText(true);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
+    }
+
+    private Label addElementGridPaneLabel(String id, String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setId(id);
+        label.setStyle("-fx-text-fill:#020203;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
+        label.getStyleClass().add("labelRoboto13");
+        label.setAlignment(pos);
+        label.setWrapText(true);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
+    }
+
+    private void addElementPaneBody() {
+        for (int i = 0; i < suministroTBs.size(); i++) {
+            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+            gpList.add(suministroTBs.get(i).getCbSuministro(), 1, (i + 1));
+            gpList.add(suministroTBs.get(i).getTxtCantidad(), 2, (i + 1));
+            gpList.add(addElementGridPaneLabel("l4" + (i + 1), "MEDIDA", Pos.CENTER), 3, (i + 1));
+            gpList.add(suministroTBs.get(i).getBtnRemove(), 4, (i + 1));
+        }
+    }
+
     private void onEventSiguiente() {
         if (Tools.isText(txtProyecto.getText())) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese el nombre del proyecto.");
@@ -240,6 +429,26 @@ public class FxProducirAgregarController implements Initializable {
         fxPrincipalController.getVbContent().getChildren().add(producirController.getWindow());
     }
 
+    private void onEventCancelar() {
+        vbPrimero.setVisible(true);
+        vbSegundo.setVisible(false);
+        txtProyecto.clear();
+        txtCantidad.clear();
+        cbProducto.getSelectionModel().select(null);
+        cbFormula.getSelectionModel().select(null);
+        Tools.actualDate(Tools.getDate(), dtFechaProduccion);
+        txtDias.clear();
+        txtHoras.clear();
+        txtMinutos.clear();
+        txtDescripcion.clear();
+        cbInterno.setSelected(true);
+        cbPersonaEncargada.getItems().clear();
+        cbPersonaEncargada.getSelectionModel().select(null);
+        suministroTBs.clear();
+        addElementPaneBody();
+        txtProyecto.requestFocus();
+    }
+
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
         closeWindow();
@@ -258,6 +467,42 @@ public class FxProducirAgregarController implements Initializable {
     }
 
     @FXML
+    private void onKeyPressedCancelar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void onKeyPressedAgregar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            addElementsTableInsumo();
+        }
+    }
+
+    @FXML
+    private void onActonAgregar(ActionEvent event) {
+        addElementsTableInsumo();
+    }
+
+    @FXML
+    private void onKeyPressedGuardar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActionGuardar(ActionEvent event) {
+
+    }
+
+    @FXML
     private void onKeyTypedCantidad(KeyEvent event) {
         char c = event.getCharacter().charAt(0);
         if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
@@ -268,25 +513,33 @@ public class FxProducirAgregarController implements Initializable {
         }
     }
 
+    @FXML
+    private void onKeyTypedDias(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedHoras(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void onKeyTypedMinutos(KeyEvent event) {
+        char c = event.getCharacter().charAt(0);
+        if ((c < '0' || c > '9') && (c != '\b')) {
+            event.consume();
+        }
+    }
+
     public void setInitControllerProducir(FxProducirController producirController, FxPrincipalController fxPrincipalController) {
         this.producirController = producirController;
         this.fxPrincipalController = fxPrincipalController;
-    }
-
-    @FXML
-    private void onKeyPressedAgregar(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActonAgregar(ActionEvent event) {
-    }
-
-    @FXML
-    private void onKeyPressedGuardar(KeyEvent event) {
-    }
-
-    @FXML
-    private void onActionGuardar(ActionEvent event) {
     }
 
 }

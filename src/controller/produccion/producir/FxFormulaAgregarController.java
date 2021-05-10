@@ -8,6 +8,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,6 +33,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import model.CotizacionADO;
+import model.CotizacionTB;
+import model.DetalleCotizacionTB;
 import model.FormulaADO;
 import model.FormulaTB;
 import model.SuministroADO;
@@ -59,6 +66,8 @@ public class FxFormulaAgregarController implements Initializable {
     private VBox vbBody;
     @FXML
     private Label lblMessageLoad;
+    @FXML
+    private Button btnAceptarLoad;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -331,29 +340,80 @@ public class FxFormulaAgregarController implements Initializable {
             } else {
                 short value = Tools.AlertMessageConfirmation(vbBody, "Formula", "¿Estás seguro de continuar?");
                 if (value == 1) {
-                    FormulaTB formulaTB = new FormulaTB();
-                    formulaTB.setTitulo(txtTitulo.getText().trim().toUpperCase());
-                    formulaTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-                    formulaTB.setIdSuministro(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
-                    formulaTB.setCostoAdicional(!Tools.isNumeric(txtCostoAdicional.getText()) ? 0 : Double.parseDouble(txtCostoAdicional.getText()));
-                    formulaTB.setInstrucciones(txtInstrucciones.getText().trim().toUpperCase());
-                    formulaTB.setFecha(Tools.getDate());
-                    formulaTB.setHora(Tools.getHour());
-                    formulaTB.setIdUsuario(Session.USER_ID);
-                    formulaTB.setSuministroTBs(suministroTBs);                   
+                    ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                        Thread t = new Thread(runnable);
+                        t.setDaemon(true);
+                        return t;
+                    });
 
-                    String result = FormulaADO.Crud_Formula(formulaTB);
-                    if (result.equalsIgnoreCase("inserted")) {
-                        Tools.AlertMessageInformation(apWindow, "Formula", "Se registró correctamente la formula.");
-                        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
-                        fxPrincipalController.getVbContent().getChildren().clear();
-                        AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
-                        AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
-                        AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
-                        AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
-                        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
-                    } else {
-                        Tools.AlertMessageError(apWindow, "Formula", result);
+                    Task<String> task = new Task<String>() {
+                        @Override
+                        protected String call() {
+                            FormulaTB formulaTB = new FormulaTB();
+                            formulaTB.setTitulo(txtTitulo.getText().trim().toUpperCase());
+                            formulaTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
+                            formulaTB.setIdSuministro(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
+                            formulaTB.setCostoAdicional(!Tools.isNumeric(txtCostoAdicional.getText()) ? 0 : Double.parseDouble(txtCostoAdicional.getText()));
+                            formulaTB.setInstrucciones(txtInstrucciones.getText().trim().toUpperCase());
+                            formulaTB.setFecha(Tools.getDate());
+                            formulaTB.setHora(Tools.getHour());
+                            formulaTB.setIdUsuario(Session.USER_ID);
+                            formulaTB.setSuministroTBs(suministroTBs);
+                            return FormulaADO.Crud_Formula(formulaTB);
+                        }
+                    };
+                    task.setOnScheduled(w -> {
+                        vbBody.setDisable(true);
+                        hbLoad.setVisible(true);
+                        btnAceptarLoad.setVisible(false);
+                        lblMessageLoad.setText("Procesando información...");
+                        lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                    });
+                    task.setOnFailed(w -> {
+                        btnAceptarLoad.setVisible(true);
+                        btnAceptarLoad.setOnAction(event -> {
+                            closeView();
+                        });
+                        btnAceptarLoad.setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                closeView();
+                            }
+                        });
+                        lblMessageLoad.setText(task.getException().getLocalizedMessage());
+                        lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                    });
+                    task.setOnSucceeded(w -> {
+                        String result = task.getValue();
+                        if (result.equalsIgnoreCase("inserted")) {
+                            lblMessageLoad.setText("Se registró correctamente la formula.");
+                            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                            btnAceptarLoad.setVisible(true);
+                            btnAceptarLoad.setOnAction(event -> {
+                                closeView();
+                            });
+                            btnAceptarLoad.setOnKeyPressed(event -> {
+                                if (event.getCode() == KeyCode.ENTER) {
+                                    closeView();
+                                }
+                            });
+                        } else {
+                            lblMessageLoad.setText(result);
+                            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                            btnAceptarLoad.setVisible(true);
+                            btnAceptarLoad.setOnAction(event -> {
+                                closeView();
+                            });
+                            btnAceptarLoad.setOnKeyPressed(event -> {
+                                if (event.getCode() == KeyCode.ENTER) {
+                                    closeView();
+                                }
+                            });
+                        }
+                    });
+                    exec.execute(task);
+
+                    if (!exec.isShutdown()) {
+                        exec.shutdown();
                     }
                 }
 
@@ -372,6 +432,16 @@ public class FxFormulaAgregarController implements Initializable {
         return ret;
     }
 
+    private void closeView() {
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
+        AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
+        AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
+        AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
+        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
+    }
+
     @FXML
     private void onKeyPressedRegistrar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -387,13 +457,13 @@ public class FxFormulaAgregarController implements Initializable {
     @FXML
     private void onKeyPressedLimpiar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            closeView();
         }
     }
 
     @FXML
     private void onActionLimpiar(ActionEvent event) {
-        
+        closeView();
     }
 
     @FXML
@@ -432,13 +502,7 @@ public class FxFormulaAgregarController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
-        fxPrincipalController.getVbContent().getChildren().clear();
-        AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
-        AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
-        AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
-        AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
-        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
+        closeView();
     }
 
     public void setInitFormulaController(FxFormulaController formulaController) {

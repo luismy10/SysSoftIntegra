@@ -63,6 +63,8 @@ public class FxFormulaEditarController implements Initializable {
     private VBox vbBody;
     @FXML
     private Label lblMessageLoad;
+    @FXML
+    private Button btnAceptarLoad;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -400,30 +402,81 @@ public class FxFormulaEditarController implements Initializable {
             } else {
                 short value = Tools.AlertMessageConfirmation(vbBody, "Formula", "¿Estás seguro de continuar?");
                 if (value == 1) {
-                    FormulaTB formulaTB = new FormulaTB();
-                    formulaTB.setIdFormula(idFormula);
-                    formulaTB.setTitulo(txtTitulo.getText().trim().toUpperCase());
-                    formulaTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-                    formulaTB.setIdSuministro(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
-                    formulaTB.setCostoAdicional(!Tools.isNumeric(txtCostoAdicional.getText()) ? 0 : Double.parseDouble(txtCostoAdicional.getText()));
-                    formulaTB.setInstrucciones(txtInstrucciones.getText().trim().toUpperCase());
-                    formulaTB.setFecha(Tools.getDate());
-                    formulaTB.setHora(Tools.getHour());
-                    formulaTB.setIdUsuario(Session.USER_ID);
-                    formulaTB.setSuministroTBs(suministroTBs);
+                    ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                        Thread t = new Thread(runnable);
+                        t.setDaemon(true);
+                        return t;
+                    });
 
-                    String result = FormulaADO.Crud_Formula(formulaTB);
-                    if (result.equalsIgnoreCase("updated")) {
-                        Tools.AlertMessageInformation(apWindow, "Formula", "Se actualizó correctamente la formula.");
-                        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
-                        fxPrincipalController.getVbContent().getChildren().clear();
-                        AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
-                        AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
-                        AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
-                        AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
-                        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
-                    } else {
-                        Tools.AlertMessageError(apWindow, "Formula", result);
+                    Task<String> task = new Task<String>() {
+                        @Override
+                        protected String call() {
+                            FormulaTB formulaTB = new FormulaTB();
+                            formulaTB.setIdFormula(idFormula);
+                            formulaTB.setTitulo(txtTitulo.getText().trim().toUpperCase());
+                            formulaTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
+                            formulaTB.setIdSuministro(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
+                            formulaTB.setCostoAdicional(!Tools.isNumeric(txtCostoAdicional.getText()) ? 0 : Double.parseDouble(txtCostoAdicional.getText()));
+                            formulaTB.setInstrucciones(txtInstrucciones.getText().trim().toUpperCase());
+                            formulaTB.setFecha(Tools.getDate());
+                            formulaTB.setHora(Tools.getHour());
+                            formulaTB.setIdUsuario(Session.USER_ID);
+                            formulaTB.setSuministroTBs(suministroTBs);
+                            return FormulaADO.Crud_Formula(formulaTB);
+                        }
+                    };
+                    task.setOnScheduled(w -> {
+                        vbBody.setDisable(true);
+                        hbLoad.setVisible(true);
+                        btnAceptarLoad.setVisible(false);
+                        lblMessageLoad.setText("Procesando información...");
+                        lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                    });
+                    task.setOnFailed(w -> {
+                        btnAceptarLoad.setVisible(true);
+                        btnAceptarLoad.setOnAction(event -> {
+                            closeView();
+                        });
+                        btnAceptarLoad.setOnKeyPressed(event -> {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                closeView();
+                            }
+                        });
+                        lblMessageLoad.setText(task.getException().getLocalizedMessage());
+                        lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                    });
+                    task.setOnSucceeded(w -> {
+                        String result = task.getValue();
+                        if (result.equalsIgnoreCase("updated")) {
+                            lblMessageLoad.setText("Se actualizó correctamente la formula.");
+                            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                            btnAceptarLoad.setVisible(true);
+                            btnAceptarLoad.setOnAction(event -> {
+                                closeView();
+                            });
+                            btnAceptarLoad.setOnKeyPressed(event -> {
+                                if (event.getCode() == KeyCode.ENTER) {
+                                    closeView();
+                                }
+                            });
+                        } else {
+                            lblMessageLoad.setText(result);
+                            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                            btnAceptarLoad.setVisible(true);
+                            btnAceptarLoad.setOnAction(event -> {
+                                closeView();
+                            });
+                            btnAceptarLoad.setOnKeyPressed(event -> {
+                                if (event.getCode() == KeyCode.ENTER) {
+                                    closeView();
+                                }
+                            });
+                        }
+                    });
+                    exec.execute(task);
+
+                    if (!exec.isShutdown()) {
+                        exec.shutdown();
                     }
                 }
             }
@@ -439,6 +492,16 @@ public class FxFormulaEditarController implements Initializable {
             }
         }
         return ret;
+    }
+
+    private void closeView() {
+        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
+        AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
+        AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
+        AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
+        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
     }
 
     @FXML
@@ -501,13 +564,7 @@ public class FxFormulaEditarController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        fxPrincipalController.getVbContent().getChildren().remove(apWindow);
-        fxPrincipalController.getVbContent().getChildren().clear();
-        AnchorPane.setLeftAnchor(formulaController.getHbWindow(), 0d);
-        AnchorPane.setTopAnchor(formulaController.getHbWindow(), 0d);
-        AnchorPane.setRightAnchor(formulaController.getHbWindow(), 0d);
-        AnchorPane.setBottomAnchor(formulaController.getHbWindow(), 0d);
-        fxPrincipalController.getVbContent().getChildren().add(formulaController.getHbWindow());
+        closeView();
     }
 
     public void setInitFormulaController(FxFormulaController formulaController) {
