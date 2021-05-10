@@ -134,7 +134,7 @@ public class BancoADO {
                             preparedBancoHistorial.setString(3, "");
                             preparedBancoHistorial.setString(4, "Apertura de cuenta");
                             preparedBancoHistorial.setString(5, Tools.getDate());
-                            preparedBancoHistorial.setString(6, Tools.getHour());
+                            preparedBancoHistorial.setString(6, Tools.getTime());
                             preparedBancoHistorial.setDouble(7, bancoTB.getSaldoInicial());
                             preparedBancoHistorial.setDouble(8, 0);
                             preparedBancoHistorial.addBatch();
@@ -178,7 +178,7 @@ public class BancoADO {
                             preparedBancoHistorial.setString(3, "");
                             preparedBancoHistorial.setString(4, "Apertura de cuenta");
                             preparedBancoHistorial.setString(5, Tools.getDate());
-                            preparedBancoHistorial.setString(6, Tools.getHour());
+                            preparedBancoHistorial.setString(6, Tools.getTime());
                             preparedBancoHistorial.setDouble(7, bancoTB.getSaldoInicial());
                             preparedBancoHistorial.setDouble(8, 0);
                             preparedBancoHistorial.addBatch();

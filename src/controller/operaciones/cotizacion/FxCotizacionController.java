@@ -583,8 +583,8 @@ public class FxCotizacionController implements Initializable {
                         cotizacionTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
                         cotizacionTB.setFechaCotizacion(Tools.getDatePicker(dtFechaEmision));
                         cotizacionTB.setFechaVencimiento(Tools.getDatePicker(dtFechaVencimiento));
-                        cotizacionTB.setHoraCotizacion(Tools.getHour());
-                        cotizacionTB.setHoraVencimiento(Tools.getHour());
+                        cotizacionTB.setHoraCotizacion(Tools.getTime());
+                        cotizacionTB.setHoraVencimiento(Tools.getTime());
                         cotizacionTB.setEstado((short) 1);
                         cotizacionTB.setObservaciones(txtObservacion.getText().trim());                        
 

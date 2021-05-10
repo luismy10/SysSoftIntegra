@@ -154,7 +154,7 @@ public class FxMovimientosProcesoController implements Initializable {
             } else {
                 AjusteInventarioTB inventarioTB = new AjusteInventarioTB();
                 inventarioTB.setFecha(Tools.getDate());
-                inventarioTB.setHora(Tools.getHour());
+                inventarioTB.setHora(Tools.getTime());
                 inventarioTB.setTipoAjuste(rbIncremento.isSelected());
                 inventarioTB.setTipoMovimiento(cbAjuste.getSelectionModel().getSelectedItem().getIdTipoMovimiento());
                 inventarioTB.setTipoMovimientoName(cbAjuste.getSelectionModel().getSelectedItem().getNombre());

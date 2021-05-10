@@ -565,9 +565,9 @@ public class FxPedidosController implements Initializable {
                         pedidoTB.setIdProveedor(cbProveedor.getSelectionModel().getSelectedItem().getIdProveedor());
                         pedidoTB.setIdVendedor(Session.USER_ID);
                         pedidoTB.setFechaEmision(Tools.getDatePicker(txtFechaEmision));
-                        pedidoTB.setHoraEmision(Tools.getHour());
+                        pedidoTB.setHoraEmision(Tools.getTime());
                         pedidoTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
-                        pedidoTB.setHoraVencimiento(Tools.getHour());
+                        pedidoTB.setHoraVencimiento(Tools.getTime());
                         pedidoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
                         pedidoTB.setObservacion(txtObservacion.getText().trim());
                         pedidoTB.setPedidoDetalleTBs(tvList.getItems());

@@ -333,13 +333,13 @@ public class Tools {
         return dateFormat.format(date);
     }
 
-    public static String getHour() {
+    public static String getTime() {
         Date date = new Date();
         SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
         return hour.format(date);
     }
 
-    public static String getHour(String format) {
+    public static String getTime(String format) {
         Date date = new Date();
         SimpleDateFormat hour = new SimpleDateFormat(format);
         return hour.format(date);

@@ -5,7 +5,7 @@ import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException; 
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +24,12 @@ import javafx.scene.input.KeyCode;
 public class ProduccionADO {
 
     public static String Registrar_Produccion(ProduccionTB produccionTB) {
-        PreparedStatement statementValidate = null;
+//        PreparedStatement statementValidate = null;
         PreparedStatement statementRegisrar = null;
-        PreparedStatement statementDetalle = null;
+//        PreparedStatement statementDetalle = null;
         CallableStatement statementCodigo = null;
-        PreparedStatement statementInventario = null;
-        PreparedStatement statementInsumo = null;
+//        PreparedStatement statementInventario = null;
+//        PreparedStatement statementInsumo = null;
 
         try {
             DBUtil.dbConnect();
@@ -54,8 +54,9 @@ public class ProduccionADO {
                     + "FechaRegistro,"
                     + "HoraRegistro,"
                     + "Cantidad,"
+                    + "CostoAdicioanal,"
                     + "Estado"
-                    + ")VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + ")VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             statementRegisrar.setString(1, id_produccion);
             statementRegisrar.setString(2, produccionTB.getFechaInicio());
             statementRegisrar.setString(3, produccionTB.getHoraInicio());
@@ -68,12 +69,13 @@ public class ProduccionADO {
             statementRegisrar.setString(10, produccionTB.getDescripcion());
             statementRegisrar.setString(11, produccionTB.getFechaRegistro());
             statementRegisrar.setString(12, produccionTB.getHoraRegistro());
-            statementRegisrar.setDouble(13, produccionTB.getCantidad());//cantidad de producto final
-            statementRegisrar.setInt(14, produccionTB.getEstado());
+            statementRegisrar.setDouble(13, produccionTB.getCantidad());
+            statementRegisrar.setDouble(14, produccionTB.getCostoAdicional());
+            statementRegisrar.setInt(15, produccionTB.getEstado());
             statementRegisrar.addBatch();
 
-            statementValidate = DBUtil.getConnection().prepareStatement("SELECT Costo FROM InsumoTB WHERE IdInsumo = ? ");
-            statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad,Costo,CantidadUtilizada,CantidadAUtilizar, Merma)VALUES(?,?,?,?,?,?,?)");
+//            statementValidate = DBUtil.getConnection().prepareStatement("SELECT Costo FROM InsumoTB WHERE IdInsumo = ? ");
+//            statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad,Costo,CantidadUtilizada,CantidadAUtilizar, Merma)VALUES(?,?,?,?,?,?,?)");
 
             double CostoTotal = 0;
 //            for (SuministroTB suministroTB : produccionTB.getSuministroTB()) {
@@ -93,23 +95,23 @@ public class ProduccionADO {
 //            }
 
             if (produccionTB.getEstado() == 1) {
-                statementInventario = DBUtil.getConnection().prepareStatement("update SuministroTB set Cantidad = Cantidad + ?, PrecioCompra = ? where IdSuministro = ?");
-                statementInventario.setDouble(1, produccionTB.getCantidad());
-                statementInventario.setDouble(2, CostoTotal);
-                statementInventario.setString(3, produccionTB.getIdProducto());
-                statementInventario.addBatch();
+//                statementInventario = DBUtil.getConnection().prepareStatement("update SuministroTB set Cantidad = Cantidad + ?, PrecioCompra = ? where IdSuministro = ?");
+//                statementInventario.setDouble(1, produccionTB.getCantidad());
+//                statementInventario.setDouble(2, CostoTotal);
+//                statementInventario.setString(3, produccionTB.getIdProducto());
+//                statementInventario.addBatch();
 
-                statementInsumo = DBUtil.getConnection().prepareStatement("UPDATE InsumoTB set Cantidad = (Cantidad - ?) where IdInsumo = ?");
+//                statementInsumo = DBUtil.getConnection().prepareStatement("UPDATE InsumoTB set Cantidad = (Cantidad - ?) where IdInsumo = ?");
 //                for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
 //                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidad().getText()) * produccionTB.getCantidad());
 //                    statementInsumo.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
 //                    statementInsumo.addBatch();
 //                }
-                statementInventario.executeBatch();
-                statementInsumo.executeBatch();
+//                statementInventario.executeBatch();
+//                statementInsumo.executeBatch();
             }
 
-            statementDetalle.executeBatch();
+//            statementDetalle.executeBatch();
             statementRegisrar.executeBatch();
 
             DBUtil.getConnection().commit();
@@ -126,21 +128,21 @@ public class ProduccionADO {
                 if (statementRegisrar != null) {
                     statementRegisrar.close();
                 }
-                if (statementDetalle != null) {
-                    statementDetalle.close();
-                }
+//                if (statementDetalle != null) {
+//                    statementDetalle.close();
+//                }
                 if (statementCodigo != null) {
                     statementCodigo.close();
                 }
-                if (statementInventario != null) {
-                    statementInventario.close();
-                }
-                if (statementInsumo != null) {
-                    statementInsumo.close();
-                }
-                if (statementValidate != null) {
-                    statementValidate.close();
-                }
+//                if (statementInventario != null) {
+//                    statementInventario.close();
+//                }
+//                if (statementInsumo != null) {
+//                    statementInsumo.close();
+//                }
+//                if (statementValidate != null) {
+//                    statementValidate.close();
+//                }
             } catch (SQLException e) {
 
             }
@@ -422,7 +424,6 @@ public class ProduccionADO {
 //                            list.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
 //                        }
 //                    });
-
 //                    searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
 //                        switch (t.getCode()) {
 //                            case ENTER:

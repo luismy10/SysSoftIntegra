@@ -64,7 +64,7 @@ public class FxVentaMovimientoController implements Initializable {
                     public String call() {
                         MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-                        movimientoCajaTB.setHoraMovimiento(Tools.getHour());
+                        movimientoCajaTB.setHoraMovimiento(Tools.getTime());
                         movimientoCajaTB.setComentario(txtComentario.getText().toUpperCase().trim());
                         movimientoCajaTB.setTipoMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex() == 0 ? (short) 4 : (short) 5);
                         movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));

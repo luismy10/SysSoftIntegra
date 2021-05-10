@@ -19,6 +19,7 @@ public class ProduccionTB {
     private int horas;
     private int minutos;
     private double cantidad;
+    private double costoAdicional;
     private int estado;
     private Label lblEstado;
     private SuministroTB suministroTB;
@@ -138,6 +139,14 @@ public class ProduccionTB {
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public double getCostoAdicional() {
+        return costoAdicional;
+    }
+
+    public void setCostoAdicional(double costoAdicional) {
+        this.costoAdicional = costoAdicional;
     }
 
     public int getEstado() {

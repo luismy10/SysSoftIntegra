@@ -458,7 +458,7 @@ public class NotaCreditoADO {
 
                 statementKardex.setString(1, detalleTB.getIdSuministro());
                 statementKardex.setString(2, Tools.getDate());
-                statementKardex.setString(3, Tools.getHour());
+                statementKardex.setString(3, Tools.getTime());
                 statementKardex.setShort(4, (short) 1);
                 statementKardex.setInt(5, 2);
                 statementKardex.setString(6, "DEVOLUCIÓN DE PRODUCTO");

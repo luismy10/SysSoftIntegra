@@ -66,7 +66,7 @@ public class FxComprasCancelarController implements Initializable {
                     bancoHistorialBancaria.setIdEmpleado(Session.USER_ID);
                     bancoHistorialBancaria.setDescripcion("INGRESO POR COMPRA ANULADA");
                     bancoHistorialBancaria.setFecha(Tools.getDate());
-                    bancoHistorialBancaria.setHora(Tools.getHour());
+                    bancoHistorialBancaria.setHora(Tools.getTime());
                     bancoHistorialBancaria.setEntrada(comprasDetalleController.getCompraTB().getTotal());
                     bancoHistorialBancaria.setSalida(0);
                     String result = CompraADO.cancelarCompraTotal(comprasDetalleController.getCompraTB().getIdCompra(), comprasDetalleController.getArrList(), bancoHistorialBancaria);

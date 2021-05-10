@@ -33,7 +33,7 @@ public class FxVentaFondoInicialController implements Initializable {
         if (Tools.isNumeric(txtImporte.getText().trim())) {
             CajaTB cajaTB = new CajaTB();
             cajaTB.setFechaApertura(Tools.getDate());
-            cajaTB.setHoraApertura(Tools.getHour("HH:mm:ss"));
+            cajaTB.setHoraApertura(Tools.getTime("HH:mm:ss"));
             cajaTB.setIdUsuario(Session.USER_ID);
             cajaTB.setEstado(true);
             cajaTB.setContado(0);
@@ -42,7 +42,7 @@ public class FxVentaFondoInicialController implements Initializable {
             
             MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
             movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-            movimientoCajaTB.setHoraMovimiento(Tools.getHour("HH:mm:ss"));
+            movimientoCajaTB.setHoraMovimiento(Tools.getTime("HH:mm:ss"));
             movimientoCajaTB.setComentario("APERTURA DE CAJA");
             movimientoCajaTB.setTipoMovimiento((short)1);
             movimientoCajaTB.setMonto(Double.parseDouble(txtImporte.getText()));

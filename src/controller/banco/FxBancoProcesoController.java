@@ -111,7 +111,7 @@ public class FxBancoProcesoController implements Initializable {
             bancoTB.setNumeroCuenta(txtNumeroCuenta.getText());
             bancoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedIndex() > 0 ? cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda() : 0);
             bancoTB.setFecha(Tools.getDate());
-            bancoTB.setHora(Tools.getHour());
+            bancoTB.setHora(Tools.getTime());
             bancoTB.setSaldoInicial(Double.parseDouble(txtSaldoInicial.getText()));
             bancoTB.setDescripcion(txtDescripcion.getText().trim());
             bancoTB.setFormaPago(CuentaEfectivo.isSelected() ? (short)1:(short)2); 

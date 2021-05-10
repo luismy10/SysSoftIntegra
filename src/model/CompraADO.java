@@ -164,7 +164,7 @@ public class CompraADO extends DBUtil {
 
                     suministro_kardex.setString(1, dc.getIdArticulo());
                     suministro_kardex.setString(2, Tools.getDate());
-                    suministro_kardex.setString(3, Tools.getHour());
+                    suministro_kardex.setString(3, Tools.getTime());
                     suministro_kardex.setShort(4, (short) 1);
                     suministro_kardex.setInt(5, 2);
                     suministro_kardex.setString(6, "COMPRA CON SERIE Y NUMERACIÓN: " + compraTB.getSerie().toUpperCase() + "-" + compraTB.getNumeracion().toUpperCase());
@@ -377,7 +377,7 @@ public class CompraADO extends DBUtil {
 
                     suministro_kardex.setString(1, dc.getIdArticulo());
                     suministro_kardex.setString(2, Tools.getDate());
-                    suministro_kardex.setString(3, Tools.getHour());
+                    suministro_kardex.setString(3, Tools.getTime());
                     suministro_kardex.setShort(4, (short) 1);
                     suministro_kardex.setInt(5, 2);
                     suministro_kardex.setString(6, "COMPRA CON SERIE Y NUMERACIÓN: " + compraTB.getSerie().toUpperCase() + "-" + compraTB.getNumeracion().toUpperCase());
@@ -863,7 +863,7 @@ public class CompraADO extends DBUtil {
 
                     statementSuministroKardex.setString(1, detalleCompraTB.getIdArticulo());
                     statementSuministroKardex.setString(2, Tools.getDate());
-                    statementSuministroKardex.setString(3, Tools.getHour());
+                    statementSuministroKardex.setString(3, Tools.getTime());
                     statementSuministroKardex.setShort(4, (short) 2);
                     statementSuministroKardex.setInt(5, 1);
                     statementSuministroKardex.setString(6, "CANCELAR COMPRA");
@@ -963,7 +963,7 @@ public class CompraADO extends DBUtil {
 
                         statementSuministroKardex.setString(1, detalleCompraTB.getIdArticulo());
                         statementSuministroKardex.setString(2, Tools.getDate());
-                        statementSuministroKardex.setString(3, Tools.getHour());
+                        statementSuministroKardex.setString(3, Tools.getTime());
                         statementSuministroKardex.setShort(4, (short) 2);
                         statementSuministroKardex.setInt(5, 1);
                         statementSuministroKardex.setString(6, "CANCELAR COMPRA");
@@ -1771,7 +1771,7 @@ public class CompraADO extends DBUtil {
 
                     insumos_kardex.setString(1, dc.getIdArticulo());
                     insumos_kardex.setString(2, Tools.getDate());
-                    insumos_kardex.setString(3, Tools.getHour());
+                    insumos_kardex.setString(3, Tools.getTime());
                     insumos_kardex.setShort(4, (short) 1);
                     insumos_kardex.setInt(5, 2);
                     insumos_kardex.setString(6, "COMPRA CON SERIE Y NUMERACIÓN: " + compraTB.getSerie().toUpperCase() + "-" + compraTB.getNumeracion().toUpperCase());

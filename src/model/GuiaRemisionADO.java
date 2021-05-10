@@ -73,7 +73,7 @@ public class GuiaRemisionADO {
                 statementGuiaRemision.setObject(8, guiaRemisionTB.getIdMotivoTraslado());
                 statementGuiaRemision.setObject(9, guiaRemisionTB.getIdModalidadTraslado());
                 statementGuiaRemision.setObject(10, guiaRemisionTB.getFechaTraslado());
-                statementGuiaRemision.setObject(11, Tools.getHour());
+                statementGuiaRemision.setObject(11, Tools.getTime());
                 statementGuiaRemision.setObject(12, guiaRemisionTB.getPesoBruto());
                 statementGuiaRemision.setObject(13, guiaRemisionTB.getNumeroBultos());
                 statementGuiaRemision.setObject(14, guiaRemisionTB.getTipoDocumentoConducto());

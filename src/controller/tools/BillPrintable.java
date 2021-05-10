@@ -125,7 +125,7 @@ public class BillPrintable implements Printable {
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.getDate("dd/MM/yyyy")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
-                    fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getTime("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("docventa")) {
                     fieldTicket.setText(Tools.AddText2Guines(nombre_impresion_comprobante));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("numventa")) {
@@ -439,7 +439,7 @@ public class BillPrintable implements Printable {
                 if (fieldTicket.getVariable().equalsIgnoreCase("fchactual")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.getDate("dd/MM/yyyy")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("horactual")) {
-                    fieldTicket.setText(Tools.AddText2Guines(Tools.getHour("hh:mm:ss aa")));
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.getTime("hh:mm:ss aa")));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("subtotal")) {
                     fieldTicket.setText(Tools.AddText2Guines(moneda + " " + subImporteNeto));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("dscttotal")) {

@@ -91,7 +91,7 @@ public class FxAmortizarPagosController implements Initializable {
                         compraCreditoTB.setIdCompra(idCompra);
                         compraCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
                         compraCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
-                        compraCreditoTB.setHoraPago(Tools.getHour());
+                        compraCreditoTB.setHoraPago(Tools.getTime());
                         compraCreditoTB.setEstado(true);
                         compraCreditoTB.setIdEmpleado(Session.USER_ID);
                         compraCreditoTB.setObservacion(txtObservacion.getText().trim());
@@ -100,7 +100,7 @@ public class FxAmortizarPagosController implements Initializable {
                         bancoHistorialTB.setIdBanco(cbCuenta.getSelectionModel().getSelectedItem().getIdBanco());
                         bancoHistorialTB.setDescripcion("SALIDA DE DINERO POR CUENTAS POR PAGAR".toUpperCase());
                         bancoHistorialTB.setFecha(Tools.getDate());
-                        bancoHistorialTB.setHora(Tools.getHour());
+                        bancoHistorialTB.setHora(Tools.getTime());
                         bancoHistorialTB.setEntrada(0);
                         bancoHistorialTB.setSalida(Double.parseDouble(txtMonto.getText()));
 
@@ -129,7 +129,7 @@ public class FxAmortizarPagosController implements Initializable {
                         compraCreditoTB.setIdCompra(idCompra);
                         compraCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
                         compraCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
-                        compraCreditoTB.setHoraPago(Tools.getHour());
+                        compraCreditoTB.setHoraPago(Tools.getTime());
                         compraCreditoTB.setEstado(true);
                         compraCreditoTB.setIdEmpleado(Session.USER_ID);
                         compraCreditoTB.setObservacion(txtObservacion.getText().trim());
@@ -137,7 +137,7 @@ public class FxAmortizarPagosController implements Initializable {
                         MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
                         movimientoCajaTB.setIdCaja(cajaTB.getIdCaja());
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-                        movimientoCajaTB.setHoraMovimiento(Tools.getHour());
+                        movimientoCajaTB.setHoraMovimiento(Tools.getTime());
                         movimientoCajaTB.setComentario("SALIDA DE DINERO DE LA CUENTA POR PAGAR");
                         movimientoCajaTB.setTipoMovimiento((short) 5);
                         movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));

@@ -57,7 +57,7 @@ public class FxBancoRetirarDineroController implements Initializable {
             bancoHistorialTB.setIdBanco(idBanco);
             bancoHistorialTB.setDescripcion(txtDescripcion.getText().trim());
             bancoHistorialTB.setFecha(Tools.getDate());
-            bancoHistorialTB.setHora(Tools.getHour());
+            bancoHistorialTB.setHora(Tools.getTime());
             bancoHistorialTB.setSalida(Double.parseDouble(txtMonto.getText()));            
             String result = BancoADO.Retirar_Dinero(bancoHistorialTB);
             if(result.equalsIgnoreCase("inserted")){

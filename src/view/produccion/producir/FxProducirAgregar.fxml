@@ -21,7 +21,7 @@
 
 <AnchorPane fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirAgregarController">
    <children>
-      <VBox style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="vbBody" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
@@ -42,7 +42,7 @@
                <content>
                   <AnchorPane>
                      <children>
-                        <VBox fx:id="vbPrimero" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox fx:id="vbPrimero" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                 <columnConstraints>
@@ -97,7 +97,7 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="vbSegundo" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox fx:id="vbSegundo" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                                  <children>
@@ -149,6 +149,20 @@
                                           </HBox>
                                        </children>
                                     </VBox>
+                                    <VBox spacing="10.0">
+                                       <children>
+                                          <Label styleClass="labelRoboto13" text="Costo Adicional" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox>
+                                             <children>
+                                                <TextField fx:id="txtCostoAdicional" onKeyTyped="#onKeyTypedDias" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
@@ -182,6 +196,20 @@
                                           </HBox>
                                        </children>
                                     </VBox>
+                                    <VBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cantidad a Producir" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox>
+                                             <children>
+                                                <TextField fx:id="txtReferenciaProduccion" disable="true" onKeyTyped="#onKeyTypedDias" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
@@ -206,7 +234,7 @@
                                  <children>
                                     <VBox alignment="BOTTOM_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Agregar">
+                                          <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Agregar">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -243,5 +271,31 @@
             </ScrollPane>
          </children>
       </VBox>
+      <HBox fx:id="hbLoad" alignment="CENTER" style="-fx-background-color: rgba(0,0,0,0.8);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" style="-fx-spacing: 0.8333333333333334em;">
+               <children>
+                  <Label fx:id="lblMessageLoad" contentDisplay="TOP" styleClass="labelRobotoBold17" text="Cargando datos..." textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/load.gif" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Button fx:id="btnAceptarLoad" mnemonicParsing="false" styleClass="buttonLight" text="Aceptar" visible="false">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/accept.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

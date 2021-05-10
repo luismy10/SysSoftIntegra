@@ -253,7 +253,7 @@ public class VentaADO {
 
                     suministro_kardex.setString(1, sm.getIdSuministro());
                     suministro_kardex.setString(2, ventaTB.getFechaVenta());
-                    suministro_kardex.setString(3, Tools.getHour());
+                    suministro_kardex.setString(3, Tools.getTime());
                     suministro_kardex.setShort(4, (short) 2);
                     suministro_kardex.setInt(5, 1);
                     suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1] + (sm.getBonificacion() <= 0 ? "" : "(BONIFICACIÓN: " + sm.getBonificacion() + ")"));
@@ -826,7 +826,7 @@ public class VentaADO {
 
                     suministro_kardex.setString(1, sm.getIdSuministro());
                     suministro_kardex.setString(2, ventaTB.getFechaVenta());
-                    suministro_kardex.setString(3, Tools.getHour());
+                    suministro_kardex.setString(3, Tools.getTime());
                     suministro_kardex.setShort(4, (short) 2);
                     suministro_kardex.setInt(5, 1);
                     suministro_kardex.setString(6, "VENTA CON SERIE Y NUMERACIÓN: " + id_comprabante[0] + "-" + id_comprabante[1] + (sm.getBonificacion() <= 0 ? "" : "(BONIFICACIÓN: " + sm.getBonificacion() + ")"));
@@ -1382,7 +1382,7 @@ public class VentaADO {
 
                                     statementKardex.setString(1, stb.getIdSuministro());
                                     statementKardex.setString(2, Tools.getDate());
-                                    statementKardex.setString(3, Tools.getHour());
+                                    statementKardex.setString(3, Tools.getTime());
                                     statementKardex.setShort(4, (short) 1);
                                     statementKardex.setInt(5, 2);
                                     statementKardex.setString(6, "DEVOLUCIÓN DE PRODUCTO");
@@ -2037,7 +2037,7 @@ public class VentaADO {
                                 + "VALUES(?,?,?,?,?,?,?,?,?)");
                         statementKardex.setString(1, idSuministro);
                         statementKardex.setString(2, Tools.getDate());
-                        statementKardex.setString(3, Tools.getHour());
+                        statementKardex.setString(3, Tools.getTime());
                         statementKardex.setShort(4, (short) 2);
                         statementKardex.setInt(5, 1);
                         statementKardex.setString(6, "SALIDA DEL PRODUCTO DE LA VENTA " + comprobante);
@@ -2050,7 +2050,7 @@ public class VentaADO {
                         statementHistorial.setString(1, idVenta);
                         statementHistorial.setString(2, idSuministro);
                         statementHistorial.setString(3, Tools.getDate());
-                        statementHistorial.setString(4, Tools.getHour());
+                        statementHistorial.setString(4, Tools.getTime());
                         statementHistorial.setDouble(5, cantidadTotal);
                         statementHistorial.setString(6, observacion);
                         statementHistorial.addBatch();
@@ -2115,7 +2115,7 @@ public class VentaADO {
                             + "VALUES(?,?,?,?,?,?,?,?,?)");
                     statementKardex.setString(1, idSuministro);
                     statementKardex.setString(2, Tools.getDate());
-                    statementKardex.setString(3, Tools.getHour());
+                    statementKardex.setString(3, Tools.getTime());
                     statementKardex.setShort(4, (short) 2);
                     statementKardex.setInt(5, 1);
                     statementKardex.setString(6, "SALIDA DEL PRODUCTO DE LA VENTA " + comprobante);
@@ -2128,7 +2128,7 @@ public class VentaADO {
                     statementHistorial.setString(1, idVenta);
                     statementHistorial.setString(2, idSuministro);
                     statementHistorial.setString(3, Tools.getDate());
-                    statementHistorial.setString(4, Tools.getHour());
+                    statementHistorial.setString(4, Tools.getTime());
                     statementHistorial.setDouble(5, cantidad);
                     statementHistorial.setString(6, observacion);
                     statementHistorial.addBatch();

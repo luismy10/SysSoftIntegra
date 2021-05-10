@@ -326,7 +326,7 @@ public class FxComprasController implements Initializable {
                 compraTB.setNumeracion(cbNumeracion.getText().trim());
                 compraTB.setIdMoneda(Session.MONEDA_ID);
                 compraTB.setFechaCompra(Tools.getDatePicker(tpFechaCompra));
-                compraTB.setHoraCompra(Tools.getHour());
+                compraTB.setHoraCompra(Tools.getTime());
                 compraTB.setTotal(totalNeto);
                 compraTB.setObservaciones(txtObservaciones.getText().trim().isEmpty() ? "" : txtObservaciones.getText().trim());
                 compraTB.setNotas(txtNotas.getText().trim().isEmpty() ? "" : txtNotas.getText().trim());

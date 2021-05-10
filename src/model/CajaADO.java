@@ -462,7 +462,7 @@ public class CajaADO {
             DBUtil.getConnection().setAutoCommit(false);
             statementCaja = DBUtil.getConnection().prepareStatement("UPDATE CajaTB SET FechaCierre = ?,HoraCierre = ?,Contado = ?,Calculado = ?,Diferencia = ?,Estado=? WHERE IdCaja = ?");
             statementCaja.setString(1, Tools.getDate());
-            statementCaja.setString(2, Tools.getHour("HH:mm:ss"));
+            statementCaja.setString(2, Tools.getTime("HH:mm:ss"));
             statementCaja.setDouble(3, contado);
             statementCaja.setDouble(4, calculado);
             statementCaja.setDouble(5, contado - calculado);

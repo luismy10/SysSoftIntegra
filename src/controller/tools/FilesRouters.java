@@ -364,8 +364,6 @@ public final class FilesRouters {
 
     public static final String FX_MODAL_ESTADO = "/view/produccion/producir/FXModalEstado.fxml";
 
-    public static final String FX_VISUALIZAR_PRODUCCION = "/view/produccion/producir/FXVisualizar.fxml";
-
     public static final String FX_FORMULA_LISTA = "/view/produccion/producir/FXFormulaLista.fxml";
 
     public static final String FX_COMPRAS_INSUMOS_PROCESO = "/view/produccion/compras/FxComprasInsumosProceso.fxml";
@@ -380,5 +378,8 @@ public final class FilesRouters {
 
     public static final String FX_PEDIDO_DETALLE = "/view/operaciones/pedidos/FxPedidosDetalle.fxml";
 
+    public static final String FX_PEDIDO_VISUALIZAR = "/view/produccion/producir/FxProducirVisualizar.fxml";
+
     public static final String FX_FORMULA_VISUALIZAR = "/view/produccion/producir/FxFormulaVisualizar.fxml";
+
 }

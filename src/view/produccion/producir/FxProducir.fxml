@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirController">
+<HBox fx:id="window" onKeyReleased="#onKeyReleasedWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirController">
    <children>
       <VBox HBox.hgrow="ALWAYS">
          <children>
@@ -44,7 +44,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightDefault" text="Nueva Produc.(F1)">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/plus.png" />
                                  </image>
@@ -53,7 +53,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionEditarProduccion" onKeyPressed="#onKeyPressedEditarProduccion" styleClass="buttonLight" text="Editar Produc.(F2)">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/edit.png" />
                                  </image>
@@ -62,7 +62,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionAnularProduccion" onKeyPressed="#onKeyPressedAnularProduccion" styleClass="buttonLight" text="Anular Produc.(F3)">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/cancel.png" />
                                  </image>
@@ -71,7 +71,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLight" text="Vizualizar(F4)">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/report-global.png" />
                                  </image>
@@ -80,7 +80,7 @@
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar(F5)">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/reload.png" />
                                  </image>
@@ -99,20 +99,34 @@
                            <children>
                               <VBox style="-fx-spacing: 0.3333333333333333em;">
                                  <children>
-                                    <Label styleClass="labelRoboto13" text="Fecha Inicial" textFill="#020203">
+                                    <Label styleClass="labelOpenSansRegular13" text="Fecha Inicial" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/calendar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                     </Label>
                                     <DatePicker fx:id="dtFechaInicial" editable="false" onAction="#onActionFechaInicial" prefHeight="30.0" prefWidth="220.0" promptText="00/00/0000" />
                                  </children>
                               </VBox>
                               <VBox style="-fx-spacing: 0.3333333333333333em;">
                                  <children>
-                                    <Label styleClass="labelRoboto13" text="Fecha Final" textFill="#020203">
+                                    <Label styleClass="labelOpenSansRegular13" text="Fecha Final" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
+                                       <graphic>
+                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/calendar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                     </Label>
                                     <DatePicker fx:id="dtFechaFinal" editable="false" onAction="#onActionFechaFinal" prefHeight="30.0" prefWidth="220.0" promptText="00/00/0000" />
                                  </children>
@@ -129,6 +143,13 @@
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
+                                             <graphic>
+                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="labelOpenSansRegular13">
+                                                   <image>
+                                                      <Image url="@../../image/search.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
                                           </Label>
                                           <TextField fx:id="txtSearch" onKeyReleased="#onKeyReleasedSearch" prefHeight="30.0" prefWidth="220.0" promptText="Ingrese los datos para buscar..." styleClass="text-field-normal" VBox.vgrow="ALWAYS" />
                                        </children>
@@ -137,7 +158,7 @@
                               </HBox>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tvList" onMouseClicked="#onMouseClickedProducir" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
                                           <TableColumn fx:id="tcEncargado" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Encargado" />

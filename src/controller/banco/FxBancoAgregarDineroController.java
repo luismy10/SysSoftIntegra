@@ -47,7 +47,7 @@ public class FxBancoAgregarDineroController implements Initializable {
             bancoHistorialTB.setIdBanco(idBanco);
             bancoHistorialTB.setDescripcion(txtDescripcion.getText().trim());
             bancoHistorialTB.setFecha(Tools.getDate());
-            bancoHistorialTB.setHora(Tools.getHour());
+            bancoHistorialTB.setHora(Tools.getTime());
             bancoHistorialTB.setEntrada(Double.parseDouble(txtMonto.getText()));
             String result = BancoADO.Insertar_Dinero(bancoHistorialTB);
             if(result.equalsIgnoreCase("inserted")){

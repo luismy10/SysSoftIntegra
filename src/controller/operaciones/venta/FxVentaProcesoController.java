@@ -220,7 +220,7 @@ public class FxVentaProcesoController implements Initializable {
                 ventaTB.setTarjeta(0);
                 ventaTB.setObservaciones("");
                 ventaTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
-                ventaTB.setHoraVencimiento(Tools.getHour());
+                ventaTB.setHoraVencimiento(Tools.getTime());
 
                 short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de continuar?");
                 if (confirmation == 1) {

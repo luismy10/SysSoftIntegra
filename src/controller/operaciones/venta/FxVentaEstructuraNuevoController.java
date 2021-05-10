@@ -1029,7 +1029,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     direccion,
                                     "00000000",
                                     Tools.getDate(),
-                                    Tools.getHour(),
+                                    Tools.getTime(),
                                     "",
                                     "",
                                     "",
@@ -1125,7 +1125,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                                     direccion,
                                     "00000000",
                                     Tools.getDate(),
-                                    Tools.getHour(),
+                                    Tools.getTime(),
                                     "",
                                     "",
                                     "",
@@ -1331,7 +1331,7 @@ public class FxVentaEstructuraNuevoController implements Initializable {
                 ventaTB.setSerie(lblSerie.getText());
                 ventaTB.setNumeracion(lblNumeracion.getText());
                 ventaTB.setFechaVenta(Tools.getDate());
-                ventaTB.setHoraVenta(Tools.getHour());
+                ventaTB.setHoraVenta(Tools.getTime());
                 ventaTB.setSubTotal(importeBruto);
                 ventaTB.setDescuento(descuentoBruto);
                 ventaTB.setSubImporte(subImporteNeto);

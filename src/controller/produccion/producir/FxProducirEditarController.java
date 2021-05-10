@@ -603,7 +603,7 @@ public class FxProducirEditarController implements Initializable {
             } else {
                 ProduccionTB produccionTB = new ProduccionTB();
                 produccionTB.setFechaInicio(Tools.getDatePicker(txtFechaInicio));
-                produccionTB.setHoraInicio(Tools.getHour());
+                produccionTB.setHoraInicio(Tools.getTime());
                 produccionTB.setDias(!Tools.isNumericInteger(txtDias.getText()) ? 1 : Integer.parseInt(txtDias.getText()));
                 produccionTB.setHoras(!Tools.isNumericInteger(txtHoras.getText()) ? 0 : Integer.parseInt(txtHoras.getText()));
                 produccionTB.setMinutos(!Tools.isNumericInteger(txtMinutos.getText()) ? 0 : Integer.parseInt(txtMinutos.getText()));

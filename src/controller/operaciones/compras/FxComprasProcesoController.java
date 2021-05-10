@@ -106,7 +106,7 @@ public class FxComprasProcesoController implements Initializable {
                 bancoHistorialTB.setIdEmpleado(Session.USER_ID);
                 bancoHistorialTB.setDescripcion("Salida de dinero por compra");
                 bancoHistorialTB.setFecha(Tools.getDate());
-                bancoHistorialTB.setHora(Tools.getHour());
+                bancoHistorialTB.setHora(Tools.getTime());
                 bancoHistorialTB.setEntrada(0);
                 bancoHistorialTB.setSalida(Double.parseDouble(txtEfectivo.getText()));
 

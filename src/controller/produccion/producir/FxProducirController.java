@@ -117,16 +117,10 @@ public class FxProducirController implements Initializable {
     }
 
     private void initLoadTable() {
-        Tools.actualDate(Tools.getDate(), dtFechaInicial);
-        Tools.actualDate(Tools.getDate(), dtFechaFinal);
-        txtSearch.requestFocus();
-        txtSearch.selectAll();
-        if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
-            if (!lblLoad.isVisible()) {
-                paginacion = 1;
-                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-                opcion = 0;
-            }
+        if (!lblLoad.isVisible()) {
+            paginacion = 1;
+            fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            opcion = 0;
         }
     }
 
@@ -257,13 +251,12 @@ public class FxProducirController implements Initializable {
 
     private void visualizarProduccion() throws IOException {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-            FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_VISUALIZAR_PRODUCCION));
-            ScrollPane node = fXMLLoader.load();
+            FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource(FilesRouters.FX_PEDIDO_VISUALIZAR));
+            AnchorPane node = fXMLLoader.load();
 
-            FXVisualizarController visualizarController = fXMLLoader.getController();
-            visualizarController.setInitControllerProducir(this);
+            FxProducirVisualizarController visualizarController = fXMLLoader.getController();
+            visualizarController.setInitProducirController(this, fxPrincipalController);
             visualizarController.setInitComponents(tvList.getSelectionModel().getSelectedItem().getIdProduccion());
-            visualizarController.setContent(fxPrincipalController);
 
             fxPrincipalController.getVbContent().getChildren().clear();
             AnchorPane.setLeftAnchor(node, 0d);
@@ -458,7 +451,6 @@ public class FxProducirController implements Initializable {
         }
     }
 
-    @FXML
     private void onMouseClickedProducir(MouseEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0 && tvList.isFocused()) {
             if (event.getClickCount() == 2) {
@@ -491,6 +483,46 @@ public class FxProducirController implements Initializable {
         anularProduccion();
     }
 
+    @FXML
+    private void onKeyPressedList(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.ENTER) {
+            visualizarProduccion();
+        }
+    }
+
+    @FXML
+    private void onMouseClickedList(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2) {
+            visualizarProduccion();
+        }
+    }
+
+    @FXML
+    private void onKeyReleasedWindow(KeyEvent event) throws IOException {
+        if (null != event.getCode()) {
+            switch (event.getCode()) {
+                case F1:
+
+                    break;
+                case F2:
+
+                    break;
+                case F3:
+                    anularProduccion();
+                    break;
+                case F4:
+                    visualizarProduccion();
+                    break;
+                case F5:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
     public HBox getWindow() {
         return window;
     }
@@ -498,4 +530,5 @@ public class FxProducirController implements Initializable {
     public void setContent(FxPrincipalController fxPrincipalController) {
         this.fxPrincipalController = fxPrincipalController;
     }
+
 }

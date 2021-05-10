@@ -49,7 +49,7 @@ public class FxCajaCerrarCajaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-        lblFechaCierre.setText(Tools.getDate() + " " + Tools.getHour("hh:mm a"));
+        lblFechaCierre.setText(Tools.getDate() + " " + Tools.getTime("hh:mm a"));
     }
 
     public void loadDataInit(String idActual, double calculado, double valorTarjeta) {
@@ -82,7 +82,7 @@ public class FxCajaCerrarCajaController implements Initializable {
                     bancoHistorialEfectivo.setIdEmpleado(Session.USER_ID);
                     bancoHistorialEfectivo.setDescripcion("INGRESO DE DINERO POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME.toUpperCase());
                     bancoHistorialEfectivo.setFecha(Tools.getDate());
-                    bancoHistorialEfectivo.setHora(Tools.getHour());
+                    bancoHistorialEfectivo.setHora(Tools.getTime());
                     bancoHistorialEfectivo.setEntrada(Double.parseDouble(txtEfectivo.getText()));
                     bancoHistorialEfectivo.setSalida(0);
                 }
@@ -94,7 +94,7 @@ public class FxCajaCerrarCajaController implements Initializable {
                     bancoHistorialTarjeta.setIdEmpleado(Session.USER_ID);
                     bancoHistorialTarjeta.setDescripcion("INGRESO DE SALDO EN TARJETA POR CORTE DE CAJA DEL USUARIO " + Session.USER_NAME.toUpperCase());
                     bancoHistorialTarjeta.setFecha(Tools.getDate());
-                    bancoHistorialTarjeta.setHora(Tools.getHour());
+                    bancoHistorialTarjeta.setHora(Tools.getTime());
                     bancoHistorialTarjeta.setEntrada(valorTarjeta);
                     bancoHistorialTarjeta.setSalida(0);
                 }

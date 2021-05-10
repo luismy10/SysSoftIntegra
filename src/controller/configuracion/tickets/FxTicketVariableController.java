@@ -62,7 +62,7 @@ public class FxTicketVariableController implements Initializable {
             listCabecera.add(new TicketTB("Razón social de la empresa", "RAZON SOCIAL", "razoempresa"));
             listCabecera.add(new TicketTB("Nombre comercial de la empresa", "NOMBRE COMERCIAL", "nomcomempresa"));
             listCabecera.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual"));
-            listCabecera.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));
+            listCabecera.add(new TicketTB("Hora actual", Tools.getTime("hh:mm:ss aa"), "horactual"));
             listCabecera.add(new TicketTB("Nombre del documento de emitido", "NOMBRE DEL DOCUMENTO EMITIDO", "docventa"));
             listCabecera.add(new TicketTB("Numeración del documento de emitido", "V000-00000000", "numventa"));
             listCabecera.add(new TicketTB("Número del documento del cliente", "NUMERO DOCUMENTO CLIENTE", "numcliente"));
@@ -109,7 +109,7 @@ public class FxTicketVariableController implements Initializable {
             lvLista.getItems().addAll(listDetalleCuerpo);
         } else if (hBox.getId().substring(0, 2).equalsIgnoreCase("cp")) {
             listPie.add(new TicketTB("Fecha actual", Tools.getDate("dd/MM/yyyy"), "fchactual"));
-            listPie.add(new TicketTB("Hora actual", Tools.getHour("hh:mm:ss aa"), "horactual"));
+            listPie.add(new TicketTB("Hora actual", Tools.getTime("hh:mm:ss aa"), "horactual"));
             listPie.add(new TicketTB("Importe Bruto", "M 00.00", "imptotal"));
             listPie.add(new TicketTB("Sub Importe", "M 00.00", "subtotal"));
             listPie.add(new TicketTB("Descuento Total", "M 00.00", "dscttotal"));

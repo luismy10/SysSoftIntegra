@@ -2,6 +2,7 @@ package controller.produccion.producir;
 
 import controller.menus.FxPrincipalController;
 import controller.tools.SearchComboBox;
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,11 +32,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import model.EmpleadoTB;
 import model.FormulaADO;
 import model.FormulaTB;
+import model.ProduccionADO;
+import model.ProduccionTB;
 import model.SuministroADO;
 import model.SuministroTB;
 
@@ -73,6 +78,20 @@ public class FxProducirAgregarController implements Initializable {
     private TextArea txtDescripcion;
     @FXML
     private GridPane gpList;
+    @FXML
+    private Button btnAgregar;
+    @FXML
+    private TextField txtCostoAdicional;
+    @FXML
+    private TextField txtReferenciaProduccion;
+    @FXML
+    private VBox vbBody;
+    @FXML
+    private HBox hbLoad;
+    @FXML
+    private Label lblMessageLoad;
+    @FXML
+    private Button btnAceptarLoad;
 
     private FxProducirController producirController;
 
@@ -419,6 +438,8 @@ public class FxProducirAgregarController implements Initializable {
         } else {
             vbPrimero.setVisible(false);
             vbSegundo.setVisible(true);
+            txtReferenciaProduccion.setText(Tools.roundingValue(Double.parseDouble(txtCantidad.getText()), 2));
+
             if (cbFormula.getSelectionModel().getSelectedIndex() >= 0) {
                 editFormulaProceso(cbFormula.getSelectionModel().getSelectedItem().getIdFormula());
             } else {
@@ -452,6 +473,8 @@ public class FxProducirAgregarController implements Initializable {
             Object object = task.getValue();
             if (object instanceof FormulaTB) {
                 FormulaTB formulaTB = (FormulaTB) object;
+                txtCostoAdicional.setText(Tools.roundingValue(formulaTB.getCostoAdicional(), 2));
+                txtDescripcion.setText(formulaTB.getInstrucciones());
                 for (SuministroTB suministroTB : formulaTB.getSuministroTBs()) {
                     ComboBox<SuministroTB> comboBox = new ComboBox();
                     comboBox.setPromptText("-- Selecionar --");
@@ -589,6 +612,8 @@ public class FxProducirAgregarController implements Initializable {
         cbInterno.setSelected(true);
         cbPersonaEncargada.getItems().clear();
         cbPersonaEncargada.getSelectionModel().select(null);
+        txtCostoAdicional.clear();
+        txtReferenciaProduccion.clear();
         suministroTBs.clear();
         addElementPaneHead();
         addElementPaneBody();
@@ -597,7 +622,95 @@ public class FxProducirAgregarController implements Initializable {
 
     private void onEventGuardar() {
         if (dtFechaProduccion.getValue() == null) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la fecha de producción.");
+            dtFechaProduccion.requestFocus();
+        } else if (cbPersonaEncargada.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione al personal encargado.");
+            cbPersonaEncargada.requestFocus();
+        } else if (suministroTBs.isEmpty()) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "No hay matería prima para producir.");
+            btnAgregar.requestFocus();
+        } else {
+            ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                Thread t = new Thread(runnable);
+                t.setDaemon(true);
+                return t;
+            });
 
+            Task<String> task = new Task<String>() {
+                @Override
+                protected String call() {
+                    ProduccionTB produccionTB = new ProduccionTB();
+                    produccionTB.setFechaInicio(Tools.getDatePicker(dtFechaProduccion));
+                    produccionTB.setHoraInicio(Tools.getTime());
+                    produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);
+                    produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
+                    produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
+                    produccionTB.setIdProducto(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
+                    produccionTB.setTipoOrden(true);
+                    produccionTB.setIdEncargado(cbPersonaEncargada.getSelectionModel().getSelectedItem().getIdEmpleado());
+                    produccionTB.setDescripcion(txtDescripcion.getText().trim());
+                    produccionTB.setFechaRegistro(Tools.getDate());
+                    produccionTB.setHoraRegistro(Tools.getTime());
+                    produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
+                    produccionTB.setCostoAdicional(Tools.isNumeric(txtCostoAdicional.getText()) ? Double.parseDouble(txtCostoAdicional.getText()) : 0);
+                    produccionTB.setEstado(2);
+                    return ProduccionADO.Registrar_Produccion(produccionTB);
+                }
+            };
+            task.setOnScheduled(w -> {
+                vbBody.setDisable(true);
+                hbLoad.setVisible(true);
+                btnAceptarLoad.setVisible(false);
+                lblMessageLoad.setText("Procesando información...");
+                lblMessageLoad.setTextFill(Color.web("#ffffff"));
+            });
+            task.setOnFailed(w -> {
+                btnAceptarLoad.setVisible(true);
+                btnAceptarLoad.setOnAction(event -> {
+                    closeWindow();
+                });
+                btnAceptarLoad.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        closeWindow();
+                    }
+                });
+                lblMessageLoad.setText(task.getException().getLocalizedMessage());
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            });
+            task.setOnSucceeded(w -> {
+                String result = task.getValue();
+                if (result.equalsIgnoreCase("registrado")) {
+                    lblMessageLoad.setText("Se registró correctamente la producción.");
+                    lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                    btnAceptarLoad.setVisible(true);
+                    btnAceptarLoad.setOnAction(event -> {
+                        closeWindow();
+                    });
+                    btnAceptarLoad.setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            closeWindow();
+                        }
+                    });
+                } else {
+                    lblMessageLoad.setText(result);
+                    lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                    btnAceptarLoad.setVisible(true);
+                    btnAceptarLoad.setOnAction(event -> {
+                        closeWindow();
+                    });
+                    btnAceptarLoad.setOnKeyPressed(event -> {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            closeWindow();
+                        }
+                    });
+                }
+            });
+            exec.execute(task);
+
+            if (!exec.isShutdown()) {
+                exec.shutdown();
+            }
         }
     }
 

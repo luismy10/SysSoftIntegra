@@ -87,7 +87,7 @@ public class FxVentaAbonoProcesoController implements Initializable {
                         ventaCreditoTB.setIdVenta(idVenta);
                         ventaCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
                         ventaCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
-                        ventaCreditoTB.setHoraPago(Tools.getHour());
+                        ventaCreditoTB.setHoraPago(Tools.getTime());
                         ventaCreditoTB.setEstado((short) 1);
                         ventaCreditoTB.setIdUsuario(Session.USER_ID);
                         ventaCreditoTB.setObservacion(txtObservacion.getText().trim());
@@ -96,7 +96,7 @@ public class FxVentaAbonoProcesoController implements Initializable {
                         bancoHistorialTB.setIdBanco(cbCuenta.getSelectionModel().getSelectedItem().getIdBanco());
                         bancoHistorialTB.setDescripcion("INGRESO DE DINERO POR CUENTAS POR COBRAR".toUpperCase());
                         bancoHistorialTB.setFecha(Tools.getDate());
-                        bancoHistorialTB.setHora(Tools.getHour());
+                        bancoHistorialTB.setHora(Tools.getTime());
                         bancoHistorialTB.setEntrada(Double.parseDouble(txtMonto.getText()));
                         bancoHistorialTB.setSalida(0);
 
@@ -123,7 +123,7 @@ public class FxVentaAbonoProcesoController implements Initializable {
                         ventaCreditoTB.setIdVenta(idVenta);
                         ventaCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
                         ventaCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
-                        ventaCreditoTB.setHoraPago(Tools.getHour());
+                        ventaCreditoTB.setHoraPago(Tools.getTime());
                         ventaCreditoTB.setEstado((short) 1);
                         ventaCreditoTB.setIdUsuario(Session.USER_ID);
                         ventaCreditoTB.setObservacion(txtObservacion.getText().trim());
@@ -131,7 +131,7 @@ public class FxVentaAbonoProcesoController implements Initializable {
                         MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
                         movimientoCajaTB.setIdCaja(cajaTB.getIdCaja());
                         movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-                        movimientoCajaTB.setHoraMovimiento(Tools.getHour());
+                        movimientoCajaTB.setHoraMovimiento(Tools.getTime());
                         movimientoCajaTB.setComentario("INGRESO DE DINERO DE LA CUENTA POR COBRAR");
                         movimientoCajaTB.setTipoMovimiento((short)2);
                         movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));

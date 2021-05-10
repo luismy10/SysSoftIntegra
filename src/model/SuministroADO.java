@@ -892,7 +892,7 @@ public class SuministroADO {
 
                     statementKardexProducto.setString(1, tvList.getItems().get(i).getIdSuministro());
                     statementKardexProducto.setString(2, Tools.getDate());
-                    statementKardexProducto.setString(3, Tools.getHour("HH:mm:ss"));
+                    statementKardexProducto.setString(3, Tools.getTime("HH:mm:ss"));
                     statementKardexProducto.setShort(4, (short) 2);
                     statementKardexProducto.setInt(5, 1);
                     statementKardexProducto.setString(6, "Asignación de producto(s) a artículo");
@@ -905,7 +905,7 @@ public class SuministroADO {
                 statementAsignacion.setString(1, idAsignacion);
                 statementAsignacion.setString(2, idArticulo);
                 statementAsignacion.setString(3, Tools.getDate());
-                statementAsignacion.setString(4, Tools.getHour("HH:mm:ss"));
+                statementAsignacion.setString(4, Tools.getTime("HH:mm:ss"));
                 statementAsignacion.setDouble(5, cantidad);
                 statementAsignacion.setDouble(6, (costoPromedio / rows));
                 statementAsignacion.setDouble(7, (precioPromedio / rows));
@@ -919,7 +919,7 @@ public class SuministroADO {
 
                 statementKardexArticulo.setString(1, idArticulo);
                 statementKardexArticulo.setString(2, Tools.getDate());
-                statementKardexArticulo.setString(3, Tools.getHour("HH:mm:ss"));
+                statementKardexArticulo.setString(3, Tools.getTime("HH:mm:ss"));
                 statementKardexArticulo.setShort(4, (short) 1);
                 statementKardexArticulo.setInt(5, 4);
                 statementKardexArticulo.setString(6, "Asignación de producto(s) a artículo");

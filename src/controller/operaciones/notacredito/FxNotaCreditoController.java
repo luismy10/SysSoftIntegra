@@ -393,7 +393,7 @@ public class FxNotaCreditoController implements Initializable {
             notaCreditoTB.setIdMoneda(cbMoneda.getSelectionModel().getSelectedItem().getIdMoneda());
             notaCreditoTB.setIdMotivo(cbMotivo.getSelectionModel().getSelectedItem().getIdDetalle());
             notaCreditoTB.setFechaRegistro(Tools.getDatePicker(txtFechaRegistro));
-            notaCreditoTB.setHoraRegistro(Tools.getHour());
+            notaCreditoTB.setHoraRegistro(Tools.getTime());
             notaCreditoTB.setEstado(1);
             notaCreditoTB.setIdVenta(idVenta);
             ArrayList<NotaCreditoDetalleTB> creditoDetalleTBs = new ArrayList<>();

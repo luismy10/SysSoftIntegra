@@ -100,7 +100,7 @@ public class AjusteInventarioADO {
 
                             suministro_kardex.setString(1, tableView.getItems().get(i).getIdSuministro());
                             suministro_kardex.setString(2, Tools.getDate());
-                            suministro_kardex.setString(3, Tools.getHour());
+                            suministro_kardex.setString(3, Tools.getTime());
                             suministro_kardex.setShort(4, inventarioTB.isTipoAjuste() ? (short) 1 : (short) 2);
                             suministro_kardex.setInt(5, inventarioTB.getTipoMovimiento());
                             suministro_kardex.setString(6, inventarioTB.getObservacion());
@@ -245,7 +245,7 @@ public class AjusteInventarioADO {
 
                                 suministro_kardex.setString(1, tableView.getItems().get(i).getIdSuministro());
                                 suministro_kardex.setString(2, Tools.getDate());
-                                suministro_kardex.setString(3, Tools.getHour());
+                                suministro_kardex.setString(3, Tools.getTime());
                                 suministro_kardex.setShort(4, inventarioTB.isTipoAjuste() ? (short) 1 : (short) 2);
                                 suministro_kardex.setInt(5, inventarioTB.getTipoMovimiento());
                                 suministro_kardex.setString(6, inventarioTB.getObservacion());
@@ -524,7 +524,7 @@ public class AjusteInventarioADO {
 
                             suministro_kardex.setString(1, tableView.get(i).getIdSuministro());
                             suministro_kardex.setString(2, Tools.getDate());
-                            suministro_kardex.setString(3, Tools.getHour());
+                            suministro_kardex.setString(3, Tools.getTime());
                             suministro_kardex.setShort(4, inventarioTB.isTipoAjuste() ? (short) 1 : (short) 2);
                             suministro_kardex.setInt(5, inventarioTB.getTipoMovimiento());
                             suministro_kardex.setString(6, inventarioTB.getObservacion());

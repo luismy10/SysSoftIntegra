@@ -356,7 +356,7 @@ public class FxFormulaAgregarController implements Initializable {
                             formulaTB.setCostoAdicional(!Tools.isNumeric(txtCostoAdicional.getText()) ? 0 : Double.parseDouble(txtCostoAdicional.getText()));
                             formulaTB.setInstrucciones(txtInstrucciones.getText().trim().toUpperCase());
                             formulaTB.setFecha(Tools.getDate());
-                            formulaTB.setHora(Tools.getHour());
+                            formulaTB.setHora(Tools.getTime());
                             formulaTB.setIdUsuario(Session.USER_ID);
                             formulaTB.setSuministroTBs(suministroTBs);
                             return FormulaADO.Crud_Formula(formulaTB);

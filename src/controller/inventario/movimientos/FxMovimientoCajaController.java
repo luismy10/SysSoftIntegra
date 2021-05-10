@@ -70,7 +70,7 @@ public class FxMovimientoCajaController implements Initializable {
                 btnEjecutar.setDisable(true);
                 MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
                 movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-                movimientoCajaTB.setHoraMovimiento(Tools.getHour());
+                movimientoCajaTB.setHoraMovimiento(Tools.getTime());
                 movimientoCajaTB.setComentario(txtObservacion.getText().trim());
                 movimientoCajaTB.setTipoMovimiento(tipoMovimiento ? (short) 5 : (short) 4);
                 movimientoCajaTB.setMonto(Double.parseDouble(txtEfectivo.getText()));
