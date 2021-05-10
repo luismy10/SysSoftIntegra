@@ -100,6 +100,7 @@ public class FxFormulaVisualizarController implements Initializable {
             if (object instanceof FormulaTB) {
                 FormulaTB formulaTB = (FormulaTB) object;
                 lblTitulo.setText("FORMULA DE PRODUCCIÓN - " + formulaTB.getTitulo());
+                lblProduccion.setText(Tools.roundingValue(formulaTB.getCantidad(), 2) + " " + formulaTB.getSuministroTB().getUnidadCompraName() + " - " + formulaTB.getSuministroTB().getNombreMarca());
                 lblCreado.setText(formulaTB.getEmpleadoTB().getApellidos() + " " + formulaTB.getEmpleadoTB().getNombres());
                 lblFechaCreacion.setText(formulaTB.getFecha() + " - " + formulaTB.getHora());
                 lblCostoAdicional.setText(Tools.roundingValue(formulaTB.getCostoAdicional(), 2));

@@ -337,7 +337,12 @@ public class FormulaADO {
                 formulaTB.setTitulo(resultSet.getString("Titulo"));
                 formulaTB.setCantidad(resultSet.getDouble("Cantidad"));
                 formulaTB.setIdSuministro(resultSet.getString("IdSuministro"));
-                formulaTB.setSuministroTB(new SuministroTB(resultSet.getString("IdSuministro"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
+                SuministroTB stb = new SuministroTB();
+                stb.setIdSuministro(resultSet.getString("IdSuministro"));
+                stb.setClave(resultSet.getString("Clave"));
+                stb.setNombreMarca(resultSet.getString("NombreMarca"));
+                stb.setUnidadCompraName(resultSet.getString("Medida"));
+                formulaTB.setSuministroTB(stb);
                 formulaTB.setCostoAdicional(resultSet.getDouble("CostoAdicional"));
                 formulaTB.setInstrucciones(resultSet.getString("Instrucciones"));
                 formulaTB.setFecha(resultSet.getDate("Fecha").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -471,6 +476,37 @@ public class FormulaADO {
                 return ex.getLocalizedMessage();
             }
         }
+    }
+
+    public static List<FormulaTB> getSearchComboBoxFormulas(String idSuministro, String buscar) {
+        String selectStmt = "SELECT IdFormula,Titulo FROM FormulaTB WHERE IdSuministro = ? AND Titulo LIKE CONCAT(?,'%')";
+        PreparedStatement preparedStatement = null;
+        List<FormulaTB> formulaTBs = new ArrayList<>();
+        try {
+            DBUtil.dbConnect();
+            preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
+            preparedStatement.setString(1, idSuministro);
+            preparedStatement.setString(2, buscar);
+            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
+                while (rsEmps.next()) {
+                    FormulaTB formulaTB = new FormulaTB();
+                    formulaTB.setIdFormula(rsEmps.getString("IdFormula"));
+                    formulaTB.setTitulo(rsEmps.getString("Titulo"));
+                    formulaTBs.add(formulaTB);
+                }
+            }
+        } catch (SQLException e) {
+
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+        return formulaTBs;
     }
 
 }

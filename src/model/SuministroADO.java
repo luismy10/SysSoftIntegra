@@ -1163,14 +1163,14 @@ public class SuministroADO {
     }
 
     public static List<SuministroTB> getSearchComboBoxSuministros(String buscar) {
-        String selectStmt = "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB WHERE Clave LIKE ? OR NombreMarca LIKE ?";
+        String selectStmt = "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB WHERE Clave LIKE CONCAT(?,'%') OR NombreMarca LIKE CONCAT(?,'%')";
         PreparedStatement preparedStatement = null;
         List<SuministroTB> suministroTBs = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, buscar + "%");
-            preparedStatement.setString(2, buscar + "%");
+            preparedStatement.setString(1, buscar);
+            preparedStatement.setString(2, buscar);
             try (ResultSet rsEmps = preparedStatement.executeQuery()) {
                 while (rsEmps.next()) {
                     SuministroTB suministroTB = new SuministroTB();

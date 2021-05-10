@@ -372,11 +372,9 @@ public class FxFormulaController implements Initializable {
     }
 
     @FXML
-    private void onMouseClickedList(MouseEvent event) {
+    private void onMouseClickedList(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
-                openWindowFormulaProcesoEdit(tvList.getSelectionModel().getSelectedItem().getIdFormula());
-            }
+            openViewVisualizarFormula();
         }
     }
 

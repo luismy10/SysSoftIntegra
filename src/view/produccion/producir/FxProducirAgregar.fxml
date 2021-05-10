@@ -17,7 +17,7 @@
 
 <AnchorPane fx:id="apWindow" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirAgregarController">
    <children>
-      <VBox style="-fx-background-color: white;">
+      <VBox style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
@@ -44,50 +44,36 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label styleClass="labelRoboto13" text="Almacen Fuente:" textFill="#020203">
+                              <Label styleClass="labelRoboto13" text="Proyecto:" textFill="#020203">
                                  <font>
                                     <Font name="Calibri" size="15.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="labelRoboto13" text="Almacen Destino:" textFill="#020203" GridPane.rowIndex="1">
+                              <TextField fx:id="txtProyecto" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" />
+                              <Label styleClass="labelRoboto13" text="Cantidad:" textFill="#020203" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="Calibri" size="15.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="labelRoboto13" text="Proyecto:" textFill="#020203" GridPane.rowIndex="2">
+                              <TextField fx:id="txtCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label styleClass="labelRoboto13" text="Producto" textFill="#020203" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="Calibri" size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtProyecto" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label styleClass="labelRoboto13" text="Cantidad:" textFill="#020203" GridPane.rowIndex="3">
+                              <Label styleClass="labelRoboto13" text="Formula:" textFill="#020203" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="Calibri" size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtCantidad" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label styleClass="labelRoboto13" text="Producto" textFill="#020203" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font name="Calibri" size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label styleClass="labelRoboto13" text="Formula:" textFill="#020203" GridPane.rowIndex="5">
-                                 <font>
-                                    <Font name="Calibri" size="15.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cbAlmacenFuente" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" />
-                              <ComboBox fx:id="cbAlmacenDestino" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="cbProducto" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <ComboBox fx:id="cbFormula" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <ComboBox fx:id="cbProducto" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="cbFormula" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                         <HBox alignment="CENTER_RIGHT">
