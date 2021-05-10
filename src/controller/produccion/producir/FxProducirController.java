@@ -18,7 +18,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -119,7 +118,7 @@ public class FxProducirController implements Initializable {
     private void initLoadTable() {
         if (!lblLoad.isVisible()) {
             paginacion = 1;
-            fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+            fillProduccionTable(0, "", "", "");
             opcion = 0;
         }
     }
@@ -187,7 +186,10 @@ public class FxProducirController implements Initializable {
                 fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
                 break;
             case 1:
-                fillProduccionTable(1, "", "", txtSearch.getText().trim());
+                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), txtSearch.getText().trim());
+                break;
+            case 2:
+                fillProduccionTable(2, "", "", txtSearch.getText().trim());
                 break;
         }
     }
@@ -362,8 +364,8 @@ public class FxProducirController implements Initializable {
             if (!Tools.isText(txtSearch.getText())) {
                 if (!lblLoad.isVisible()) {
                     paginacion = 1;
-                    fillProduccionTable(1, "", "", txtSearch.getText().trim());
-                    opcion = 1;
+                    fillProduccionTable(2, "", "", txtSearch.getText().trim());
+                    opcion = 2;
                 }
             }
         }
@@ -418,8 +420,8 @@ public class FxProducirController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
                 paginacion = 1;
-                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-                opcion = 0;
+                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 1;
             }
         }
     }
@@ -429,8 +431,8 @@ public class FxProducirController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
                 paginacion = 1;
-                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
-                opcion = 0;
+                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                opcion = 1;
             }
         }
     }
