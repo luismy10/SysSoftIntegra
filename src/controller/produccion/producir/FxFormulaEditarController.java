@@ -91,7 +91,7 @@ public class FxFormulaEditarController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             protected Object call() {
-                return FormulaADO.Obtener_Formula_ById_Editar(idFormula, 1);
+                return FormulaADO.Obtener_Formula_ById_Editar(idFormula);
             }
         };
 

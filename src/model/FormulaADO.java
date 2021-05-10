@@ -181,7 +181,7 @@ public class FormulaADO {
         }
     }
 
-    public static Object Obtener_Formula_ById_Editar(String idFormula, double cantidad) {
+    public static Object Obtener_Formula_ById_Editar(String idFormula) {
         PreparedStatement statementFormula = null;
         PreparedStatement statementDetalle = null;
         ResultSet resultSet = null;
@@ -265,7 +265,7 @@ public class FormulaADO {
                     suministroTB.getCbSuministro().getItems().add(new SuministroTB(resultSet.getString("IdSuministro"), resultSet.getString("Clave"), resultSet.getString("NombreMarca")));
                     suministroTB.getCbSuministro().getSelectionModel().select(0);
 
-                    TextField textField = new TextField(Tools.roundingValue(suministroTB.getCantidad() * cantidad, 2));
+                    TextField textField = new TextField(Tools.roundingValue(suministroTB.getCantidad(), 2));
                     textField.setPromptText("0.00");
                     textField.getStyleClass().add("text-field-normal");
                     textField.setPrefWidth(220);
@@ -322,7 +322,7 @@ public class FormulaADO {
         }
     }
 
-    public static Object Obtener_Formula_ById(String idFormula, double cantidad) {
+    public static Object Obtener_Formula_ById(String idFormula) {
         PreparedStatement statementFormula = null;
         PreparedStatement statementDetalle = null;
         ResultSet resultSet = null;

@@ -70,7 +70,7 @@ public class FxFormulaVisualizarController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             protected Object call() {
-                return FormulaADO.Obtener_Formula_ById(idFormula, 1);
+                return FormulaADO.Obtener_Formula_ById(idFormula);
             }
         };
 

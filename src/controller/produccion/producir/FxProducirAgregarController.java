@@ -7,6 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,6 +33,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import model.EmpleadoTB;
 import model.FormulaADO;
 import model.FormulaTB;
@@ -233,9 +237,8 @@ public class FxProducirAgregarController implements Initializable {
         });
     }
 
-    private void addElementsTableInsumo() {
+    private void addElementsTableSuministro() {
         SuministroTB suministroTB = new SuministroTB();
-        suministroTB.setCantidad(1);
         ComboBox<SuministroTB> comboBox = new ComboBox();
         comboBox.setPromptText("-- Selecionar --");
         comboBox.setPrefWidth(220);
@@ -289,7 +292,7 @@ public class FxProducirAgregarController implements Initializable {
         });
         suministroTB.setSearchComboBox(searchComboBox);
 
-        TextField textField = new TextField(Tools.roundingValue(suministroTB.getCantidad(), 2));
+        TextField textField = new TextField(Tools.roundingValue(0, 2));
         textField.setDisable(true);
         textField.setPromptText("0.00");
         textField.getStyleClass().add("text-field-normal");
@@ -412,10 +415,56 @@ public class FxProducirAgregarController implements Initializable {
         } else if (Double.parseDouble(txtCantidad.getText()) <= 0) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese una cantidad mayor a 0");
             txtCantidad.requestFocus();
+        } else if (cbProducto.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione un producto a producir.");
+            cbProducto.requestFocus();
         } else {
             vbPrimero.setVisible(false);
             vbSegundo.setVisible(true);
+            if (cbFormula.getSelectionModel().getSelectedIndex() >= 0) {
+                editFormulaProceso(cbFormula.getSelectionModel().getSelectedItem().getIdFormula());
+            } else {
 
+            }
+
+        }
+    }
+
+    public void editFormulaProceso(String idFormula) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<Object> task = new Task<Object>() {
+            @Override
+            protected Object call() {
+                return FormulaADO.Obtener_Formula_ById(idFormula);
+            }
+        };
+
+        task.setOnScheduled(w -> {
+
+        });
+        task.setOnFailed(w -> {
+
+        });
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+            if (object instanceof FormulaTB) {
+                FormulaTB formulaTB = (FormulaTB) object;
+                for (SuministroTB suministroTB : formulaTB.getSuministroTBs()) {
+                  
+                }
+
+            } else {
+                Tools.println((String) object);
+            }
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
         }
     }
 
@@ -467,18 +516,6 @@ public class FxProducirAgregarController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedCancelar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-
-        }
-    }
-
-    @FXML
-    private void onActionCancelar(ActionEvent event) {
-
-    }
-
-    @FXML
     private void onKeyPressedAgregar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             addElementsTableInsumo();
@@ -500,6 +537,18 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private void onActionGuardar(ActionEvent event) {
 
+    }
+
+    @FXML
+    private void onKeyPressedCancelar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventCancelar();
+        }
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
+        onEventCancelar();
     }
 
     @FXML
