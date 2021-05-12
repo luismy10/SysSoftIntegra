@@ -296,7 +296,7 @@ public class FxCotizacionDetalleController implements Initializable {
     }
 
     private void ticket() {
-        if (!Session.ESTADO_IMPRESORA_COTIZACION && Tools.isText(Session.NOMBRE_IMPRESORA_COTIZACION) && Tools.isText(Session.FORMATO_IMPRESORA_VENTA)) {
+        if (!Session.ESTADO_IMPRESORA_COTIZACION && Tools.isText(Session.NOMBRE_IMPRESORA_COTIZACION) && Tools.isText(Session.FORMATO_IMPRESORA_COTIZACION)) {
             Tools.AlertMessageWarning(apWindow, "Venta", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
             return;
         }

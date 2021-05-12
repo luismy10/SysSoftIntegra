@@ -218,7 +218,7 @@ public class BillPrintable implements Printable {
         }
         return lines;
     }
-    
+
     public int hbDetalleCotizacion(HBox hBox, HBox box, ObservableList<SuministroTB> arrList, int m) {
         int lines = 0;
         for (int j = 0; j < box.getChildren().size(); j++) {
@@ -235,6 +235,38 @@ public class BillPrintable implements Printable {
                     fieldTicket.setText(Tools.AddText2Guines(nombreMarcaReplace));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getCantidad(), 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines("-" + Tools.roundingValue(arrList.get(m).getDescuento(), 0)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("impoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getImporteNeto(), 2)));
+                }
+                hBox.getChildren().add(addElementTextField("iu", fieldTicket.getText(), fieldTicket.isMultilineas(), fieldTicket.getLines(), fieldTicket.getColumnWidth(), fieldTicket.getAlignment(), fieldTicket.isEditable(), fieldTicket.getVariable(), fieldTicket.getFontName(), fieldTicket.getFontSize()));
+                lines = fieldTicket.getLines();
+            }
+        }
+        return lines;
+    }
+
+    public int hbDetallePedido(HBox hBox, HBox box, ObservableList<SuministroTB> arrList, int m) {
+        int lines = 0;
+        for (int j = 0; j < box.getChildren().size(); j++) {
+            if (box.getChildren().get(j) instanceof TextFieldTicket) {
+                TextFieldTicket fieldTicket = ((TextFieldTicket) box.getChildren().get(j));
+                if (fieldTicket.getVariable().equalsIgnoreCase("numfilas")) {
+                    fieldTicket.setText(Tools.AddText2Guines("" + (m + 1)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codalternoarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getClaveAlterna()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("codbarrasarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(arrList.get(m).getClave()));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("nombretarticulo")) {
+                    String nombreMarcaReplace = arrList.get(m).getNombreMarca().replaceAll("\"", "");
+                    fieldTicket.setText(Tools.AddText2Guines(nombreMarcaReplace));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("cantarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getCantidad(), 2)));
+                } else if (fieldTicket.getVariable().equalsIgnoreCase("costarticulo")) {
+                    fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getCostoCompra(), 2)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("precarticulo")) {
                     fieldTicket.setText(Tools.AddText2Guines(Tools.roundingValue(arrList.get(m).getPrecioVentaGeneral(), 2)));
                 } else if (fieldTicket.getVariable().equalsIgnoreCase("descarticulo")) {
@@ -627,9 +659,9 @@ public class BillPrintable implements Printable {
             gimage.setPaint(Color.black);
             g2d.setPaint(Color.black);
 
-            y = createRow(apEncabezado, g2d, /*gimage,*/ width, y);
-            y = createRow(apDetalle, g2d,/*gimage,*/ width, y);
-            createRow(apPie, g2d, /*gimage,*/ width, y);
+            y = createRow(apEncabezado, g2d, gimage, width, y);
+            y = createRow(apDetalle, g2d,gimage, width, y);
+            createRow(apPie, g2d, gimage, width, y);
 
             graphics.dispose();
             gimage.dispose();
@@ -644,7 +676,7 @@ public class BillPrintable implements Printable {
         }
     }
 
-    private int createRow(AnchorPane anchorPane, Graphics2D g2d, /*Graphics2D gimage*/ double width, int y) {
+    private int createRow(AnchorPane anchorPane, Graphics2D g2d, Graphics2D gimage, double width, int y) {
         if (anchorPane == null) {
             return y;
         }
@@ -689,7 +721,7 @@ public class BillPrintable implements Printable {
                                 : (int) ((field.getColumnWidth() * pointWidthSizePaper) - layout.getAdvance());
 
                         layout.draw(g2d, xPos + x, yPos + yAux);
-//                        layout.draw(gimage, xPos + x, yPos + yAux);
+                        layout.draw(gimage, xPos + x, yPos + yAux);
                         yAux += layout.getDescent() + layout.getLeading();
                     }
                     if (yMax < yAux) {
@@ -729,7 +761,7 @@ public class BillPrintable implements Printable {
                                 ? (int) (width - layout.getAdvance()) / 2
                                 : (int) (width - layout.getAdvance());
                         layout.draw(g2d, x, y);
-//                        layout.draw(gimage, x, y);
+                        layout.draw(gimage, x, y);
                         y += layout.getDescent() + layout.getLeading();
                     }
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
@@ -742,10 +774,10 @@ public class BillPrintable implements Printable {
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
 
-//                            gimage.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
-//                                    : box.getAlignment() == Pos.CENTER
-//                                    ? (int) (width - imageView.getFitWidth()) / 2
-//                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+                            gimage.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
                             y += imageView.getFitHeight() + 3;
                         } catch (WriterException ex) {
                             System.out.println(ex.getLocalizedMessage());
@@ -762,10 +794,10 @@ public class BillPrintable implements Printable {
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
 
-//                            gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
-//                                    : box.getAlignment() == Pos.CENTER
-//                                    ? (int) (width - imageView.getFitWidth()) / 2
-//                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+                            gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
+                                    : box.getAlignment() == Pos.CENTER
+                                    ? (int) (width - imageView.getFitWidth()) / 2
+                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
                             y += imageView.getFitHeight() + 3;
                         } catch (IOException ex) {
                             System.out.println(ex.getLocalizedMessage());

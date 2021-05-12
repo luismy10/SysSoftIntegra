@@ -354,7 +354,7 @@ public class FxImpresoraController implements Initializable {
                 prop.setProperty("printerCutPaperCotizacion", cbPaperCut.isSelected() + "");
                 prop.setProperty("printerTypeFormatCotizacion", rbTicket.isSelected() ? "ticket" : "a4");
                 prop.setProperty("printerTypeDesingCotizacion", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
-                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+                prop.store(output, "Ruta de configuración de la impresora de cotización");
 
                 Session.ESTADO_IMPRESORA_COTIZACION = true;
                 Session.NOMBRE_IMPRESORA_COTIZACION = cbImpresoras.getSelectionModel().getSelectedItem();
@@ -367,7 +367,7 @@ public class FxImpresoraController implements Initializable {
                 prop.setProperty("printerCutPaperCorteCaja", cbPaperCut.isSelected() + "");
                 prop.setProperty("printerTypeFormatCorteCaja", rbTicket.isSelected() ? "ticket" : "a4");
                 prop.setProperty("printerTypeDesingCorteCaja", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
-                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+                prop.store(output, "Ruta de configuración de la impresora de corte de caja");
 
                 Session.ESTADO_IMPRESORA_CORTE_CAJA = true;
                 Session.NOMBRE_IMPRESORA_CORTE_CAJA = cbImpresoras.getSelectionModel().getSelectedItem();
@@ -380,7 +380,7 @@ public class FxImpresoraController implements Initializable {
                 prop.setProperty("printerCutPaperCuentasPorCobrar", cbPaperCut.isSelected() + "");
                 prop.setProperty("printerTypeFormatCuentasPorCobrar", rbTicket.isSelected() ? "ticket" : "a4");
                 prop.setProperty("printerTypeDesingCuentasPorCobrar", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
-                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+                prop.store(output, "Ruta de configuración de la impresora de cuentas por cobrar");
 
                 Session.ESTADO_IMPRESORA_CUENTA_POR_COBRAR = true;
                 Session.NOMBRE_IMPRESORA_CUENTA_POR_COBRAR = cbImpresoras.getSelectionModel().getSelectedItem();
@@ -393,7 +393,7 @@ public class FxImpresoraController implements Initializable {
                 prop.setProperty("printerCutPaperCuentasPorPagar", cbPaperCut.isSelected() + "");
                 prop.setProperty("printerTypeFormatCuentasPorPagar", rbTicket.isSelected() ? "ticket" : "a4");
                 prop.setProperty("printerTypeDesingCuentasPorPagar", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
-                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+                prop.store(output, "Ruta de configuración de la impresora de cuentas por pagar");
 
                 Session.ESTADO_IMPRESORA_CUENTA_POR_PAGAR = true;
                 Session.NOMBRE_IMPRESORA_CUENTA_POR_PAGAR = cbImpresoras.getSelectionModel().getSelectedItem();
@@ -406,13 +406,26 @@ public class FxImpresoraController implements Initializable {
                 prop.setProperty("printerCutPaperHistorialSalidaProducto", cbPaperCut.isSelected() + "");
                 prop.setProperty("printerTypeFormatHistorialSalidaProducto", rbTicket.isSelected() ? "ticket" : "a4");
                 prop.setProperty("printerTypeDesingHistorialSalidaProducto", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
-                prop.store(output, "Ruta de configuración de la impresora de pre venta");
+                prop.store(output, "Ruta de configuración de la impresora de historial de producto");
 
                 Session.ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = true;
                 Session.NOMBRE_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = cbImpresoras.getSelectionModel().getSelectedItem();
                 Session.CORTAPAPEL_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = cbPaperCut.isSelected();
                 Session.FORMATO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = rbTicket.isSelected() ? "ticket" : "a4";
                 Session.DESING_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
+                Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
+            } else if (cbTipo.getSelectionModel().getSelectedItem().getNombreTicket().equals("PEDIDO")) {
+                prop.setProperty("printerNamePedido", cbImpresoras.getSelectionModel().getSelectedItem());
+                prop.setProperty("printerCutPaperPedido", cbPaperCut.isSelected() + "");
+                prop.setProperty("printerTypeFormatPedido", rbTicket.isSelected() ? "ticket" : "a4");
+                prop.setProperty("printerTypeDesingPedido", rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing");
+                prop.store(output, "Ruta de configuración de la impresora de pedido");
+
+                Session.ESTADO_IMPRESORA_PEDIDO = true;
+                Session.NOMBRE_IMPRESORA_PEDIDO = cbImpresoras.getSelectionModel().getSelectedItem();
+                Session.CORTAPAPEL_IMPRESORA_PEDIDO = cbPaperCut.isSelected();
+                Session.FORMATO_IMPRESORA_PEDIDO = rbTicket.isSelected() ? "ticket" : "a4";
+                Session.DESING_IMPRESORA_PEDIDO = rbTicketWithDesing.isSelected() ? "withdesing" : "nodesing";
                 Tools.AlertMessageInformation(vbWindow, "Impresora", "Se guardo la configuración correctamente.");
             } else {
                 Tools.AlertMessageWarning(vbWindow, "Impresora", "No se puede guardar la configuración, comuníquese con su proveedor para habilitar el módulo.");
@@ -468,7 +481,7 @@ public class FxImpresoraController implements Initializable {
         }
     }
 
-     public void setContent( FxPrincipalController fxPrincipalController) {
+    public void setContent(FxPrincipalController fxPrincipalController) {
         this.fxPrincipalController = fxPrincipalController;
     }
 

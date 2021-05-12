@@ -16,8 +16,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" fx:id="apWindow" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.produccion.producir.FxProducirVisualizarController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.produccion.producir.FxProducirVisualizarController">
    <children>
       <ScrollPane fx:id="spBody" fitToWidth="true" styleClass="scroll-pane-secundario" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
@@ -77,19 +76,19 @@
                                        </rowConstraints>
                                        <children>
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Cantidad a Producir:" textFill="#020203" GridPane.rowIndex="1" />
-                                          <Text fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Text fx:id="lblCantidadProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Producto:" textFill="#020203" />
-                                          <Text fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="1" />
+                                          <Text fx:id="lblProducto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="-" GridPane.columnIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Fecha de Creación:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Encargado:" textFill="#020203" GridPane.columnIndex="2" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Fecha de Producción:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Duración:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                          <Text fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" />
-                                          <Text fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                          <Text fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                          <Text fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                          <Text fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                          <Text fx:id="lblEncargado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" />
+                                          <Text fx:id="lblFechaCreacion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <Text fx:id="lblFechaProduccion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                          <Text fx:id="lblEstado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                          <Text fx:id="lblDuracion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -122,11 +121,12 @@
                                     </GridPane>
                                  </children>
                               </HBox>
-                              <HBox style="-fx-padding: 0em 0.8333333333333334em;">
+                              <HBox style="-fx-padding: 0em 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
-                                    <VBox HBox.hgrow="ALWAYS">
+                                    <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label styleClass="labelRoboto13" text="OBSERVACIÓN:" textFill="#020203" />
+                                          <Label fx:id="lblObservacion" styleClass="labelRoboto13" text="-" textFill="#020203" />
                                        </children>
                                     </VBox>
                                     <VBox>
@@ -147,10 +147,10 @@
                                                 <Label styleClass="labelRoboto15" text="Costo Adicionales:" textFill="#020203" GridPane.rowIndex="1" />
                                                 <Label styleClass="labelRoboto15" text="Costo / Producto:" textFill="#020203" GridPane.rowIndex="2" />
                                                 <Label styleClass="labelRoboto15" text="Total:" textFill="#020203" GridPane.rowIndex="3" />
-                                                <Label fx:id="lblValorVenta" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
-                                                <Label fx:id="lblValorVenta1" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label fx:id="lblValorVenta11" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Label fx:id="lblValorVenta111" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label fx:id="lblCostoTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" />
+                                                <Label fx:id="lblCostoAdicional" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label fx:id="lblCosto" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label fx:id="lblTotal" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto15" text="M. 0.00" textFill="#0771d3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                              </children>
                                           </GridPane>
                                        </children>

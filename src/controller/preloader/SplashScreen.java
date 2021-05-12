@@ -82,8 +82,8 @@ public class SplashScreen extends Preloader {
                     preloaderStage.hide();
                     Platform.exit();
                     return;
-                }              
-           
+                }
+
                 DBUtil.dbConnect();
                 if (DBUtil.getConnection() != null) {
 
@@ -184,6 +184,19 @@ public class SplashScreen extends Preloader {
                             Session.ESTADO_IMPRESORA_HISTORIA_SALIDA_PRODUCTOS = false;
                         }
 
+                        String rutaPedido = "./archivos/PEDIDO.properties";
+                        try (InputStream input = new FileInputStream(rutaPedido)) {
+                            Properties prop = new Properties();
+                            prop.load(input);
+                            Session.ESTADO_IMPRESORA_PEDIDO = true;
+                            Session.NOMBRE_IMPRESORA_PEDIDO = prop.getProperty("printerNamePedido");
+                            Session.CORTAPAPEL_IMPRESORA_PEDIDO = Boolean.parseBoolean(prop.getProperty("printerCutPaperPedido"));
+                            Session.FORMATO_IMPRESORA_PEDIDO = prop.getProperty("printerTypeFormatPedido");
+                            Session.DESING_IMPRESORA_PEDIDO = prop.getProperty("printerTypeDesingPedido");
+                        } catch (IOException ex) {
+                            Session.ESTADO_IMPRESORA_PEDIDO = false;
+                        }
+
                         LoadFont loadFont = new LoadFont();
                         loadFont.loadFont();
 
@@ -241,13 +254,31 @@ public class SplashScreen extends Preloader {
                             Session.TICKET_CUENTA_POR_PAGAR_RUTA = "";
                         }
 
-                        TicketTB ticketHistorialSuministroLlevar = TicketADO.GetTicketRuta(11);
+                        TicketTB ticketGuiaRemision = TicketADO.GetTicketRuta(11);
+                        if (ticketGuiaRemision != null) {
+                            Session.TICKET_GUIA_REMISION_ID = ticketGuiaRemision.getId();
+                            Session.TICKET_GUIA_REMISION_RUTA = ticketGuiaRemision.getRuta();
+                        } else {
+                            Session.TICKET_GUIA_REMISION_ID = 0;
+                            Session.TICKET_GUIA_REMISION_RUTA = "";
+                        }
+
+                        TicketTB ticketHistorialSuministroLlevar = TicketADO.GetTicketRuta(12);
                         if (ticketHistorialSuministroLlevar != null) {
                             Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = ticketHistorialSuministroLlevar.getId();
                             Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = ticketHistorialSuministroLlevar.getRuta();
                         } else {
                             Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = 0;
                             Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = "";
+                        }
+
+                        TicketTB ticketPedido = TicketADO.GetTicketRuta(13);
+                        if (ticketPedido != null) {
+                            Session.TICKET_PEDIDO_ID = ticketPedido.getId();
+                            Session.TICKET_PEDIDO_RUTA = ticketPedido.getRuta();
+                        } else {
+                            Session.TICKET_PEDIDO_ID = 0;
+                            Session.TICKET_PEDIDO_RUTA = "";
                         }
 
                         EmpresaTB list = EmpresaADO.GetEmpresa();
@@ -289,7 +320,7 @@ public class SplashScreen extends Preloader {
 
                     }
                 } else {
-                    Tools.AlertMessageError(preloaderStage.getScene().getRoot(), "Preloader", "No se pudo conectar al servidor, revise su conexión e intente nuevamente ("+DBUtil.dbConnect()+")");
+                    Tools.AlertMessageError(preloaderStage.getScene().getRoot(), "Preloader", "No se pudo conectar al servidor, revise su conexión e intente nuevamente (" + DBUtil.dbConnect() + ")");
                     preloaderStage.hide();
                     Platform.exit();
                 }

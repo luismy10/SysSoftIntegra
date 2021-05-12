@@ -1,17 +1,34 @@
 package controller.produccion.producir;
 
 import controller.menus.FxPrincipalController;
+import controller.tools.Session;
+import controller.tools.Tools;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import model.FormulaADO;
+import model.FormulaTB;
+import model.ProduccionADO;
+import model.ProduccionTB;
+import model.SuministroTB;
 
 public class FxProducirVisualizarController implements Initializable {
 
@@ -22,25 +39,43 @@ public class FxProducirVisualizarController implements Initializable {
     @FXML
     private Label lblTitulo;
     @FXML
+    private Text lblCantidadProducir;
+    @FXML
+    private Text lblProducto;
+    @FXML
+    private Text lblEncargado;
+    @FXML
+    private Text lblFechaCreacion;
+    @FXML
+    private Text lblFechaProduccion;
+    @FXML
+    private Text lblEstado;
+    @FXML
+    private Text lblDuracion;
+    @FXML
+    private Label lblCostoTotal;
+    @FXML
+    private Label lblCostoAdicional;
+    @FXML
+    private Label lblCosto;
+    @FXML
+    private Label lblTotal;
+    @FXML
     private GridPane gpList;
-    @FXML
-    private Label lblValorVenta;
-    @FXML
-    private Label lblValorVenta1;
-    @FXML
-    private Label lblValorVenta11;
-    @FXML
-    private Label lblValorVenta111;
     @FXML
     private HBox hbLoad;
     @FXML
     private Label lblMessageLoad;
     @FXML
     private Button btnAceptarLoad;
+    @FXML
+    private Label lblObservacion;
 
     private FxProducirController fxProducirController;
 
     private FxPrincipalController fxPrincipalController;
+
+    private ProduccionTB produccionTB;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -48,7 +83,120 @@ public class FxProducirVisualizarController implements Initializable {
     }
 
     public void setInitComponents(String idProducir) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
 
+        Task<Object> task = new Task<Object>() {
+            @Override
+            protected Object call() {
+                return ProduccionADO.Obtener_Produccion_ById(idProducir);
+            }
+        };
+
+        task.setOnScheduled(w -> {
+            spBody.setDisable(true);
+            hbLoad.setVisible(true);
+            lblMessageLoad.setText("Cargando datos...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+            btnAceptarLoad.setVisible(false);
+        });
+        task.setOnFailed(w -> {
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+            btnAceptarLoad.setVisible(true);
+            btnAceptarLoad.setOnAction(event -> {
+                closeWindow();
+            });
+            btnAceptarLoad.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    closeWindow();
+                }
+                event.consume();
+            });
+        });
+        task.setOnSucceeded(w -> {
+            Object object = task.getValue();
+            if (object instanceof ProduccionTB) {
+                produccionTB = (ProduccionTB) object;
+                lblTitulo.setText("ORDEN DE PRODUCCIÓN - " + idProducir);
+                lblProducto.setText(produccionTB.getSuministroTB().getClave() + " - " + produccionTB.getSuministroTB().getNombreMarca());
+                lblCantidadProducir.setText(Tools.roundingValue(produccionTB.getCantidad(), 2) + " " + produccionTB.getSuministroTB().getUnidadCompraName());
+                lblEncargado.setText(produccionTB.getEmpleadoTB().getApellidos() + ", " + produccionTB.getEmpleadoTB().getNombres());
+                lblFechaCreacion.setText(produccionTB.getFechaRegistro());
+                lblFechaProduccion.setText(produccionTB.getFechaInicio());
+                switch (produccionTB.getEstado()) {
+                    case 1:
+                        lblEstado.setFill(Color.web("#055bd3"));
+                        lblEstado.setText("COMPLETADO");
+                        break;
+                    case 2:
+                        lblEstado.setFill(Color.web("#cc6a00"));
+                        lblEstado.setText("EN PRODUCIÓN");
+                        break;
+                    default:
+                        lblEstado.setFill(Color.web("#e70606"));
+                        lblEstado.setText("ANULADO");
+                        break;
+                }
+                lblDuracion.setText(((produccionTB.getDias() == 1 ? produccionTB.getDias() + " día" : produccionTB.getDias() + " días ") + produccionTB.getHoras() + ":" + produccionTB.getMinutos() + ":00"));
+                lblObservacion.setText(produccionTB.getDescripcion());
+                fillTableDetalleFormula(produccionTB.getSuministroTBs());
+                spBody.setDisable(false);
+                hbLoad.setVisible(false);
+            } else {
+                lblMessageLoad.setText((String) object);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+                btnAceptarLoad.setOnAction(event -> {
+                    closeWindow();
+                });
+                btnAceptarLoad.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        closeWindow();
+                    }
+                    event.consume();
+                });
+            }
+        });
+        exec.execute(task);
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
+    private void fillTableDetalleFormula(ArrayList<SuministroTB> suministroTBs) {
+        double costoTotal = 0;
+        for (int i = 0; i < suministroTBs.size(); i++) {
+            gpList.add(addElementGridPane("l1" + (i + 1), suministroTBs.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
+            gpList.add(addElementGridPane("l2" + (i + 1), suministroTBs.get(i).getClave() + "\n" + suministroTBs.get(i).getNombreMarca() + "", Pos.CENTER_LEFT), 1, (i + 1));
+            gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad(), 2) + "", Pos.CENTER), 2, (i + 1));
+            gpList.add(addElementGridPane("l4" + (i + 1), suministroTBs.get(i).getUnidadCompraName() + "", Pos.CENTER_LEFT), 3, (i + 1));
+            gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 4, (i + 1));
+            gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 5, (i + 1));
+            costoTotal += suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra();
+        }
+        double total = costoTotal + produccionTB.getCostoAdicional();
+        lblCostoTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(costoTotal, 2));
+        lblCostoAdicional.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(produccionTB.getCostoAdicional(), 2));
+        lblCosto.setText(Session.MONEDA_SIMBOLO + " " + (total / produccionTB.getCantidad()));
+        lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(total, 2));
+    }
+
+    private Label addElementGridPane(String id, String nombre, Pos pos) {
+        Label label = new Label(nombre);
+        label.setId(id);
+        label.setStyle("-fx-text-fill:#020203;-fx-background-color: #dddddd;-fx-padding: 0.4166666666666667em 0.8333333333333334em 0.4166666666666667em 0.8333333333333334em;");
+        label.getStyleClass().add("labelRoboto13");
+        label.setAlignment(pos);
+        label.setWrapText(true);
+        label.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        label.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
     }
 
     private void closeWindow() {

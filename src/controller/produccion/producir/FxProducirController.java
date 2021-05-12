@@ -77,6 +77,8 @@ public class FxProducirController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         paginacion = 1;
         opcion = 0;
+        Tools.actualDate(Tools.getDate(), dtFechaInicial);
+        Tools.actualDate(Tools.getDate(), dtFechaFinal);
         loadTableComponents();
         initLoadTable();
     }
@@ -316,12 +318,16 @@ public class FxProducirController implements Initializable {
     @FXML
     private void onKeyPressedRecargar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
+            txtSearch.requestFocus();
+            txtSearch.selectAll();
             initLoadTable();
         }
     }
 
     @FXML
     private void onActionRecargar(ActionEvent event) {
+        txtSearch.requestFocus();
+        txtSearch.selectAll();
         initLoadTable();
     }
 

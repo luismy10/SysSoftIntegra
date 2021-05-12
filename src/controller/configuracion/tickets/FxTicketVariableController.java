@@ -98,6 +98,7 @@ public class FxTicketVariableController implements Initializable {
             listDetalleCuerpo.add(new TicketTB("Código de barras del producto", "789456123789", "codbarrasarticulo"));
             listDetalleCuerpo.add(new TicketTB("Descripción del producto", "DESCRIPCION DEL PRODUCTO", "nombretarticulo"));
             listDetalleCuerpo.add(new TicketTB("Cantidad por producto", "1000", "cantarticulo"));
+            listDetalleCuerpo.add(new TicketTB("Costo unitario por producto", "0000.00", "costarticulo"));
             listDetalleCuerpo.add(new TicketTB("Precio unitario por producto", "0000.00", "precarticulo"));
             listDetalleCuerpo.add(new TicketTB("Descuento por producto", "00.00", "descarticulo"));
             listDetalleCuerpo.add(new TicketTB("Importe por producto", "00.00", "impoarticulo"));

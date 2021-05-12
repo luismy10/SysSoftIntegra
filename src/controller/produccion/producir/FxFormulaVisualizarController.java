@@ -86,11 +86,11 @@ public class FxFormulaVisualizarController implements Initializable {
             lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
             btnAceptarLoad.setVisible(true);
             btnAceptarLoad.setOnAction(event -> {
-                closerView();
+                closeView();
             });
             btnAceptarLoad.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {
-                    closerView();
+                    closeView();
                 }
                 event.consume();
             });
@@ -112,11 +112,11 @@ public class FxFormulaVisualizarController implements Initializable {
                 lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
                 btnAceptarLoad.setVisible(true);
                 btnAceptarLoad.setOnAction(event -> {
-                    closerView();
+                    closeView();
                 });
                 btnAceptarLoad.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.ENTER) {
-                        closerView();
+                        closeView();
                     }
                     event.consume();
                 });
@@ -151,7 +151,7 @@ public class FxFormulaVisualizarController implements Initializable {
         return label;
     }
 
-    private void closerView() {
+    private void closeView() {
         fxPrincipalController.getVbContent().getChildren().remove(apWindow);
         fxPrincipalController.getVbContent().getChildren().clear();
         AnchorPane.setLeftAnchor(fxFormulaController.getHbWindow(), 0d);
@@ -163,7 +163,7 @@ public class FxFormulaVisualizarController implements Initializable {
 
     @FXML
     private void onMouseClickedBehind(MouseEvent event) {
-        closerView();
+        closeView();
     }
 
     public void setInitFormulaController(FxFormulaController fxFormulaController, FxPrincipalController fxPrincipalController) {

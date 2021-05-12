@@ -8,6 +8,9 @@ import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.awt.print.Book;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +21,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,6 +43,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import model.PedidoADO;
 import model.PedidoTB;
 import model.SuministroTB;
@@ -351,6 +359,186 @@ public class FxPedidosDetalleController implements Initializable {
         }
     }
 
+    private void ticket() {
+        if (!Session.ESTADO_IMPRESORA_PEDIDO && Tools.isText(Session.NOMBRE_IMPRESORA_PEDIDO) && Tools.isText(Session.FORMATO_IMPRESORA_PEDIDO)) {
+            Tools.AlertMessageWarning(apWindow, "Pedido", "No esta configurado la ruta de impresión ve a la sección configuración/impresora.");
+            return;
+        }
+
+        if (Session.FORMATO_IMPRESORA_PEDIDO.equalsIgnoreCase("ticket")) {
+            if (Session.TICKET_PEDIDO_ID == 0 && Session.TICKET_PEDIDO_RUTA.equalsIgnoreCase("")) {
+                Tools.AlertMessageWarning(apWindow, "Pedido", "No hay un diseño predeterminado para la impresión configure su ticket en la sección configuración/tickets.");
+            } else {
+                ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+                    Thread t = new Thread(runnable);
+                    t.setDaemon(true);
+                    return t;
+                });
+
+                Task<String> task = new Task<String>() {
+                    @Override
+                    public String call() {
+                        try {
+                            if (Session.DESING_IMPRESORA_PEDIDO.equalsIgnoreCase("withdesing")) {
+                                billPrintable.loadEstructuraTicket(Session.TICKET_PEDIDO_ID, Session.TICKET_PEDIDO_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+
+                                for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
+                                    HBox box = ((HBox) hbEncabezado.getChildren().get(i));
+                                    billPrintable.hbEncebezado(box,
+                                            "PEDIDO",
+                                            "N° " + pedidoTB.getIdPedido(),
+                                            pedidoTB.getProveedorTB().getNumeroDocumento(),
+                                            pedidoTB.getProveedorTB().getRazonSocial(),
+                                            pedidoTB.getProveedorTB().getCelular(),
+                                            pedidoTB.getProveedorTB().getDireccion(),
+                                            "CODIGO PROCESO",
+                                            "IMPORTE EN LETRAS",
+                                            pedidoTB.getFechaEmision(),
+                                            pedidoTB.getHoraEmision(),
+                                            pedidoTB.getFechaVencimiento(),
+                                            pedidoTB.getHoraVencimiento(),
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "-",
+                                            pedidoTB.getEmpleadoTB().getApellidos() + " " + pedidoTB.getEmpleadoTB().getNombres(),
+                                            "-",
+                                            "-",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0",
+                                            "0");
+                                }
+
+                                AnchorPane hbDetalle = new AnchorPane();
+                                ObservableList<SuministroTB> arrList = FXCollections.observableArrayList(pedidoTB.getSuministroTBs());
+                                for (int m = 0; m < arrList.size(); m++) {
+                                    for (int i = 0; i < hbDetalleCabecera.getChildren().size(); i++) {
+                                        HBox hBox = new HBox();
+                                        hBox.setId("dc_" + m + "" + i);
+                                        HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
+                                        billPrintable.hbDetallePedido(hBox, box, arrList, m);
+                                        hbDetalle.getChildren().add(hBox);
+                                    }
+                                }
+
+                                for (int i = 0; i < hbPie.getChildren().size(); i++) {
+                                    HBox box = ((HBox) hbPie.getChildren().get(i));
+                                    billPrintable.hbPie(box,
+                                            pedidoTB.getMonedaTB().getSimbolo(),
+                                            Tools.roundingValue(importeBruto, 2),
+                                            Tools.roundingValue(descuentoBruto, 2),
+                                            Tools.roundingValue(subImporteNeto, 2),
+                                            Tools.roundingValue(impuestoNeto, 2),
+                                            Tools.roundingValue(subImporteNeto, 2),
+                                            Tools.roundingValue(importeTotal, 2),
+                                            "TARJETA",
+                                            "EFECTIVO",
+                                            "VUELTO",
+                                            pedidoTB.getProveedorTB().getNumeroDocumento(),
+                                            pedidoTB.getProveedorTB().getRazonSocial(),
+                                            "CODIGO VENTA",
+                                            pedidoTB.getProveedorTB().getCelular(),
+                                            "IMPORTE EN LETRAS",
+                                            "DOCUMENTO EMPLEADO",
+                                            pedidoTB.getEmpleadoTB().getApellidos() + " " + pedidoTB.getEmpleadoTB().getNombres(),
+                                            "CELULAR EMPLEADO",
+                                            "DIRECCION EMPLEADO",
+                                            pedidoTB.getObservacion());
+                                }
+
+                                billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
+
+                                DocPrintJob job = billPrintable.findPrintService(Session.NOMBRE_IMPRESORA_COTIZACION, PrinterJob.lookupPrintServices()).createPrintJob();
+
+                                if (job != null) {
+                                    PrinterJob pj = PrinterJob.getPrinterJob();
+                                    pj.setPrintService(job.getPrintService());
+                                    pj.setJobName(Session.NOMBRE_IMPRESORA_COTIZACION);
+                                    Book book = new Book();
+                                    book.append(billPrintable, billPrintable.getPageFormat(pj));
+                                    pj.setPageable(book);
+                                    pj.print();
+                                    if (Session.CORTAPAPEL_IMPRESORA_COTIZACION) {
+                                        billPrintable.printCortarPapel(Session.NOMBRE_IMPRESORA_COTIZACION);
+                                    }
+                                    return "completed";
+                                } else {
+                                    return "error_name";
+                                }
+                            } else {
+                                return "completed";
+//                                billPrintable.loadEstructuraTicket(Session.TICKET_COTIZACION_ID, Session.TICKET_COTIZACION_RUTA, hbEncabezado, hbDetalleCabecera, hbPie);
+//                                return imprimirVenta(Session.NOMBRE_IMPRESORA_COTIZACION, Session.CORTAPAPEL_IMPRESORA_COTIZACION);
+                            }
+
+                        } catch (PrinterException | PrintException | IOException ex) {
+                            return "Error en imprimir: " + ex.getLocalizedMessage();
+                        }
+                    }
+                };
+
+                task.setOnSucceeded(w -> {
+
+                    String result = task.getValue();
+                    if (result.equalsIgnoreCase("completed")) {
+                        Tools.showAlertNotification("/view/image/information_large.png",
+                                "Envío de impresión",
+                                "Se completo el proceso de impresión correctamente.",
+                                Duration.seconds(5),
+                                Pos.BOTTOM_RIGHT);
+                    } else if (result.equalsIgnoreCase("error_name")) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Envío de impresión",
+                                "Error en encontrar el nombre de la impresión por problemas de puerto o driver.",
+                                Duration.seconds(10),
+                                Pos.CENTER);
+                    } else if (result.equalsIgnoreCase("empty")) {
+                        Tools.showAlertNotification("/view/image/warning_large.png",
+                                "Envío de impresión",
+                                "No hay registros para mostrar en el reporte.",
+                                Duration.seconds(10),
+                                Pos.CENTER);
+                    } else {
+                        Tools.showAlertNotification("/view/image/error_large.png",
+                                "Envío de impresión",
+                                "Se producto un problema por problemas de la impresora\n" + result,
+                                Duration.seconds(10),
+                                Pos.CENTER);
+                    }
+                });
+                task.setOnFailed(w -> {
+                    Tools.showAlertNotification("/view/image/warning_large.png",
+                            "Envío de impresión",
+                            "Se produjo un problema en el proceso de envío, \n intente nuevamente o comuníquese con su proveedor del sistema.",
+                            Duration.seconds(10),
+                            Pos.BOTTOM_RIGHT);
+                });
+
+                task.setOnScheduled(w -> {
+                    Tools.showAlertNotification("/view/image/print.png",
+                            "Envío de impresión",
+                            "Se envió la impresión a la cola, este\n proceso puede tomar unos segundos.",
+                            Duration.seconds(5),
+                            Pos.BOTTOM_RIGHT);
+                });
+
+                exec.execute(task);
+                if (!exec.isShutdown()) {
+                    exec.shutdown();
+                }
+
+            }
+        } else {
+            Tools.AlertMessageWarning(apWindow, "Venta", "Error al validar el formato de impresión configure en la sección configuración/impresora.");
+        }
+    }
+
     private void closerView() {
         fxPrincipalController.getVbContent().getChildren().remove(apWindow);
         fxPrincipalController.getVbContent().getChildren().clear();
@@ -381,13 +569,13 @@ public class FxPedidosDetalleController implements Initializable {
     @FXML
     private void onKeyPressedTicket(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            ticket();
         }
     }
 
     @FXML
     private void onActionTicket(ActionEvent event) {
-
+        ticket();
     }
 
     @FXML

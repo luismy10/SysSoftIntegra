@@ -511,6 +511,9 @@ public class FxTicketController implements Initializable {
                             } else if (tipoTicket == 12) {
                                 Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = idTicket;
                                 Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = sampleObject.toJSONString();
+                            } else if (tipoTicket == 13) {
+                                Session.TICKET_PEDIDO_ID = idTicket;
+                                Session.TICKET_PEDIDO_RUTA = sampleObject.toJSONString();
                             }
                         }
                         clearPane();
@@ -1508,9 +1511,12 @@ public class FxTicketController implements Initializable {
                     } else if (tipoTicket == 11) {
                         Session.TICKET_GUIA_REMISION_ID = idTicket;
                         Session.TICKET_GUIA_REMISION_RUTA = ruta;
-                    }else if (tipoTicket == 12) {
+                    } else if (tipoTicket == 12) {
                         Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = idTicket;
                         Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = ruta;
+                    } else if (tipoTicket == 13) {
+                        Session.TICKET_PEDIDO_ID = idTicket;
+                        Session.TICKET_PEDIDO_RUTA = ruta;
                     }
                 } else {
                     Tools.AlertMessageError(vbWindow, "Ticket", result);
@@ -1550,9 +1556,12 @@ public class FxTicketController implements Initializable {
                     } else if (tipoTicket == 11) {
                         Session.TICKET_GUIA_REMISION_ID = 0;
                         Session.TICKET_GUIA_REMISION_RUTA = "";
-                    }else if (tipoTicket == 12) {
+                    } else if (tipoTicket == 12) {
                         Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_ID = 0;
                         Session.TICKET_HISTORIAL_SALIDA_PRODUCTOS_RUTA = "";
+                    } else if (tipoTicket == 13) {
+                        Session.TICKET_PEDIDO_ID = 0;
+                        Session.TICKET_PEDIDO_RUTA = "";
                     }
                     clearPane();
                 } else if (result.equalsIgnoreCase("predeterminated")) {
@@ -1904,7 +1913,7 @@ public class FxTicketController implements Initializable {
         return sheetWidth;
     }
 
-     public void setContent( FxPrincipalController fxPrincipalController) {
+    public void setContent(FxPrincipalController fxPrincipalController) {
         this.fxPrincipalController = fxPrincipalController;
     }
 

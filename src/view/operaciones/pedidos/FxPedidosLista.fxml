@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" fx:id="apWindow" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.operaciones.pedidos.FxPedidosListaController">
+<AnchorPane id="AnchorPane" fx:id="apWindow" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.pedidos.FxPedidosListaController">
    <children>
       <HBox>
          <children>
@@ -141,11 +140,11 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                            <children>
                               <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" prefHeight="30.0" styleClass="buttonLight" text="Aceptar">
                                  <graphic>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/accept.png" />
                                        </image>
@@ -154,7 +153,7 @@
                               </Button>
                               <Button mnemonicParsing="false" onAction="#onActionCerrar" onKeyPressed="#onKeyPressedCerrar" prefHeight="30.0" styleClass="buttonLight" text="Cerrar">
                                  <graphic>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/error.png" />
                                        </image>

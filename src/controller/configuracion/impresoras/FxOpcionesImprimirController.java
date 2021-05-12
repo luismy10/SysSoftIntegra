@@ -368,7 +368,7 @@ public class FxOpcionesImprimirController implements Initializable {
                         Session.TICKET_PEDIDO_ID,
                         Session.TICKET_PEDIDO_RUTA,
                         Session.NOMBRE_IMPRESORA_PEDIDO,
-                        Session.CORTAPAPEL_IMPRESORA_COTIZACION
+                        Session.CORTAPAPEL_IMPRESORA_PEDIDO
                 );
                 Tools.Dispose(apWindow);
             }
@@ -1987,7 +1987,7 @@ public class FxOpcionesImprimirController implements Initializable {
         for (int i = 0; i < hbEncabezado.getChildren().size(); i++) {
             HBox box = ((HBox) hbEncabezado.getChildren().get(i));
             billPrintable.hbEncebezado(box,
-                    "COTIZACIÓN",
+                    "PEDIDO",
                     "N° " + pedidoTB.getIdPedido(),
                     pedidoTB.getProveedorTB().getNumeroDocumento(),
                     pedidoTB.getProveedorTB().getRazonSocial(),
@@ -2024,7 +2024,7 @@ public class FxOpcionesImprimirController implements Initializable {
                 HBox hBox = new HBox();
                 hBox.setId("dc_" + m + "" + i);
                 HBox box = ((HBox) hbDetalleCabecera.getChildren().get(i));
-                billPrintable.hbDetalleCotizacion(hBox, box, arrList, m);
+                billPrintable.hbDetallePedido(hBox, box, arrList, m);
                 hbDetalle.getChildren().add(hBox);
             }
         }
@@ -2037,13 +2037,13 @@ public class FxOpcionesImprimirController implements Initializable {
 
         for (SuministroTB suministroTB : arrList) {
             double descuento = suministroTB.getDescuento();
-            double precioDescuento = suministroTB.getPrecioVentaGeneral() - descuento;
-            double subPrecio = Tools.calculateTaxBruto(suministroTB.getImpuestoValor(), precioDescuento);
-            double precioBruto = subPrecio + descuento;
-            totalBruto += precioBruto * suministroTB.getCantidad();
+            double costoDescuento = suministroTB.getCostoCompra()- descuento;
+            double subCosto = Tools.calculateTaxBruto(suministroTB.getImpuestoValor(), costoDescuento);
+            double costoBruto = subCosto + descuento;
+            totalBruto += costoBruto * suministroTB.getCantidad();
             totalDescuento += suministroTB.getCantidad() * descuento;
-            totalSubTotal += suministroTB.getCantidad() * subPrecio;
-            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), subPrecio);
+            totalSubTotal += suministroTB.getCantidad() * subCosto;
+            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), subCosto);
             totalImpuesto += suministroTB.getCantidad() * impuesto;
             totalNeto = totalSubTotal + totalImpuesto;
         }

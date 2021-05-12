@@ -34,9 +34,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import model.CotizacionADO;
-import model.CotizacionTB;
-import model.DetalleCotizacionTB;
 import model.FormulaADO;
 import model.FormulaTB;
 import model.SuministroADO;
@@ -332,7 +329,7 @@ public class FxFormulaAgregarController implements Initializable {
             }
 
             if (cantidad > 0) {
-                Tools.AlertMessageWarning(apWindow, "Formula", "Hay cantidades en 0 en la lista de insumos.");
+                Tools.AlertMessageWarning(apWindow, "Formula", "Hay cantidades en 0 en la lista de materia prima.");
                 tpContenedor.getSelectionModel().select(1);
             } else if (insumo > 0) {
                 Tools.AlertMessageWarning(apWindow, "Formula", "No hay insumos seleccionados en la lista.");

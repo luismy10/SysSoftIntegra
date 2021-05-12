@@ -87,7 +87,7 @@
                                  <children>
                                     <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label styleClass="labelRoboto14" text="Cliente:" textFill="#020203">
+                                          <Label styleClass="labelRoboto13" text="Cliente:" textFill="#020203">
                                              <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
