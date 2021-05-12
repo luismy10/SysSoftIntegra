@@ -61,8 +61,8 @@ public class FXModalEstadoController implements Initializable {
                     if (result.equalsIgnoreCase("actualizado")) {
                         Tools.AlertMessageInformation(window, "Producción", "Se actualizo correctamente la produccón.");
                         Tools.Dispose(window);
-                        fxProducirEditarController.clearComponentes();
-                        fxProducirEditarController.closeWindow();
+//                        fxProducirEditarController.clearComponentes();
+//                        fxProducirEditarController.closeWindow();
                     } else {
                         Tools.AlertMessageWarning(window, "Producción", result);
                     }

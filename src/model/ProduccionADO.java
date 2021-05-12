@@ -361,7 +361,74 @@ public class ProduccionADO {
                 produccionTB.setIdProducto(resultSet.getString("IdProducto"));
                 produccionTB.setCantidad(resultSet.getInt("Cantidad"));
                 SuministroTB newSuministroTB = new SuministroTB(resultSet.getString("IdProducto"), resultSet.getString("Clave"), resultSet.getString("NombreMarca"));
-                newSuministroTB.setUnidadCompraName(resultSet.getString("Medida")); 
+                newSuministroTB.setUnidadCompraName(resultSet.getString("Medida"));
+                produccionTB.setSuministroTB(newSuministroTB);
+                produccionTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("IdEmpleado"), resultSet.getString("Apellidos"), resultSet.getString("Nombres")));
+                produccionTB.setEstado(resultSet.getInt("Estado"));
+
+                statementDetalleProduccion = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Produccion_ById(?)}");
+                statementDetalleProduccion.setString(1, idProduccion);
+                resultSet = statementDetalleProduccion.executeQuery();
+                ArrayList<SuministroTB> suministroTBs = new ArrayList();
+                while (resultSet.next()) {
+                    SuministroTB suministroTB = new SuministroTB();
+                    suministroTB.setId(resultSet.getRow());
+                    suministroTB.setClave(resultSet.getString("Clave"));
+                    suministroTB.setNombreMarca(resultSet.getString("NombreMarca"));
+                    suministroTB.setUnidadCompraName(resultSet.getString("Medida"));
+                    suministroTB.setCostoCompra(resultSet.getDouble("Costo"));
+                    suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
+                    suministroTBs.add(suministroTB);
+                }
+                produccionTB.setSuministroTBs(suministroTBs);
+                return produccionTB;
+            } else {
+                throw new Exception("No se pudo obtener los datos de la producción");
+            }
+        } catch (SQLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            return ex.getLocalizedMessage();
+        } finally {
+            try {
+                if (statementProduccion != null) {
+                    statementProduccion.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statementDetalleProduccion != null) {
+                    statementDetalleProduccion.close();
+                }
+                DBUtil.dbDisconnect();
+            } catch (SQLException ex) {
+                return ex.getLocalizedMessage();
+            }
+        }
+    }
+
+    public static Object Obtener_Produccion_Editor_ById(String idProduccion) {
+        PreparedStatement statementProduccion = null;
+        PreparedStatement statementDetalleProduccion = null;
+        ResultSet resultSet = null;
+        try {
+            DBUtil.dbConnect();
+            statementProduccion = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Produccion_ById(?)}");
+            statementProduccion.setString(1, idProduccion);
+            resultSet = statementProduccion.executeQuery();
+            if (resultSet.next()) {
+                ProduccionTB produccionTB = new ProduccionTB();
+                produccionTB.setFechaRegistro(resultSet.getDate("FechaRegistro").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                produccionTB.setFechaInicio(resultSet.getDate("FechaInico").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                produccionTB.setDias(resultSet.getInt("Dias"));
+                produccionTB.setHoras(resultSet.getInt("Horas"));
+                produccionTB.setMinutos(resultSet.getInt("Minutos"));
+                produccionTB.setTipoOrden(resultSet.getBoolean("TipoOrden"));
+                produccionTB.setDescripcion(resultSet.getString("Descripcion"));
+                produccionTB.setIdProducto(resultSet.getString("IdProducto"));
+                produccionTB.setCantidad(resultSet.getInt("Cantidad"));
+                SuministroTB newSuministroTB = new SuministroTB(resultSet.getString("IdProducto"), resultSet.getString("Clave"), resultSet.getString("NombreMarca"));
+                newSuministroTB.setUnidadCompraName(resultSet.getString("Medida"));
                 produccionTB.setSuministroTB(newSuministroTB);
                 produccionTB.setEmpleadoTB(new EmpleadoTB(resultSet.getString("IdEmpleado"), resultSet.getString("Apellidos"), resultSet.getString("Nombres")));
                 produccionTB.setEstado(resultSet.getInt("Estado"));
