@@ -237,7 +237,7 @@ public class FxProducirController implements Initializable {
                 FXMLLoader fXMLProduccionEditarProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_PRODUCIR_EDITAR));
                 AnchorPane nodeProduccionProceso = fXMLProduccionEditarProceso.load();
                 FxProducirEditarController produccionEditarController = fXMLProduccionEditarProceso.getController();
-                produccionEditarController.setInitControllerProducir(this);
+                produccionEditarController.setInitControllerProducir(this,fxPrincipalController);
                 produccionEditarController.editarProduccion(idProduccion);
                 fxPrincipalController.getVbContent().getChildren().clear();
                 AnchorPane.setLeftAnchor(nodeProduccionProceso, 0d);
@@ -456,14 +456,6 @@ public class FxProducirController implements Initializable {
     private void onActionEditarProduccion(ActionEvent event) {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             editarProduccion(tvList.getSelectionModel().getSelectedItem().getIdProduccion());
-        }
-    }
-
-    private void onMouseClickedProducir(MouseEvent event) {
-        if (tvList.getSelectionModel().getSelectedIndex() >= 0 && tvList.isFocused()) {
-            if (event.getClickCount() == 2) {
-                editarProduccion(tvList.getSelectionModel().getSelectedItem().getIdProduccion());
-            }
         }
     }
 

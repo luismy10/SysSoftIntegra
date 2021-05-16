@@ -48,11 +48,11 @@
                   </Button>
                </children>
             </HBox>
-            <ScrollPane fitToWidth="true" prefHeight="420.0" styleClass="scroll-pane-primary">
+            <ScrollPane fitToWidth="true" prefHeight="420.0" styleClass="scroll-pane-primary" VBox.vgrow="ALWAYS">
                <content>
                   <AnchorPane>
                      <children>
-                        <VBox fx:id="vbSegundo" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-padding: 0em 0.8333333333333334em;">
                                  <children>
@@ -91,9 +91,9 @@
                                           </Label>
                                           <HBox>
                                              <children>
-                                                <TextField prefHeight="30.0" prefWidth="100.0" promptText="Días" styleClass="text-field-normal" />
-                                                <TextField prefHeight="30.0" prefWidth="100.0" promptText="Horas" styleClass="text-field-normal" />
-                                                <TextField prefHeight="30.0" prefWidth="100.0" promptText="Minutos" styleClass="text-field-normal" />
+                                                <TextField fx:id="txtDias" onKeyTyped="#onKeyTypedDias" prefHeight="30.0" prefWidth="100.0" promptText="Días" styleClass="text-field-normal" />
+                                                <TextField fx:id="txtHoras" onKeyTyped="#onKeyTypedHoras" prefHeight="30.0" prefWidth="100.0" promptText="Horas" styleClass="text-field-normal" />
+                                                <TextField fx:id="txtMinutos" onKeyTyped="#onKeyTypedMinutos" prefHeight="30.0" prefWidth="100.0" promptText="Minutos" styleClass="text-field-normal" />
                                              </children>
                                           </HBox>
                                        </children>

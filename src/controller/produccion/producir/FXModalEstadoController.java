@@ -44,28 +44,28 @@ public class FXModalEstadoController implements Initializable {
         if(produccionTB.getIdProduccion() == null){
             short value = Tools.AlertMessageConfirmation(window, "Producción", "¿Está seguro de continuar?");
             if (value == 1) {
-                String result = ProduccionADO.Registrar_Produccion(produccionTB);
-                if (result.equalsIgnoreCase("registrado")) {
-                    Tools.AlertMessageInformation(window, "Producción", "Se registró correctamente la produccón.");
-                    Tools.Dispose(window);
-//                    fxProducirAgregarController.clearComponentes();
-//                    fxProducirAgregarController.closeWindow();
-                } else {
-                    Tools.AlertMessageWarning(window, "Producción", result);
-                }
+//                String result = ProduccionADO.Registrar_Produccion(produccionTB);
+//                if (result.equalsIgnoreCase("registrado")) {
+//                    Tools.AlertMessageInformation(window, "Producción", "Se registró correctamente la produccón.");
+//                    Tools.Dispose(window);
+////                    fxProducirAgregarController.clearComponentes();
+////                    fxProducirAgregarController.closeWindow();
+//                } else {
+//                    Tools.AlertMessageWarning(window, "Producción", result);
+//                }
             }
         }else{
             short value = Tools.AlertMessageConfirmation(window, "Producción", "¿Está seguro de continuar?");
                 if (value == 1) {
-                    String result = ProduccionADO.Actualizar_Produccion(produccionTB);
-                    if (result.equalsIgnoreCase("actualizado")) {
-                        Tools.AlertMessageInformation(window, "Producción", "Se actualizo correctamente la produccón.");
-                        Tools.Dispose(window);
-//                        fxProducirEditarController.clearComponentes();
-//                        fxProducirEditarController.closeWindow();
-                    } else {
-                        Tools.AlertMessageWarning(window, "Producción", result);
-                    }
+//                    String result = ProduccionADO.Actualizar_Produccion(produccionTB);
+//                    if (result.equalsIgnoreCase("actualizado")) {
+//                        Tools.AlertMessageInformation(window, "Producción", "Se actualizo correctamente la produccón.");
+//                        Tools.Dispose(window);
+////                        fxProducirEditarController.clearComponentes();
+////                        fxProducirEditarController.closeWindow();
+//                    } else {
+//                        Tools.AlertMessageWarning(window, "Producción", result);
+//                    }
                 }
         }  
     }

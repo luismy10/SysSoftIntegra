@@ -688,7 +688,7 @@ public class FxProducirAgregarController implements Initializable {
                             produccionTB.setCostoAdicional(Tools.isNumeric(txtCostoAdicional.getText()) ? Double.parseDouble(txtCostoAdicional.getText()) : 0);
                             produccionTB.setEstado(2);
                             produccionTB.setSuministroTBs(newSuministroTBs);
-                            return ProduccionADO.Registrar_Produccion(produccionTB);
+                            return ProduccionADO.Crud_Produccion(produccionTB);
                         }
                     };
                     task.setOnScheduled(w -> {
