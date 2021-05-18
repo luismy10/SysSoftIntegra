@@ -13,7 +13,7 @@
    <children>
       <VBox prefWidth="500.0">
          <children>
-            <HBox style="-fx-padding: 0.8333333333333334em; -fx-background-color: white; -fx-border-color: #3c8dbc; -fx-border-width: 0 0 2px 0;">
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-background-color: white; -fx-border-color: #3c8dbc; -fx-border-width: 0 0 1px 0;">
                <children>
                   <Label styleClass="labelRobotoBold15" text="Confirmacion" textFill="#020203" HBox.hgrow="ALWAYS">
                      <graphic>

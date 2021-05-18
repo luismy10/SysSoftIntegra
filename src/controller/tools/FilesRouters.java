@@ -364,8 +364,6 @@ public final class FilesRouters {
 
     public static final String FX_MODAL_ESTADO = "/view/produccion/producir/FXModalEstado.fxml";
 
-    public static final String FX_FORMULA_LISTA = "/view/produccion/producir/FXFormulaLista.fxml";
-
     public static final String FX_COMPRAS_INSUMOS_PROCESO = "/view/produccion/compras/FxComprasInsumosProceso.fxml";
 
     public static final String FX_PEDIDO_MODAL = "/view/operaciones/pedidos/FxPedidosModal.fxml";

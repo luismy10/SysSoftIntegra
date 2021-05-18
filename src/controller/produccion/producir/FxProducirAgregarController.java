@@ -1,8 +1,11 @@
 package controller.produccion.producir;
 
 import controller.menus.FxPrincipalController;
+import controller.tools.FilesRouters;
 import controller.tools.SearchComboBox;
 import controller.tools.Tools;
+import controller.tools.WindowStage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +15,11 @@ import java.util.concurrent.Executors;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -35,6 +40,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.EmpleadoTB;
 import model.FormulaADO;
 import model.FormulaTB;
@@ -619,6 +625,28 @@ public class FxProducirAgregarController implements Initializable {
         txtProyecto.requestFocus();
     }
 
+    private void openModalComplete(ProduccionTB produccionTB) {
+        try {
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_MODAL_ESTADO);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+
+            FXModalEstadoController controller = fXMLLoader.getController();
+            controller.setInitControllerProducirAgregar(this);
+            controller.setProduccionTB(produccionTB);
+
+            Stage stage = WindowStage.StageLoaderModal(parent, "Confirmacion de Producción", apWindow.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println("Controller modal estado" + ex.getLocalizedMessage());
+        }
+    }
+
     private void onEventGuardar() {
         if (dtFechaProduccion.getValue() == null) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la fecha de producción.");
@@ -663,97 +691,99 @@ public class FxProducirAgregarController implements Initializable {
                 if (duplicate > 0) {
                     Tools.AlertMessageWarning(apWindow, "Producción", "Hay insumos duplicados en la lista.");
                 } else {
-                    ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-                        Thread t = new Thread(runnable);
-                        t.setDaemon(true);
-                        return t;
-                    });
-
-                    Task<String> task = new Task<String>() {
-                        @Override
-                        protected String call() {
-                            ProduccionTB produccionTB = new ProduccionTB();
-                            produccionTB.setFechaInicio(Tools.getDatePicker(dtFechaProduccion));
-                            produccionTB.setHoraInicio(Tools.getTime());
-                            produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);
-                            produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
-                            produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
-                            produccionTB.setIdProducto(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
-                            produccionTB.setTipoOrden(true);
-                            produccionTB.setIdEncargado(cbPersonaEncargada.getSelectionModel().getSelectedItem().getIdEmpleado());
-                            produccionTB.setDescripcion(txtDescripcion.getText().trim());
-                            produccionTB.setFechaRegistro(Tools.getDate());
-                            produccionTB.setHoraRegistro(Tools.getTime());
-                            produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
-                            produccionTB.setCostoAdicional(Tools.isNumeric(txtCostoAdicional.getText()) ? Double.parseDouble(txtCostoAdicional.getText()) : 0);
-                            produccionTB.setEstado(2);
-                            produccionTB.setSuministroTBs(newSuministroTBs);
-                            
-                            
-                            return ProduccionADO.Crud_Produccion(produccionTB);
-                        }
-                    };
-                    task.setOnScheduled(w -> {
-                        vbBody.setDisable(true);
-                        hbLoad.setVisible(true);
-                        btnAceptarLoad.setVisible(false);
-                        lblMessageLoad.setText("Procesando información...");
-                        lblMessageLoad.setTextFill(Color.web("#ffffff"));
-                    });
-                    task.setOnFailed(w -> {
-                        btnAceptarLoad.setVisible(true);
-                        btnAceptarLoad.setOnAction(event -> {
-                            closeWindow();
-                        });
-                        btnAceptarLoad.setOnKeyPressed(event -> {
-                            if (event.getCode() == KeyCode.ENTER) {
-                                closeWindow();
-                            }
-                        });
-                        lblMessageLoad.setText(task.getException().getLocalizedMessage());
-                        lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
-                    });
-                    task.setOnSucceeded(w -> {
-                        String result = task.getValue();
-                        if (result.equalsIgnoreCase("inserted")) {
-                            lblMessageLoad.setText("Se registró correctamente la producción.");
-                            lblMessageLoad.setTextFill(Color.web("#ffffff"));
-                            btnAceptarLoad.setVisible(true);
-                            btnAceptarLoad.setOnAction(event -> {
-                                closeWindow();
-                            });
-                            btnAceptarLoad.setOnKeyPressed(event -> {
-                                if (event.getCode() == KeyCode.ENTER) {
-                                    closeWindow();
-                                }
-                            });
-                        } else {
-                            lblMessageLoad.setText(result);
-                            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
-                            btnAceptarLoad.setVisible(true);
-                            btnAceptarLoad.setOnAction(event -> {
-                                closeWindow();
-                            });
-                            btnAceptarLoad.setOnKeyPressed(event -> {
-                                if (event.getCode() == KeyCode.ENTER) {
-                                    closeWindow();
-                                }
-                            });
-                        }
-                    });
-                    exec.execute(task);
-
-                    if (!exec.isShutdown()) {
-                        exec.shutdown();
-                    }
+                    ProduccionTB produccionTB = new ProduccionTB();
+                    produccionTB.setFechaInicio(Tools.getDatePicker(dtFechaProduccion));
+                    produccionTB.setHoraInicio(Tools.getTime());
+                    produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);
+                    produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
+                    produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
+                    produccionTB.setIdProducto(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
+                    produccionTB.setTipoOrden(true);
+                    produccionTB.setIdEncargado(cbPersonaEncargada.getSelectionModel().getSelectedItem().getIdEmpleado());
+                    produccionTB.setDescripcion(txtDescripcion.getText().trim());
+                    produccionTB.setFechaRegistro(Tools.getDate());
+                    produccionTB.setHoraRegistro(Tools.getTime());
+                    produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
+                    produccionTB.setCostoAdicional(Tools.isNumeric(txtCostoAdicional.getText()) ? Double.parseDouble(txtCostoAdicional.getText()) : 0);
+                    produccionTB.setEstado(2);
+                    produccionTB.setSuministroTBs(newSuministroTBs);
+                    openModalComplete(produccionTB);
                 }
             }
         }
     }
 
+    public void executeRegistro(ProduccionTB produccionTB) {
+        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() {
+                return ProduccionADO.Crud_Produccion(produccionTB);
+            }
+        };
+        task.setOnScheduled(w -> {
+            vbBody.setDisable(true);
+            hbLoad.setVisible(true);
+            btnAceptarLoad.setVisible(false);
+            lblMessageLoad.setText("Procesando información...");
+            lblMessageLoad.setTextFill(Color.web("#ffffff"));
+        });
+        task.setOnFailed(w -> {
+            btnAceptarLoad.setVisible(true);
+            btnAceptarLoad.setOnAction(event -> {
+                closeWindow();
+            });
+            btnAceptarLoad.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    closeWindow();
+                }
+            });
+            lblMessageLoad.setText(task.getException().getLocalizedMessage());
+            lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+        });
+        task.setOnSucceeded(w -> {
+            String result = task.getValue();
+            if (result.equalsIgnoreCase("inserted")) {
+                lblMessageLoad.setText("Se registró correctamente la producción.");
+                lblMessageLoad.setTextFill(Color.web("#ffffff"));
+                btnAceptarLoad.setVisible(true);
+                btnAceptarLoad.setOnAction(event -> {
+                    closeWindow();
+                });
+                btnAceptarLoad.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        closeWindow();
+                    }
+                });
+            } else {
+                lblMessageLoad.setText(result);
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+                btnAceptarLoad.setOnAction(event -> {
+                    closeWindow();
+                });
+                btnAceptarLoad.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        closeWindow();
+                    }
+                });
+            }
+        });
+        exec.execute(task);
+
+        if (!exec.isShutdown()) {
+            exec.shutdown();
+        }
+    }
+
     private boolean validateDuplicateInsumo(ArrayList<SuministroTB> view, SuministroTB suministroTB) {
         boolean ret = false;
-        for (SuministroTB sm  : view) {
+        for (SuministroTB sm : view) {
             if (sm.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro().equals(suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro())) {
                 ret = true;
                 break;

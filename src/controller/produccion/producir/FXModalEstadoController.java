@@ -1,4 +1,3 @@
-
 package controller.produccion.producir;
 
 import controller.tools.Tools;
@@ -15,7 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import model.ProduccionADO;
 import model.ProduccionTB;
 
-
 public class FXModalEstadoController implements Initializable {
 
     @FXML
@@ -24,11 +22,11 @@ public class FXModalEstadoController implements Initializable {
     private RadioButton rbSaveOden;
     @FXML
     private RadioButton rbSaveAndEnd;
-    
+
     private FxProducirAgregarController fxProducirAgregarController;
-    
+
     private FxProducirEditarController fxProducirEditarController;
-    
+
     private ProduccionTB produccionTB;
 
     @Override
@@ -39,56 +37,27 @@ public class FXModalEstadoController implements Initializable {
         rbSaveAndEnd.setToggleGroup(guardar);
         rbSaveOden.setSelected(true);
     }
-    
-    private void GuardarProduccion(){
-        if(produccionTB.getIdProduccion() == null){
-            short value = Tools.AlertMessageConfirmation(window, "Producción", "¿Está seguro de continuar?");
-            if (value == 1) {
-//                String result = ProduccionADO.Registrar_Produccion(produccionTB);
-//                if (result.equalsIgnoreCase("registrado")) {
-//                    Tools.AlertMessageInformation(window, "Producción", "Se registró correctamente la produccón.");
-//                    Tools.Dispose(window);
-////                    fxProducirAgregarController.clearComponentes();
-////                    fxProducirAgregarController.closeWindow();
-//                } else {
-//                    Tools.AlertMessageWarning(window, "Producción", result);
-//                }
+
+    private void GuardarProduccion() {
+        short value = Tools.AlertMessageConfirmation(window, "Producción", "¿Está seguro de continuar?");
+        if (value == 1) {
+            if (fxProducirAgregarController != null) {
+                fxProducirAgregarController.executeRegistro(produccionTB);
+            } else if (fxProducirEditarController != null) {
+                fxProducirEditarController.executeEdicion(produccionTB);
             }
-        }else{
-            short value = Tools.AlertMessageConfirmation(window, "Producción", "¿Está seguro de continuar?");
-                if (value == 1) {
-//                    String result = ProduccionADO.Actualizar_Produccion(produccionTB);
-//                    if (result.equalsIgnoreCase("actualizado")) {
-//                        Tools.AlertMessageInformation(window, "Producción", "Se actualizo correctamente la produccón.");
-//                        Tools.Dispose(window);
-////                        fxProducirEditarController.clearComponentes();
-////                        fxProducirEditarController.closeWindow();
-//                    } else {
-//                        Tools.AlertMessageWarning(window, "Producción", result);
-//                    }
-                }
-        }  
+        }
     }
 
     @FXML
     private void onKeyPressedRegister(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            if (rbSaveAndEnd.isSelected()) {
-                produccionTB.setEstado(1);
-            } else {
-                produccionTB.setEstado(2);
-            }
             GuardarProduccion();
         }
     }
 
     @FXML
     private void onActionToRegister(ActionEvent event) {
-        if (rbSaveAndEnd.isSelected()) {
-            produccionTB.setEstado(1);
-        } else {
-            produccionTB.setEstado(2);
-        }
         GuardarProduccion();
     }
 
@@ -106,14 +75,13 @@ public class FXModalEstadoController implements Initializable {
 
     public void setInitControllerProducirAgregar(FxProducirAgregarController fxProducirAgregarController) {
         this.fxProducirAgregarController = fxProducirAgregarController;
-        rbSaveAndEnd.setDisable(true);
     }
-    
-    public void setInitControllerProducirEditar(FxProducirEditarController fxProducirEditarController){
+
+    public void setInitControllerProducirEditar(FxProducirEditarController fxProducirEditarController) {
         this.fxProducirEditarController = fxProducirEditarController;
     }
-    
-    public void setProduccionTB(ProduccionTB produccionTB){
+
+    public void setProduccionTB(ProduccionTB produccionTB) {
         this.produccionTB = produccionTB;
     }
 }
