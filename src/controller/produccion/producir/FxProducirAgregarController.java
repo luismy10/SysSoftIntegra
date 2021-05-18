@@ -688,6 +688,8 @@ public class FxProducirAgregarController implements Initializable {
                             produccionTB.setCostoAdicional(Tools.isNumeric(txtCostoAdicional.getText()) ? Double.parseDouble(txtCostoAdicional.getText()) : 0);
                             produccionTB.setEstado(2);
                             produccionTB.setSuministroTBs(newSuministroTBs);
+                            
+                            
                             return ProduccionADO.Crud_Produccion(produccionTB);
                         }
                     };
@@ -713,7 +715,7 @@ public class FxProducirAgregarController implements Initializable {
                     });
                     task.setOnSucceeded(w -> {
                         String result = task.getValue();
-                        if (result.equalsIgnoreCase("registrado")) {
+                        if (result.equalsIgnoreCase("inserted")) {
                             lblMessageLoad.setText("Se registró correctamente la producción.");
                             lblMessageLoad.setTextFill(Color.web("#ffffff"));
                             btnAceptarLoad.setVisible(true);

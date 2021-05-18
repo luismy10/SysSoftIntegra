@@ -1,11 +1,13 @@
 package model;
 
 import controller.tools.SearchComboBox;
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ public class ProduccionADO {
         PreparedStatement statementValidate = null;
         PreparedStatement statementProducion = null;
         PreparedStatement statementDetalle = null;
+        PreparedStatement statementHistorial = null;
         CallableStatement statementCodigo = null;
 //        PreparedStatement statementInventario = null;
         PreparedStatement statementSuministro = null;
@@ -36,19 +39,53 @@ public class ProduccionADO {
             DBUtil.getConnection().setAutoCommit(false);
 
             statementValidate = DBUtil.getConnection().prepareCall("SELECT * FROM ProduccionTB WHERE IdProduccion = ?");
+            statementValidate.setString(1, produccionTB.getIdProduccion());
             if (statementValidate.executeQuery().next()) {
-                statementProducion = DBUtil.getConnection().prepareStatement("UPDATE ProduccionTB SET"
-                        + "Dias = ?,"
-                        + "Horas = ?,"
-                        + "Minutos = ?"                       
-                        + "WHERE IdProduccion = ?");
+                statementProducion = DBUtil.getConnection().prepareStatement("UPDATE ProduccionTB SET Dias = Dias + ?, Horas = Horas + ?, Minutos = Minutos + ? WHERE IdProduccion = ?");
                 statementProducion.setInt(1, produccionTB.getDias());
                 statementProducion.setInt(2, produccionTB.getHoras());
                 statementProducion.setInt(3, produccionTB.getMinutos());
                 statementProducion.setString(4, produccionTB.getIdProduccion());
                 statementProducion.addBatch();
 
+                statementDetalle = DBUtil.getConnection().prepareStatement("DELETE FROM ProduccionDetalleTB WHERE IdProduccion = ?");
+                statementDetalle.setString(1, produccionTB.getIdProduccion());
+                statementDetalle.addBatch();
+                statementDetalle.executeBatch();
+
+                statementValidate = DBUtil.getConnection().prepareStatement("SELECT PrecioCompra FROM SuministroTB WHERE IdSuministro = ? ");
+                statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad,Costo)VALUES(?,?,?,?)");
+
+                double cantidadTotal = 0;
+
+                for (SuministroTB suministroTB : produccionTB.getSuministroTBs()) {
+                    statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                    ResultSet resultSet = statementValidate.executeQuery();
+                    if (resultSet.next()) {
+                        statementDetalle.setString(1, produccionTB.getIdProduccion());
+                        statementDetalle.setString(2, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                        statementDetalle.setDouble(3, suministroTB.getCantidad() + (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) ? Double.parseDouble(suministroTB.getTxtCantidad().getText()) : 0));
+                        statementDetalle.setDouble(4, resultSet.getDouble("PrecioCompra"));
+                        statementDetalle.addBatch();
+                        cantidadTotal += (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) ? Double.parseDouble(suministroTB.getTxtCantidad().getText()) : 0);
+                    }
+                }
+
+                statementHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionHistorialTB(IdProduccion,IdEmpleado,Fecha,Hora,Movimiento,Dias,Horas,Minutos,Descripcion) VALUES(?,?,?,?,?,?,?,?,?)");
+                statementHistorial.setString(1, produccionTB.getIdProduccion());
+                statementHistorial.setString(2, Session.USER_ID);
+                statementHistorial.setString(3, produccionTB.getFechaRegistro());
+                statementHistorial.setString(4, produccionTB.getHoraRegistro());
+                statementHistorial.setDouble(5, cantidadTotal);
+                statementHistorial.setInt(6, produccionTB.getDias());
+                statementHistorial.setInt(7, produccionTB.getHoras());
+                statementHistorial.setInt(8, produccionTB.getMinutos());
+                statementHistorial.setString(9, produccionTB.getDescripcion());
+                statementHistorial.addBatch();
+
+                statementDetalle.executeBatch();
                 statementProducion.executeBatch();
+                statementHistorial.executeBatch();
                 DBUtil.getConnection().commit();
                 return "updated";
             } else {
@@ -95,6 +132,8 @@ public class ProduccionADO {
                 statementValidate = DBUtil.getConnection().prepareStatement("SELECT PrecioCompra FROM SuministroTB WHERE IdSuministro = ? ");
                 statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad,Costo)VALUES(?,?,?,?)");
 
+                double cantidadTotal = 0;
+                
                 for (SuministroTB suministroTB : produccionTB.getSuministroTBs()) {
                     statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
                     ResultSet resultSet = statementValidate.executeQuery();
@@ -104,8 +143,21 @@ public class ProduccionADO {
                         statementDetalle.setDouble(3, Double.parseDouble(suministroTB.getTxtCantidad().getText()));
                         statementDetalle.setDouble(4, resultSet.getDouble("PrecioCompra"));
                         statementDetalle.addBatch();
+                        cantidadTotal += Double.parseDouble(suministroTB.getTxtCantidad().getText());
                     }
                 }
+
+                statementHistorial = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionHistorialTB(IdProduccion,IdEmpleado,Fecha,Hora,Movimiento,Dias,Horas,Minutos,Descripcion) VALUES(?,?,?,?,?,?,?,?,?)");
+                statementHistorial.setString(1, id_produccion);
+                statementHistorial.setString(2, Session.USER_ID);
+                statementHistorial.setString(3, produccionTB.getFechaRegistro());
+                statementHistorial.setString(4, produccionTB.getHoraRegistro());
+                statementHistorial.setDouble(5, cantidadTotal);
+                statementHistorial.setInt(6, produccionTB.getDias());
+                statementHistorial.setInt(7, produccionTB.getHoras());
+                statementHistorial.setInt(8, produccionTB.getMinutos());
+                statementHistorial.setString(9, produccionTB.getDescripcion());
+                statementHistorial.addBatch();
 
                 if (produccionTB.getEstado() == 1) {
 //                statementInventario = DBUtil.getConnection().prepareStatement("update SuministroTB set Cantidad = Cantidad + ?, PrecioCompra = ? where IdSuministro = ?");
@@ -124,8 +176,9 @@ public class ProduccionADO {
 //                statementInsumo.executeBatch();
                 }
 
-                statementDetalle.executeBatch();
                 statementProducion.executeBatch();
+                statementDetalle.executeBatch();
+                statementHistorial.executeBatch();
 
                 DBUtil.getConnection().commit();
                 return "inserted";
@@ -147,6 +200,9 @@ public class ProduccionADO {
                 }
                 if (statementCodigo != null) {
                     statementCodigo.close();
+                }
+                if (statementHistorial != null) {
+                    statementHistorial.close();
                 }
 //                if (statementInventario != null) {
 //                    statementInventario.close();
@@ -377,6 +433,7 @@ public class ProduccionADO {
                 produccionTB.setDescripcion(resultSet.getString("Descripcion"));
                 produccionTB.setIdProducto(resultSet.getString("IdProducto"));
                 produccionTB.setCantidad(resultSet.getInt("Cantidad"));
+                produccionTB.setCostoAdicional(resultSet.getDouble("CostoAdicioanal"));
                 SuministroTB newSuministroTB = new SuministroTB(resultSet.getString("IdProducto"), resultSet.getString("Clave"), resultSet.getString("NombreMarca"));
                 newSuministroTB.setUnidadCompraName(resultSet.getString("Medida"));
                 produccionTB.setSuministroTB(newSuministroTB);
@@ -458,6 +515,7 @@ public class ProduccionADO {
                 while (resultSet.next()) {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setId(resultSet.getRow());
+                    suministroTB.setIdSuministro(resultSet.getString("IdSuministro"));
                     suministroTB.setClave(resultSet.getString("Clave"));
                     suministroTB.setNombreMarca(resultSet.getString("NombreMarca"));
                     suministroTB.setUnidadCompraName(resultSet.getString("Medida"));
@@ -519,17 +577,17 @@ public class ProduccionADO {
                     suministroTB.getCbSuministro().getItems().add(new SuministroTB(suministroTB.getIdSuministro(), suministroTB.getClave(), suministroTB.getNombreMarca()));
                     suministroTB.getCbSuministro().getSelectionModel().select(0);
 
-                    TextField textField = new TextField(Tools.roundingValue(resultSet.getDouble("Cantidad"), 2));
+                    TextField textField = new TextField("0.00");
                     textField.setPromptText("0.00");
                     textField.getStyleClass().add("text-field-normal");
                     textField.setPrefWidth(220);
                     textField.setPrefHeight(30);
                     textField.setOnKeyTyped(event -> {
                         char c = event.getCharacter().charAt(0);
-                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                        if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
                             event.consume();
                         }
-                        if (c == '.' && textField.getText().contains(".")) {
+                        if (c == '.' && textField.getText().contains(".") || c == '-' && textField.getText().contains("-")) {
                             event.consume();
                         }
                     });

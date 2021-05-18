@@ -176,6 +176,7 @@ public class FxProducirEditarController implements Initializable {
 
     private void addElementsTableSuministro() {
         SuministroTB suministroTB = new SuministroTB();
+        suministroTB.setCantidad(0);
         ComboBox<SuministroTB> comboBox = new ComboBox();
         comboBox.setPromptText("-- Selecionar --");
         comboBox.setPrefWidth(220);
@@ -236,10 +237,10 @@ public class FxProducirEditarController implements Initializable {
         textField.setPrefHeight(30);
         textField.setOnKeyTyped(event -> {
             char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
                 event.consume();
             }
-            if (c == '.' && textField.getText().contains(".")) {
+            if (c == '.' && textField.getText().contains(".") || c == '-' && textField.getText().contains("-")) {
                 event.consume();
             }
         });
@@ -294,13 +295,18 @@ public class FxProducirEditarController implements Initializable {
         gpList.getColumnConstraints().get(4).setMinWidth(10);
         gpList.getColumnConstraints().get(4).setPrefWidth(60);
         gpList.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
-        gpList.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
+
+        gpList.getColumnConstraints().get(5).setMinWidth(10);
+        gpList.getColumnConstraints().get(5).setPrefWidth(60);
+        gpList.getColumnConstraints().get(5).setHgrow(Priority.SOMETIMES);
+        gpList.getColumnConstraints().get(5).setHalignment(HPos.CENTER);
 
         gpList.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
         gpList.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
-        gpList.add(addElementGridPaneLabel("l03", "Cantidad"), 2, 0);
-        gpList.add(addElementGridPaneLabel("l04", "Medida"), 3, 0);
-        gpList.add(addElementGridPaneLabel("l05", "Quitar"), 4, 0);
+        gpList.add(addElementGridPaneLabel("l03", "Cantidad Utilizada"), 2, 0);
+        gpList.add(addElementGridPaneLabel("l04", "Cantidad a Utilizar"), 3, 0);
+        gpList.add(addElementGridPaneLabel("l05", "Medida"), 4, 0);
+        gpList.add(addElementGridPaneLabel("l06", "Quitar"), 5, 0);
     }
 
     private Label addElementGridPaneLabel(String id, String nombre) {
@@ -335,9 +341,10 @@ public class FxProducirEditarController implements Initializable {
         for (int i = 0; i < suministroTBs.size(); i++) {
             gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
             gpList.add(suministroTBs.get(i).getCbSuministro(), 1, (i + 1));
-            gpList.add(suministroTBs.get(i).getTxtCantidad(), 2, (i + 1));
-            gpList.add(addElementGridPaneLabel("l4" + (i + 1), "MEDIDA", Pos.CENTER), 3, (i + 1));
-            gpList.add(suministroTBs.get(i).getBtnRemove(), 4, (i + 1));
+            gpList.add(addElementGridPaneLabel("l3", Tools.roundingValue(suministroTBs.get(i).getCantidad(), 2), Pos.CENTER), 2, (i + 1));
+            gpList.add(suministroTBs.get(i).getTxtCantidad(), 3, (i + 1));
+            gpList.add(addElementGridPaneLabel("l6" + (i + 1), "MEDIDA", Pos.CENTER), 4, (i + 1));
+            gpList.add(suministroTBs.get(i).getBtnRemove(), 5, (i + 1));
         }
     }
 
@@ -368,14 +375,8 @@ public class FxProducirEditarController implements Initializable {
             Tools.AlertMessageWarning(apWindow, "Producción", "No hay matería prima para producir.");
             btnAgregar.requestFocus();
         } else {
-            int cantidad = 0;
             int producto = 0;
             for (SuministroTB suministroTB : suministroTBs) {
-                if (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) && Double.parseDouble(suministroTB.getTxtCantidad().getText()) > 0) {
-                    cantidad += 0;
-                } else {
-                    cantidad += 1;
-                }
                 if (suministroTB.getCbSuministro().getSelectionModel().getSelectedIndex() >= 0) {
                     producto += 0;
                 } else {
@@ -383,9 +384,7 @@ public class FxProducirEditarController implements Initializable {
                 }
             }
 
-            if (cantidad > 0) {
-                Tools.AlertMessageWarning(apWindow, "Producción", "Hay cantidades en 0 en la lista de insumos.");
-            } else if (producto > 0) {
+            if (producto > 0) {
                 Tools.AlertMessageWarning(apWindow, "Producción", "No hay insumos seleccionados en la lista.");
             } else {
                 int duplicate = 0;
@@ -412,6 +411,8 @@ public class FxProducirEditarController implements Initializable {
                         protected String call() {
                             ProduccionTB produccionTB = new ProduccionTB();
                             produccionTB.setIdProduccion(idProduccion);
+                            produccionTB.setFechaRegistro(Tools.getDate());
+                            produccionTB.setHoraRegistro(Tools.getTime());
                             produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);
                             produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
                             produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
@@ -443,8 +444,8 @@ public class FxProducirEditarController implements Initializable {
                     });
                     task.setOnSucceeded(w -> {
                         String result = task.getValue();
-                        if (result.equalsIgnoreCase("registrado")) {
-                            lblMessageLoad.setText("Se registró correctamente la producción.");
+                        if (result.equalsIgnoreCase("updated")) {
+                            lblMessageLoad.setText("Se actualizó correctamente la producción.");
                             lblMessageLoad.setTextFill(Color.web("#ffffff"));
                             btnAceptarLoad.setVisible(true);
                             btnAceptarLoad.setOnAction(event -> {
@@ -494,7 +495,8 @@ public class FxProducirEditarController implements Initializable {
     private boolean validateDuplicateInsumo(ArrayList<SuministroTB> view, SuministroTB suministroTB) {
         boolean ret = false;
         for (SuministroTB sm : view) {
-            if (sm.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro().equals(suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro())) {
+            if (sm.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro()
+                    .equals(suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro())) {
                 ret = true;
                 break;
             }
