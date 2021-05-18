@@ -705,7 +705,6 @@ public class FxProducirAgregarController implements Initializable {
                     produccionTB.setHoraRegistro(Tools.getTime());
                     produccionTB.setCantidad(Double.parseDouble(txtCantidad.getText()));
                     produccionTB.setCostoAdicional(Tools.isNumeric(txtCostoAdicional.getText()) ? Double.parseDouble(txtCostoAdicional.getText()) : 0);
-                    produccionTB.setEstado(2);
                     produccionTB.setSuministroTBs(newSuministroTBs);
                     openModalComplete(produccionTB);
                 }

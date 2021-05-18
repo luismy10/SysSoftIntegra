@@ -11,7 +11,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import model.ProduccionADO;
 import model.ProduccionTB;
 
 public class FXModalEstadoController implements Initializable {
@@ -42,8 +41,19 @@ public class FXModalEstadoController implements Initializable {
         short value = Tools.AlertMessageConfirmation(window, "Producción", "¿Está seguro de continuar?");
         if (value == 1) {
             if (fxProducirAgregarController != null) {
+                if (rbSaveOden.isSelected()) {
+                    produccionTB.setEstado(2);
+                } else {
+                    produccionTB.setEstado(1);
+                }
+                Tools.Dispose(window);
                 fxProducirAgregarController.executeRegistro(produccionTB);
             } else if (fxProducirEditarController != null) {
+                if (rbSaveOden.isSelected()) {
+                    produccionTB.setEstado(2);
+                } else {
+                    produccionTB.setEstado(1);
+                }
                 fxProducirEditarController.executeEdicion(produccionTB);
             }
         }

@@ -465,6 +465,18 @@ public class FxProducirEditarController implements Initializable {
                         closeWindow();
                     }
                 });
+            } else if (result.equalsIgnoreCase("state")) {
+                lblMessageLoad.setText("La producción se encuentra anulada o terminada.");
+                lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
+                btnAceptarLoad.setVisible(true);
+                btnAceptarLoad.setOnAction(event -> {
+                    closeWindow();
+                });
+                btnAceptarLoad.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        closeWindow();
+                    }
+                });
             } else {
                 lblMessageLoad.setText(result);
                 lblMessageLoad.setTextFill(Color.web("#ff6d6d"));
