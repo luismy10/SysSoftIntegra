@@ -10,6 +10,7 @@ public class ProduccionTB {
     private String idProducto;
     private boolean tipoOrden;
     private String idEncargado;
+    private String proyecto;
     private String descripcion;
     private String fechaInicio;
     private String horaInicio;
@@ -84,6 +85,14 @@ public class ProduccionTB {
 
     public void setHoraInicio(String horaInicio) {
         this.horaInicio = horaInicio;
+    }
+
+    public String getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(String proyecto) {
+        this.proyecto = proyecto;
     }
 
     public String getDescripcion() {

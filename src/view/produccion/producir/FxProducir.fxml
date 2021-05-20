@@ -161,6 +161,7 @@
                                     <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="260.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                                        <columns>
                                           <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
+                                          <TableColumn fx:id="tcProyecto" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Proyecto" />
                                           <TableColumn fx:id="tcEncargado" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Encargado" />
                                           <TableColumn fx:id="tcFechaInicio" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Inicio" />
                                           <TableColumn fx:id="tcDuracion" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Duración" />

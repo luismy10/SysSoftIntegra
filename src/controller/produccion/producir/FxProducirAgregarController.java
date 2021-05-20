@@ -692,6 +692,7 @@ public class FxProducirAgregarController implements Initializable {
                     Tools.AlertMessageWarning(apWindow, "Producción", "Hay insumos duplicados en la lista.");
                 } else {
                     ProduccionTB produccionTB = new ProduccionTB();
+                    produccionTB.setProyecto(txtProyecto.getText().trim().toUpperCase());
                     produccionTB.setFechaInicio(Tools.getDatePicker(dtFechaProduccion));
                     produccionTB.setHoraInicio(Tools.getTime());
                     produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);

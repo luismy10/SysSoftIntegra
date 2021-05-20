@@ -216,7 +216,7 @@
                                     <HBox alignment="CENTER_LEFT" minWidth="-Infinity" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" styleClass="labelRobotoMedium14">
                                        <children>
                                           <Text fill="#020203" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="CANT. ACTUAL" />
-                                          <Label fx:id="lblQuantity" ellipsisString="" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0" styleClass="labelRobotoBold13" text="-" textFill="#117c02" wrapText="true" />
+                                          <Label fx:id="lblQuantity" ellipsisString="" maxWidth="-Infinity" minWidth="-Infinity" styleClass="labelRobotoBold15" text="-" textFill="#117c02" wrapText="true" />
                                        </children>
                                     </HBox>
                                  </children>

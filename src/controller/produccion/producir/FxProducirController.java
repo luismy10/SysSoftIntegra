@@ -41,6 +41,8 @@ public class FxProducirController implements Initializable {
     @FXML
     private TableColumn<ProduccionTB, String> tcNumero;
     @FXML
+    private TableColumn<ProduccionTB, String> tcProyecto;
+    @FXML
     private TableColumn<ProduccionTB, String> tcEncargado;
     @FXML
     private TableColumn<ProduccionTB, String> tcFechaInicio;
@@ -85,6 +87,11 @@ public class FxProducirController implements Initializable {
 
     private void loadTableComponents() {
         tcNumero.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getId()));
+        tcProyecto.setCellValueFactory(cellData -> Bindings.concat(
+                cellData.getValue().getIdProduccion() + "\n"
+                + cellData.getValue().getProyecto()
+        ));
+
         tcEncargado.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getEmpleadoTB().getNumeroDocumento() + "\n"
                 + cellData.getValue().getEmpleadoTB().getApellidos() + " " + cellData.getValue().getEmpleadoTB().getNombres()
@@ -104,15 +111,16 @@ public class FxProducirController implements Initializable {
         tcCantidad.setCellValueFactory(cellData -> Bindings.concat(
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getSuministroTB().getUnidadCompraName()
         ));
-
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("lblEstado"));
+        
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
-        tcEncargado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
-        tcFechaInicio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
-        tcDuracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
-        tcProductoFabricar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.22));
-        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
-        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.14));
+        tcProyecto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcEncargado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
+        tcFechaInicio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcDuracion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcProductoFabricar.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
+        tcCantidad.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
     }
@@ -237,7 +245,7 @@ public class FxProducirController implements Initializable {
                 FXMLLoader fXMLProduccionEditarProceso = new FXMLLoader(getClass().getResource(FilesRouters.FX_PRODUCIR_EDITAR));
                 AnchorPane nodeProduccionProceso = fXMLProduccionEditarProceso.load();
                 FxProducirEditarController produccionEditarController = fXMLProduccionEditarProceso.getController();
-                produccionEditarController.setInitControllerProducir(this,fxPrincipalController);
+                produccionEditarController.setInitControllerProducir(this, fxPrincipalController);
                 produccionEditarController.editarProduccion(idProduccion);
                 fxPrincipalController.getVbContent().getChildren().clear();
                 AnchorPane.setLeftAnchor(nodeProduccionProceso, 0d);
