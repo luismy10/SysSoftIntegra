@@ -237,10 +237,10 @@ public class FxProducirEditarController implements Initializable {
         textField.setPrefHeight(30);
         textField.setOnKeyTyped(event -> {
             char c = event.getCharacter().charAt(0);
-            if ((c < '0' || c > '9') && (c != '\b') && (c != '.') && (c != '-')) {
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
                 event.consume();
             }
-            if (c == '.' && textField.getText().contains(".") || c == '-' && textField.getText().contains("-")) {
+            if (c == '.' && textField.getText().contains(".")) {
                 event.consume();
             }
         });
@@ -375,8 +375,14 @@ public class FxProducirEditarController implements Initializable {
             Tools.AlertMessageWarning(apWindow, "Producción", "No hay matería prima para producir.");
             btnAgregar.requestFocus();
         } else {
+            int cantidad = 0;
             int producto = 0;
             for (SuministroTB suministroTB : suministroTBs) {
+                if (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) && Double.parseDouble(suministroTB.getTxtCantidad().getText()) > 0) {
+                    cantidad += 0;
+                } else {
+                    cantidad += 1;
+                }
                 if (suministroTB.getCbSuministro().getSelectionModel().getSelectedIndex() >= 0) {
                     producto += 0;
                 } else {
@@ -384,7 +390,9 @@ public class FxProducirEditarController implements Initializable {
                 }
             }
 
-            if (producto > 0) {
+            if (cantidad > 0) {
+                Tools.AlertMessageWarning(apWindow, "Producción", "Hay cantidades en 0 en la lista de insumos.");
+            } else if (producto > 0) {
                 Tools.AlertMessageWarning(apWindow, "Producción", "No hay insumos seleccionados en la lista.");
             } else {
                 int duplicate = 0;
@@ -408,7 +416,6 @@ public class FxProducirEditarController implements Initializable {
                     produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
                     produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
                     produccionTB.setDescripcion(txtDescripcion.getText().trim());
-                    produccionTB.setEstado(2);
                     produccionTB.setSuministroTBs(newSuministroTBs);
                     modalEstado(produccionTB);
                 }
@@ -427,7 +434,6 @@ public class FxProducirEditarController implements Initializable {
         Task<String> task = new Task<String>() {
             @Override
             protected String call() {
-
                 return ProduccionADO.Crud_Produccion(produccionTB);
             }
         };

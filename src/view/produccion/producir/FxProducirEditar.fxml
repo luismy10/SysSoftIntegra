@@ -37,7 +37,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-width: 0px 0px 1px 0px; -fx-border-color: #cccccc;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressedEditar" styleClass="buttonLightWarning" text="Editar(F1)">
+                  <Button mnemonicParsing="false" onAction="#onActionEditar" onKeyPressed="#onKeyPressedEditar" styleClass="buttonLightDefault" text="Editar(F1)">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -100,29 +100,20 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                              <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
                                  <children>
-                                    <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Glosa Descriptiva de la Orden:" textFill="#020203">
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Lista de Materia Prima:" textFill="#020203">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <HBox VBox.vgrow="ALWAYS">
-                                             <children>
-                                                <TextArea fx:id="txtDescripcion" maxHeight="80.0" prefHeight="80.0" promptText="Ingrese una descripción..." HBox.hgrow="ALWAYS" />
-                                             </children>
-                                          </HBox>
                                        </children>
                                     </VBox>
-                                 </children>
-                              </HBox>
-                              <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                                 <children>
-                                    <VBox alignment="BOTTOM_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Agregar">
+                                          <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Insumo">
                                              <graphic>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -150,6 +141,24 @@
                                           <RowConstraints />
                                        </rowConstraints>
                                     </GridPane>
+                                 </children>
+                              </HBox>
+                              <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Glosa Descriptiva de la Orden:" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <TextArea fx:id="txtDescripcion" maxHeight="80.0" prefHeight="80.0" promptText="Ingrese una descripción..." HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                            </children>

@@ -54,6 +54,7 @@ public class FXModalEstadoController implements Initializable {
                 } else {
                     produccionTB.setEstado(1);
                 }
+                Tools.Dispose(window);
                 fxProducirEditarController.executeEdicion(produccionTB);
             }
         }

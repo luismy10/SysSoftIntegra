@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -212,6 +213,92 @@
                                     </VBox>
                                  </children>
                               </HBox>
+                              <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Lista de Materia Prima:" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Insumo">
+                                             <graphic>
+                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/plus.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <GridPane fx:id="gpListInsumo" style="-fx-vgap: 1em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="340.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints />
+                                       </rowConstraints>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Merma:" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#onActonMerma" onKeyPressed="#onKeyPressedMerma" styleClass="buttonLightError" text="Merma">
+                                             <graphic>
+                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../image/plus.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <GridPane fx:id="gpListMerma" style="-fx-vgap: 1em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="340.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints />
+                                       </rowConstraints>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
                               <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
@@ -228,39 +315,6 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                 </children>
-                              </HBox>
-                              <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
-                                 <children>
-                                    <VBox alignment="BOTTOM_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#onActonAgregar" onKeyPressed="#onKeyPressedAgregar" styleClass="buttonLightWarning" text="Agregar">
-                                             <graphic>
-                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../image/plus.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
-                                 <children>
-                                    <GridPane fx:id="gpList" style="-fx-vgap: 1em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="340.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints />
-                                       </rowConstraints>
-                                    </GridPane>
                                  </children>
                               </HBox>
                            </children>

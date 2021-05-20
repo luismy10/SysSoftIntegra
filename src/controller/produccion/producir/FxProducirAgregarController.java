@@ -82,7 +82,9 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private TextArea txtDescripcion;
     @FXML
-    private GridPane gpList;
+    private GridPane gpListInsumo;
+    @FXML
+    private GridPane gpListMerma;
     @FXML
     private Button btnAgregar;
     @FXML
@@ -102,19 +104,22 @@ public class FxProducirAgregarController implements Initializable {
 
     private FxPrincipalController fxPrincipalController;
 
-    private ArrayList<SuministroTB> suministroTBs;
+    private ArrayList<SuministroTB> suministroInsumos;
+
+    private ArrayList<SuministroTB> suministroMerma;
 
     private SearchComboBox<FormulaTB> searchComboBoxFormula;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        suministroTBs = new ArrayList();
+        suministroInsumos = new ArrayList();
+        suministroMerma = new ArrayList();
         searchComboBoxFormula = new SearchComboBox<>(cbFormula, false);
         Tools.actualDate(Tools.getDate(), dtFechaProduccion);
         ToggleGroup toggleGroup = new ToggleGroup();
         cbInterno.setToggleGroup(toggleGroup);
         cbExterno.setToggleGroup(toggleGroup);
-        addElementPaneHead();
+        addElementPaneHeadInsumo();
         comboBoxProductos();
         comboBoxFormulas();
         comboBoxEmpleados();
@@ -260,7 +265,8 @@ public class FxProducirAgregarController implements Initializable {
         });
     }
 
-    private void addElementsTableSuministro() {
+    //------------------------------------------------------------------------------------ 
+    private void addElementsTableInsumos() {
         SuministroTB suministroTB = new SuministroTB();
         ComboBox<SuministroTB> comboBox = new ComboBox();
         comboBox.setPromptText("-- Selecionar --");
@@ -342,53 +348,204 @@ public class FxProducirAgregarController implements Initializable {
         button.setGraphic(imageView);
 
         button.setOnAction(event -> {
-            suministroTBs.remove(suministroTB);
-            addElementPaneHead();
-            addElementPaneBody();
+            suministroInsumos.remove(suministroTB);
+            addElementPaneHeadInsumo();
+            addElementPaneBodyInsumo();
         });
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                suministroTBs.remove(suministroTB);
-                addElementPaneHead();
-                addElementPaneBody();
+                suministroInsumos.remove(suministroTB);
+                addElementPaneHeadInsumo();
+                addElementPaneBodyInsumo();
             }
         });
         suministroTB.setBtnRemove(button);
-        suministroTBs.add(suministroTB);
-        addElementPaneHead();
-        addElementPaneBody();
+        suministroInsumos.add(suministroTB);
+        addElementPaneHeadInsumo();
+        addElementPaneBodyInsumo();
     }
 
-    private void addElementPaneHead() {
-        gpList.getChildren().clear();
-        gpList.getColumnConstraints().get(0).setMinWidth(10);
-        gpList.getColumnConstraints().get(0).setPrefWidth(40);
-        gpList.getColumnConstraints().get(0).setHgrow(Priority.SOMETIMES);
+    private void addElementPaneHeadInsumo() {
+        gpListInsumo.getChildren().clear();
+        gpListInsumo.getColumnConstraints().get(0).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(0).setPrefWidth(40);
+        gpListInsumo.getColumnConstraints().get(0).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(1).setMinWidth(10);
-        gpList.getColumnConstraints().get(1).setPrefWidth(320);
-        gpList.getColumnConstraints().get(1).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(1).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(1).setPrefWidth(320);
+        gpListInsumo.getColumnConstraints().get(1).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(2).setMinWidth(10);
-        gpList.getColumnConstraints().get(2).setPrefWidth(60);
-        gpList.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(2).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(2).setPrefWidth(60);
+        gpListInsumo.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(3).setMinWidth(10);
-        gpList.getColumnConstraints().get(3).setPrefWidth(60);
-        gpList.getColumnConstraints().get(3).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(3).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(3).setPrefWidth(60);
+        gpListInsumo.getColumnConstraints().get(3).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(4).setMinWidth(10);
-        gpList.getColumnConstraints().get(4).setPrefWidth(60);
-        gpList.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
-        gpList.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
+        gpListInsumo.getColumnConstraints().get(4).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(4).setPrefWidth(60);
+        gpListInsumo.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
 
-        gpList.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
-        gpList.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
-        gpList.add(addElementGridPaneLabel("l03", "Cantidad"), 2, 0);
-        gpList.add(addElementGridPaneLabel("l04", "Medida"), 3, 0);
-        gpList.add(addElementGridPaneLabel("l05", "Quitar"), 4, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l03", "Cantidad"), 2, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l04", "Medida"), 3, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l05", "Quitar"), 4, 0);
     }
 
+    private void addElementPaneBodyInsumo() {
+        for (int i = 0; i < suministroInsumos.size(); i++) {
+            gpListInsumo.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+            gpListInsumo.add(suministroInsumos.get(i).getCbSuministro(), 1, (i + 1));
+            gpListInsumo.add(suministroInsumos.get(i).getTxtCantidad(), 2, (i + 1));
+            gpListInsumo.add(addElementGridPaneLabel("l4" + (i + 1), "MEDIDA", Pos.CENTER), 3, (i + 1));
+            gpListInsumo.add(suministroInsumos.get(i).getBtnRemove(), 4, (i + 1));
+        }
+    }
+
+    //------------------------------------------------------------------------------------  
+    private void addElementsTableMerma() {
+        SuministroTB suministroTB = new SuministroTB();
+        ComboBox<SuministroTB> comboBox = new ComboBox();
+        comboBox.setPromptText("-- Selecionar --");
+        comboBox.setPrefWidth(220);
+        comboBox.setPrefHeight(30);
+        comboBox.setMaxWidth(Double.MAX_VALUE);
+        suministroTB.setCbSuministro(comboBox);
+
+        SearchComboBox<SuministroTB> searchComboBox = new SearchComboBox<>(suministroTB.getCbSuministro(), false);
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBox.getComboBox().hide();
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+                searchComboBox.getComboBox().getItems().clear();
+                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                suministroTBs.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            switch (t.getCode()) {
+                case ENTER:
+                case SPACE:
+                case ESCAPE:
+                    searchComboBox.getComboBox().hide();
+                    break;
+                case UP:
+                case DOWN:
+                case LEFT:
+                case RIGHT:
+                    break;
+                default:
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+                    break;
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBox.getComboBox().getSelectionModel().select(item);
+                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBox.getComboBox().hide();
+                }
+            }
+        });
+        suministroTB.setSearchComboBox(searchComboBox);
+
+        TextField textField = new TextField(Tools.roundingValue(1, 2));
+        textField.setPromptText("0.00");
+        textField.getStyleClass().add("text-field-normal");
+        textField.setPrefWidth(220);
+        textField.setPrefHeight(30);
+        textField.setOnKeyTyped(event -> {
+            char c = event.getCharacter().charAt(0);
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                event.consume();
+            }
+            if (c == '.' && textField.getText().contains(".")) {
+                event.consume();
+            }
+        });
+        suministroTB.setTxtCantidad(textField);
+
+        Button button = new Button();
+        button.getStyleClass().add("buttonLightError");
+        button.setAlignment(Pos.CENTER);
+        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        button.setGraphic(imageView);
+
+        button.setOnAction(event -> {
+            suministroMerma.remove(suministroTB);
+            addElementPaneHeadMerma();
+            addElementPaneBodyMerma();
+        });
+        button.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                suministroMerma.remove(suministroTB);
+                addElementPaneHeadMerma();
+                addElementPaneBodyMerma();
+            }
+        });
+        suministroTB.setBtnRemove(button);
+        suministroMerma.add(suministroTB);
+        addElementPaneHeadMerma();
+        addElementPaneBodyMerma();
+    }
+
+    private void addElementPaneHeadMerma() {
+        gpListMerma.getChildren().clear();
+        gpListMerma.getColumnConstraints().get(0).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(0).setPrefWidth(40);
+        gpListMerma.getColumnConstraints().get(0).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(1).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(1).setPrefWidth(320);
+        gpListMerma.getColumnConstraints().get(1).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(2).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(2).setPrefWidth(60);
+        gpListMerma.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(3).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(3).setPrefWidth(60);
+        gpListMerma.getColumnConstraints().get(3).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(4).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(4).setPrefWidth(60);
+        gpListMerma.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
+        gpListMerma.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
+
+        gpListMerma.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
+        gpListMerma.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
+        gpListMerma.add(addElementGridPaneLabel("l03", "Cantidad"), 2, 0);
+        gpListMerma.add(addElementGridPaneLabel("l04", "Medida"), 3, 0);
+        gpListMerma.add(addElementGridPaneLabel("l05", "Quitar"), 4, 0);
+    }
+
+    private void addElementPaneBodyMerma() {
+        for (int i = 0; i < suministroMerma.size(); i++) {
+            gpListMerma.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+            gpListMerma.add(suministroMerma.get(i).getCbSuministro(), 1, (i + 1));
+            gpListMerma.add(suministroMerma.get(i).getTxtCantidad(), 2, (i + 1));
+            gpListMerma.add(addElementGridPaneLabel("l4" + (i + 1), "MEDIDA", Pos.CENTER), 3, (i + 1));
+            gpListMerma.add(suministroMerma.get(i).getBtnRemove(), 4, (i + 1));
+        }
+    }
+
+    //------------------------------------------------------------------------------------    
     private Label addElementGridPaneLabel(String id, String nombre) {
         Label label = new Label(nombre);
         label.setId(id);
@@ -417,16 +574,7 @@ public class FxProducirAgregarController implements Initializable {
         return label;
     }
 
-    private void addElementPaneBody() {
-        for (int i = 0; i < suministroTBs.size(); i++) {
-            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
-            gpList.add(suministroTBs.get(i).getCbSuministro(), 1, (i + 1));
-            gpList.add(suministroTBs.get(i).getTxtCantidad(), 2, (i + 1));
-            gpList.add(addElementGridPaneLabel("l4" + (i + 1), "MEDIDA", Pos.CENTER), 3, (i + 1));
-            gpList.add(suministroTBs.get(i).getBtnRemove(), 4, (i + 1));
-        }
-    }
-
+    //------------------------------------------------------------------------------------ 
     private void onEventSiguiente() {
         if (Tools.isText(txtProyecto.getText())) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese el nombre del proyecto.");
@@ -446,7 +594,7 @@ public class FxProducirAgregarController implements Initializable {
             txtReferenciaProduccion.setText(Tools.roundingValue(Double.parseDouble(txtCantidad.getText()), 2));
 
             if (cbFormula.getSelectionModel().getSelectedIndex() >= 0) {
-                editFormulaProceso(cbFormula.getSelectionModel().getSelectedItem().getIdFormula());
+                addFormulaProceso(cbFormula.getSelectionModel().getSelectedItem().getIdFormula());
             } else {
 
             }
@@ -454,7 +602,7 @@ public class FxProducirAgregarController implements Initializable {
         }
     }
 
-    public void editFormulaProceso(String idFormula) {
+    public void addFormulaProceso(String idFormula) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -563,21 +711,21 @@ public class FxProducirAgregarController implements Initializable {
                     button.setGraphic(imageView);
 
                     button.setOnAction(event -> {
-                        suministroTBs.remove(suministroTB);
-                        addElementPaneHead();
-                        addElementPaneBody();
+                        suministroInsumos.remove(suministroTB);
+                        addElementPaneHeadInsumo();
+                        addElementPaneBodyInsumo();
                     });
                     button.setOnKeyPressed(event -> {
                         if (event.getCode() == KeyCode.ENTER) {
-                            suministroTBs.remove(suministroTB);
-                            addElementPaneHead();
-                            addElementPaneBody();
+                            suministroInsumos.remove(suministroTB);
+                            addElementPaneHeadInsumo();
+                            addElementPaneBodyInsumo();
                         }
                     });
                     suministroTB.setBtnRemove(button);
-                    suministroTBs.add(suministroTB);
-                    addElementPaneHead();
-                    addElementPaneBody();
+                    suministroInsumos.add(suministroTB);
+                    addElementPaneHeadInsumo();
+                    addElementPaneBodyInsumo();
                 }
 
             } else {
@@ -589,6 +737,7 @@ public class FxProducirAgregarController implements Initializable {
             exec.shutdown();
         }
     }
+    //------------------------------------------------------------------------------------ 
 
     private void closeWindow() {
         fxPrincipalController.getVbContent().getChildren().remove(apWindow);
@@ -619,9 +768,12 @@ public class FxProducirAgregarController implements Initializable {
         cbPersonaEncargada.getSelectionModel().select(null);
         txtCostoAdicional.clear();
         txtReferenciaProduccion.clear();
-        suministroTBs.clear();
-        addElementPaneHead();
-        addElementPaneBody();
+        suministroInsumos.clear();
+        addElementPaneHeadInsumo();
+        addElementPaneBodyInsumo();
+        suministroMerma.clear();
+        addElementPaneHeadMerma();
+        addElementPaneBodyMerma();
         txtProyecto.requestFocus();
     }
 
@@ -654,13 +806,13 @@ public class FxProducirAgregarController implements Initializable {
         } else if (cbPersonaEncargada.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione al personal encargado.");
             cbPersonaEncargada.requestFocus();
-        } else if (suministroTBs.isEmpty()) {
+        } else if (suministroInsumos.isEmpty()) {
             Tools.AlertMessageWarning(apWindow, "Producción", "No hay matería prima para producir.");
             btnAgregar.requestFocus();
         } else {
             int cantidad = 0;
             int producto = 0;
-            for (SuministroTB suministroTB : suministroTBs) {
+            for (SuministroTB suministroTB : suministroInsumos) {
                 if (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) && Double.parseDouble(suministroTB.getTxtCantidad().getText()) > 0) {
                     cantidad += 0;
                 } else {
@@ -680,7 +832,7 @@ public class FxProducirAgregarController implements Initializable {
             } else {
                 int duplicate = 0;
                 ArrayList<SuministroTB> newSuministroTBs = new ArrayList();
-                for (SuministroTB suministroTB : suministroTBs) {
+                for (SuministroTB suministroTB : suministroInsumos) {
                     if (validateDuplicateInsumo(newSuministroTBs, suministroTB)) {
                         duplicate += 1;
                     } else {
@@ -812,13 +964,13 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private void onKeyPressedAgregar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            addElementsTableSuministro();
+            addElementsTableInsumos();
         }
     }
 
     @FXML
     private void onActonAgregar(ActionEvent event) {
-        addElementsTableSuministro();
+        addElementsTableInsumos();
     }
 
     @FXML
@@ -826,6 +978,18 @@ public class FxProducirAgregarController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             onEventGuardar();
         }
+    }
+
+    @FXML
+    private void onKeyPressedMerma(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActonMerma(ActionEvent event) {
+
     }
 
     @FXML

@@ -88,6 +88,7 @@ public class SuministroTB {
     private boolean cambios;
     private ImpuestoTB impuestoTB;
     private double bonificacion;
+    private TextField txtMerma;
     private ComboBox<SuministroTB> cbSuministro;
     private SearchComboBox<SuministroTB> searchComboBox;
     
@@ -648,6 +649,14 @@ public class SuministroTB {
 
     public void setBonificacion(double bonificacion) {
         this.bonificacion = bonificacion;
+    }
+
+    public TextField getTxtMerma() {
+        return txtMerma;
+    }
+
+    public void setTxtMerma(TextField txtMerma) {
+        this.txtMerma = txtMerma;
     }
 
     public ComboBox<SuministroTB> getCbSuministro() {
