@@ -26,7 +26,8 @@ public class ProduccionADO {
 
     public static String Crud_Produccion(ProduccionTB produccionTB) {
 
-        CallableStatement statementCodigo = null;
+        CallableStatement statementProduccionCodigo = null;
+        CallableStatement statementMermaCodigo = null;
         PreparedStatement statementValidate = null;
         PreparedStatement statementProducion = null;
         PreparedStatement statementProduccionDetalle = null;
@@ -35,6 +36,8 @@ public class ProduccionADO {
         PreparedStatement statementSuministroKardex = null;
         PreparedStatement statementInventario = null;
         PreparedStatement statementInventarioKardex = null;
+        PreparedStatement statementMerma = null;
+        PreparedStatement statementMermaDetalle = null;
 
         try {
             DBUtil.dbConnect();
@@ -69,7 +72,7 @@ public class ProduccionADO {
                     double costoMateriaPrima = 0;
                     double cantidadTotal = 0;
 
-                    for (SuministroTB suministroTB : produccionTB.getSuministroTBs()) {
+                    for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                         statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
                         ResultSet resultSet = statementValidate.executeQuery();
                         if (resultSet.next()) {
@@ -120,7 +123,7 @@ public class ProduccionADO {
                         statementSuministroKardex.setDouble(9, produccionTB.getCantidad() * costoProducto);
                         statementSuministroKardex.addBatch();
 
-                        for (SuministroTB suministroTB : produccionTB.getSuministroTBs()) {
+                        for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                             statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
                             ResultSet resultSet = statementValidate.executeQuery();
                             if (resultSet.next()) {
@@ -157,10 +160,10 @@ public class ProduccionADO {
 
             } else {
 
-                statementCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Produccion_Codigo_Alfanumerico()}");
-                statementCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
-                statementCodigo.execute();
-                String id_produccion = statementCodigo.getString(1);
+                statementProduccionCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Produccion_Codigo_Alfanumerico()}");
+                statementProduccionCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
+                statementProduccionCodigo.execute();
+                String id_produccion = statementProduccionCodigo.getString(1);
 
                 statementProducion = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionTB("
                         + "IdProduccion,"
@@ -204,7 +207,7 @@ public class ProduccionADO {
                 double costoMateriaPrima = 0;
                 double cantidadTotal = 0;
 
-                for (SuministroTB suministroTB : produccionTB.getSuministroTBs()) {
+                for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                     statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
                     ResultSet resultSet = statementValidate.executeQuery();
                     if (resultSet.next()) {
@@ -235,6 +238,8 @@ public class ProduccionADO {
                 statementSuministroKardex = DBUtil.getConnection().prepareStatement("INSERT INTO KardexSuministroTB(IdSuministro,Fecha,Hora,Tipo,Movimiento,Detalle,Cantidad,Costo,Total)VALUES(?,?,?,?,?,?,?,?,?)");
                 statementInventario = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB set Cantidad = (Cantidad - ?) where IdSuministro = ?");
                 statementInventarioKardex = DBUtil.getConnection().prepareStatement("INSERT INTO KardexSuministroTB(IdSuministro,Fecha,Hora,Tipo,Movimiento,Detalle,Cantidad,Costo, Total)VALUES(?,?,?,?,?,?,?,?,?)");
+                statementMerma = DBUtil.getConnection().prepareStatement("INSERT INTO MermaTB(IdMerma,IdProduccion,IdUsuario) VALUES(?,?,?)");
+                statementMermaDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO MermaDetalleTB(IdMerma,IdProducto,Cantidad,Costo) VALUES(?,?,?,?)");
 
                 if (produccionTB.getEstado() == 1) {
                     double costoProducto = (costoMateriaPrima + produccionTB.getCostoAdicional()) / produccionTB.getCantidad();
@@ -255,7 +260,7 @@ public class ProduccionADO {
                     statementSuministroKardex.setDouble(9, produccionTB.getCantidad() * costoProducto);
                     statementSuministroKardex.addBatch();
 
-                    for (SuministroTB suministroTB : produccionTB.getSuministroTBs()) {
+                    for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                         statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
                         ResultSet resultSet = statementValidate.executeQuery();
                         if (resultSet.next()) {
@@ -277,6 +282,31 @@ public class ProduccionADO {
                         }
                     }
 
+                    if (!produccionTB.getSuministroMermas().isEmpty()) {
+                        statementMermaCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Merma_Codigo_Alfanumerico()}");
+                        statementMermaCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
+                        statementMermaCodigo.execute();
+                        String id_merma = statementMermaCodigo.getString(1);
+
+                        statementMerma.setString(1, id_merma);
+                        statementMerma.setString(2, id_produccion);
+                        statementMerma.setString(3, Session.USER_ID);
+                        statementMerma.addBatch();
+
+                        for (SuministroTB suministroTB : produccionTB.getSuministroMermas()) {
+                            statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                            ResultSet resultSet = statementValidate.executeQuery();
+                            if (resultSet.next()) {
+                                statementMermaDetalle.setString(1, id_merma);
+                                statementMermaDetalle.setString(2, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                                statementMermaDetalle.setDouble(3, Double.parseDouble(suministroTB.getTxtCantidad().getText()));
+                                statementMermaDetalle.setDouble(4, resultSet.getDouble("PrecioCompra"));
+                                statementMermaDetalle.addBatch();
+                            }
+                        }
+
+                    }
+
                 }
 
                 statementProducion.executeBatch();
@@ -286,6 +316,8 @@ public class ProduccionADO {
                 statementInventarioKardex.executeBatch();
                 statementSuministro.executeBatch();
                 statementSuministroKardex.executeBatch();
+                statementMerma.executeBatch();
+                statementMermaDetalle.executeBatch();
                 DBUtil.getConnection().commit();
                 return "inserted";
             }
@@ -304,8 +336,8 @@ public class ProduccionADO {
                 if (statementProduccionDetalle != null) {
                     statementProduccionDetalle.close();
                 }
-                if (statementCodigo != null) {
-                    statementCodigo.close();
+                if (statementProduccionCodigo != null) {
+                    statementProduccionCodigo.close();
                 }
                 if (statementProduccionHistorial != null) {
                     statementProduccionHistorial.close();
@@ -325,128 +357,33 @@ public class ProduccionADO {
                 if (statementInventarioKardex != null) {
                     statementInventarioKardex.close();
                 }
+                if (statementMerma != null) {
+                    statementMerma.close();
+                }
+                if (statementMermaDetalle != null) {
+                    statementMermaDetalle.close();
+                }
             } catch (SQLException e) {
 
             }
         }
     }
 
-//    public static String Actualizar_Produccion(ProduccionTB produccionTB) {
-//        PreparedStatement statementValidate = null;
-//        PreparedStatement statementActualizar = null;
-//        PreparedStatement statementDetalle = null;
-//        PreparedStatement statementInventario = null;
-//        PreparedStatement statementInsumo = null;
-//        try {
-//            DBUtil.dbConnect();
-//            DBUtil.getConnection().setAutoCommit(false);
-//
-//            statementActualizar = DBUtil.getConnection().prepareStatement("UPDATE ProduccionTB SET FechaInico = ?, HoraInicio = ?, Dias = ?, Horas = ?, Minutos = ?, "
-//                    + "TipoOrden = ?, Descripcion = ?, Cantidad = ?, Estado = ?\n"
-//                    + "WHERE IdProduccion = ?");
-//            statementActualizar.setString(1, produccionTB.getFechaInicio());
-//            statementActualizar.setString(2, produccionTB.getHoraInicio());
-//            statementActualizar.setInt(3, produccionTB.getDias());
-//            statementActualizar.setInt(4, produccionTB.getHoras());
-//            statementActualizar.setInt(5, produccionTB.getMinutos());
-//            statementActualizar.setBoolean(6, produccionTB.isTipoOrden());
-//            statementActualizar.setString(7, produccionTB.getDescripcion());
-//            statementActualizar.setDouble(8, produccionTB.getCantidad());
-//            statementActualizar.setDouble(9, produccionTB.getEstado());
-//            statementActualizar.setString(10, produccionTB.getIdProduccion());
-//            statementActualizar.addBatch();
-//
-//            statementDetalle = DBUtil.getConnection().prepareStatement("DELETE FROM ProduccionDetalleTB WHERE IdProduccion = ?");
-//            statementDetalle.setString(1, produccionTB.getIdProduccion());
-//            statementDetalle.addBatch();
-//            statementDetalle.executeBatch();
-//
-//            statementValidate = DBUtil.getConnection().prepareStatement("SELECT Costo FROM InsumoTB WHERE IdInsumo = ? ");
-//            statementDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO ProduccionDetalleTB(IdProduccion,IdProducto,Cantidad,Costo,CantidadUtilizada,CantidadAUtilizar,Merma)VALUES(?,?,?,?,?,?,?)");
-//
-//            double CostoTotal = 0;
-////            for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
-////                statementValidate.setString(1, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-////                ResultSet resultSet = statementValidate.executeQuery();
-////                if (resultSet.next()) {
-////                    Tools.println(insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-////                    statementDetalle.setString(1, produccionTB.getIdProduccion());
-////                    statementDetalle.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-////                    statementDetalle.setDouble(3, Double.parseDouble(insumoTB.getTxtCantidad().getText()));
-////                    statementDetalle.setDouble(4, resultSet.getDouble("Costo"));
-////                    statementDetalle.setDouble(5, Double.parseDouble(insumoTB.getTxtCantidadUtilizada().getText()) + Double.parseDouble(insumoTB.getTxtCantidadAUtilizar().getText()));
-////                    statementDetalle.setDouble(6, 0);
-////                    statementDetalle.setDouble(7, Double.parseDouble(insumoTB.getTxtMerma().getText().equalsIgnoreCase("") ? "0" : insumoTB.getTxtMerma().getText()));
-////                    statementDetalle.addBatch();
-////                    CostoTotal += (Double.parseDouble(insumoTB.getTxtCantidad().getText()) * resultSet.getDouble("Costo"));
-////                }
-////            }
-//
-//            if (produccionTB.getEstado() == 1) {
-//                statementInventario = DBUtil.getConnection().prepareStatement("update SuministroTB set Cantidad = Cantidad + ?, PrecioCompra = ? where IdSuministro = ?");
-//                statementInventario.setDouble(1, produccionTB.getCantidad());
-//                statementInventario.setDouble(2, CostoTotal);
-//                statementInventario.setString(3, produccionTB.getIdProducto());
-//                statementInventario.addBatch();
-//
-//                statementInsumo = DBUtil.getConnection().prepareStatement("UPDATE InsumoTB set Cantidad = (Cantidad - ?) where IdInsumo = ?");
-////                for (InsumoTB insumoTB : produccionTB.getInsumoTBs()) {
-//////                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidad().getText()) * produccionTB.getCantidad());
-////                    statementInsumo.setDouble(1, Double.parseDouble(insumoTB.getTxtCantidadUtilizada().getText()));
-////                    statementInsumo.setString(2, insumoTB.getComboBox().getSelectionModel().getSelectedItem().getIdInsumo());
-////                    statementInsumo.addBatch();
-////                }
-//
-//                statementInventario.executeBatch();
-//                statementInsumo.executeBatch();
-//            }
-//            statementActualizar.executeBatch();
-//            statementDetalle.executeBatch();
-//            DBUtil.getConnection().commit();
-//            return "actualizado";
-//        } catch (SQLException ex) {
-//            try {
-//                DBUtil.getConnection().rollback();
-//            } catch (SQLException e) {
-//
-//            }
-//            return ex.getLocalizedMessage();
-//        } finally {
-//            try {
-//                if (statementActualizar != null) {
-//                    statementActualizar.close();
-//                }
-//                if (statementDetalle != null) {
-//                    statementDetalle.close();
-//                }
-//                if (statementInventario != null) {
-//                    statementInventario.close();
-//                }
-//                if (statementInsumo != null) {
-//                    statementInsumo.close();
-//                }
-//                if (statementValidate != null) {
-//                    statementValidate.close();
-//                }
-//            } catch (SQLException e) {
-//
-//            }
-//        }
-//    }
-    public static Object ListarProduccion(int tipo, String fechaInicio, String fechaFinal, String busqueda, int posicionPagina, int filasPorPagina) {
+    public static Object ListarProduccion(int tipo, String fechaInicio, String fechaFinal, String busqueda, int estado, int posicionPagina, int filasPorPagina) {
         PreparedStatement statementListar = null;
         try {
             DBUtil.dbConnect();
             Object[] objects = new Object[2];
 
             ObservableList<ProduccionTB> produccionTBs = FXCollections.observableArrayList();
-            statementListar = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Produccion(?,?,?,?,?,?)}");
+            statementListar = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Produccion(?,?,?,?,?,?,?)}");
             statementListar.setInt(1, tipo);
             statementListar.setString(2, fechaInicio);
             statementListar.setString(3, fechaFinal);
             statementListar.setString(4, busqueda);
-            statementListar.setInt(5, posicionPagina);
-            statementListar.setInt(6, filasPorPagina);
+            statementListar.setInt(5, estado);
+            statementListar.setInt(6, posicionPagina);
+            statementListar.setInt(7, filasPorPagina);
             ResultSet resultSet = statementListar.executeQuery();
             while (resultSet.next()) {
                 ProduccionTB produccionTB = new ProduccionTB();
@@ -493,15 +430,15 @@ public class ProduccionADO {
                         break;
                 }
                 produccionTB.setLblEstado(label);
-
                 produccionTBs.add(produccionTB);
             }
 
-            statementListar = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Produccion_Count(?,?,?,?)}");
+            statementListar = DBUtil.getConnection().prepareStatement("{CALL Sp_Listar_Produccion_Count(?,?,?,?,?)}");
             statementListar.setInt(1, tipo);
             statementListar.setString(2, fechaInicio);
             statementListar.setString(3, fechaFinal);
             statementListar.setString(4, busqueda);
+            statementListar.setInt(5, estado);
             resultSet = statementListar.executeQuery();
             Integer cantidadTotal = 0;
             if (resultSet.next()) {
@@ -567,7 +504,7 @@ public class ProduccionADO {
                     suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
                     suministroTBs.add(suministroTB);
                 }
-                produccionTB.setSuministroTBs(suministroTBs);
+                produccionTB.setSuministroInsumos(suministroTBs);
                 return produccionTB;
             } else {
                 throw new Exception("No se pudo obtener los datos de la producción");
@@ -719,7 +656,7 @@ public class ProduccionADO {
                     suministroTB.setBtnRemove(button);
                     suministroTBs.add(suministroTB);
                 }
-                produccionTB.setSuministroTBs(suministroTBs);
+                produccionTB.setSuministroInsumos(suministroTBs);
                 return produccionTB;
             } else {
                 throw new Exception("No se pudo obtener los datos de la producción");

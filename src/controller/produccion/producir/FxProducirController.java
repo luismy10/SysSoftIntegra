@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -64,6 +65,8 @@ public class FxProducirController implements Initializable {
     private DatePicker dtFechaFinal;
     @FXML
     private TextField txtSearch;
+    @FXML
+    private ComboBox<String> cbEstado;
 
     private FxProducirEditarController producirEditarController;
 
@@ -81,6 +84,7 @@ public class FxProducirController implements Initializable {
         opcion = 0;
         Tools.actualDate(Tools.getDate(), dtFechaInicial);
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
+        cbEstado.getItems().addAll("COMPLETADO", "EN PRODUCCIÓN", "ANULADO");
         loadTableComponents();
         initLoadTable();
     }
@@ -112,7 +116,7 @@ public class FxProducirController implements Initializable {
                 Tools.roundingValue(cellData.getValue().getCantidad(), 2) + " " + cellData.getValue().getSuministroTB().getUnidadCompraName()
         ));
         tcEstado.setCellValueFactory(new PropertyValueFactory<>("lblEstado"));
-        
+
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
         tcProyecto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
         tcEncargado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
@@ -128,12 +132,12 @@ public class FxProducirController implements Initializable {
     private void initLoadTable() {
         if (!lblLoad.isVisible()) {
             paginacion = 1;
-            fillProduccionTable(0, "", "", "");
+            fillProduccionTable(0, "", "", "", 0);
             opcion = 0;
         }
     }
 
-    private void fillProduccionTable(int tipo, String fechaInicio, String fechaFinal, String buscar) {
+    private void fillProduccionTable(int tipo, String fechaInicio, String fechaFinal, String buscar, int estado) {
         ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -143,7 +147,7 @@ public class FxProducirController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return ProduccionADO.ListarProduccion(tipo, fechaInicio, fechaFinal, buscar, (paginacion - 1) * 20, 20);
+                return ProduccionADO.ListarProduccion(tipo, fechaInicio, fechaFinal, buscar, estado, (paginacion - 1) * 20, 20);
             }
         };
 
@@ -193,13 +197,16 @@ public class FxProducirController implements Initializable {
     public void onEventPaginacion() {
         switch (opcion) {
             case 0:
-                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                fillProduccionTable(0, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "", 0);
                 break;
             case 1:
-                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), txtSearch.getText().trim());
+                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), txtSearch.getText().trim(), 0);
                 break;
             case 2:
-                fillProduccionTable(2, "", "", txtSearch.getText().trim());
+                fillProduccionTable(2, "", "", txtSearch.getText().trim(), 0);
+                break;
+            case 3:
+                fillProduccionTable(3, "", "", "", getSelectEstadoId(cbEstado.getSelectionModel().getSelectedItem()));
                 break;
         }
     }
@@ -311,6 +318,16 @@ public class FxProducirController implements Initializable {
         }
     }
 
+    private int getSelectEstadoId(String value) {
+        if (value.equalsIgnoreCase("ANULADO")) {
+            return 3;
+        } else if (value.equalsIgnoreCase("EN PRODUCCIÓN")) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
     @FXML
     private void onKeyPressedAgregar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -378,7 +395,7 @@ public class FxProducirController implements Initializable {
             if (!Tools.isText(txtSearch.getText())) {
                 if (!lblLoad.isVisible()) {
                     paginacion = 1;
-                    fillProduccionTable(2, "", "", txtSearch.getText().trim());
+                    fillProduccionTable(2, "", "", txtSearch.getText().trim(), 0);
                     opcion = 2;
                 }
             }
@@ -434,7 +451,7 @@ public class FxProducirController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
                 paginacion = 1;
-                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "", 0);
                 opcion = 1;
             }
         }
@@ -445,8 +462,19 @@ public class FxProducirController implements Initializable {
         if (dtFechaInicial.getValue() != null && dtFechaFinal.getValue() != null) {
             if (!lblLoad.isVisible()) {
                 paginacion = 1;
-                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "");
+                fillProduccionTable(1, Tools.getDatePicker(dtFechaInicial), Tools.getDatePicker(dtFechaFinal), "", 0);
                 opcion = 1;
+            }
+        }
+    }
+
+    @FXML
+    private void onActionEstado(ActionEvent event) {
+        if (cbEstado.getSelectionModel().getSelectedIndex() >= 0) {
+            if (!lblLoad.isVisible()) {
+                paginacion = 1;
+                fillProduccionTable(3, "", "", "", getSelectEstadoId(cbEstado.getSelectionModel().getSelectedItem()));
+                opcion = 3;
             }
         }
     }

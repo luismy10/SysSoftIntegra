@@ -380,4 +380,6 @@ public final class FilesRouters {
 
     public static final String FX_FORMULA_VISUALIZAR = "/view/produccion/producir/FxFormulaVisualizar.fxml";
 
+    public static final String FX_MERMA = "/view/produccion/producir/FxMerma.fxml";
+
 }

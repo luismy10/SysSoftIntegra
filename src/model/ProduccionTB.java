@@ -26,7 +26,8 @@ public class ProduccionTB {
     private SuministroTB suministroTB;
     private EmpleadoTB empleadoTB;
     private ArrayList<ProduccionHistorialTB> produccionHistorialTBs;
-    private ArrayList<SuministroTB> suministroTBs;
+    private ArrayList<SuministroTB> suministroInsumos;
+    private ArrayList<SuministroTB> suministroMermas;
     
     public ProduccionTB() {
     }
@@ -199,12 +200,20 @@ public class ProduccionTB {
         this.produccionHistorialTBs = produccionHistorialTBs;
     }
 
-    public ArrayList<SuministroTB> getSuministroTBs() {
-        return suministroTBs;
+    public ArrayList<SuministroTB> getSuministroInsumos() {
+        return suministroInsumos;
     }
 
-    public void setSuministroTBs(ArrayList<SuministroTB> suministroTBs) {
-        this.suministroTBs = suministroTBs;
+    public void setSuministroInsumos(ArrayList<SuministroTB> suministroInsumos) {
+        this.suministroInsumos = suministroInsumos;
+    }
+
+    public ArrayList<SuministroTB> getSuministroMermas() {
+        return suministroMermas;
+    }
+
+    public void setSuministroMermas(ArrayList<SuministroTB> suministroMermas) {
+        this.suministroMermas = suministroMermas;
     }
     
 }

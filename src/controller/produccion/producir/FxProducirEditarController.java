@@ -134,7 +134,7 @@ public class FxProducirEditarController implements Initializable {
                 lblCantidadProducir.setText(Tools.roundingValue(produccionTB.getCantidad(), 2) + " " + produccionTB.getSuministroTB().getUnidadCompraName());
                 lblEncargado.setText(produccionTB.getEmpleadoTB().getApellidos() + " " + produccionTB.getEmpleadoTB().getNombres());
                 lblFechaCreacion.setText(produccionTB.getFechaRegistro() + " -" + produccionTB.getHoraRegistro());
-                for (SuministroTB suministroTB : produccionTB.getSuministroTBs()) {
+                for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                     suministroTB.getBtnRemove().setOnAction(event -> {
                         suministroTBs.remove(suministroTB);
                         addElementPaneHead();
@@ -416,7 +416,7 @@ public class FxProducirEditarController implements Initializable {
                     produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
                     produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
                     produccionTB.setDescripcion(txtDescripcion.getText().trim());
-                    produccionTB.setSuministroTBs(newSuministroTBs);
+                    produccionTB.setSuministroInsumos(newSuministroTBs);
                     modalEstado(produccionTB);
                 }
             }

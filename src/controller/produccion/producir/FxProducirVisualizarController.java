@@ -16,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,8 +23,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import model.FormulaADO;
-import model.FormulaTB;
 import model.ProduccionADO;
 import model.ProduccionTB;
 import model.SuministroTB;
@@ -143,7 +140,7 @@ public class FxProducirVisualizarController implements Initializable {
                 }
                 lblDuracion.setText(((produccionTB.getDias() == 1 ? produccionTB.getDias() + " día" : produccionTB.getDias() + " días ") + produccionTB.getHoras() + ":" + produccionTB.getMinutos() + ":00"));
                 lblObservacion.setText(produccionTB.getDescripcion());
-                fillTableDetalleFormula(produccionTB.getSuministroTBs());
+                fillTableDetalleFormula(produccionTB.getSuministroInsumos());
                 spBody.setDisable(false);
                 hbLoad.setVisible(false);
             } else {

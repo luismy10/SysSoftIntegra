@@ -1,6 +1,7 @@
 package controller.menus;
 
 import controller.produccion.producir.FxFormulaController;
+import controller.produccion.producir.FxMermaController;
 import controller.produccion.producir.FxProducirController;
 import controller.tools.FilesRouters;
 import java.io.IOException;
@@ -46,6 +47,15 @@ public class FxProduccionController implements Initializable {
 
     private FxFormulaController controllerFormula;
 
+    /*
+    Controller merma     
+     */
+    private FXMLLoader fXMLMerma;
+
+    private HBox nodeMerma;
+
+    private FxMermaController controllerMerma;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -54,6 +64,10 @@ public class FxProduccionController implements Initializable {
             controllerProducir = fXMLProducir.getController();
 
             fXMLFormula = new FXMLLoader(getClass().getResource(FilesRouters.FX_FORMULA));
+            nodeFormula = fXMLFormula.load();
+            controllerFormula = fXMLFormula.getController();
+
+            fXMLFormula = new FXMLLoader(getClass().getResource(FilesRouters.FX_MERMA));
             nodeFormula = fXMLFormula.load();
             controllerFormula = fXMLFormula.getController();
         } catch (IOException ex) {
@@ -81,6 +95,10 @@ public class FxProduccionController implements Initializable {
         fxPrincipalController.getVbContent().getChildren().add(nodeFormula);
     }
 
+    private void openWindowMerma() {
+
+    }
+
     @FXML
     private void onKeyPressedProducir(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -103,6 +121,18 @@ public class FxProduccionController implements Initializable {
     @FXML
     private void onActionFormula(ActionEvent event) {
         openWindowFormula();
+    }
+
+    @FXML
+    private void onKeyPressedMerma(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowMerma();
+        }
+    }
+
+    @FXML
+    private void onActionMerma(ActionEvent event) {
+        openWindowMerma();
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {
