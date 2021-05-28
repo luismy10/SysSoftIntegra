@@ -198,7 +198,7 @@ public class FxProducirEditarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
                 suministroTBs.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
             }
         });

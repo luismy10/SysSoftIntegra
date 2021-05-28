@@ -43,7 +43,7 @@
                <content>
                   <AnchorPane>
                      <children>
-                        <VBox fx:id="vbPrimero" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox fx:id="vbPrimero" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
                                 <columnConstraints>
@@ -55,32 +55,42 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label styleClass="labelRoboto13" text="Proyecto:" textFill="#020203">
+                                    <Label styleClass="labelRoboto13" text="Nombre del Proyecto:" textFill="#020203">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
                                     <TextField fx:id="txtProyecto" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" />
-                                    <Label styleClass="labelRoboto13" text="Cantidad:" textFill="#020203" GridPane.rowIndex="1">
+                                    <Label styleClass="labelRoboto13" text="Producto:" textFill="#020203" GridPane.rowIndex="1">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label styleClass="labelRoboto13" text="Producto" textFill="#020203" GridPane.rowIndex="2">
+                                    <ComboBox fx:id="cbProducto" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label styleClass="labelRoboto13" text="Medida a Producir:" textFill="#020203" GridPane.rowIndex="2">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="cbProducto" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label styleClass="labelRoboto13" text="Formula:" textFill="#020203" GridPane.rowIndex="3">
+                                    <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <children>
+                                          <ComboBox fx:id="cbMedidaProducir" prefHeight="30.0" prefWidth="240.0" />
+                                       </children></HBox>
+                                    <TextField fx:id="txtCantidad" onKeyTyped="#onKeyTypedCantidad" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label styleClass="labelRoboto13" text="Formula:" textFill="#020203" GridPane.rowIndex="4">
                                        <font>
                                           <Font name="Calibri" size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="cbFormula" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="cbFormula" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label styleClass="labelRoboto13" text="Cantidad:" textFill="#020203" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font name="Calibri" size="15.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </GridPane>
                               <HBox alignment="CENTER_LEFT">
@@ -98,7 +108,7 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="vbSegundo" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox fx:id="vbSegundo" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
                                  <children>
@@ -122,16 +132,45 @@
                                     </Button>
                                  </children>
                               </HBox>
-                              <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
                                  <children>
-                                    <VBox spacing="10.0">
+                                    <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                       <columnConstraints>
+                                          <ColumnConstraints minWidth="10.0" />
+                                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                          <ColumnConstraints minWidth="10.0" />
+                                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="20.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
-                                          <Label styleClass="labelRoboto13" text="Fecha de Producción:" textFill="#020203">
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Medida a Producir:" textFill="#020203" GridPane.rowIndex="1" />
+                                          <Text fx:id="lblMedidaProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Producto:" textFill="#020203" />
+                                          <Text fx:id="lblProducto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="-" GridPane.columnIndex="1" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cantidad a Producir" textFill="#020203" GridPane.columnIndex="2">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <DatePicker fx:id="dtFechaProduccion" editable="false" prefHeight="30.0" prefWidth="240.0" promptText="00/00/0000" />
+                                          <Text fx:id="lblCantidadProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="-" GridPane.columnIndex="3" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox spacing="10.0">
+                                       <children>
+                                          <Label styleClass="labelRoboto13" text="Fecha de Término:" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <DatePicker fx:id="dtFechaTermino" editable="false" prefHeight="30.0" prefWidth="240.0" promptText="00/00/0000" />
                                        </children>
                                     </VBox>
                                     <VBox spacing="10.0">
@@ -197,20 +236,6 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" spacing="10.0">
-                                       <children>
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cantidad a Producir" textFill="#020203">
-                                             <font>
-                                                <Font name="Calibri" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <HBox>
-                                             <children>
-                                                <TextField fx:id="txtReferenciaProduccion" disable="true" onKeyTyped="#onKeyTypedDias" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
@@ -269,15 +294,19 @@
                                     </VBox>
                                     <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#onActonMerma" onKeyPressed="#onKeyPressedMerma" styleClass="buttonLightError" text="Merma">
-                                             <graphic>
-                                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../image/plus.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
+                                          <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#onActonMerma" onKeyPressed="#onKeyPressedMerma" styleClass="buttonLight" text="Merma">
+                                                   <graphic>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/plus.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>

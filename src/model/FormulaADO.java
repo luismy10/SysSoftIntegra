@@ -231,7 +231,7 @@ public class FormulaADO {
                     searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
                         if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                             searchComboBox.getComboBox().getItems().clear();
-                            List<SuministroTB> list = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                            List<SuministroTB> list = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(),false);
                             list.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
                         }
                     });

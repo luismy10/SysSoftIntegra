@@ -174,6 +174,7 @@ public class ProduccionADO {
                         + "Horas,"
                         + "Minutos,"
                         + "IdProducto,"
+                        + "IdMedidaProducir,"
                         + "TipoOrden,"
                         + "IdEncargado,"
                         + "Descripcion,"
@@ -182,7 +183,7 @@ public class ProduccionADO {
                         + "Cantidad,"
                         + "CostoAdicioanal,"
                         + "Estado"
-                        + ")VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + ")VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 statementProducion.setString(1, id_produccion);
                 statementProducion.setString(2, produccionTB.getProyecto());
                 statementProducion.setString(3, produccionTB.getFechaInicio());
@@ -191,14 +192,15 @@ public class ProduccionADO {
                 statementProducion.setInt(6, produccionTB.getHoras());
                 statementProducion.setInt(7, produccionTB.getMinutos());
                 statementProducion.setString(8, produccionTB.getIdProducto());
-                statementProducion.setBoolean(9, produccionTB.isTipoOrden());
-                statementProducion.setString(10, produccionTB.getIdEncargado());
-                statementProducion.setString(11, produccionTB.getDescripcion());
-                statementProducion.setString(12, produccionTB.getFechaRegistro());
-                statementProducion.setString(13, produccionTB.getHoraRegistro());
-                statementProducion.setDouble(14, produccionTB.getCantidad());
-                statementProducion.setDouble(15, produccionTB.getCostoAdicional());
-                statementProducion.setInt(16, produccionTB.getEstado());
+                statementProducion.setInt(9, produccionTB.getIdMedidaProducir());
+                statementProducion.setBoolean(10, produccionTB.isTipoOrden());
+                statementProducion.setString(11, produccionTB.getIdEncargado());
+                statementProducion.setString(12, produccionTB.getDescripcion());
+                statementProducion.setString(13, produccionTB.getFechaRegistro());
+                statementProducion.setString(14, produccionTB.getHoraRegistro());
+                statementProducion.setDouble(15, produccionTB.getCantidad());
+                statementProducion.setDouble(16, produccionTB.getCostoAdicional());
+                statementProducion.setInt(17, produccionTB.getEstado());
                 statementProducion.addBatch();
 
                 statementValidate = DBUtil.getConnection().prepareStatement("SELECT PrecioCompra FROM SuministroTB WHERE IdSuministro = ? ");
@@ -300,7 +302,7 @@ public class ProduccionADO {
                                 statementMermaDetalle.setString(1, id_merma);
                                 statementMermaDetalle.setString(2, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
                                 statementMermaDetalle.setDouble(3, Double.parseDouble(suministroTB.getTxtCantidad().getText()));
-                                statementMermaDetalle.setDouble(4, resultSet.getDouble("PrecioCompra"));
+                                statementMermaDetalle.setDouble(4, costoProducto);
                                 statementMermaDetalle.addBatch();
                             }
                         }
@@ -466,6 +468,8 @@ public class ProduccionADO {
     public static Object Obtener_Produccion_ById(String idProduccion) {
         PreparedStatement statementProduccion = null;
         PreparedStatement statementDetalleProduccion = null;
+        PreparedStatement statementMerma = null;
+        PreparedStatement statementMermaDetalle = null;
         ResultSet resultSet = null;
         try {
             DBUtil.dbConnect();
@@ -493,7 +497,7 @@ public class ProduccionADO {
                 statementDetalleProduccion = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Produccion_ById(?)}");
                 statementDetalleProduccion.setString(1, idProduccion);
                 resultSet = statementDetalleProduccion.executeQuery();
-                ArrayList<SuministroTB> suministroTBs = new ArrayList();
+                ArrayList<SuministroTB> suministroInsumos = new ArrayList();
                 while (resultSet.next()) {
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setId(resultSet.getRow());
@@ -502,9 +506,35 @@ public class ProduccionADO {
                     suministroTB.setUnidadCompraName(resultSet.getString("Medida"));
                     suministroTB.setCostoCompra(resultSet.getDouble("Costo"));
                     suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
-                    suministroTBs.add(suministroTB);
+                    suministroInsumos.add(suministroTB);
                 }
-                produccionTB.setSuministroInsumos(suministroTBs);
+                produccionTB.setSuministroInsumos(suministroInsumos);
+
+                statementMerma = DBUtil.getConnection().prepareStatement("SELECT IdMerma,IdProduccion,IdUsuario FROM MermaTB WHERE IdProduccion = ?");
+                statementMerma.setString(1, idProduccion);
+                resultSet = statementMerma.executeQuery();
+                if (resultSet.next()) {
+                    MermaTB mermaTB = new MermaTB();
+                    mermaTB.setIdMerma(resultSet.getString("IdMerma"));
+                    mermaTB.setIdProduccion(idProduccion);
+
+                    statementMermaDetalle = DBUtil.getConnection().prepareStatement("{CALL Sp_Obtener_Detalle_Merma_ById(?)}");
+                    statementMermaDetalle.setString(1, resultSet.getString("IdMerma"));
+                    resultSet = statementMermaDetalle.executeQuery();
+                    ArrayList<SuministroTB> suministroMerma = new ArrayList();
+                    while (resultSet.next()) {
+                        SuministroTB suministroTB = new SuministroTB();
+                        suministroTB.setId(resultSet.getRow());
+                        suministroTB.setClave(resultSet.getString("Clave"));
+                        suministroTB.setNombreMarca(resultSet.getString("NombreMarca"));
+                        suministroTB.setUnidadCompraName(resultSet.getString("Medida"));
+                        suministroTB.setCostoCompra(resultSet.getDouble("Costo"));
+                        suministroTB.setCantidad(resultSet.getDouble("Cantidad"));
+                        suministroMerma.add(suministroTB);
+                    }
+                    mermaTB.setSuministroMerma(suministroMerma);
+                    produccionTB.setMermaTB(mermaTB);
+                }
                 return produccionTB;
             } else {
                 throw new Exception("No se pudo obtener los datos de la producción");
@@ -523,6 +553,12 @@ public class ProduccionADO {
                 }
                 if (statementDetalleProduccion != null) {
                     statementDetalleProduccion.close();
+                }
+                if (statementMerma != null) {
+                    statementMerma.close();
+                }
+                if (statementMermaDetalle != null) {
+                    statementMermaDetalle.close();
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
@@ -593,7 +629,7 @@ public class ProduccionADO {
                     searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
                         if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                             searchComboBox.getComboBox().getItems().clear();
-                            List<SuministroTB> list = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                            List<SuministroTB> list = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
                             list.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
                         }
                     });

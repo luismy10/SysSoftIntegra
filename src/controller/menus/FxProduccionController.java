@@ -67,9 +67,9 @@ public class FxProduccionController implements Initializable {
             nodeFormula = fXMLFormula.load();
             controllerFormula = fXMLFormula.getController();
 
-            fXMLFormula = new FXMLLoader(getClass().getResource(FilesRouters.FX_MERMA));
-            nodeFormula = fXMLFormula.load();
-            controllerFormula = fXMLFormula.getController();
+            fXMLMerma = new FXMLLoader(getClass().getResource(FilesRouters.FX_MERMA));
+            nodeMerma = fXMLMerma.load();
+            controllerMerma = fXMLMerma.getController();
         } catch (IOException ex) {
             System.out.println("Error en Producción Controller:" + ex.getLocalizedMessage());
         }
@@ -96,7 +96,13 @@ public class FxProduccionController implements Initializable {
     }
 
     private void openWindowMerma() {
-
+        controllerMerma.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeMerma, 0d);
+        AnchorPane.setTopAnchor(nodeMerma, 0d);
+        AnchorPane.setRightAnchor(nodeMerma, 0d);
+        AnchorPane.setBottomAnchor(nodeMerma, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodeMerma);
     }
 
     @FXML

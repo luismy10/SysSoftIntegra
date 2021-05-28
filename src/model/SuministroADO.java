@@ -1162,30 +1162,38 @@ public class SuministroADO {
         return suministroTB;
     }
 
-    public static List<SuministroTB> getSearchComboBoxSuministros(String buscar) {
-        String selectStmt = "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB WHERE Clave LIKE CONCAT(?,'%') OR NombreMarca LIKE CONCAT(?,'%')";
+    public static List<SuministroTB> getSearchComboBoxSuministros(String buscar, boolean directo) {
+        String selectStmt = directo ? "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB WHERE IdSuministro = ?" : "SELECT IdSuministro,Clave,NombreMarca FROM SuministroTB WHERE Clave LIKE CONCAT(?,'%') OR NombreMarca LIKE CONCAT(?,'%')";
         PreparedStatement preparedStatement = null;
+        ResultSet rsEmps = null;
         List<SuministroTB> suministroTBs = new ArrayList<>();
         try {
             DBUtil.dbConnect();
             preparedStatement = DBUtil.getConnection().prepareStatement(selectStmt);
-            preparedStatement.setString(1, buscar);
-            preparedStatement.setString(2, buscar);
-            try (ResultSet rsEmps = preparedStatement.executeQuery()) {
-                while (rsEmps.next()) {
-                    SuministroTB suministroTB = new SuministroTB();
-                    suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
-                    suministroTB.setClave(rsEmps.getString("Clave"));
-                    suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
-                    suministroTBs.add(suministroTB);
-                }
+            if (directo) {
+                preparedStatement.setString(1, buscar);
+            } else {
+                preparedStatement.setString(1, buscar);
+                preparedStatement.setString(2, buscar);
             }
+            rsEmps = preparedStatement.executeQuery();
+            while (rsEmps.next()) {
+                SuministroTB suministroTB = new SuministroTB();
+                suministroTB.setIdSuministro(rsEmps.getString("IdSuministro"));
+                suministroTB.setClave(rsEmps.getString("Clave"));
+                suministroTB.setNombreMarca(rsEmps.getString("NombreMarca"));
+                suministroTBs.add(suministroTB);
+            }
+
         } catch (SQLException e) {
 
         } finally {
             try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
+                }
+                if (rsEmps != null) {
+                    rsEmps.close();
                 }
             } catch (SQLException e) {
 

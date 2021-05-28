@@ -102,7 +102,7 @@ public class FxFormulaAgregarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<SuministroTB> insumoTBss = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                List<SuministroTB> insumoTBss = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
                 insumoTBss.forEach(p -> searchComboBox.getComboBox().getItems().add(p));
             }
         });
@@ -262,7 +262,7 @@ public class FxFormulaAgregarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
                 suministroTBs.forEach(p -> cbProducto.getItems().add(p));
             }
         });

@@ -54,7 +54,7 @@
                      <children>
                         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0em 0.8333333333333334em;">
+                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
                                  <children>
                                     <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                        <columnConstraints>

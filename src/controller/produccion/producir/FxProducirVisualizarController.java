@@ -50,6 +50,8 @@ public class FxProducirVisualizarController implements Initializable {
     @FXML
     private Text lblDuracion;
     @FXML
+    private GridPane gpListInsumos;
+    @FXML
     private Label lblCostoTotal;
     @FXML
     private Label lblCostoAdicional;
@@ -58,7 +60,9 @@ public class FxProducirVisualizarController implements Initializable {
     @FXML
     private Label lblTotal;
     @FXML
-    private GridPane gpList;
+    private GridPane gpListMerma;
+    @FXML
+    private Label lblTotalMerma;
     @FXML
     private HBox hbLoad;
     @FXML
@@ -140,7 +144,10 @@ public class FxProducirVisualizarController implements Initializable {
                 }
                 lblDuracion.setText(((produccionTB.getDias() == 1 ? produccionTB.getDias() + " día" : produccionTB.getDias() + " días ") + produccionTB.getHoras() + ":" + produccionTB.getMinutos() + ":00"));
                 lblObservacion.setText(produccionTB.getDescripcion());
-                fillTableDetalleFormula(produccionTB.getSuministroInsumos());
+                fillTableDetalleInsumos(produccionTB.getSuministroInsumos());
+                if (produccionTB.getMermaTB() != null) {
+                    fillTableDetalleMerma(produccionTB.getMermaTB().getSuministroMerma());
+                }
                 spBody.setDisable(false);
                 hbLoad.setVisible(false);
             } else {
@@ -164,15 +171,15 @@ public class FxProducirVisualizarController implements Initializable {
         }
     }
 
-    private void fillTableDetalleFormula(ArrayList<SuministroTB> suministroTBs) {
+    private void fillTableDetalleInsumos(ArrayList<SuministroTB> suministroTBs) {
         double costoTotal = 0;
         for (int i = 0; i < suministroTBs.size(); i++) {
-            gpList.add(addElementGridPane("l1" + (i + 1), suministroTBs.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
-            gpList.add(addElementGridPane("l2" + (i + 1), suministroTBs.get(i).getClave() + "\n" + suministroTBs.get(i).getNombreMarca() + "", Pos.CENTER_LEFT), 1, (i + 1));
-            gpList.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad(), 2) + "", Pos.CENTER), 2, (i + 1));
-            gpList.add(addElementGridPane("l4" + (i + 1), suministroTBs.get(i).getUnidadCompraName() + "", Pos.CENTER_LEFT), 3, (i + 1));
-            gpList.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 4, (i + 1));
-            gpList.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 5, (i + 1));
+            gpListInsumos.add(addElementGridPane("l1" + (i + 1), suministroTBs.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
+            gpListInsumos.add(addElementGridPane("l2" + (i + 1), suministroTBs.get(i).getClave() + "\n" + suministroTBs.get(i).getNombreMarca() + "", Pos.CENTER_LEFT), 1, (i + 1));
+            gpListInsumos.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad(), 2) + "", Pos.CENTER), 2, (i + 1));
+            gpListInsumos.add(addElementGridPane("l4" + (i + 1), suministroTBs.get(i).getUnidadCompraName() + "", Pos.CENTER_LEFT), 3, (i + 1));
+            gpListInsumos.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 4, (i + 1));
+            gpListInsumos.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 5, (i + 1));
             costoTotal += suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra();
         }
         double total = costoTotal + produccionTB.getCostoAdicional();
@@ -180,6 +187,20 @@ public class FxProducirVisualizarController implements Initializable {
         lblCostoAdicional.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(produccionTB.getCostoAdicional(), 2));
         lblCosto.setText(Session.MONEDA_SIMBOLO + " " + (total / produccionTB.getCantidad()));
         lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(total, 2));
+    }
+
+    private void fillTableDetalleMerma(ArrayList<SuministroTB> suministroTBs) {
+        double costoTotal = 0;
+        for (int i = 0; i < suministroTBs.size(); i++) {
+            gpListMerma.add(addElementGridPane("l1" + (i + 1), suministroTBs.get(i).getId() + "", Pos.CENTER), 0, (i + 1));
+            gpListMerma.add(addElementGridPane("l2" + (i + 1), suministroTBs.get(i).getClave() + "\n" + suministroTBs.get(i).getNombreMarca() + "", Pos.CENTER_LEFT), 1, (i + 1));
+            gpListMerma.add(addElementGridPane("l3" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad(), 2) + "", Pos.CENTER), 2, (i + 1));
+            gpListMerma.add(addElementGridPane("l4" + (i + 1), suministroTBs.get(i).getUnidadCompraName() + "", Pos.CENTER_LEFT), 3, (i + 1));
+            gpListMerma.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 4, (i + 1));
+            gpListMerma.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 5, (i + 1));
+            costoTotal += suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra();
+        }
+        lblTotalMerma.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(costoTotal, 2));
     }
 
     private Label addElementGridPane(String id, String nombre, Pos pos) {

@@ -8,6 +8,7 @@ public class ProduccionTB {
     private int id;
     private String idProduccion;
     private String idProducto;
+    private int idMedidaProducir;
     private boolean tipoOrden;
     private String idEncargado;
     private String proyecto;
@@ -25,10 +26,11 @@ public class ProduccionTB {
     private Label lblEstado;
     private SuministroTB suministroTB;
     private EmpleadoTB empleadoTB;
+    private MermaTB mermaTB;
     private ArrayList<ProduccionHistorialTB> produccionHistorialTBs;
     private ArrayList<SuministroTB> suministroInsumos;
     private ArrayList<SuministroTB> suministroMermas;
-    
+
     public ProduccionTB() {
     }
 
@@ -54,6 +56,14 @@ public class ProduccionTB {
 
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public int getIdMedidaProducir() {
+        return idMedidaProducir;
+    }
+
+    public void setIdMedidaProducir(int idMedidaProducir) {
+        this.idMedidaProducir = idMedidaProducir;
     }
 
     public boolean isTipoOrden() {
@@ -142,7 +152,7 @@ public class ProduccionTB {
 
     public void setMinutos(int minutos) {
         this.minutos = minutos;
-    }    
+    }
 
     public double getCantidad() {
         return cantidad;
@@ -182,7 +192,7 @@ public class ProduccionTB {
 
     public void setSuministroTB(SuministroTB suministroTB) {
         this.suministroTB = suministroTB;
-    }    
+    }
 
     public EmpleadoTB getEmpleadoTB() {
         return empleadoTB;
@@ -190,6 +200,14 @@ public class ProduccionTB {
 
     public void setEmpleadoTB(EmpleadoTB empleadoTB) {
         this.empleadoTB = empleadoTB;
+    }
+
+    public MermaTB getMermaTB() {
+        return mermaTB;
+    }
+
+    public void setMermaTB(MermaTB mermaTB) {
+        this.mermaTB = mermaTB;
     }
 
     public ArrayList<ProduccionHistorialTB> getProduccionHistorialTBs() {
@@ -215,5 +233,5 @@ public class ProduccionTB {
     public void setSuministroMermas(ArrayList<SuministroTB> suministroMermas) {
         this.suministroMermas = suministroMermas;
     }
-    
+
 }

@@ -40,7 +40,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.DetalleADO;
+import model.DetalleTB;
 import model.EmpleadoTB;
 import model.FormulaADO;
 import model.FormulaTB;
@@ -66,7 +69,7 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private VBox vbSegundo;
     @FXML
-    private DatePicker dtFechaProduccion;
+    private DatePicker dtFechaTermino;
     @FXML
     private TextField txtDias;
     @FXML
@@ -80,6 +83,8 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private ComboBox<EmpleadoTB> cbPersonaEncargada;
     @FXML
+    private ComboBox<DetalleTB> cbMedidaProducir;
+    @FXML
     private TextArea txtDescripcion;
     @FXML
     private GridPane gpListInsumo;
@@ -90,8 +95,6 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private TextField txtCostoAdicional;
     @FXML
-    private TextField txtReferenciaProduccion;
-    @FXML
     private VBox vbBody;
     @FXML
     private HBox hbLoad;
@@ -99,6 +102,12 @@ public class FxProducirAgregarController implements Initializable {
     private Label lblMessageLoad;
     @FXML
     private Button btnAceptarLoad;
+    @FXML
+    private Text lblMedidaProducir;
+    @FXML
+    private Text lblProducto;
+    @FXML
+    private Text lblCantidadProducir;
 
     private FxProducirController producirController;
 
@@ -115,12 +124,13 @@ public class FxProducirAgregarController implements Initializable {
         suministroInsumos = new ArrayList();
         suministroMermas = new ArrayList();
         searchComboBoxFormula = new SearchComboBox<>(cbFormula, false);
-        Tools.actualDate(Tools.getDate(), dtFechaProduccion);
+        Tools.actualDate(Tools.getDate(), dtFechaTermino);
         ToggleGroup toggleGroup = new ToggleGroup();
         cbInterno.setToggleGroup(toggleGroup);
         cbExterno.setToggleGroup(toggleGroup);
         addElementPaneHeadInsumo();
         comboBoxProductos();
+        comboBoxMedidaProducir();
         comboBoxFormulas();
         comboBoxEmpleados();
     }
@@ -140,7 +150,7 @@ public class FxProducirAgregarController implements Initializable {
         searchComboBoxSuministro.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBoxSuministro.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBoxSuministro.getComboBox().getItems().clear();
-                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBoxSuministro.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBoxSuministro.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
                 suministroTBs.forEach(p -> cbProducto.getItems().add(p));
             }
         });
@@ -170,6 +180,44 @@ public class FxProducirAgregarController implements Initializable {
                 }
             }
         });
+    }
+
+    private void comboBoxMedidaProducir() {
+        SearchComboBox<DetalleTB> searchComboBoxCategoria = new SearchComboBox<>(cbMedidaProducir, true);
+        searchComboBoxCategoria.setFilter((item, text) -> item.getNombre().toLowerCase().contains(text.toLowerCase()));
+        searchComboBoxCategoria.getComboBox().getItems().addAll(DetalleADO.GetDetailId("0020"));
+        searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            if (null == t.getCode()) {
+                searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().selectAll();
+            } else {
+                switch (t.getCode()) {
+                    case ENTER:
+                    case SPACE:
+                    case ESCAPE:
+                        searchComboBoxCategoria.getComboBox().hide();
+                        break;
+                    case UP:
+                    case DOWN:
+                    case LEFT:
+                    case RIGHT:
+                        break;
+                    default:
+                        searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                        searchComboBoxCategoria.getSearchComboBoxSkin().getSearchBox().selectAll();
+                        break;
+                }
+            }
+        });
+        searchComboBoxCategoria.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBoxCategoria.getComboBox().getSelectionModel().select(item);
+                if (searchComboBoxCategoria.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBoxCategoria.getComboBox().hide();
+                }
+            }
+        });
+
     }
 
     private void comboBoxFormulas() {
@@ -289,7 +337,7 @@ public class FxProducirAgregarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
                 suministroTBs.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
             }
         });
@@ -406,9 +454,108 @@ public class FxProducirAgregarController implements Initializable {
     }
 
     //------------------------------------------------------------------------------------  
+//    private void addElementsTableMerma() {
+//        SuministroTB suministroTB = new SuministroTB();
+//        ComboBox<SuministroTB> comboBox = new ComboBox();
+//        comboBox.setPromptText("-- Selecionar --");
+//        comboBox.setPrefWidth(220);
+//        comboBox.setPrefHeight(30);
+//        comboBox.setMaxWidth(Double.MAX_VALUE);
+//        suministroTB.setCbSuministro(comboBox);
+//
+//        SearchComboBox<SuministroTB> searchComboBox = new SearchComboBox<>(suministroTB.getCbSuministro(), false);
+//        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+//            if (t.getCode() == KeyCode.ENTER) {
+//                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+//                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+//                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+//                }
+//            } else if (t.getCode() == KeyCode.ESCAPE) {
+//                searchComboBox.getComboBox().hide();
+//            }
+//        });
+//        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+//            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+//                searchComboBox.getComboBox().getItems().clear();
+//                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
+//                suministroTBs.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
+//            }
+//        });
+//        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+//            switch (t.getCode()) {
+//                case ENTER:
+//                case SPACE:
+//                case ESCAPE:
+//                    searchComboBox.getComboBox().hide();
+//                    break;
+//                case UP:
+//                case DOWN:
+//                case LEFT:
+//                case RIGHT:
+//                    break;
+//                default:
+//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+//                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+//                    break;
+//            }
+//        });
+//        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+//            if (item != null) {
+//                searchComboBox.getComboBox().getSelectionModel().select(item);
+//                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+//                    searchComboBox.getComboBox().hide();
+//                }
+//            }
+//        });
+//        suministroTB.setSearchComboBox(searchComboBox);
+//
+//        TextField textField = new TextField(Tools.roundingValue(1, 2));
+//        textField.setPromptText("0.00");
+//        textField.getStyleClass().add("text-field-normal");
+//        textField.setPrefWidth(220);
+//        textField.setPrefHeight(30);
+//        textField.setOnKeyTyped(event -> {
+//            char c = event.getCharacter().charAt(0);
+//            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+//                event.consume();
+//            }
+//            if (c == '.' && textField.getText().contains(".")) {
+//                event.consume();
+//            }
+//        });
+//        suministroTB.setTxtCantidad(textField);
+//
+//        Button button = new Button();
+//        button.getStyleClass().add("buttonLightError");
+//        button.setAlignment(Pos.CENTER);
+//        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+//        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+//        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+//        imageView.setFitWidth(20);
+//        imageView.setFitHeight(20);
+//        button.setGraphic(imageView);
+//
+//        button.setOnAction(event -> {
+//            suministroMermas.remove(suministroTB);
+//            addElementPaneHeadMerma();
+//            addElementPaneBodyMerma();
+//        });
+//        button.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.ENTER) {
+//                suministroMermas.remove(suministroTB);
+//                addElementPaneHeadMerma();
+//                addElementPaneBodyMerma();
+//            }
+//        });
+//        suministroTB.setBtnRemove(button);
+//        suministroMermas.add(suministroTB);
+//        addElementPaneHeadMerma();
+//        addElementPaneBodyMerma();
+//    }
     private void addElementsTableMerma() {
         SuministroTB suministroTB = new SuministroTB();
         ComboBox<SuministroTB> comboBox = new ComboBox();
+        comboBox.setDisable(true);
         comboBox.setPromptText("-- Selecionar --");
         comboBox.setPrefWidth(220);
         comboBox.setPrefHeight(30);
@@ -429,8 +576,6 @@ public class FxProducirAgregarController implements Initializable {
         searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
             if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                 searchComboBox.getComboBox().getItems().clear();
-                List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
-                suministroTBs.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
             }
         });
         searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
@@ -460,6 +605,11 @@ public class FxProducirAgregarController implements Initializable {
             }
         });
         suministroTB.setSearchComboBox(searchComboBox);
+        List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro(), true);
+        suministroTBs.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
+        if (!suministroTB.getCbSuministro().getItems().isEmpty()) {
+            suministroTB.getCbSuministro().getSelectionModel().select(0);
+        }
 
         TextField textField = new TextField(Tools.roundingValue(1, 2));
         textField.setPromptText("0.00");
@@ -579,19 +729,24 @@ public class FxProducirAgregarController implements Initializable {
         if (Tools.isText(txtProyecto.getText())) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese el nombre del proyecto.");
             txtProyecto.requestFocus();
+        } else if (cbProducto.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione un producto a producir.");
+            cbProducto.requestFocus();
+        } else if (cbMedidaProducir.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione la medida a producir.");
+            cbMedidaProducir.requestFocus();
         } else if (!Tools.isNumeric(txtCantidad.getText())) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la cantidad a producir.");
             txtCantidad.requestFocus();
         } else if (Double.parseDouble(txtCantidad.getText()) <= 0) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese una cantidad mayor a 0");
             txtCantidad.requestFocus();
-        } else if (cbProducto.getSelectionModel().getSelectedIndex() < 0) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione un producto a producir.");
-            cbProducto.requestFocus();
         } else {
             vbPrimero.setVisible(false);
             vbSegundo.setVisible(true);
-            txtReferenciaProduccion.setText(Tools.roundingValue(Double.parseDouble(txtCantidad.getText()), 2));
+            lblProducto.setText(cbProducto.getSelectionModel().getSelectedItem().getNombreMarca());
+            lblMedidaProducir.setText(cbMedidaProducir.getSelectionModel().getSelectedItem().getNombre());
+            lblCantidadProducir.setText(Tools.roundingValue(Double.parseDouble(txtCantidad.getText()), 2));
 
             if (cbFormula.getSelectionModel().getSelectedIndex() >= 0) {
                 addFormulaProceso(cbFormula.getSelectionModel().getSelectedItem().getIdFormula());
@@ -650,7 +805,7 @@ public class FxProducirAgregarController implements Initializable {
                     searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
                         if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
                             searchComboBox.getComboBox().getItems().clear();
-                            List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim());
+                            List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText().trim(), false);
                             suministroTBs.forEach(p -> cbProducto.getItems().add(p));
                         }
                     });
@@ -758,7 +913,7 @@ public class FxProducirAgregarController implements Initializable {
         cbProducto.getSelectionModel().select(null);
         cbFormula.getItems().clear();
         cbFormula.getSelectionModel().select(null);
-        Tools.actualDate(Tools.getDate(), dtFechaProduccion);
+        Tools.actualDate(Tools.getDate(), dtFechaTermino);
         txtDias.clear();
         txtHoras.clear();
         txtMinutos.clear();
@@ -767,7 +922,9 @@ public class FxProducirAgregarController implements Initializable {
         cbPersonaEncargada.getItems().clear();
         cbPersonaEncargada.getSelectionModel().select(null);
         txtCostoAdicional.clear();
-        txtReferenciaProduccion.clear();
+        lblProducto.setText("-");
+        lblMedidaProducir.setText("-");
+        lblCantidadProducir.setText("-");
         suministroInsumos.clear();
         addElementPaneHeadInsumo();
         addElementPaneBodyInsumo();
@@ -800,9 +957,9 @@ public class FxProducirAgregarController implements Initializable {
     }
 
     private void onEventGuardar() {
-        if (dtFechaProduccion.getValue() == null) {
-            Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la fecha de producción.");
-            dtFechaProduccion.requestFocus();
+        if (dtFechaTermino.getValue() == null) {
+            Tools.AlertMessageWarning(apWindow, "Producción", "Ingrese la fecha que termina la producción.");
+            dtFechaTermino.requestFocus();
         } else if (cbPersonaEncargada.getSelectionModel().getSelectedIndex() < 0) {
             Tools.AlertMessageWarning(apWindow, "Producción", "Seleccione al personal encargado.");
             cbPersonaEncargada.requestFocus();
@@ -893,12 +1050,13 @@ public class FxProducirAgregarController implements Initializable {
     private void produccionObject(ArrayList<SuministroTB> newInsumos, ArrayList<SuministroTB> newMerma) {
         ProduccionTB produccionTB = new ProduccionTB();
         produccionTB.setProyecto(txtProyecto.getText().trim().toUpperCase());
-        produccionTB.setFechaInicio(Tools.getDatePicker(dtFechaProduccion));
+        produccionTB.setFechaInicio(Tools.getDatePicker(dtFechaTermino));
         produccionTB.setHoraInicio(Tools.getTime());
         produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);
         produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
         produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
         produccionTB.setIdProducto(cbProducto.getSelectionModel().getSelectedItem().getIdSuministro());
+        produccionTB.setIdMedidaProducir(cbMedidaProducir.getSelectionModel().getSelectedItem().getIdDetalle());
         produccionTB.setTipoOrden(true);
         produccionTB.setIdEncargado(cbPersonaEncargada.getSelectionModel().getSelectedItem().getIdEmpleado());
         produccionTB.setDescripcion(txtDescripcion.getText().trim());
