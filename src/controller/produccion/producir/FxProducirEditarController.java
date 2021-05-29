@@ -61,7 +61,9 @@ public class FxProducirEditarController implements Initializable {
     @FXML
     private Button btnAgregar;
     @FXML
-    private GridPane gpList;
+    private GridPane gpListInsumo;
+    @FXML
+    private GridPane gpListMerma;
     @FXML
     private VBox vbBody;
     @FXML
@@ -76,6 +78,8 @@ public class FxProducirEditarController implements Initializable {
     private TextField txtHoras;
     @FXML
     private TextField txtMinutos;
+    @FXML
+    private TextField txtCostoAdicional;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -83,12 +87,17 @@ public class FxProducirEditarController implements Initializable {
 
     private String idProduccion;
 
+    private ProduccionTB produccionTB;
+
     private ArrayList<SuministroTB> suministroTBs;
+
+    private ArrayList<SuministroTB> suministroMermas;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         suministroTBs = new ArrayList();
-        addElementPaneHead();
+        suministroMermas = new ArrayList();
+        addElementPaneHeadInsumos();
     }
 
     public void editarProduccion(String idProduccion) {
@@ -129,28 +138,29 @@ public class FxProducirEditarController implements Initializable {
         task.setOnSucceeded(w -> {
             Object object = task.getValue();
             if (object instanceof ProduccionTB) {
-                ProduccionTB produccionTB = (ProduccionTB) object;
+                produccionTB = (ProduccionTB) object;
                 lblProducto.setText(produccionTB.getSuministroTB().getClave() + " - " + produccionTB.getSuministroTB().getNombreMarca());
                 lblCantidadProducir.setText(Tools.roundingValue(produccionTB.getCantidad(), 2) + " " + produccionTB.getSuministroTB().getUnidadCompraName());
                 lblEncargado.setText(produccionTB.getEmpleadoTB().getApellidos() + " " + produccionTB.getEmpleadoTB().getNombres());
                 lblFechaCreacion.setText(produccionTB.getFechaRegistro() + " -" + produccionTB.getHoraRegistro());
+                txtCostoAdicional.setText(Tools.roundingValue(produccionTB.getCostoAdicional(), 2));
                 for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                     suministroTB.getBtnRemove().setOnAction(event -> {
                         suministroTBs.remove(suministroTB);
-                        addElementPaneHead();
-                        addElementPaneBody();
+                        addElementPaneHeadInsumos();
+                        addElementPaneBodyInsumos();
                     });
                     suministroTB.getBtnRemove().setOnKeyPressed(event -> {
                         if (event.getCode() == KeyCode.ENTER) {
                             suministroTBs.remove(suministroTB);
-                            addElementPaneHead();
-                            addElementPaneBody();
+                            addElementPaneHeadInsumos();
+                            addElementPaneBodyInsumos();
                         }
                     });
                     suministroTBs.add(suministroTB);
                 }
-                addElementPaneHead();
-                addElementPaneBody();
+                addElementPaneHeadInsumos();
+                addElementPaneBodyInsumos();
                 vbBody.setDisable(false);
                 hbLoad.setVisible(false);
             } else {
@@ -174,7 +184,7 @@ public class FxProducirEditarController implements Initializable {
         }
     }
 
-    private void addElementsTableSuministro() {
+    private void addElementsTableInsumos() {
         SuministroTB suministroTB = new SuministroTB();
         suministroTB.setCantidad(0);
         ComboBox<SuministroTB> comboBox = new ComboBox();
@@ -258,57 +268,213 @@ public class FxProducirEditarController implements Initializable {
 
         button.setOnAction(event -> {
             suministroTBs.remove(suministroTB);
-            addElementPaneHead();
-            addElementPaneBody();
+            addElementPaneHeadInsumos();
+            addElementPaneBodyInsumos();
         });
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 suministroTBs.remove(suministroTB);
-                addElementPaneHead();
-                addElementPaneBody();
+                addElementPaneHeadInsumos();
+                addElementPaneBodyInsumos();
             }
         });
         suministroTB.setBtnRemove(button);
         suministroTBs.add(suministroTB);
-        addElementPaneHead();
-        addElementPaneBody();
+        addElementPaneHeadInsumos();
+        addElementPaneBodyInsumos();
     }
 
-    private void addElementPaneHead() {
-        gpList.getChildren().clear();
-        gpList.getColumnConstraints().get(0).setMinWidth(10);
-        gpList.getColumnConstraints().get(0).setPrefWidth(40);
-        gpList.getColumnConstraints().get(0).setHgrow(Priority.SOMETIMES);
+    private void addElementPaneHeadInsumos() {
+        gpListInsumo.getChildren().clear();
+        gpListInsumo.getColumnConstraints().get(0).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(0).setPrefWidth(40);
+        gpListInsumo.getColumnConstraints().get(0).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(1).setMinWidth(10);
-        gpList.getColumnConstraints().get(1).setPrefWidth(320);
-        gpList.getColumnConstraints().get(1).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(1).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(1).setPrefWidth(320);
+        gpListInsumo.getColumnConstraints().get(1).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(2).setMinWidth(10);
-        gpList.getColumnConstraints().get(2).setPrefWidth(60);
-        gpList.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(2).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(2).setPrefWidth(60);
+        gpListInsumo.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(3).setMinWidth(10);
-        gpList.getColumnConstraints().get(3).setPrefWidth(60);
-        gpList.getColumnConstraints().get(3).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(3).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(3).setPrefWidth(60);
+        gpListInsumo.getColumnConstraints().get(3).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(4).setMinWidth(10);
-        gpList.getColumnConstraints().get(4).setPrefWidth(60);
-        gpList.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(4).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(4).setPrefWidth(60);
+        gpListInsumo.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
 
-        gpList.getColumnConstraints().get(5).setMinWidth(10);
-        gpList.getColumnConstraints().get(5).setPrefWidth(60);
-        gpList.getColumnConstraints().get(5).setHgrow(Priority.SOMETIMES);
-        gpList.getColumnConstraints().get(5).setHalignment(HPos.CENTER);
+        gpListInsumo.getColumnConstraints().get(5).setMinWidth(10);
+        gpListInsumo.getColumnConstraints().get(5).setPrefWidth(60);
+        gpListInsumo.getColumnConstraints().get(5).setHgrow(Priority.SOMETIMES);
+        gpListInsumo.getColumnConstraints().get(5).setHalignment(HPos.CENTER);
 
-        gpList.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
-        gpList.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
-        gpList.add(addElementGridPaneLabel("l03", "Cantidad Utilizada"), 2, 0);
-        gpList.add(addElementGridPaneLabel("l04", "Cantidad a Utilizar"), 3, 0);
-        gpList.add(addElementGridPaneLabel("l05", "Medida"), 4, 0);
-        gpList.add(addElementGridPaneLabel("l06", "Quitar"), 5, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l03", "Cantidad Utilizada"), 2, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l04", "Cantidad a Utilizar"), 3, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l05", "Medida"), 4, 0);
+        gpListInsumo.add(addElementGridPaneLabel("l06", "Quitar"), 5, 0);
     }
 
+    private void addElementPaneBodyInsumos() {
+        for (int i = 0; i < suministroTBs.size(); i++) {
+            gpListInsumo.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+            gpListInsumo.add(suministroTBs.get(i).getCbSuministro(), 1, (i + 1));
+            gpListInsumo.add(addElementGridPaneLabel("l3", Tools.roundingValue(suministroTBs.get(i).getCantidad(), 2), Pos.CENTER), 2, (i + 1));
+            gpListInsumo.add(suministroTBs.get(i).getTxtCantidad(), 3, (i + 1));
+            gpListInsumo.add(addElementGridPaneLabel("l6" + (i + 1), "MEDIDA", Pos.CENTER), 4, (i + 1));
+            gpListInsumo.add(suministroTBs.get(i).getBtnRemove(), 5, (i + 1));
+        }
+    }
+
+    //------------------------------------------------------------------------------------   
+    private void addElementsTableMerma() {
+        SuministroTB suministroTB = new SuministroTB();
+        ComboBox<SuministroTB> comboBox = new ComboBox();
+        comboBox.setDisable(true);
+        comboBox.setPromptText("-- Selecionar --");
+        comboBox.setPrefWidth(220);
+        comboBox.setPrefHeight(30);
+        comboBox.setMaxWidth(Double.MAX_VALUE);
+        suministroTB.setCbSuministro(comboBox);
+
+        SearchComboBox<SuministroTB> searchComboBox = new SearchComboBox<>(suministroTB.getCbSuministro(), false);
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyPressed(t -> {
+            if (t.getCode() == KeyCode.ENTER) {
+                if (!searchComboBox.getSearchComboBoxSkin().getItemView().getItems().isEmpty()) {
+                    searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().select(0);
+                    searchComboBox.getSearchComboBoxSkin().getItemView().requestFocus();
+                }
+            } else if (t.getCode() == KeyCode.ESCAPE) {
+                searchComboBox.getComboBox().hide();
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getSearchBox().setOnKeyReleased(t -> {
+            if (!Tools.isText(searchComboBox.getSearchComboBoxSkin().getSearchBox().getText())) {
+                searchComboBox.getComboBox().getItems().clear();
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().setOnKeyPressed(t -> {
+            switch (t.getCode()) {
+                case ENTER:
+                case SPACE:
+                case ESCAPE:
+                    searchComboBox.getComboBox().hide();
+                    break;
+                case UP:
+                case DOWN:
+                case LEFT:
+                case RIGHT:
+                    break;
+                default:
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().requestFocus();
+                    searchComboBox.getSearchComboBoxSkin().getSearchBox().selectAll();
+                    break;
+            }
+        });
+        searchComboBox.getSearchComboBoxSkin().getItemView().getSelectionModel().selectedItemProperty().addListener((p, o, item) -> {
+            if (item != null) {
+                searchComboBox.getComboBox().getSelectionModel().select(item);
+                if (searchComboBox.getSearchComboBoxSkin().isClickSelection()) {
+                    searchComboBox.getComboBox().hide();
+                }
+            }
+        });
+        suministroTB.setSearchComboBox(searchComboBox);
+        List<SuministroTB> suministroTBs = SuministroADO.getSearchComboBoxSuministros(produccionTB.getIdProducto(), true);
+        suministroTBs.forEach(p -> suministroTB.getCbSuministro().getItems().add(p));
+        if (!suministroTB.getCbSuministro().getItems().isEmpty()) {
+            suministroTB.getCbSuministro().getSelectionModel().select(0);
+        }
+
+        TextField textField = new TextField(Tools.roundingValue(1, 2));
+        textField.setPromptText("0.00");
+        textField.getStyleClass().add("text-field-normal");
+        textField.setPrefWidth(220);
+        textField.setPrefHeight(30);
+        textField.setOnKeyTyped(event -> {
+            char c = event.getCharacter().charAt(0);
+            if ((c < '0' || c > '9') && (c != '\b') && (c != '.')) {
+                event.consume();
+            }
+            if (c == '.' && textField.getText().contains(".")) {
+                event.consume();
+            }
+        });
+        suministroTB.setTxtCantidad(textField);
+
+        Button button = new Button();
+        button.getStyleClass().add("buttonLightError");
+        button.setAlignment(Pos.CENTER);
+        button.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        button.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        ImageView imageView = new ImageView(new Image("/view/image/remove-gray.png"));
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        button.setGraphic(imageView);
+
+        button.setOnAction(event -> {
+            suministroMermas.remove(suministroTB);
+            addElementPaneHeadMerma();
+            addElementPaneBodyMerma();
+        });
+        button.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                suministroMermas.remove(suministroTB);
+                addElementPaneHeadMerma();
+                addElementPaneBodyMerma();
+            }
+        });
+        suministroTB.setBtnRemove(button);
+        suministroMermas.add(suministroTB);
+        addElementPaneHeadMerma();
+        addElementPaneBodyMerma();
+    }
+
+    private void addElementPaneHeadMerma() {
+        gpListMerma.getChildren().clear();
+        gpListMerma.getColumnConstraints().get(0).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(0).setPrefWidth(40);
+        gpListMerma.getColumnConstraints().get(0).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(1).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(1).setPrefWidth(320);
+        gpListMerma.getColumnConstraints().get(1).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(2).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(2).setPrefWidth(60);
+        gpListMerma.getColumnConstraints().get(2).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(3).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(3).setPrefWidth(60);
+        gpListMerma.getColumnConstraints().get(3).setHgrow(Priority.SOMETIMES);
+
+        gpListMerma.getColumnConstraints().get(4).setMinWidth(10);
+        gpListMerma.getColumnConstraints().get(4).setPrefWidth(60);
+        gpListMerma.getColumnConstraints().get(4).setHgrow(Priority.SOMETIMES);
+        gpListMerma.getColumnConstraints().get(4).setHalignment(HPos.CENTER);
+
+        gpListMerma.add(addElementGridPaneLabel("l01", "N°"), 0, 0);
+        gpListMerma.add(addElementGridPaneLabel("l02", "Insumo"), 1, 0);
+        gpListMerma.add(addElementGridPaneLabel("l03", "Cantidad"), 2, 0);
+        gpListMerma.add(addElementGridPaneLabel("l04", "Medida"), 3, 0);
+        gpListMerma.add(addElementGridPaneLabel("l05", "Quitar"), 4, 0);
+    }
+
+    private void addElementPaneBodyMerma() {
+        for (int i = 0; i < suministroMermas.size(); i++) {
+            gpListMerma.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
+            gpListMerma.add(suministroMermas.get(i).getCbSuministro(), 1, (i + 1));
+            gpListMerma.add(suministroMermas.get(i).getTxtCantidad(), 2, (i + 1));
+            gpListMerma.add(addElementGridPaneLabel("l4" + (i + 1), "MEDIDA", Pos.CENTER), 3, (i + 1));
+            gpListMerma.add(suministroMermas.get(i).getBtnRemove(), 4, (i + 1));
+        }
+    }
+
+    //------------------------------------------------------------------------------------ 
     private Label addElementGridPaneLabel(String id, String nombre) {
         Label label = new Label(nombre);
         label.setId(id);
@@ -335,17 +501,6 @@ public class FxProducirEditarController implements Initializable {
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
         return label;
-    }
-
-    private void addElementPaneBody() {
-        for (int i = 0; i < suministroTBs.size(); i++) {
-            gpList.add(addElementGridPaneLabel("l1" + (i + 1), (i + 1) + "", Pos.CENTER), 0, (i + 1));
-            gpList.add(suministroTBs.get(i).getCbSuministro(), 1, (i + 1));
-            gpList.add(addElementGridPaneLabel("l3", Tools.roundingValue(suministroTBs.get(i).getCantidad(), 2), Pos.CENTER), 2, (i + 1));
-            gpList.add(suministroTBs.get(i).getTxtCantidad(), 3, (i + 1));
-            gpList.add(addElementGridPaneLabel("l6" + (i + 1), "MEDIDA", Pos.CENTER), 4, (i + 1));
-            gpList.add(suministroTBs.get(i).getBtnRemove(), 5, (i + 1));
-        }
     }
 
     private void modalEstado(ProduccionTB produccionTB) {
@@ -546,13 +701,25 @@ public class FxProducirEditarController implements Initializable {
     @FXML
     private void onKeyPressedAgregar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            addElementsTableSuministro();
+            addElementsTableInsumos();
         }
     }
 
     @FXML
     private void onActonAgregar(ActionEvent event) {
-        addElementsTableSuministro();
+        addElementsTableInsumos();
+    }
+
+    @FXML
+    private void onKeyPressedMerma(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+
+        }
+    }
+
+    @FXML
+    private void onActonMerma(ActionEvent event) {
+
     }
 
     @FXML

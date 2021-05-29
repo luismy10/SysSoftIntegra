@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -68,14 +69,14 @@
                                           <RowConstraints minHeight="20.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Cantidad a Producir:" textFill="#020203" GridPane.rowIndex="1" />
-                                          <Text fx:id="lblCantidadProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Producto:" textFill="#020203" />
-                                          <Text fx:id="lblProducto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular15" text="-" GridPane.columnIndex="1" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Fecha de Creación:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Encargado:" textFill="#020203" GridPane.columnIndex="2" />
-                                          <Text fx:id="lblEncargado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" />
-                                          <Text fx:id="lblFechaCreacion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cantidad a Producir:" textFill="#020203" GridPane.rowIndex="1" />
+                                          <Text fx:id="lblCantidadProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Producto:" textFill="#020203" />
+                                          <Text fx:id="lblProducto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Fecha de Creación:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Encargado:" textFill="#020203" GridPane.columnIndex="2" />
+                                          <Text fx:id="lblEncargado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" />
+                                          <Text fx:id="lblFechaCreacion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -94,6 +95,20 @@
                                                 <TextField fx:id="txtDias" onKeyTyped="#onKeyTypedDias" prefHeight="30.0" prefWidth="100.0" promptText="Días" styleClass="text-field-normal" />
                                                 <TextField fx:id="txtHoras" onKeyTyped="#onKeyTypedHoras" prefHeight="30.0" prefWidth="100.0" promptText="Horas" styleClass="text-field-normal" />
                                                 <TextField fx:id="txtMinutos" onKeyTyped="#onKeyTypedMinutos" prefHeight="30.0" prefWidth="100.0" promptText="Minutos" styleClass="text-field-normal" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox spacing="10.0">
+                                       <children>
+                                          <Label styleClass="labelRoboto13" text="Costo Adicional" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox>
+                                             <children>
+                                                <TextField fx:id="txtCostoAdicional" onKeyTyped="#onKeyTypedDias" prefHeight="30.0" prefWidth="240.0" promptText="0.00" styleClass="text-field-normal" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -128,7 +143,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
                                  <children>
-                                    <GridPane fx:id="gpList" style="-fx-vgap: 1em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
+                                    <GridPane fx:id="gpListInsumo" style="-fx-vgap: 1em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="340.0" />
@@ -143,6 +158,54 @@
                                     </GridPane>
                                  </children>
                               </HBox>
+                              <Separator prefWidth="200.0" />
+                              <HBox spacing="10.0" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Merma:" textFill="#020203">
+                                             <font>
+                                                <Font name="Calibri" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <HBox alignment="CENTER_RIGHT" style="-fx-spacing: 0.8333333333333334em;">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#onActonMerma" onKeyPressed="#onKeyPressedMerma" styleClass="buttonLight" text="Merma">
+                                                   <graphic>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../image/plus.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em;">
+                                 <children>
+                                    <GridPane fx:id="gpListMerma" style="-fx-vgap: 1em; -fx-hgap: 0.5em;" HBox.hgrow="ALWAYS">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="340.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints />
+                                       </rowConstraints>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
                               <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                  <children>
                                     <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">

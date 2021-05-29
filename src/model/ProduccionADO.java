@@ -246,22 +246,6 @@ public class ProduccionADO {
                 if (produccionTB.getEstado() == 1) {
                     double costoProducto = (costoMateriaPrima + produccionTB.getCostoAdicional()) / produccionTB.getCantidad();
 
-                    statementSuministro.setDouble(1, produccionTB.getCantidad());
-                    statementSuministro.setDouble(2, costoProducto);
-                    statementSuministro.setString(3, produccionTB.getIdProducto());
-                    statementSuministro.addBatch();
-
-                    statementSuministroKardex.setString(1, produccionTB.getIdProducto());
-                    statementSuministroKardex.setString(2, Tools.getDate());
-                    statementSuministroKardex.setString(3, Tools.getTime());
-                    statementSuministroKardex.setShort(4, (short) 1);
-                    statementSuministroKardex.setInt(5, 2);
-                    statementSuministroKardex.setString(6, "INGRESO POR PRODUCCIÓN DEL LA NUMERACIÓN " + id_produccion);
-                    statementSuministroKardex.setDouble(7, produccionTB.getCantidad());
-                    statementSuministroKardex.setDouble(8, costoProducto);
-                    statementSuministroKardex.setDouble(9, produccionTB.getCantidad() * costoProducto);
-                    statementSuministroKardex.addBatch();
-
                     for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                         statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
                         ResultSet resultSet = statementValidate.executeQuery();
@@ -284,6 +268,7 @@ public class ProduccionADO {
                         }
                     }
 
+                    double merma = 0;
                     if (!produccionTB.getSuministroMermas().isEmpty()) {
                         statementMermaCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Merma_Codigo_Alfanumerico()}");
                         statementMermaCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
@@ -304,10 +289,27 @@ public class ProduccionADO {
                                 statementMermaDetalle.setDouble(3, Double.parseDouble(suministroTB.getTxtCantidad().getText()));
                                 statementMermaDetalle.setDouble(4, costoProducto);
                                 statementMermaDetalle.addBatch();
+
+                                merma += Double.parseDouble(suministroTB.getTxtCantidad().getText());
                             }
                         }
-
                     }
+
+                    statementSuministro.setDouble(1, produccionTB.getCantidad() - merma);
+                    statementSuministro.setDouble(2, costoProducto);
+                    statementSuministro.setString(3, produccionTB.getIdProducto());
+                    statementSuministro.addBatch();
+
+                    statementSuministroKardex.setString(1, produccionTB.getIdProducto());
+                    statementSuministroKardex.setString(2, Tools.getDate());
+                    statementSuministroKardex.setString(3, Tools.getTime());
+                    statementSuministroKardex.setShort(4, (short) 1);
+                    statementSuministroKardex.setInt(5, 2);
+                    statementSuministroKardex.setString(6, "INGRESO POR PRODUCCIÓN DEL LA NUMERACIÓN " + id_produccion);
+                    statementSuministroKardex.setDouble(7, produccionTB.getCantidad() - merma);
+                    statementSuministroKardex.setDouble(8, costoProducto);
+                    statementSuministroKardex.setDouble(9, produccionTB.getCantidad() * costoProducto);
+                    statementSuministroKardex.addBatch();
 
                 }
 
@@ -588,6 +590,7 @@ public class ProduccionADO {
                 produccionTB.setDescripcion(resultSet.getString("Descripcion"));
                 produccionTB.setIdProducto(resultSet.getString("IdProducto"));
                 produccionTB.setCantidad(resultSet.getInt("Cantidad"));
+                produccionTB.setCostoAdicional(resultSet.getDouble("CostoAdicioanal")); 
                 SuministroTB newSuministroTB = new SuministroTB(resultSet.getString("IdProducto"), resultSet.getString("Clave"), resultSet.getString("NombreMarca"));
                 newSuministroTB.setUnidadCompraName(resultSet.getString("Medida"));
                 produccionTB.setSuministroTB(newSuministroTB);

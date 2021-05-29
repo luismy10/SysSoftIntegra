@@ -71,12 +71,22 @@ public class FxProducirVisualizarController implements Initializable {
     private Button btnAceptarLoad;
     @FXML
     private Label lblObservacion;
+    @FXML
+    private Label lblCantidadTotal;
+    @FXML
+    private Label lblCostoProductoTotal;
+    @FXML
+    private Label lblCostoFinal;
 
     private FxProducirController fxProducirController;
 
     private FxPrincipalController fxPrincipalController;
 
     private ProduccionTB produccionTB;
+
+    private double cantidadTotal = 0;
+
+    private double costoProductoTotal = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -148,6 +158,10 @@ public class FxProducirVisualizarController implements Initializable {
                 if (produccionTB.getMermaTB() != null) {
                     fillTableDetalleMerma(produccionTB.getMermaTB().getSuministroMerma());
                 }
+                lblCantidadTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cantidadTotal, 2));
+                lblCostoProductoTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(costoProductoTotal / produccionTB.getCantidad(), 2));
+                lblCostoFinal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(cantidadTotal * (costoProductoTotal / produccionTB.getCantidad()), 2));
+
                 spBody.setDisable(false);
                 hbLoad.setVisible(false);
             } else {
@@ -182,6 +196,9 @@ public class FxProducirVisualizarController implements Initializable {
             gpListInsumos.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 5, (i + 1));
             costoTotal += suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra();
         }
+
+        cantidadTotal += produccionTB.getCantidad();
+        costoProductoTotal = costoTotal + produccionTB.getCostoAdicional();
         double total = costoTotal + produccionTB.getCostoAdicional();
         lblCostoTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(costoTotal, 2));
         lblCostoAdicional.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(produccionTB.getCostoAdicional(), 2));
@@ -199,6 +216,7 @@ public class FxProducirVisualizarController implements Initializable {
             gpListMerma.add(addElementGridPane("l5" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 4, (i + 1));
             gpListMerma.add(addElementGridPane("l6" + (i + 1), Tools.roundingValue(suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra(), 2) + "", Pos.CENTER), 5, (i + 1));
             costoTotal += suministroTBs.get(i).getCantidad() * suministroTBs.get(i).getCostoCompra();
+            cantidadTotal -= suministroTBs.get(i).getCantidad();
         }
         lblTotalMerma.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(costoTotal, 2));
     }

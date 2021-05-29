@@ -1175,14 +1175,7 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private void onActonAgregar(ActionEvent event) {
         addElementsTableInsumos();
-    }
-
-    @FXML
-    private void onKeyPressedGuardar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            onEventGuardar();
-        }
-    }
+    }   
 
     @FXML
     private void onKeyPressedMerma(KeyEvent event) {
@@ -1194,6 +1187,13 @@ public class FxProducirAgregarController implements Initializable {
     @FXML
     private void onActonMerma(ActionEvent event) {
         addElementsTableMerma();
+    }
+    
+     @FXML
+    private void onKeyPressedGuardar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventGuardar();
+        }
     }
 
     @FXML

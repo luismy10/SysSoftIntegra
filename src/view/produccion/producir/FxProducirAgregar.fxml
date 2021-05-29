@@ -147,15 +147,15 @@
                                        </rowConstraints>
                                        <children>
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Medida a Producir:" textFill="#020203" GridPane.rowIndex="1" />
-                                          <Text fx:id="lblMedidaProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Text fx:id="lblMedidaProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Producto:" textFill="#020203" />
-                                          <Text fx:id="lblProducto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="-" GridPane.columnIndex="1" />
+                                          <Text fx:id="lblProducto" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="1" />
                                           <Label maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cantidad a Producir" textFill="#020203" GridPane.columnIndex="2">
                                              <font>
                                                 <Font name="Calibri" size="15.0" />
                                              </font>
                                           </Label>
-                                          <Text fx:id="lblCantidadProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto15" text="-" GridPane.columnIndex="3" />
+                                          <Text fx:id="lblCantidadProducir" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" />
                                        </children>
                                     </GridPane>
                                  </children>
