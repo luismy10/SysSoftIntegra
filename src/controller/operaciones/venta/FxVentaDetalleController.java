@@ -696,6 +696,7 @@ public class FxVentaDetalleController implements Initializable {
                                         "",
                                         "",
                                         "");
+                                
                             }
 
                             billPrintable.generatePDFPrint(hbEncabezado, hbDetalle, hbPie);
