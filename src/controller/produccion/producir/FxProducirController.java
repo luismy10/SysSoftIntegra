@@ -102,11 +102,10 @@ public class FxProducirController implements Initializable {
         ));
         tcFechaInicio.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getFechaInicio() + "\n"
-                + cellData.getValue().getHoraInicio()
+                + cellData.getValue().getFechaRegistro()
         ));
         tcDuracion.setCellValueFactory(cellData -> Bindings.concat(
-                (cellData.getValue().getDias() == 1 ? cellData.getValue().getDias() + " día" : cellData.getValue().getDias() + " días ") + cellData.getValue().getHoras() + ":" + cellData.getValue().getMinutos() + ":00" + "\n"
-                + cellData.getValue().getFechaInicio()
+                (cellData.getValue().getDias() == 1 ? cellData.getValue().getDias() + " día" : cellData.getValue().getDias() + " días ") + cellData.getValue().getHoras() + ":" + cellData.getValue().getMinutos() + ":00"
         ));
         tcProductoFabricar.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getSuministroTB().getClave() + "\n"

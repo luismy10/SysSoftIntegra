@@ -85,11 +85,11 @@
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Fecha de Producción:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Estado:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Duración:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                          <Text fx:id="lblEncargado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="-" GridPane.columnIndex="3" />
-                                          <Text fx:id="lblFechaCreacion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                          <Text fx:id="lblFechaProduccion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                          <Text fx:id="lblEstado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                          <Text fx:id="lblDuracion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto13" text="-" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                          <Text fx:id="lblEncargado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" />
+                                          <Text fx:id="lblFechaCreacion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <Text fx:id="lblFechaProduccion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                          <Text fx:id="lblEstado" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                          <Text fx:id="lblDuracion" fill="#055bd3" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelRoboto14" text="-" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                        </children>
                                     </GridPane>
                                  </children>

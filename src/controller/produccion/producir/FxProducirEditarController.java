@@ -142,7 +142,7 @@ public class FxProducirEditarController implements Initializable {
                 lblProducto.setText(produccionTB.getSuministroTB().getClave() + " - " + produccionTB.getSuministroTB().getNombreMarca());
                 lblCantidadProducir.setText(Tools.roundingValue(produccionTB.getCantidad(), 2) + " " + produccionTB.getSuministroTB().getUnidadCompraName());
                 lblEncargado.setText(produccionTB.getEmpleadoTB().getApellidos() + " " + produccionTB.getEmpleadoTB().getNombres());
-                lblFechaCreacion.setText(produccionTB.getFechaRegistro() + " -" + produccionTB.getHoraRegistro());
+                lblFechaCreacion.setText(produccionTB.getFechaRegistro() + " - " + produccionTB.getHoraRegistro());
                 txtCostoAdicional.setText(Tools.roundingValue(produccionTB.getCostoAdicional(), 2));
                 for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                     suministroTB.getBtnRemove().setOnAction(event -> {
@@ -530,53 +530,99 @@ public class FxProducirEditarController implements Initializable {
             Tools.AlertMessageWarning(apWindow, "Producción", "No hay matería prima para producir.");
             btnAgregar.requestFocus();
         } else {
-            int cantidad = 0;
-            int producto = 0;
+            int cantidadInsumo = 0;
+            int itemInsumo = 0;
             for (SuministroTB suministroTB : suministroTBs) {
                 if (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) && Double.parseDouble(suministroTB.getTxtCantidad().getText()) > 0) {
-                    cantidad += 0;
+                    cantidadInsumo += 0;
                 } else {
-                    cantidad += 1;
+                    cantidadInsumo += 1;
                 }
                 if (suministroTB.getCbSuministro().getSelectionModel().getSelectedIndex() >= 0) {
-                    producto += 0;
+                    itemInsumo += 0;
                 } else {
-                    producto += 1;
+                    itemInsumo += 1;
                 }
             }
 
-            if (cantidad > 0) {
+            if (cantidadInsumo > 0) {
                 Tools.AlertMessageWarning(apWindow, "Producción", "Hay cantidades en 0 en la lista de insumos.");
-            } else if (producto > 0) {
+            } else if (itemInsumo > 0) {
                 Tools.AlertMessageWarning(apWindow, "Producción", "No hay insumos seleccionados en la lista.");
             } else {
-                int duplicate = 0;
-                ArrayList<SuministroTB> newSuministroTBs = new ArrayList();
+                int duplicateInsumo = 0;
+                ArrayList<SuministroTB> newSuministroInsumos = new ArrayList();
                 for (SuministroTB suministroTB : suministroTBs) {
-                    if (validateDuplicateInsumo(newSuministroTBs, suministroTB)) {
-                        duplicate += 1;
+                    if (validateDuplicateInsumo(newSuministroInsumos, suministroTB)) {
+                        duplicateInsumo += 1;
                     } else {
-                        newSuministroTBs.add(suministroTB);
-                        duplicate += 0;
+                        newSuministroInsumos.add(suministroTB);
+                        duplicateInsumo += 0;
                     }
                 }
-                if (duplicate > 0) {
+                if (duplicateInsumo > 0) {
                     Tools.AlertMessageWarning(apWindow, "Producción", "Hay insumos duplicados en la lista.");
                 } else {
-                    ProduccionTB produccionTB = new ProduccionTB();
-                    produccionTB.setIdProduccion(idProduccion);
-                    produccionTB.setFechaRegistro(Tools.getDate());
-                    produccionTB.setHoraRegistro(Tools.getTime());
-                    produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);
-                    produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
-                    produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
-                    produccionTB.setDescripcion(txtDescripcion.getText().trim());
-                    produccionTB.setSuministroInsumos(newSuministroTBs);
-                    modalEstado(produccionTB);
+                    if (!suministroMermas.isEmpty()) {
+                        int cantidadMerma = 0;
+                        int itemMerma = 0;
+                        for (SuministroTB suministroTB : suministroMermas) {
+                            if (Tools.isNumeric(suministroTB.getTxtCantidad().getText()) && Double.parseDouble(suministroTB.getTxtCantidad().getText()) > 0) {
+                                cantidadMerma += 0;
+                            } else {
+                                cantidadMerma += 1;
+                            }
+                            if (suministroTB.getCbSuministro().getSelectionModel().getSelectedIndex() >= 0) {
+                                itemMerma += 0;
+                            } else {
+                                itemMerma += 1;
+                            }
+                        }
+
+                        if (cantidadMerma > 0) {
+                            Tools.AlertMessageWarning(apWindow, "Producción", "Hay cantidades en 0 en la lista de merma.");
+                        } else if (itemMerma > 0) {
+                            Tools.AlertMessageWarning(apWindow, "Producción", "No hay merma seleccionados en la lista.");
+                        } else {
+                            int duplicateMerma = 0;
+                            ArrayList<SuministroTB> newSuministroMermas = new ArrayList();
+                            for (SuministroTB suministroTB : suministroMermas) {
+                                if (validateDuplicateInsumo(newSuministroMermas, suministroTB)) {
+                                    duplicateMerma += 1;
+                                } else {
+                                    newSuministroMermas.add(suministroTB);
+                                    duplicateMerma += 0;
+                                }
+                            }
+
+                            if (duplicateMerma > 0) {
+                                Tools.AlertMessageWarning(apWindow, "Producción", "Hay mermas duplicados en la lista.");
+                            } else {
+                                produccionObject(newSuministroInsumos, newSuministroMermas);
+                            }
+                        }
+                    } else {
+                        produccionObject(newSuministroInsumos, suministroMermas);
+                    }
                 }
             }
 
         }
+    }
+
+    private void produccionObject(ArrayList<SuministroTB> newInsumos, ArrayList<SuministroTB> newMerma) {
+        ProduccionTB produccionTB = new ProduccionTB();
+        produccionTB.setIdProduccion(idProduccion);
+        produccionTB.setFechaRegistro(Tools.getDate());
+        produccionTB.setHoraRegistro(Tools.getTime());
+        produccionTB.setDias(Tools.isNumericInteger(txtDias.getText()) ? Integer.parseInt(txtDias.getText()) : 0);
+        produccionTB.setHoras(Tools.isNumericInteger(txtHoras.getText()) ? Integer.parseInt(txtHoras.getText()) : 0);
+        produccionTB.setMinutos(Tools.isNumericInteger(txtMinutos.getText()) ? Integer.parseInt(txtMinutos.getText()) : 0);
+        produccionTB.setCostoAdicional(Tools.isNumeric(txtCostoAdicional.getText()) ? Double.parseDouble(txtCostoAdicional.getText()) : 0);
+        produccionTB.setDescripcion(txtDescripcion.getText().trim());
+        produccionTB.setSuministroInsumos(newInsumos);
+        produccionTB.setSuministroMermas(newMerma);
+        modalEstado(produccionTB);
     }
 
     public void executeEdicion(ProduccionTB produccionTB) {
@@ -713,13 +759,13 @@ public class FxProducirEditarController implements Initializable {
     @FXML
     private void onKeyPressedMerma(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-
+            addElementsTableMerma();
         }
     }
 
     @FXML
     private void onActonMerma(ActionEvent event) {
-
+        addElementsTableMerma();
     }
 
     @FXML

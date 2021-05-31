@@ -181,7 +181,7 @@
                                           <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
                                           <TableColumn fx:id="tcProyecto" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Proyecto" />
                                           <TableColumn fx:id="tcEncargado" prefWidth="160.0" style="-fx-alignment: CENTER-LEFT;" text="Encargado" />
-                                          <TableColumn fx:id="tcFechaInicio" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Inicio" />
+                                          <TableColumn fx:id="tcFechaInicio" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Fecha Ini/Fin" />
                                           <TableColumn fx:id="tcDuracion" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="Duración" />
                                           <TableColumn fx:id="tcProductoFabricar" prefWidth="229.0" style="-fx-alignment: CENTER-LEFT;" text="Producto a Fabricar" />
                                           <TableColumn fx:id="tcCantidad" prefWidth="160.0" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />

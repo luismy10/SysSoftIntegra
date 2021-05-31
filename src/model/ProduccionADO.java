@@ -38,7 +38,7 @@ public class ProduccionADO {
         PreparedStatement statementInventarioKardex = null;
         PreparedStatement statementMerma = null;
         PreparedStatement statementMermaDetalle = null;
-
+        
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -53,12 +53,13 @@ public class ProduccionADO {
                     DBUtil.getConnection().rollback();
                     return "state";
                 } else {
-                    statementProducion = DBUtil.getConnection().prepareStatement("UPDATE ProduccionTB SET Dias = Dias + ?, Horas = Horas + ?, Minutos = Minutos + ?,Estado = ? WHERE IdProduccion = ?");
+                    statementProducion = DBUtil.getConnection().prepareStatement("UPDATE ProduccionTB SET Dias = Dias + ?, Horas = Horas + ?, Minutos = Minutos + ?,CostoAdicioanal = ?,Estado = ? WHERE IdProduccion = ?");
                     statementProducion.setInt(1, produccionTB.getDias());
                     statementProducion.setInt(2, produccionTB.getHoras());
                     statementProducion.setInt(3, produccionTB.getMinutos());
-                    statementProducion.setInt(4, produccionTB.getEstado());
-                    statementProducion.setString(5, produccionTB.getIdProduccion());
+                    statementProducion.setDouble(4, produccionTB.getCostoAdicional());
+                    statementProducion.setInt(5, produccionTB.getEstado());
+                    statementProducion.setString(6, produccionTB.getIdProduccion());
                     statementProducion.addBatch();
 
                     statementProduccionDetalle = DBUtil.getConnection().prepareStatement("DELETE FROM ProduccionDetalleTB WHERE IdProduccion = ?");
@@ -103,25 +104,11 @@ public class ProduccionADO {
                     statementSuministroKardex = DBUtil.getConnection().prepareStatement("INSERT INTO KardexSuministroTB(IdSuministro,Fecha,Hora,Tipo,Movimiento,Detalle,Cantidad,Costo,Total)VALUES(?,?,?,?,?,?,?,?,?)");
                     statementInventario = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB set Cantidad = (Cantidad - ?) where IdSuministro = ?");
                     statementInventarioKardex = DBUtil.getConnection().prepareStatement("INSERT INTO KardexSuministroTB(IdSuministro,Fecha,Hora,Tipo,Movimiento,Detalle,Cantidad,Costo, Total)VALUES(?,?,?,?,?,?,?,?,?)");
+                    statementMerma = DBUtil.getConnection().prepareStatement("INSERT INTO MermaTB(IdMerma,IdProduccion,IdUsuario) VALUES(?,?,?)");
+                    statementMermaDetalle = DBUtil.getConnection().prepareStatement("INSERT INTO MermaDetalleTB(IdMerma,IdProducto,Cantidad,Costo) VALUES(?,?,?,?)");
 
                     if (produccionTB.getEstado() == 1) {
                         double costoProducto = (costoMateriaPrima + produccionTB.getCostoAdicional()) / produccionTB.getCantidad();
-
-                        statementSuministro.setDouble(1, produccionTB.getCantidad());
-                        statementSuministro.setDouble(2, costoProducto);
-                        statementSuministro.setString(3, produccionTB.getIdProducto());
-                        statementSuministro.addBatch();
-
-                        statementSuministroKardex.setString(1, produccionTB.getIdProducto());
-                        statementSuministroKardex.setString(2, Tools.getDate());
-                        statementSuministroKardex.setString(3, Tools.getTime());
-                        statementSuministroKardex.setShort(4, (short) 1);
-                        statementSuministroKardex.setInt(5, 2);
-                        statementSuministroKardex.setString(6, "INGRESO POR PRODUCCIÓN DEL LA NUMERACIÓN " + produccionTB.getIdProduccion());
-                        statementSuministroKardex.setDouble(7, produccionTB.getCantidad());
-                        statementSuministroKardex.setDouble(8, costoProducto);
-                        statementSuministroKardex.setDouble(9, produccionTB.getCantidad() * costoProducto);
-                        statementSuministroKardex.addBatch();
 
                         for (SuministroTB suministroTB : produccionTB.getSuministroInsumos()) {
                             statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
@@ -142,14 +129,59 @@ public class ProduccionADO {
                                 statementInventarioKardex.setDouble(8, resultSet.getDouble("PrecioCompra"));
                                 statementInventarioKardex.setDouble(9, Double.parseDouble(suministroTB.getTxtCantidad().getText()) * resultSet.getDouble("PrecioCompra"));
                                 statementInventarioKardex.addBatch();
-
                             }
                         }
+
+                        double merma = 0;
+                        if (!produccionTB.getSuministroMermas().isEmpty()) {
+                            statementMermaCodigo = DBUtil.getConnection().prepareCall("{? = call Fc_Merma_Codigo_Alfanumerico()}");
+                            statementMermaCodigo.registerOutParameter(1, java.sql.Types.VARCHAR);
+                            statementMermaCodigo.execute();
+                            String id_merma = statementMermaCodigo.getString(1);
+
+                            statementMerma.setString(1, id_merma);
+                            statementMerma.setString(2, produccionTB.getIdProduccion());
+                            statementMerma.setString(3, Session.USER_ID);
+                            statementMerma.addBatch();
+
+                            for (SuministroTB suministroTB : produccionTB.getSuministroMermas()) {
+                                statementValidate.setString(1, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                                ResultSet resultSet = statementValidate.executeQuery();
+                                if (resultSet.next()) {
+                                    statementMermaDetalle.setString(1, id_merma);
+                                    statementMermaDetalle.setString(2, suministroTB.getCbSuministro().getSelectionModel().getSelectedItem().getIdSuministro());
+                                    statementMermaDetalle.setDouble(3, Double.parseDouble(suministroTB.getTxtCantidad().getText()));
+                                    statementMermaDetalle.setDouble(4, costoProducto);
+                                    statementMermaDetalle.addBatch();
+
+                                    merma += Double.parseDouble(suministroTB.getTxtCantidad().getText());
+                                }
+                            }
+                        }
+
+                        statementSuministro.setDouble(1, produccionTB.getCantidad() - merma);
+                        statementSuministro.setDouble(2, costoProducto);
+                        statementSuministro.setString(3, produccionTB.getIdProducto());
+                        statementSuministro.addBatch();
+
+                        statementSuministroKardex.setString(1, produccionTB.getIdProducto());
+                        statementSuministroKardex.setString(2, Tools.getDate());
+                        statementSuministroKardex.setString(3, Tools.getTime());
+                        statementSuministroKardex.setShort(4, (short) 1);
+                        statementSuministroKardex.setInt(5, 2);
+                        statementSuministroKardex.setString(6, "INGRESO POR PRODUCCIÓN DEL LA NUMERACIÓN " + produccionTB.getIdProduccion());
+                        statementSuministroKardex.setDouble(7, produccionTB.getCantidad() - merma);
+                        statementSuministroKardex.setDouble(8, costoProducto);
+                        statementSuministroKardex.setDouble(9, (produccionTB.getCantidad() - merma) * costoProducto);
+                        statementSuministroKardex.addBatch();
+
                     }
 
                     statementProducion.executeBatch();
                     statementProduccionDetalle.executeBatch();
                     statementProduccionHistorial.executeBatch();
+                    statementMerma.executeBatch();
+                    statementMermaDetalle.executeBatch();
                     statementSuministro.executeBatch();
                     statementSuministroKardex.executeBatch();
                     statementInventario.executeBatch();
@@ -308,7 +340,7 @@ public class ProduccionADO {
                     statementSuministroKardex.setString(6, "INGRESO POR PRODUCCIÓN DEL LA NUMERACIÓN " + id_produccion);
                     statementSuministroKardex.setDouble(7, produccionTB.getCantidad() - merma);
                     statementSuministroKardex.setDouble(8, costoProducto);
-                    statementSuministroKardex.setDouble(9, produccionTB.getCantidad() * costoProducto);
+                    statementSuministroKardex.setDouble(9, (produccionTB.getCantidad() - merma) * costoProducto);
                     statementSuministroKardex.addBatch();
 
                 }
@@ -590,7 +622,7 @@ public class ProduccionADO {
                 produccionTB.setDescripcion(resultSet.getString("Descripcion"));
                 produccionTB.setIdProducto(resultSet.getString("IdProducto"));
                 produccionTB.setCantidad(resultSet.getInt("Cantidad"));
-                produccionTB.setCostoAdicional(resultSet.getDouble("CostoAdicioanal")); 
+                produccionTB.setCostoAdicional(resultSet.getDouble("CostoAdicioanal"));
                 SuministroTB newSuministroTB = new SuministroTB(resultSet.getString("IdProducto"), resultSet.getString("Clave"), resultSet.getString("NombreMarca"));
                 newSuministroTB.setUnidadCompraName(resultSet.getString("Medida"));
                 produccionTB.setSuministroTB(newSuministroTB);
