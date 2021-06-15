@@ -214,6 +214,29 @@
                                           </Label>
                                        </children>
                                     </HBox>
+                                    <HBox fx:id="btnPosTerminal" alignment="CENTER_LEFT" styleClass="buttonMenu">
+                                       <children>
+                                          <Label styleClass="labelRoboto14" text="Pos Terminal" textFill="WHITE">
+                                             <graphic>
+                                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../image/caja_registradora.png" />
+                                                   </image>
+                                                   <effect>
+                                                      <Lighting diffuseConstant="1.5" specularConstant="0.0">
+                                                         <bumpInput>
+                                                            <Shadow />
+                                                         </bumpInput>
+                                                         <light>
+                                                            <Light.Distant />
+                                                         </light>
+                                                      </Lighting>
+                                                   </effect>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                     <HBox fx:id="btnContactos" alignment="CENTER_LEFT" styleClass="buttonMenu">
                                        <children>
                                           <Label styleClass="labelRoboto14" text="Contactos" textFill="WHITE">

@@ -611,7 +611,6 @@ public class FxProducirEditarController implements Initializable {
     }
 
     private void produccionObject(ArrayList<SuministroTB> newInsumos, ArrayList<SuministroTB> newMerma) {
-        ProduccionTB produccionTB = new ProduccionTB();
         produccionTB.setIdProduccion(idProduccion);
         produccionTB.setFechaRegistro(Tools.getDate());
         produccionTB.setHoraRegistro(Tools.getTime());
@@ -660,6 +659,7 @@ public class FxProducirEditarController implements Initializable {
         });
         task.setOnSucceeded(w -> {
             String result = task.getValue();
+            Tools.println(result);
             if (result.equalsIgnoreCase("updated")) {
                 lblMessageLoad.setText("Se actualizó correctamente la producción.");
                 lblMessageLoad.setTextFill(Color.web("#ffffff"));

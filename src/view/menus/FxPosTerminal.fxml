@@ -10,9 +10,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxOperacionesController">
+
+<HBox style="-fx-background-color: white;" stylesheets="@../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menus.FxPosTerminalController">
    <children>
-      <VBox HBox.hgrow="ALWAYS">
+      <VBox>
          <children>
             <HBox alignment="CENTER" prefHeight="66.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 0  0 1px 0; -fx-padding: 0.8333333333333334em;">
                <children>
@@ -48,7 +49,8 @@
                                     <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../image/sales.png" />
-                                       </image></ImageView>
+                                       </image>
+                                    </ImageView>
                                  </graphic>
                               </Button>
                               <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ingresos">
@@ -76,101 +78,36 @@
                               </Text>
                            </children>
                         </VBox>
-                        <VBox fx:id="btnCompras" alignment="CENTER">
+                        <VBox fx:id="btnCorteCaja" alignment="CENTER">
                            <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCompras" onKeyPressed="#onKeyPressedCompras" styleClass="buttonTransparent" text="Compras" textFill="#020203">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCorteCaja" onKeyPressed="#onKeyPressedCorteCaja" styleClass="buttonTransparent" text="Corte Caja" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../image/purchases.png" />
+                                          <Image url="@../image/caja_registradora.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Egresos">
+                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ingresos">
                                  <font>
                                     <Font name="Roboto" size="14.0" />
                                  </font>
                               </Text>
                            </children>
                         </VBox>
-                        <VBox fx:id="btnCotizacion" alignment="CENTER">
+                        <VBox fx:id="btnVentas1" alignment="CENTER">
                            <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionCotizacion" onKeyPressed="#onKeyPressedCotizacion" styleClass="buttonTransparent" text="Cotización" textFill="#020203">
+                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasRealizadas" onKeyPressed="#onKeyPressedVentasRealizadas" styleClass="buttonTransparent" text="Ventas Echas" textFill="#020203">
                                  <graphic>
                                     <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../image/cotizacion.png" />
+                                          <Image url="@../image/sales.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documentos">
-                                 <font>
-                                    <Font name="Roboto" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </VBox>
-                        <VBox fx:id="btnGuiaRemision" alignment="CENTER">
-                           <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGuiaRemision" onKeyPressed="#onKeyPressedGuiaRemision" styleClass="buttonTransparent" text="Guía de Remisión" textFill="#020203">
-                                 <graphic>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/guia_remision.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Traslado">
-                                 <font>
-                                    <Font name="Roboto" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </VBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-                     <children>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActioNotaCredito" onKeyPressed="#onKeyPresseNotaCredito" styleClass="buttonTransparent" text="Nota de Crédito" textFill="#020203">
-                                 <graphic>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/note.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Egresos">
-                                 <font>
-                                    <Font name="Roboto" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActioPedidos" onKeyPressed="#onKeyPressedPedidos" styleClass="buttonTransparent" text="Pedidos" textFill="#020203">
-                                 <graphic>
-                                    <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../image/pedidos.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documentos">
+                              <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Ingresos">
                                  <font>
                                     <Font name="Roboto" size="14.0" />
                                  </font>

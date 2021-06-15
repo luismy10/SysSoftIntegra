@@ -38,7 +38,7 @@ public class ProduccionADO {
         PreparedStatement statementInventarioKardex = null;
         PreparedStatement statementMerma = null;
         PreparedStatement statementMermaDetalle = null;
-        
+
         try {
             DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
@@ -366,6 +366,9 @@ public class ProduccionADO {
             return ex.getLocalizedMessage();
         } finally {
             try {
+                if (statementMermaCodigo != null) {
+                    statementMermaCodigo.close();
+                }
                 if (statementProducion != null) {
                     statementProducion.close();
                 }

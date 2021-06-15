@@ -1,7 +1,6 @@
 package controller.menus;
 
 import controller.operaciones.compras.FxComprasController;
-import controller.operaciones.cortecaja.FxCajaController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.notacredito.FxNotaCreditoController;
@@ -42,8 +41,7 @@ public class FxOperacionesController implements Initializable {
     private VBox btnCotizacion;
     @FXML
     private VBox btnGuiaRemision;
-    @FXML
-    private VBox btnCorteCaja;
+//    private VBox btnCorteCaja;
     /*
     Objectos de la ventana principal y venta que agrega a los hijos
      */
@@ -97,11 +95,11 @@ public class FxOperacionesController implements Initializable {
     /*
     Controller corte de caja
      */
-    private FXMLLoader fXMLCorteCaja;
-
-    private VBox nodeCorteCaja;
-
-    private FxCajaController controllerCorteCaja;
+//    private FXMLLoader fXMLCorteCaja;
+//
+//    private VBox nodeCorteCaja;
+//
+//    private FxCajaController controllerCorteCaja;
     /*
     Controller corte de caja
      */
@@ -147,9 +145,9 @@ public class FxOperacionesController implements Initializable {
             nodeGuiaRemision = fXMLGuiaRemision.load();
             controllerGuiaRemision = fXMLGuiaRemision.getController();
 
-            fXMLCorteCaja = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA));
-            nodeCorteCaja = fXMLCorteCaja.load();
-            controllerCorteCaja = fXMLCorteCaja.getController();
+//            fXMLCorteCaja = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA));
+//            nodeCorteCaja = fXMLCorteCaja.load();
+//            controllerCorteCaja = fXMLCorteCaja.getController();
 
             fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO));
             nodeNotaCredito = fXMLNotaCredito.load();
@@ -186,10 +184,10 @@ public class FxOperacionesController implements Initializable {
         }
 
         if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCorteCaja);
+//            hbOperacionesUno.getChildren().remove(btnCorteCaja);
         } else {
             ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(3).getIdSubMenu());
-            controllerCorteCaja.loadPrivilegios(privilegioTBs);
+//            controllerCorteCaja.loadPrivilegios(privilegioTBs);
         }
 
         if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
@@ -252,16 +250,16 @@ public class FxOperacionesController implements Initializable {
         fxPrincipalController.getVbContent().getChildren().add(nodeGuiaRemision);
     }
 
-    private void openWindowCorteCaja() {
-        controllerCorteCaja.setContent(fxPrincipalController);
-        fxPrincipalController.getVbContent().getChildren().clear();
-        AnchorPane.setLeftAnchor(nodeCorteCaja, 0d);
-        AnchorPane.setTopAnchor(nodeCorteCaja, 0d);
-        AnchorPane.setRightAnchor(nodeCorteCaja, 0d);
-        AnchorPane.setBottomAnchor(nodeCorteCaja, 0d);
-        fxPrincipalController.getVbContent().getChildren().add(nodeCorteCaja);
-
-    }
+//    private void openWindowCorteCaja() {
+//        controllerCorteCaja.setContent(fxPrincipalController);
+//        fxPrincipalController.getVbContent().getChildren().clear();
+//        AnchorPane.setLeftAnchor(nodeCorteCaja, 0d);
+//        AnchorPane.setTopAnchor(nodeCorteCaja, 0d);
+//        AnchorPane.setRightAnchor(nodeCorteCaja, 0d);
+//        AnchorPane.setBottomAnchor(nodeCorteCaja, 0d);
+//        fxPrincipalController.getVbContent().getChildren().add(nodeCorteCaja);
+//
+//    }
 
     private void openWindowNotaCredito() {
         controllerNotaCredito.setContent(fxPrincipalController);
@@ -307,17 +305,15 @@ public class FxOperacionesController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyPressedCorteCaja(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            openWindowCorteCaja();
-        }
-    }
-
-    @FXML
-    private void onActionCorteCaja(ActionEvent event) {
-        openWindowCorteCaja();
-    }
+//    private void onKeyPressedCorteCaja(KeyEvent event) {
+//        if (event.getCode() == KeyCode.ENTER) {
+//            openWindowCorteCaja();
+//        }
+//    }
+//
+//    private void onActionCorteCaja(ActionEvent event) {
+//        openWindowCorteCaja();
+//    }
 
     @FXML
     private void onKeyPressedGuiaRemision(KeyEvent event) {

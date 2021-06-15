@@ -62,6 +62,8 @@ public class FxPrincipalController implements Initializable {
     @FXML
     private HBox btnReportes;
     @FXML
+    private HBox btnPosTerminal;
+    @FXML
     private HBox btnConfiguracion;
     @FXML
     private Label lblDatos;
@@ -242,7 +244,7 @@ public class FxPrincipalController implements Initializable {
             }
 
         } catch (Exception ex) {
-             hbLoadModulos.setVisible(false);
+            hbLoadModulos.setVisible(false);
         }
     }
 
@@ -319,7 +321,7 @@ public class FxPrincipalController implements Initializable {
             vbSiderBar.setPrefWidth(0);
             isExpand = false;
         } else {
-             vbSiderBar.setMinWidth(200);
+            vbSiderBar.setMinWidth(200);
             vbSiderBar.setPrefWidth(width_siderbar);
             isExpand = true;
         }
