@@ -34,6 +34,8 @@ public class FxOperacionesController implements Initializable {
     @FXML
     private HBox hbOperacionesUno;
     @FXML
+    private HBox hbOperacionesDos;
+    @FXML
     private VBox btnVentas;
     @FXML
     private VBox btnCompras;
@@ -41,6 +43,10 @@ public class FxOperacionesController implements Initializable {
     private VBox btnCotizacion;
     @FXML
     private VBox btnGuiaRemision;
+    @FXML
+    private VBox btnNotaCredito;
+    @FXML
+    private VBox btnPedido;
 //    private VBox btnCorteCaja;
     /*
     Objectos de la ventana principal y venta que agrega a los hijos
@@ -148,7 +154,6 @@ public class FxOperacionesController implements Initializable {
 //            fXMLCorteCaja = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA));
 //            nodeCorteCaja = fXMLCorteCaja.load();
 //            controllerCorteCaja = fXMLCorteCaja.getController();
-
             fXMLNotaCredito = new FXMLLoader(getClass().getResource(FilesRouters.FX_NOTA_CREDITO));
             nodeNotaCredito = fXMLNotaCredito.load();
             controllerNotaCredito = fXMLNotaCredito.getController();
@@ -164,36 +169,43 @@ public class FxOperacionesController implements Initializable {
 
     public void loadSubMenus(ObservableList<SubMenusTB> subMenusTBs) {
 
-        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnVentas);
-        } else {
-            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
-            controllerVentaOld.loadPrivilegios(privilegioTBs);
-            controllerVentaNew.loadPrivilegios(privilegioTBs);
-        }
-
-        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
-
-        }
-
-        if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCompras);
-        } else {
-            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(2).getIdSubMenu());
-            controllerCompras.loadPrivilegios(privilegioTBs);
-        }
-
-        if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnCorteCaja);
-        } else {
-            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(3).getIdSubMenu());
-//            controllerCorteCaja.loadPrivilegios(privilegioTBs);
-        }
-
-        if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
-
-        }
-
+//        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnVentas);
+//        } else {
+//            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
+//            controllerVentaOld.loadPrivilegios(privilegioTBs);
+//            controllerVentaNew.loadPrivilegios(privilegioTBs);
+//        }
+//
+//        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnCotizacion);
+//        }
+//
+//        if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnCompras);
+//        } else {
+//            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(2).getIdSubMenu());
+//            controllerCompras.loadPrivilegios(privilegioTBs);
+//        }
+//
+//        if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnGuiaRemision);
+//        } else {
+//            //ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(3).getIdSubMenu());
+////            controllerCorteCaja.loadPrivilegios(privilegioTBs);
+//        }
+//
+//        if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
+//            hbOperacionesDos.getChildren().remove(btnNotaCredito);
+//        } else {
+//
+//        }
+//
+//        if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
+//            hbOperacionesDos.getChildren().remove(btnPedido);
+//        } else {
+//
+//        }
     }
 
     private void openWindowVenta() {
@@ -260,7 +272,6 @@ public class FxOperacionesController implements Initializable {
 //        fxPrincipalController.getVbContent().getChildren().add(nodeCorteCaja);
 //
 //    }
-
     private void openWindowNotaCredito() {
         controllerNotaCredito.setContent(fxPrincipalController);
         fxPrincipalController.getVbContent().getChildren().clear();
@@ -314,7 +325,6 @@ public class FxOperacionesController implements Initializable {
 //    private void onActionCorteCaja(ActionEvent event) {
 //        openWindowCorteCaja();
 //    }
-
     @FXML
     private void onKeyPressedGuiaRemision(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {

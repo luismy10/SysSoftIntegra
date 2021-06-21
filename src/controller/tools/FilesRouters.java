@@ -47,6 +47,8 @@ public final class FilesRouters {
     public static final String FX_INICIO = "/view/menus/FxInicio.fxml";
 
     public static final String FX_OPERACIONES = "/view/menus/FxOperaciones.fxml";
+    
+    public static final String FX_POSTERMINAL = "/view/menus/FxPosTerminal.fxml";
 
     public static final String FX_CONSULTAS = "/view/menus/FxConsultas.fxml";
 

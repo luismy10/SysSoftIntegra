@@ -1,16 +1,22 @@
-
 package controller.menus;
 
+import controller.operaciones.cortecaja.FxCajaController;
+import controller.operaciones.venta.FxVentaController;
+import controller.operaciones.venta.FxVentaRealizadasController;
+import controller.tools.FilesRouters;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 
 public class FxPosTerminalController implements Initializable {
 
@@ -19,48 +25,178 @@ public class FxPosTerminalController implements Initializable {
     @FXML
     private HBox hbOperacionesUno;
     @FXML
-    private VBox btnVentas;
-    @FXML
     private VBox btnCorteCaja;
     @FXML
-    private VBox btnVentas1;
+    private VBox btnTerminalUno;
+    @FXML
+    private VBox btnTerminalDos;
+    @FXML
+    private VBox btnVentasEchas;
 
-   
+    /*
+    Objectos de la ventana principal y venta que agrega a los hijos
+     */
+    private FxPrincipalController fxPrincipalController;
+
+    /*
+    Controller ventas
+     */
+    private FXMLLoader fXMLVentaOld;
+
+    private AnchorPane nodeVentaOld;
+
+    private FxVentaController controllerVentaOld;
+
+    /*
+    Controller ventas nueva
+     */
+    private FXMLLoader fXMLVentaNew;
+
+    private AnchorPane nodeVentaNew;
+
+    private FxVentaController controllerVentaNew;
+
+    /*
+    Controller corte de caja
+     */
+    private FXMLLoader fXMLCorteCaja;
+
+    private VBox nodeCorteCaja;
+
+    private FxCajaController controllerCorteCaja;
+
+    /*
+    Controller ventas realizadas
+     */
+    private FXMLLoader fXMLVentaRealizadas;
+
+    private VBox nodeVentaRealizadas;
+
+    private FxVentaRealizadasController ventaRealizadasController;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
-    }    
+        try {
+            fXMLVentaOld = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
+            nodeVentaOld = fXMLVentaOld.load();
+            controllerVentaOld = fXMLVentaOld.getController();
+            controllerVentaOld.setTipoVenta((short) 1);
+            controllerVentaOld.loadComponents();
+
+            fXMLVentaNew = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
+            nodeVentaNew = fXMLVentaNew.load();
+            controllerVentaNew = fXMLVentaNew.getController();
+            controllerVentaNew.setTipoVenta((short) 2);
+            controllerVentaNew.loadComponents();
+
+            fXMLCorteCaja = new FXMLLoader(getClass().getResource(FilesRouters.FX_CAJA));
+            nodeCorteCaja = fXMLCorteCaja.load();
+            controllerCorteCaja = fXMLCorteCaja.getController();
+
+            fXMLVentaRealizadas = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_REALIZADAS));
+            nodeVentaRealizadas = fXMLVentaRealizadas.load();
+            ventaRealizadasController = fXMLVentaRealizadas.getController();
+        } catch (IOException ex) {
+            System.out.println("Error en Ingresos Controller:" + ex.getLocalizedMessage());
+        }
+    }
+
+    private void openWindowVenta() {
+        controllerVentaOld.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeVentaOld, 0d);
+        AnchorPane.setTopAnchor(nodeVentaOld, 0d);
+        AnchorPane.setRightAnchor(nodeVentaOld, 0d);
+        AnchorPane.setBottomAnchor(nodeVentaOld, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodeVentaOld);
+        controllerVentaOld.loadValidarCaja();
+        controllerVentaOld.loadElements();
+    }
+
+    private void openWindowVentaNueva() {
+        controllerVentaNew.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeVentaNew, 0d);
+        AnchorPane.setTopAnchor(nodeVentaNew, 0d);
+        AnchorPane.setRightAnchor(nodeVentaNew, 0d);
+        AnchorPane.setBottomAnchor(nodeVentaNew, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodeVentaNew);
+        controllerVentaNew.loadValidarCaja();
+        controllerVentaNew.loadElements();
+    }
+
+    private void openWindowCorteCaja() {
+        controllerCorteCaja.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeCorteCaja, 0d);
+        AnchorPane.setTopAnchor(nodeCorteCaja, 0d);
+        AnchorPane.setRightAnchor(nodeCorteCaja, 0d);
+        AnchorPane.setBottomAnchor(nodeCorteCaja, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodeCorteCaja);
+
+    }
+
+    private void openWindowVentaRealizadas() {
+        ventaRealizadasController.setContent(fxPrincipalController);
+        fxPrincipalController.getVbContent().getChildren().clear();
+        AnchorPane.setLeftAnchor(nodeVentaRealizadas, 0d);
+        AnchorPane.setTopAnchor(nodeVentaRealizadas, 0d);
+        AnchorPane.setRightAnchor(nodeVentaRealizadas, 0d);
+        AnchorPane.setBottomAnchor(nodeVentaRealizadas, 0d);
+        fxPrincipalController.getVbContent().getChildren().add(nodeVentaRealizadas);
+        ventaRealizadasController.loadInit();
+    }
 
     @FXML
     private void onKeyPressedVentas(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVenta();
+        }
     }
 
     @FXML
     private void onActionVentas(ActionEvent event) {
+        openWindowVenta();
     }
 
     @FXML
     private void onKeyPressedVentasNueva(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVentaNueva();
+        }
     }
 
     @FXML
     private void onActionVentasNueva(ActionEvent event) {
+        openWindowVentaNueva();
     }
 
     @FXML
     private void onKeyPressedCorteCaja(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowCorteCaja();
+        }
     }
 
     @FXML
     private void onActionCorteCaja(ActionEvent event) {
+        openWindowCorteCaja();
     }
 
     @FXML
     private void onKeyPressedVentasRealizadas(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            openWindowVentaRealizadas();
+        }
     }
 
     @FXML
     private void onActionVentasRealizadas(ActionEvent event) {
+        openWindowVentaRealizadas();
     }
-    
+
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
+    }
+
 }

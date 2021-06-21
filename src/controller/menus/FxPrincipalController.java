@@ -86,6 +86,10 @@ public class FxPrincipalController implements Initializable {
 
     private FxInventarioController inventarioController;
 
+    private HBox fxPosTerminal;
+
+    private FxPosTerminalController posTerminalController;
+
     private HBox fxProduccion;
 
     private HBox fxContactos;
@@ -131,6 +135,11 @@ public class FxPrincipalController implements Initializable {
             FxProduccionController produccionController = fXMLProduccion.getController();
             produccionController.setContent(this);
 
+            FXMLLoader fXMLPosTerminal = new FXMLLoader(getClass().getResource(FilesRouters.FX_POSTERMINAL));
+            fxPosTerminal = fXMLPosTerminal.load();
+            posTerminalController = fXMLPosTerminal.getController();
+            posTerminalController.setContent(this);
+
             FXMLLoader fXMLContactos = new FXMLLoader(getClass().getResource(FilesRouters.FX_CONTACTOS));
             fxContactos = fXMLContactos.load();
             contactosController = fXMLContactos.getController();
@@ -160,13 +169,13 @@ public class FxPrincipalController implements Initializable {
 
             Task<ObservableList<MenuTB>> task = new Task<ObservableList<MenuTB>>() {
                 @Override
-                protected ObservableList<MenuTB> call() throws Exception {
-                    Thread.sleep(1000);
+                protected ObservableList<MenuTB> call() throws Exception {                    
                     btnInicio.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxInicio, btnInicio));
                     btnOperaciones.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxOperaciones, btnOperaciones));
                     btnConsultas.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxConsultas, btnConsultas));
                     btnInventario.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxInventario, btnInventario));
                     btnProduccion.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxProduccion, btnProduccion));
+                    btnPosTerminal.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxPosTerminal, btnPosTerminal));
                     btnContactos.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxContactos, btnContactos));
                     btnReportes.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxReportes, btnReportes));
                     btnConfiguracion.setOnMouseClicked((event) -> onMouseClickedMenus(event, fxConfiguracion, btnConfiguracion));
@@ -185,56 +194,58 @@ public class FxPrincipalController implements Initializable {
 
             task.setOnSucceeded(e -> {
                 ObservableList<MenuTB> menuTBs = task.getValue();
-                if (menuTBs.get(0).getIdMenu() != 0 && !menuTBs.get(0).isEstado()) {
-                    hbMenus.getChildren().remove(btnInicio);
-                }
-                if (menuTBs.get(1).getIdMenu() != 0 && !menuTBs.get(1).isEstado()) {
-                    hbMenus.getChildren().remove(btnOperaciones);
-                } else {
-                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(1).getIdMenu());
-                    operacionesController.loadSubMenus(subMenusTBs);
-                }
 
-                if (menuTBs.get(2).getIdMenu() != 0 && !menuTBs.get(2).isEstado()) {
-                    hbMenus.getChildren().remove(btnConsultas);
-                } else {
-                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(2).getIdMenu());
-                    consultasController.loadSubMenus(subMenusTBs);
-                }
-
-                if (menuTBs.get(3).getIdMenu() != 0 && !menuTBs.get(3).isEstado()) {
-                    hbMenus.getChildren().remove(btnInventario);
-                } else {
-                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(3).getIdMenu());
-                    inventarioController.loadSubMenus(subMenusTBs);
-                }
-
-                if (menuTBs.get(4).getIdMenu() != 0 && !menuTBs.get(4).isEstado()) {
-                    hbMenus.getChildren().remove(btnProduccion);
-                }
-
-                if (menuTBs.get(5).getIdMenu() != 0 && !menuTBs.get(5).isEstado()) {
-                    hbMenus.getChildren().remove(btnContactos);
-                } else {
-                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(3).getIdMenu());
-                    contactosController.loadSubMenus(subMenusTBs);
-                }
-
-                if (menuTBs.get(6).getIdMenu() != 0 && !menuTBs.get(6).isEstado()) {
-                    hbMenus.getChildren().remove(btnReportes);
-                }
-
-                if (menuTBs.get(7).getIdMenu() != 0 && !menuTBs.get(7).isEstado()) {
-
-                }
-
-                if (menuTBs.get(8).getIdMenu() != 0 && !menuTBs.get(8).isEstado()) {
-                    hbMenus.getChildren().remove(btnConfiguracion);
-                } else {
-                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(8).getIdMenu());
-                    configuracionController.loadSubMenus(subMenusTBs);
-                }
-
+                //CONTROLADOR INICIO
+//                if (menuTBs.get(0).getIdMenu() != 0 && !menuTBs.get(0).isEstado()) {
+//                    hbMenus.getChildren().remove(btnInicio);
+//                }
+//                //OPERACIONES OPERACIONES
+//                if (menuTBs.get(1).getIdMenu() != 0 && !menuTBs.get(1).isEstado()) {
+//                    hbMenus.getChildren().remove(btnOperaciones);
+//                } else {
+//                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(1).getIdMenu());
+//                    operacionesController.loadSubMenus(subMenusTBs);
+//                }
+//                //OPERACIONES CONSULTAS
+//                if (menuTBs.get(2).getIdMenu() != 0 && !menuTBs.get(2).isEstado()) {
+//                    hbMenus.getChildren().remove(btnConsultas);
+//                } else {
+//                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(2).getIdMenu());
+//                    consultasController.loadSubMenus(subMenusTBs);
+//                }
+//                //OPERACIONES INVENTARIO
+//                if (menuTBs.get(3).getIdMenu() != 0 && !menuTBs.get(3).isEstado()) {
+//                    hbMenus.getChildren().remove(btnInventario);
+//                } else {
+//                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(3).getIdMenu());
+//                    inventarioController.loadSubMenus(subMenusTBs);
+//                }
+//                //OPERACIONES PRODUCCION
+//                if (menuTBs.get(4).getIdMenu() != 0 && !menuTBs.get(4).isEstado()) {
+//                    hbMenus.getChildren().remove(btnProduccion);
+//                }
+//                //OPERACIONES CONTACTOS
+//                if (menuTBs.get(5).getIdMenu() != 0 && !menuTBs.get(5).isEstado()) {
+//                    hbMenus.getChildren().remove(btnContactos);
+//                } else {
+//                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(3).getIdMenu());
+//                    contactosController.loadSubMenus(subMenusTBs);
+//                }
+//                //OPERACIONES REPORTES
+//                if (menuTBs.get(6).getIdMenu() != 0 && !menuTBs.get(6).isEstado()) {
+//                    hbMenus.getChildren().remove(btnReportes);
+//                }
+//                //OPERACIONES POS TERMINAL
+//                if (menuTBs.get(7).getIdMenu() != 0 && !menuTBs.get(7).isEstado()) {
+//                    hbMenus.getChildren().remove(btnPosTerminal);
+//                }
+//                //OPERACIONES CONFIGURACIÓN
+//                if (menuTBs.get(8).getIdMenu() != 0 && !menuTBs.get(8).isEstado()) {
+//                    hbMenus.getChildren().remove(btnConfiguracion);
+//                } else {
+//                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(8).getIdMenu());
+//                    configuracionController.loadSubMenus(subMenusTBs);
+//                }
                 hbLoadModulos.setVisible(false);
             });
 

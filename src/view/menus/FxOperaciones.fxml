@@ -139,9 +139,9 @@
             </VBox>
             <VBox>
                <children>
-                  <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
+                  <HBox fx:id="hbOperacionesDos" alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                      <children>
-                        <VBox alignment="CENTER">
+                        <VBox fx:id="btnNotaCredito" alignment="CENTER">
                            <children>
                               <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActioNotaCredito" onKeyPressed="#onKeyPresseNotaCredito" styleClass="buttonTransparent" text="Nota de Crédito" textFill="#020203">
                                  <graphic>
@@ -159,7 +159,7 @@
                               </Text>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER">
+                        <VBox fx:id="btnPedido" alignment="CENTER">
                            <children>
                               <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActioPedidos" onKeyPressed="#onKeyPressedPedidos" styleClass="buttonTransparent" text="Pedidos" textFill="#020203">
                                  <graphic>

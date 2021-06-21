@@ -152,51 +152,51 @@ public class FxConfiguracionController implements Initializable {
     }
 
     public void loadSubMenus(ObservableList<SubMenusTB> subMenusTBs) {
-        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnEmpresa);
-        } else {
-
-        }
-        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnTablasBasicas);
-        } else {
-
-        }
-        if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnRoles);
-        } else {
-
-        }
-        if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnEmpleados);
-        } else {
-
-        }
-        if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnMoneda);
-        } else {
-
-        }
-        if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnComprobante);
-        } else {
-
-        }
-        if (subMenusTBs.get(6).getIdSubMenu() != 0 && !subMenusTBs.get(6).isEstado()) {
-            hbOperacionesDos.getChildren().remove(btnImpuesto);
-        } else {
-
-        }
-        if (subMenusTBs.get(7).getIdSubMenu() != 0 && !subMenusTBs.get(7).isEstado()) {
-            hbOperacionesDos.getChildren().remove(btnTickets);
-        } else {
-
-        }
-        if (subMenusTBs.get(8).getIdSubMenu() != 0 && !subMenusTBs.get(8).isEstado()) {
-            hbOperacionesDos.getChildren().remove(btnEtiqueta);
-        } else {
-
-        }
+//        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnEmpresa);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnTablasBasicas);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnRoles);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnEmpleados);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnMoneda);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
+//            hbOperacionesUno.getChildren().remove(btnComprobante);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(6).getIdSubMenu() != 0 && !subMenusTBs.get(6).isEstado()) {
+//            hbOperacionesDos.getChildren().remove(btnImpuesto);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(7).getIdSubMenu() != 0 && !subMenusTBs.get(7).isEstado()) {
+//            hbOperacionesDos.getChildren().remove(btnTickets);
+//        } else {
+//
+//        }
+//        if (subMenusTBs.get(8).getIdSubMenu() != 0 && !subMenusTBs.get(8).isEstado()) {
+//            hbOperacionesDos.getChildren().remove(btnEtiqueta);
+//        } else {
+//
+//        }
     }
 
     private void openWindowTablasBasicas() {

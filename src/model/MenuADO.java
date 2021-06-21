@@ -9,7 +9,11 @@ import javafx.collections.ObservableList;
 public class MenuADO {
 
     public static ObservableList<MenuTB> GetMenus(int idRol) {
-        String selectStmt = "select m.IdMenu,m.Nombre,pm.Estado from \n"
+        String selectStmt = "select\n"
+                + "m.IdMenu,\n"
+                + "m.Nombre,\n"
+                + "pm.Estado\n"
+                + "from\n"
                 + "PermisoMenusTB as pm inner join RolTB as r \n"
                 + "on pm.IdRol = r.IdRol\n"
                 + "inner join MenuTB as m \n"
@@ -51,7 +55,12 @@ public class MenuADO {
     }
 
     public static ObservableList<SubMenusTB> GetSubMenus(int rol, int menu) {
-        String selectStmt = "select sm.IdSubmenu,sm.Nombre,psm.Estado from PermisoSubMenusTB as psm inner join RolTB as r \n"
+        String selectStmt = "select\n"
+                + "sm.IdSubmenu,\n"
+                + "sm.Nombre,\n"
+                + "psm.Estado\n"
+                + "from PermisoSubMenusTB as psm\n"
+                + "inner join RolTB as r \n"
                 + "on psm.IdRol = r.IdRol\n"
                 + "inner join SubmenuTB as sm\n"
                 + "on psm.IdSubMenus = sm.IdSubmenu\n"
