@@ -58,18 +58,18 @@
                            <children>
                               <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                                 <columnConstraints>
-                                  <ColumnConstraints minWidth="10.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Cuenta:" textFill="#020203" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Valor recibido:" textFill="#020203" GridPane.rowIndex="1" />
-                                    <ComboBox fx:id="cbCuentas" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" />
-                                    <TextField fx:id="txtEfectivo" onKeyTyped="#onKeyTypedEfectivo" prefHeight="30.0" prefWidth="220.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" styleClass="labelRoboto13" text="Cuenta:" textFill="#020203" />
+                                    <ComboBox fx:id="cbCuentas" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" />
+                                    <Label alignment="CENTER_RIGHT" styleClass="labelRoboto13" text="Valor pagar:" textFill="#020203" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtEfectivo" disable="true" onKeyTyped="#onKeyTypedEfectivo" prefHeight="30.0" prefWidth="240.0" styleClass="text-field-normal" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
@@ -91,44 +91,21 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <VBox fx:id="vbPagoCredito" style="-fx-spacing: 0.8333333333333334em;">
+                        <VBox fx:id="vbPagoCredito" alignment="CENTER_LEFT" disable="true" style="-fx-spacing: 0.8333333333333334em;">
                            <children>
-                              <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
+                              <GridPane style="-fx-hgap: 0.8333333333333334em; -fx-vgap: 0.8333333333333334em;">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Fecha de Vencimiento:" textFill="#020203" />
-                                    <DatePicker fx:id="txtFechaVencimiento" editable="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="220.0" HBox.hgrow="ALWAYS" />
+                                    <Label alignment="CENTER_RIGHT" styleClass="labelRoboto13" text="Fecha de Vencimiento:" textFill="#020203" />
+                                    <DatePicker fx:id="txtFechaVencimiento" editable="false" prefHeight="30.0" prefWidth="240.0" GridPane.columnIndex="1" />
                                  </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox minHeight="0.0" prefHeight="0.0" style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;" visible="false">
-               <children>
-                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <HBox>
-                           <children>
-                              <RadioButton fx:id="rbBorrado" mnemonicParsing="false" onAction="#onActionRbBorrado" styleClass="labelOpenSansRegular14" text="Guardar" />
-                           </children>
-                        </HBox>
-                        <VBox fx:id="vbPagoBorrado" disable="true" style="-fx-spacing: 0.8333333333333334em;">
-                           <children>
-                              <HBox>
-                                 <children>
-                                    <VBox HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <Label prefWidth="469.0" styleClass="labelOpenSansRegular14" text="La compra se guarda sin afectar el inventario o movimiento de banco/caja para ser editado y/o pagado posteriormente." wrapText="true" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
+                              </GridPane>
                            </children>
                         </VBox>
                      </children>

@@ -41,13 +41,9 @@ public class FxComprasProcesoController implements Initializable {
     @FXML
     private VBox vbPagoCredito;
     @FXML
-    private VBox vbPagoBorrado;
-    @FXML
     private RadioButton rbContado;
     @FXML
     private RadioButton rbCredito;
-    @FXML
-    private RadioButton rbBorrado;
     @FXML
     private ComboBox<BancoTB> cbCuentas;
     @FXML
@@ -67,7 +63,6 @@ public class FxComprasProcesoController implements Initializable {
         ToggleGroup group = new ToggleGroup();
         rbContado.setToggleGroup(group);
         rbCredito.setToggleGroup(group);
-        rbBorrado.setToggleGroup(group);
         setInitializeCaja();
     }
 
@@ -139,20 +134,6 @@ public class FxComprasProcesoController implements Initializable {
                     Tools.AlertMessageError(apWindow, "Compra", result);
                 }
             }
-        } else if (rbBorrado.isSelected()) {
-            compraTB.setTipo(3);
-            compraTB.setEstado(4);
-            compraTB.setFechaVencimiento(compraTB.getFechaCompra());
-            compraTB.setHoraVencimiento(compraTB.getHoraCompra());
-
-            String result = CompraADO.Compra_Borrado(compraTB, tvList, loteTBs);
-            if (result.equalsIgnoreCase("register")) {
-                Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra como guardado.");
-                Tools.Dispose(apWindow);
-                comprasController.clearComponents();
-            } else {
-                Tools.AlertMessageError(apWindow, "Compra", result);
-            }
         }
     }
 
@@ -194,7 +175,6 @@ public class FxComprasProcesoController implements Initializable {
     @FXML
     private void onActionRbContado(ActionEvent event) {
         vbPagoCredito.setDisable(true);
-        vbPagoBorrado.setDisable(true);
         hbPagoContado.setDisable(false);
 
     }
@@ -202,15 +182,7 @@ public class FxComprasProcesoController implements Initializable {
     @FXML
     private void onActionRbCredito(ActionEvent event) {
         hbPagoContado.setDisable(true);
-        vbPagoBorrado.setDisable(true);
         vbPagoCredito.setDisable(false);
-    }
-
-    @FXML
-    private void onActionRbBorrado(ActionEvent event) {
-        hbPagoContado.setDisable(true);
-        vbPagoCredito.setDisable(true);
-        vbPagoBorrado.setDisable(false);
     }
 
     public void setInitComprasController(FxComprasController comprasController) {

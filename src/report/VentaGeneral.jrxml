@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5aa49b8b-1bb2-4be2-945b-96f1decae4ba">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="190"/>
-	<property name="ireport.y" value="60"/>
+	<property name="ireport.y" value="154"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="PERIODO" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -167,7 +167,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="9" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Tipo de compra]]></text>
+					<text><![CDATA[Tipo de Venta]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="394" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="fcd260f5-4e31-44e8-8755-7f958653add2">

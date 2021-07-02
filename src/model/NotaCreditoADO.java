@@ -219,6 +219,10 @@ public class NotaCreditoADO {
                 ventaTB.setSerie(resultSet.getString("SerieVenta"));
                 ventaTB.setNumeracion(resultSet.getString("NumeracionVenta"));
                 notaCreditoTB.setVentaTB(ventaTB);
+                
+                MonedaTB monedaTB = new MonedaTB();
+                monedaTB.setSimbolo(resultSet.getString("Simbolo"));
+                notaCreditoTB.setMonedaTB(monedaTB);
 
                 notaCreditoTB.setImporteNeto(resultSet.getDouble("Total"));
                 notaCreditoTBs.add(notaCreditoTB);

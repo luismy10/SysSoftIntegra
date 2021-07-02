@@ -207,7 +207,7 @@ public class GlobalADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
             try {
-                preparedLista = DBUtil.getConnection().prepareStatement("SELECT SUM(Total) AS Total FROM VentaTB WHERE FechaVenta = ? AND Estado = 1");
+                preparedLista = DBUtil.getConnection().prepareStatement("SELECT ISNULL(sum(dv.Cantidad*(dv.PrecioVenta-dv.Descuento)),0) AS Total FROM VentaTB as v INNER JOIN DetalleVentaTB as dv on dv.IdVenta = v.IdVenta LEFT JOIN NotaCreditoTB as nc on nc.IdVenta = v.IdVenta WHERE CAST(v.FechaVenta AS DATE) = ? AND v.Tipo = 1 AND v.Estado <> 3 AND nc.IdNotaCredito IS NULL");
                 preparedLista.setString(1, fechaActual);
                 resultLista = preparedLista.executeQuery();
                 if (resultLista.next()) {
@@ -271,15 +271,15 @@ public class GlobalADO {
                 }
 
                 preparedLista = DBUtil.getConnection().prepareStatement("SELECT TOP 10 dt.IdArticulo, s.NombreMarca, s.NuevaImagen as NuevaImagen,dt.PrecioVenta, SUM(dt.Cantidad) as Cantidad\n"
-                        + "        from DetalleVentaTB as dt \n"
-                        + "        inner join VentaTB as v on v.IdVenta=dt.IdVenta\n"
-                        + "        inner join SuministroTB as s on dt.IdArticulo=s.IdSuministro \n"
-                        + "        where MONTH(v.FechaVenta) = MONTH(GETDATE()) AND YEAR(v.FechaVenta) = YEAR(GETDATE())\n"
-                        + "        group by dt.IdArticulo, s.NombreMarca, NuevaImagen,dt.PrecioVenta  \n"
-                        + "        order by Cantidad DESC");
+                        + "from DetalleVentaTB as dt \n"
+                        + "inner join VentaTB as v on v.IdVenta=dt.IdVenta\n"
+                        + "inner join SuministroTB as s on dt.IdArticulo=s.IdSuministro \n"
+                        + "where MONTH(v.FechaVenta) = MONTH(GETDATE()) AND YEAR(v.FechaVenta) = YEAR(GETDATE())\n"
+                        + "group by dt.IdArticulo, s.NombreMarca, NuevaImagen,dt.PrecioVenta  \n"
+                        + "order by Cantidad DESC");
                 resultLista = preparedLista.executeQuery();
                 while (resultLista.next()) {
-                    
+
                     SuministroTB suministroTB = new SuministroTB();
                     suministroTB.setNombreMarca(resultLista.getString("NombreMarca"));
                     suministroTB.setPrecioVentaGeneral(resultLista.getDouble("PrecioVenta"));
@@ -320,6 +320,7 @@ public class GlobalADO {
                 arrayList.add(ventas_cobrar);
                 arrayList.add(compras_pagar);
             } catch (SQLException ex) {
+                Tools.println(ex.getLocalizedMessage());
                 arrayList.add(Tools.roundingValue(ventasTotales, 2));
                 arrayList.add(Tools.roundingValue(comprasTotales, 2));
                 arrayList.add(Tools.roundingValue(articulos, 0));

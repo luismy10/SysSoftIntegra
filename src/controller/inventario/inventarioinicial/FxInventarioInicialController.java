@@ -134,7 +134,6 @@ public class FxInventarioInicialController implements Initializable {
 
     @FXML
     private void onActionGenerar(ActionEvent event) {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Inventario inicial");
         fileChooser.setInitialFileName("Inventario Inicial");

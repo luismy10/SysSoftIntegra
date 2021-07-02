@@ -7,6 +7,7 @@ import controller.operaciones.cortecaja.FxCajaController;
 import controller.operaciones.cotizacion.FxCotizacionController;
 import controller.operaciones.pedidos.FxPedidosController;
 import controller.operaciones.venta.FxVentaLlevarControllerHistorial;
+import controller.posterminal.venta.FxPostVentaLlevarControllerHistorial;
 import controller.reporte.FxReportViewController;
 import controller.tools.BillPrintable;
 import controller.tools.ConvertMonedaCadena;
@@ -80,6 +81,8 @@ public class FxOpcionesImprimirController implements Initializable {
     private FxCotizacionController cotizacionController;
 
     private FxVentaLlevarControllerHistorial ventaLlevarControllerHistorial;
+
+    private FxPostVentaLlevarControllerHistorial postVentaLlevarControllerHistorial;
 
     private FxPedidosController pedidosController;
 
@@ -164,6 +167,8 @@ public class FxOpcionesImprimirController implements Initializable {
             Tools.Dispose(apWindow);
         } else if (ventaLlevarControllerHistorial != null) {
             Tools.println(apWindow);
+        } else if (postVentaLlevarControllerHistorial != null) {
+            Tools.println(apWindow);
         } else if (pedidosController != null) {
             Tools.Dispose(apWindow);
         }
@@ -186,6 +191,8 @@ public class FxOpcionesImprimirController implements Initializable {
         } else if (pedidosController != null) {
             printEventTicketPedido();
         } else if (ventaLlevarControllerHistorial != null) {
+            printEventHistorialSuministroLlevarTicket();
+        } else if (postVentaLlevarControllerHistorial != null) {
             printEventHistorialSuministroLlevarTicket();
         }
     }
@@ -2037,7 +2044,7 @@ public class FxOpcionesImprimirController implements Initializable {
 
         for (SuministroTB suministroTB : arrList) {
             double descuento = suministroTB.getDescuento();
-            double costoDescuento = suministroTB.getCostoCompra()- descuento;
+            double costoDescuento = suministroTB.getCostoCompra() - descuento;
             double subCosto = Tools.calculateTaxBruto(suministroTB.getImpuestoValor(), costoDescuento);
             double costoBruto = subCosto + descuento;
             totalBruto += costoBruto * suministroTB.getCantidad();
@@ -2568,6 +2575,10 @@ public class FxOpcionesImprimirController implements Initializable {
 
     public void setInitOpcionesVentaLlevar(FxVentaLlevarControllerHistorial ventaLlevarControllerHistorial) {
         this.ventaLlevarControllerHistorial = ventaLlevarControllerHistorial;
+    }
+
+    public void setInitPostOpcionesVentaLlevar(FxPostVentaLlevarControllerHistorial postVentaLlevarControllerHistorial) {
+        this.postVentaLlevarControllerHistorial = postVentaLlevarControllerHistorial;
     }
 
     public void setInitOpcionesImprimirPedido(FxPedidosController pedidosController) {

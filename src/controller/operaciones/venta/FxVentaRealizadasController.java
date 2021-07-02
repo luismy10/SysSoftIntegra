@@ -134,31 +134,31 @@ public class FxVentaRealizadasController implements Initializable {
         tcSerie.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getComprobanteName() + "\n"
                 + cellData.getValue().getSerie() + "-" + cellData.getValue().getNumeracion()
-                + (cellData.getValue().getNotaCreditoTB() != null ? " Modificado(" + cellData.getValue().getNotaCreditoTB().getSerie() + "-" + cellData.getValue().getNotaCreditoTB().getNumeracion() + ")" : "")));
+                + (cellData.getValue().getNotaCreditoTB() != null ? " (NOTA CREDITO: " + cellData.getValue().getNotaCreditoTB().getSerie() + "-" + cellData.getValue().getNotaCreditoTB().getNumeracion() + ")" : "")));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMonedaName() + " " + Tools.roundingValue(cellData.getValue().getTotal(), 2)));
 
-        tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
-        tcFechaVenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tcId.prefWidthProperty().bind(tvList.widthProperty().multiply(0.05));
+        tcFechaVenta.prefWidthProperty().bind(tvList.widthProperty().multiply(0.11));
         tcCliente.prefWidthProperty().bind(tvList.widthProperty().multiply(0.20));
-        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.17));
+        tcSerie.prefWidthProperty().bind(tvList.widthProperty().multiply(0.19));
         tcTipo.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tcEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.15));
         tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
-        tvList.setRowFactory(tv -> new TableRow<VentaTB>() {
-            @Override
-            protected void updateItem(VentaTB item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null) {
-                    setStyle("");
-                } else if (item.getNotaCreditoTB() != null) {
-                    setStyle("-fx-background-color: rgba(220, 53, 69, 0.6)");
-                } else {
-                    setStyle("");
-                }
-            }
-        });
+//        tvList.setRowFactory(tv -> new TableRow<VentaTB>() {
+//            @Override
+//            protected void updateItem(VentaTB item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (item == null) {
+//                    setStyle("");
+//                } else if (item.getNotaCreditoTB() != null) {
+//                    setStyle("-fx-background-color: rgba(220, 53, 69, 0.6)");
+//                } else {
+//                    setStyle("");
+//                }
+//            }
+//        });
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {

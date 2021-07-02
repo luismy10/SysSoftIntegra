@@ -29,14 +29,11 @@ public class SuministroADO {
         DBUtil.dbConnect();
         if (DBUtil.getConnection() != null) {
 
+            CallableStatement codigoSuministro = null;
             PreparedStatement preparedSuministro = null;
             PreparedStatement preparedValidation = null;
-            CallableStatement codigoSuministro = null;
             PreparedStatement preparedPrecios = null;
 
-//            PreparedStatement preparedArticulo = null;
-//            PreparedStatement statementBusqueda = null;
-//            CallableStatement codigoArticulo = null;
             try {
                 DBUtil.getConnection().setAutoCommit(false);
 
@@ -57,17 +54,6 @@ public class SuministroADO {
                             DBUtil.getConnection().rollback();
                             result = "duplicatename";
                         } else {
-//                            preparedValidation = DBUtil.getConnection().prepareStatement("SELECT Cantidad FROM SuministroTB WHERE IdSuministro = ?");
-//                            preparedValidation.setString(1, suministroTB.getIdSuministro());
-//                            if (preparedValidation.executeQuery().next()) {
-//                                ResultSet resultSet = preparedValidation.executeQuery();
-//                                if (resultSet.next()) {
-//                                    if (resultSet.getDouble("Cantidad") > 0) {
-//                                        result = "mayor";
-//                                    }
-//                                }
-//                            } else {
-
                             preparedSuministro = DBUtil.getConnection().prepareStatement("UPDATE SuministroTB SET Origen=?,Clave=?,ClaveAlterna=UPPER(?), NombreMarca=UPPER(?),NombreGenerico=UPPER(?),Categoria=?,Marca=?,Presentacion=?,StockMinimo=?,StockMaximo=?,PrecioCompra=?,PrecioVentaGeneral=?,UnidadCompra=?,UnidadVenta = ?,Estado=?,Lote=?,Inventario=?,NuevaImagen=?,Impuesto=?, ValorInventario = ?,ClaveSat = ?,TipoPrecio=? WHERE IdSuministro = ? ");
 
                             preparedSuministro.setInt(1, suministroTB.getOrigen());
@@ -101,50 +87,6 @@ public class SuministroADO {
                             preparedSuministro.addBatch();
                             preparedSuministro.executeBatch();
 
-//                            String idArticulo = "";
-//
-//                            if (articulo) {
-//
-//                                statementBusqueda = DBUtil.getConnection().prepareStatement("SELECT IdArticulo FROM ArticuloTB WHERE IdSuministro = ?");
-//                                statementBusqueda.setString(1, suministroTB.getIdSuministro());
-//                                if (statementBusqueda.executeQuery().next()) {
-//                                    ResultSet resultSet = statementBusqueda.executeQuery();
-//                                    if (resultSet.next()) {
-//                                        idArticulo = resultSet.getString("IdArticulo");
-//                                        preparedArticulo = DBUtil.getConnection().prepareStatement("update ArticuloTB set Origen=?,Clave=?,ClaveAlterna=UPPER(?),NombreMarca=UPPER(?),NombreGenerico=UPPER(?), Categoria=?, Marca=?, Presentacion=?, StockMinimo=?, StockMaximo=?, PrecioCompra=?, PrecioVentaGeneral=?, PrecioMargenGeneral=?, PrecioUtilidadGeneral=?, UnidadCompra=?, UnidadVenta = ?, Estado=?, Lote=?, Inventario=?, Imagen=?, Impuesto=?, ValorInventario=?,ClaveSat = ?, TipoPrecio = ? where IdArticulo = ?");
-//                                        preparedArticulo.setInt(1, suministroTB.getOrigen());
-//                                        preparedArticulo.setString(2, suministroTB.getClave());
-//                                        preparedArticulo.setString(3, suministroTB.getClaveAlterna());
-//                                        preparedArticulo.setString(4, suministroTB.getNombreMarca());
-//                                        preparedArticulo.setString(5, suministroTB.getNombreGenerico());
-//                                        preparedArticulo.setInt(6, suministroTB.getCategoria());
-//                                        preparedArticulo.setInt(7, suministroTB.getMarcar());
-//                                        preparedArticulo.setInt(8, suministroTB.getPresentacion());
-//                                        preparedArticulo.setDouble(9, suministroTB.getStockMinimo());
-//                                        preparedArticulo.setDouble(10, suministroTB.getStockMaximo());
-//                                        preparedArticulo.setDouble(11, suministroTB.getCostoCompra());
-//
-//                                        preparedArticulo.setDouble(12, suministroTB.getPrecioVentaGeneral());
-//                                        preparedArticulo.setShort(13, suministroTB.getPrecioMargenGeneral());
-//                                        preparedArticulo.setDouble(14, suministroTB.getPrecioUtilidadGeneral());
-//
-//                                        preparedArticulo.setInt(15, suministroTB.getUnidadCompra());
-//                                        preparedArticulo.setInt(16, suministroTB.getUnidadVenta());
-//                                        preparedArticulo.setInt(17, suministroTB.getEstado());
-//                                        preparedArticulo.setBoolean(18, suministroTB.isLote());
-//                                        preparedArticulo.setBoolean(19, suministroTB.isInventario());
-//                                        preparedArticulo.setString(20, suministroTB.getImagenTB());
-//                                        preparedArticulo.setInt(21, suministroTB.getImpuestoId());
-//                                        preparedArticulo.setBoolean(22, suministroTB.isValorInventario());
-//                                        preparedArticulo.setString(23, suministroTB.getClaveSat());
-//                                        preparedArticulo.setBoolean(24, suministroTB.isTipoPrecio());
-//                                        preparedArticulo.setString(25, idArticulo);
-//
-//                                        preparedArticulo.addBatch();
-//                                        preparedArticulo.executeBatch();
-//                                    }
-//                                }
-//                            }
                             preparedPrecios = DBUtil.getConnection().prepareStatement("DELETE FROM PreciosTB WHERE IdSuministro = ?");
                             preparedPrecios.setString(1, suministroTB.getIdSuministro());
                             preparedPrecios.addBatch();
@@ -164,7 +106,6 @@ public class SuministroADO {
 
                             DBUtil.getConnection().commit();
                             result = "updated";
-                            //}
                         }
                     }
                 } else {
@@ -209,8 +150,9 @@ public class SuministroADO {
                                     + "NuevaImagen,"
                                     + "Impuesto,"
                                     + "ValorInventario,"
+                                    + "Imagen,"
                                     + "ClaveSat,TipoPrecio)"
-                                    + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                                    + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                             preparedSuministro.setString(1, idSuministro);
                             preparedSuministro.setInt(2, suministroTB.getOrigen());
@@ -243,82 +185,13 @@ public class SuministroADO {
                             //
                             preparedSuministro.setInt(21, suministroTB.getImpuestoId());
                             preparedSuministro.setShort(22, suministroTB.getValorInventario());
-                            preparedSuministro.setString(23, suministroTB.getClaveSat());
-                            preparedSuministro.setBoolean(24, suministroTB.isTipoPrecio());
+                            preparedSuministro.setString(23, "");
+                            preparedSuministro.setString(24, suministroTB.getClaveSat());
+                            preparedSuministro.setBoolean(25, suministroTB.isTipoPrecio());
 
                             preparedSuministro.addBatch();
                             preparedSuministro.executeBatch();
 
-//                            String idArticulo = "";
-//
-//                            if (articulo) {
-//                                codigoArticulo = DBUtil.getConnection().prepareCall("{? = call Fc_Articulo_Codigo_Alfanumerico()}");
-//                                codigoArticulo.registerOutParameter(1, java.sql.Types.VARCHAR);
-//                                codigoArticulo.execute();
-//                                idArticulo = codigoArticulo.getString(1);
-//
-//                                preparedArticulo = DBUtil.getConnection().prepareStatement("INSERT INTO "
-//                                        + "ArticuloTB"
-//                                        + "(IdArticulo,"
-//                                        + "Origen,"
-//                                        + "Clave,"
-//                                        + "ClaveAlterna,"
-//                                        + "NombreMarca,"
-//                                        + "NombreGenerico,"
-//                                        + "Categoria,"
-//                                        + "Marca,"
-//                                        + "Presentacion,"
-//                                        + "StockMinimo,"
-//                                        + "StockMaximo,"
-//                                        + "PrecioCompra,"
-//                                        + "PrecioVentaGeneral,"
-//                                        + "PrecioMargenGeneral,"
-//                                        + "PrecioUtilidadGeneral,"
-//                                        + "Cantidad,"
-//                                        + "UnidadCompra,"
-//                                        + "UnidadVenta,"
-//                                        + "Estado,"
-//                                        + "Lote,"
-//                                        + "Inventario,"
-//                                        + "Imagen,"
-//                                        + "Impuesto,"
-//                                        + "ValorInventario,"
-//                                        + "ClaveSat,"
-//                                        + "IdSuministro,TipoPrecio)"
-//                                        + "values(?,?,?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-//                                preparedArticulo.setString(1, idArticulo);
-//                                preparedArticulo.setInt(2, suministroTB.getOrigen());
-//                                preparedArticulo.setString(3, suministroTB.getClave());
-//                                preparedArticulo.setString(4, suministroTB.getClaveAlterna());
-//                                preparedArticulo.setString(5, suministroTB.getNombreMarca());
-//                                preparedArticulo.setString(6, suministroTB.getNombreGenerico());
-//                                preparedArticulo.setInt(7, suministroTB.getCategoria());
-//                                preparedArticulo.setInt(8, suministroTB.getMarcar());
-//                                preparedArticulo.setInt(9, suministroTB.getPresentacion());
-//                                preparedArticulo.setDouble(10, suministroTB.getStockMinimo());
-//                                preparedArticulo.setDouble(11, suministroTB.getStockMaximo());
-//                                preparedArticulo.setDouble(12, suministroTB.getCostoCompra());
-//
-//                                preparedArticulo.setDouble(13, suministroTB.getPrecioVentaGeneral());
-//                                preparedArticulo.setShort(14, suministroTB.getPrecioMargenGeneral());
-//                                preparedArticulo.setDouble(15, suministroTB.getPrecioUtilidadGeneral());
-//
-//                                preparedArticulo.setDouble(16, 0);
-//                                preparedArticulo.setInt(17, suministroTB.getUnidadCompra());
-//                                preparedArticulo.setInt(18, suministroTB.getUnidadVenta());
-//                                preparedArticulo.setInt(19, suministroTB.getEstado());
-//                                preparedArticulo.setBoolean(20, suministroTB.isLote());
-//                                preparedArticulo.setBoolean(21, suministroTB.isInventario());
-//                                preparedArticulo.setString(22, suministroTB.getImagenTB());
-//                                preparedArticulo.setInt(23, suministroTB.getImpuestoId());
-//                                preparedArticulo.setBoolean(24, suministroTB.isValorInventario());
-//                                preparedArticulo.setString(25, suministroTB.getClaveSat());
-//                                preparedArticulo.setString(26, idSuministro);
-//                                preparedArticulo.setBoolean(27, suministroTB.isTipoPrecio());
-//                                preparedArticulo.addBatch();
-//
-//                                preparedArticulo.executeBatch();
-//                            }
                             preparedPrecios = DBUtil.getConnection().prepareStatement("INSERT INTO PreciosTB(IdArticulo, IdSuministro, Nombre, Valor, Factor,Estado) VALUES(?,?,?,?,?,?)");
 
                             for (int i = 0; i < tvPrecios.size(); i++) {
@@ -354,27 +227,17 @@ public class SuministroADO {
                     if (codigoSuministro != null) {
                         codigoSuministro.close();
                     }
-//                    if (codigoArticulo != null) {
-//                        codigoArticulo.close();
-//                    }
-//                    if (preparedArticulo != null) {
-//                        preparedArticulo.close();
-//                    }
                     if (preparedValidation != null) {
                         preparedValidation.close();
                     }
                     if (preparedPrecios != null) {
                         preparedPrecios.close();
                     }
-//                    if (statementBusqueda != null) {
-//                        statementBusqueda.close();
-//                    }
                     DBUtil.dbDisconnect();
                 } catch (SQLException ex) {
                     result = ex.getLocalizedMessage();
                 }
             }
-
         } else {
             result = "No se puedo establecer una conexión, intente nuevamente.";
         }
@@ -722,10 +585,12 @@ public class SuministroADO {
                 suministroTB.setPrecioVentaGeneral(rsEmps.getDouble("PrecioVentaGeneral"));
                 suministroTB.setCantidad(rsEmps.getDouble("Cantidad"));
                 suministroTB.setUnidadCompraName(rsEmps.getString("UnidadCompra"));
-                suministroTB.setEstadoName(rsEmps.getString("Estado"));
+                suministroTB.setEstado(rsEmps.getInt("Estado"));
+                suministroTB.setEstadoName(rsEmps.getString("EstadoName"));
                 suministroTB.setImporteNeto(rsEmps.getDouble("Total"));
                 suministroTB.setStockMinimo(rsEmps.getDouble("StockMinimo"));
                 suministroTB.setStockMaximo(rsEmps.getDouble("StockMaximo"));
+                suministroTB.setInventario(rsEmps.getBoolean("Inventario"));
                 suministroTB.setCategoriaName(rsEmps.getString("Categoria"));
                 suministroTB.setMarcaName(rsEmps.getString("Marca"));
 

@@ -1,6 +1,7 @@
 package controller.configuracion.empleados;
 
 import controller.operaciones.venta.FxVentaRealizadasController;
+import controller.posterminal.venta.FxPostVentaRealizadasController;
 import controller.reporte.FxVentaReporteController;
 import controller.tools.Tools;
 import java.net.URL;
@@ -44,6 +45,8 @@ public class FxEmpleadosListaController implements Initializable {
     private FxVentaReporteController ventaReporteController;
 
     private FxVentaRealizadasController ventaRealizadasController;
+
+    private FxPostVentaRealizadasController postVentaRealizadasController;
 
     private boolean status;
 
@@ -118,7 +121,13 @@ public class FxEmpleadosListaController implements Initializable {
         } else if (ventaRealizadasController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 ventaRealizadasController.setIdEmpleado(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
-                ventaRealizadasController.getTxtVendedor().setText(tvList.getSelectionModel().getSelectedItem().getApellidos()+" "+tvList.getSelectionModel().getSelectedItem().getNombres());
+                ventaRealizadasController.getTxtVendedor().setText(tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                Tools.Dispose(apWindow);
+            }
+        } else if (postVentaRealizadasController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                postVentaRealizadasController.setIdEmpleado(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
+                postVentaRealizadasController.getTxtVendedor().setText(tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
                 Tools.Dispose(apWindow);
             }
         }
@@ -224,6 +233,10 @@ public class FxEmpleadosListaController implements Initializable {
 
     public void setInitVentaRealizadasController(FxVentaRealizadasController ventaRealizadasController) {
         this.ventaRealizadasController = ventaRealizadasController;
+    }
+
+    public void setInitPostVentaRealizadasController(FxPostVentaRealizadasController postVentaRealizadasController) {
+        this.postVentaRealizadasController = postVentaRealizadasController;
     }
 
 }

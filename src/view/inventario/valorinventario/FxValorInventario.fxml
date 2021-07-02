@@ -43,7 +43,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAjuste" onKeyPressed="#onKeyPressedAjuste" styleClass="buttonLight" text="Ajuste">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/edit.png" />
                            </image>
@@ -52,27 +52,36 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onActionRecargar" onKeyPressed="#onKeyPressedRecargar" styleClass="buttonLight" text="Recargar">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Reporte">
+                  <Button mnemonicParsing="false" onAction="#onActionReporte" onKeyPressed="#onKeyPressedReporte" styleClass="buttonLight" text="Visualizar">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/complete.png" />
+                              <Image url="@../../image/view.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onActionTicket" onKeyPressed="#onKeyPressedTicket" styleClass="buttonLight" text="Ticket">
+                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Pdf">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../image/ticket.png" />
+                              <Image url="@../../image/pdf.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="buttonLight" text="Excel">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/excel.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -113,7 +122,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefHeight="30.0" prefWidth="240.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
+                              <TextField fx:id="txtProducto" onKeyReleased="#onKeyReleasedProducto" prefHeight="30.0" prefWidth="160.0" promptText="Clave o clave alterna" styleClass="text-field-normal" />
                            </children>
                         </VBox>
                         <VBox style="-fx-spacing: 0.3333333333333333em;" HBox.hgrow="ALWAYS">
@@ -231,12 +240,12 @@
                                  <columns>
                                     <TableColumn fx:id="tcNumero" prefWidth="75.0" style="-fx-alignment: CENTER;" text="N°" />
                                     <TableColumn fx:id="tcDescripcion" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Descripción" />
-                                    <TableColumn fx:id="tcCostoPromedio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Costo General" />
-                                    <TableColumn fx:id="tcPrecio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Precio Venta" />
-                                    <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
-                                    <TableColumn fx:id="tcInventario" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Inv.Min / Inv.Max" />
                                     <TableColumn fx:id="tcCategoria" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Categoria" />
                                     <TableColumn fx:id="tcMarca" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT;" text="Marca" />
+                                    <TableColumn fx:id="tcExistencia" prefWidth="126.4000244140625" style="-fx-alignment: CENTER-RIGHT;" text="Cantidad" />
+                                    <TableColumn fx:id="tcStock" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Inv.Min / Inv.Max" />
+                                    <TableColumn fx:id="cbInventario" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Inventario" />
+                                    <TableColumn fx:id="cbEstado" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Estado" />
                                  </columns>
                               </TableView>
                               <HBox alignment="CENTER" style="-fx-background-color: cccccc;">

@@ -453,141 +453,140 @@ public class CompraADO extends DBUtil {
         }
     }
 
-    public static String Compra_Borrado(CompraTB compraTB, TableView<DetalleCompraTB> tableView, ObservableList<LoteTB> loteTBs) {
-        CallableStatement codigo_compra = null;
-        CallableStatement codigo_credito = null;
-        PreparedStatement compra = null;
-        PreparedStatement detalle_compra = null;
-        PreparedStatement lote_compra = null;
-        dbConnect();
-        if (getConnection() != null) {
-            try {
-                getConnection().setAutoCommit(false);
-                codigo_compra = getConnection().prepareCall("{? = call Fc_Compra_Codigo_Alfanumerico()}");
-                codigo_compra.registerOutParameter(1, java.sql.Types.VARCHAR);
-                codigo_compra.execute();
-                String id_compra = codigo_compra.getString(1);
-
-                compra = getConnection().prepareStatement("INSERT INTO "
-                        + "CompraTB("
-                        + "IdCompra,"
-                        + "Proveedor,"
-                        + "Comprobante,"
-                        + "Numeracion,"
-                        + "TipoMoneda,"
-                        + "FechaCompra,"
-                        + "HoraCompra,"
-                        + "FechaVencimiento,"
-                        + "HoraVencimiento,"
-                        + "SubTotal,"
-                        + "Descuento,"
-                        + "Total,"
-                        + "Observaciones,"
-                        + "Notas,"
-                        + "TipoCompra,"
-                        + "EstadoCompra,"
-                        + "Usuario) "
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-                detalle_compra = getConnection().prepareStatement("INSERT INTO "
-                        + "DetalleCompraTB("
-                        + "IdCompra,"
-                        + "IdArticulo,"
-                        + "Cantidad,"
-                        + "PrecioCompra,"
-                        + "Descuento,"
-                        + "IdImpuesto,"
-                        + "NombreImpuesto,"
-                        + "ValorImpuesto,"
-                        + "ImpuestoSumado,"
-                        + "Importe,"
-                        + "Descripcion)"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-
-                lote_compra = getConnection().prepareStatement("INSERT INTO "
-                        + "LoteTB("
-                        + "NumeroLote,"
-                        + "FechaCaducidad,"
-                        + "ExistenciaInicial,"
-                        + "ExistenciaActual,"
-                        + "IdArticulo,"
-                        + "IdCompra) "
-                        + "VALUES(?,?,?,?,?,?)");
-
-                compra.setString(1, id_compra);
-                compra.setString(2, compraTB.getIdProveedor());
-                compra.setString(3, compraTB.getSerie());
-                compra.setString(4, compraTB.getNumeracion());
-                compra.setInt(5, compraTB.getIdMoneda());
-                compra.setString(6, compraTB.getFechaCompra());
-                compra.setString(7, compraTB.getHoraCompra());
-                compra.setString(8, compraTB.getFechaVencimiento());
-                compra.setString(9, compraTB.getHoraVencimiento());
-                compra.setDouble(10, compraTB.getSubTotal());
-                compra.setDouble(11, compraTB.getDescuento());
-                compra.setDouble(12, compraTB.getTotal());
-                compra.setString(13, compraTB.getObservaciones());
-                compra.setString(14, compraTB.getNotas());
-                compra.setInt(15, compraTB.getTipo());
-                compra.setInt(16, compraTB.getEstado());
-                compra.setString(17, compraTB.getUsuario());
-                compra.addBatch();
-
-                for (int i = 0; i < tableView.getItems().size(); i++) {
-                    detalle_compra.setString(1, id_compra);
-                    detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
-                    detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
-                    detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompra());
-                    detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
-
-                    detalle_compra.setInt(6, tableView.getItems().get(i).getIdImpuesto());
-                    detalle_compra.setString(7, tableView.getItems().get(i).getNombreImpuesto());
-                    detalle_compra.setDouble(8, tableView.getItems().get(i).getValorImpuesto());
-                    detalle_compra.setDouble(9, tableView.getItems().get(i).getImpuestoSumado());
-                    detalle_compra.setDouble(10, tableView.getItems().get(i).getImporte());
-                    detalle_compra.setString(11, tableView.getItems().get(i).getDescripcion());
-                    detalle_compra.addBatch();
-                }
-
-                compra.executeBatch();
-                detalle_compra.executeBatch();
-                lote_compra.executeBatch();
-                getConnection().commit();
-                return "register";
-            } catch (SQLException ex) {
-                try {
-                    getConnection().rollback();
-                    return ex.getLocalizedMessage();
-                } catch (SQLException ex1) {
-                    return ex1.getLocalizedMessage();
-                }
-            } finally {
-                try {
-                    if (codigo_compra != null) {
-                        codigo_compra.close();
-                    }
-                    if (compra != null) {
-                        compra.close();
-                    }
-                    if (detalle_compra != null) {
-                        detalle_compra.close();
-                    }
-                    if (codigo_credito != null) {
-                        codigo_credito.close();
-                    }
-                    if (lote_compra != null) {
-                        lote_compra.close();
-                    }
-                    dbDisconnect();
-                } catch (SQLException ex) {
-                    return ex.getLocalizedMessage();
-                }
-            }
-        } else {
-            return "No se pudo conectar el servidor, intente nuevamente.";
-        }
-    }
-
+//    public static String Compra_Borrado(CompraTB compraTB, TableView<DetalleCompraTB> tableView, ObservableList<LoteTB> loteTBs) {
+//        CallableStatement codigo_compra = null;
+//        CallableStatement codigo_credito = null;
+//        PreparedStatement compra = null;
+//        PreparedStatement detalle_compra = null;
+//        PreparedStatement lote_compra = null;
+//        dbConnect();
+//        if (getConnection() != null) {
+//            try {
+//                getConnection().setAutoCommit(false);
+//                codigo_compra = getConnection().prepareCall("{? = call Fc_Compra_Codigo_Alfanumerico()}");
+//                codigo_compra.registerOutParameter(1, java.sql.Types.VARCHAR);
+//                codigo_compra.execute();
+//                String id_compra = codigo_compra.getString(1);
+//
+//                compra = getConnection().prepareStatement("INSERT INTO "
+//                        + "CompraTB("
+//                        + "IdCompra,"
+//                        + "Proveedor,"
+//                        + "Comprobante,"
+//                        + "Numeracion,"
+//                        + "TipoMoneda,"
+//                        + "FechaCompra,"
+//                        + "HoraCompra,"
+//                        + "FechaVencimiento,"
+//                        + "HoraVencimiento,"
+//                        + "SubTotal,"
+//                        + "Descuento,"
+//                        + "Total,"
+//                        + "Observaciones,"
+//                        + "Notas,"
+//                        + "TipoCompra,"
+//                        + "EstadoCompra,"
+//                        + "Usuario) "
+//                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+//
+//                detalle_compra = getConnection().prepareStatement("INSERT INTO "
+//                        + "DetalleCompraTB("
+//                        + "IdCompra,"
+//                        + "IdArticulo,"
+//                        + "Cantidad,"
+//                        + "PrecioCompra,"
+//                        + "Descuento,"
+//                        + "IdImpuesto,"
+//                        + "NombreImpuesto,"
+//                        + "ValorImpuesto,"
+//                        + "ImpuestoSumado,"
+//                        + "Importe,"
+//                        + "Descripcion)"
+//                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+//
+//                lote_compra = getConnection().prepareStatement("INSERT INTO "
+//                        + "LoteTB("
+//                        + "NumeroLote,"
+//                        + "FechaCaducidad,"
+//                        + "ExistenciaInicial,"
+//                        + "ExistenciaActual,"
+//                        + "IdArticulo,"
+//                        + "IdCompra) "
+//                        + "VALUES(?,?,?,?,?,?)");
+//
+//                compra.setString(1, id_compra);
+//                compra.setString(2, compraTB.getIdProveedor());
+//                compra.setString(3, compraTB.getSerie());
+//                compra.setString(4, compraTB.getNumeracion());
+//                compra.setInt(5, compraTB.getIdMoneda());
+//                compra.setString(6, compraTB.getFechaCompra());
+//                compra.setString(7, compraTB.getHoraCompra());
+//                compra.setString(8, compraTB.getFechaVencimiento());
+//                compra.setString(9, compraTB.getHoraVencimiento());
+//                compra.setDouble(10, compraTB.getSubTotal());
+//                compra.setDouble(11, compraTB.getDescuento());
+//                compra.setDouble(12, compraTB.getTotal());
+//                compra.setString(13, compraTB.getObservaciones());
+//                compra.setString(14, compraTB.getNotas());
+//                compra.setInt(15, compraTB.getTipo());
+//                compra.setInt(16, compraTB.getEstado());
+//                compra.setString(17, compraTB.getUsuario());
+//                compra.addBatch();
+//
+//                for (int i = 0; i < tableView.getItems().size(); i++) {
+//                    detalle_compra.setString(1, id_compra);
+//                    detalle_compra.setString(2, tableView.getItems().get(i).getIdArticulo());
+//                    detalle_compra.setDouble(3, tableView.getItems().get(i).getCantidad());
+//                    detalle_compra.setDouble(4, tableView.getItems().get(i).getPrecioCompra());
+//                    detalle_compra.setDouble(5, tableView.getItems().get(i).getDescuento());
+//
+//                    detalle_compra.setInt(6, tableView.getItems().get(i).getIdImpuesto());
+//                    detalle_compra.setString(7, tableView.getItems().get(i).getNombreImpuesto());
+//                    detalle_compra.setDouble(8, tableView.getItems().get(i).getValorImpuesto());
+//                    detalle_compra.setDouble(9, tableView.getItems().get(i).getImpuestoSumado());
+//                    detalle_compra.setDouble(10, tableView.getItems().get(i).getImporte());
+//                    detalle_compra.setString(11, tableView.getItems().get(i).getDescripcion());
+//                    detalle_compra.addBatch();
+//                }
+//
+//                compra.executeBatch();
+//                detalle_compra.executeBatch();
+//                lote_compra.executeBatch();
+//                getConnection().commit();
+//                return "register";
+//            } catch (SQLException ex) {
+//                try {
+//                    getConnection().rollback();
+//                    return ex.getLocalizedMessage();
+//                } catch (SQLException ex1) {
+//                    return ex1.getLocalizedMessage();
+//                }
+//            } finally {
+//                try {
+//                    if (codigo_compra != null) {
+//                        codigo_compra.close();
+//                    }
+//                    if (compra != null) {
+//                        compra.close();
+//                    }
+//                    if (detalle_compra != null) {
+//                        detalle_compra.close();
+//                    }
+//                    if (codigo_credito != null) {
+//                        codigo_credito.close();
+//                    }
+//                    if (lote_compra != null) {
+//                        lote_compra.close();
+//                    }
+//                    dbDisconnect();
+//                } catch (SQLException ex) {
+//                    return ex.getLocalizedMessage();
+//                }
+//            }
+//        } else {
+//            return "No se pudo conectar el servidor, intente nuevamente.";
+//        }
+//    }
     public static ObservableList<CompraTB> ListComprasRealizadas(short opcion, String value, String fechaInicial, String fechaFinal, int estadoCompra) {
         String selectStmt = "{call Sp_Listar_Compras(?,?,?,?,?)}";
         PreparedStatement preparedStatement = null;
@@ -911,11 +910,7 @@ public class CompraADO extends DBUtil {
     }
 
     public static String cancelarCompraTotal(String idCompra, ObservableList<DetalleCompraTB> tableView, BancoHistorialTB bancoHistorialBancaria) {
-        String result = "";
-        DBUtil.dbConnect();
-        if (DBUtil.getConnection() != null) {
-            return "No se pudo completar la petición por problemas de red, intente nuevamente.";
-        }
+
         PreparedStatement statementValidate = null;
         PreparedStatement statementCompra = null;
         PreparedStatement statementSuministro = null;
@@ -923,19 +918,20 @@ public class CompraADO extends DBUtil {
         PreparedStatement statementBanco = null;
         PreparedStatement statementBancoHistorial = null;
         try {
+            DBUtil.dbConnect();
             DBUtil.getConnection().setAutoCommit(false);
             statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraTB WHERE IdCompra = ? and EstadoCompra = ?");
             statementValidate.setString(1, idCompra);
             statementValidate.setInt(2, 3);
             if (statementValidate.executeQuery().next()) {
                 DBUtil.getConnection().rollback();
-                result = "scrambled";
+                return "scrambled";
             } else {
                 statementValidate = DBUtil.getConnection().prepareStatement("SELECT * FROM CompraCreditoTB WHERE IdCompra = ? and Estado = 1");
-                statementValidate.setString(1, result);
+                statementValidate.setString(1, idCompra);
                 if (statementValidate.executeQuery().next()) {
                     DBUtil.getConnection().rollback();
-                    result = "historial";
+                    return "historial";
                 } else {
                     statementCompra = DBUtil.getConnection().prepareStatement("UPDATE CompraTB SET EstadoCompra = ? WHERE IdCompra = ?");
                     statementCompra.setInt(1, 3);
@@ -1008,7 +1004,7 @@ public class CompraADO extends DBUtil {
                     statementBanco.executeBatch();
                     statementBancoHistorial.executeBatch();
                     DBUtil.getConnection().commit();
-                    result = "updated";
+                    return "updated";
                 }
             }
         } catch (SQLException ex) {
@@ -1017,7 +1013,7 @@ public class CompraADO extends DBUtil {
             } catch (SQLException e) {
 
             }
-            result = ex.getLocalizedMessage();
+            return ex.getLocalizedMessage();
         } finally {
             try {
                 if (statementValidate != null) {
@@ -1040,11 +1036,9 @@ public class CompraADO extends DBUtil {
                 }
                 DBUtil.dbDisconnect();
             } catch (SQLException ex) {
-                result = ex.getLocalizedMessage();
+                return ex.getLocalizedMessage();
             }
         }
-
-        return result;
     }
 
     public static ArrayList<Object> GetComprasForEditar(String idCompra) {
@@ -1221,7 +1215,7 @@ public class CompraADO extends DBUtil {
                     empList.add(detalleCompraTB);
                 }
                 compraTB.setDetalleCompraTBs(empList);
-                
+
                 return compraTB;
             } else {
                 throw new Exception("No se pudo carga la información, intente nuevamente.");

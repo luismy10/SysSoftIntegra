@@ -73,12 +73,6 @@ public class FxNotaCreditoController implements Initializable {
     @FXML
     private TextField txtRazonsocial;
     @FXML
-    private TextField txtDireccion;
-    @FXML
-    private TextField txtCelular;
-    @FXML
-    private TextField txtEmail;
-    @FXML
     private Button btnAceptarLoad;
     @FXML
     private GridPane gpList;
@@ -185,9 +179,6 @@ public class FxNotaCreditoController implements Initializable {
 
                 txtNumeroDocumento.setText(ventaTB.getClienteTB().getNumeroDocumento());
                 txtRazonsocial.setText(ventaTB.getClienteTB().getInformacion());
-                txtDireccion.setText(ventaTB.getClienteTB().getDireccion());
-                txtCelular.setText(ventaTB.getClienteTB().getCelular());
-                txtEmail.setText(ventaTB.getClienteTB().getEmail());
 
                 detalleVentaTBs.addAll((ArrayList<DetalleVentaTB>) objects[6]);
                 for (DetalleVentaTB detalleVentaTB : detalleVentaTBs) {
@@ -348,9 +339,6 @@ public class FxNotaCreditoController implements Initializable {
         cbTipoDocumento.getSelectionModel().select(null);
         txtNumeroDocumento.clear();
         txtRazonsocial.clear();
-        txtDireccion.clear();
-        txtCelular.clear();
-        txtEmail.clear();
         detalleVentaTBs.clear();
         addElementPaneHead();
         addElementPaneBody();

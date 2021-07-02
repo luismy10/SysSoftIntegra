@@ -2,20 +2,14 @@ package controller.operaciones.venta;
 
 import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
-import controller.tools.Session;
-import controller.tools.WindowStage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -23,9 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import model.CajaADO;
-import model.CajaTB;
 import model.PrivilegioTB;
 
 public class FxVentaController implements Initializable {
@@ -51,11 +42,9 @@ public class FxVentaController implements Initializable {
 
     private short tipoVenta;
 
-    private boolean aperturaCaja;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        aperturaCaja = false;
+
     }
 
     public void loadComponents() {
@@ -117,134 +106,6 @@ public class FxVentaController implements Initializable {
         }
     }
 
-    public void loadValidarCaja() {
-        ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
-            Thread t = new Thread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
-
-        Task<CajaTB> task = new Task<CajaTB>() {
-            @Override
-            public CajaTB call() {
-                return CajaADO.ValidarCreacionCaja(Session.USER_ID);
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-//            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-            CajaTB cajaTB = task.getValue();
-            if (cajaTB != null) {
-                switch (cajaTB.getId()) {
-                    case 1:
-                        openWindowFondoInicial();
-                        break;
-                    case 2:
-                        aperturaCaja = true;
-                        hbContenedorVentas.setDisable(false);
-                        Session.CAJA_ID = cajaTB.getIdCaja();
-                        break;
-                    case 3:
-                        openWindowValidarCaja(cajaTB.getFechaApertura() + " " + cajaTB.getHoraApertura());
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                openWindowCajaNoRegistrada("No se pudo verificar el estado de su caja por problemas de red, intente nuevamente.");
-            }
-        });
-
-        task.setOnFailed(e -> {
-//            vbPrincipal.getChildren().remove(ObjectGlobal.PANE);
-        });
-
-        task.setOnScheduled(e -> {
-//            ObjectGlobal.InitializationTransparentBackground(vbPrincipal);
-        });
-
-        exec.execute(task);
-        if (!exec.isShutdown()) {
-            exec.shutdown();
-        }
-    }
-
-    public void openWindowCajaNoRegistrada(String mensaje) {
-        try {
-            fxPrincipalController.openFondoModal();
-            URL url = getClass().getResource(FilesRouters.FX_CAJA_NO_REGISTRADA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-
-            FxCajaNoRegistrada controller = fXMLLoader.getController();
-            controller.initElements(mensaje);
-
-            Stage stage = WindowStage.StageLoaderModal(parent, "Caja no registrada", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> {
-           fxPrincipalController.closeFondoModal();
-                if (aperturaCaja) {
-                    aperturaCaja = false;
-                    hbContenedorVentas.setDisable(true);
-                }
-            });
-            stage.show();
-        } catch (IOException ex) {
-            System.out.println("venta controller openWindowFondoInicial():" + ex.getLocalizedMessage());
-        }
-    }
-
-    public void openWindowFondoInicial() {
-        try {
-            fxPrincipalController.openFondoModal();
-            URL url = getClass().getResource(FilesRouters.FX_VENTA_FONDO_INICIAL);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxVentaFondoInicialController controller = fXMLLoader.getController();
-            controller.setInitVentaController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Fondo inicial", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                fxPrincipalController.closeFondoModal();
-                hbContenedorVentas.setDisable(!aperturaCaja);
-            });
-            stage.show();
-        } catch (IOException ex) {
-            System.out.println("venta controller openWindowFondoInicial():" + ex.getLocalizedMessage());
-        }
-    }
-
-    private void openWindowValidarCaja(String dateTime) {
-        try {
-            fxPrincipalController.openFondoModal();
-            URL url = getClass().getResource(FilesRouters.FX_VENTA_VALIDAR_CAJA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxVentaValidarCajaController controller = fXMLLoader.getController();
-            controller.setInitVentaController(this);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Validar apertura y cierre de caja", window.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> {
-                fxPrincipalController.closeFondoModal();
-                if (aperturaCaja) {
-                    aperturaCaja = false;
-                    hbContenedorVentas.setDisable(true);
-                }
-            });
-            stage.show();
-            controller.loadData(dateTime);
-        } catch (IOException ex) {
-            System.out.println("venta controller openWindowFondoInicial():" + ex.getLocalizedMessage());
-        }
-    }
-
     @FXML
     private void onKeyPressedAgregarVenta(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -255,10 +116,6 @@ public class FxVentaController implements Initializable {
     @FXML
     private void onActionAgregarVenta(ActionEvent event) {
         addTabVentaEstructura();
-    }
-
-    public void setAperturaCaja(boolean aperturaCaja) {
-        this.aperturaCaja = aperturaCaja;
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {

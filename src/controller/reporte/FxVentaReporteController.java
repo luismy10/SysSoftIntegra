@@ -8,10 +8,13 @@ import controller.tools.Session;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
 import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -20,23 +23,39 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.TipoDocumentoADO;
 import model.TipoDocumentoTB;
 import model.VentaADO;
 import model.VentaTB;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class FxVentaReporteController implements Initializable {
 
@@ -63,15 +82,13 @@ public class FxVentaReporteController implements Initializable {
     @FXML
     private CheckBox cbVendedoresSeleccionar;
     @FXML
-    private DatePicker dpFechaInicialGlobal;
+    private HBox hbTipoPago;
     @FXML
-    private DatePicker dpFechaFinalGlobal;
+    private CheckBox cbTipoPagoSeleccionar;
     @FXML
-    private ComboBox<String> cbOrdenar;
+    private RadioButton rbContado;
     @FXML
-    private ComboBox<String> cbOrden;
-    @FXML
-    private CheckBox cbMostrarVenta;
+    private RadioButton rbCredito;
 
     private FxPrincipalController fxPrincipalController;
 
@@ -83,19 +100,14 @@ public class FxVentaReporteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Tools.actualDate(Tools.getDate(), dpFechaInicial);
         Tools.actualDate(Tools.getDate(), dpFechaFinal);
-        Tools.actualDate(Tools.getDate(), dpFechaInicialGlobal);
-        Tools.actualDate(Tools.getDate(), dpFechaFinalGlobal);
+        ToggleGroup groupFormaPago = new ToggleGroup();
+        rbContado.setToggleGroup(groupFormaPago);
+        rbCredito.setToggleGroup(groupFormaPago);
         cbDocumentos.getItems().clear();
         TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
             cbDocumentos.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
         });
         idCliente = idEmpleado = "";
-//        cbMostar.getItems().addAll("Día", "Semana", "Quincena", "Mensual", "Año");
-//        cbMostar.getSelectionModel().select(0);
-        cbOrdenar.getItems().addAll("Fecha", "Total");
-        cbOrdenar.getSelectionModel().select(0);
-        cbOrden.getItems().addAll("Ascendente", "Descentente");
-        cbOrden.getSelectionModel().select(0);
     }
 
     private void openWindowClientes() {
@@ -140,7 +152,47 @@ public class FxVentaReporteController implements Initializable {
         }
     }
 
-    private void openViewReporteGeneral() {
+    private JasperPrint reportGenerate() throws JRException {
+        ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentas(
+                Tools.getDatePicker(dpFechaInicial),
+                Tools.getDatePicker(dpFechaFinal),
+                cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                idCliente,
+                idEmpleado);
+
+        double totalcontado = 0;
+        double totalcredito = 0;
+        double totalanulado = 0;
+        for (int i = 0; i < list.size(); i++) {
+            switch (list.get(i).getEstado()) {
+                case 1:
+                    totalcontado += list.get(i).getTotal();
+                    break;
+                case 2:
+                    totalcredito += list.get(i).getTotal();
+                    break;
+                default:
+                    totalanulado += list.get(i).getTotal();
+                    break;
+            }
+        }
+
+        Map map = new HashMap();
+        map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+        map.put("DOCUMENTO", cbDocumentosSeleccionar.isSelected() ? "TODOS" : cbDocumentos.getSelectionModel().getSelectedItem().getNombre());
+        map.put("ORDEN", "TODOS");
+        map.put("CLIENTE", cbClientesSeleccionar.isSelected() ? "TODOS" : txtClientes.getText().toUpperCase());
+        map.put("ESTADO", "TODOS");
+        map.put("VENDEDOR", cbVendedoresSeleccionar.isSelected() ? "TODOS" : txtVendedores.getText().toUpperCase());
+        map.put("TOTAANULADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalanulado, 2));
+        map.put("TOTALCREDITO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalcredito, 2));
+        map.put("TOTALCONTADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalcontado, 2));
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneral.jasper"), map, new JRBeanCollectionDataSource(list));
+        return jasperPrint;
+    }
+
+    private void openViewVisualizar() {
         try {
             if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
                 Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Seleccione un documento para generar el reporte.");
@@ -152,49 +204,13 @@ public class FxVentaReporteController implements Initializable {
                 Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Ingrese un empleado para generar el reporte.");
                 btnVendedor.requestFocus();
             } else {
-                ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentas(
-                        Tools.getDatePicker(dpFechaInicial),
-                        Tools.getDatePicker(dpFechaFinal),
-                        cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
-                        idCliente,
-                        idEmpleado);
-                if (list.isEmpty()) {
-                    Tools.AlertMessageWarning(window, "Reporte General de Ventas", "No hay registros para mostrar en el reporte.");
-                    return;
-                }
-
-                double totalcontado = 0;
-                double totalcredito = 0;
-                double totalanulado = 0;
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getEstado() == 1) {
-                        totalcontado += list.get(i).getTotal();
-                    }else if(list.get(i).getEstado() == 2){
-                        totalcredito += list.get(i).getTotal();
-                    }else if(list.get(i).getEstado() == 3){
-                        totalanulado += list.get(i).getTotal();
-                    }
-                }
-
-                Map map = new HashMap();
-                map.put("PERIODO", dpFechaInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
-                map.put("DOCUMENTO", cbDocumentosSeleccionar.isSelected() ? "TODOS" : cbDocumentos.getSelectionModel().getSelectedItem().getNombre());
-                map.put("ORDEN", "TODOS");
-                map.put("CLIENTE", cbClientesSeleccionar.isSelected() ? "TODOS" : txtClientes.getText().toUpperCase());
-                map.put("ESTADO", "TODOS");
-                map.put("VENDEDOR", cbVendedoresSeleccionar.isSelected() ? "TODOS" : txtVendedores.getText().toUpperCase());
-                map.put("TOTAANULADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalanulado, 2));
-                map.put("TOTALCREDITO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalcredito, 2));
-                map.put("TOTALCONTADO", Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(totalcontado, 2));
-
-                JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneral.jasper"), map, new JRBeanCollectionDataSource(list));
 
                 URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
                 FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
                 Parent parent = fXMLLoader.load(url.openStream());
                 //Controlller here
                 FxReportViewController controller = fXMLLoader.getController();
-                controller.setJasperPrint(jasperPrint);
+                controller.setJasperPrint(reportGenerate());
                 controller.show();
                 Stage stage = WindowStage.StageLoader(parent, "Reporte General de Ventas");
                 stage.setResizable(true);
@@ -207,97 +223,203 @@ public class FxVentaReporteController implements Initializable {
         }
     }
 
-//    private void openWindowReporteGlobal() {
-//        try {
-////            if (cbMostar.getSelectionModel().getSelectedIndex() < 0) {
-////                Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "Seleccione la forma de mostrar el reporte.");
-////                cbMostar.requestFocus();
-////            } else 
-//            if (cbOrdenar.getSelectionModel().getSelectedIndex() < 0) {
-//                Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "Seleccione la forma de ordenar el reporte.");
-//                cbOrdenar.requestFocus();
-//            } else {
-//                ArrayList<VentaTB> list = VentaADO.GetReporteSumaVentaPorDia(
-//                        Tools.getDatePicker(dpFechaInicialGlobal),
-//                        Tools.getDatePicker(dpFechaFinalGlobal),
-//                        !(cbOrdenar.getSelectionModel().getSelectedIndex() == 0),
-//                        !(cbOrden.getSelectionModel().getSelectedIndex() == 0));
+    private void onEventPdf() {
+        try {
+            if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
+                Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Seleccione un documento para generar el reporte.");
+                cbDocumentos.requestFocus();
+            } else if (!cbClientesSeleccionar.isSelected() && idCliente.equalsIgnoreCase("") && txtClientes.getText().isEmpty()) {
+                Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Ingrese un cliente para generar el reporte.");
+                btnClientes.requestFocus();
+            } else if (!cbVendedoresSeleccionar.isSelected() && idEmpleado.equalsIgnoreCase("") && txtVendedores.getText().isEmpty()) {
+                Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Ingrese un empleado para generar el reporte.");
+                btnVendedor.requestFocus();
+            } else {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Reporte de Ventas");
+                fileChooser.setInitialFileName("ListaDeVentas");
+                fileChooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("PDF Documento", Arrays.asList("*.pdf", "*.PDF"))
+                );
+                File file = fileChooser.showSaveDialog(window.getScene().getWindow());
+                if (file != null) {
+                    file = new File(file.getAbsolutePath());
+                    if (file.getName().endsWith("pdf") || file.getName().endsWith("PDF")) {
+                        JasperExportManager.exportReportToPdfFile(reportGenerate(), file.getAbsolutePath());
+                    }
+                }
+            }
+        } catch (JRException ex) {
+            Tools.AlertMessageError(window, "Reporte General de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
+        }
+    }
+
+    private void onEventExcel() {
+        if (!cbDocumentosSeleccionar.isSelected() && cbDocumentos.getSelectionModel().getSelectedIndex() < 0) {
+            Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Seleccione un documento para generar el reporte.");
+            cbDocumentos.requestFocus();
+        } else if (!cbClientesSeleccionar.isSelected() && idCliente.equalsIgnoreCase("") && txtClientes.getText().isEmpty()) {
+            Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Ingrese un cliente para generar el reporte.");
+            btnClientes.requestFocus();
+        } else if (!cbVendedoresSeleccionar.isSelected() && idEmpleado.equalsIgnoreCase("") && txtVendedores.getText().isEmpty()) {
+            Tools.AlertMessageWarning(window, "Reporte General de Ventas", "Ingrese un empleado para generar el reporte.");
+            btnVendedor.requestFocus();
+        } else {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Reporte de Ventas");
+            fileChooser.setInitialFileName("ListaDeVentas");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Libro de Excel (*.xlsx)", "*.xlsx"),
+                    new FileChooser.ExtensionFilter("Libro de Excel(1997-2003) (*.xls)", "*.xls")
+            );
+            File file = fileChooser.showSaveDialog(window.getScene().getWindow());
+            if (file != null) {
+                file = new File(file.getAbsolutePath());
+                if (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) {
+                    try {
+
+                        ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentas(
+                                Tools.getDatePicker(dpFechaInicial),
+                                Tools.getDatePicker(dpFechaFinal),
+                                cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                                idCliente,
+                                idEmpleado);
+
+                        double totalcontado = 0;
+                        double totalcredito = 0;
+                        double totalanulado = 0;
+                        for (int i = 0; i < list.size(); i++) {
+                            switch (list.get(i).getEstado()) {
+                                case 1:
+                                    totalcontado += list.get(i).getTotal();
+                                    break;
+                                case 2:
+                                    totalcredito += list.get(i).getTotal();
+                                    break;
+                                default:
+                                    totalanulado += list.get(i).getTotal();
+                                    break;
+                            }
+                        }
+
+                        Workbook workbook;
+                        if (file.getName().endsWith("xls")) {
+                            workbook = new HSSFWorkbook();
+                        } else {
+                            workbook = new XSSFWorkbook();
+                        }
+
+                        Sheet sheet = workbook.createSheet("Ventas");
+                        sheet.setColumnWidth(1, 5000);
+
+                        Font font = workbook.createFont();
+                        font.setFontHeightInPoints((short) 12);
+                        font.setBold(true);
+                        font.setColor(HSSFColor.BLACK.index);
+
+                        CellStyle cellStyle = workbook.createCellStyle();
+                        cellStyle.setFont(font);
+                        cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                        String header[] = {"Id", "Fecha", "Cliente", "Comprobante", "Tipo de Venta", "Estado", "Importe"};
+
+                        Row headerRow = sheet.createRow(0);
+                        for (int i = 0; i < header.length; i++) {
+                            Cell cell = headerRow.createCell(i);
+                            cell.setCellStyle(cellStyle);
+                            cell.setCellValue(header[i].toUpperCase());
+
+                        }
+
+                        for (int i = 0; i < list.size(); i++) {
+                            Row row = sheet.createRow(i + 1);
+
+                            Cell cell1 = row.createCell(0);
+                            cell1.setCellValue(String.valueOf(i + 1));
+                            cell1.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell1.getColumnIndex());
+
+                            Cell cell2 = row.createCell(1);
+                            cell2.setCellValue(String.valueOf(list.get(i).getFechaVenta()));
+                            cell2.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell2.getColumnIndex());
+
+                            Cell cell3 = row.createCell(2);
+                            cell3.setCellValue(String.valueOf(i + 1));
+                            cell3.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell3.getColumnIndex());
+
+                            Cell cell4 = row.createCell(3);
+                            cell4.setCellValue(String.valueOf(i + 1));
+                            cell4.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell4.getColumnIndex());
+
+                            Cell cell5 = row.createCell(4);
+                            cell5.setCellValue(list.get(i).getEstadoName());
+                            cell5.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell5.getColumnIndex());
+
+                            Cell cell6 = row.createCell(5);
+                            cell6.setCellValue(Double.parseDouble(Tools.roundingValue(list.get(i).getTotal(), 2)));
+                            cell6.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            sheet.autoSizeColumn(cell6.getColumnIndex());
 //
-//                if (list.isEmpty()) {
-//                    Tools.AlertMessageWarning(window, "Reporte Global de Ventas", "No hay registros para mostrar en el reporte.");
-//                    return;
-//                }
+//                        Cell cell2 = row.createCell(1);
+//                        cell2.setCellValue(String.valueOf(Tools.getValueAt(tvList, i, 1)));
+//                        cell2.setCellType(Cell.CELL_TYPE_STRING);
+//                        sheet.autoSizeColumn(cell2.getColumnIndex());
 //
-//                double total = 0;
+//                        Cell cell3 = row.createCell(2);
+//                        cell3.setCellValue(Tools.getValueAt(tvList, i, 2).toString());
+//                        cell3.setCellType(Cell.CELL_TYPE_STRING);
+//                        sheet.autoSizeColumn(cell3.getColumnIndex());
 //
-//                for (int i = 0; i < list.size(); i++) {
-//                    total = total + list.get(i).getTotal();
-//                }
+//                        Cell cell4 = row.createCell(3);
+//                        cell4.setCellValue(Tools.getValueAt(tvList, i, 3).toString());
+//                        cell4.setCellType(Cell.CELL_TYPE_STRING);
+//                        sheet.autoSizeColumn(cell4.getColumnIndex());
 //
-//                ArrayList<VentaTB> newList = new ArrayList<>();
-//                int count = 0;
+//                        Cell cell5 = row.createCell(4);
+//                        cell5.setCellValue(Tools.getValueAt(tvList, i, 4).toString());
+//                        cell5.setCellType(Cell.CELL_TYPE_NUMERIC);
+//                        sheet.autoSizeColumn(cell5.getColumnIndex());
 //
-//                for (int i = 0; i < list.size(); i++) {
-//                    if (validateDuplicateDate(newList, list.get(i))) {
-//                        for (int j = 0; j < newList.size(); j++) {
-//                            if (newList.get(j).getFechaVenta().equalsIgnoreCase(list.get(i).getFechaVenta())) {
-//                                VentaTB newVenta = newList.get(j);
-//                                newVenta.setFechaVenta(list.get(i).getFechaVenta());
-//                                newVenta.setTotal(newVenta.getTotal() + list.get(i).getTotal());
-//                            }
-//                        }
-//                    } else {
-//                        count++;
-//                        VentaTB newVenta = new VentaTB();
-//                        newVenta.setId(count);
-//                        newVenta.setFechaVenta(list.get(i).getFechaVenta());
-//                        newVenta.setTotal(list.get(i).getTotal());
-//                        newList.add(newVenta);
-//                    }
-//                }
+//                        CellStyle cellStyleCell = workbook.createCellStyle();
+//                        cellStyleCell.setDataFormat(workbook.createDataFormat().getFormat("0.00"));
 //
-//                ArrayList<VentaTB> detail_list = new ArrayList<>();
-//                detail_list.add(new VentaTB(1, "campras", 00.00));
-//                detail_list.add(new VentaTB(2, "ventas", 00.00));
-//                detail_list.add(new VentaTB(3, "lotes", 00.00));
-//                detail_list.add(new VentaTB(4, "campras", 00.00));
-//                detail_list.add(new VentaTB(5, "ventas", 00.00));
-//                detail_list.add(new VentaTB(6, "lotes", 00.00));
+//                        Cell cell6 = row.createCell(5);
+//                        cell6.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 5).toString()));
+//                        cell6.setCellType(Cell.CELL_TYPE_NUMERIC);
+//                        cell6.setCellStyle(cellStyleCell);
+//                        sheet.autoSizeColumn(cell6.getColumnIndex());
 //
-//                Map map = new HashMap();
-//                map.put("PERIODO", dpFechaInicialGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + " - " + dpFechaFinalGlobal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
-//                map.put("MOSTRAR", "Día");
-//                map.put("ORDEN", cbOrdenar.getSelectionModel().getSelectedItem() + " - " + cbOrden.getSelectionModel().getSelectedItem());
-//                map.put("TOTAL", Session.MONEDA_SIMBOLO + " " + total);
-//                map.put("DETALLE_VENTA", new JRBeanCollectionDataSource(detail_list));
+//                        Cell cell7 = row.createCell(6);
+//                        cell7.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 6).toString()));
+//                        cell7.setCellType(Cell.CELL_TYPE_NUMERIC);
+//                        cell7.setCellStyle(cellStyleCell);
+//                        sheet.autoSizeColumn(cell7.getColumnIndex());
 //
-//                JasperPrint jasperPrint = JasperFillManager.fillReport(FxVentaReporteController.class.getResourceAsStream("/report/VentaGeneralTotales.jasper"), map, new JRBeanCollectionDataSource(newList));
+//                        Cell cell8 = row.createCell(7);
+//                        cell8.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 7).toString()));
+//                        cell8.setCellType(Cell.CELL_TYPE_NUMERIC);
+//                        cell8.setCellStyle(cellStyleCell);
+//                        sheet.autoSizeColumn(cell8.getColumnIndex());
 //
-//                URL url = getClass().getResource(FilesRouters.FX_REPORTE_VIEW);
-//                FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-//                Parent parent = fXMLLoader.load(url.openStream());
-//                //Controlller here
-//                FxReportViewController controller = fXMLLoader.getController();
-//                controller.setJasperPrint(jasperPrint);
-//                controller.show();
-//                Stage stage = WindowStage.StageLoader(parent, "Reporte Global de Ventas");
-//                stage.setResizable(true);
-//                stage.show();
-//                stage.requestFocus();
-//            }
-//        } catch (HeadlessException | JRException | IOException ex) {
-//            Tools.AlertMessageError(window, "Reporte Global de Ventas", "Error al generar el reporte : " + ex.getLocalizedMessage());
-//        }
-//    }
-    private static boolean validateDuplicateDate(ArrayList<VentaTB> view, VentaTB ventaTB) {
-        boolean value = false;
-        for (int i = 0; i < view.size(); i++) {
-            if (view.get(i).getFechaVenta().equals(ventaTB.getFechaVenta())) {
-                value = true;
-                break;
+                        }
+                        try (FileOutputStream out = new FileOutputStream(file)) {
+                            workbook.write(out);
+                        }
+                        workbook.close();
+                        Tools.openFile(file.getAbsolutePath());
+
+                    } catch (IOException ex) {
+                        Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Exportar", "Error al exportar el archivo, intente de nuevo.", false);
+                    }
+
+                } else {
+                    Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Exportar", "Elija un formato valido", false);
+                }
             }
         }
-        return value;
     }
 
     @FXML
@@ -333,15 +455,44 @@ public class FxVentaReporteController implements Initializable {
     }
 
     @FXML
-    private void onKeyPressedReporteGeneral(KeyEvent event) {
+    private void onActionCbTipoPago(ActionEvent event) {
+        hbTipoPago.setDisable(cbTipoPagoSeleccionar.isSelected());
+    }
+
+    @FXML
+    private void onKeyPressedVisualizar(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            openViewReporteGeneral();
+            openViewVisualizar();
         }
     }
 
     @FXML
-    private void onActionReporteGeneral(ActionEvent event) {
-        openViewReporteGeneral();
+    private void onActionVisualizar(ActionEvent event) {
+        openViewVisualizar();
+    }
+
+    @FXML
+    private void onKeyPressedPdf(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventPdf();
+        }
+    }
+
+    @FXML
+    private void onActionPdf(ActionEvent event) {
+        onEventPdf();
+    }
+
+    @FXML
+    private void onKeyPressedExcel(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            onEventExcel();
+        }
+    }
+
+    @FXML
+    private void onActionExcel(ActionEvent event) {
+        onEventExcel();
     }
 
     @FXML
@@ -366,18 +517,6 @@ public class FxVentaReporteController implements Initializable {
     @FXML
     private void onActionVendedor(ActionEvent event) {
         openWindowVendedores();
-    }
-
-    @FXML
-    private void onKeyPressedPrueba(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-//            openWindowReporteGlobal();
-        }
-    }
-
-    @FXML
-    private void onActionPrueba(ActionEvent event) {
-//        openWindowReporteGlobal();
     }
 
     public void setClienteVentaReporte(String idCliente, String datos) {

@@ -74,7 +74,7 @@ public class FxVentaDevolucionController implements Initializable {
 
                 Task<String> task = new Task<String>() {
                     @Override
-                    public String call() {                       
+                    public String call() {
                         return VentaADO.CancelTheSale(idVenta, arrList);
                     }
                 };
@@ -86,8 +86,6 @@ public class FxVentaDevolucionController implements Initializable {
                         Tools.Dispose(window);
                     } else if (result.equalsIgnoreCase("scrambled")) {
                         Tools.AlertMessageWarning(window, "Detalle de venta", "Ya está anulada la venta.");
-                    } else if (result.equalsIgnoreCase("nocaja")) {
-                        Tools.AlertMessageWarning(window, "Detalle de venta", "No tienes aperturado ninguna caja para completar la operación.");
                     } else if (result.equalsIgnoreCase("nodate")) {
                         Tools.AlertMessageWarning(window, "Detalle de venta", "No se puede anular la venta porque la fecha es distinta a la fecha de emisión.");
                     } else if (result.equalsIgnoreCase("ventacredito")) {

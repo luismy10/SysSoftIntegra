@@ -1,6 +1,5 @@
 package controller.inventario.valorinventario;
 
-import controller.configuracion.tickets.FxTicketBusquedaController;
 import controller.menus.FxPrincipalController;
 import controller.tools.BillPrintable;
 import controller.tools.FilesRouters;
@@ -65,18 +64,20 @@ public class FxValorInventarioController implements Initializable {
     private TableColumn<SuministroTB, Integer> tcNumero;
     @FXML
     private TableColumn<SuministroTB, String> tcDescripcion;
-    @FXML
-    private TableColumn<SuministroTB, String> tcCostoPromedio;
-    @FXML
-    private TableColumn<SuministroTB, String> tcPrecio;
+//    private TableColumn<SuministroTB, String> tcCostoPromedio;
+//    private TableColumn<SuministroTB, String> tcPrecio;
     @FXML
     private TableColumn<SuministroTB, Label> tcExistencia;
     @FXML
-    private TableColumn<SuministroTB, String> tcInventario;
+    private TableColumn<SuministroTB, String> tcStock;
     @FXML
     private TableColumn<SuministroTB, String> tcCategoria;
     @FXML
     private TableColumn<SuministroTB, String> tcMarca;
+    @FXML
+    private TableColumn<SuministroTB, String> cbInventario;
+    @FXML
+    private TableColumn<SuministroTB, String> cbEstado;
     @FXML
     private Label lblValoTotal;
     @FXML
@@ -120,21 +121,25 @@ public class FxValorInventarioController implements Initializable {
         tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(
                 cellData.getValue().getClave() + (cellData.getValue().getClaveAlterna().isEmpty() ? "" : " - ") + cellData.getValue().getClaveAlterna()
                 + "\n" + cellData.getValue().getNombreMarca()));
-        tcCostoPromedio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
-        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
-        tcExistencia.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
-        tcInventario.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getStockMinimo(), 2) + " - " + Tools.roundingValue(cellData.getValue().getStockMaximo(), 2)));
+//        tcCostoPromedio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getCostoCompra(), 2)));
+//        tcPrecio.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getPrecioVentaGeneral(), 2)));
         tcCategoria.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getCategoriaName()));
         tcMarca.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getMarcaName()));
+        tcExistencia.setCellValueFactory(new PropertyValueFactory<>("lblCantidad"));
+        tcStock.setCellValueFactory(cellData -> Bindings.concat(Tools.roundingValue(cellData.getValue().getStockMinimo(), 2) + " - " + Tools.roundingValue(cellData.getValue().getStockMaximo(), 2)));
+        cbInventario.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().isInventario() ? "SI" : "NO"));
+        cbEstado.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEstado() == 1 ? "Activo" : "Inactivo"));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.04));
         tcDescripcion.prefWidthProperty().bind(tvList.widthProperty().multiply(0.25));
-        tcCostoPromedio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcPrecio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
-        tcExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
-        tcInventario.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tcCategoria.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
         tcMarca.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+//        tcCostoPromedio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+//        tcPrecio.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        tcExistencia.prefWidthProperty().bind(tvList.widthProperty().multiply(0.16));
+        tcStock.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
+        cbInventario.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
+        cbEstado.prefWidthProperty().bind(tvList.widthProperty().multiply(0.10));
 
         billPrintable = new BillPrintable();
         apEncabezado = new AnchorPane();
@@ -163,7 +168,7 @@ public class FxValorInventarioController implements Initializable {
                 tvList.setItems((ObservableList<SuministroTB>) objects.get(0));
                 double total = 0;
                 total = tvList.getItems().stream().map((l) -> l.getImporteNeto()).reduce(total, (accumulator, _item) -> accumulator + _item);
-                lblValoTotal.setText(Session.MONEDA_SIMBOLO + Tools.roundingValue(total, 4));
+                lblValoTotal.setText(Session.MONEDA_SIMBOLO + Tools.roundingValue(total, 2));
 
                 int integer = (int) (Math.ceil((double) (((Integer) objects.get(1)) / 20.00)));
                 totalPaginacion = integer;
@@ -397,28 +402,27 @@ public class FxValorInventarioController implements Initializable {
         }
     }
 
-    private void onEventTicketBusqueda() {
-        try {
-            fxPrincipalController.openFondoModal();
-            URL url = getClass().getResource(FilesRouters.FX_TICKET_BUSQUEDA);
-            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
-            Parent parent = fXMLLoader.load(url.openStream());
-            //Controlller here
-            FxTicketBusquedaController controller = fXMLLoader.getController();
-            controller.setInitValorInventarioController(this);
-            controller.loadComponents(3, false);
-            //
-            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
-            stage.setResizable(false);
-            stage.sizeToScene();
-            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
-            stage.show();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getLocalizedMessage());
-        }
-    }
-
+//    private void onEventTicketBusqueda() {
+//        try {
+//            fxPrincipalController.openFondoModal();
+//            URL url = getClass().getResource(FilesRouters.FX_TICKET_BUSQUEDA);
+//            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+//            Parent parent = fXMLLoader.load(url.openStream());
+//            //Controlller here
+//            FxTicketBusquedaController controller = fXMLLoader.getController();
+//            controller.setInitValorInventarioController(this);
+//            controller.loadComponents(3, false);
+//            //
+//            Stage stage = WindowStage.StageLoaderModal(parent, "Seleccionar formato", vbWindow.getScene().getWindow());
+//            stage.setResizable(false);
+//            stage.sizeToScene();
+//            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+//            stage.show();
+//
+//        } catch (IOException ex) {
+//            System.out.println(ex.getLocalizedMessage());
+//        }
+//    }
     public void setGenerarTicket(int idTicket, String rutaTicket) {
 
         if (!Session.ESTADO_IMPRESORA_VENTA && Session.NOMBRE_IMPRESORA_VENTA == null) {
@@ -743,18 +747,15 @@ public class FxValorInventarioController implements Initializable {
         }
     }
 
-    @FXML
-    private void onKeyPressedTicket(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            onEventTicketBusqueda();
-        }
-    }
-
-    @FXML
-    private void onActionTicket(ActionEvent event) {
-        onEventTicketBusqueda();
-    }
-
+//    private void onKeyPressedTicket(KeyEvent event) {
+//        if (event.getCode() == KeyCode.ENTER) {
+//            onEventTicketBusqueda();
+//        }
+//    }
+//
+//    private void onActionTicket(ActionEvent event) {
+//        onEventTicketBusqueda();
+//    }
     @FXML
     private void onKeyPressedAnterior(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {

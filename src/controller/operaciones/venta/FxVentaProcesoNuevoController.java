@@ -325,7 +325,7 @@ public class FxVentaProcesoNuevoController implements Initializable {
                 txtEfectivoAdelantado.requestFocus();
             } else {
                 ventaTB.setTipo(1);
-                ventaTB.setEstado(2);
+                ventaTB.setEstado(4);
                 ventaTB.setVuelto(vueltoAdelantado);
                 ventaTB.setObservaciones("");
 

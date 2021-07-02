@@ -130,7 +130,7 @@ public class FxInicioController implements Initializable {
 //                    notificationState("Estado del inventario","Tiene un total de "+((int) arrayList.get(6))+" producto negativos,\n actualize su inventario por favor.","warning_large.png",Pos.TOP_RIGHT);
 //                    notificationState("SysSoftIntegra","Usa la AppSysSoftIntegra para realizar consular\n en tiempo real de sus tiendas.","logo.png",Pos.TOP_LEFT);
                 });
-                count = 259;
+                count = 295;
             }
         }, 0, 1, TimeUnit.SECONDS);
 

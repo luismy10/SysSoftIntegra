@@ -1,6 +1,7 @@
 package controller.operaciones.cotizacion;
 
 import controller.operaciones.venta.FxVentaEstructuraController;
+import controller.posterminal.venta.FxPostVentaEstructuraController;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,6 +57,8 @@ public class FxCotizacionListaController implements Initializable {
     private Label lblPaginaSiguiente;
 
     private FxVentaEstructuraController ventaEstructuraController;
+    
+    private FxPostVentaEstructuraController postVentaEstructuraController;
 
     private FxCotizacionController cotizacionController;
 
@@ -313,6 +316,10 @@ public class FxCotizacionListaController implements Initializable {
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
         this.ventaEstructuraController = ventaEstructuraController;
+    }
+    
+    public void setInitPostVentaEstructuraController(FxPostVentaEstructuraController postVentaEstructuraController) {
+        this.postVentaEstructuraController = postVentaEstructuraController;
     }
 
     public void setInitCotizacionListaController(FxCotizacionController cotizacionController) {

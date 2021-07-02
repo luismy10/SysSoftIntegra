@@ -47,7 +47,7 @@ public final class FilesRouters {
     public static final String FX_INICIO = "/view/menus/FxInicio.fxml";
 
     public static final String FX_OPERACIONES = "/view/menus/FxOperaciones.fxml";
-    
+
     public static final String FX_POSTERMINAL = "/view/menus/FxPosTerminal.fxml";
 
     public static final String FX_CONSULTAS = "/view/menus/FxConsultas.fxml";
@@ -208,12 +208,6 @@ public final class FilesRouters {
 
     public static final String FX_VENTA_DETALLE_PRODUCTO = "/view/operaciones/venta/FxVentaDetalleProducto.fxml";
 
-    public static final String FX_VENTA_FONDO_INICIAL = "/view/operaciones/venta/FxVentaFondoInicial.fxml";
-
-    public static final String FX_VENTA_VALIDAR_CAJA = "/view/operaciones/venta/FxVentaValidarCaja.fxml";
-
-    public static final String FX_CAJA_NO_REGISTRADA = "/view/operaciones/venta/FxCajaNoRegistrada.fxml";
-
     public static final String FX_VENTA_GRANEL = "/view/operaciones/venta/FxVentaGranel.fxml";
 
     public static final String FX_VENTA_MOSTRAR = "/view/operaciones/venta/FxVentaMostrar.fxml";
@@ -322,6 +316,51 @@ public final class FilesRouters {
     public static final String FX_BANCO_RETIRAR = "/view/banco/FxBancoRetirarDinero.fxml";
 
     public static final String FX_BANCO_TRANSFERIR = "/view/banco/FxBancoTranferencia.fxml";
+
+    //---------------------------------------------------------------------------------------------------
+    public static final String FX_POS_CAJA_NO_REGISTRADA = "/view/posterminal/venta/FxPostCajaNoRegistrada.fxml";
+
+    public static final String FX_POS_LISTA_PRECIOS = "/view/posterminal/venta/FxPostListaPrecios.fxml";
+
+    public static final String FX_POS_VENTA = "/view/posterminal/venta/FxPostVenta.fxml";
+
+    public static final String FX_POS_VENTA_ABONO = "/view/posterminal/venta/FxPostVentaAbonoProceso.fxml";
+
+    public static final String FX_POS_VENTA_CANTIDADES = "/view/posterminal/venta/FxPostVentaCantidades.fxml";
+
+    public static final String FX_POS_VENTA_DESCUENTO = "/view/posterminal/venta/FxPostVentaDescuento.fxml";
+
+    public static final String FX_POS_VENTA_DETALLE = "/view/posterminal/venta/FxPostVentaDetalle.fxml";
+
+    public static final String FX_POS_VENTA_DETALLE_PRODUCTO = "/view/posterminal/venta/FxPostVentaDetalleProducto.fxml";
+
+    public static final String FX_POS_VENTA_DEVOLUCION = "/view/posterminal/venta/FxPostVentaDevolucion.fxml";
+    
+    public static final String FX_POS_VENTA_ESTRUCTURA = "/view/posterminal/venta/FxPostVentaEstructura.fxml";
+    
+    public static final String FX_POS_VENTA_ESTRUCTURA_NUEVO = "/view/posterminal/venta/FxPostVentaEstructuraNuevo.fxml";
+    
+    public static final String FX_POS_VENTA_FONDO_INICIAL = "/view/posterminal/venta/FxPostVentaFondoInicial.fxml";
+    
+    public static final String FX_POS_VENTA_GRANEL = "/view/posterminal/venta/FxPostVentaGranel.fxml";
+
+    public static final String FX_POS_VENTA_LISTA = "/view/posterminal/venta/FxPostVentaLista.fxml";
+    
+    public static final String FX_POS_VENTA_LLEVAR = "/view/posterminal/venta/FxPostVentaLlevar.fxml";
+    
+    public static final String FX_POS_VENTA_LLEVAR_HISTORIAL = "/view/posterminal/venta/FxPostVentaLlevarHistorial.fxml";
+    
+    public static final String FX_POS_VENTA_MOSTRAR = "/view/posterminal/venta/FxPostVentaMostrar.fxml";
+    
+    public static final String FX_POS_VENTA_MOVIMIENTO = "/view/posterminal/venta/FxPostVentaMovimiento.fxml";
+    
+    public static final String FX_POS_VENTA_PROCESO = "/view/posterminal/venta/FxPostVentaProceso.fxml";
+    
+    public static final String FX_POS_VENTA_PROCESO_NUEVO = "/view/posterminal/venta/FxPostVentaProcesoNuevo.fxml";
+    
+    public static final String FX_POS_VENTA_REALIZADAS = "/view/posterminal/venta/FxPostVentaRealizadas.fxml";
+    
+    public static final String FX_POS_VENTA_VALIDAR_CAJA = "/view/posterminal/venta/FxPostVentaValidarCaja.fxml";
 
     //---------------------------------------------------------------------------------------------------
     public static final String FX_COTIZACION = "/view/operaciones/cotizacion/FxCotizacion.fxml";

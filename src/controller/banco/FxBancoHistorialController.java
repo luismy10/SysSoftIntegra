@@ -67,8 +67,8 @@ public class FxBancoHistorialController implements Initializable {
         tcFecha.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFecha() + "\n" + cellData.getValue().getHora()));
         tcUsuario.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEmpleadoTB().getInformacion()));
         tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDescripcion()));
-        tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEntrada() == 0 ? "" : Tools.roundingValue(cellData.getValue().getEntrada(), 4)));
-        tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSalida() == 0 ? "" : Tools.roundingValue(cellData.getValue().getSalida(), 4)));
+        tcEntrada.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getEntrada() == 0 ? "" : Tools.roundingValue(cellData.getValue().getEntrada(), 2)));
+        tcSalida.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSalida() == 0 ? "" : Tools.roundingValue(cellData.getValue().getSalida(), 2)));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
         tcFecha.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
@@ -102,7 +102,7 @@ public class FxBancoHistorialController implements Initializable {
             if (!arrayList.isEmpty()) {
                 BancoTB bancoTB = (BancoTB) arrayList.get(0);
                 if (bancoTB != null) {
-                    lblSaldoTotal.setText(bancoTB.getSimboloMoneda() + " " + Tools.roundingValue(bancoTB.getSaldoInicial(), 4));
+                    lblSaldoTotal.setText(bancoTB.getSimboloMoneda() + " " + Tools.roundingValue(bancoTB.getSaldoInicial(), 2));
                 }
                 tvList.setItems((ObservableList<BancoHistorialTB>) arrayList.get(1));
                 lblLoad.setVisible(false);

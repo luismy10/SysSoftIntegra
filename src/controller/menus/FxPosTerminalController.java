@@ -1,8 +1,8 @@
 package controller.menus;
 
 import controller.operaciones.cortecaja.FxCajaController;
-import controller.operaciones.venta.FxVentaController;
-import controller.operaciones.venta.FxVentaRealizadasController;
+import controller.posterminal.venta.FxPostVentaController;
+import controller.posterminal.venta.FxPostVentaRealizadasController;
 import controller.tools.FilesRouters;
 import java.io.IOException;
 import java.net.URL;
@@ -45,7 +45,7 @@ public class FxPosTerminalController implements Initializable {
 
     private AnchorPane nodeVentaOld;
 
-    private FxVentaController controllerVentaOld;
+    private FxPostVentaController controllerVentaOld;
 
     /*
     Controller ventas nueva
@@ -54,7 +54,7 @@ public class FxPosTerminalController implements Initializable {
 
     private AnchorPane nodeVentaNew;
 
-    private FxVentaController controllerVentaNew;
+    private FxPostVentaController controllerVentaNew;
 
     /*
     Controller corte de caja
@@ -72,18 +72,18 @@ public class FxPosTerminalController implements Initializable {
 
     private VBox nodeVentaRealizadas;
 
-    private FxVentaRealizadasController ventaRealizadasController;
+    private FxPostVentaRealizadasController ventaRealizadasController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            fXMLVentaOld = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
+            fXMLVentaOld = new FXMLLoader(getClass().getResource(FilesRouters.FX_POS_VENTA));
             nodeVentaOld = fXMLVentaOld.load();
             controllerVentaOld = fXMLVentaOld.getController();
             controllerVentaOld.setTipoVenta((short) 1);
             controllerVentaOld.loadComponents();
 
-            fXMLVentaNew = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA));
+            fXMLVentaNew = new FXMLLoader(getClass().getResource(FilesRouters.FX_POS_VENTA));
             nodeVentaNew = fXMLVentaNew.load();
             controllerVentaNew = fXMLVentaNew.getController();
             controllerVentaNew.setTipoVenta((short) 2);
@@ -93,7 +93,7 @@ public class FxPosTerminalController implements Initializable {
             nodeCorteCaja = fXMLCorteCaja.load();
             controllerCorteCaja = fXMLCorteCaja.getController();
 
-            fXMLVentaRealizadas = new FXMLLoader(getClass().getResource(FilesRouters.FX_VENTA_REALIZADAS));
+            fXMLVentaRealizadas = new FXMLLoader(getClass().getResource(FilesRouters.FX_POS_VENTA_REALIZADAS));
             nodeVentaRealizadas = fXMLVentaRealizadas.load();
             ventaRealizadasController = fXMLVentaRealizadas.getController();
         } catch (IOException ex) {

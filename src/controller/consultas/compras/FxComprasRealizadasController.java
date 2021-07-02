@@ -33,7 +33,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import model.CompraADO;
 import model.CompraTB;
-import model.DetalleADO;
 import model.DetalleTB;
 
 public class FxComprasRealizadasController implements Initializable {
@@ -97,7 +96,9 @@ public class FxComprasRealizadasController implements Initializable {
         Tools.actualDate(Tools.getDate(), dtFechaFinal);
 
         cbEstadoCompra.getItems().add(new DetalleTB(0, "TODOS"));
-        DetalleADO.GetDetailId("0009").forEach(e -> cbEstadoCompra.getItems().add(e));
+        cbEstadoCompra.getItems().add(new DetalleTB(1, "PAGADO"));
+        cbEstadoCompra.getItems().add(new DetalleTB(2, "POR PAGAR"));
+        cbEstadoCompra.getItems().add(new DetalleTB(3, "ANULADO"));
         cbEstadoCompra.getSelectionModel().select(0);
 
     }
