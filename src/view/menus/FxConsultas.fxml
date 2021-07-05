@@ -44,7 +44,7 @@
                <children>
                   <VBox fx:id="btnVentas" alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasRealizadas" onKeyPressed="#onKeyPressedVentasRealizadas" styleClass="buttonTransparent" text="Ventas" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentasRealizadas" onKeyPressed="#onKeyPressedVentasRealizadas" styleClass="buttonTransparent" text="Ventas Echas" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

@@ -51,7 +51,25 @@
                      <children>
                         <HBox>
                            <children>
-                              <RadioButton fx:id="rbContado" mnemonicParsing="false" onAction="#onActionRbContado" selected="true" styleClass="labelRoboto15" text="Pago con Banco / Caja" />
+                              <RadioButton fx:id="rbEgreso" mnemonicParsing="false" onAction="#onActionRbEgreso" selected="true" styleClass="labelRoboto15" text="Egreso Libre" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" styleClass="labelRoboto13" text="Registrar un salida de dinero ." textFill="#020203" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox style="-fx-padding: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0px 0px 1px 0px;">
+               <children>
+                  <VBox style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox>
+                           <children>
+                              <RadioButton fx:id="rbBanco" mnemonicParsing="false" onAction="#onActionRbBanco" styleClass="labelRoboto15" text="Pago con Banco / Cuentas" />
                            </children>
                         </HBox>
                         <HBox fx:id="hbPagoContado" alignment="CENTER_LEFT">

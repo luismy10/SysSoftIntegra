@@ -4,7 +4,6 @@ import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.notacredito.FxNotaCreditoController;
 import controller.tools.Tools;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -104,7 +103,7 @@ public class FxVentaListaController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
+                return VentaADO.ListVentasLibres(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
             }
         };
         task.setOnSucceeded(w -> {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8b29d31e-6951-4410-a336-0788b681bb9c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="TIPO_AJUSTE" class="java.lang.String"/>
@@ -16,7 +16,7 @@
 	<title>
 		<band height="54" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="555" height="30" forecolor="#FFFFFF" backcolor="#373B46" uuid="988d31c5-f62f-4fb0-bab9-fa8793da0087"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="30" forecolor="#FFFFFF" backcolor="#020203" uuid="988d31c5-f62f-4fb0-bab9-fa8793da0087"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -58,7 +58,7 @@
 	<columnHeader>
 		<band height="26" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="555" height="26" backcolor="#373B46" uuid="4c513acb-d037-42b9-83cb-0371482ff699"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="26" backcolor="#020203" uuid="4c513acb-d037-42b9-83cb-0371482ff699"/>
 				<staticText>
 					<reportElement x="463" y="0" width="92" height="26" forecolor="#FFFFFF" uuid="47066cb2-2a86-457c-b08e-1478d9d8548f"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">

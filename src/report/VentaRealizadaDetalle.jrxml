@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="120" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="004c1a4f-7bb5-4a27-9d30-1b3356608805">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="VALOR_VENTA" class="java.lang.String"/>
@@ -14,28 +14,28 @@
 	<columnHeader>
 		<band height="58">
 			<staticText>
-				<reportElement x="318" y="38" width="123" height="20" forecolor="#1A2226" uuid="4e30bd70-02bd-4b69-9437-a3b1c6e03093"/>
+				<reportElement x="318" y="38" width="123" height="20" forecolor="#020203" uuid="4e30bd70-02bd-4b69-9437-a3b1c6e03093"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Sub Importe:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="318" y="19" width="123" height="20" uuid="9412492f-6185-47d0-94c2-be877a5ed417"/>
+				<reportElement x="318" y="19" width="123" height="20" forecolor="#020203" uuid="9412492f-6185-47d0-94c2-be877a5ed417"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Descuento:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="318" y="0" width="123" height="20" uuid="dd9aec9f-cf18-42da-94db-7cf335955850"/>
+				<reportElement x="318" y="0" width="123" height="20" forecolor="#020203" uuid="dd9aec9f-cf18-42da-94db-7cf335955850"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Valor Venta:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="456" y="38" width="100" height="20" forecolor="#1A2226" uuid="e98c40b7-ded2-4cfb-8f51-aa5d4fbf832a"/>
+				<reportElement x="456" y="38" width="100" height="20" forecolor="#020203" uuid="e98c40b7-ded2-4cfb-8f51-aa5d4fbf832a"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 					<paragraph rightIndent="5"/>
@@ -43,7 +43,7 @@
 				<textFieldExpression><![CDATA[$P{SUB_TOTAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="456" y="19" width="100" height="20" forecolor="#1A2226" uuid="a34d38d3-08dd-441d-9ce9-c3fa596bddec"/>
+				<reportElement x="456" y="19" width="100" height="20" forecolor="#020203" uuid="a34d38d3-08dd-441d-9ce9-c3fa596bddec"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 					<paragraph rightIndent="5"/>
@@ -51,7 +51,7 @@
 				<textFieldExpression><![CDATA[$P{DESCUENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="456" y="0" width="100" height="20" forecolor="#1A2226" uuid="c21cdd80-832d-485d-b2a2-f1a83c5faa23"/>
+				<reportElement x="456" y="0" width="100" height="20" forecolor="#020203" uuid="c21cdd80-832d-485d-b2a2-f1a83c5faa23"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 					<paragraph rightIndent="5"/>
@@ -65,7 +65,7 @@
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="0" y="0" width="295" height="20" forecolor="#1A2226" uuid="3fa9463c-e8f6-451b-920e-f325cf53a38f"/>
+				<reportElement x="0" y="0" width="295" height="20" forecolor="#020203" uuid="3fa9463c-e8f6-451b-920e-f325cf53a38f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 					<paragraph rightIndent="5"/>
@@ -83,14 +83,14 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="318" y="0" width="123" height="20" forecolor="#1A2226" uuid="aaebbfe8-ccdd-4aaf-a1f7-14550d747325"/>
+				<reportElement x="318" y="0" width="123" height="20" forecolor="#020203" uuid="aaebbfe8-ccdd-4aaf-a1f7-14550d747325"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{impuestoArticuloName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="456" y="0" width="100" height="20" forecolor="#1A2226" uuid="286328c2-3e81-4e14-a50a-2d86bf3f1903"/>
+				<reportElement x="456" y="0" width="100" height="20" forecolor="#020203" uuid="286328c2-3e81-4e14-a50a-2d86bf3f1903"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 					<paragraph rightIndent="5"/>
@@ -108,46 +108,42 @@
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="318" y="0" width="123" height="20" forecolor="#000000" uuid="998e2a0f-a525-4ce7-bc9c-16db8461e73c"/>
+				<reportElement x="318" y="0" width="123" height="20" forecolor="#020203" uuid="998e2a0f-a525-4ce7-bc9c-16db8461e73c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total importe:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="456" y="0" width="100" height="20" forecolor="#000000" uuid="2bf79560-e766-49c9-9046-f439a98d835b"/>
+				<reportElement x="456" y="0" width="100" height="20" forecolor="#020203" uuid="2bf79560-e766-49c9-9046-f439a98d835b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{TOTAL}]]></textFieldExpression>
 			</textField>
-			<rectangle>
-				<reportElement x="285" y="35" width="270" height="29" backcolor="#FE3152" uuid="a7cd9daf-f026-4271-8edc-30ed39e6aba8"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="249" y="35" width="36" height="10" backcolor="#B5B5B5" uuid="269b4e31-eee2-4a2b-978b-df908b32602e"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="0" y="45" width="249" height="19" backcolor="#373B46" uuid="cb5248bc-1a9a-4f34-b263-fadfa706c0b8"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="249" y="45" width="36" height="19" backcolor="#576767" uuid="2da2812e-fead-4957-b1c2-1d5f3a26e7ec"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
+			<frame>
+				<reportElement x="285" y="35" width="270" height="29" backcolor="#FFFFFF" uuid="77134a39-9bc3-4eec-936d-08550d193a26"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#020203"/>
+					<topPen lineWidth="1.0" lineColor="#020203"/>
+					<leftPen lineWidth="1.0" lineColor="#020203"/>
+					<bottomPen lineWidth="1.0" lineColor="#020203"/>
+					<rightPen lineWidth="1.0" lineColor="#020203"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement x="0" y="45" width="285" height="19" backcolor="#020203" uuid="7f862fc0-18e4-45c7-90e6-e0b425981439"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#020203"/>
+					<topPen lineWidth="1.0" lineColor="#020203"/>
+					<leftPen lineWidth="1.0" lineColor="#020203"/>
+					<bottomPen lineWidth="1.0" lineColor="#020203"/>
+					<rightPen lineWidth="1.0" lineColor="#020203"/>
+				</box>
+			</frame>
 			<staticText>
-				<reportElement x="320" y="40" width="217" height="19" forecolor="#F0F3FC" uuid="9b4a895e-4305-4144-975c-3ade915460a6"/>
+				<reportElement x="320" y="40" width="217" height="19" forecolor="#020203" uuid="9b4a895e-4305-4144-975c-3ade915460a6"/>
 				<textElement>
 					<font fontName="Arial" size="16"/>
 				</textElement>

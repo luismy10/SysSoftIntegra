@@ -403,6 +403,8 @@ public class FxNotaCreditoController implements Initializable {
                 if (result.equalsIgnoreCase("registrado")) {
                     Tools.AlertMessageInformation(apWindow, "Nota de Crédito", "Se registró correctamente la nota de crédito.");
                     clearElements();
+                } else if (result.equalsIgnoreCase("nota")) {
+                    Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "El comprobante ya tiene asociado una nota de crédito.");
                 } else {
                     Tools.AlertMessageError(apWindow, "Nota de Crédito", result);
                 }
@@ -439,9 +441,11 @@ public class FxNotaCreditoController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> principalController.closeFondoModal());
-            stage.setOnShown(w -> controller.getTxtBuscar().requestFocus());
+            stage.setOnShown(w -> {
+                controller.getTxtBuscar().requestFocus();
+                controller.loadInit();
+            });
             stage.show();
-            controller.loadInit();
         } catch (IOException ex) {
             System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }

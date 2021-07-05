@@ -111,7 +111,7 @@ public class FxPostVentaRealizadasController implements Initializable {
         cbEstado.getSelectionModel().select(0);
 
         cbComprobante.getItems().add(new TipoDocumentoTB(0, "TODOS"));
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre())));
+        TipoDocumentoADO.GetDocumentoCombBoxVentas().forEach(e -> cbComprobante.getItems().add(e));
         cbComprobante.getSelectionModel().select(0);
 
         idEmpleado = Session.USER_ID;
@@ -209,7 +209,7 @@ public class FxPostVentaRealizadasController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
+                return VentaADO.ListVentasPos(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
             }
         };
         task.setOnSucceeded(w -> {

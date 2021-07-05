@@ -291,6 +291,15 @@ public class Tools {
         return localDate.toString();
     }
 
+    public static String formatDate(String date) {
+        String arr[] = date.split("-");
+        if (arr != null && arr.length != 0) {
+            return arr[2] + "/" + arr[1] + "/" + arr[0];
+        } else {
+            return date;
+        }
+    }
+
     public static String getValueTable(TableView table, int position) {
         return Tools.getValueAt(table, table.getSelectionModel().getSelectedIndex(), position).toString();
     }

@@ -198,7 +198,7 @@ public class FxPostVentaEstructuraNuevoController implements Initializable {
 
     private void loadDataComponent() {
         cbComprobante.getItems().clear();
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> cbComprobante.getItems().add(e));
+        TipoDocumentoADO.GetDocumentoCombBoxVentas().forEach(e -> cbComprobante.getItems().add(e));
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
                 if (cbComprobante.getItems().get(i).isPredeterminado()) {

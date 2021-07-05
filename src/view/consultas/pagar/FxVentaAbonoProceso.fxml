@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.operaciones.venta.FxVentaAbonoProcesoController">
+<AnchorPane id="AnchorPane" fx:id="window" style="-fx-background-color: white;" stylesheets="@../../style/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.consultas.pagar.FxVentaAbonoProcesoController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -47,22 +46,21 @@
                   <TextField fx:id="txtMonto" onAction="#onActionAceptar" onKeyTyped="#onKeyTypedMonto" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
                <children>
-                  <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Fecha:" textFill="#020203">
+                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Observación:" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../image/calendar.png" />
+                                    <Image url="@../../image/edit.png" />
                                  </image>
                               </ImageView>
-                           </graphic>
-                        </Label>
+                           </graphic></Label>
                      </children>
                   </VBox>
-                  <DatePicker fx:id="dtFecha" disable="true" editable="false" prefHeight="30.0" prefWidth="280.0" />
+                  <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" text="N/D" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
@@ -82,8 +80,8 @@
                   </VBox>
                   <HBox alignment="CENTER_LEFT" prefWidth="280.0" style="-fx-spacing: 0.8333333333333334em;" HBox.hgrow="ALWAYS">
                      <children>
+                        <RadioButton fx:id="rbIngreso" mnemonicParsing="false" onAction="#onActionIngreso" selected="true" text="Ingreso" />
                         <RadioButton fx:id="rbBancos" mnemonicParsing="false" onAction="#onActionBancos" text="Bancos" />
-                        <RadioButton fx:id="rbCaja" mnemonicParsing="false" onAction="#onActionCaja" selected="true" text="Caja" />
                      </children>
                   </HBox>
                </children>
@@ -104,16 +102,6 @@
                      </children>
                   </VBox>
                   <ComboBox fx:id="cbCuenta" disable="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="- Seleccione. -" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.5em;">
-               <children>
-                  <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Observaciòn:" textFill="#020203" />
-                     </children>
-                  </VBox>
-                  <TextField fx:id="txtObservacion" onAction="#onActionAceptar" prefHeight="30.0" prefWidth="280.0" styleClass="text-field-normal" text="N/D" />
                </children>
             </HBox>
             <HBox alignment="CENTER" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 1px 0px 0px 0px;">

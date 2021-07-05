@@ -83,7 +83,11 @@ public class FxVentaMostrarController implements Initializable {
     private TableColumn<VentaTB, Button> tcAgregarVenta;
     @FXML
     private TableColumn<VentaTB, Button> tcSumarVenta;
-
+    @FXML
+    private Label lblPaginaActual;
+    @FXML
+    private Label lblPaginaSiguiente;
+    
     private FxVentaEstructuraController ventaEstructuraController;
 
     private BillPrintable billPrintable;
@@ -101,10 +105,7 @@ public class FxVentaMostrarController implements Initializable {
     private int totalPaginacion;
 
     private short opcion;
-    @FXML
-    private Label lblPaginaActual;
-    @FXML
-    private Label lblPaginaSiguiente;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -143,7 +144,7 @@ public class FxVentaMostrarController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return VentaADO.ListVentasMostrar(opcion, value, (paginacion - 1) * 10, 10);
+                return VentaADO.ListVentasMostrarLibres(opcion, value, (paginacion - 1) * 10, 10);
             }
         };
 

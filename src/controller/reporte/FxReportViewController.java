@@ -134,6 +134,7 @@ public class FxReportViewController implements Initializable {
 
     public boolean onActionSave() {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
         fileChooser.setTitle("Guardar Archivo");
         fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Documento", Arrays.asList("*.pdf", "*.PDF")));
 //        fileChooser.getExtensionFilters().add(new ExtensionFilter("PNG image", Arrays.asList("*.png", "*.PNG")));
@@ -147,7 +148,7 @@ public class FxReportViewController implements Initializable {
                 List<String> selectedExtension = fileChooser.getSelectedExtensionFilter().getExtensions();
                 if (selectedExtension.contains("*.pdf")) {
                     Tools.println(fileName);
-                    JasperExportManager.exportReportToPdfFile(jasperPrint,  file.getAbsolutePath());
+                    JasperExportManager.exportReportToPdfFile(jasperPrint, file.getAbsolutePath());
                 }
 //                else if (selectedExtension.contains("*.png")) {
 //                    for (int i = 0; i < jasperPrint.getPages().size(); i++) {

@@ -26,7 +26,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold15" text="Reporte de Ventas" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Reporte de Ventas Libres" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -161,7 +161,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Formas de Pago" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Venta" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>

@@ -71,7 +71,7 @@ public class FxCompraReporteController implements Initializable {
     @FXML
     private RadioButton rbCredito;
     @FXML
-    private CheckBox cbFormasPagoSeleccionar;
+    private CheckBox cbTipoCompra;
     @FXML
     private HBox hbFormasPago;
 
@@ -94,7 +94,7 @@ public class FxCompraReporteController implements Initializable {
                 Tools.getDatePicker(dpFechaInicial),
                 Tools.getDatePicker(dpFechaFinal),
                 idProveedor,
-                cbFormasPagoSeleccionar.isSelected() ? 0 : rbContado.isSelected() ? 1 : 2);
+                cbTipoCompra.isSelected() ? 0 : rbContado.isSelected() ? 1 : 2);
 
         double totalContado = 0;
         double totalCredito = 0;
@@ -159,6 +159,7 @@ public class FxCompraReporteController implements Initializable {
                 Parent parent = fXMLLoader.load(url.openStream());
                 //Controlller here
                 FxReportViewController controller = fXMLLoader.getController();
+                controller.setFileName("ListaDeCompras");
                 controller.setJasperPrint(reportGenerate());
                 controller.show();
                 Stage stage = WindowStage.StageLoader(parent, "Reporte General de Compras");
@@ -179,6 +180,7 @@ public class FxCompraReporteController implements Initializable {
                 btnProveedor.requestFocus();
             } else {
                 FileChooser fileChooser = new FileChooser();
+                fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
                 fileChooser.setTitle("Reporte de Compra");
                 fileChooser.setInitialFileName("ListaDeCompras");
                 fileChooser.getExtensionFilters().addAll(
@@ -203,6 +205,7 @@ public class FxCompraReporteController implements Initializable {
             btnProveedor.requestFocus();
         } else {
             FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
             fileChooser.setTitle("Reporte de Compras");
             fileChooser.setInitialFileName("ListaDeCompras");
             fileChooser.getExtensionFilters().addAll(
@@ -215,6 +218,12 @@ public class FxCompraReporteController implements Initializable {
                 if (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) {
                     try {
 
+                        ArrayList<CompraTB> list = CompraADO.GetReporteGenetalCompras(
+                                Tools.getDatePicker(dpFechaInicial),
+                                Tools.getDatePicker(dpFechaFinal),
+                                idProveedor,
+                                cbTipoCompra.isSelected() ? 0 : rbContado.isSelected() ? 1 : 2);
+
                         Workbook workbook;
                         if (file.getName().endsWith("xls")) {
                             workbook = new HSSFWorkbook();
@@ -223,24 +232,96 @@ public class FxCompraReporteController implements Initializable {
                         }
 
                         Sheet sheet = workbook.createSheet("Compras");
-                        sheet.setColumnWidth(5, 20*256);
 
                         Font font = workbook.createFont();
                         font.setFontHeightInPoints((short) 12);
                         font.setBold(true);
                         font.setColor(HSSFColor.BLACK.index);
 
-                        CellStyle cellStyle = workbook.createCellStyle();
-                        cellStyle.setFont(font);
-                        cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                        String header[] = {"Id", "Fecha", "Cliente", "Comprobante", "Tipo de Compra", "Estado", "Importe"};
+                        CellStyle cellStyleHeader = workbook.createCellStyle();
+                        cellStyleHeader.setFont(font);
+                        cellStyleHeader.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                        String header[] = {"Id", "Fecha", "Documento", "Proveedor", "Serie", "Numeración", "Tipo de Compra", "Estado", "Importe"};
 
                         Row headerRow = sheet.createRow(0);
                         for (int i = 0; i < header.length; i++) {
                             Cell cell = headerRow.createCell(i);
-                            cell.setCellStyle(cellStyle);
+                            cell.setCellStyle(cellStyleHeader);
                             cell.setCellValue(header[i].toUpperCase());
 
+                        }
+
+                        CellStyle cellStyle = workbook.createCellStyle();
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getEstadoName().equalsIgnoreCase("ANULADO")) {
+                                Font fontRed = workbook.createFont();
+                                fontRed.setColor(HSSFColor.RED.index);
+                                cellStyle = workbook.createCellStyle();
+                                cellStyle.setFont(fontRed);
+                                cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                            } else {
+                                Font fontBlack = workbook.createFont();
+                                fontBlack.setColor(HSSFColor.BLACK.index);
+                                fontBlack.setBold(false);
+                                cellStyle.setFont(fontBlack);
+                            }
+
+                            Row row = sheet.createRow(i + 1);
+                            Cell cell1 = row.createCell(0);
+                            cell1.setCellStyle(cellStyle);
+                            cell1.setCellValue(String.valueOf(i + 1));
+                            cell1.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell1.getColumnIndex());
+
+                            Cell cell2 = row.createCell(1);
+                            cell2.setCellStyle(cellStyle);
+                            cell2.setCellValue(String.valueOf(list.get(i).getFechaCompra()));
+                            cell2.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell2.getColumnIndex());
+
+                            Cell cell3 = row.createCell(2);
+                            cell3.setCellStyle(cellStyle);
+                            cell3.setCellValue(String.valueOf(list.get(i).getProveedorTB().getNumeroDocumento()));
+                            cell3.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell3.getColumnIndex());
+
+                            Cell cell4 = row.createCell(3);
+                            cell4.setCellStyle(cellStyle);
+                            cell4.setCellValue(String.valueOf(list.get(i).getProveedorTB().getRazonSocial()));
+                            cell4.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell4.getColumnIndex());
+
+                            Cell cell5 = row.createCell(4);
+                            cell5.setCellStyle(cellStyle);
+                            cell5.setCellValue(list.get(i).getSerie());
+                            cell5.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell5.getColumnIndex());
+
+                            Cell cell6 = row.createCell(5);
+                            cell6.setCellStyle(cellStyle);
+                            cell6.setCellValue(list.get(i).getNumeracion());
+                            cell6.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell6.getColumnIndex());
+
+                            Cell cell7 = row.createCell(6);
+                            cell7.setCellStyle(cellStyle);
+                            cell7.setCellValue(list.get(i).getTipoName());
+                            cell7.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell7.getColumnIndex());
+
+                            Cell cell8 = row.createCell(7);
+                            cell8.setCellStyle(cellStyle);
+                            cell8.setCellValue(list.get(i).getEstadoName());
+                            cell8.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell8.getColumnIndex());
+
+                            Cell cell9 = row.createCell(8);
+                            cellStyle = workbook.createCellStyle();
+                            cellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00"));
+                            cell9.setCellStyle(cellStyle);
+                            cell9.setCellValue(Double.parseDouble(Tools.roundingValue(list.get(i).getTotal(), 2)));
+                            cell9.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            sheet.autoSizeColumn(cell9.getColumnIndex());
                         }
 
                         try (FileOutputStream out = new FileOutputStream(file)) {
@@ -271,8 +352,8 @@ public class FxCompraReporteController implements Initializable {
     }
 
     @FXML
-    private void onActionCbFormasPagoSeleccionar(ActionEvent event) {
-        if (cbFormasPagoSeleccionar.isSelected()) {
+    private void onActionCbTipoCompro(ActionEvent event) {
+        if (cbTipoCompra.isSelected()) {
             hbFormasPago.setDisable(true);
         } else {
             hbFormasPago.setDisable(false);

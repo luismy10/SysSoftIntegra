@@ -19,49 +19,44 @@ public class GlobalADO {
             try {
 
                 // ventas contado
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasContado' from VentaTB where Tipo = 1 and Estado = 1 and FechaVenta between ? and ?");
+                preparedGlobal = DBUtil.getConnection().prepareStatement("SELECT ISNULL(sum(dv.Cantidad*(dv.PrecioVenta-dv.Descuento)),0) AS Total FROM VentaTB as v INNER JOIN DetalleVentaTB as dv on dv.IdVenta = v.IdVenta LEFT JOIN NotaCreditoTB as nc on nc.IdVenta = v.IdVenta WHERE v.FechaVenta between ? AND ? AND v.Tipo = 1 AND v.Estado <> 3 AND nc.IdNotaCredito IS NULL");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
                 double ventasContado = 0;
                 if (resultSet.next()) {
-                    ventasContado += resultSet.getObject("ventasContado") == null ? 0 : resultSet.getDouble("ventasContado");
+                    ventasContado += resultSet.getDouble("Total");
                 }
                 list.add(ventasContado);
 
                 // ventas credito
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasCredito' from VentaTB where Tipo = 2 and FechaVenta between ? and ?");
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as VentaTB from VentaTB where Tipo = 2 and Estado = 2 and FechaVenta between ? and ? ");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
                 double ventasCredito = 0;
                 if (resultSet.next()) {
-                    ventasCredito += resultSet.getObject("ventasCredito") == null ? 0 : resultSet.getDouble("ventasCredito");
+                    ventasCredito += resultSet.getDouble("Total");
                 }
                 list.add(ventasCredito);
 
-                // ventas anuladas
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'ventasAnuladas' from VentaTB where Estado = 3 and FechaVenta between ? and ?");
-                preparedGlobal.setString(1, fechaInicial);
-                preparedGlobal.setString(2, fechaFinal);
-                resultSet = preparedGlobal.executeQuery();
+                // ventas anuladas                
                 double ventasAnuladas = 0;
-                if (resultSet.next()) {
-                    ventasAnuladas += resultSet.getObject("ventasAnuladas") == null ? 0 : resultSet.getDouble("ventasAnuladas");
-                }
                 list.add(ventasAnuladas);
 
                 // utilidad
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select \n"
-                        + "	case \n"
-                        + "		when a.ValorInventario = 1 then (dv.Cantidad * a.PrecioVentaGeneral )- (dv.Cantidad * dv.CostoVenta)\n"
-                        + "		when a.ValorInventario = 2 then (dv.CantidadGranel * a.PrecioVentaGeneral )- (dv.CantidadGranel * dv.CostoVenta)\n"
-                        + "		when a.ValorInventario = 3 then (dv.Cantidad * a.PrecioVentaGeneral )- (dv.Cantidad * dv.CostoVenta)\n"
-                        + "	end as  Utilidad\n"
-                        + "		from DetalleVentaTB as dv \n"
-                        + "		inner join SuministroTB as a on dv.IdArticulo = a.IdSuministro \n"
-                        + "		inner join VentaTB as v on v.IdVenta = dv.IdVenta\n"
-                        + "		where v.Estado <> 3 and v.FechaVenta between ? and ?");
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select\n"
+                        + "case\n"
+                        + "when a.ValorInventario = 1 then (dv.Cantidad * dv.PrecioVenta)- (dv.Cantidad * dv.CostoVenta )\n"
+                        + "when a.ValorInventario = 2 then (dv.Cantidad * dv.PrecioVenta )- (dv.Cantidad * dv.CostoVenta )\n"
+                        + "when a.ValorInventario = 3 then (dv.Cantidad * dv.PrecioVenta )- (dv.Cantidad * dv.CostoVenta )\n"
+                        + "end as Utilidad\n"
+                        + "from DetalleVentaTB as dv\n"
+                        + "inner join SuministroTB as a on dv.IdArticulo = a.IdSuministro \n"
+                        + "inner join VentaTB as v on v.IdVenta = dv.IdVenta\n"
+                        + "left join NotaCreditoTB as nc on nc.IdVenta = v.IdVenta\n"
+                        + "inner join MonedaTB as m on m.IdMoneda = v.Moneda\n"
+                        + "where v.Estado <> 3 and v.FechaVenta between ? and ? and nc.IdNotaCredito is null");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
@@ -72,7 +67,7 @@ public class GlobalADO {
                 list.add(utilidad);
 
                 // compras al contado
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalcontado' from CompraTB where TipoCompra = 1 and EstadoCompra = 1 and FechaCompra between ? and ?");
+                preparedGlobal = DBUtil.getConnection().prepareStatement("SELECT SUM(d.Importe) AS Total FROM CompraTB as c inner join DetalleCompraTB as d on d.IdCompra = c.IdCompra where c.FechaCompra between ? and ? and c.EstadoCompra = 1");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
@@ -83,7 +78,7 @@ public class GlobalADO {
                 list.add(totalcontado);
 
 //              compras al credito
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalcredito' from CompraTB where TipoCompra = 2 and EstadoCompra = 2 and FechaCompra between ? and ?");
+                preparedGlobal = DBUtil.getConnection().prepareStatement("select COUNT(*) as ComprasPagar from CompraTB where TipoCompra = 2 and EstadoCompra = 2 and c.FechaCompra between ? and ?");
                 preparedGlobal.setString(1, fechaInicial);
                 preparedGlobal.setString(2, fechaFinal);
                 resultSet = preparedGlobal.executeQuery();
@@ -93,25 +88,9 @@ public class GlobalADO {
                 }
                 list.add(totalcredito);
 
-                // total compras
-//                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'totalCompras' from CompraTB where FechaCompra between ? and ?");
-//                preparedGlobal.setString(1, fechaInicial);
-//                preparedGlobal.setString(2, fechaFinal);
-//                resultSet = preparedGlobal.executeQuery();
-//                double totalCompras = 0;
-//                if (resultSet.next()) {
-//                    totalCompras += resultSet.getDouble("totalCompras");
-//                }
-//                list.add(totalCompras);
-                // compras anuladas
-                preparedGlobal = DBUtil.getConnection().prepareStatement("select sum(Total) as 'comprasAnuladas' from CompraTB where EstadoCompra = 3 and FechaCompra between ? and ?");
-                preparedGlobal.setString(1, fechaInicial);
-                preparedGlobal.setString(2, fechaFinal);
-                resultSet = preparedGlobal.executeQuery();
+                // compras anuladas         
                 double comprasAnuladas = 0;
-                if (resultSet.next()) {
-                    comprasAnuladas += (resultSet.getObject("comprasAnuladas") == null ? 0 : resultSet.getDouble("comprasAnuladas"));
-                }
+                
                 list.add(comprasAnuladas);
 
                 // CUENTAS
@@ -364,13 +343,12 @@ public class GlobalADO {
         return arrayList;
     }
 
-    public static String RegistrarInicioPrograma(EmpresaTB empresaTB, MonedaTB monedaTB, EmpleadoTB empleadoTB, ImpuestoTB impuestoTB, TipoDocumentoTB tipoDocumentoTicket, TipoDocumentoTB tipoDocumentoGuiaRemision, ClienteTB clienteTB) {
+    public static String RegistrarInicioPrograma(EmpresaTB empresaTB, MonedaTB monedaTB, EmpleadoTB empleadoTB, ImpuestoTB impuestoTB, TipoDocumentoTB tipoDocumentoTicket, ClienteTB clienteTB) {
         PreparedStatement statementEmpresa = null;
         PreparedStatement statementMoneda = null;
         PreparedStatement statementEmpleado = null;
         PreparedStatement statementImpuesto = null;
         PreparedStatement statementTipoDocumentoTicket = null;
-        PreparedStatement statementTipoDocumentoGuiaRemision = null;
         PreparedStatement statementCliente = null;
         CallableStatement codigoEmpleado = null;
         CallableStatement codigoCliente = null;
@@ -504,16 +482,6 @@ public class GlobalADO {
             statementTipoDocumentoTicket.setBoolean(7, tipoDocumentoTicket.isSistema());
             statementTipoDocumentoTicket.addBatch();
 
-            statementTipoDocumentoGuiaRemision = DBUtil.getConnection().prepareStatement("INSERT INTO TipoDocumentoTB(Nombre,Serie,Numeracion,CodigoAlterno,Predeterminado,Sistema,Guia)VALUES(?,?,?,?,?,?,?)");
-            statementTipoDocumentoGuiaRemision.setString(1, tipoDocumentoGuiaRemision.getNombre());
-            statementTipoDocumentoGuiaRemision.setString(2, tipoDocumentoGuiaRemision.getSerie());
-            statementTipoDocumentoGuiaRemision.setInt(3, tipoDocumentoGuiaRemision.getNumeracion());
-            statementTipoDocumentoGuiaRemision.setString(4, tipoDocumentoGuiaRemision.getCodigoAlterno());
-            statementTipoDocumentoGuiaRemision.setBoolean(5, tipoDocumentoGuiaRemision.isPredeterminado());
-            statementTipoDocumentoGuiaRemision.setBoolean(6, tipoDocumentoGuiaRemision.isSistema());
-            statementTipoDocumentoGuiaRemision.setBoolean(7, tipoDocumentoGuiaRemision.isSistema());
-            statementTipoDocumentoGuiaRemision.addBatch();
-
             codigoCliente = DBUtil.getConnection().prepareCall("{? = call Fc_Cliente_Codigo_Alfanumerico()}");
             codigoCliente.registerOutParameter(1, java.sql.Types.VARCHAR);
             codigoCliente.execute();
@@ -539,7 +507,6 @@ public class GlobalADO {
             statementEmpleado.executeBatch();
             statementImpuesto.executeBatch();
             statementTipoDocumentoTicket.executeBatch();
-            statementTipoDocumentoGuiaRemision.executeBatch();
             statementCliente.executeBatch();
             DBUtil.getConnection().commit();
             result = "inserted";
@@ -566,9 +533,6 @@ public class GlobalADO {
                 }
                 if (statementTipoDocumentoTicket != null) {
                     statementTipoDocumentoTicket.close();
-                }
-                if (statementTipoDocumentoGuiaRemision != null) {
-                    statementTipoDocumentoGuiaRemision.close();
                 }
                 if (codigoEmpleado != null) {
                     codigoEmpleado.close();

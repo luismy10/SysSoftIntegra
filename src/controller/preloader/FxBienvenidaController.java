@@ -344,7 +344,7 @@ public class FxBienvenidaController implements Initializable {
             monedaTB.setSistema(true);
 
             EmpleadoTB empleadoTB = new EmpleadoTB();
-            empleadoTB.setTipoDocumento(338);
+            empleadoTB.setTipoDocumento(1);
             empleadoTB.setNumeroDocumento("00000000");
             empleadoTB.setApellidos("ADMINISTRADOR");
             empleadoTB.setNombres("GENERAL");
@@ -354,7 +354,7 @@ public class FxBienvenidaController implements Initializable {
             ImpuestoTB impuestoTB = new ImpuestoTB();
             impuestoTB.setOperacion(2);
             impuestoTB.setNombre("NINGUNO(%)");
-            impuestoTB.setValor(1);
+            impuestoTB.setValor(0);
             impuestoTB.setCodigo("");
             impuestoTB.setNumeracion("");
             impuestoTB.setNombreImpuesto("");
@@ -371,18 +371,9 @@ public class FxBienvenidaController implements Initializable {
             tipoDocumentoTicket.setPredeterminado(true);
             tipoDocumentoTicket.setSistema(true);
             tipoDocumentoTicket.setGuia(false);
-            
-            TipoDocumentoTB tipoDocumentoGuiaRemision = new TipoDocumentoTB();
-            tipoDocumentoGuiaRemision.setNombre("GUIA REMISION");
-            tipoDocumentoGuiaRemision.setSerie("G001");
-            tipoDocumentoGuiaRemision.setNumeracion(1);
-            tipoDocumentoGuiaRemision.setCodigoAlterno("");
-            tipoDocumentoGuiaRemision.setPredeterminado(true);
-            tipoDocumentoGuiaRemision.setSistema(true);
-            tipoDocumentoGuiaRemision.setGuia(true);
 
             ClienteTB clienteTB = new ClienteTB();
-            clienteTB.setTipoDocumento(338);
+            clienteTB.setTipoDocumento(1);
             clienteTB.setNumeroDocumento("00000000");
             clienteTB.setInformacion("PUBLICO GENERAL");
             clienteTB.setTelefono("");
@@ -402,7 +393,7 @@ public class FxBienvenidaController implements Initializable {
             Task<String> task = new Task<String>() {
                 @Override
                 public String call() {
-                    return GlobalADO.RegistrarInicioPrograma(empresaTB, monedaTB, empleadoTB, impuestoTB, tipoDocumentoTicket, tipoDocumentoGuiaRemision,clienteTB);
+                    return GlobalADO.RegistrarInicioPrograma(empresaTB, monedaTB, empleadoTB, impuestoTB, tipoDocumentoTicket,clienteTB);
                 }
             };
             task.setOnScheduled(w -> {

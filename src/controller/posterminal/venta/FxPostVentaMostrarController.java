@@ -143,7 +143,7 @@ public class FxPostVentaMostrarController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return VentaADO.ListVentasMostrar(opcion, value, (paginacion - 1) * 10, 10);
+                return VentaADO.ListVentasMostrarPos(opcion, value, (paginacion - 1) * 10, 10);
             }
         };
 

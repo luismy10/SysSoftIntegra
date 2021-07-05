@@ -104,9 +104,7 @@ public class FxVentaReporteController implements Initializable {
         rbContado.setToggleGroup(groupFormaPago);
         rbCredito.setToggleGroup(groupFormaPago);
         cbDocumentos.getItems().clear();
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> {
-            cbDocumentos.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre(), e.isPredeterminado()));
-        });
+        TipoDocumentoADO.GetDocumentoCombBoxVentas().forEach(e -> cbDocumentos.getItems().add(e));
         idCliente = idEmpleado = "";
     }
 
@@ -156,24 +154,29 @@ public class FxVentaReporteController implements Initializable {
         ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentas(
                 Tools.getDatePicker(dpFechaInicial),
                 Tools.getDatePicker(dpFechaFinal),
-                cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
+                cbDocumentosSeleccionar.isSelected()? 0: cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                 idCliente,
-                idEmpleado);
+                idEmpleado,
+                cbTipoPagoSeleccionar.isSelected() ? 0 : rbContado.isSelected() ? 1 : 2);
 
         double totalcontado = 0;
         double totalcredito = 0;
         double totalanulado = 0;
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getEstado()) {
-                case 1:
-                    totalcontado += list.get(i).getTotal();
-                    break;
-                case 2:
-                    totalcredito += list.get(i).getTotal();
-                    break;
-                default:
-                    totalanulado += list.get(i).getTotal();
-                    break;
+        for (VentaTB vt : list) {
+            if (vt.getNotaCreditoTB() != null) {
+                totalanulado += vt.getTotal();
+            } else {
+                switch (vt.getEstado()) {
+                    case 1:
+                        totalcontado += vt.getTotal();
+                        break;
+                    case 2:
+                        totalcredito += vt.getTotal();
+                        break;
+                    default:
+                        totalanulado += vt.getTotal();
+                        break;
+                }
             }
         }
 
@@ -210,6 +213,7 @@ public class FxVentaReporteController implements Initializable {
                 Parent parent = fXMLLoader.load(url.openStream());
                 //Controlller here
                 FxReportViewController controller = fXMLLoader.getController();
+                controller.setFileName("ListaDeVentas");
                 controller.setJasperPrint(reportGenerate());
                 controller.show();
                 Stage stage = WindowStage.StageLoader(parent, "Reporte General de Ventas");
@@ -236,6 +240,7 @@ public class FxVentaReporteController implements Initializable {
                 btnVendedor.requestFocus();
             } else {
                 FileChooser fileChooser = new FileChooser();
+                fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
                 fileChooser.setTitle("Reporte de Ventas");
                 fileChooser.setInitialFileName("ListaDeVentas");
                 fileChooser.getExtensionFilters().addAll(
@@ -266,6 +271,7 @@ public class FxVentaReporteController implements Initializable {
             btnVendedor.requestFocus();
         } else {
             FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
             fileChooser.setTitle("Reporte de Ventas");
             fileChooser.setInitialFileName("ListaDeVentas");
             fileChooser.getExtensionFilters().addAll(
@@ -283,24 +289,8 @@ public class FxVentaReporteController implements Initializable {
                                 Tools.getDatePicker(dpFechaFinal),
                                 cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
                                 idCliente,
-                                idEmpleado);
-
-                        double totalcontado = 0;
-                        double totalcredito = 0;
-                        double totalanulado = 0;
-                        for (int i = 0; i < list.size(); i++) {
-                            switch (list.get(i).getEstado()) {
-                                case 1:
-                                    totalcontado += list.get(i).getTotal();
-                                    break;
-                                case 2:
-                                    totalcredito += list.get(i).getTotal();
-                                    break;
-                                default:
-                                    totalanulado += list.get(i).getTotal();
-                                    break;
-                            }
-                        }
+                                idEmpleado,
+                                cbTipoPagoSeleccionar.isSelected() ? 0 : rbContado.isSelected() ? 1 : 2);
 
                         Workbook workbook;
                         if (file.getName().endsWith("xls")) {
@@ -310,100 +300,102 @@ public class FxVentaReporteController implements Initializable {
                         }
 
                         Sheet sheet = workbook.createSheet("Ventas");
-                        sheet.setColumnWidth(1, 5000);
 
                         Font font = workbook.createFont();
                         font.setFontHeightInPoints((short) 12);
                         font.setBold(true);
                         font.setColor(HSSFColor.BLACK.index);
 
-                        CellStyle cellStyle = workbook.createCellStyle();
-                        cellStyle.setFont(font);
-                        cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                        String header[] = {"Id", "Fecha", "Cliente", "Comprobante", "Tipo de Venta", "Estado", "Importe"};
+                        CellStyle cellStyleHeader = workbook.createCellStyle();
+                        cellStyleHeader.setFont(font);
+                        cellStyleHeader.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                        String header[] = {"Id", "Fecha", "Documento", "Cliente", "Comprobante", "Serie", "Numeración", "Tipo de Venta", "Estado", "Importe"};
 
                         Row headerRow = sheet.createRow(0);
                         for (int i = 0; i < header.length; i++) {
                             Cell cell = headerRow.createCell(i);
-                            cell.setCellStyle(cellStyle);
+                            cell.setCellStyle(cellStyleHeader);
                             cell.setCellValue(header[i].toUpperCase());
 
                         }
-
+                        
+                        CellStyle cellStyle = workbook.createCellStyle();
                         for (int i = 0; i < list.size(); i++) {
-                            Row row = sheet.createRow(i + 1);
+                            if (list.get(i).getEstadoName().equalsIgnoreCase("ANULADO") || list.get(i).getNotaCreditoTB() != null) {
+                                Font fontRed = workbook.createFont();
+                                fontRed.setColor(HSSFColor.RED.index);
+                                cellStyle = workbook.createCellStyle();
+                                cellStyle.setFont(fontRed);
+                                cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                            } else {
+                                Font fontBlack = workbook.createFont();
+                                fontBlack.setColor(HSSFColor.BLACK.index);
+                                fontBlack.setBold(false);
+                                cellStyle.setFont(fontBlack);
+                            }
 
+                            Row row = sheet.createRow(i + 1);
                             Cell cell1 = row.createCell(0);
+                            cell1.setCellStyle(cellStyle);
                             cell1.setCellValue(String.valueOf(i + 1));
                             cell1.setCellType(Cell.CELL_TYPE_STRING);
                             sheet.autoSizeColumn(cell1.getColumnIndex());
 
                             Cell cell2 = row.createCell(1);
+                            cell2.setCellStyle(cellStyle);
                             cell2.setCellValue(String.valueOf(list.get(i).getFechaVenta()));
                             cell2.setCellType(Cell.CELL_TYPE_STRING);
                             sheet.autoSizeColumn(cell2.getColumnIndex());
 
                             Cell cell3 = row.createCell(2);
-                            cell3.setCellValue(String.valueOf(i + 1));
+                            cell3.setCellStyle(cellStyle);
+                            cell3.setCellValue(String.valueOf(list.get(i).getClienteTB().getNumeroDocumento()));
                             cell3.setCellType(Cell.CELL_TYPE_STRING);
                             sheet.autoSizeColumn(cell3.getColumnIndex());
 
                             Cell cell4 = row.createCell(3);
-                            cell4.setCellValue(String.valueOf(i + 1));
+                            cell4.setCellStyle(cellStyle);
+                            cell4.setCellValue(String.valueOf(list.get(i).getClienteTB().getInformacion()));
                             cell4.setCellType(Cell.CELL_TYPE_STRING);
                             sheet.autoSizeColumn(cell4.getColumnIndex());
 
                             Cell cell5 = row.createCell(4);
-                            cell5.setCellValue(list.get(i).getEstadoName());
+                            cell5.setCellStyle(cellStyle);
+                            cell5.setCellValue(list.get(i).getComprobanteName());
                             cell5.setCellType(Cell.CELL_TYPE_STRING);
                             sheet.autoSizeColumn(cell5.getColumnIndex());
 
                             Cell cell6 = row.createCell(5);
-                            cell6.setCellValue(Double.parseDouble(Tools.roundingValue(list.get(i).getTotal(), 2)));
-                            cell6.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            cell6.setCellStyle(cellStyle);
+                            cell6.setCellValue(list.get(i).getSerie());
+                            cell6.setCellType(Cell.CELL_TYPE_STRING);
                             sheet.autoSizeColumn(cell6.getColumnIndex());
-//
-//                        Cell cell2 = row.createCell(1);
-//                        cell2.setCellValue(String.valueOf(Tools.getValueAt(tvList, i, 1)));
-//                        cell2.setCellType(Cell.CELL_TYPE_STRING);
-//                        sheet.autoSizeColumn(cell2.getColumnIndex());
-//
-//                        Cell cell3 = row.createCell(2);
-//                        cell3.setCellValue(Tools.getValueAt(tvList, i, 2).toString());
-//                        cell3.setCellType(Cell.CELL_TYPE_STRING);
-//                        sheet.autoSizeColumn(cell3.getColumnIndex());
-//
-//                        Cell cell4 = row.createCell(3);
-//                        cell4.setCellValue(Tools.getValueAt(tvList, i, 3).toString());
-//                        cell4.setCellType(Cell.CELL_TYPE_STRING);
-//                        sheet.autoSizeColumn(cell4.getColumnIndex());
-//
-//                        Cell cell5 = row.createCell(4);
-//                        cell5.setCellValue(Tools.getValueAt(tvList, i, 4).toString());
-//                        cell5.setCellType(Cell.CELL_TYPE_NUMERIC);
-//                        sheet.autoSizeColumn(cell5.getColumnIndex());
-//
-//                        CellStyle cellStyleCell = workbook.createCellStyle();
-//                        cellStyleCell.setDataFormat(workbook.createDataFormat().getFormat("0.00"));
-//
-//                        Cell cell6 = row.createCell(5);
-//                        cell6.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 5).toString()));
-//                        cell6.setCellType(Cell.CELL_TYPE_NUMERIC);
-//                        cell6.setCellStyle(cellStyleCell);
-//                        sheet.autoSizeColumn(cell6.getColumnIndex());
-//
-//                        Cell cell7 = row.createCell(6);
-//                        cell7.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 6).toString()));
-//                        cell7.setCellType(Cell.CELL_TYPE_NUMERIC);
-//                        cell7.setCellStyle(cellStyleCell);
-//                        sheet.autoSizeColumn(cell7.getColumnIndex());
-//
-//                        Cell cell8 = row.createCell(7);
-//                        cell8.setCellValue(Double.parseDouble(Tools.getValueAt(tvList, i, 7).toString()));
-//                        cell8.setCellType(Cell.CELL_TYPE_NUMERIC);
-//                        cell8.setCellStyle(cellStyleCell);
-//                        sheet.autoSizeColumn(cell8.getColumnIndex());
-//
+
+                            Cell cell7 = row.createCell(6);
+                            cell7.setCellStyle(cellStyle);
+                            cell7.setCellValue(list.get(i).getNumeracion());
+                            cell7.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell7.getColumnIndex());
+
+                            Cell cell8 = row.createCell(7);
+                            cell8.setCellStyle(cellStyle);
+                            cell8.setCellValue(list.get(i).getTipoName());
+                            cell8.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell8.getColumnIndex());
+
+                            Cell cell9 = row.createCell(8);
+                            cell9.setCellStyle(cellStyle);
+                            cell9.setCellValue(list.get(i).getEstadoName());
+                            cell9.setCellType(Cell.CELL_TYPE_STRING);
+                            sheet.autoSizeColumn(cell9.getColumnIndex());
+
+                            Cell cell10 = row.createCell(9);
+                            cellStyle = workbook.createCellStyle();
+                            cellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.00"));
+                            cell10.setCellStyle(cellStyle);
+                            cell10.setCellValue(Double.parseDouble(Tools.roundingValue(list.get(i).getTotal(), 2)));
+                            cell10.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            sheet.autoSizeColumn(cell10.getColumnIndex());
                         }
                         try (FileOutputStream out = new FileOutputStream(file)) {
                             workbook.write(out);

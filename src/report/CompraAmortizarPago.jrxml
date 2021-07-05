@@ -27,7 +27,7 @@
 	<title>
 		<band height="184" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Opaque" x="0" y="0" width="555" height="184" backcolor="#373B46" uuid="d29f49f4-01ae-407d-aed1-dca9a180f00c"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="184" backcolor="#020203" uuid="d29f49f4-01ae-407d-aed1-dca9a180f00c"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>

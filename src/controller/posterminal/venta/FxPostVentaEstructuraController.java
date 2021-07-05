@@ -268,7 +268,7 @@ public class FxPostVentaEstructuraController implements Initializable {
 
     private void loadDataComponent() {
         cbComprobante.getItems().clear();
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(cbComprobante.getItems()::add);
+        TipoDocumentoADO.GetDocumentoCombBoxVentas().forEach(cbComprobante.getItems()::add);
         if (!cbComprobante.getItems().isEmpty()) {
             for (int i = 0; i < cbComprobante.getItems().size(); i++) {
                 if (cbComprobante.getItems().get(i).isPredeterminado()) {
@@ -491,6 +491,7 @@ public class FxPostVentaEstructuraController implements Initializable {
         tcDescuento.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImpuesto.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
         tcImporte.prefWidthProperty().bind(tvList.widthProperty().multiply(0.12));
+        tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
         cerar_modal_agregar_item_lista = privilegioTBs.get(35).getIdPrivilegio() != 0 && !privilegioTBs.get(35).isEstado();
     }

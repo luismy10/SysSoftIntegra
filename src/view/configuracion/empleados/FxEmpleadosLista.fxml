@@ -18,9 +18,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRoboto14" text="Buscar(F1):" textFill="#020203">
+                  <Label styleClass="labelRoboto13" text="Buscar(F1):" textFill="#020203">
                      <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/search.png" />
                            </image>
@@ -30,10 +30,10 @@
                         <Font name="Roboto" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearh" prefHeight="30.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtSearch" onKeyPressed="#onKeyPressedToSearh" onKeyReleased="#onKeyReleasedToSearh" prefHeight="32.0" styleClass="text-field-normal" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#onActionReload" onKeyPressed="#onKeyPressedReload" styleClass="buttonLight" text="Recargar(F3)">
                      <graphic>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/reload.png" />
                            </image>
@@ -44,7 +44,7 @@
             </HBox>
             <HBox style="-fx-padding: 0.8333333333333334em;" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="380.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="360.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="tcId" prefWidth="70.0" style="-fx-alignment: CENTER;" text="N°" />
                         <TableColumn fx:id="tcDocumento" prefWidth="140.0" style="-fx-alignment: CENTER;" text="Documento" />
@@ -62,7 +62,7 @@
                            <children>
                               <Button mnemonicParsing="false" styleClass="buttonLight" text="Anterior">
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/left.png" />
                                        </image>
@@ -74,7 +74,7 @@
                               <Label styleClass="labelBorder" text="0" textFill="#020203" />
                               <Button contentDisplay="RIGHT" mnemonicParsing="false" styleClass="buttonLight" text="Siguiente">
                                  <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../../image/right.png" />
                                        </image>
@@ -89,7 +89,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onActionAceptar" onKeyPressed="#onKeyPressedAceptar" styleClass="buttonLightDefault" text="Aceptar">
                            <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../image/accept.png" />
                                  </image>

@@ -208,186 +208,187 @@ public class FxVentaProcesoNuevoController implements Initializable {
     }
 
     private void onEventAceptar() {
-        if (state_view_pago == 1) {
-            if (txtFechaVencimiento.getValue() == null) {
-                Tools.AlertMessageWarning(window, "Venta", "Ingrese la fecha de vencimiento.");
-                txtFechaVencimiento.requestFocus();
-            } else {
-                ventaTB.setTipo(2);
-                ventaTB.setEstado(2);
-                ventaTB.setVuelto(0);
-                ventaTB.setEfectivo(0);
-                ventaTB.setTarjeta(0);
-                ventaTB.setObservaciones("");
-                ventaTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
-                ventaTB.setHoraVencimiento(Tools.getTime());
-
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de continuar?");
-                if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaCredito(ventaTB, tvList, privilegios);
-                    switch (result.getCode()) {
-                        case "register":
-                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
-                            if (value == 1) {
-                                ventaEstructuraNuevoController.resetVenta();
-                                ventaEstructuraNuevoController.imprimirVenta(result.getResult());
-                                Tools.Dispose(window);
-                            } else {
-                                ventaEstructuraNuevoController.resetVenta();
-                                Tools.Dispose(window);
-                            }
-                            break;
-                        case "nocantidades":
-                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
-                            break;
-                        case "error":
-                            Tools.AlertMessageError(window, "Venta", result.getResult());
-                            break;
-                        default:
-                            Tools.AlertMessageError(window, "Venta", result.getResult());
-                            break;
+        switch (state_view_pago) {
+            case 1:
+                if (txtFechaVencimiento.getValue() == null) {
+                    Tools.AlertMessageWarning(window, "Venta", "Ingrese la fecha de vencimiento.");
+                    txtFechaVencimiento.requestFocus();
+                } else {
+                    ventaTB.setTipo(2);
+                    ventaTB.setEstado(2);
+                    ventaTB.setVuelto(0);
+                    ventaTB.setEfectivo(0);
+                    ventaTB.setTarjeta(0);
+                    ventaTB.setObservaciones("");
+                    ventaTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
+                    ventaTB.setHoraVencimiento(Tools.getTime());
+                    
+                    short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Está seguro de continuar?");
+                    if (confirmation == 1) {
+                        ResultTransaction result = VentaADO.registrarVentaCredito(ventaTB, tvList, privilegios);
+                        switch (result.getCode()) {
+                            case "register":
+                                short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
+                                if (value == 1) {
+                                    ventaEstructuraNuevoController.resetVenta();
+                                    ventaEstructuraNuevoController.imprimirVenta(result.getResult());
+                                    Tools.Dispose(window);
+                                } else {
+                                    ventaEstructuraNuevoController.resetVenta();
+                                    Tools.Dispose(window);
+                                }
+                                break;
+                            case "nocantidades":
+                                Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
+                                break;
+                            case "error":
+                                Tools.AlertMessageError(window, "Venta", result.getResult());
+                                break;
+                            default:
+                                Tools.AlertMessageError(window, "Venta", result.getResult());
+                                break;
+                        }
                     }
-                }
-
-            }
-        } else if (state_view_pago == 0) {
-            if (!estadoCobroContado) {
-                Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
-                txtEfectivo.requestFocus();
-            } else {
-                ventaTB.setTipo(1);
-                ventaTB.setEstado(1);
-                ventaTB.setVuelto(vueltoContado);
-                ventaTB.setObservaciones("");
-
-                ventaTB.setEfectivo(0);
-                ventaTB.setTarjeta(0);
-
-                if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
-                    ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
-                }
-
-                if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
-                    ventaTB.setTarjeta(Double.parseDouble(txtTarjeta.getText()));
-                }
-
-                if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
-                    if ((Double.parseDouble(txtEfectivo.getText())) >= tota_venta) {
-                        Tools.AlertMessageWarning(window, "Venta", "Los valores ingresados no son correctos!!");
-                        return;
+                    
+                }   break;
+            case 0:
+                if (!estadoCobroContado) {
+                    Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
+                    txtEfectivo.requestFocus();
+                } else {
+                    ventaTB.setTipo(1);
+                    ventaTB.setEstado(1);
+                    ventaTB.setVuelto(vueltoContado);
+                    ventaTB.setObservaciones("");
+                    
+                    ventaTB.setEfectivo(0);
+                    ventaTB.setTarjeta(0);
+                    
+                    if (Tools.isNumeric(txtEfectivo.getText()) && Double.parseDouble(txtEfectivo.getText()) > 0) {
+                        ventaTB.setEfectivo(Double.parseDouble(txtEfectivo.getText()));
                     }
-                    double efectivo = Double.parseDouble(txtEfectivo.getText());
-                    double tarjeta = Double.parseDouble(txtTarjeta.getText());
-                    if ((efectivo + tarjeta) != tota_venta) {
-                        Tools.AlertMessageWarning(window, "Venta", " El monto a pagar no debe ser mayor al total!!");
-                        return;
+                    
+                    if (Tools.isNumeric(txtTarjeta.getText()) && Double.parseDouble(txtTarjeta.getText()) > 0) {
+                        ventaTB.setTarjeta(Double.parseDouble(txtTarjeta.getText()));
                     }
-                }
-
-                if (!Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
-                    if ((Double.parseDouble(txtTarjeta.getText())) > tota_venta) {
-                        Tools.AlertMessageWarning(window, "Venta", "El pago con tarjeta no debe ser mayor al total!!");
-                        return;
+                    
+                    if (Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
+                        if ((Double.parseDouble(txtEfectivo.getText())) >= tota_venta) {
+                            Tools.AlertMessageWarning(window, "Venta", "Los valores ingresados no son correctos!!");
+                            return;
+                        }
+                        double efectivo = Double.parseDouble(txtEfectivo.getText());
+                        double tarjeta = Double.parseDouble(txtTarjeta.getText());
+                        if ((efectivo + tarjeta) != tota_venta) {
+                            Tools.AlertMessageWarning(window, "Venta", " El monto a pagar no debe ser mayor al total!!");
+                            return;
+                        }
                     }
-                }
-
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
-                if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, privilegios);
-                    switch (result.getCode()) {
-                        case "register":
-                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
-                            if (value == 1) {
-                                ventaEstructuraNuevoController.resetVenta();
-                                ventaEstructuraNuevoController.imprimirVenta(result.getResult());
-                                Tools.Dispose(window);
-                            } else {
-                                ventaEstructuraNuevoController.resetVenta();
-                                Tools.Dispose(window);
-                            }
-                            break;
-                        case "nocantidades":
-                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
-                            break;
-                        case "error":
-                            Tools.AlertMessageError(window, "Venta", result.getResult());
-                            break;
-                        default:
-                            Tools.AlertMessageError(window, "Venta", result.getResult());
-                            break;
+                    
+                    if (!Tools.isNumeric(txtEfectivo.getText()) && Tools.isNumeric(txtTarjeta.getText())) {
+                        if ((Double.parseDouble(txtTarjeta.getText())) > tota_venta) {
+                            Tools.AlertMessageWarning(window, "Venta", "El pago con tarjeta no debe ser mayor al total!!");
+                            return;
+                        }
                     }
-                }
-
-            }
-        } else {
-            if (!estadoCobroAdelantado) {
-                Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
-                txtEfectivoAdelantado.requestFocus();
-            } else {
-                ventaTB.setTipo(1);
-                ventaTB.setEstado(4);
-                ventaTB.setVuelto(vueltoAdelantado);
-                ventaTB.setObservaciones("");
-
-                ventaTB.setEfectivo(0);
-                ventaTB.setTarjeta(0);
-
-                if (Tools.isNumeric(txtEfectivoAdelantado.getText()) && Double.parseDouble(txtEfectivoAdelantado.getText()) > 0) {
-                    ventaTB.setEfectivo(Double.parseDouble(txtEfectivoAdelantado.getText()));
-                }
-
-                if (Tools.isNumeric(txtTarjetaAdelantado.getText()) && Double.parseDouble(txtTarjetaAdelantado.getText()) > 0) {
-                    ventaTB.setTarjeta(Double.parseDouble(txtTarjetaAdelantado.getText()));
-                }
-
-                if (Tools.isNumeric(txtEfectivoAdelantado.getText()) && Tools.isNumeric(txtTarjetaAdelantado.getText())) {
-                    if ((Double.parseDouble(txtEfectivoAdelantado.getText())) >= tota_venta) {
-                        Tools.AlertMessageWarning(window, "Venta", "Los valores ingresados no son correctos!!");
-                        return;
+                    
+                    short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
+                    if (confirmation == 1) {
+                        ResultTransaction result = VentaADO.registrarVentaContado(ventaTB, tvList, privilegios);
+                        switch (result.getCode()) {
+                            case "register":
+                                short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
+                                if (value == 1) {
+                                    ventaEstructuraNuevoController.resetVenta();
+                                    ventaEstructuraNuevoController.imprimirVenta(result.getResult());
+                                    Tools.Dispose(window);
+                                } else {
+                                    ventaEstructuraNuevoController.resetVenta();
+                                    Tools.Dispose(window);
+                                }
+                                break;
+                            case "nocantidades":
+                                Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
+                                break;
+                            case "error":
+                                Tools.AlertMessageError(window, "Venta", result.getResult());
+                                break;
+                            default:
+                                Tools.AlertMessageError(window, "Venta", result.getResult());
+                                break;
+                        }
                     }
-                    double efectivo = Double.parseDouble(txtEfectivoAdelantado.getText());
-                    double tarjeta = Double.parseDouble(txtTarjetaAdelantado.getText());
-                    if ((efectivo + tarjeta) != tota_venta) {
-                        Tools.AlertMessageWarning(window, "Venta", " El monto a pagar no debe ser mayor al total!!");
-                        return;
+                    
+                }   break;
+            default:
+                if (!estadoCobroAdelantado) {
+                    Tools.AlertMessageWarning(window, "Venta", "El monto es menor que el total.");
+                    txtEfectivoAdelantado.requestFocus();
+                } else {
+                    ventaTB.setTipo(1);
+                    ventaTB.setEstado(4);
+                    ventaTB.setVuelto(vueltoAdelantado);
+                    ventaTB.setObservaciones("");
+                    
+                    ventaTB.setEfectivo(0);
+                    ventaTB.setTarjeta(0);
+                    
+                    if (Tools.isNumeric(txtEfectivoAdelantado.getText()) && Double.parseDouble(txtEfectivoAdelantado.getText()) > 0) {
+                        ventaTB.setEfectivo(Double.parseDouble(txtEfectivoAdelantado.getText()));
                     }
-                }
-
-                if (!Tools.isNumeric(txtEfectivoAdelantado.getText()) && Tools.isNumeric(txtTarjetaAdelantado.getText())) {
-                    if ((Double.parseDouble(txtTarjetaAdelantado.getText())) > tota_venta) {
-                        Tools.AlertMessageWarning(window, "Venta", "El pago con tarjeta no debe ser mayor al total!!");
-                        return;
+                    
+                    if (Tools.isNumeric(txtTarjetaAdelantado.getText()) && Double.parseDouble(txtTarjetaAdelantado.getText()) > 0) {
+                        ventaTB.setTarjeta(Double.parseDouble(txtTarjetaAdelantado.getText()));
                     }
-                }
-
-                short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
-                if (confirmation == 1) {
-                    ResultTransaction result = VentaADO.registrarVentaAdelantado(ventaTB, tvList);
-                    switch (result.getCode()) {
-                        case "register":
-                            short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
-                            if (value == 1) {
-                                ventaEstructuraNuevoController.resetVenta();
-                                ventaEstructuraNuevoController.imprimirVenta(result.getResult());
-                                Tools.Dispose(window);
-                            } else {
-                                ventaEstructuraNuevoController.resetVenta();
-                                Tools.Dispose(window);
-                            }
-                            break;
-                        case "nocantidades":
-                            Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
-                            break;
-                        case "error":
-                            Tools.AlertMessageError(window, "Venta", result.getResult());
-                            break;
-                        default:
-                            Tools.AlertMessageError(window, "Venta", result.getResult());
-                            break;
+                    
+                    if (Tools.isNumeric(txtEfectivoAdelantado.getText()) && Tools.isNumeric(txtTarjetaAdelantado.getText())) {
+                        if ((Double.parseDouble(txtEfectivoAdelantado.getText())) >= tota_venta) {
+                            Tools.AlertMessageWarning(window, "Venta", "Los valores ingresados no son correctos!!");
+                            return;
+                        }
+                        double efectivo = Double.parseDouble(txtEfectivoAdelantado.getText());
+                        double tarjeta = Double.parseDouble(txtTarjetaAdelantado.getText());
+                        if ((efectivo + tarjeta) != tota_venta) {
+                            Tools.AlertMessageWarning(window, "Venta", " El monto a pagar no debe ser mayor al total!!");
+                            return;
+                        }
                     }
-                }
-
-            }
+                    
+                    if (!Tools.isNumeric(txtEfectivoAdelantado.getText()) && Tools.isNumeric(txtTarjetaAdelantado.getText())) {
+                        if ((Double.parseDouble(txtTarjetaAdelantado.getText())) > tota_venta) {
+                            Tools.AlertMessageWarning(window, "Venta", "El pago con tarjeta no debe ser mayor al total!!");
+                            return;
+                        }
+                    }
+                    
+                    short confirmation = Tools.AlertMessageConfirmation(window, "Venta", "¿Esta seguro de continuar?");
+                    if (confirmation == 1) {
+                        ResultTransaction result = VentaADO.registrarVentaAdelantado(ventaTB, tvList);
+                        switch (result.getCode()) {
+                            case "register":
+                                short value = Tools.AlertMessage(window.getScene().getWindow(), "Venta", "Se realizó la venta con éxito, ¿Desea imprimir el comprobante?");
+                                if (value == 1) {
+                                    ventaEstructuraNuevoController.resetVenta();
+                                    ventaEstructuraNuevoController.imprimirVenta(result.getResult());
+                                    Tools.Dispose(window);
+                                } else {
+                                    ventaEstructuraNuevoController.resetVenta();
+                                    Tools.Dispose(window);
+                                }
+                                break;
+                            case "nocantidades":
+                                Tools.AlertDialogMessage(window, Alert.AlertType.WARNING, "Venta", "No se puede completar la venta por que hay productos con stock inferior.", result.toStringArrayResult());
+                                break;
+                            case "error":
+                                Tools.AlertMessageError(window, "Venta", result.getResult());
+                                break;
+                            default:
+                                Tools.AlertMessageError(window, "Venta", result.getResult());
+                                break;
+                        }
+                    }
+                    
+                }   break;
         }
     }
 

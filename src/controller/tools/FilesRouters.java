@@ -153,7 +153,7 @@ public final class FilesRouters {
     //--------------------------------------------------------------------------------------------------
     //PROCESO DE COMPRAS
     //--------------------------------------------------------------------------------------------------
-    public static final String FX_AMARTIZAR_PAGOS = "/view/operaciones/compras/FxAmortizarPagos.fxml";
+    public static final String FX_AMARTIZAR_PAGOS = "/view/consultas/pagar/FxAmortizarPagos.fxml";
 
     public static final String FX_COMPRAS = "/view/operaciones/compras/FxCompras.fxml";
 
@@ -194,7 +194,7 @@ public final class FilesRouters {
 
     public static final String FX_VENTA = "/view/operaciones/venta/FxVenta.fxml";
 
-    public static final String FX_VENTA_ABONO_PROCESO = "/view/operaciones/venta/FxVentaAbonoProceso.fxml";
+    public static final String FX_VENTA_ABONO_PROCESO = "/view/consultas/pagar/FxVentaAbonoProceso.fxml";
 
     public static final String FX_VENTA_DESCUENTO = "/view/operaciones/venta/FxVentaDescuento.fxml";
 
@@ -294,8 +294,6 @@ public final class FilesRouters {
     //--------------------------------------------------------------------------------------------------
     public static final String FX_REPORTE_VIEW = "/view/reporte/FxReportView.fxml";
 
-    public static final String FX_GLOBAL_REPORTE = "/view/reporte/FxGlobalReporte.fxml";
-
     public static final String FX_VENTA_REPORTE = "/view/reporte/FxVentaReporte.fxml";
 
     public static final String FX_VENTA_UTILIDADES = "/view/reporte/FxVentaUtilidades.fxml";
@@ -323,8 +321,6 @@ public final class FilesRouters {
     public static final String FX_POS_LISTA_PRECIOS = "/view/posterminal/venta/FxPostListaPrecios.fxml";
 
     public static final String FX_POS_VENTA = "/view/posterminal/venta/FxPostVenta.fxml";
-
-    public static final String FX_POS_VENTA_ABONO = "/view/posterminal/venta/FxPostVentaAbonoProceso.fxml";
 
     public static final String FX_POS_VENTA_CANTIDADES = "/view/posterminal/venta/FxPostVentaCantidades.fxml";
 
@@ -422,5 +418,11 @@ public final class FilesRouters {
     public static final String FX_FORMULA_VISUALIZAR = "/view/produccion/producir/FxFormulaVisualizar.fxml";
 
     public static final String FX_MERMA = "/view/produccion/producir/FxMerma.fxml";
+    
+    public static final String FX_INGRESOS_REPORTE = "/view/reporte/FxIngresosReporte.fxml";
+    
+    public static final String FX_NOTA_CREDITO_REPORTE = "/view/reporte/FxNotaCreditoReporte.fxml";
+    
+    public static final String FX_REPORTE_POS = "/view/reporte/FxPosReporte.fxml";
 
 }

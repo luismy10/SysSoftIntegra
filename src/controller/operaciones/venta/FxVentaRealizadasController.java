@@ -26,7 +26,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -111,7 +110,7 @@ public class FxVentaRealizadasController implements Initializable {
         cbEstado.getSelectionModel().select(0);
 
         cbComprobante.getItems().add(new TipoDocumentoTB(0, "TODOS"));
-        TipoDocumentoADO.GetDocumentoCombBox().forEach(e -> cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre())));
+        TipoDocumentoADO.GetDocumentoCombBoxVentas().forEach(e -> cbComprobante.getItems().add(new TipoDocumentoTB(e.getIdTipoDocumento(), e.getNombre())));
         cbComprobante.getSelectionModel().select(0);
 
         idEmpleado = Session.USER_ID;
@@ -146,19 +145,6 @@ public class FxVentaRealizadasController implements Initializable {
         tcTotal.prefWidthProperty().bind(tvList.widthProperty().multiply(0.13));
         tvList.setPlaceholder(Tools.placeHolderTableView("No hay datos para mostrar.", "-fx-text-fill:#020203;", false));
 
-//        tvList.setRowFactory(tv -> new TableRow<VentaTB>() {
-//            @Override
-//            protected void updateItem(VentaTB item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (item == null) {
-//                    setStyle("");
-//                } else if (item.getNotaCreditoTB() != null) {
-//                    setStyle("-fx-background-color: rgba(220, 53, 69, 0.6)");
-//                } else {
-//                    setStyle("");
-//                }
-//            }
-//        });
     }
 
     public void loadPrivilegios(ObservableList<PrivilegioTB> privilegioTBs) {
@@ -209,7 +195,7 @@ public class FxVentaRealizadasController implements Initializable {
         Task<Object> task = new Task<Object>() {
             @Override
             public Object call() {
-                return VentaADO.ListVentas(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
+                return VentaADO.ListVentasLibres(opcion, value, fechaInicial, fechaFinal, comprobante, estado, usuario, (paginacion - 1) * 20, 20);
             }
         };
         task.setOnSucceeded(w -> {
