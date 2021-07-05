@@ -2,8 +2,8 @@
     "body":{
         "addres":"localhost",
         "port":"1433",
-        "dbname":"FerreteriaDiamanante",
+        "dbname":"ImportacionesAmerica",
         "user":"sa",
-        "password":"Qz0966lb"
+        "password":"123456"
     }
 }
