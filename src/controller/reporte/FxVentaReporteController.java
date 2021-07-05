@@ -151,7 +151,7 @@ public class FxVentaReporteController implements Initializable {
     }
 
     private JasperPrint reportGenerate() throws JRException {
-        ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentas(
+        ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentasLibres(
                 Tools.getDatePicker(dpFechaInicial),
                 Tools.getDatePicker(dpFechaFinal),
                 cbDocumentosSeleccionar.isSelected()? 0: cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),
@@ -284,7 +284,7 @@ public class FxVentaReporteController implements Initializable {
                 if (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) {
                     try {
 
-                        ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentas(
+                        ArrayList<VentaTB> list = VentaADO.GetReporteGenetalVentasLibres(
                                 Tools.getDatePicker(dpFechaInicial),
                                 Tools.getDatePicker(dpFechaFinal),
                                 cbDocumentosSeleccionar.isSelected() ? 0 : cbDocumentos.getSelectionModel().getSelectedItem().getIdTipoDocumento(),

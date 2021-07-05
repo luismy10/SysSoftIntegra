@@ -2773,7 +2773,7 @@ public class VentaADO {
         }
     }
 
-    public static ArrayList<VentaTB> GetReporteGenetalVentas(String fechaInicial, String fechaFinal, int tipoDocumento, String cliente, String vendedor, int tipo) {
+    public static ArrayList<VentaTB> GetReporteGenetalVentasLibres(String fechaInicial, String fechaFinal, int tipoDocumento, String cliente, String vendedor, int tipo) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ArrayList<VentaTB> arrayList = new ArrayList<>();
@@ -2824,31 +2824,41 @@ public class VentaADO {
         return arrayList;
     }
 
-    public static ArrayList<VentaTB> GetReporteSumaVentaPorDia(String fechaInicial, String fechaFinal, boolean tipoOrden, boolean ordern) {
+    public static ArrayList<VentaTB> GetReporteGenetalVentasPos(String fechaInicial, String fechaFinal, int tipoDocumento, String cliente, String vendedor, int tipo) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ArrayList<VentaTB> arrayList = new ArrayList<>();
         try {
             DBUtil.dbConnect();
-            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Reporte_Ventas_Sumadas_Por_Fecha(?,?,?,?)}");
+            preparedStatement = DBUtil.getConnection().prepareCall("{call Sp_Reporte_General_Pos_Ventas(?,?,?,?,?,?)}");
             preparedStatement.setString(1, fechaInicial);
             preparedStatement.setString(2, fechaFinal);
-            preparedStatement.setBoolean(3, tipoOrden);
-            preparedStatement.setBoolean(4, ordern);
+            preparedStatement.setInt(3, tipoDocumento);
+            preparedStatement.setString(4, cliente);
+            preparedStatement.setString(5, vendedor);
+            preparedStatement.setInt(6, tipo);
             resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next()) {
                 VentaTB ventaTB = new VentaTB();
-                ventaTB.setFechaVenta(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+                ventaTB.setFechaVenta(resultSet.getDate("FechaVenta").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                ventaTB.setIdCliente(resultSet.getString("NumeroDocumento") + "\n" + resultSet.getString("Cliente"));
+                ventaTB.setClienteTB(new ClienteTB(resultSet.getString("NumeroDocumento"), resultSet.getString("Cliente")));
+                ventaTB.setComprobanteName(resultSet.getString("Nombre"));
+                ventaTB.setSerie(resultSet.getString("Serie"));
+                ventaTB.setNumeracion(resultSet.getString("Numeracion"));
+                ventaTB.setTipoName(resultSet.getString("Tipo"));
                 ventaTB.setEstado(resultSet.getInt("Estado"));
+                ventaTB.setEstadoName(resultSet.getString("EstadoName"));
                 ventaTB.setMonedaName(resultSet.getString("Simbolo"));
-                ventaTB.setTotal(ventaTB.getEstado() == 3
-                        ? 0 : resultSet.getDouble("Total"));
-                arrayList.add(ventaTB);
+                ventaTB.setTotal(resultSet.getDouble("Total"));
+                if (resultSet.getInt("IdNotaCredito") == 1) {
+                    ventaTB.setNotaCreditoTB(new NotaCreditoTB());
+                }
 
+                arrayList.add(ventaTB);
             }
         } catch (SQLException ex) {
-            System.out.println("Venta ADO:" + ex.getLocalizedMessage());
+            System.out.println("Venta ADO GetReporteGenetalVentas():" + ex.getLocalizedMessage());
         } finally {
             try {
                 if (preparedStatement != null) {
