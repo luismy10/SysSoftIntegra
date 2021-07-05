@@ -204,32 +204,32 @@ public class FxConsultasController implements Initializable {
     }
 
     public void loadSubMenus(ObservableList<SubMenusTB> subMenusTBs) {
-//        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnVentas);
-//        } else {
-//            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
-//            ventaRealizadasController.loadPrivilegios(privilegioTBs);
-//        }
-//
-//        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnCompras);
-//        }
-//
-//        if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnCorteCaja);
-//        }
-//
-//        if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnCuentasPorCobrar);
-//        }
-//
-//        if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnCuentasPorPagar);
-//        }
-//
-//        if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
-//            hbOperacionesDos.getChildren().remove(btnBancos);
-//        }
+        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnVentas);
+        } else {
+            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
+            ventaRealizadasController.loadPrivilegios(privilegioTBs);
+        }
+
+        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCompras);
+        }
+
+        if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCorteCaja);
+        }
+
+        if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCuentasPorCobrar);
+        }
+
+        if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCuentasPorPagar);
+        }
+
+        if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
+            hbOperacionesDos.getChildren().remove(btnBancos);
+        }
     }
 
     private void openWindowVentaRealizadas() {

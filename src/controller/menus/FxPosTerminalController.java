@@ -4,9 +4,12 @@ import controller.operaciones.cortecaja.FxCajaController;
 import controller.posterminal.venta.FxPostVentaController;
 import controller.posterminal.venta.FxPostVentaRealizadasController;
 import controller.tools.FilesRouters;
+import controller.tools.Session;
+import controller.tools.Tools;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +20,16 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.MenuADO;
+import model.PrivilegioTB;
+import model.SubMenusTB;
 
 public class FxPosTerminalController implements Initializable {
 
     @FXML
     private TextField txtSearch;
+    @FXML
+    private VBox vbContentOne;
     @FXML
     private HBox hbOperacionesUno;
     @FXML
@@ -98,6 +106,31 @@ public class FxPosTerminalController implements Initializable {
             ventaRealizadasController = fXMLVentaRealizadas.getController();
         } catch (IOException ex) {
             System.out.println("Error en Ingresos Controller:" + ex.getLocalizedMessage());
+        }
+    }
+
+    public void loadSubMenus(ObservableList<SubMenusTB> subMenusTBs) {
+        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnTerminalUno);
+            hbOperacionesUno.getChildren().remove(btnTerminalDos);
+        } else {
+            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
+            controllerVentaOld.loadPrivilegios(privilegioTBs);
+            controllerVentaNew.loadPrivilegios(privilegioTBs);
+        }
+
+        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCorteCaja);
+        } else {
+            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(1).getIdSubMenu());
+            controllerCorteCaja.loadPrivilegios(privilegioTBs);
+        }
+
+        if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnVentasEchas);
+        } else {
+            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(0).getIdSubMenu());
+            ventaRealizadasController.loadPrivilegios(privilegioTBs);
         }
     }
 
