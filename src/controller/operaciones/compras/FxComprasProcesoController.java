@@ -26,6 +26,7 @@ import model.BancoTB;
 import model.CompraADO;
 import model.CompraTB;
 import model.DetalleCompraTB;
+import model.IngresoTB;
 import model.LoteTB;
 
 public class FxComprasProcesoController implements Initializable {
@@ -35,21 +36,19 @@ public class FxComprasProcesoController implements Initializable {
     @FXML
     private Label lblTotal;
     @FXML
-    private TextField txtEfectivo;
+    private RadioButton rbEgreso;
+    @FXML
+    private RadioButton rbBanco;
     @FXML
     private HBox hbPagoContado;
     @FXML
-    private VBox vbPagoCredito;
+    private ComboBox<BancoTB> cbCuentas;
     @FXML
-    private VBox vbPagoBorrado;
-    @FXML
-    private RadioButton rbContado;
+    private TextField txtEfectivo;
     @FXML
     private RadioButton rbCredito;
     @FXML
-    private RadioButton rbBorrado;
-    @FXML
-    private ComboBox<BancoTB> cbCuentas;
+    private VBox vbPagoCredito;
     @FXML
     private DatePicker txtFechaVencimiento;
 
@@ -61,13 +60,15 @@ public class FxComprasProcesoController implements Initializable {
 
     private ObservableList<LoteTB> loteTBs;
 
+    private double montoTotal = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
         ToggleGroup group = new ToggleGroup();
-        rbContado.setToggleGroup(group);
+        rbEgreso.setToggleGroup(group);
+        rbBanco.setToggleGroup(group);
         rbCredito.setToggleGroup(group);
-        rbBorrado.setToggleGroup(group);
         setInitializeCaja();
     }
 
@@ -83,19 +84,61 @@ public class FxComprasProcesoController implements Initializable {
         this.tvList = tvList;
         this.loteTBs = loteTBs;
         lblTotal.setText(Session.MONEDA_SIMBOLO + " " + Tools.roundingValue(compraTB.getTotal(), 2));
-        txtEfectivo.setText(Tools.roundingValue(compraTB.getTotal(), 2));
+        montoTotal = Double.parseDouble(Tools.roundingValue(compraTB.getTotal(), 2));
+        txtEfectivo.setText("" + montoTotal);
     }
 
     private void onEventProcess() {
-        if (rbContado.isSelected()) {
+        if (rbEgreso.isSelected()) {
+            compraTB.setTipo(1);
+            compraTB.setEstado(1);
+            compraTB.setFechaVencimiento(compraTB.getFechaCompra());
+            compraTB.setHoraVencimiento(compraTB.getHoraCompra());
+
+            /*
+                    procedencia
+                    1 = venta
+                    2 = compra
+                    
+                    3 = ingreso libre
+                    4 = salida libre
+                    
+                    5 = ingreso cuentas por cobrar
+                    6 = salida cuentas por pagar
+             */
+
+ /*
+                    forma
+                    1 = efectivo
+                    2 = tarjeta
+             */
+            IngresoTB ingresoTB = new IngresoTB();
+            ingresoTB.setIdProcedencia("");
+            ingresoTB.setIdUsuario(Session.USER_ID);
+            ingresoTB.setDetalle("SALIDA DE DINERO POR COMPRA");
+            ingresoTB.setProcedencia(2);
+            ingresoTB.setFecha(Tools.getDate());
+            ingresoTB.setHora(Tools.getTime());
+            ingresoTB.setForma(1);
+            ingresoTB.setMonto(montoTotal);
+
+            short value = Tools.AlertMessageConfirmation(apWindow, "Compra", "¿Está seguro de continuar?");
+            if (value == 1) {
+                String result = CompraADO.Compra_Contado(null, ingresoTB, compraTB, tvList, loteTBs);
+                if (result.equalsIgnoreCase("register")) {
+                    Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
+                    Tools.Dispose(apWindow);
+                    comprasController.clearComponents();
+                } else {
+                    Tools.AlertMessageError(apWindow, "Compra", result);
+                }
+            }
+
+        } else if (rbBanco.isSelected()) {
             if (cbCuentas.getSelectionModel().getSelectedIndex() <= 0) {
                 Tools.AlertMessageWarning(apWindow, "Compra", "Seleccione una cuenta.");
                 cbCuentas.requestFocus();
-            } else if (!Tools.isNumeric(txtEfectivo.getText())) {
-                Tools.AlertMessageWarning(apWindow, "Compra", "Ingrese el valor recibido.");
-                txtEfectivo.requestFocus();
             } else {
-                compraTB.setTipoDocumento(0);
                 compraTB.setTipo(1);
                 compraTB.setEstado(1);
                 compraTB.setFechaVencimiento(compraTB.getFechaCompra());
@@ -104,19 +147,22 @@ public class FxComprasProcesoController implements Initializable {
                 BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
                 bancoHistorialTB.setIdBanco(cbCuentas.getSelectionModel().getSelectedItem().getIdBanco());
                 bancoHistorialTB.setIdEmpleado(Session.USER_ID);
-                bancoHistorialTB.setDescripcion("Salida de dinero por compra");
+                bancoHistorialTB.setDescripcion("SALIDA DE DINERO POR COMPRA");
                 bancoHistorialTB.setFecha(Tools.getDate());
                 bancoHistorialTB.setHora(Tools.getTime());
                 bancoHistorialTB.setEntrada(0);
-                bancoHistorialTB.setSalida(Double.parseDouble(txtEfectivo.getText()));
+                bancoHistorialTB.setSalida(montoTotal);
 
-                String result = CompraADO.Compra_Contado(bancoHistorialTB, compraTB, tvList, loteTBs);
-                if (result.equalsIgnoreCase("register")) {
-                    Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
-                    Tools.Dispose(apWindow);
-                    comprasController.clearComponents();
-                } else {
-                    Tools.AlertMessageError(apWindow, "Compra", result);
+                short value = Tools.AlertMessageConfirmation(apWindow, "Compra", "¿Está seguro de continuar?");
+                if (value == 1) {
+                    String result = CompraADO.Compra_Contado(bancoHistorialTB, null, compraTB, tvList, loteTBs);
+                    if (result.equalsIgnoreCase("register")) {
+                        Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
+                        Tools.Dispose(apWindow);
+                        comprasController.clearComponents();
+                    } else {
+                        Tools.AlertMessageError(apWindow, "Compra", result);
+                    }
                 }
             }
         } else if (rbCredito.isSelected()) {
@@ -129,29 +175,17 @@ public class FxComprasProcesoController implements Initializable {
                 compraTB.setFechaVencimiento(Tools.getDatePicker(txtFechaVencimiento));
                 compraTB.setHoraVencimiento(compraTB.getHoraCompra());
 
-                String result = CompraADO.Compra_Credito(compraTB, tvList, loteTBs);
-                if (result.equalsIgnoreCase("register")) {
-                    Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
-                    Tools.Dispose(apWindow);
-
-                    comprasController.clearComponents();
-                } else {
-                    Tools.AlertMessageError(apWindow, "Compra", result);
+                short value = Tools.AlertMessageConfirmation(apWindow, "Compra", "¿Está seguro de continuar?");
+                if (value == 1) {
+                    String result = CompraADO.Compra_Credito(compraTB, tvList, loteTBs);
+                    if (result.equalsIgnoreCase("register")) {
+                        Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra.");
+                        Tools.Dispose(apWindow);
+                        comprasController.clearComponents();
+                    } else {
+                        Tools.AlertMessageError(apWindow, "Compra", result);
+                    }
                 }
-            }
-        } else if (rbBorrado.isSelected()) {
-            compraTB.setTipo(3);
-            compraTB.setEstado(4);
-            compraTB.setFechaVencimiento(compraTB.getFechaCompra());
-            compraTB.setHoraVencimiento(compraTB.getHoraCompra());
-
-            String result = CompraADO.Compra_Borrado(compraTB, tvList, loteTBs);
-            if (result.equalsIgnoreCase("register")) {
-                Tools.AlertMessageInformation(apWindow, "Compra", "Se registró correctamente la compra como guardado.");
-                Tools.Dispose(apWindow);
-                comprasController.clearComponents();
-            } else {
-                Tools.AlertMessageError(apWindow, "Compra", result);
             }
         }
     }
@@ -192,25 +226,21 @@ public class FxComprasProcesoController implements Initializable {
     }
 
     @FXML
-    private void onActionRbContado(ActionEvent event) {
+    private void onActionRbEgreso(ActionEvent event) {
         vbPagoCredito.setDisable(true);
-        vbPagoBorrado.setDisable(true);
-        hbPagoContado.setDisable(false);
+        hbPagoContado.setDisable(true);
+    }
 
+    @FXML
+    private void onActionRbBanco(ActionEvent event) {
+        vbPagoCredito.setDisable(true);
+        hbPagoContado.setDisable(false);
     }
 
     @FXML
     private void onActionRbCredito(ActionEvent event) {
         hbPagoContado.setDisable(true);
-        vbPagoBorrado.setDisable(true);
         vbPagoCredito.setDisable(false);
-    }
-
-    @FXML
-    private void onActionRbBorrado(ActionEvent event) {
-        hbPagoContado.setDisable(true);
-        vbPagoCredito.setDisable(true);
-        vbPagoBorrado.setDisable(false);
     }
 
     public void setInitComprasController(FxComprasController comprasController) {

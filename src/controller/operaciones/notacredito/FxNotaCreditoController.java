@@ -73,12 +73,6 @@ public class FxNotaCreditoController implements Initializable {
     @FXML
     private TextField txtRazonsocial;
     @FXML
-    private TextField txtDireccion;
-    @FXML
-    private TextField txtCelular;
-    @FXML
-    private TextField txtEmail;
-    @FXML
     private Button btnAceptarLoad;
     @FXML
     private GridPane gpList;
@@ -185,9 +179,6 @@ public class FxNotaCreditoController implements Initializable {
 
                 txtNumeroDocumento.setText(ventaTB.getClienteTB().getNumeroDocumento());
                 txtRazonsocial.setText(ventaTB.getClienteTB().getInformacion());
-                txtDireccion.setText(ventaTB.getClienteTB().getDireccion());
-                txtCelular.setText(ventaTB.getClienteTB().getCelular());
-                txtEmail.setText(ventaTB.getClienteTB().getEmail());
 
                 detalleVentaTBs.addAll((ArrayList<DetalleVentaTB>) objects[6]);
                 for (DetalleVentaTB detalleVentaTB : detalleVentaTBs) {
@@ -348,9 +339,6 @@ public class FxNotaCreditoController implements Initializable {
         cbTipoDocumento.getSelectionModel().select(null);
         txtNumeroDocumento.clear();
         txtRazonsocial.clear();
-        txtDireccion.clear();
-        txtCelular.clear();
-        txtEmail.clear();
         detalleVentaTBs.clear();
         addElementPaneHead();
         addElementPaneBody();
@@ -415,6 +403,8 @@ public class FxNotaCreditoController implements Initializable {
                 if (result.equalsIgnoreCase("registrado")) {
                     Tools.AlertMessageInformation(apWindow, "Nota de Crédito", "Se registró correctamente la nota de crédito.");
                     clearElements();
+                } else if (result.equalsIgnoreCase("nota")) {
+                    Tools.AlertMessageWarning(apWindow, "Nota de Crédito", "El comprobante ya tiene asociado una nota de crédito.");
                 } else {
                     Tools.AlertMessageError(apWindow, "Nota de Crédito", result);
                 }
@@ -451,9 +441,11 @@ public class FxNotaCreditoController implements Initializable {
             stage.setResizable(false);
             stage.sizeToScene();
             stage.setOnHiding(w -> principalController.closeFondoModal());
-            stage.setOnShown(w -> controller.getTxtBuscar().requestFocus());
+            stage.setOnShown(w -> {
+                controller.getTxtBuscar().requestFocus();
+                controller.loadInit();
+            });
             stage.show();
-            controller.loadInit();
         } catch (IOException ex) {
             System.out.println("openWindowArticulos():" + ex.getLocalizedMessage());
         }

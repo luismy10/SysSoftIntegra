@@ -26,7 +26,6 @@ public class VentaTB {
     private double subImporte;
     private double impuesto;
     private double total;
-    private String totalFormat;
     private int tipo;
     private String tipoName;
     private int estado;
@@ -230,14 +229,6 @@ public class VentaTB {
 
     public void setTotal(double total) {
         this.total = total;
-    }
-
-    public String getTotalFormat() {
-        return totalFormat;
-    }
-
-    public void setTotalFormat(String totalFormat) {
-        this.totalFormat = totalFormat;
     }
 
     public int getEstado() {

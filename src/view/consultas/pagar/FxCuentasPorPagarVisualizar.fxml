@@ -87,26 +87,26 @@
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Proveedor:" textFill="#020203" />
-                                          <Label fx:id="lblProveedor" styleClass="labelOpenSansRegular13" text="-" textFill="#055bd3" GridPane.columnIndex="1" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Comprobante:" textFill="#020203" GridPane.rowIndex="4" />
-                                          <Label fx:id="lblComprobante" styleClass="labelOpenSansRegular13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Estado:" textFill="#020203" GridPane.rowIndex="5" />
-                                          <Label fx:id="lblEstado" styleClass="labelOpenSansRegular13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Observación:" textFill="#020203" GridPane.rowIndex="6" />
-                                          <Label fx:id="lblObservacion" styleClass="labelOpenSansRegular13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Teléfono y celular:" textFill="#020203" GridPane.rowIndex="1" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Dirección:" textFill="#020203" GridPane.rowIndex="2" />
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelOpenSansRegular13" text="Email:" textFill="#020203" GridPane.rowIndex="3" />
-                                          <Label fx:id="lblTelefonoCelular" styleClass="labelOpenSansRegular13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label fx:id="lblDireccion" styleClass="labelOpenSansRegular13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label fx:id="lblEmail" styleClass="labelOpenSansRegular13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Proveedor:" textFill="#020203" />
+                                          <Label fx:id="lblProveedor" styleClass="labelRoboto13" text="-" textFill="#055bd3" GridPane.columnIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Comprobante:" textFill="#020203" GridPane.rowIndex="4" />
+                                          <Label fx:id="lblComprobante" styleClass="labelRoboto13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Estado:" textFill="#020203" GridPane.rowIndex="5" />
+                                          <Label fx:id="lblEstado" styleClass="labelRoboto13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Observación:" textFill="#020203" GridPane.rowIndex="6" />
+                                          <Label fx:id="lblObservacion" styleClass="labelRoboto13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Teléfono y celular:" textFill="#020203" GridPane.rowIndex="1" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Dirección:" textFill="#020203" GridPane.rowIndex="2" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Email:" textFill="#020203" GridPane.rowIndex="3" />
+                                          <Label fx:id="lblTelefonoCelular" styleClass="labelRoboto13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label fx:id="lblDireccion" styleClass="labelRoboto13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label fx:id="lblEmail" styleClass="labelRoboto13" text="-" textFill="#055bd3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Monto Total:" textFill="#020203" GridPane.columnIndex="2" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Monto Pagado:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="Diferencia:" textFill="#020203" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                          <Label fx:id="lblMontoTotal" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="0.00" textFill="#0771d3" GridPane.columnIndex="3" />
-                                          <Label fx:id="lblMontoPagado" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="0.00" textFill="#0771d3" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                          <Label fx:id="lblDiferencia" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium15" text="0.00" textFill="#c62303" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                          <Label fx:id="lblMontoTotal" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="0.00" textFill="#0771d3" GridPane.columnIndex="3" />
+                                          <Label fx:id="lblMontoPagado" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="0.00" textFill="#0771d3" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <Label fx:id="lblDiferencia" maxWidth="1.7976931348623157E308" styleClass="labelRoboto13" text="0.00" textFill="#c62303" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
                                  </children>

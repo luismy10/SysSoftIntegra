@@ -40,16 +40,16 @@
                <children>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionGlobal" onKeyPressed="#onKeyPressedGlobal" styleClass="buttonTransparent" text="Global" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonTransparent" text="Ventas Libres" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../image/report-global.png" />
+                                    <Image url="@../image/sales.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Resumen">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documento">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -58,16 +58,52 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionVentas" onKeyPressed="#onKeyPressedVentas" styleClass="buttonTransparent" text="Ventas" textFill="#020203">
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionPos" onKeyPressed="#onKeyPressedPos" styleClass="buttonTransparent" text="Ventas Pos" textFill="#020203">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../image/sales_report.png" />
+                                    <Image url="@../image/caja_registradora.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Salidas">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documento">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionIngresos" onKeyPressed="#onKeyPressedIngresos" styleClass="buttonTransparent" text="Ingresos/Egresos" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/movimiento.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documento">
+                           <font>
+                              <Font name="Roboto" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onActionNotaCredito" onKeyPressed="#onKeyPressedNotaCredito" styleClass="buttonTransparent" text="Nota Credito" textFill="#020203">
+                           <graphic>
+                              <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../image/note.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documento">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -85,7 +121,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Entradas">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documento">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>
@@ -103,7 +139,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Finanzas">
+                        <Text fill="#01469a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="labelOpenSansRegular14" text="Documento">
                            <font>
                               <Font name="Roboto" size="14.0" />
                            </font>

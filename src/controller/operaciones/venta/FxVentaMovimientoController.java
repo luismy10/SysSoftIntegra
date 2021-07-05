@@ -1,5 +1,6 @@
 package controller.operaciones.venta;
 
+import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import model.IngresoTB;
 import model.MovimientoCajaTB;
 import model.VentaADO;
 
@@ -48,9 +50,9 @@ public class FxVentaMovimientoController implements Initializable {
             Tools.AlertMessageWarning(window, "Ventas", "Ingrese un comentario.");
             txtComentario.requestFocus();
         } else {
-            
+
             short opcion = Tools.AlertMessageConfirmation(window, "Ventas", "¿Está seguto de continuar?");
-            
+
             if (opcion == 1) {
 
                 ExecutorService exec = Executors.newCachedThreadPool((runnable) -> {
@@ -62,20 +64,40 @@ public class FxVentaMovimientoController implements Initializable {
                 Task<String> task = new Task<String>() {
                     @Override
                     public String call() {
-                        MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
-                        movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-                        movimientoCajaTB.setHoraMovimiento(Tools.getTime());
-                        movimientoCajaTB.setComentario(txtComentario.getText().toUpperCase().trim());
-                        movimientoCajaTB.setTipoMovimiento(cbMovimiento.getSelectionModel().getSelectedIndex() == 0 ? (short) 4 : (short) 5);
-                        movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));
-                        return VentaADO.movimientoCaja(movimientoCajaTB);
+                        /*
+                        procedencia
+                        1 = venta
+                        2 = compra
+                        
+                        3 = ingreso libre
+                        4 = salida libre
+                        
+                        5 = ingreso cuentas por cobrar
+                        6 = salida cuentas por pagar
+                         */
+
+                        /*
+                        forma
+                        1 = efectivo
+                        2 = tarjeta
+                         */
+                        IngresoTB ingresoTB = new IngresoTB();
+                        ingresoTB.setIdProcedencia("");
+                        ingresoTB.setIdUsuario(Session.USER_ID);
+                        ingresoTB.setDetalle(txtComentario.getText().toUpperCase().trim());
+                        ingresoTB.setProcedencia(cbMovimiento.getSelectionModel().getSelectedIndex() == 0 ? 3 : 4);
+                        ingresoTB.setFecha(Tools.getDate());
+                        ingresoTB.setHora(Tools.getTime());
+                        ingresoTB.setForma(1);
+                        ingresoTB.setMonto(Double.parseDouble(txtMonto.getText()));
+                        return VentaADO.movimientoIngreso(ingresoTB);
                     }
                 };
 
                 task.setOnSucceeded(e -> {
                     String result = task.getValue();
                     if (result.equalsIgnoreCase("updated")) {
-                        Tools.AlertMessageInformation(window, "Ventas", "Se proceso correctamente su movimiento de caja.");
+                        Tools.AlertMessageInformation(window, "Ventas", "Se proceso correctamente el ingreso/salida de dinero.");
                         Tools.Dispose(window);
                     } else {
                         Tools.AlertMessageError(window, "Ventas", result);

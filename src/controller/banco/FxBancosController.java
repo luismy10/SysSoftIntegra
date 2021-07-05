@@ -59,7 +59,7 @@ public class FxBancosController implements Initializable {
         tcNombreCuenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNombreCuenta().toUpperCase()));
         tcNumeroCuenta.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getNumeroCuenta()));
         tcDescripcion.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getDescripcion().toUpperCase()));
-        tcSaldo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSimboloMoneda() + " " + Tools.roundingValue(cellData.getValue().getSaldoInicial(), 4)));
+        tcSaldo.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getSimboloMoneda() + " " + Tools.roundingValue(cellData.getValue().getSaldoInicial(), 2)));
         tcForma.setCellValueFactory(cellData -> Bindings.concat(cellData.getValue().getFormaPago() == (short) 1 ? "Efectivo".toUpperCase() : "Banco".toUpperCase()));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));

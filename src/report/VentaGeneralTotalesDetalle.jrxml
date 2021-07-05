@@ -10,12 +10,12 @@
 				<reportElement x="0" y="0" width="555" height="50" uuid="747e00df-5324-4d04-80e2-5c479deab6c1"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="555" height="25" uuid="686609ec-e4a7-4179-bbd6-01a60836fee6"/>
+				<reportElement x="0" y="0" width="555" height="25" forecolor="#020203" uuid="686609ec-e4a7-4179-bbd6-01a60836fee6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[DETALLE DE LA VENTA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="25" width="555" height="25" uuid="82fa3ed0-428a-4f6e-9ca9-0347ab96c585"/>
+				<reportElement x="0" y="25" width="555" height="25" forecolor="#020203" uuid="82fa3ed0-428a-4f6e-9ca9-0347ab96c585"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NOMBRE}]]></textFieldExpression>
 			</textField>

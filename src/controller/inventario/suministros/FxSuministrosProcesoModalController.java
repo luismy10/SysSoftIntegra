@@ -140,10 +140,6 @@ public class FxSuministrosProcesoModalController implements Initializable {
     private TextField txtPrecioVentaNetoPersonalizado;
     @FXML
     private TabPane tpContenedor;
-    @FXML
-    private CheckBox cbVentaControlada;
-    @FXML
-    private CheckBox cbProductoEstrella;
 
     private String idSuministro;
 

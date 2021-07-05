@@ -2,7 +2,6 @@ package controller.consultas.pagar;
 
 import controller.configuracion.impresoras.FxOpcionesImprimirController;
 import controller.menus.FxPrincipalController;
-import controller.operaciones.compras.FxAmortizarPagosController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
 import controller.tools.WindowStage;

@@ -317,7 +317,7 @@ public class FxGuiaRemisionController implements Initializable {
                 objects.add(DetalleADO.GetDetailId("0017"));
                 objects.add(DetalleADO.GetDetailId("0018"));
                 objects.add(DetalleADO.GetDetailId("0003"));
-                objects.add(TipoDocumentoADO.GetDocumentoCombBox());
+                objects.add(TipoDocumentoADO.GetDocumentoCombBoxVentas());
                 objects.add(TipoDocumentoADO.GetTipoDocumentoGuiaRemision());
                 return objects;
             }

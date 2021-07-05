@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -25,11 +26,11 @@
          <children>
             <HBox alignment="CENTER_LEFT" style="-fx-border-width: 0  0 2px 0; -fx-border-color: #3c8dbc; -fx-background-color: #FFFF; -fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                <children>
-                  <Label styleClass="labelRobotoBold15" text="Reporte de Ventas" textFill="#020203">
+                  <Label styleClass="labelRobotoBold15" text="Reporte de Ventas Libres" textFill="#020203">
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../image/sales_report.png" />
+                              <Image url="@../image/sales.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -47,13 +48,31 @@
                            <children>
                               <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox style="-fx-padding: 0.8333333333333334em;">
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#onActionReporteGeneral" onKeyPressed="#onKeyPressedReporteGeneral" styleClass="buttonLight" text="Reporte">
+                                          <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLight" text="Visualizar">
                                              <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
                                                    <image>
-                                                      <Image url="@../image/reports.png" />
+                                                      <Image url="@../image/view.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionPdf" onKeyPressed="#onKeyPressedPdf" styleClass="buttonLight" text="Pdf">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
+                                                   <image>
+                                                      <Image url="@../image/pdf.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionExcel" onKeyPressed="#onKeyPressedExcel" styleClass="buttonLight" text="Excel">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
+                                                   <image>
+                                                      <Image url="@../image/excel.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -114,7 +133,7 @@
                                                       <CheckBox fx:id="cbDocumentosSeleccionar" mnemonicParsing="false" onAction="#onActionCbDocumentosSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los Documentos" textFill="#1a2226" />
                                                       <CheckBox fx:id="cbClientesSeleccionar" mnemonicParsing="false" onAction="#onActionCbClientesSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los Clientes" textFill="#1a2226" GridPane.rowIndex="1" />
                                                       <CheckBox fx:id="cbVendedoresSeleccionar" mnemonicParsing="false" onAction="#onActionCbVendedoresSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los Vendedores" textFill="#1a2226" GridPane.rowIndex="2" />
-                                                      <CheckBox mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Todos las Formas de Pago" textFill="#1a2226" GridPane.rowIndex="3" />
+                                                      <CheckBox fx:id="cbTipoPagoSeleccionar" mnemonicParsing="false" onAction="#onActionCbTipoPago" selected="true" styleClass="check-box-contenido" text="Todos las Tipo de Pago" textFill="#1a2226" GridPane.rowIndex="3" />
                                                       <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Documentos" textFill="#020203" GridPane.columnIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -142,7 +161,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Label>
-                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Formas de Pago" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                      <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Venta" textFill="#020203" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -180,10 +199,10 @@
                                                             </Button>
                                                          </children>
                                                       </HBox>
-                                                      <HBox style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em 0  0.4166666666666667em 0;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                      <HBox fx:id="hbTipoPago" disable="true" style="-fx-spacing: 0.8333333333333334em; -fx-padding: 0.4166666666666667em 0  0.4166666666666667em 0;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                                          <children>
-                                                            <CheckBox disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="Al Contado" />
-                                                            <CheckBox disable="true" mnemonicParsing="false" styleClass="check-box-contenido" text="Al Credito" />
+                                                            <RadioButton fx:id="rbContado" mnemonicParsing="false" selected="true" text="Al Contado" />
+                                                            <RadioButton fx:id="rbCredito" mnemonicParsing="false" text="Al Crédito" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -198,102 +217,6 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab disable="true" text="Reporte Global">
-                    <content>
-                      <AnchorPane style="-fx-background-color: white;">
-                           <children>
-                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <HBox style="-fx-padding: 0.8333333333333334em;">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#onActionPrueba" onKeyPressed="#onKeyPressedPrueba" styleClass="buttonLight" text="Reporte">
-                                             <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
-                                                   <image>
-                                                      <Image url="@../image/reports.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </HBox>
-                                    <Separator prefWidth="200.0" />
-                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
-                                             <children>
-                                                <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Fecha Inicial:" textFill="#020203">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../image/calendar.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <DatePicker fx:id="dpFechaInicialGlobal" prefWidth="220.0" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.4166666666666667em;">
-                                             <children>
-                                                <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Fecha Final:" textFill="#020203">
-                                                   <graphic>
-                                                      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../image/calendar.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Label>
-                                                <DatePicker fx:id="dpFechaFinalGlobal" minWidth="-Infinity" prefWidth="220.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </HBox>
-                                    <Separator prefWidth="200.0" />
-                                    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
-                                       <children>
-                                          <VBox>
-                                             <children>
-                                                <GridPane style="-fx-hgap: 0.4166666666666667em; -fx-vgap: 1em;">
-                                                  <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                  </columnConstraints>
-                                                  <rowConstraints>
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                  </rowConstraints>
-                                                   <children>
-                                                      <Label styleClass="labelRoboto13" text="Ordenar por:" textFill="#1a2226">
-                                                         <graphic>
-                                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../image/ordenar.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Label>
-                                                      <ComboBox fx:id="cbOrdenar" prefWidth="220.0" GridPane.columnIndex="1" />
-                                                      <ComboBox fx:id="cbOrden" prefWidth="220.0" GridPane.columnIndex="2" />
-                                                   </children>
-                                                </GridPane>
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                    <Separator />
-                                    <HBox style="-fx-padding: 0.8333333333333334em;">
-                                       <children>
-                                          <CheckBox fx:id="cbMostrarVenta" mnemonicParsing="false" selected="true" styleClass="check-box-contenido" text="Mostrar detalle de cada venta" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
               </tabs>
             </TabPane>
          </children>

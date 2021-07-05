@@ -38,7 +38,7 @@
       </HBox>
       <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em; -fx-border-color: #cccccc; -fx-border-width: 0 0 1px 0;">
          <children>
-            <Button mnemonicParsing="false" onAction="#onActionMostrar" onKeyPressed="#onKeyPressedMostar" styleClass="buttonLightDefault" text="Mostrar">
+            <Button mnemonicParsing="false" onAction="#onActionMostrar" onKeyPressed="#onKeyPressedMostar" styleClass="buttonLight" text="Mostrar">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>

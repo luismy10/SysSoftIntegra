@@ -99,7 +99,7 @@ public class FxNotaCreditoRealizadasController implements Initializable {
                 + "MODIFICADA: " + cellData.getValue().getVentaTB().getSerie() + "-" + cellData.getValue().getVentaTB().getNumeracion()
         ));
         tcTotal.setCellValueFactory(cellData -> Bindings.concat(
-                Tools.roundingValue(cellData.getValue().getImporteNeto(), 2)
+                cellData.getValue().getMonedaTB().getSimbolo() + " " + Tools.roundingValue(cellData.getValue().getImporteNeto(), 2)
         ));
 
         tcNumero.prefWidthProperty().bind(tvList.widthProperty().multiply(0.06));
@@ -377,7 +377,7 @@ public class FxNotaCreditoRealizadasController implements Initializable {
     }
 
     public void setContent(FxPrincipalController fxPrincipalController) {
-        this.fxPrincipalController=fxPrincipalController;
+        this.fxPrincipalController = fxPrincipalController;
     }
 
 }

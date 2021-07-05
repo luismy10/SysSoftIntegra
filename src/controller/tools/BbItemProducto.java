@@ -1,6 +1,7 @@
 package controller.tools;
 
 import controller.operaciones.venta.FxVentaEstructuraNuevoController;
+import controller.posterminal.venta.FxPostVentaEstructuraNuevoController;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,7 +21,9 @@ public class BbItemProducto extends HBox {
 
     private final ListView<BbItemProducto> lvProductoAgregados;
 
-    private final FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
+    private FxVentaEstructuraNuevoController ventaEstructuraNuevoController;
+
+    private FxPostVentaEstructuraNuevoController postVentaEstructuraNuevoController;
 
     private SuministroTB suministroTB;
 
@@ -28,6 +31,12 @@ public class BbItemProducto extends HBox {
         this.suministroTB = suministroTB;
         this.lvProductoAgregados = lvProductoAgregados;
         this.ventaEstructuraNuevoController = ventaEstructuraNuevoController;
+    }
+
+    public BbItemProducto(SuministroTB suministroTB, ListView<BbItemProducto> lvProductoAgregados, FxPostVentaEstructuraNuevoController postVentaEstructuraNuevoController) {
+        this.suministroTB = suministroTB;
+        this.lvProductoAgregados = lvProductoAgregados;
+        this.postVentaEstructuraNuevoController = postVentaEstructuraNuevoController;
     }
 
     public void addElementListView() {
@@ -39,7 +48,7 @@ public class BbItemProducto extends HBox {
         HBox.setHgrow(vbLeft, Priority.ALWAYS);
         vbLeft.setAlignment(Pos.CENTER_LEFT);
         vbLeft.setMaxWidth(Control.USE_PREF_SIZE);
-        Label lblProducto = new Label(suministroTB.getNombreMarca()+(suministroTB.getBonificacion()<=0?"":"(BONIFICACIÓN: "+suministroTB.getBonificacion()+")"));
+        Label lblProducto = new Label(suministroTB.getNombreMarca() + (suministroTB.getBonificacion() <= 0 ? "" : "(BONIFICACIÓN: " + suministroTB.getBonificacion() + ")"));
         lblProducto.getStyleClass().add("labelRoboto14");
         lblProducto.setTextFill(Color.web("#020203"));
         lblProducto.setWrapText(true);
@@ -116,12 +125,22 @@ public class BbItemProducto extends HBox {
         btnRemoved.getStyleClass().add("buttonDark");
         btnRemoved.setOnAction((ActionEvent a) -> {
             lvProductoAgregados.getItems().remove(this);
-            ventaEstructuraNuevoController.calculateTotales();
+            if (ventaEstructuraNuevoController != null) {
+                ventaEstructuraNuevoController.calculateTotales();
+            } else {
+                postVentaEstructuraNuevoController.calculateTotales();
+            }
+
         });
         btnRemoved.setOnKeyPressed(a -> {
             if (a.getCode() == KeyCode.ENTER) {
                 lvProductoAgregados.getItems().remove(this);
-                ventaEstructuraNuevoController.calculateTotales();
+                if (ventaEstructuraNuevoController != null) {
+                    ventaEstructuraNuevoController.calculateTotales();
+                } else {
+                    postVentaEstructuraNuevoController.calculateTotales();
+                }
+
             }
         });
         vbRight.getChildren().addAll(lblImporte, btnRemoved);

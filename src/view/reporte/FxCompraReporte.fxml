@@ -47,13 +47,31 @@
                            <children>
                               <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox style="-fx-padding: 0.8333333333333334em;">
+                                    <HBox style="-fx-padding: 0.8333333333333334em; -fx-spacing: 0.8333333333333334em;">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#onActionReporteGeneral" onKeyPressed="#onKeyPressedReporteGeneral" styleClass="buttonLight" text="Reporte">
+                                          <Button mnemonicParsing="false" onAction="#onActionVisualizar" onKeyPressed="#onKeyPressedVisualizar" styleClass="buttonLight" text="Visualizar">
                                              <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
                                                    <image>
-                                                      <Image url="@../image/reports.png" />
+                                                      <Image url="@../image/view.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionPdf" onKeyPressed="#onKeyPressedPdf" styleClass="buttonLight" text="Pdf">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
+                                                   <image>
+                                                      <Image url="@../image/pdf.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#onActionExcel" onKeyPressed="#onKeyPressedExcel" styleClass="buttonLight" text="Excel">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" style="-fx-fit-width: 0.8333333333333334em;">
+                                                   <image>
+                                                      <Image url="@../image/excel.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -110,7 +128,7 @@
                                                    </rowConstraints>
                                                    <children>
                                                       <CheckBox fx:id="cbProveedoresSeleccionar" mnemonicParsing="false" onAction="#onActionCbProveedoresSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos los Proveedores" textFill="#1a2226" />
-                                                      <CheckBox fx:id="cbFormasPagoSeleccionar" mnemonicParsing="false" onAction="#onActionCbFormasPagoSeleccionar" selected="true" styleClass="check-box-contenido" text="Todos las Formas de Compra" textFill="#1a2226" GridPane.rowIndex="1" />
+                                                      <CheckBox fx:id="cbTipoCompra" mnemonicParsing="false" onAction="#onActionCbTipoCompro" selected="true" styleClass="check-box-contenido" text="Todos los Tipos de Compra" textFill="#1a2226" GridPane.rowIndex="1" />
                                                       <Label minWidth="-Infinity" styleClass="labelRoboto13" text="Proveedores" textFill="#020203" GridPane.columnIndex="1">
                                                          <graphic>
                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">

@@ -1,5 +1,7 @@
 package controller.contactos.clientes;
 
+import controller.reporte.FxNotaCreditoReporteController;
+import controller.reporte.FxPosReporteController;
 import controller.reporte.FxVentaReporteController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -46,9 +48,11 @@ public class FxClienteListaController implements Initializable {
     @FXML
     private TableColumn<ClienteTB, String> tcDireccion;
 
-//    private FxVentaProcesoController ventaProcesoController;
-
     private FxVentaReporteController ventaReporteController;
+
+    private FxPosReporteController posReporteController;
+
+    private FxNotaCreditoReporteController notaCreditoReporteController;
 
     private boolean status;
 
@@ -138,11 +142,15 @@ public class FxClienteListaController implements Initializable {
                 ventaReporteController.setClienteVentaReporte(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
                         tvList.getSelectionModel().getSelectedItem().getInformacion());
                 Tools.Dispose(apWindow);
-            } 
-//            else if (ventaProcesoController != null) {
-//                ventaProcesoController.setLoadCliente(tvList.getSelectionModel().getSelectedItem().getIdCliente());
-//                Tools.Dispose(apWindow);
-//            }
+            } else if (notaCreditoReporteController != null) {
+                notaCreditoReporteController.setClienteVentaReporte(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
+                        tvList.getSelectionModel().getSelectedItem().getInformacion());
+                Tools.Dispose(apWindow);
+            } else if (posReporteController != null) {
+                posReporteController.setClienteVentaReporte(tvList.getSelectionModel().getSelectedItem().getIdCliente(),
+                        tvList.getSelectionModel().getSelectedItem().getInformacion());
+                Tools.Dispose(apWindow);
+            }
         }
     }
 
@@ -253,12 +261,16 @@ public class FxClienteListaController implements Initializable {
         openWindowAddCliente();
     }
 
-//    public void setInitVentaProcesoController(FxVentaProcesoController ventaProcesoController) {
-//        this.ventaProcesoController = ventaProcesoController;
-//    }
-
     public void setInitVentaReporteController(FxVentaReporteController ventaReporteController) {
         this.ventaReporteController = ventaReporteController;
+    }
+
+    public void setInitPostReporteController(FxPosReporteController posReporteController) {
+        this.posReporteController = posReporteController;
+    }
+
+    public void setInitNotaCreditoReporteController(FxNotaCreditoReporteController notaCreditoReporteController) {
+        this.notaCreditoReporteController = notaCreditoReporteController;
     }
 
 }

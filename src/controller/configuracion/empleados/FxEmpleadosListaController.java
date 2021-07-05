@@ -1,6 +1,9 @@
 package controller.configuracion.empleados;
 
 import controller.operaciones.venta.FxVentaRealizadasController;
+import controller.posterminal.venta.FxPostVentaRealizadasController;
+import controller.reporte.FxIngresosReporteController;
+import controller.reporte.FxPosReporteController;
 import controller.reporte.FxVentaReporteController;
 import controller.tools.Tools;
 import java.net.URL;
@@ -43,7 +46,13 @@ public class FxEmpleadosListaController implements Initializable {
 
     private FxVentaReporteController ventaReporteController;
 
+    private FxPosReporteController posReporteController;
+
     private FxVentaRealizadasController ventaRealizadasController;
+
+    private FxPostVentaRealizadasController postVentaRealizadasController;
+
+    private FxIngresosReporteController ingresosReporteController;
 
     private boolean status;
 
@@ -115,10 +124,27 @@ public class FxEmpleadosListaController implements Initializable {
                 ventaReporteController.getTxtVendedores().setText(tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
                 Tools.Dispose(apWindow);
             }
+        } else if (posReporteController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                posReporteController.setIdEmpleado(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
+                posReporteController.getTxtVendedores().setText(tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                Tools.Dispose(apWindow);
+            }
         } else if (ventaRealizadasController != null) {
             if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
                 ventaRealizadasController.setIdEmpleado(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
-                ventaRealizadasController.getTxtVendedor().setText(tvList.getSelectionModel().getSelectedItem().getApellidos()+" "+tvList.getSelectionModel().getSelectedItem().getNombres());
+                ventaRealizadasController.getTxtVendedor().setText(tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                Tools.Dispose(apWindow);
+            }
+        } else if (postVentaRealizadasController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                postVentaRealizadasController.setIdEmpleado(tvList.getSelectionModel().getSelectedItem().getIdEmpleado());
+                postVentaRealizadasController.getTxtVendedor().setText(tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
+                Tools.Dispose(apWindow);
+            }
+        } else if (ingresosReporteController != null) {
+            if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+                ingresosReporteController.setVendorReporte(tvList.getSelectionModel().getSelectedItem().getIdEmpleado(), tvList.getSelectionModel().getSelectedItem().getApellidos() + " " + tvList.getSelectionModel().getSelectedItem().getNombres());
                 Tools.Dispose(apWindow);
             }
         }
@@ -222,8 +248,20 @@ public class FxEmpleadosListaController implements Initializable {
         this.ventaReporteController = ventaReporteController;
     }
 
+    public void setInitPostReporteController(FxPosReporteController posReporteController) {
+        this.posReporteController = posReporteController;
+    }
+
     public void setInitVentaRealizadasController(FxVentaRealizadasController ventaRealizadasController) {
         this.ventaRealizadasController = ventaRealizadasController;
+    }
+
+    public void setInitPostVentaRealizadasController(FxPostVentaRealizadasController postVentaRealizadasController) {
+        this.postVentaRealizadasController = postVentaRealizadasController;
+    }
+
+    public void setInitIngresosReporteController(FxIngresosReporteController ingresosReporteController) {
+        this.ingresosReporteController = ingresosReporteController;
     }
 
 }

@@ -10,6 +10,7 @@ import controller.operaciones.cotizacion.FxCotizacionModalController;
 import controller.operaciones.guiaremision.FxGuiaRemisionController;
 import controller.operaciones.pedidos.FxPedidosController;
 import controller.operaciones.pedidos.FxPedidosModalController;
+import controller.posterminal.venta.FxPostVentaEstructuraController;
 import controller.produccion.producir.FxProducirAgregarController;
 import controller.tools.FilesRouters;
 import controller.tools.Tools;
@@ -90,6 +91,8 @@ public class FxSuministrosListaController implements Initializable {
     private FxSuministrosKardexController suministrosKardexController;
 
     private FxVentaEstructuraController ventaEstructuraController;
+
+    private FxPostVentaEstructuraController postVentaEstructuraController;
 
     private FxVentaUtilidadesController ventaUtilidadesController;
 
@@ -421,7 +424,9 @@ public class FxSuministrosListaController implements Initializable {
 
     private void executeEvent() {
         if (ventaEstructuraController != null) {
-            addArticuloToList();
+            addVentaToList();
+        } else if (postVentaEstructuraController != null) {
+            addPostVentaToList();
         } else if (cotizacionController != null) {
             addCotizacion();
             txtSearch.requestFocus();
@@ -494,7 +499,7 @@ public class FxSuministrosListaController implements Initializable {
         return ret;
     }
 
-    private void addArticuloToList() {
+    private void addVentaToList() {
         if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
             if (ventaEstructuraController.isVender_con_cantidades_negativas() && tvList.getSelectionModel().getSelectedItem().getCantidad() <= 0) {
                 Tools.AlertMessageWarning(apWindow, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
@@ -563,6 +568,75 @@ public class FxSuministrosListaController implements Initializable {
         }
     }
 
+    private void addPostVentaToList() {
+        if (tvList.getSelectionModel().getSelectedIndex() >= 0) {
+            if (postVentaEstructuraController.isVender_con_cantidades_negativas() && tvList.getSelectionModel().getSelectedItem().getCantidad() <= 0) {
+                Tools.AlertMessageWarning(apWindow, "Venta", "No puede agregar el producto ya que tiene la cantidad <= 0.");
+                return;
+            }
+            SuministroTB suministroTB = new SuministroTB();
+            suministroTB.setIdSuministro(tvList.getSelectionModel().getSelectedItem().getIdSuministro());
+            suministroTB.setClave(tvList.getSelectionModel().getSelectedItem().getClave());
+            suministroTB.setNombreMarca(tvList.getSelectionModel().getSelectedItem().getNombreMarca());
+            suministroTB.setCantidad(1);
+            suministroTB.setCostoCompra(tvList.getSelectionModel().getSelectedItem().getCostoCompra());
+            suministroTB.setBonificacion(0);
+
+            double valor_sin_impuesto = tvList.getSelectionModel().getSelectedItem().getPrecioVentaGeneral() / ((tvList.getSelectionModel().getSelectedItem().getImpuestoValor() / 100.00) + 1);
+            double descuento = suministroTB.getDescuento();
+            double porcentajeRestante = valor_sin_impuesto * (descuento / 100.00);
+            double preciocalculado = valor_sin_impuesto - porcentajeRestante;
+
+            suministroTB.setDescuento(0);
+            suministroTB.setDescuentoCalculado(0);
+            suministroTB.setDescuentoSumado(0);
+
+            suministroTB.setPrecioVentaGeneralUnico(valor_sin_impuesto);
+            suministroTB.setPrecioVentaGeneralReal(preciocalculado);
+
+            suministroTB.setImpuestoOperacion(tvList.getSelectionModel().getSelectedItem().getImpuestoOperacion());
+            suministroTB.setImpuestoId(tvList.getSelectionModel().getSelectedItem().getImpuestoId());
+            suministroTB.setImpuestoNombre(tvList.getSelectionModel().getSelectedItem().getImpuestoNombre());
+            suministroTB.setImpuestoValor(tvList.getSelectionModel().getSelectedItem().getImpuestoValor());
+
+            double impuesto = Tools.calculateTax(suministroTB.getImpuestoValor(), suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImpuestoSumado(suministroTB.getCantidad() * impuesto);
+            suministroTB.setPrecioVentaGeneral(suministroTB.getPrecioVentaGeneralReal() + impuesto);
+            suministroTB.setPrecioVentaGeneralAuxiliar(suministroTB.getPrecioVentaGeneral());
+
+            suministroTB.setImporteBruto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralUnico());
+            suministroTB.setSubImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneralReal());
+            suministroTB.setImporteNeto(suministroTB.getCantidad() * suministroTB.getPrecioVentaGeneral());
+
+            suministroTB.setInventario(tvList.getSelectionModel().getSelectedItem().isInventario());
+            suministroTB.setUnidadVenta(tvList.getSelectionModel().getSelectedItem().getUnidadVenta());
+            suministroTB.setValorInventario(tvList.getSelectionModel().getSelectedItem().getValorInventario());
+
+            Button button = new Button("X");
+            button.getStyleClass().add("buttonDark");
+            button.setOnAction(e -> {
+                postVentaEstructuraController.getTvList().getItems().remove(suministroTB);
+                postVentaEstructuraController.calculateTotales();
+            });
+            button.setOnKeyPressed(e -> {
+                if (e.getCode() == KeyCode.ENTER) {
+                    postVentaEstructuraController.getTvList().getItems().remove(suministroTB);
+                    postVentaEstructuraController.calculateTotales();
+                }
+            });
+            suministroTB.setBtnRemove(button);
+            if (postVentaEstructuraController.isCerar_modal_agregar_item_lista()) {
+                Tools.Dispose(apWindow);
+                postVentaEstructuraController.getAddArticulo(suministroTB, postVentaEstructuraController.getWindow().getScene().getWindow());
+            } else {
+                txtSearch.selectAll();
+                txtSearch.requestFocus();
+                postVentaEstructuraController.getAddArticulo(suministroTB, apWindow.getScene().getWindow());
+            }
+
+        }
+    }
+    
     private void openWindowAddSuministro() {
         try {
             URL url = getClass().getResource(FilesRouters.FX_SUMINISTROS_PROCESO_MODAL);
@@ -772,6 +846,10 @@ public class FxSuministrosListaController implements Initializable {
 
     public void setInitVentaEstructuraController(FxVentaEstructuraController ventaEstructuraController) {
         this.ventaEstructuraController = ventaEstructuraController;
+    }
+
+    public void setInitPostVentaEstructuraController(FxPostVentaEstructuraController postVentaEstructuraController) {
+        this.postVentaEstructuraController = postVentaEstructuraController;
     }
 
     public void setInitVentaUtilidadesController(FxVentaUtilidadesController ventaUtilidadesController) {

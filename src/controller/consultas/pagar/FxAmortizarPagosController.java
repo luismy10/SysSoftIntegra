@@ -1,6 +1,5 @@
-package controller.operaciones.compras;
+package controller.consultas.pagar;
 
-import controller.consultas.pagar.FxCuentasPorPagarVisualizarController;
 import controller.tools.Session;
 import controller.tools.Tools;
 import java.net.URL;
@@ -10,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -20,14 +18,10 @@ import javafx.scene.layout.AnchorPane;
 import model.BancoADO;
 import model.BancoHistorialTB;
 import model.BancoTB;
-import model.CajaADO;
-import model.CajaTB;
 import model.CompraADO;
 import model.CompraCreditoTB;
+import model.IngresoTB;
 import model.ModeloObject;
-import model.MovimientoCajaTB;
-import model.VentaADO;
-import model.VentaCreditoTB;
 
 public class FxAmortizarPagosController implements Initializable {
 
@@ -36,17 +30,13 @@ public class FxAmortizarPagosController implements Initializable {
     @FXML
     private TextField txtMonto;
     @FXML
-    private DatePicker dtFecha;
-    @FXML
     private ComboBox<BancoTB> cbCuenta;
     @FXML
     private Button btnGuardar;
     @FXML
-    private Button btnCancelar;
-    @FXML
     private RadioButton rbBancos;
     @FXML
-    private RadioButton rbCaja;
+    private RadioButton rbEgreso;
     @FXML
     private TextField txtObservacion;
 
@@ -57,11 +47,10 @@ public class FxAmortizarPagosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(apWindow, KeyEvent.KEY_RELEASED);
-        Tools.actualDate(Tools.getDate(), dtFecha);
         BancoADO.GetBancoComboBox().forEach(e -> cbCuenta.getItems().add(new BancoTB(e.getIdBanco(), e.getNombreCuenta())));
         ToggleGroup toggleGroup = new ToggleGroup();
         rbBancos.setToggleGroup(toggleGroup);
-        rbCaja.setToggleGroup(toggleGroup);
+        rbEgreso.setToggleGroup(toggleGroup);
     }
 
     public void setInitValues(String idCompra) {
@@ -90,7 +79,7 @@ public class FxAmortizarPagosController implements Initializable {
                         CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
                         compraCreditoTB.setIdCompra(idCompra);
                         compraCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
-                        compraCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
+                        compraCreditoTB.setFechaPago(Tools.getDate());
                         compraCreditoTB.setHoraPago(Tools.getTime());
                         compraCreditoTB.setEstado(true);
                         compraCreditoTB.setIdEmpleado(Session.USER_ID);
@@ -98,7 +87,7 @@ public class FxAmortizarPagosController implements Initializable {
 
                         BancoHistorialTB bancoHistorialTB = new BancoHistorialTB();
                         bancoHistorialTB.setIdBanco(cbCuenta.getSelectionModel().getSelectedItem().getIdBanco());
-                        bancoHistorialTB.setDescripcion("SALIDA DE DINERO POR CUENTAS POR PAGAR".toUpperCase());
+                        bancoHistorialTB.setDescripcion("SALIDA DE DINERO POR CUENTAS POR PAGAR");
                         bancoHistorialTB.setFecha(Tools.getDate());
                         bancoHistorialTB.setHora(Tools.getTime());
                         bancoHistorialTB.setEntrada(0);
@@ -121,40 +110,53 @@ public class FxAmortizarPagosController implements Initializable {
             } else {
                 short value = Tools.AlertMessageConfirmation(apWindow, "Abonar", "¿Está seguro de continuar?");
                 if (value == 1) {
-
                     btnGuardar.setDisable(true);
-                    CajaTB cajaTB = CajaADO.ValidarCreacionCaja(Session.USER_ID);
-                    if (cajaTB.getId() == 2) {
-                        CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
-                        compraCreditoTB.setIdCompra(idCompra);
-                        compraCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
-                        compraCreditoTB.setFechaPago(Tools.getDatePicker(dtFecha));
-                        compraCreditoTB.setHoraPago(Tools.getTime());
-                        compraCreditoTB.setEstado(true);
-                        compraCreditoTB.setIdEmpleado(Session.USER_ID);
-                        compraCreditoTB.setObservacion(txtObservacion.getText().trim());
+                    CompraCreditoTB compraCreditoTB = new CompraCreditoTB();
+                    compraCreditoTB.setIdCompra(idCompra);
+                    compraCreditoTB.setMonto(Double.parseDouble(txtMonto.getText()));
+                    compraCreditoTB.setFechaPago(Tools.getDate());
+                    compraCreditoTB.setHoraPago(Tools.getTime());
+                    compraCreditoTB.setEstado(true);
+                    compraCreditoTB.setIdEmpleado(Session.USER_ID);
+                    compraCreditoTB.setObservacion(txtObservacion.getText().trim());
 
-                        MovimientoCajaTB movimientoCajaTB = new MovimientoCajaTB();
-                        movimientoCajaTB.setIdCaja(cajaTB.getIdCaja());
-                        movimientoCajaTB.setFechaMovimiento(Tools.getDate());
-                        movimientoCajaTB.setHoraMovimiento(Tools.getTime());
-                        movimientoCajaTB.setComentario("SALIDA DE DINERO DE LA CUENTA POR PAGAR");
-                        movimientoCajaTB.setTipoMovimiento((short) 5);
-                        movimientoCajaTB.setMonto(Double.parseDouble(txtMonto.getText()));
+                    /*
+                    procedencia
+                    1 = venta
+                    2 = compra
+                    
+                    3 = ingreso libre
+                    4 = salida libre
+                    
+                    5 = ingreso cuentas por cobrar
+                    6 = salida cuentas por pagar
+                     */
 
-                        ModeloObject result = CompraADO.Registrar_Amortizacion(compraCreditoTB, null, movimientoCajaTB);
-                        if (result.getState().equalsIgnoreCase("inserted")) {
-                            Tools.Dispose(apWindow);
-                            cuentasPorPagarVisualizarController.openModalImpresion(idCompra, result.getIdResult());
-                            cuentasPorPagarVisualizarController.loadTableCompraCredito(idCompra);
-                        } else if (result.getState().equalsIgnoreCase("error")) {
-                            Tools.AlertMessageWarning(apWindow, "Abonar", result.getMessage());
-                        } else {
-                            Tools.AlertMessageError(apWindow, "Abonar", "No se completo el proceso por problemas de conexión.");
-                            btnGuardar.setDisable(false);
-                        }
+ /*
+                    forma
+                    1 = efectivo
+                    2 = tarjeta
+                     */
+                    IngresoTB ingresoTB = new IngresoTB();
+                    ingresoTB.setIdProcedencia("");
+                    ingresoTB.setIdUsuario(Session.USER_ID);
+                    ingresoTB.setDetalle("SALIDA DE DINERO POR CUENTAS POR PAGAR");
+                    ingresoTB.setProcedencia(6);
+                    ingresoTB.setFecha(Tools.getDate());
+                    ingresoTB.setHora(Tools.getTime());
+                    ingresoTB.setForma(1);
+                    ingresoTB.setMonto(Double.parseDouble(txtMonto.getText()));
+
+                    ModeloObject result = CompraADO.Registrar_Amortizacion(compraCreditoTB, null, ingresoTB);
+                    if (result.getState().equalsIgnoreCase("inserted")) {
+                        Tools.Dispose(apWindow);
+                        cuentasPorPagarVisualizarController.openModalImpresion(idCompra, result.getIdResult());
+                        cuentasPorPagarVisualizarController.loadTableCompraCredito(idCompra);
+                    } else if (result.getState().equalsIgnoreCase("error")) {
+                        Tools.AlertMessageWarning(apWindow, "Abonar", result.getMessage());
+                        btnGuardar.setDisable(false);
                     } else {
-                        Tools.AlertMessageWarning(apWindow, "Abonar", "No se tiene una caja apertura para realizar el cobro.");
+                        Tools.AlertMessageError(apWindow, "Abonar", "No se completo el proceso por problemas de conexión.");
                         btnGuardar.setDisable(false);
                     }
                 }
@@ -179,7 +181,7 @@ public class FxAmortizarPagosController implements Initializable {
     }
 
     @FXML
-    private void onActionCaja(ActionEvent event) {
+    private void onActionEgreso(ActionEvent event) {
         cbCuenta.setDisable(true);
     }
 

@@ -104,7 +104,7 @@
                         <TableView fx:id="tvList" onKeyPressed="#onKeyPressedList" onMouseClicked="#onMouseClickedList" prefHeight="320.0" styleClass="table-view-principal" HBox.hgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="tcNumero" prefWidth="50.0" style="-fx-alignment: center;" text="N°" />
-                              <TableColumn fx:id="tcFecha" prefWidth="160.0" style="-fx-alignment: center;" text="Fecha de Venta" />
+                              <TableColumn fx:id="tcFecha" prefWidth="140.0" style="-fx-alignment: center;" text="Fecha de Venta" />
                               <TableColumn fx:id="tcComprobante" prefWidth="160.0" style="-fx-alignment: center-left;" text="Comprobante" />
                               <TableColumn fx:id="tcCliente" prefWidth="250.0" style="-fx-alignment: center-left;" text="Cliente" />
                               <TableColumn fx:id="tcEstado" prefWidth="160.0" style="-fx-alignment: center-left;" text="Estado" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a629070-32bd-40c6-81a0-c9f68832968f">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="175"/>
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="PERIODO" class="java.lang.String"/>
@@ -31,7 +31,7 @@
 	<title>
 		<band height="90" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Opaque" x="0" y="0" width="555" height="90" backcolor="#373B46" uuid="bd5dd74c-dddf-44f3-aa4e-d590aef25368"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="90" backcolor="#020203" uuid="bd5dd74c-dddf-44f3-aa4e-d590aef25368"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
@@ -81,7 +81,7 @@
 	<columnHeader>
 		<band height="21" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="555" height="21" backcolor="#373B46" uuid="04f59c7d-7bd0-40b1-89f8-bf9cd86e1c5b"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="21" backcolor="#020203" uuid="04f59c7d-7bd0-40b1-89f8-bf9cd86e1c5b"/>
 			</frame>
 			<staticText>
 				<reportElement x="347" y="0" width="70" height="20" forecolor="#FFFFFF" uuid="59c2d91b-a10d-4032-aaca-cbebc9a85cb9"/>

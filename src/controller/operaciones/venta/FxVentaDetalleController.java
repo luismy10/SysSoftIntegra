@@ -413,7 +413,7 @@ public class FxVentaDetalleController implements Initializable {
     private Label addLabelTotal(String nombre, Pos pos) {
         Label label = new Label(nombre);
         label.setStyle("-fx-text-fill:#0771d3;");
-        label.getStyleClass().add("labelRobotoMedium15");
+        label.getStyleClass().add("labelRoboto15");
         label.setAlignment(pos);
         label.setMinWidth(Control.USE_COMPUTED_SIZE);
         label.setMinHeight(Control.USE_COMPUTED_SIZE);
@@ -509,7 +509,6 @@ public class FxVentaDetalleController implements Initializable {
     private JasperPrint reportA4(ArrayList<SuministroTB> list) throws JRException {
 
         InputStream imgInputStreamIcon = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
-
         InputStream imgInputStream = getClass().getResourceAsStream(FilesRouters.IMAGE_LOGO);
 
         if (Session.COMPANY_IMAGE != null) {

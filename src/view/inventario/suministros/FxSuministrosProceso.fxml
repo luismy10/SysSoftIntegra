@@ -518,16 +518,6 @@
                                                 <CheckBox fx:id="cbLote" mnemonicParsing="false" styleClass="check-box-contenido" text="Lote (Indica si manejara un control de lotes y caducidades para este artículo)" />
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <CheckBox fx:id="cbVentaControlada" mnemonicParsing="false" styleClass="check-box-contenido" text="Venta controlada (Indica que se maneja un control de su salida con un documento como una recete medica)" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" style="-fx-spacing: 0.8333333333333334em;">
-                                             <children>
-                                                <CheckBox fx:id="cbProductoEstrella" mnemonicParsing="false" styleClass="check-box-contenido" text="Producto Estrella (Producto que nunca debe falta en el inventario)" />
-                                             </children>
-                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a8fcc85-bb64-405d-8ebb-a9f118fce454">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="295"/>
+	<property name="ireport.y" value="4"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="style1" mode="Opaque" backcolor="#CCCCCC" fill="Solid" isBold="true"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
@@ -42,12 +42,16 @@
 	<field name="importeNeto" class="java.lang.Double"/>
 	<background>
 		<band height="802">
-			<rectangle>
-				<reportElement x="0" y="0" width="555" height="802" forecolor="#1A2226" uuid="8893b563-12d9-4c5a-934c-b78e2f7d4a8a"/>
-				<graphicElement>
-					<pen lineWidth="0.25" lineColor="#373B46"/>
-				</graphicElement>
-			</rectangle>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="802" forecolor="#1A2226" uuid="ea3108ca-a100-45b2-97aa-f91f0178d40b"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#020203"/>
+					<topPen lineWidth="1.0" lineColor="#020203"/>
+					<leftPen lineWidth="1.0" lineColor="#020203"/>
+					<bottomPen lineWidth="1.0" lineColor="#020203"/>
+					<rightPen lineWidth="1.0" lineColor="#020203"/>
+				</box>
+			</frame>
 		</band>
 	</background>
 	<title>
@@ -58,18 +62,26 @@
 					<pen lineWidth="0.25" lineColor="#373B46"/>
 				</graphicElement>
 			</rectangle>
-			<rectangle>
-				<reportElement x="345" y="0" width="210" height="90" backcolor="#FE3152" uuid="6d509428-6887-4106-851b-99ff7fbcb677"/>
-				<graphicElement>
-					<pen lineWidth="0.0" lineColor="#373B46"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="0" y="0" width="345" height="90" backcolor="#373B46" uuid="19032309-773d-4f69-b43f-645505f281cc"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
+			<frame>
+				<reportElement x="345" y="0" width="210" height="90" backcolor="#FFFFFF" uuid="16905bbb-c033-4280-903c-663ab0fdfcc6"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#020203"/>
+					<topPen lineWidth="1.0" lineColor="#020203"/>
+					<leftPen lineWidth="1.0" lineColor="#020203"/>
+					<bottomPen lineWidth="1.0" lineColor="#020203"/>
+					<rightPen lineWidth="1.0" lineColor="#020203"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="345" height="90" backcolor="#020203" uuid="f7299edd-a386-443d-90fe-00c092e416f3"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#020203"/>
+					<topPen lineWidth="1.0" lineColor="#020203"/>
+					<leftPen lineWidth="1.0" lineColor="#020203"/>
+					<bottomPen lineWidth="1.0" lineColor="#020203"/>
+					<rightPen lineWidth="1.0" lineColor="#020203"/>
+				</box>
+			</frame>
 			<textField isStretchWithOverflow="true">
 				<reportElement mode="Transparent" x="100" y="0" width="245" height="47" forecolor="#F0F3FC" uuid="44fb73db-b8df-4a61-92b0-8196ea1731d7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -106,21 +118,21 @@
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="345" y="11" width="210" height="17" forecolor="#FFFFFF" uuid="70cd6cb4-a02e-455b-9925-c9b1fe642190"/>
+				<reportElement x="345" y="11" width="210" height="17" forecolor="#020203" uuid="70cd6cb4-a02e-455b-9925-c9b1fe642190"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial Black" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{DOCUMENTOEMPRESA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="345" y="36" width="210" height="17" forecolor="#F0F3FC" uuid="87d8bd70-0ba2-4e03-8a3a-47f4e390f4e2"/>
+				<reportElement x="345" y="36" width="210" height="17" forecolor="#020203" uuid="87d8bd70-0ba2-4e03-8a3a-47f4e390f4e2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial Black" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NOMBREDOCUMENTO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="345" y="61" width="210" height="17" forecolor="#F0F3FC" uuid="9862e5ed-ce05-4bd2-9045-3b814b182b6c"/>
+				<reportElement x="345" y="61" width="210" height="17" forecolor="#020203" uuid="9862e5ed-ce05-4bd2-9045-3b814b182b6c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial Black" size="10"/>
 				</textElement>
@@ -140,7 +152,7 @@
 				<textFieldExpression><![CDATA[$P{DATOSCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="110" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="7f9cb32e-75e7-423c-bade-b3b4418af6ed"/>
+				<reportElement mode="Opaque" x="0" y="110" width="75" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="7f9cb32e-75e7-423c-bade-b3b4418af6ed"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -154,7 +166,7 @@
 				<text><![CDATA[CLIENTE:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="90" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="6d17f7bf-cb0e-4168-afad-3001841fb889"/>
+				<reportElement mode="Opaque" x="0" y="90" width="75" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="6d17f7bf-cb0e-4168-afad-3001841fb889"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -182,7 +194,7 @@
 				<textFieldExpression><![CDATA[$P{NUMERODOCUMENTOCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="150" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="e4b9e70d-8b1c-4a30-83b7-8bae8d155ddc"/>
+				<reportElement mode="Opaque" x="0" y="150" width="75" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="e4b9e70d-8b1c-4a30-83b7-8bae8d155ddc"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -209,7 +221,7 @@
 				<textFieldExpression><![CDATA[$P{CELULARCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="233" y="150" width="55" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="b63ce981-d651-435a-a071-ee53f10a05fe"/>
+				<reportElement mode="Opaque" x="233" y="150" width="55" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="b63ce981-d651-435a-a071-ee53f10a05fe"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -236,7 +248,7 @@
 				<textFieldExpression><![CDATA[$P{EMAILCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="130" width="75" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="94d83c1c-9336-4b35-acbc-4646270b868b"/>
+				<reportElement mode="Opaque" x="0" y="130" width="75" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="94d83c1c-9336-4b35-acbc-4646270b868b"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -263,7 +275,7 @@
 				<textFieldExpression><![CDATA[$P{DIRECCIONCLIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="435" y="90" width="120" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="8ca9262e-2956-4b18-9869-caffc85508a5"/>
+				<reportElement mode="Opaque" x="435" y="90" width="120" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="8ca9262e-2956-4b18-9869-caffc85508a5"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -302,7 +314,7 @@
 				<textFieldExpression><![CDATA[$P{MONEDA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="435" y="130" width="120" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="5eb596f4-5ecd-4689-bfaa-dc30d6e48be6"/>
+				<reportElement mode="Opaque" x="435" y="130" width="120" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="5eb596f4-5ecd-4689-bfaa-dc30d6e48be6"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -315,7 +327,7 @@
 				<text><![CDATA[MODENA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="30" y="190" width="65" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="33a0feb5-6aa6-485a-a559-20cb348dccfc">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="30" y="190" width="65" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="33a0feb5-6aa6-485a-a559-20cb348dccfc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
 				</reportElement>
 				<box>
@@ -330,7 +342,7 @@
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="95" y="190" width="70" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="8a7b8cc6-3961-474c-bab3-c266cdb600ea">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="95" y="190" width="70" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="8a7b8cc6-3961-474c-bab3-c266cdb600ea">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3da7e1ae-407f-4aa8-93f4-73f7353846ed"/>
 				</reportElement>
 				<box>
@@ -345,7 +357,7 @@
 				<text><![CDATA[Unidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="165" y="190" width="210" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="5798831c-301d-43d7-815c-70cc94ba5294">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="165" y="190" width="210" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="5798831c-301d-43d7-815c-70cc94ba5294">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
 				</reportElement>
 				<box>
@@ -360,7 +372,7 @@
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="375" y="190" width="60" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="8af29ce9-fae3-40bb-80d6-4af10d636236">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="375" y="190" width="60" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="8af29ce9-fae3-40bb-80d6-4af10d636236">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
 				</reportElement>
 				<box>
@@ -375,7 +387,7 @@
 				<text><![CDATA[Precio Unit.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="435" y="190" width="60" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="e818dc12-1f16-42ab-8550-3a0b3693b10e">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="435" y="190" width="60" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="e818dc12-1f16-42ab-8550-3a0b3693b10e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a409c07-f7c6-4edc-a1fd-bcf829901b1f"/>
 				</reportElement>
 				<box>
@@ -390,7 +402,7 @@
 				<text><![CDATA[Descuento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="495" y="190" width="60" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="794abf25-8b5e-40f8-b5ea-b294589eb1ef">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="495" y="190" width="60" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="794abf25-8b5e-40f8-b5ea-b294589eb1ef">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f447245-6fd4-47a4-bfe9-577f89507046"/>
 				</reportElement>
 				<box>
@@ -405,7 +417,7 @@
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="190" width="30" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="ead45d6a-c323-4445-a941-83abd281c1ad">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="190" width="30" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="ead45d6a-c323-4445-a941-83abd281c1ad">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69abe7fe-4546-4e75-929f-a504af6d82c8"/>
 				</reportElement>
 				<box>
@@ -420,7 +432,7 @@
 				<text><![CDATA[Item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="170" width="115" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="b64e9d2d-db5a-4254-b707-4c26377a81f4"/>
+				<reportElement mode="Opaque" x="0" y="170" width="115" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="b64e9d2d-db5a-4254-b707-4c26377a81f4"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -434,7 +446,7 @@
 				<text><![CDATA[DOCUMENTO DE REFERENCIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="233" y="170" width="131" height="20" forecolor="#F0F3FC" backcolor="#373B46" uuid="8b7b6192-0dd2-4db2-bdfa-efb5fc931c78"/>
+				<reportElement mode="Opaque" x="233" y="170" width="131" height="20" forecolor="#F0F3FC" backcolor="#020203" uuid="8b7b6192-0dd2-4db2-bdfa-efb5fc931c78"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -610,7 +622,7 @@
 				<textFieldExpression><![CDATA["SON: "+$P{VALORSOLES}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="335" y="20" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="b1baf618-4853-48a2-95e2-fde2363172c2"/>
+				<reportElement mode="Opaque" x="335" y="20" width="100" height="16" forecolor="#F0F3FC" backcolor="#020203" uuid="b1baf618-4853-48a2-95e2-fde2363172c2"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
@@ -625,7 +637,7 @@
 				<text><![CDATA[IMPORTE BRUTO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="335" y="36" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="c19a7b74-ee51-442d-befc-502754ce2f6c"/>
+				<reportElement mode="Opaque" x="335" y="36" width="100" height="16" forecolor="#F0F3FC" backcolor="#020203" uuid="c19a7b74-ee51-442d-befc-502754ce2f6c"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -639,7 +651,7 @@
 				<text><![CDATA[DESCUENTO TOTAL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="335" y="52" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="b654c53b-4953-43a5-88a8-42be0b63995e"/>
+				<reportElement mode="Opaque" x="335" y="52" width="100" height="16" forecolor="#F0F3FC" backcolor="#020203" uuid="b654c53b-4953-43a5-88a8-42be0b63995e"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -692,7 +704,14 @@
 Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="284" y="104" width="271" height="37" forecolor="#F0F3FC" backcolor="#FE3152" uuid="c885ce9a-ee8e-4214-b6b2-4dad818ea73e"/>
+				<reportElement mode="Opaque" x="284" y="104" width="271" height="37" forecolor="#020203" backcolor="#FFFFFF" uuid="c885ce9a-ee8e-4214-b6b2-4dad818ea73e"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#020203"/>
+					<topPen lineWidth="1.0" lineColor="#020203"/>
+					<leftPen lineWidth="1.0" lineColor="#020203"/>
+					<bottomPen lineWidth="1.0" lineColor="#020203"/>
+					<rightPen lineWidth="1.0" lineColor="#020203"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="13"/>
 				</textElement>
@@ -747,7 +766,7 @@ Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 				<textFieldExpression><![CDATA[$P{SUB_IMPORTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="335" y="84" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="7cbd56d3-bd14-4c15-8b8b-3c050add7716"/>
+				<reportElement mode="Opaque" x="335" y="84" width="100" height="16" forecolor="#F0F3FC" backcolor="#020203" uuid="7cbd56d3-bd14-4c15-8b8b-3c050add7716"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -777,7 +796,7 @@ Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 				<textFieldExpression><![CDATA[$P{IMPORTE_TOTAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="335" y="68" width="100" height="16" forecolor="#F0F3FC" backcolor="#373B46" uuid="19a62b92-98b0-401b-a5f4-5face941fd21"/>
+				<reportElement mode="Opaque" x="335" y="68" width="100" height="16" forecolor="#F0F3FC" backcolor="#020203" uuid="19a62b92-98b0-401b-a5f4-5face941fd21"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#373B46"/>
 					<leftPen lineWidth="0.25" lineColor="#373B46"/>
@@ -816,7 +835,7 @@ Para consultar el Documento ingrese a: www.sunat.pe]]></text>
 )]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="122" width="284" height="19" forecolor="#F0F3FC" backcolor="#373B46" uuid="4f2bf4c2-debc-455a-a60d-77af24aa770a"/>
+				<reportElement mode="Opaque" x="0" y="122" width="284" height="19" forecolor="#F0F3FC" backcolor="#020203" uuid="4f2bf4c2-debc-455a-a60d-77af24aa770a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
