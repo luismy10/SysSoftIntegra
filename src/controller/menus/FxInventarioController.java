@@ -168,12 +168,6 @@ public class FxInventarioController implements Initializable {
         }
 
         if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
-
-        } else {
-
-        }
-
-        if (subMenusTBs.get(6).getIdSubMenu() != 0 && !subMenusTBs.get(6).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnLote);
         } else {
 

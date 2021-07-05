@@ -224,21 +224,28 @@ public class FxPrincipalController implements Initializable {
                 if (menuTBs.get(4).getIdMenu() != 0 && !menuTBs.get(4).isEstado()) {
                     hbMenus.getChildren().remove(btnProduccion);
                 }
-                //OPERACIONES CONTACTOS
+
+                //OPERACIONES POS TERMINAL
                 if (menuTBs.get(5).getIdMenu() != 0 && !menuTBs.get(5).isEstado()) {
+                    hbMenus.getChildren().remove(btnReportes);
+                } else {
+                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(5).getIdMenu());
+                    posTerminalController.loadSubMenus(subMenusTBs);
+                }
+
+                //OPERACIONES CONTACTOS
+                if (menuTBs.get(6).getIdMenu() != 0 && !menuTBs.get(6).isEstado()) {
                     hbMenus.getChildren().remove(btnContactos);
                 } else {
-                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(3).getIdMenu());
+                    ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(6).getIdMenu());
                     contactosController.loadSubMenus(subMenusTBs);
                 }
+
                 //OPERACIONES REPORTES
-                if (menuTBs.get(6).getIdMenu() != 0 && !menuTBs.get(6).isEstado()) {
-                    hbMenus.getChildren().remove(btnReportes);
-                }
-                //OPERACIONES POS TERMINAL
                 if (menuTBs.get(7).getIdMenu() != 0 && !menuTBs.get(7).isEstado()) {
                     hbMenus.getChildren().remove(btnPosTerminal);
                 }
+
                 //OPERACIONES CONFIGURACIÓN
                 if (menuTBs.get(8).getIdMenu() != 0 && !menuTBs.get(8).isEstado()) {
                     hbMenus.getChildren().remove(btnConfiguracion);

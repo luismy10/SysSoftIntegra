@@ -8,6 +8,7 @@ import controller.operaciones.pedidos.FxPedidosController;
 import controller.operaciones.venta.FxVentaController;
 import controller.tools.FilesRouters;
 import controller.tools.Session;
+import controller.tools.Tools;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -96,7 +97,7 @@ public class FxOperacionesController implements Initializable {
     private ScrollPane nodeGuiaRemision;
 
     private FxGuiaRemisionController controllerGuiaRemision;
-    
+
     /*
     Controller corte de caja
      */
@@ -166,21 +167,18 @@ public class FxOperacionesController implements Initializable {
         }
 
         if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCotizacion);
+            hbOperacionesUno.getChildren().remove(btnCompras);
+        } else {
+            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(1).getIdSubMenu());
+            controllerCompras.loadPrivilegios(privilegioTBs);
         }
 
         if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCompras);
-        } else {
-            ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(2).getIdSubMenu());
-            controllerCompras.loadPrivilegios(privilegioTBs);
+            hbOperacionesUno.getChildren().remove(btnCotizacion);
         }
 
         if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnGuiaRemision);
-        } else {
-            //ObservableList<PrivilegioTB> privilegioTBs = MenuADO.GetPrivilegios(Session.USER_ROL, subMenusTBs.get(3).getIdSubMenu());
-//            controllerCorteCaja.loadPrivilegios(privilegioTBs);
         }
 
         if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
