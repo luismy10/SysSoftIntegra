@@ -194,7 +194,6 @@ public class FxPrincipalController implements Initializable {
 
             task.setOnSucceeded(e -> {
                 ObservableList<MenuTB> menuTBs = task.getValue();
-
                 //CONTROLADOR INICIO
                 if (menuTBs.get(0).getIdMenu() != 0 && !menuTBs.get(0).isEstado()) {
                     hbMenus.getChildren().remove(btnInicio);
@@ -227,7 +226,7 @@ public class FxPrincipalController implements Initializable {
 
                 //OPERACIONES POS TERMINAL
                 if (menuTBs.get(5).getIdMenu() != 0 && !menuTBs.get(5).isEstado()) {
-                    hbMenus.getChildren().remove(btnReportes);
+                    hbMenus.getChildren().remove(btnPosTerminal);
                 } else {
                     ObservableList<SubMenusTB> subMenusTBs = MenuADO.GetSubMenus(Session.USER_ROL, menuTBs.get(5).getIdMenu());
                     posTerminalController.loadSubMenus(subMenusTBs);
@@ -243,7 +242,7 @@ public class FxPrincipalController implements Initializable {
 
                 //OPERACIONES REPORTES
                 if (menuTBs.get(7).getIdMenu() != 0 && !menuTBs.get(7).isEstado()) {
-                    hbMenus.getChildren().remove(btnPosTerminal);
+                    hbMenus.getChildren().remove(btnReportes);
                 }
 
                 //OPERACIONES CONFIGURACIÓN

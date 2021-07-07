@@ -99,7 +99,7 @@ public class FxImpresoraEtiquetaController implements Initializable {
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
-        paper.setSize(converMmToPoint(widthEtiquetaMM), converMmToPoint(heightEtiquetaMM));
+        paper.setSize(converMmToPoint(widthEtiquetaMM), converMmToPoint(heightEtiquetaMM));        
         paper.setImageableArea(0, 0, pf.getWidth(), pf.getHeight());
         pf.setOrientation(orientacionEtiqueta);
         pf.setPaper(paper);

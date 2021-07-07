@@ -204,6 +204,7 @@ public class FxConsultasController implements Initializable {
     }
 
     public void loadSubMenus(ObservableList<SubMenusTB> subMenusTBs) {
+        
         if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnVentas);
         } else {
@@ -214,22 +215,39 @@ public class FxConsultasController implements Initializable {
         if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
             hbOperacionesUno.getChildren().remove(btnCompras);
         }
-
+        
         if (subMenusTBs.get(2).getIdSubMenu() != 0 && !subMenusTBs.get(2).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCorteCaja);
+            hbOperacionesUno.getChildren().remove(btnCotizaciones);
         }
-
+        
         if (subMenusTBs.get(3).getIdSubMenu() != 0 && !subMenusTBs.get(3).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCuentasPorCobrar);
+            hbOperacionesUno.getChildren().remove(btnGuiaRemision);
         }
 
         if (subMenusTBs.get(4).getIdSubMenu() != 0 && !subMenusTBs.get(4).isEstado()) {
-            hbOperacionesUno.getChildren().remove(btnCuentasPorPagar);
+            hbOperacionesUno.getChildren().remove(btnCorteCaja);
         }
 
         if (subMenusTBs.get(5).getIdSubMenu() != 0 && !subMenusTBs.get(5).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCuentasPorCobrar);
+        }
+
+        if (subMenusTBs.get(6).getIdSubMenu() != 0 && !subMenusTBs.get(6).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCuentasPorPagar);
+        }
+        
+        if (subMenusTBs.get(7).getIdSubMenu() != 0 && !subMenusTBs.get(7).isEstado()) {
+            hbOperacionesDos.getChildren().remove(btnPedidos);
+        }
+        
+        if (subMenusTBs.get(8).getIdSubMenu() != 0 && !subMenusTBs.get(8).isEstado()) {
+            hbOperacionesDos.getChildren().remove(btnNotaCredito);
+        }
+
+        if (subMenusTBs.get(9).getIdSubMenu() != 0 && !subMenusTBs.get(9).isEstado()) {
             hbOperacionesDos.getChildren().remove(btnBancos);
         }
+         
     }
 
     private void openWindowVentaRealizadas() {

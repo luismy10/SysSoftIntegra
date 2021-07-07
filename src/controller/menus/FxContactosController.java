@@ -68,17 +68,18 @@ public class FxContactosController implements Initializable {
     }
 
     public void loadSubMenus(ObservableList<SubMenusTB> subMenusTBs) {
-//        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnCliente);
-//        } else {
-//
-//        }
-//
-//        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
-//            hbOperacionesUno.getChildren().remove(btnProveedor);
-//        } else {
-//
-//        }
+        
+        if (subMenusTBs.get(0).getIdSubMenu() != 0 && !subMenusTBs.get(0).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnCliente);
+        } else {
+
+        }
+
+        if (subMenusTBs.get(1).getIdSubMenu() != 0 && !subMenusTBs.get(1).isEstado()) {
+            hbOperacionesUno.getChildren().remove(btnProveedor);
+        } else {
+
+        }
     }
 
     private void openWindowCostumer() {

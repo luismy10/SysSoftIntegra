@@ -1288,13 +1288,16 @@ public class FxEtiquetasController implements Initializable {
         public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
             if (pageIndex == 0) {
                 Graphics2D g2d = (Graphics2D) graphics;
+                 g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+                 
+                 
                 //CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
                 //ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
                 //g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
                 //g2d.drawString("hola mundo", 10, 10);
-                g2d.drawImage(bufferedImage, 5, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
-                //BufferedImage image = SwingFXUtils.fromFXImage(generateBarCode("12345678", new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16)), null);
-                //g2d.drawImage(image, 10, 10, 100,40,null);
+                g2d.drawImage(bufferedImage, 40, 20, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+//                BufferedImage image = SwingFXUtils.fromFXImage(generateBarCode("12345678", new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16)), null);
+//                g2d.drawImage(image, 0, 20, (int) converMmToPoint(30),(int) converMmToPoint(20),null);
                 g2d.dispose();
                 return (PAGE_EXISTS);
             } else {
