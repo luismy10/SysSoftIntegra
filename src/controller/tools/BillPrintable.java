@@ -577,7 +577,6 @@ public class BillPrintable implements Printable {
                                     break;
                             }
                         }
-
                     }
                 } else {
                     rowscount = linescount;
@@ -646,37 +645,37 @@ public class BillPrintable implements Printable {
             //RobotoRegular"
             //"RobotoBold
 
-            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D gimage = image.createGraphics();
+//            BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
+//            Graphics2D gimage = image.createGraphics();
             Graphics2D g2d = (Graphics2D) graphics;
             double width = pageFormat.getImageableWidth();
 
             g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-            gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+//            gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
 
-            gimage.setColor(Color.white);
-            gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
-            gimage.setPaint(Color.black);
+//            gimage.setColor(Color.white);
+//            gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
+//            gimage.setPaint(Color.black);
             g2d.setPaint(Color.black);
 
-            y = createRow(apEncabezado, g2d, gimage, width, y);
-            y = createRow(apDetalle, g2d,gimage, width, y);
-            createRow(apPie, g2d, gimage, width, y);
+            y = createRow(apEncabezado, g2d/*,gimage*/, width, y);
+            y = createRow(apDetalle, g2d/*,gimage*/, width, y);
+            createRow(apPie, g2d/*, gimage*/, width, y);
 
             graphics.dispose();
-            gimage.dispose();
-            try {
-                ImageIO.write(image, "png", new File("yourImageName.png"));
-            } catch (IOException ex) {
-                System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
-            }
+//            gimage.dispose();
+//            try {
+//                ImageIO.write(image, "png", new File("yourImageName.png"));
+//            } catch (IOException ex) {
+//                System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
+//            }
             return PAGE_EXISTS;
         } else {
             return NO_SUCH_PAGE;
         }
     }
 
-    private int createRow(AnchorPane anchorPane, Graphics2D g2d, Graphics2D gimage, double width, int y) {
+    private int createRow(AnchorPane anchorPane, Graphics2D g2d/*, Graphics2D*/, double width, int y) {
         if (anchorPane == null) {
             return y;
         }
@@ -687,7 +686,7 @@ public class BillPrintable implements Printable {
                 int yMax = 0;
                 int yAux = 0;
                 int xPos = 0;
-                int yPos = 0;
+                int yPos;
                 yPos = y;
                 for (int j = 0; j < box.getChildren().size(); j++) {
                     TextFieldTicket field = (TextFieldTicket) box.getChildren().get(j);
@@ -721,7 +720,7 @@ public class BillPrintable implements Printable {
                                 : (int) ((field.getColumnWidth() * pointWidthSizePaper) - layout.getAdvance());
 
                         layout.draw(g2d, xPos + x, yPos + yAux);
-                        layout.draw(gimage, xPos + x, yPos + yAux);
+//                        layout.draw(gimage, xPos + x, yPos + yAux);
                         yAux += layout.getDescent() + layout.getLeading();
                     }
                     if (yMax < yAux) {
@@ -761,7 +760,7 @@ public class BillPrintable implements Printable {
                                 ? (int) (width - layout.getAdvance()) / 2
                                 : (int) (width - layout.getAdvance());
                         layout.draw(g2d, x, y);
-                        layout.draw(gimage, x, y);
+//                        layout.draw(gimage, x, y);
                         y += layout.getDescent() + layout.getLeading();
                     }
                 } else if (box.getChildren().get(0) instanceof ImageViewTicket) {
@@ -774,10 +773,10 @@ public class BillPrintable implements Printable {
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
 
-                            gimage.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
-                                    : box.getAlignment() == Pos.CENTER
-                                    ? (int) (width - imageView.getFitWidth()) / 2
-                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+//                            gimage.drawImage(qrImage, box.getAlignment() == Pos.CENTER_LEFT ? 0
+//                                    : box.getAlignment() == Pos.CENTER
+//                                    ? (int) (width - imageView.getFitWidth()) / 2
+//                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
                             y += imageView.getFitHeight() + 3;
                         } catch (WriterException ex) {
                             System.out.println(ex.getLocalizedMessage());
@@ -794,10 +793,10 @@ public class BillPrintable implements Printable {
                                     ? (int) (width - imageView.getFitWidth()) / 2
                                     : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
 
-                            gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
-                                    : box.getAlignment() == Pos.CENTER
-                                    ? (int) (width - imageView.getFitWidth()) / 2
-                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
+//                            gimage.drawImage(image, box.getAlignment() == Pos.CENTER_LEFT ? 0
+//                                    : box.getAlignment() == Pos.CENTER
+//                                    ? (int) (width - imageView.getFitWidth()) / 2
+//                                    : box.getAlignment() == Pos.CENTER_RIGHT ? (int) (width - imageView.getFitWidth()) : 0, y, (int) imageView.getFitWidth(), (int) imageView.getFitHeight(), null);
                             y += imageView.getFitHeight() + 3;
                         } catch (IOException ex) {
                             System.out.println(ex.getLocalizedMessage());

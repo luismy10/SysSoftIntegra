@@ -90,7 +90,7 @@ public class FxImpresoraEtiquetaController implements Initializable {
                     }
                 }
             }
-        }else{
+        } else {
             Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Ventana de impresión", "Seleccione una impresa.", false);
             cbImpresoras.requestFocus();
         }
@@ -99,8 +99,11 @@ public class FxImpresoraEtiquetaController implements Initializable {
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
-        paper.setSize(converMmToPoint(widthEtiquetaMM), converMmToPoint(heightEtiquetaMM));        
-        paper.setImageableArea(0, 0, pf.getWidth(), pf.getHeight());
+        paper.setSize(converMmToPoint(widthEtiquetaMM), converMmToPoint(heightEtiquetaMM));
+//        Tools.println("PageFormat setSize:" + converMmToPoint(widthEtiquetaMM) + " - " + converMmToPoint(heightEtiquetaMM));        
+//        Tools.println("PageFormat setImageableArea 1:" + pf.getWidth() + " - " + pf.getHeight());
+        paper.setImageableArea(0, 0, converMmToPoint(widthEtiquetaMM), pf.getHeight());
+//        Tools.println("PageFormat setImageableArea 2:" +paper.getImageableX()+" - "+paper.getImageableY()+" - "+ paper.getWidth() + " - " + paper.getHeight());
         pf.setOrientation(orientacionEtiqueta);
         pf.setPaper(paper);
         return pf;

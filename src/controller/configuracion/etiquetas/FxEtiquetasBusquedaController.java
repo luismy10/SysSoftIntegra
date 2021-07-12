@@ -1,6 +1,7 @@
 package controller.configuracion.etiquetas;
 
 import controller.inventario.suministros.FxSuministrosController;
+import controller.menus.FxPrincipalController;
 import controller.tools.FilesRouters;
 import controller.tools.SelectecElement;
 import controller.tools.Tools;
@@ -42,6 +43,11 @@ public class FxEtiquetasBusquedaController implements Initializable {
     private SelectecElement selectecElement;
 
     private VBoxContent etiquetaReferent;
+    
+     /*
+    Objectos de la ventana principal y venta que agrega al os hijos
+     */
+    private FxPrincipalController fxPrincipalController;
 
     private FxEtiquetasController etiquetasController;
 
@@ -108,6 +114,7 @@ public class FxEtiquetasBusquedaController implements Initializable {
             Parent parent = fXMLLoader.load(url.openStream());
             //Controlller here
             FxEtiquetasPrevisualizadorController controller = fXMLLoader.getController();
+            controller.setContent(fxPrincipalController);
             controller.loadEtiqueta(ruta, suministroTB);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Vista previa", window.getScene().getWindow());
@@ -165,6 +172,10 @@ public class FxEtiquetasBusquedaController implements Initializable {
 
     public void setInitSuministroController(FxSuministrosController suministrosController) {
         this.suministrosController = suministrosController;
+    }
+    
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
     }
 
     class VBoxContent extends VBox {

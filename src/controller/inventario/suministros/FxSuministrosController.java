@@ -437,6 +437,7 @@ public class FxSuministrosController implements Initializable {
                 //Controlller here
                 FxEtiquetasBusquedaController controller = fXMLLoader.getController();
                 controller.setInitSuministroController(this);
+                controller.setContent(fxPrincipalController);
                 controller.onLoadEtiquetas(1);
                 //
                 Stage stage = WindowStage.StageLoaderModal(parent, "Buscar etiquetas", hbWindow.getScene().getWindow());

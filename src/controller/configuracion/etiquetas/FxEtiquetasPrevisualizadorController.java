@@ -1,9 +1,12 @@
 package controller.configuracion.etiquetas;
 
+import controller.menus.FxPrincipalController;
 import controller.tools.CodBar;
+import controller.tools.FilesRouters;
 import controller.tools.Session;
 import controller.tools.Text;
 import controller.tools.Tools;
+import controller.tools.WindowStage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -15,6 +18,7 @@ import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -23,11 +27,13 @@ import java.util.ResourceBundle;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -41,6 +47,7 @@ import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 import model.SuministroTB;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
@@ -60,6 +67,8 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
     @FXML
     private ScrollPane scrollPane;
 
+    private FxPrincipalController fxPrincipalController;
+
     private Pane panel;
 
     private double widthEtiquetaMM;
@@ -71,31 +80,7 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Tools.DisposeWindow(window, KeyEvent.KEY_RELEASED);
-    }
-
-    @FXML
-    private void onKeyPressedPrint(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            eventImprimir();
-        }
-    }
-
-    @FXML
-    private void onActionPrint(ActionEvent event) {
-        eventImprimir();
-    }
-
-    @FXML
-    private void onKeyPressedCancelar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            Tools.Dispose(window);
-        }
-    }
-
-    @FXML
-    private void onActionCancelar(ActionEvent event) {
-        Tools.Dispose(window);
-    }
+    }   
 
     public void loadEtiqueta(String ruta, SuministroTB suministroTB) {
         if (ruta != null) {
@@ -372,26 +357,50 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
     }
 
     private void eventImprimir() {
-        WritableImage image = createScaledView(panel, 4);
-        BillPrintableEtiquetas billPrintable = new BillPrintableEtiquetas(SwingFXUtils.fromFXImage(image, null));
-        PrinterJob pj = PrinterJob.getPrinterJob();
-        pj.setCopies(1);
-        Book book = new Book();
-        book.append(billPrintable, getPageFormat(pj));
-        pj.setPageable(book);
         try {
-            if (pj.printDialog()) {
-                pj.print();
-            }
-        } catch (PrinterException ex) {
+            Pane newPane = panel;
+            newPane.setScaleX(1.0);
+            newPane.setScaleY(1.0);
+
+            WritableImage image = createScaledView(newPane, 4);
+            BillPrintableEtiquetas billPrintable = new BillPrintableEtiquetas(SwingFXUtils.fromFXImage(image, null));
+
+            fxPrincipalController.openFondoModal();
+            URL url = getClass().getResource(FilesRouters.FX_IMPRESORA_ETIQUETA);
+            FXMLLoader fXMLLoader = WindowStage.LoaderWindow(url);
+            Parent parent = fXMLLoader.load(url.openStream());
+            //Controlller here
+            FxImpresoraEtiquetaController controller = fXMLLoader.getController();
+            controller.loadImpresoraEtiqueta(billPrintable, widthEtiquetaMM, heightEtiquetaMM, orientacionEtiqueta);
+            //
+            Stage stage = WindowStage.StageLoaderModal(parent, "Ventana de impresión", window.getScene().getWindow());
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
+            stage.show();
+        } catch (IOException exception) {
+
         }
+//        WritableImage image = createScaledView(panel, 4);
+//        BillPrintableEtiquetas billPrintable = new BillPrintableEtiquetas(SwingFXUtils.fromFXImage(image, null));
+//        PrinterJob pj = PrinterJob.getPrinterJob();
+//        pj.setCopies(1);
+//        Book book = new Book();
+//        book.append(billPrintable, getPageFormat(pj));
+//        pj.setPageable(book);
+//        try {
+//            if (pj.printDialog()) {
+//                pj.print();
+//            }
+//        } catch (PrinterException ex) {
+//        }
     }
 
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
         paper.setSize(converMmToPoint(widthEtiquetaMM), converMmToPoint(heightEtiquetaMM));
-        paper.setImageableArea(0, 0, pf.getWidth(), pf.getHeight());
+        paper.setImageableArea(0, 0, converMmToPoint(widthEtiquetaMM), pf.getHeight());
         pf.setOrientation(orientacionEtiqueta);
         pf.setPaper(paper);
         return pf;
@@ -413,6 +422,30 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
         panel.setScaleY(zoomFactor * panel.getScaleY());
         // refresh ScrollPane scroll positions & content bounds
         scrollPane.layout();
+    }
+    
+    @FXML
+    private void onKeyPressedPrint(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            eventImprimir();
+        }
+    }
+
+    @FXML
+    private void onActionPrint(ActionEvent event) {
+        eventImprimir();
+    }
+
+    @FXML
+    private void onKeyPressedCancelar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Tools.Dispose(window);
+        }
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
+        Tools.Dispose(window);
     }
 
     @FXML
@@ -439,6 +472,10 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
         eventAlejar();
     }
 
+    public void setContent(FxPrincipalController fxPrincipalController) {
+        this.fxPrincipalController = fxPrincipalController;
+    }
+
     class BillPrintableEtiquetas implements Printable {
 
         private final BufferedImage bufferedImage;
@@ -450,10 +487,38 @@ public class FxEtiquetasPrevisualizadorController implements Initializable {
         @Override
         public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
             if (pageIndex == 0) {
+
+//                Tools.println("print:");
+//                Tools.println(pageFormat.getImageableWidth() + " - " + pageFormat.getImageableHeight());
+//                Tools.println(pageFormat.getImageableWidth() + " - " + pageFormat.getHeight());
+//                BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
+//                Graphics2D gimage = image.createGraphics();
                 Graphics2D g2d = (Graphics2D) graphics;
-                g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
-                g2d.drawImage(bufferedImage, 5, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+
+                g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+//                gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+
+//                gimage.setColor(Color.white);
+//                gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
+//                gimage.setPaint(Color.black);
+                g2d.drawImage(bufferedImage, 20, 20, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+//                gimage.drawImage(bufferedImage, 0, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+
+                //CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
+                //ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
+                //g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+                //g2d.drawString("hola mundo", 10, 10);
+//                BufferedImage imageBarCode = SwingFXUtils.fromFXImage(generateBarCode("12345678", new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16)), null);
+//                g2d.drawImage(imageBarCode, 20, 20, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+//                gimage.drawImage(imageBarCode, 0, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
                 g2d.dispose();
+//                gimage.dispose();
+
+//                try {
+//                    ImageIO.write(image, "png", new File("etiqueta.png"));
+//                } catch (IOException ex) {
+//                    System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
+//                }
                 return (PAGE_EXISTS);
             } else {
                 return (NO_SUCH_PAGE);

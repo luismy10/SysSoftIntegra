@@ -4,11 +4,11 @@ import controller.menus.FxPrincipalController;
 import controller.tools.CodBar;
 import controller.tools.FilesRouters;
 import controller.tools.Json;
-import controller.tools.ObjectGlobal;
 import controller.tools.SelectionModel;
 import controller.tools.Text;
 import controller.tools.Tools;
 import controller.tools.WindowStage;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
@@ -20,6 +20,7 @@ import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -448,10 +449,10 @@ public class FxEtiquetasController implements Initializable {
             if (result.equalsIgnoreCase("duplicate")) {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.WARNING, "Etiqueta", "El nombre del formato ya existe, intente con otro.", false);
             } else if (result.equalsIgnoreCase("updated")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se actualizo correctamente el formato.", false);
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se actualizó correctamente el formato.", false);
                 clearEtiqueta();
             } else if (result.equalsIgnoreCase("registered")) {
-                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se guardo correctamente el formato.", false);
+                Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.INFORMATION, "Etiqueta", "Se registró correctamente el formato.", false);
                 clearEtiqueta();
             } else {
                 Tools.AlertMessage(window.getScene().getWindow(), Alert.AlertType.ERROR, "Etiqueta", result, false);
@@ -675,7 +676,7 @@ public class FxEtiquetasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Nueva Etiqueta", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w-> fxPrincipalController.closeFondoModal());
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Etiqueta controlller nuevo:" + ex.getLocalizedMessage());
@@ -691,12 +692,13 @@ public class FxEtiquetasController implements Initializable {
             //Controlller here
             FxEtiquetasBusquedaController controller = fXMLLoader.getController();
             controller.setInitEtiquetasController(this);
+            controller.setContent(fxPrincipalController);
             controller.onLoadEtiquetas(0);
             //
             Stage stage = WindowStage.StageLoaderModal(parent, "Buscar etiquetas", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w-> fxPrincipalController.closeFondoModal());
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException exception) {
 
@@ -716,7 +718,7 @@ public class FxEtiquetasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Ventana de impresión", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w-> fxPrincipalController.closeFondoModal());
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException exception) {
 
@@ -756,7 +758,7 @@ public class FxEtiquetasController implements Initializable {
             Stage stage = WindowStage.StageLoaderModal(parent, "Editar Etiqueta", window.getScene().getWindow());
             stage.setResizable(false);
             stage.sizeToScene();
-            stage.setOnHiding(w-> fxPrincipalController.closeFondoModal());
+            stage.setOnHiding(w -> fxPrincipalController.closeFondoModal());
             stage.show();
         } catch (IOException exception) {
 
@@ -1287,18 +1289,41 @@ public class FxEtiquetasController implements Initializable {
         @Override
         public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
             if (pageIndex == 0) {
+
+//                Tools.println("print:");
+//                Tools.println(pageFormat.getImageableWidth() + " - " + pageFormat.getImageableHeight());
+//                Tools.println(pageFormat.getImageableWidth() + " - " + pageFormat.getHeight());
+//                BufferedImage image = new BufferedImage((int) pageFormat.getImageableWidth(), (int) pageFormat.getImageableHeight(), BufferedImage.TYPE_INT_ARGB);
+//                Graphics2D gimage = image.createGraphics();
                 Graphics2D g2d = (Graphics2D) graphics;
-                 g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-                 
-                 
+
+                g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+//                gimage.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+
+//                gimage.setColor(Color.white);
+//                gimage.fillRect(0, 0, (int) pageFormat.getImageableWidth(), (int) pageFormat.getHeight());
+//                gimage.setPaint(Color.black);
+
+                g2d.drawImage(bufferedImage, 20, 20, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+//                gimage.drawImage(bufferedImage, 0, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+                
                 //CodBar ivCodigo = new CodBar(value, x, y, new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16));
                 //ivCodigo.setImage(generateBarCode(ivCodigo.getTexto(), ivCodigo.getFont()));
                 //g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
                 //g2d.drawString("hola mundo", 10, 10);
-                g2d.drawImage(bufferedImage, 40, 20, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
-//                BufferedImage image = SwingFXUtils.fromFXImage(generateBarCode("12345678", new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16)), null);
-//                g2d.drawImage(image, 0, 20, (int) converMmToPoint(30),(int) converMmToPoint(20),null);
+//                BufferedImage imageBarCode = SwingFXUtils.fromFXImage(generateBarCode("12345678", new java.awt.Font("Lucida Sans Typewriter", java.awt.Font.BOLD, 16)), null);
+//                g2d.drawImage(imageBarCode, 20, 20, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+//                gimage.drawImage(imageBarCode, 0, 0, (int) converMmToPoint(widthEtiquetaMM), (int) converMmToPoint(heightEtiquetaMM), null);
+
                 g2d.dispose();
+//                gimage.dispose();
+
+//                try {
+//                    ImageIO.write(image, "png", new File("etiqueta.png"));
+//                } catch (IOException ex) {
+//                    System.out.println("Error en imprimir: " + ex.getLocalizedMessage());
+//                }
+
                 return (PAGE_EXISTS);
             } else {
                 return (NO_SUCH_PAGE);
@@ -1345,7 +1370,7 @@ public class FxEtiquetasController implements Initializable {
 
     }
 
-    public void setContent( FxPrincipalController fxPrincipalController) {
+    public void setContent(FxPrincipalController fxPrincipalController) {
         this.fxPrincipalController = fxPrincipalController;
     }
 
